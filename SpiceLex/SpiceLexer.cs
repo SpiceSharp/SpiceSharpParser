@@ -15,7 +15,7 @@ namespace SpiceSharpLex
             builder.AddRule(new LexerInternalRule("LETTER", "[a-z]"));
             builder.AddRule(new LexerInternalRule("CHARACTER", "[a-z0-9]"));
             builder.AddRule(new LexerInternalRule("DIGIT", "[0-9]"));
-            builder.AddRule(new LexerInternalRule("SPECIAL", "[_,.:!%#-;/<>\\^]"));
+            builder.AddRule(new LexerInternalRule("SPECIAL", "[_,\\.\\:\\!%\\#\\-;\\<>\\^]"));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.WHITESPACE, "WHITESPACE", "[ \t]*", (SpiceLexerState state) => { return LexerRuleResult.IgnoreToken; }));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.ASTERIKS, "ASTERIKS", "\\*"));
@@ -23,7 +23,8 @@ namespace SpiceSharpLex
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.MINUS, "MINUS", "-"));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.DOT, "DOT", "\\."));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.COMMA, "COMMA", ","));
-            builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.DELIMITER, "DELIMITER", @"(=|\(|\)|\|)"));
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.DELIMITER, "DELIMITER", @"(\(|\)|\|)"));
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.EQUAL, "EQUAL", @"="));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.NEWLINE, "NEWLINE", @"(\r\n|\n|\r)",
                 (SpiceLexerState state) =>
                 {
@@ -38,7 +39,7 @@ namespace SpiceSharpLex
                 }));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.ENDS, "ENDS", ".ends"));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.END, "END", ".end"));
-            builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.VALUE, "VALUE", @"(([+-])?((<DIGIT>)+(\.(<DIGIT>)*)?|\.(<DIGIT>)+)(e(\+|-)?(<DIGIT>)+|[tgmkunpf](<LETTER>)*)?)"));
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.VALUE, "VALUE", @"(([+-])?((<DIGIT>)+(\.(<DIGIT>)*)?|\.(<DIGIT>)+)(e(\+|-)?(<DIGIT>)+|[tgmkunpf](<LETTER>)*)?[vH]?)"));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.COMMENT, "COMMENT", "[^\r\n]+",
                 null,
                 (SpiceLexerState state) => {
@@ -60,8 +61,8 @@ namespace SpiceSharpLex
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.STRING, "STRING", @"""[^\r\n]+\"""));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.EXPRESSION, "EXPRESSION", "{[^{}]*}"));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.REFERENCE, "REFERENCE", "@<WORD>"));
-            builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.WORD, "WORD", "<LETTER>(<CHARACTER>|<SPECIAL>)*"));
-            builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.IDENTIFIER, "IDENTIFIER", "(<CHARACTER>|_)(<CHARACTER>|<SPECIAL>)*"));
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.WORD, "WORD", "(<LETTER>(<CHARACTER>|<SPECIAL>)*)"));
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.IDENTIFIER, "IDENTIFIER", "((<CHARACTER>|_)(<CHARACTER>|<SPECIAL>)*)"));
             this.grammar = builder.GetGrammar();
         }
 

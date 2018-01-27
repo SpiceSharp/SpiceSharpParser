@@ -20,6 +20,7 @@
         IDENTIFIER = 15,
         STRING = 16,
         TITLE = 17,
-        CONTINUE = 18
+        CONTINUE = 18,
+        EQUAL = 19
     }
 }
