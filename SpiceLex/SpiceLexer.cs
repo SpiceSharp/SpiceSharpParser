@@ -1,5 +1,5 @@
 ﻿using NLex;
-using SpiceSharpNetlistGrammar;
+using SpiceNetlist;
 using System.Collections.Generic;
 
 namespace SpiceSharpLex

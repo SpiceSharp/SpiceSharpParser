@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SpiceNetList\SpiceNetlist.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="NLex">
+      <HintPath>..\..\NLex\NLex\bin\Debug\netcoreapp2.0\NLex.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
