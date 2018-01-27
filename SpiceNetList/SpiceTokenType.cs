@@ -19,6 +19,7 @@
         PLUS = 14,
         IDENTIFIER = 15,
         STRING = 16,
-        TITLE = 17
+        TITLE = 17,
+        CONTINUE = 18
     }
 }

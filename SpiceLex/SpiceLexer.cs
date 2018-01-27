@@ -30,7 +30,12 @@ namespace SpiceSharpLex
                     state.LineNumber++;
                     return LexerRuleResult.ReturnToken;
                 }));
-
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.CONTINUE, "CONTINUE", @"((\r\n|\n|\r)\+)",
+                (SpiceLexerState state) =>
+                {
+                    state.LineNumber++;
+                    return LexerRuleResult.IgnoreToken;
+                }));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.ENDS, "ENDS", ".ends"));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.END, "END", ".end"));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.VALUE, "VALUE", @"(([+-])?((<DIGIT>)+(\.(<DIGIT>)*)?|\.(<DIGIT>)+)(e(\+|-)?(<DIGIT>)+|[tgmkunpf](<LETTER>)*)?)"));
@@ -57,7 +62,6 @@ namespace SpiceSharpLex
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.REFERENCE, "REFERENCE", "@<WORD>"));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.WORD, "WORD", "<LETTER>(<CHARACTER>|<SPECIAL>)*"));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceTokenType.IDENTIFIER, "IDENTIFIER", "(<CHARACTER>|_)(<CHARACTER>|<SPECIAL>)*"));
-
             this.grammar = builder.GetGrammar();
         }
 
