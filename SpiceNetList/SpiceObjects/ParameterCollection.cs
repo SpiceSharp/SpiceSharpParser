@@ -2,11 +2,11 @@
 
 namespace SpiceNetlist.SpiceObjects
 {
-    public class Parameters : SpiceObject
+    public class ParameterCollection : SpiceObject
     {
         public List<Parameter> Values { get; set; }
 
-        public Parameters()
+        public ParameterCollection()
         {
             Values = new List<Parameter>();
         }

@@ -1,6 +1,6 @@
-﻿namespace SpiceNetlist.SpiceObjects
+﻿namespace SpiceNetlist.SpiceObjects.Parameters
 {
-    public class Model : Statement
+    public class ComplexParameter : Parameter
     {
         public string Name { get; set; }
         public ParameterCollection Parameters { get; set; }
