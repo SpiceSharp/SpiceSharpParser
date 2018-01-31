@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SpiceSharp\SpiceSharp\SpiceSharp.csproj" />
+    <ProjectReference Include="..\SpiceNetList\SpiceNetlist.csproj" />
+  </ItemGroup>
+
+</Project>
