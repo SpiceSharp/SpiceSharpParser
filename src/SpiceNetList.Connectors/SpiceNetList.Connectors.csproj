@@ -5,8 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SpiceSharp\SpiceSharp\SpiceSharp.csproj" />
     <ProjectReference Include="..\SpiceNetList\SpiceNetlist.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SpiceSharp">
+      <HintPath>..\..\libs\SpiceSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

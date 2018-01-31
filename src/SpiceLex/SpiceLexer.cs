@@ -2,7 +2,7 @@
 using SpiceNetlist;
 using System.Collections.Generic;
 
-namespace SpiceSharpLex
+namespace SpiceLex
 {
     public class SpiceLexer
     {

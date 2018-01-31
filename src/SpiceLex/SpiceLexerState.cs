@@ -1,6 +1,6 @@
 ﻿using NLex;
 
-namespace SpiceSharpLex
+namespace SpiceLex
 {
     public class SpiceLexerState : LexerState
     {
