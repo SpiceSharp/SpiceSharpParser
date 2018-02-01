@@ -14,4 +14,10 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="SpiceSharp\Processors\Generators\Controls\" />
+    <Folder Include="SpiceSharp\Processors\Generators\Models\" />
+    <Folder Include="SpiceSharp\Processors\Generators\Others\" />
+  </ItemGroup>
+
 </Project>

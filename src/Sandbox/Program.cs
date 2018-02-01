@@ -418,10 +418,9 @@ o2 6 0 3 0 convtwoinch
 
             ParseTreeTranslator translator = new ParseTreeTranslator();
             parseTree.Accept(translator);
-            var netList = translator.GetSpiceObject(parseTree) as NetList;
+            var netList = translator.GetSpiceObject(parseTree) as SpiceNetlist.NetList;
 
-            var spiceSharpStuff = new SpiceSharpConnector().Translate(netList);
-            Circuit circuit = spiceSharpStuff.Item1;
+            var netListSpiceSharp = new Connector().Translate(netList);
         }
     }
 }

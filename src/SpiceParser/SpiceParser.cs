@@ -38,6 +38,11 @@ namespace SpiceParser
 
         private int ParseStatements(ParseTreeNonTerminalNode statementsNode, Token[] tokens, int currentTokenIndex)
         {
+            if (tokens.Length <= currentTokenIndex)
+            {
+                return currentTokenIndex;
+            }
+
             var currentToken = tokens[currentTokenIndex];
 
             if (currentToken.TokenType == (int)SpiceTokenType.DOT
@@ -393,7 +398,7 @@ namespace SpiceParser
                 component.Children.Add(CreateTerminal(currentToken, component));
                 component.Children.Add(parameters);
 
-                currentTokenIndex = ParseParameters(parameters, tokens, currentTokenIndex + 2);
+                currentTokenIndex = ParseParameters(parameters, tokens, currentTokenIndex + 1);
 
                 var token = tokens[currentTokenIndex];
 

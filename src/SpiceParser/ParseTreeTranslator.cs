@@ -120,18 +120,19 @@ namespace SpiceParser
         {
             var parameters = new ParameterCollection();
 
-            if (CurrentItems.Count > 0)
+            if (CurrentItems.Count == 2)
             {
                 if (CurrentItems[0].SpiceObject is Parameter p)
                 {
                     parameters.Values.Add(p);
                 }
 
-                if (CurrentItems[1].SpiceObject is ParameterCollection ps)
+                if (CurrentItems[1].SpiceObject is ParameterCollection ps2)
                 {
-                    parameters.Values.AddRange(ps.Values);
+                    parameters.Values.AddRange(ps2.Values);
                 }
             }
+
             return parameters;
         }
 
@@ -195,11 +196,11 @@ namespace SpiceParser
             {
                 if (CurrentItems[0].SpiceObject is Statement st)
                 {
-                    statements.List.Add(st);
+                    statements.Add(st);
                 }
                 if (CurrentItems[1].SpiceObject is Statements sts)
                 {
-                    statements.List.AddRange(sts.List);
+                    statements.Merge(sts);
                 }
             }
             else
@@ -208,7 +209,7 @@ namespace SpiceParser
                 {
                     if (CurrentItems[0].SpiceObject is Statements sts)
                     {
-                        statements.List.AddRange(sts.List);
+                        statements.Merge(sts);
                     }
                     else
                     {
