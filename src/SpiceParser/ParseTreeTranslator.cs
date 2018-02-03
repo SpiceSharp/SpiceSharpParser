@@ -151,8 +151,8 @@ namespace SpiceParser
         private SpiceObject CreateControl(List<ParseTreeTranslatorItem> CurrentItems)
         {
             var control = new Control();
-            control.Name = CurrentItems[0].Token.Value;
-            control.Parameters = CurrentItems[1].SpiceObject as ParameterCollection;
+            control.Name = CurrentItems[1].Token.Value;
+            control.Parameters = CurrentItems[2].SpiceObject as ParameterCollection;
             return control;
         }
 
@@ -213,7 +213,13 @@ namespace SpiceParser
                     }
                     else
                     {
-                        throw new ParseException();
+                        if (CurrentItems[0].IsToken && CurrentItems[0].Token.TokenType == (int)SpiceTokenType.END)
+                        {
+                        }
+                        else
+                        {
+                            throw new Exception();
+                        }
                     }
                 }
             }

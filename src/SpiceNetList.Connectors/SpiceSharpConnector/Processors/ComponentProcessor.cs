@@ -1,11 +1,16 @@
 ﻿using SpiceNetlist.SpiceObjects;
-using SpiceNetList.Connectors.SpiceSharp.Generators.Components;
+using SpiceNetlist.Connectors.SpiceSharpConnector.Generators.Components;
 using SpiceSharp.Circuits;
 
-namespace SpiceNetList.Connectors.SpiceSharp.Processors
+namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors
 {
     class ComponentProcessor : StatementProcessor
     {
+        public override void Init()
+        {
+            Generators.Add(new RLCGenerator());
+        }
+
         public override void Process(Statement statement, NetList netlist)
         {
             Component c = statement as Component;
@@ -24,11 +29,6 @@ namespace SpiceNetList.Connectors.SpiceSharp.Processors
                     }
                 }
             }
-        }
-
-        protected override void RegisterGenerators()
-        {
-            Generators.Add(new RLCGenerator());
         }
     }
 }

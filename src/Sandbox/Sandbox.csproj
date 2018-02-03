@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SpiceLex\SpiceLex.csproj" />
-    <ProjectReference Include="..\SpiceNetList.Connectors\SpiceNetList.Connectors.csproj" />
+    <ProjectReference Include="..\SpiceNetList.Connectors\SpiceNetlist.Connectors.csproj" />
     <ProjectReference Include="..\SpiceNetList\SpiceNetlist.csproj" />
     <ProjectReference Include="..\SpiceParser\SpiceParser.csproj" />
   </ItemGroup>

@@ -68,6 +68,10 @@ namespace SpiceParser
 
                 statementsNode.Children.Add(statements);
             }
+            else if (currentToken.TokenType == (int)SpiceTokenType.END)
+            {
+                statementsNode.Children.Add(CreateTerminal(currentToken, statementsNode));
+            }
             else if (currentToken.TokenType == -1) // follow
             {
                 //do nothing

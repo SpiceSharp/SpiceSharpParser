@@ -1,10 +1,9 @@
 ﻿using SpiceNetlist.SpiceObjects;
-using SpiceNetList.Connectors.SpiceSharp.Processors;
 using SpiceSharp;
 using System;
 using System.Collections.Generic;
 
-namespace SpiceNetList.Connectors.SpiceSharp
+namespace SpiceNetlist.Connectors.SpiceSharpConnector
 {
     public class Connector
     {

@@ -1,9 +1,9 @@
 ﻿using SpiceNetlist.SpiceObjects;
-using SpiceNetList.Connectors.SpiceSharp.Processors;
+using SpiceNetlist.Connectors.SpiceSharpConnector.Processors;
 using System;
 using System.Collections.Generic;
 
-namespace SpiceNetList.Connectors.SpiceSharp
+namespace SpiceNetlist.Connectors.SpiceSharpConnector
 {
     public class StatementProcessorRegistry
     {
@@ -12,6 +12,7 @@ namespace SpiceNetList.Connectors.SpiceSharp
         public StatementProcessorRegistry()
         {
             Processors[typeof(Component)] = new ComponentProcessor();
+            Processors[typeof(Model)] = new ModelProcessor();
         }
 
         public void Init()

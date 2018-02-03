@@ -1,8 +1,8 @@
 ﻿using SpiceNetlist.SpiceObjects;
-using SpiceNetList.Connectors.SpiceSharp.Processors;
+using SpiceNetlist.Connectors.SpiceSharpConnector.Processors;
 using System.Collections.Generic;
 
-namespace SpiceNetList.Connectors.SpiceSharp
+namespace SpiceNetlist.Connectors.SpiceSharpConnector
 {
     public abstract class StatementProcessor
     {
@@ -10,11 +10,6 @@ namespace SpiceNetList.Connectors.SpiceSharp
 
         public abstract void Process(Statement statement, NetList netlist);
 
-        public void Init()
-        {
-            RegisterGenerators();
-        }
-
-        protected abstract void RegisterGenerators();
+        public abstract void Init();
     }
 }
