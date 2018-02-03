@@ -37,7 +37,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             if (parameters.Values.Count == 3)
             {
                 var capacitance = (parameters.Values[2] as SingleParameter).RawValue;
-                capacitor.ParameterSets.SetProperty("capacitance", expressionParser.Parse(capacitance));
+                capacitor.ParameterSets.SetProperty("capacitance", currentNetList.ParseDouble(capacitance));
 
                 return capacitor;
             }
@@ -61,7 +61,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 throw new System.Exception();
             }
             var inductance = (parameters.Values[2] as SingleParameter).RawValue;
-            inductor.ParameterSets.SetProperty("inductance", expressionParser.Parse(inductance));
+            inductor.ParameterSets.SetProperty("inductance", currentNetList.ParseDouble(inductance));
             return inductor;
         }
 
@@ -77,7 +77,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 res.Connect(nodes);
                 
                 var value = (parameters.Values[2] as SingleParameter).RawValue;
-                res.ParameterSets.SetProperty("resistance", expressionParser.Parse(value));
+                res.ParameterSets.SetProperty("resistance", currentNetList.ParseDouble(value));
                 return res;
             }
             else

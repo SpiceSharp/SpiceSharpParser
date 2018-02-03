@@ -1,6 +1,10 @@
-﻿using SpiceSharp;
+﻿using SpiceNetlist.SpiceSharpConnector.Expressions;
+using SpiceSharp;
+using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SpiceNetlist.SpiceSharpConnector
 {
@@ -14,19 +18,36 @@ namespace SpiceNetlist.SpiceSharpConnector
         public Dictionary<string, double> UserGlobalParameters = new Dictionary<string, double>();
 
         public List<Simulation> Simulations { get; set; } = new List<Simulation>();
-
-        public BaseConfiguration BaseConfiguration { get; set; }
-
-        public FrequencyConfiguration FrequencyConfiguration { get; set; }
-
-        public TimeConfiguration TimeConfiguration { get; set; }
-
-        public DCConfiguration DCConfiguration { get; set; }
-
+      
         public List<string> Comments { get; set; }
 
         public List<string> Warnings { get; set; }
 
         public List<string> Errors { get; set; }
+
+        internal BaseConfiguration BaseConfiguration { get; set; }
+
+        internal FrequencyConfiguration FrequencyConfiguration { get; set; }
+
+        internal TimeConfiguration TimeConfiguration { get; set; }
+
+        internal DCConfiguration DCConfiguration { get; set; }
+
+        internal Entity FindModel(Identifier modelId)
+        {
+            return Circuit.Objects[modelId];
+        }
+
+        internal double ParseDouble(string value)
+        {
+            if (UserGlobalParameters.ContainsKey(value))
+            {
+                return UserGlobalParameters[value];
+            }
+
+            SpiceExpression spiceExpressionParser = new SpiceExpression();
+            return spiceExpressionParser.Parse(value);
+        }
+
     }
 }

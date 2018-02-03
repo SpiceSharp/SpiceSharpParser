@@ -13,7 +13,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                     string name = a.Name.ToLower();
                     string value = a.Value;
 
-                    netlist.UserGlobalParameters[name] = spiceExpressionParser.Parse(value);
+                    netlist.UserGlobalParameters[name] = netlist.ParseDouble(value);
                 }
             }
         }

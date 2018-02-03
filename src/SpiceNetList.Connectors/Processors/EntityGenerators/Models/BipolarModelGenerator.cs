@@ -8,14 +8,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models
     {
         public override List<string> GetGeneratedTypes()
         {
-            return new List<string>() { "npm", "pnp" };
+            return new List<string>() { "npn", "pnp" };
         }
 
         internal override Entity GenerateModel(string name, string type)
         {
             BipolarJunctionTransistorModel model = new BipolarJunctionTransistorModel(name);
             if (type == "npn")
-                model.ParameterSets.SetProperty("npm", true);
+                model.ParameterSets.SetProperty("npn", true);
             else if (type == "pnp")
                 model.ParameterSets.SetProperty("pnp", true);
             return model;

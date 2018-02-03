@@ -1,5 +1,4 @@
 ﻿using SpiceNetlist.SpiceObjects;
-using SpiceNetlist.SpiceSharpConnector.Expressions;
 using SpiceNetlist.SpiceSharpConnector.Processors.Controls;
 using System.Collections.Generic;
 
@@ -7,7 +6,6 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
     class ControlProcessor : StatementProcessor
     {
-        protected SpiceExpression spiceExpressionParser = new SpiceExpression();
         Dictionary<string, SingleControlProcessor> ControlProcessors = new Dictionary<string, SingleControlProcessor>();
 
         public override void Init()
@@ -21,7 +19,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
         public override void Process(Statement statement, NetList netlist)
         {
-            var control = statement as SpiceNetlist.SpiceObjects.Control;
+            var control = statement as Control;
             if (ControlProcessors.ContainsKey(control.Name))
             {
                 ControlProcessors[control.Name].Process(control, netlist);

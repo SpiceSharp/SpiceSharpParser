@@ -19,23 +19,23 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                     {
                         case "abstol":
                             if (netlist.BaseConfiguration == null) netlist.BaseConfiguration = new SpiceSharp.Simulations.BaseConfiguration();
-                            netlist.BaseConfiguration.AbsoluteTolerance = spiceExpressionParser.Parse(value); break;
+                            netlist.BaseConfiguration.AbsoluteTolerance = netlist.ParseDouble(value); break;
                         case "reltol":
                             if (netlist.BaseConfiguration == null) netlist.BaseConfiguration = new SpiceSharp.Simulations.BaseConfiguration();
-                            netlist.BaseConfiguration.AbsoluteTolerance = spiceExpressionParser.Parse(value); break;
+                            netlist.BaseConfiguration.AbsoluteTolerance = netlist.ParseDouble(value); break;
                         case "gmin":
                             if (netlist.BaseConfiguration == null) netlist.BaseConfiguration = new SpiceSharp.Simulations.BaseConfiguration();
-                            netlist.BaseConfiguration.Gmin = spiceExpressionParser.Parse(value); break;
+                            netlist.BaseConfiguration.Gmin = netlist.ParseDouble(value); break;
                         case "itl1":
                             if (netlist.BaseConfiguration == null) netlist.BaseConfiguration = new SpiceSharp.Simulations.BaseConfiguration();
-                            netlist.BaseConfiguration.DCMaxIterations = (int)spiceExpressionParser.Parse(value); break;
+                            netlist.BaseConfiguration.DCMaxIterations = (int)netlist.ParseDouble(value); break;
                         case "itl2":
                             if (netlist.DCConfiguration == null) netlist.DCConfiguration = new SpiceSharp.Simulations.DCConfiguration();
-                            netlist.DCConfiguration.SweepMaxIterations = (int)spiceExpressionParser.Parse(value); break;
+                            netlist.DCConfiguration.SweepMaxIterations = (int)netlist.ParseDouble(value); break;
 
                         case "itl4":
                             if (netlist.TimeConfiguration == null) netlist.TimeConfiguration = new SpiceSharp.Simulations.TimeConfiguration();
-                            netlist.TimeConfiguration.TranMaxIterations = (int)spiceExpressionParser.Parse(value); break;
+                            netlist.TimeConfiguration.TranMaxIterations = (int)netlist.ParseDouble(value); break;
 
                         case "temp":
                             // TODO: Set current temperature

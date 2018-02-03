@@ -22,14 +22,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
             {
                 case 2:
                     tran = new Transient("Transient -" + netlist.Simulations.Count(s => s is Transient),
-                        spiceExpressionParser.Parse((statement.Parameters.Values[0] as ValueParameter).RawValue),
-                        spiceExpressionParser.Parse((statement.Parameters.Values[1] as ValueParameter).RawValue));
+                        netlist.ParseDouble((statement.Parameters.Values[0] as ValueParameter).RawValue),
+                        netlist.ParseDouble((statement.Parameters.Values[1] as ValueParameter).RawValue));
                     break;
                 case 3:
                     tran = new Transient("Transient -" + netlist.Simulations.Count(s => s is Transient),
-                        spiceExpressionParser.Parse((statement.Parameters.Values[0] as ValueParameter).RawValue),
-                        spiceExpressionParser.Parse((statement.Parameters.Values[1] as ValueParameter).RawValue),
-                        spiceExpressionParser.Parse((statement.Parameters.Values[2] as ValueParameter).RawValue));
+                        netlist.ParseDouble((statement.Parameters.Values[0] as ValueParameter).RawValue),
+                        netlist.ParseDouble((statement.Parameters.Values[1] as ValueParameter).RawValue),
+                        netlist.ParseDouble((statement.Parameters.Values[2] as ValueParameter).RawValue));
                     break;
                 case 4:
                     //TODO: There is something wrong with this

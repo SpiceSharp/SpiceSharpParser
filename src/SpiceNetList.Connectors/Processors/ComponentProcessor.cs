@@ -13,6 +13,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         {
             Generators.Add(new RLCGenerator());
             Generators.Add(new VoltageSourceGenerator());
+            Generators.Add(new BipolarJunctionTransistorGenerator());
         }
 
         public override void Process(Statement statement, NetList netlist)

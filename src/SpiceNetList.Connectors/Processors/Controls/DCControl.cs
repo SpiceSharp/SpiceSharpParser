@@ -29,9 +29,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
             {
                 SweepConfiguration sweep = new SweepConfiguration(
                     (statement.Parameters.Values[4 * i] as SingleParameter).RawValue,
-                    spiceExpressionParser.Parse((statement.Parameters.Values[4 * i + 1] as SingleParameter).RawValue),
-                    spiceExpressionParser.Parse((statement.Parameters.Values[4 * i + 2] as SingleParameter).RawValue),
-                    spiceExpressionParser.Parse((statement.Parameters.Values[4 * i + 3] as SingleParameter).RawValue));
+                    netlist.ParseDouble((statement.Parameters.Values[4 * i + 1] as SingleParameter).RawValue),
+                    netlist.ParseDouble((statement.Parameters.Values[4 * i + 2] as SingleParameter).RawValue),
+                    netlist.ParseDouble((statement.Parameters.Values[4 * i + 3] as SingleParameter).RawValue));
 
                 sweeps.Add(sweep);
             }
