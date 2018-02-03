@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using SpiceNetlist.SpiceObjects;
 using SpiceSharp.Circuits;
-using SpiceSharp.Components;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.Generators.Models
+namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.EntityGenerators.Models
 {
-    abstract class ModelGenerator : Generator
+    abstract class ModelGenerator : EntityGenerator
     {
         public override Entity Generate(string name, string type, ParameterCollection parameters, NetList currentNetList)
         {

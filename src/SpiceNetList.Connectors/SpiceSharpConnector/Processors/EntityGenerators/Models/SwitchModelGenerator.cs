@@ -2,7 +2,7 @@
 using SpiceSharp.Components;
 using System.Collections.Generic;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.Generators.Models
+namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.EntityGenerators.Models
 {
     class SwitchModelGenerator : ModelGenerator
     {

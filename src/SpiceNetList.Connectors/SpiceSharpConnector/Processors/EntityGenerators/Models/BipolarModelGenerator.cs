@@ -2,7 +2,7 @@
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.Generators.Models
+namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.EntityGenerators.Models
 {
     class BipolarModelGenerator : ModelGenerator
     {
@@ -15,9 +15,9 @@ namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.Generators.Mode
         {
             BipolarJunctionTransistorModel model = new BipolarJunctionTransistorModel(name);
             if (type == "npn")
-                model.Parameters.SetProperty("npm", true);
+                model.ParameterSets.SetProperty("npm", true);
             else if (type == "pnp")
-                model.Parameters.SetProperty("pnp", true);
+                model.ParameterSets.SetProperty("pnp", true);
             return model;
         }
     }

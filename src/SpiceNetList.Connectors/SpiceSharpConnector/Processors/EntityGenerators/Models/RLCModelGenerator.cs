@@ -2,7 +2,7 @@
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.Generators.Models
+namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.EntityGenerators.Models
 {
     class RLCModelGenerator : ModelGenerator
     {

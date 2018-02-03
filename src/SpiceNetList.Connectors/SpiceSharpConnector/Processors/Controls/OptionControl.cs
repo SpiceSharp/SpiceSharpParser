@@ -3,17 +3,13 @@ using SpiceNetlist.Connectors.SpiceSharpConnector.Expressions;
 using SpiceNetlist.SpiceObjects;
 using SpiceSharp.IntegrationMethods;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.Control
+namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.Controls
 {
-    class OptionControl
+    class OptionControl : SingleControlProcessor
     {
-        SpiceExpression spiceExpressionParser = new SpiceExpression();
-
-        internal void Process(Statement statement, NetList netlist)
+        public override void Process(Control statement, NetList netlist)
         {
-            var c = statement as SpiceNetlist.SpiceObjects.Control;
-
-            foreach (var param in c.Parameters.Values)
+            foreach (var param in statement.Parameters.Values)
             {
                 if (param is SpiceNetlist.SpiceObjects.Parameters.AssignmentParameter a)
                 {

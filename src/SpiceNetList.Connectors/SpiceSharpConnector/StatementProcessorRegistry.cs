@@ -2,6 +2,7 @@
 using SpiceNetlist.Connectors.SpiceSharpConnector.Processors;
 using System;
 using System.Collections.Generic;
+using SpiceNetlist.Connectors.SpiceSharpConnector.Processors.Generators;
 
 namespace SpiceNetlist.Connectors.SpiceSharpConnector
 {
@@ -13,6 +14,7 @@ namespace SpiceNetlist.Connectors.SpiceSharpConnector
         {
             Processors[typeof(Component)] = new ComponentProcessor();
             Processors[typeof(Model)] = new ModelProcessor();
+            Processors[typeof(Control)] = new ControlProcessor();
         }
 
         public void Init()

@@ -13,7 +13,7 @@ namespace SpiceNetlist.Connectors.SpiceSharpConnector
         //TODO: Introduce better user parameters system
         public Dictionary<string, double> UserGlobalParameters = new Dictionary<string, double>();
 
-        public string SimulationType { get; set; }
+        public List<Simulation> Simulations { get; set; } = new List<Simulation>();
 
         public BaseConfiguration BaseConfiguration { get; set; }
 

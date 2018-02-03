@@ -10,12 +10,8 @@
 
   <ItemGroup>
     <Reference Include="SpiceSharp">
-      <HintPath>..\..\libs\SpiceSharp.dll</HintPath>
+      <HintPath>..\..\..\SpiceSharp\SpiceSharp\bin\Debug\SpiceSharp.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="SpiceSharpConnector\Processors\Generators\Others\" />
   </ItemGroup>
 
 </Project>

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors
 {
-    public abstract class Generator
+    public abstract class EntityGenerator
     {
         protected SpiceExpression expressionParser = new SpiceExpression();
 
@@ -21,7 +21,7 @@ namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors
             {
                 if (parameter is AssignmentParameter ap)
                 {
-                    entity.Parameters.SetProperty(ap.Name, expressionParser.Parse(ap.Value));
+                    entity.ParameterSets.SetProperty(ap.Name, expressionParser.Parse(ap.Value));
                 }
             }
         }
