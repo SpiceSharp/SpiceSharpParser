@@ -2,7 +2,7 @@
 using SpiceSharp.Simulations;
 using System.Collections.Generic;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector
+namespace SpiceNetlist.SpiceSharpConnector
 {
     public class NetList
     {

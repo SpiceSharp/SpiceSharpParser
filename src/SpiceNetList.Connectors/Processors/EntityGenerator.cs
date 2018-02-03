@@ -1,11 +1,11 @@
 ﻿using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
-using SpiceNetlist.Connectors.SpiceSharpConnector.Expressions;
+using SpiceNetlist.SpiceSharpConnector.Expressions;
 using SpiceSharp.Circuits;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors
+namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
     public abstract class EntityGenerator
     {

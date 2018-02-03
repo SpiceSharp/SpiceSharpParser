@@ -1,6 +1,6 @@
 ﻿using SpiceNetlist.SpiceObjects;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector
+namespace SpiceNetlist.SpiceSharpConnector
 {
     public abstract class StatementProcessor
     {

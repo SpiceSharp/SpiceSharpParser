@@ -3,7 +3,7 @@ using System.Linq;
 using SpiceNetlist.SpiceObjects;
 using SpiceSharp.Simulations;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.Controls
+namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
     class OPControl : SingleControlProcessor
     {

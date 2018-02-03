@@ -4,7 +4,7 @@ using SpiceSharp.Simulations;
 using System.Linq;
 using SpiceNetlist.SpiceObjects.Parameters;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.Controls
+namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
     class TransientControl : SingleControlProcessor
     {

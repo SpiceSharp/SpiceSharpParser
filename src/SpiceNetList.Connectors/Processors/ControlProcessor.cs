@@ -1,9 +1,9 @@
-﻿using SpiceNetlist.Connectors.SpiceSharpConnector.Expressions;
-using SpiceNetlist.Connectors.SpiceSharpConnector.Processors.Controls;
-using SpiceNetlist.SpiceObjects;
+﻿using SpiceNetlist.SpiceObjects;
+using SpiceNetlist.SpiceSharpConnector.Expressions;
+using SpiceNetlist.SpiceSharpConnector.Processors.Controls;
 using System.Collections.Generic;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.Generators
+namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
     class ControlProcessor : StatementProcessor
     {

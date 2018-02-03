@@ -4,7 +4,7 @@ using SpiceSharp.Simulations;
 using System;
 using System.Collections.Generic;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.Controls
+namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
     class DCControl : SingleControlProcessor
     {

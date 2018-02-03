@@ -1,9 +1,8 @@
 ﻿using System;
-using SpiceNetlist.Connectors.SpiceSharpConnector.Expressions;
 using SpiceNetlist.SpiceObjects;
 using SpiceSharp.IntegrationMethods;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.Controls
+namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
     class OptionControl : SingleControlProcessor
     {
@@ -11,7 +10,7 @@ namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.Controls
         {
             foreach (var param in statement.Parameters.Values)
             {
-                if (param is SpiceNetlist.SpiceObjects.Parameters.AssignmentParameter a)
+                if (param is SpiceObjects.Parameters.AssignmentParameter a)
                 {
                     string name = a.Name.ToLower();
                     string value = a.Value;

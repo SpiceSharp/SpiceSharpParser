@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceNetlist", "SpiceNetLis
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceParser", "SpiceParser\SpiceParser.csproj", "{8ED4C1D1-FD30-40D2-BBFC-86C7C9B7ADD7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceNetlist.Connectors", "SpiceNetList.Connectors\SpiceNetlist.Connectors.csproj", "{05303B98-FFD6-40EE-80A7-E7B7825F079B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceNetlist.SpiceSharpConnector", "SpiceNetList.Connectors\SpiceNetlist.SpiceSharpConnector.csproj", "{05303B98-FFD6-40EE-80A7-E7B7825F079B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,13 +1,11 @@
 ﻿using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
-using SpiceNetlist.Connectors.SpiceSharpConnector.Expressions;
-using SpiceNetlist.Connectors.SpiceSharpConnector.Processors;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using System.Collections.Generic;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector.EntityGenerators.Components
+namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components
 {
     public class RLCGenerator : EntityGenerator
     {

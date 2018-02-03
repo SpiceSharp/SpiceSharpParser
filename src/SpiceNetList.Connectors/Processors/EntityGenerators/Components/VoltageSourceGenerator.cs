@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.EntityGenerators.Components
+namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components
 {
     class VoltageSourceGenerator : EntityGenerator
     {

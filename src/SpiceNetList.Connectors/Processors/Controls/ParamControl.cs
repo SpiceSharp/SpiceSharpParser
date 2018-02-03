@@ -1,6 +1,6 @@
 ﻿using SpiceNetlist.SpiceObjects;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.Controls
+namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
     class ParamControl : SingleControlProcessor
     {

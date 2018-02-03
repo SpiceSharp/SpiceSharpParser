@@ -2,7 +2,7 @@
 using SpiceNetlist.SpiceObjects;
 using SpiceSharp.Circuits;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors.EntityGenerators.Models
+namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators
 {
     abstract class ModelGenerator : EntityGenerator
     {

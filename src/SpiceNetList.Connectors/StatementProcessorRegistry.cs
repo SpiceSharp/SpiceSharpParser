@@ -1,10 +1,9 @@
 ﻿using SpiceNetlist.SpiceObjects;
-using SpiceNetlist.Connectors.SpiceSharpConnector.Processors;
+using SpiceNetlist.SpiceSharpConnector.Processors;
 using System;
 using System.Collections.Generic;
-using SpiceNetlist.Connectors.SpiceSharpConnector.Processors.Generators;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector
+namespace SpiceNetlist.SpiceSharpConnector
 {
     public class StatementProcessorRegistry
     {

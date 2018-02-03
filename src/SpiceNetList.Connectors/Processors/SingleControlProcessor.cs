@@ -1,7 +1,7 @@
-﻿using SpiceNetlist.Connectors.SpiceSharpConnector.Expressions;
-using SpiceNetlist.SpiceObjects;
+﻿using SpiceNetlist.SpiceObjects;
+using SpiceNetlist.SpiceSharpConnector.Expressions;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors
+namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
     public abstract class SingleControlProcessor
     {

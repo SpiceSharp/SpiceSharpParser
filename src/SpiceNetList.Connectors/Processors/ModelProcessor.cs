@@ -1,10 +1,10 @@
 ﻿using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
+using SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models;
 using SpiceSharp.Circuits;
-using SpiceNetlist.Connectors.SpiceSharpConnector.Processors.EntityGenerators.Models;
 using System.Collections.Generic;
 
-namespace SpiceNetlist.Connectors.SpiceSharpConnector.Processors
+namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
     class ModelProcessor : StatementProcessor
     {
