@@ -20,14 +20,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             if (parameters.Values.Count == 4)
                 parameters.Values.Insert(3, parameters.Values[2]);
 
-            //TODO Refactor this .....
-            Identifier[] nodes = new Identifier[4];
-            nodes[0] = (parameters.Values[0] as SingleParameter).RawValue;
-            nodes[1] = (parameters.Values[1] as SingleParameter).RawValue;
-            nodes[2] = (parameters.Values[2] as SingleParameter).RawValue;
-            nodes[3] = (parameters.Values[3] as SingleParameter).RawValue;
-            bjt.Connect(nodes);
-
+            CreateNodes(parameters, bjt);
 
             if (parameters.Values.Count < 5)
                 throw new System.Exception();
@@ -78,6 +71,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 
             return bjt;
         }
+
 
         public override List<string> GetGeneratedTypes()
         {

@@ -1,6 +1,7 @@
 ﻿using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceNetlist.SpiceSharpConnector.Expressions;
+using SpiceSharp;
 using SpiceSharp.Circuits;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,17 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                     entity.ParameterSets.SetProperty(ap.Name, currentNetList.ParseDouble(ap.Value));
                 }
             }
+        }
+
+        protected static void CreateNodes(ParameterCollection parameters, SpiceSharp.Components.Component c)
+        {
+            //TODO Refactor this .....
+            Identifier[] nodes = new Identifier[c.PinCount];
+            for (var i = 0; i < c.PinCount; i++)
+            {
+                nodes[i] = (parameters.Values[i] as SingleParameter).RawValue;
+            }
+            c.Connect(nodes);
         }
     }
 }

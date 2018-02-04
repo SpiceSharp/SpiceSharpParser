@@ -29,10 +29,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
         private Entity GenerateCap(string name, ParameterCollection parameters, NetList currentNetList)
         {
             var capacitor = new Capacitor(name);
-            Identifier[] nodes = new Identifier[2];
-            nodes[0] = (parameters.Values[0] as SingleParameter).RawValue;
-            nodes[1] = (parameters.Values[1] as SingleParameter).RawValue;
-            capacitor.Connect(nodes);
+            CreateNodes(parameters, capacitor);
 
             if (parameters.Values.Count == 3)
             {
@@ -50,16 +47,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 
         private Entity GenerateInd(string name, ParameterCollection parameters, NetList currentNetList)
         {
-            var inductor = new Inductor(name);
-            Identifier[] nodes = new Identifier[2];
-            nodes[0] = (parameters.Values[0] as SingleParameter).RawValue;
-            nodes[1] = (parameters.Values[1] as SingleParameter).RawValue;
-            inductor.Connect(nodes);
-
             if (parameters.Values.Count != 3)
             {
                 throw new System.Exception();
             }
+
+            var inductor = new Inductor(name);
+            CreateNodes(parameters, inductor);
+           
             var inductance = (parameters.Values[2] as SingleParameter).RawValue;
             inductor.ParameterSets.SetProperty("inductance", currentNetList.ParseDouble(inductance));
             return inductor;
@@ -70,12 +65,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             if (parameters.Values.Count == 3)
             {
                 var res = new Resistor(name);
+                CreateNodes(parameters, res);
 
-                Identifier[] nodes = new Identifier[2];
-                nodes[0] = (parameters.Values[0] as SingleParameter).RawValue;
-                nodes[1] = (parameters.Values[1] as SingleParameter).RawValue;
-                res.Connect(nodes);
-                
                 var value = (parameters.Values[2] as SingleParameter).RawValue;
                 res.ParameterSets.SetProperty("resistance", currentNetList.ParseDouble(value));
                 return res;
