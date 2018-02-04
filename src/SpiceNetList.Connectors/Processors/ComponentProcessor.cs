@@ -27,11 +27,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                 if (generator.GetGeneratedTypes().Contains(type))
                 {
                     Entity entity = generator.Generate(name, type, c.Parameters, netlist);
-
-                    if (entity != null)
-                    {
-                        netlist.Circuit.Objects.Add(entity);
-                    }
+                    if (entity == null) throw new System.Exception();
+                    netlist.Circuit.Objects.Add(entity);
                 }
             }
         }
