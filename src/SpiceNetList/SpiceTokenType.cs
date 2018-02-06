@@ -1,7 +1,8 @@
 ﻿namespace SpiceNetlist
 {
-    public enum SpiceTokenType
+    public enum SpiceToken
     {
+        EOF = -1,
         ASTERIKS = 0,
         MINUS = 1,
         DOT = 2,
@@ -21,6 +22,6 @@
         STRING = 16,
         TITLE = 17,
         CONTINUE = 18,
-        EQUAL = 19
+        EQUAL = 19,
     }
 }
