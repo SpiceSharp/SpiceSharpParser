@@ -62,13 +62,13 @@ namespace SpiceParser
                 else
                 {
                     if (CurrentItems[0].IsToken
-                        && CurrentItems[0].Token.TokenType == (int)SpiceTokenType.WORD
+                        && CurrentItems[0].Token.TokenType == (int)SpiceToken.WORD
                         && CurrentItems[1].IsToken
-                        && CurrentItems[1].Token.TokenType == (int)SpiceTokenType.DELIMITER
+                        && CurrentItems[1].Token.TokenType == (int)SpiceToken.DELIMITER
                         && CurrentItems[1].Token.Value == "("
                         && CurrentItems[2].IsSpiceObject
                         && CurrentItems[2].SpiceObject is ParameterCollection
-                        && CurrentItems[3].Token.TokenType == (int)SpiceTokenType.DELIMITER
+                        && CurrentItems[3].Token.TokenType == (int)SpiceToken.DELIMITER
                         && CurrentItems[3].Token.Value == ")")
                     {
                         parameter = new ComplexParameter()
@@ -79,9 +79,9 @@ namespace SpiceParser
                     }
 
                     if (CurrentItems[0].IsToken
-                        && CurrentItems[0].Token.TokenType == (int)SpiceTokenType.WORD
+                        && CurrentItems[0].Token.TokenType == (int)SpiceToken.WORD
                         && CurrentItems[1].Token.Value == "="
-                        && CurrentItems[2].Token.TokenType == (int)SpiceTokenType.VALUE)
+                        && CurrentItems[2].Token.TokenType == (int)SpiceToken.VALUE)
                     {
                         parameter = new AssignmentParameter()
                         {
@@ -104,13 +104,13 @@ namespace SpiceParser
 
             switch(CurrentItems[0].Token.TokenType)
             {
-                case (int)SpiceTokenType.REFERENCE:
+                case (int)SpiceToken.REFERENCE:
                     return new ReferenceParameter() { RawValue = CurrentItems[0].Token.Value };
-                case (int)SpiceTokenType.VALUE:
+                case (int)SpiceToken.VALUE:
                     return new ValueParameter() { RawValue = CurrentItems[0].Token.Value };
-                case (int)SpiceTokenType.WORD:
+                case (int)SpiceToken.WORD:
                     return new WordParameter() { RawValue = CurrentItems[0].Token.Value };
-                case (int)SpiceTokenType.IDENTIFIER:
+                case (int)SpiceToken.IDENTIFIER:
                     return new IdentifierParameter() { RawValue = CurrentItems[0].Token.Value };
             }
             throw new ParseException();
@@ -213,7 +213,7 @@ namespace SpiceParser
                     }
                     else
                     {
-                        if (CurrentItems[0].IsToken && CurrentItems[0].Token.TokenType == (int)SpiceTokenType.END)
+                        if (CurrentItems[0].IsToken && CurrentItems[0].Token.TokenType == (int)SpiceToken.END)
                         {
                         }
                         else

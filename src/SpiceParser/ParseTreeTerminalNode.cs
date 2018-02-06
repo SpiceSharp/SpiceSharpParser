@@ -4,7 +4,12 @@ namespace SpiceParser
 {
     public class ParseTreeTerminalNode : ParseTreeNode
     {
-        public Token Token { get; set; }
+        public Token Token { get; private set; }
+
+        public ParseTreeTerminalNode(Token token, ParseTreeNonTerminalNode parent) : base(parent)
+        {
+            this.Token = token;
+        }
 
         public override string ToString()
         {

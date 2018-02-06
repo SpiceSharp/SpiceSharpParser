@@ -13,7 +13,6 @@ namespace SpiceParser
             }
 
             var root = CreateNonTerminal(SpiceGrammarSymbol.START, null);
-
             var lastIndex = ParseNetList(root, tokens, 0);
 
             return root;
@@ -22,7 +21,7 @@ namespace SpiceParser
         private int ParseNetList(ParseTreeNonTerminalNode currentTreeNode, Token[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
-            if (currentToken.TokenType == (int)SpiceTokenType.TITLE)
+            if (currentToken.Is(SpiceToken.TITLE))
             {
                 var statements = CreateNonTerminal(SpiceGrammarSymbol.STATEMENTS, currentTreeNode);
                 currentTreeNode.Children.Add(CreateTerminal(currentToken, statements));
@@ -45,9 +44,9 @@ namespace SpiceParser
 
             var currentToken = tokens[currentTokenIndex];
 
-            if (currentToken.TokenType == (int)SpiceTokenType.DOT
-                || currentToken.TokenType == (int)SpiceTokenType.WORD
-                || currentToken.TokenType == (int)SpiceTokenType.ASTERIKS)
+            if (currentToken.Is(SpiceToken.DOT)
+                || currentToken.Is(SpiceToken.WORD)
+                || currentToken.Is(SpiceToken.ASTERIKS))
             {
                 var statement = CreateNonTerminal(SpiceGrammarSymbol.STATEMENT, statementsNode);
                 statementsNode.Children.Add(statement);
@@ -59,7 +58,7 @@ namespace SpiceParser
 
                 currentTokenIndex = ParseStatements(statements, tokens, currentTokenIndex);
             }            
-            else if (currentToken.TokenType == (int)SpiceTokenType.NEWLINE)
+            else if (currentToken.Is(SpiceToken.NEWLINE))
             {
                 statementsNode.Children.Add(CreateTerminal(currentToken, statementsNode));
 
@@ -68,15 +67,15 @@ namespace SpiceParser
 
                 statementsNode.Children.Add(statements);
             }
-            else if (currentToken.TokenType == (int)SpiceTokenType.END)
+            else if (currentToken.Is(SpiceToken.END))
             {
                 statementsNode.Children.Add(CreateTerminal(currentToken, statementsNode));
             }
-            else if (currentToken.TokenType == -1) // follow
+            else if (currentToken.Is(SpiceToken.EOF)) 
             {
                 //do nothing
             }
-            else if (currentToken.TokenType == (int)SpiceTokenType.ENDS) // follow
+            else if (currentToken.Is(SpiceToken.ENDS))
             {
                 // do nothing 
             }
@@ -93,25 +92,25 @@ namespace SpiceParser
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
 
-            if (currentToken.TokenType == (int)SpiceTokenType.WORD)
+            if (currentToken.Is(SpiceToken.WORD))
             {
                 var component = CreateNonTerminal(SpiceGrammarSymbol.COMPONENT, statementTreeNode);
                 statementTreeNode.Children.Add(component);
 
                 currentTokenIndex = ParseComponent(component, tokens, currentTokenIndex);
             }
-            else if (currentToken.TokenType == (int)SpiceTokenType.DOT)
+            else if (currentToken.Is(SpiceToken.DOT))
             {
-                if (nextToken.TokenType == (int)SpiceTokenType.WORD)
+                if (nextToken.Is(SpiceToken.WORD))
                 {
-                    if (nextToken.Value == "subckt")
+                    if (nextToken.Equal("subckt", true))
                     {
                         //subckt
                         var subckt = CreateNonTerminal(SpiceGrammarSymbol.SUBCKT, statementTreeNode);
                         statementTreeNode.Children.Add(subckt);
                         currentTokenIndex = ParseSubckt(subckt, tokens, currentTokenIndex);
                     }
-                    else if (nextToken.Value == "model")
+                    else if (nextToken.Equal("model", true))
                     {
                         // model
                         var model = CreateNonTerminal(SpiceGrammarSymbol.MODEL, statementTreeNode);
@@ -133,7 +132,7 @@ namespace SpiceParser
                     throw new ParseException("Error during parsing a statement");
                 }
             }
-            else if (currentToken.TokenType == (int)SpiceTokenType.ASTERIKS)
+            else if (currentToken.Is(SpiceToken.ASTERIKS))
             {
                 var commentLine = CreateNonTerminal(SpiceGrammarSymbol.COMMENTLINE, statementTreeNode);
                 statementTreeNode.Children.Add(commentLine);
@@ -148,10 +147,10 @@ namespace SpiceParser
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
 
-            if (currentToken.TokenType == (int)SpiceTokenType.ASTERIKS
-                && (nextToken.TokenType == (int)SpiceTokenType.COMMENT
-                || nextToken.TokenType == (int)SpiceTokenType.NEWLINE
-                || nextToken.TokenType == -1))
+            if (currentToken.Is(SpiceToken.ASTERIKS)
+                && (nextToken.Is(SpiceToken.COMMENT)
+                || nextToken.Is(SpiceToken.NEWLINE)
+                || nextToken.Is(SpiceToken.EOF)))
 
             {
                 commentLine.Children.Add(CreateTerminal(currentToken, commentLine));
@@ -164,12 +163,10 @@ namespace SpiceParser
 
         private int ParseSubckt(ParseTreeNonTerminalNode subckt, Token[] tokens, int currentTokenIndex)
         {
-            var currentToken = tokens[currentTokenIndex];
+            Token currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
 
-            if (currentToken.TokenType == (int)SpiceTokenType.DOT
-                && nextToken.TokenType == (int)SpiceTokenType.WORD
-                && nextToken.Value == "subckt")
+            if (currentToken.Is(SpiceToken.DOT) && nextToken.Is(SpiceToken.WORD) && nextToken.Equal("subckt", true))
             {
                 subckt.Children.Add(CreateTerminal(currentToken, subckt));
                 subckt.Children.Add(CreateTerminal(nextToken, subckt));
@@ -181,7 +178,7 @@ namespace SpiceParser
 
                 var token = tokens[currentTokenIndex];
 
-                if (token.TokenType == (int)SpiceTokenType.NEWLINE)
+                if (token.Is(SpiceToken.NEWLINE))
                 {
                     subckt.Children.Add(CreateTerminal(token, subckt));
 
@@ -193,9 +190,9 @@ namespace SpiceParser
                     nextToken = tokens[currentTokenIndex + 1];
                     var nextNextToken = tokens[currentTokenIndex + 2];
 
-                    if (token.TokenType == (int)SpiceTokenType.ENDS 
-                        && nextToken.TokenType == (int)SpiceTokenType.WORD
-                        && (nextNextToken.TokenType == (int)SpiceTokenType.NEWLINE || nextNextToken.TokenType == -1))
+                    if (token.Is(SpiceToken.ENDS) 
+                        && nextToken.Is(SpiceToken.WORD)
+                        && (nextNextToken.Is(SpiceToken.NEWLINE) || nextNextToken.Is(SpiceToken.EOF)))
                     {
                         subckt.Children.Add(CreateTerminal(currentToken, subckt));
                         subckt.Children.Add(CreateTerminal(nextToken, subckt));
@@ -219,12 +216,12 @@ namespace SpiceParser
         {
             var currentToken = tokens[currentTokenIndex];
 
-            if (currentToken.TokenType == (int)SpiceTokenType.WORD
-                || currentToken.TokenType == (int)SpiceTokenType.VALUE
-                || currentToken.TokenType == (int)SpiceTokenType.STRING
-                || currentToken.TokenType == (int)SpiceTokenType.IDENTIFIER
-                || currentToken.TokenType == (int)SpiceTokenType.REFERENCE
-                || currentToken.TokenType == (int)SpiceTokenType.EXPRESSION)
+            if (currentToken.Is(SpiceToken.WORD)
+                || currentToken.Is(SpiceToken.VALUE)
+                || currentToken.Is(SpiceToken.STRING)
+                || currentToken.Is(SpiceToken.IDENTIFIER)
+                || currentToken.Is(SpiceToken.REFERENCE)
+                || currentToken.Is(SpiceToken.EXPRESSION))
             {
                 var parameter = CreateNonTerminal(SpiceGrammarSymbol.PARAMETER, parametersNode);
                 parametersNode.Children.Add(parameter);
@@ -235,15 +232,15 @@ namespace SpiceParser
                 parametersNode.Children.Add(parameters);
                 currentTokenIndex = ParseParameters(parameters, tokens, currentTokenIndex);
             }
-            else if (currentToken.TokenType == -1) // follow
+            else if (currentToken.Is(SpiceToken.EOF))
             {
                 //do nothing
             }
-            else if (currentToken.TokenType == (int)SpiceTokenType.NEWLINE) // follow
+            else if (currentToken.Is(SpiceToken.NEWLINE)) // follow
             {
                 // do nothing 
             }
-            else if (currentToken.TokenType == (int)SpiceTokenType.DELIMITER && currentToken.Value == ")") // follow
+            else if (currentToken.Is(SpiceToken.DELIMITER) && currentToken.Value == ")") // follow
             {
                 // do nothing 
             }
@@ -258,25 +255,25 @@ namespace SpiceParser
         private int ParseParameter(ParseTreeNonTerminalNode parameter, Token[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
-            var nextToken = tokens[currentTokenIndex+1];
+            var nextToken = tokens[currentTokenIndex + 1];
 
-            if (currentToken.TokenType == (int)SpiceTokenType.WORD)
+            if (currentToken.Is(SpiceToken.WORD))
             {
-                if (nextToken.TokenType == (int)SpiceTokenType.EQUAL)
+                if (nextToken.Is(SpiceToken.EQUAL))
                 {
                     parameter.Children.Add(CreateTerminal(currentToken, parameter));
                     parameter.Children.Add(CreateTerminal(nextToken, parameter));
 
                     var nextNextToken = tokens[currentTokenIndex + 2];
 
-                    if (nextNextToken.TokenType == (int)SpiceTokenType.VALUE)
+                    if (nextNextToken.Is(SpiceToken.VALUE))
                     {
                         parameter.Children.Add(CreateTerminal(nextNextToken, parameter));
 
                         return currentTokenIndex + 3;
                     }
                 }
-                else if (nextToken.TokenType == (int)SpiceTokenType.DELIMITER && nextToken.Value == "(")
+                else if (nextToken.Is(SpiceToken.DELIMITER) && nextToken.Equal("(", true))
                 {
                     parameter.Children.Add(CreateTerminal(currentToken, parameter));
                     parameter.Children.Add(CreateTerminal(nextToken, parameter));
@@ -287,25 +284,28 @@ namespace SpiceParser
                     var nextNextToken = tokens[currentTokenIndex];
                     parameter.Children.Add(CreateTerminal(nextNextToken, parameter));
                     return currentTokenIndex + 1;
-                } 
+                }
                 else
                 {
-                    var pS = CreateNonTerminal(SpiceGrammarSymbol.PARAMETERSINGLE, parameter);
-                    parameter.Children.Add(pS);
-                    currentTokenIndex = ParseParameterSingle(pS, tokens, currentTokenIndex);
+                    var parameterSingleNode = CreateNonTerminal(SpiceGrammarSymbol.PARAMETERSINGLE, parameter);
+                    parameter.Children.Add(parameterSingleNode);
+                    currentTokenIndex = ParseParameterSingle(parameterSingleNode, tokens, currentTokenIndex);
                     return currentTokenIndex;
                 }
             }
-            else if (currentToken.TokenType == (int)SpiceTokenType.WORD
-                || currentToken.TokenType == (int)SpiceTokenType.VALUE
-                || currentToken.TokenType == (int)SpiceTokenType.STRING
-                || currentToken.TokenType == (int)SpiceTokenType.REFERENCE
-                || currentToken.TokenType == (int)SpiceTokenType.EXPRESSION)
+            else
             {
-                var pS = CreateNonTerminal(SpiceGrammarSymbol.PARAMETERSINGLE, parameter);
-                parameter.Children.Add(pS);
-                currentTokenIndex = ParseParameterSingle(pS, tokens, currentTokenIndex);
-                return currentTokenIndex;
+                if (currentToken.Is(SpiceToken.WORD) 
+                    || currentToken.Is(SpiceToken.VALUE)
+                    || currentToken.Is(SpiceToken.STRING)
+                    || currentToken.Is(SpiceToken.REFERENCE)
+                    || currentToken.Is(SpiceToken.EXPRESSION))
+                {
+                    var parameterSingleNode = CreateNonTerminal(SpiceGrammarSymbol.PARAMETERSINGLE, parameter);
+                    parameter.Children.Add(parameterSingleNode);
+                    currentTokenIndex = ParseParameterSingle(parameterSingleNode, tokens, currentTokenIndex);
+                    return currentTokenIndex;
+                }
             }
 
             throw new ParseException("Error during parsing a parameter");
@@ -315,12 +315,12 @@ namespace SpiceParser
         {
             var currentToken = tokens[currentTokenIndex];
 
-            if (currentToken.TokenType == (int)SpiceTokenType.WORD
-                || currentToken.TokenType == (int)SpiceTokenType.VALUE
-                || currentToken.TokenType == (int)SpiceTokenType.STRING
-                || currentToken.TokenType == (int)SpiceTokenType.IDENTIFIER
-                || currentToken.TokenType == (int)SpiceTokenType.REFERENCE
-                || currentToken.TokenType == (int)SpiceTokenType.EXPRESSION)
+            if (currentToken.Is(SpiceToken.WORD)
+                || currentToken.Is(SpiceToken.VALUE)
+                || currentToken.Is(SpiceToken.STRING)
+                || currentToken.Is(SpiceToken.IDENTIFIER)
+                || currentToken.Is(SpiceToken.REFERENCE)
+                || currentToken.Is(SpiceToken.EXPRESSION))
             {
                 parameterSingle.Children.Add(CreateTerminal(currentToken, parameterSingle));
 
@@ -335,10 +335,8 @@ namespace SpiceParser
             var nextToken = tokens[currentTokenIndex + 1];
             var nextNextToken = tokens[currentTokenIndex + 2];
 
-            if (currentToken.TokenType == (int)SpiceTokenType.DOT
-                && nextToken.TokenType == (int)SpiceTokenType.WORD
-                && nextToken.Value == "model"
-                && nextNextToken.TokenType == (int)SpiceTokenType.WORD)
+            if (currentToken.Is(SpiceToken.DOT) && nextToken.Is(SpiceToken.WORD)
+                && nextToken.Equal("model", true) && nextNextToken.Is(SpiceToken.WORD))
             {
                 model.Children.Add(CreateTerminal(currentToken, model));
                 model.Children.Add(CreateTerminal(nextToken, model));
@@ -350,7 +348,7 @@ namespace SpiceParser
                 currentTokenIndex = ParseParameters(parameters, tokens, currentTokenIndex + 3);
                 var token = tokens[currentTokenIndex];
 
-                if (token.TokenType == (int)SpiceTokenType.NEWLINE || token.TokenType == -1)
+                if (token.Is(SpiceToken.NEWLINE) || token.Is(SpiceToken.EOF))
                 {
                     model.Children.Add(CreateTerminal(token, model));
                     currentTokenIndex += 1;
@@ -366,8 +364,7 @@ namespace SpiceParser
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
 
-            if (currentToken.TokenType == (int)SpiceTokenType.DOT
-                && nextToken.TokenType == (int)SpiceTokenType.WORD)
+            if (currentToken.Is(SpiceToken.DOT) && nextToken.Is(SpiceToken.WORD))
             {
                 control.Children.Add(CreateTerminal(currentToken, control));
                 control.Children.Add(CreateTerminal(nextToken, control));
@@ -378,7 +375,7 @@ namespace SpiceParser
 
                 var token = tokens[currentTokenIndex];
 
-                if (token.TokenType == (int)SpiceTokenType.NEWLINE || token.TokenType == -1)
+                if (token.Is(SpiceToken.NEWLINE) || token.Is(SpiceToken.EOF))
                 {
                     control.Children.Add(CreateTerminal(token, control));
 
@@ -395,7 +392,7 @@ namespace SpiceParser
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
 
-            if (currentToken.TokenType == (int)SpiceTokenType.WORD)
+            if (currentToken.Is(SpiceToken.WORD))
             {
                 var parameters = CreateNonTerminal(SpiceGrammarSymbol.PARAMETERS, component);
 
@@ -406,7 +403,7 @@ namespace SpiceParser
 
                 var token = tokens[currentTokenIndex];
 
-                if (token.TokenType == (int)SpiceTokenType.NEWLINE || token.TokenType == -1)
+                if (token.Is(SpiceToken.NEWLINE) || token.Is(SpiceToken.EOF))
                 {
                     component.Children.Add(CreateTerminal(token, component));
                     currentTokenIndex += 1;
@@ -419,12 +416,12 @@ namespace SpiceParser
 
         private ParseTreeNonTerminalNode CreateNonTerminal(string symbolName, ParseTreeNode parent)
         {
-            return new ParseTreeNonTerminalNode() { Parent = parent, Name = symbolName };
+            return new ParseTreeNonTerminalNode(parent, symbolName);
         }
 
-        private ParseTreeTerminalNode CreateTerminal(Token token, ParseTreeNode parent)
+        private ParseTreeTerminalNode CreateTerminal(Token token, ParseTreeNonTerminalNode parent)
         {
-            return new ParseTreeTerminalNode() { Parent = parent, Token = token };
+            return new ParseTreeTerminalNode(token, parent);
         }
     }
 }
