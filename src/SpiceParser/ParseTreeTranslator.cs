@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using SpiceNetlist;
+﻿using SpiceNetlist;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace SpiceParser
 {
-    public class ParseTreeTranslator : ParseTreeVisitor
+    public class ParseTreeTranslator
     {
-        Dictionary<string, Func<List<ParseTreeTranslatorItem>, SpiceObject>> Translators = new Dictionary<string, Func<List<ParseTreeTranslatorItem>, SpiceObject>>();
         Dictionary<ParseTreeNode, ParseTreeTranslatorItem> TranslatorItems = new Dictionary<ParseTreeNode, ParseTreeTranslatorItem>();
+        Dictionary<string, Func<List<ParseTreeTranslatorItem>, SpiceObject>> Translators = new Dictionary<string, Func<List<ParseTreeTranslatorItem>, SpiceObject>>();
 
         public ParseTreeTranslator()
         {
@@ -26,67 +27,80 @@ namespace SpiceParser
             Translators.Add(SpiceGrammarSymbol.COMMENTLINE, (List<ParseTreeTranslatorItem> nt) => CreateComment(nt));
         }
 
-        public SpiceObject GetSpiceObject(ParseTreeNode parseTreeNode)
+        public NetList GetNetList(ParseTreeNode root)
         {
-            return TranslatorItems[parseTreeNode].SpiceObject;
-        }
+            var travelsal = new ParseTreeTravelsal();
+            var treeNodes = travelsal.GetIterativePostOrder(root);
 
-        public override void VisitParseTreeTerminal(ParseTreeTerminalNode node)
-        {
-            TranslatorItems[node] = new ParseTreeTranslatorItem() { Node = node, Token = node.Token };
-        }
-
-        public override void VisitParseTreeNonTerminal(ParseTreeNonTerminalNode node)
-        {
-            List<ParseTreeTranslatorItem> items = new List<ParseTreeTranslatorItem>();
-            foreach (var childNode in node.Children)
+            foreach (var treeNode in treeNodes)
             {
-                items.Add(TranslatorItems[childNode]);
+                if (treeNode is ParseTreeNonTerminalNode nt)
+                {
+                    var items = new List<ParseTreeTranslatorItem>();
+
+                    foreach (var child in nt.Children)
+                    {
+                        items.Add(TranslatorItems[child]);
+                    }
+
+                    var treeNodeResult = Translators[nt.Name](items);
+                    TranslatorItems[treeNode] = new ParseTreeTranslatorItem()
+                    {
+                        SpiceObject = treeNodeResult,
+                        Node = treeNode
+                    };
+                }
+                else
+                {
+                    TranslatorItems[treeNode] = new ParseTreeTranslatorItem()
+                    {
+                        Node = treeNode,
+                        Token = ((ParseTreeTerminalNode)treeNode).Token
+                    };
+                }
             }
 
-            var item = new ParseTreeTranslatorItem() { Node = node, SpiceObject = Translators[node.Name](items) };
-
-            TranslatorItems[node] = item;
+            return TranslatorItems[root].SpiceObject as NetList;
         }
 
-        private SpiceObject CreateParameter(List<ParseTreeTranslatorItem> CurrentItems)
+        private SpiceObject CreateParameter(List<ParseTreeTranslatorItem> childrenItems)
         {
             Parameter parameter = null;
 
-            if (CurrentItems.Count > 0)
+            if (childrenItems.Count > 0)
             {
-                if (CurrentItems[0].SpiceObject is SingleParameter sp)
+                if (childrenItems[0].SpiceObject is SingleParameter sp)
                 {
                     parameter = sp;
                 }
                 else
                 {
-                    if (CurrentItems[0].IsToken
-                        && CurrentItems[0].Token.TokenType == (int)SpiceToken.WORD
-                        && CurrentItems[1].IsToken
-                        && CurrentItems[1].Token.TokenType == (int)SpiceToken.DELIMITER
-                        && CurrentItems[1].Token.Value == "("
-                        && CurrentItems[2].IsSpiceObject
-                        && CurrentItems[2].SpiceObject is ParameterCollection
-                        && CurrentItems[3].Token.TokenType == (int)SpiceToken.DELIMITER
-                        && CurrentItems[3].Token.Value == ")")
+                    if (childrenItems[0].IsToken
+                        && childrenItems[0].Token.TokenType == (int)SpiceToken.WORD
+                        && childrenItems[1].IsToken
+                        && childrenItems[1].Token.TokenType == (int)SpiceToken.DELIMITER
+                        && childrenItems[1].Token.Value == "("
+                        && childrenItems[2].IsSpiceObject
+                        && childrenItems[2].SpiceObject is ParameterCollection
+                        && childrenItems[3].Token.TokenType == (int)SpiceToken.DELIMITER
+                        && childrenItems[3].Token.Value == ")")
                     {
                         parameter = new ComplexParameter()
                         {
-                            Name = CurrentItems[0].Token.Value,
-                            Parameters = CurrentItems[2].SpiceObject as ParameterCollection
+                            Name = childrenItems[0].Token.Value,
+                            Parameters = childrenItems[2].SpiceObject as ParameterCollection
                         };
                     }
 
-                    if (CurrentItems[0].IsToken
-                        && CurrentItems[0].Token.TokenType == (int)SpiceToken.WORD
-                        && CurrentItems[1].Token.Value == "="
-                        && CurrentItems[2].Token.TokenType == (int)SpiceToken.VALUE)
+                    if (childrenItems[0].IsToken
+                        && childrenItems[0].Token.TokenType == (int)SpiceToken.WORD
+                        && childrenItems[1].Token.Value == "="
+                        && childrenItems[2].Token.TokenType == (int)SpiceToken.VALUE)
                     {
                         parameter = new AssignmentParameter()
                         {
-                            Name = CurrentItems[0].Token.Value,
-                            Value = CurrentItems[2].Token.Value,
+                            Name = childrenItems[0].Token.Value,
+                            Value = childrenItems[2].Token.Value,
                         };
                     }
                 }
@@ -95,39 +109,39 @@ namespace SpiceParser
             return parameter;
         }
 
-        private SpiceObject CreateParameterSingle(List<ParseTreeTranslatorItem> CurrentItems)
+        private SpiceObject CreateParameterSingle(List<ParseTreeTranslatorItem> childrenItems)
         {
-            if (!CurrentItems[0].IsToken)
+            if (!childrenItems[0].IsToken)
             {
                 throw new ParseException();
             }
 
-            switch(CurrentItems[0].Token.TokenType)
+            switch (childrenItems[0].Token.TokenType)
             {
                 case (int)SpiceToken.REFERENCE:
-                    return new ReferenceParameter() { RawValue = CurrentItems[0].Token.Value };
+                    return new ReferenceParameter() { RawValue = childrenItems[0].Token.Value };
                 case (int)SpiceToken.VALUE:
-                    return new ValueParameter() { RawValue = CurrentItems[0].Token.Value };
+                    return new ValueParameter() { RawValue = childrenItems[0].Token.Value };
                 case (int)SpiceToken.WORD:
-                    return new WordParameter() { RawValue = CurrentItems[0].Token.Value };
+                    return new WordParameter() { RawValue = childrenItems[0].Token.Value };
                 case (int)SpiceToken.IDENTIFIER:
-                    return new IdentifierParameter() { RawValue = CurrentItems[0].Token.Value };
+                    return new IdentifierParameter() { RawValue = childrenItems[0].Token.Value };
             }
             throw new ParseException();
         }
 
-        private SpiceObject CreateParameters(List<ParseTreeTranslatorItem> CurrentItems)
+        private SpiceObject CreateParameters(List<ParseTreeTranslatorItem> childrenItems)
         {
             var parameters = new ParameterCollection();
 
-            if (CurrentItems.Count == 2)
+            if (childrenItems.Count == 2)
             {
-                if (CurrentItems[0].SpiceObject is Parameter p)
+                if (childrenItems[0].SpiceObject is Parameter p)
                 {
                     parameters.Values.Add(p);
                 }
 
-                if (CurrentItems[1].SpiceObject is ParameterCollection ps2)
+                if (childrenItems[1].SpiceObject is ParameterCollection ps2)
                 {
                     parameters.Values.AddRange(ps2.Values);
                 }
@@ -136,84 +150,84 @@ namespace SpiceParser
             return parameters;
         }
 
-        private SpiceObject CreateComponent(List<ParseTreeTranslatorItem> CurrentItems)
+        private SpiceObject CreateComponent(List<ParseTreeTranslatorItem> childrenItems)
         {
-            if (CurrentItems.Count != 2 && CurrentItems.Count != 3)
+            if (childrenItems.Count != 2 && childrenItems.Count != 3)
             {
                 throw new ParseException();
             }
             var component = new Component();
-            component.Name = CurrentItems[0].Token.Value;
-            component.Parameters = CurrentItems[1].SpiceObject as ParameterCollection;
+            component.Name = childrenItems[0].Token.Value;
+            component.Parameters = childrenItems[1].SpiceObject as ParameterCollection;
             return component;
         }
 
-        private SpiceObject CreateControl(List<ParseTreeTranslatorItem> CurrentItems)
+        private SpiceObject CreateControl(List<ParseTreeTranslatorItem> childrenItems)
         {
             var control = new Control();
-            control.Name = CurrentItems[1].Token.Value;
-            control.Parameters = CurrentItems[2].SpiceObject as ParameterCollection;
+            control.Name = childrenItems[1].Token.Value;
+            control.Parameters = childrenItems[2].SpiceObject as ParameterCollection;
             return control;
         }
 
-        private SpiceObject CreateSubCircuit(List<ParseTreeTranslatorItem> CurrentItems)
+        private SpiceObject CreateSubCircuit(List<ParseTreeTranslatorItem> childrenItems)
         {
             var control = new SubCircuit();
-            control.Name = CurrentItems[0].Token.Value;
-            control.Parameters = CurrentItems[1].SpiceObject as ParameterCollection;
+            control.Name = childrenItems[0].Token.Value;
+            control.Parameters = childrenItems[1].SpiceObject as ParameterCollection;
             return control;
         }
 
-        private SpiceObject CreateComment(List<ParseTreeTranslatorItem> CurrentItems)
+        private SpiceObject CreateComment(List<ParseTreeTranslatorItem> childrenItems)
         {
             var comment = new CommentLine();
-            comment.Text = CurrentItems[1].Token.Value;
+            comment.Text = childrenItems[1].Token.Value;
             return comment;
         }
 
-        private SpiceObject CreateStatement(List<ParseTreeTranslatorItem> CurrentItems)
+        private SpiceObject CreateStatement(List<ParseTreeTranslatorItem> childrenItems)
         {
-            if (CurrentItems.Count == 1 && CurrentItems[0].IsSpiceObject)
+            if (childrenItems.Count == 1 && childrenItems[0].IsSpiceObject)
             {
-                return CurrentItems[0].SpiceObject as Statement;
+                return childrenItems[0].SpiceObject as Statement;
             }
             throw new ParseException();
         }
 
-        private SpiceObject CreateModel(List<ParseTreeTranslatorItem> CurrentItems)
+        private SpiceObject CreateModel(List<ParseTreeTranslatorItem> childrenItems)
         {
             var model = new Model();
-            model.Name = CurrentItems[2].Token.Value;
-            model.Parameters = CurrentItems[3].SpiceObject as ParameterCollection;
+            model.Name = childrenItems[2].Token.Value;
+            model.Parameters = childrenItems[3].SpiceObject as ParameterCollection;
             return model;
         }
 
-        private SpiceObject CreateStatements(List<ParseTreeTranslatorItem> CurrentItems)
+        private SpiceObject CreateStatements(List<ParseTreeTranslatorItem> childrenItems)
         {
             var statements = new Statements();
 
-            if (CurrentItems.Count == 2)
+            if (childrenItems.Count == 2)
             {
-                if (CurrentItems[0].SpiceObject is Statement st)
+                if (childrenItems[0].SpiceObject is Statement st)
                 {
                     statements.Add(st);
                 }
-                if (CurrentItems[1].SpiceObject is Statements sts)
+                if (childrenItems[1].SpiceObject is Statements sts)
                 {
                     statements.Merge(sts);
                 }
             }
             else
             {
-                if (CurrentItems.Count == 1)
+                if (childrenItems.Count == 1)
                 {
-                    if (CurrentItems[0].SpiceObject is Statements sts)
+                    if (childrenItems[0].SpiceObject is Statements sts)
                     {
                         statements.Merge(sts);
                     }
                     else
                     {
-                        if (CurrentItems[0].IsToken && CurrentItems[0].Token.TokenType == (int)SpiceToken.END)
+                        if (childrenItems[0].IsToken && childrenItems[0].Token.TokenType == (int)SpiceToken.END)
                         {
                         }
                         else
@@ -226,13 +240,13 @@ namespace SpiceParser
             return statements;
         }
 
-        private SpiceObject CreateNetList(List<ParseTreeTranslatorItem> CurrentItems)
+        private SpiceObject CreateNetList(List<ParseTreeTranslatorItem> childrenItems)
         {
-            return new NetList() {
-                Title = CurrentItems[0].Token.Value,
-                Statements = CurrentItems[1].SpiceObject as Statements
+            return new NetList()
+            {
+                Title = childrenItems[0].Token.Value,
+                Statements = childrenItems[1].SpiceObject as Statements
             };
         }
     }
 }
-
