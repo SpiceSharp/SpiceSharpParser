@@ -194,7 +194,7 @@ namespace SpiceParser
                         && nextToken.Is(SpiceToken.WORD)
                         && (nextNextToken.Is(SpiceToken.NEWLINE) || nextNextToken.Is(SpiceToken.EOF)))
                     {
-                        subckt.Children.Add(CreateTerminal(currentToken, subckt));
+                        subckt.Children.Add(CreateTerminal(token, subckt));
                         subckt.Children.Add(CreateTerminal(nextToken, subckt));
                         subckt.Children.Add(CreateTerminal(nextNextToken, subckt));
 

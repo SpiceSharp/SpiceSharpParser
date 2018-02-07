@@ -3,7 +3,6 @@ using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SpiceParser
 {
@@ -172,10 +171,11 @@ namespace SpiceParser
 
         private SpiceObject CreateSubCircuit(List<ParseTreeTranslatorItem> childrenItems)
         {
-            var control = new SubCircuit();
-            control.Name = childrenItems[0].Token.Value;
-            control.Parameters = childrenItems[1].SpiceObject as ParameterCollection;
-            return control;
+            var subCkt = new SubCircuit();
+            subCkt.Name = childrenItems[1].Token.Value;
+            subCkt.Parameters = childrenItems[2].SpiceObject as ParameterCollection;
+            subCkt.Statements = childrenItems[4].SpiceObject as Statements;
+            return subCkt;
         }
 
         private SpiceObject CreateComment(List<ParseTreeTranslatorItem> childrenItems)
