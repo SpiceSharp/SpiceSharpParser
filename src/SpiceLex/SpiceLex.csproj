@@ -5,13 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NLex\NLex\NLex.csproj" />
     <ProjectReference Include="..\SpiceNetList\SpiceNetlist.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="NLex">
-      <HintPath>..\..\..\NLex\NLex\bin\Debug\netcoreapp2.0\NLex.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

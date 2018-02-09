@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NLex\NLex\NLex.csproj" />
+    <ProjectReference Include="..\SpiceLex\SpiceLex.csproj" />
+    <ProjectReference Include="..\SpiceNetList.Connectors\SpiceNetlist.SpiceSharpConnector.csproj" />
+    <ProjectReference Include="..\SpiceNetList\SpiceNetlist.csproj" />
+    <ProjectReference Include="..\SpiceParser\SpiceParser.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SpiceSharp">
+      <HintPath>..\..\..\SpiceSharp\SpiceSharp\bin\Debug\SpiceSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

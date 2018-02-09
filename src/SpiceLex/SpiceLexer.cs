@@ -69,9 +69,8 @@ namespace SpiceLex
         public IEnumerable<Token> GetTokens(string text)
         {
             var state = new SpiceLexerState();
-            var lexer = new Lexer<SpiceLexerState>(this.grammar);
-            lexer.SetState(state);
-            return lexer.GetTokens(text);
+            var lexer = new Lexer<SpiceLexerState>(this.grammar, new LexerOptions() { SingleLineTokens = true });
+            return lexer.GetTokens(text, state);
         }
     }
 }
