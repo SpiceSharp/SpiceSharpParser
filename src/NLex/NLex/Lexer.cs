@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace NLex
@@ -25,25 +23,30 @@ namespace NLex
         public IEnumerable<Token> GetTokens(string text, TLexerState state = null)
         {
             int textTokenIndex = 0;
+            LexerStringReader strReader = new LexerStringReader(text);
+            string textToLex = null;
 
             while (textTokenIndex < text.Length)
             {
-                string remainingText = remainingText = text.Substring(textTokenIndex);
-
                 if (Options.SingleLineTokens)
                 {
-                    var newLineCharIndex = remainingText.IndexOf('\n');
-                    if (newLineCharIndex != -1)
+                    if (textToLex == null)
                     {
-                        remainingText = remainingText.Substring(0, newLineCharIndex + 1);
+                        textToLex = strReader.ReadLine();
+
+                        if (textToLex == "") break;
                     }
+                }
+                else
+                {
+                    textToLex = text.Substring(textTokenIndex);
                 }
 
                 bool tokenReturned = false;
 
                 LexerTokenRule<TLexerState> bestTokenRule;
                 Match bestMatch;
-                this.FindBestTokenRule(remainingText, state, out bestTokenRule, out bestMatch);
+                this.FindBestTokenRule(textToLex, state, out bestTokenRule, out bestMatch);
 
                 if (bestMatch != null && bestTokenRule != null)
                 {
@@ -59,12 +62,16 @@ namespace NLex
                     state.PreviousTokenType = bestTokenRule.TokenType;
                     tokenReturned = true;
                     textTokenIndex += bestMatch.Length;
+                    if (Options.SingleLineTokens)
+                    {
+                        textToLex = textToLex.Substring(bestMatch.Length);
+                        if (textToLex == "") textToLex = null;
+                    }
                 }
-
                 if (!tokenReturned)
                 {
                     // undefined token in text
-                    throw new LexerException("Can't get next token from text:" + remainingText);
+                    throw new LexerException("Can't get next token from text: '" + textToLex + "'");
                 }
             }
 
@@ -79,7 +86,7 @@ namespace NLex
         {
             bestMatchTokenRule = null;
             bestMatch = null;
-            foreach (LexerTokenRule<TLexerState> tokenRule in Grammar.LexerRules.Where(t => t is LexerTokenRule<TLexerState>))
+            foreach (LexerTokenRule<TLexerState> tokenRule in Grammar.LexerRules)
             {
                 if (tokenRule.IsActive(state))
                 {
