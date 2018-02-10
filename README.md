@@ -11,4 +11,4 @@ A lexer library for spice netlists
 A object model library for spice netlists
 
 ## SpiceParser
-A parser library for spice netlists. It generates a parse tree from array of tokens
+A parser library for spice netlists. It generates a parse tree from array of tokens and a object model of netlist (SpiceNetListLibrary)
