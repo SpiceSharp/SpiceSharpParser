@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NLex
+namespace NLexer
 {
     public class LexerException : Exception
     {

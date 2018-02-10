@@ -1,4 +1,4 @@
-﻿namespace NLex
+﻿namespace NLexer
 {
     /// <summary>
     /// Internal rule of lexer. It is use for creating common regular expression to use with LexerTokeRules

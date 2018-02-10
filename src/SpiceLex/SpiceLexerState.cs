@@ -1,4 +1,4 @@
-﻿using NLex;
+﻿using NLexer;
 
 namespace SpiceLex
 {

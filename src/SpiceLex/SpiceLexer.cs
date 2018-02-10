@@ -1,4 +1,4 @@
-﻿using NLex;
+﻿using NLexer;
 using SpiceNetlist;
 using System.Collections.Generic;
 
@@ -31,7 +31,7 @@ namespace SpiceLex
                     state.LineNumber++;
                     return LexerRuleResult.ReturnToken;
                 }));
-            builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceToken.CONTINUE, "CONTINUE", @"((\r\n|\n|\r)\+)",
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceToken.CONTINUE, "CONTINUE", @"((\r\n\+|\n\+|\r\+))",
                 (SpiceLexerState state) =>
                 {
                     state.LineNumber++;
@@ -69,7 +69,7 @@ namespace SpiceLex
         public IEnumerable<Token> GetTokens(string text)
         {
             var state = new SpiceLexerState();
-            var lexer = new Lexer<SpiceLexerState>(this.grammar, new LexerOptions() { SingleLineTokens = true });
+            var lexer = new Lexer<SpiceLexerState>(this.grammar, new LexerOptions() { MultipleLineTokens = true, LineContinuationCharacter = '+' });
             return lexer.GetTokens(text, state);
         }
     }

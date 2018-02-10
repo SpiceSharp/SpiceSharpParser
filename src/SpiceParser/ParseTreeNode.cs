@@ -2,7 +2,7 @@
 {
     public class ParseTreeNode
     {
-        public ParseTreeNode Parent { get; private set; }
+        public ParseTreeNode Parent { get; }
 
         public ParseTreeNode()
         {
@@ -10,7 +10,7 @@
 
         public ParseTreeNode(ParseTreeNode parent)
         {
-            this.Parent = parent;
+            Parent = parent;
         }
 
         public virtual void Accept(ParseTreeVisitor visitor)

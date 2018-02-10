@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NLex
+namespace NLexer
 {
     public class LexerTokenRule<TLexerState> : LexerRule where TLexerState : LexerState
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace NLex
+namespace NLexer
 {
     /// <summary>
     /// Builds LexerGrammar from lexer rules either of type LexerTokenRole or LexerInternalRule

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NLex
+namespace NLexer
 {
     /// <summary>
     /// Lexer grammar. It contains a collection of lexer token rules

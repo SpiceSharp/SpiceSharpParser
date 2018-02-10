@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NLex\NLex\NLex.csproj" />
+    <ProjectReference Include="..\NLexer\NLexer.csproj" />
     <ProjectReference Include="..\SpiceLex\SpiceLex.csproj" />
     <ProjectReference Include="..\SpiceNetList.Connectors\SpiceNetlist.SpiceSharpConnector.csproj" />
     <ProjectReference Include="..\SpiceNetList\SpiceNetlist.csproj" />

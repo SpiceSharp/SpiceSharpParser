@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace NLex
+namespace NLexer
 {
     public abstract class LexerRule
     {

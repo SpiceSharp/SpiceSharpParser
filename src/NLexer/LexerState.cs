@@ -1,4 +1,4 @@
-﻿namespace NLex
+﻿namespace NLexer
 {
     public class LexerState
     {

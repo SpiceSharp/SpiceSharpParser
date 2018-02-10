@@ -4,8 +4,8 @@ namespace SpiceParser
 {
     public class ParseTreeNonTerminalNode : ParseTreeNode
     {
-        public string Name { get; private set; }
-        public List<ParseTreeNode> Children { get; private set; }
+        public string Name { get; set; }
+        public List<ParseTreeNode> Children { get; set; }
 
         public ParseTreeNonTerminalNode(ParseTreeNode parent, string name) : base(parent)
         {

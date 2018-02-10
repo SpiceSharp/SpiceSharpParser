@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NLex\NLex.csproj" />
+    <ProjectReference Include="..\NLexer\NLexer.csproj" />
   </ItemGroup>
 
 </Project>

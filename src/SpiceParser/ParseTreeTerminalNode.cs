@@ -1,10 +1,10 @@
-﻿using NLex;
+﻿using NLexer;
 
 namespace SpiceParser
 {
     public class ParseTreeTerminalNode : ParseTreeNode
     {
-        public Token Token { get; private set; }
+        public Token Token { get; }
 
         public ParseTreeTerminalNode(Token token, ParseTreeNonTerminalNode parent) : base(parent)
         {
@@ -13,7 +13,7 @@ namespace SpiceParser
 
         public override string ToString()
         {
-            return "Terminal: [" + (Token.Value == "\r\n" ? "newline" : Token.Value) + "]";
+            return "Terminal: [" + ((Token.Value == "\r\n" || Token.Value == "\n") ? "newline" : Token.Value) + "]";
         }
 
         public override void Accept(ParseTreeVisitor visitor)
