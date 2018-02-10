@@ -1,4 +1,4 @@
-# SpiceSharp-tools
+# SpiceSharp-tools (in development)
 Various libraries for use with SpiceSharp
 
 ## NLexer 
