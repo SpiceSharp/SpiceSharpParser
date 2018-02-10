@@ -36,14 +36,19 @@ namespace NLexer
             LexerTokenRule<TLexerState> bestTokenRule = null;
             Match bestMatch = null;
             string textToLex = null;
+            bool getNextTextToLex = true;
             int currentTokenIndex = 0;
 
             LexerStringReader strReader = new LexerStringReader(text, Options.LineContinuationCharacter);
 
             while (currentTokenIndex < text.Length)
             {
-                GetNextTextToLex(strReader, currentTokenIndex, ref textToLex);
-                if (textToLex == "") break;
+                if (getNextTextToLex)
+                {
+                    textToLex = GetTextToLex(strReader, currentTokenIndex);
+                    getNextTextToLex = false;
+                }
+                if (String.IsNullOrEmpty(textToLex)) break;
 
                 if (FindBestTokenRule(textToLex, state, out bestTokenRule, out bestMatch))
                 {
@@ -55,17 +60,14 @@ namespace NLexer
                             Value = bestMatch.Value,
                             TokenType = bestTokenRule.TokenType,
                         };
+                        state.PreviousTokenType = bestTokenRule.TokenType;
                     }
-                    state.PreviousTokenType = bestTokenRule.TokenType;
                     currentTokenIndex += bestMatch.Length;
 
-                    UpdateTextToLex(ref textToLex, bestMatch);
-
-                    if (textToLex == "") break;
+                    UpdateTextToLex(ref textToLex, ref getNextTextToLex, bestMatch);
                 }
                 else 
                 {
-                    // undefined token in text
                     throw new LexerException("Can't get next token from text: '" + textToLex + "'");
                 }
             }
@@ -77,38 +79,32 @@ namespace NLexer
             };
         }
 
-        void UpdateTextToLex(ref string textToLex, Match bestMatch)
+        void UpdateTextToLex(ref string textToLex, ref bool getNextTextToLex, Match bestMatch)
         {
             if (Options.SingleLineTokens || Options.MultipleLineTokens)
             {
                 textToLex = textToLex.Substring(bestMatch.Length);
             }
 
-            if (textToLex == "")
+            if (string.IsNullOrEmpty(textToLex))
             {
-                textToLex = null;
+                getNextTextToLex = true;
             }
         }
 
-        void GetNextTextToLex(LexerStringReader strReader, int currentTokenIndex, ref string textToLex)
+        string GetTextToLex(LexerStringReader strReader, int currentTokenIndex)
         {
             if (Options.SingleLineTokens)
             {
-                if (textToLex == null)
-                {
-                    textToLex = strReader.ReadLine();
-                }
+                return strReader.ReadLine();
             }
             if (Options.MultipleLineTokens)
             {
-                if (textToLex == null)
-                {
-                    textToLex = strReader.ReadLineWithContinuation();
-                }
+                return strReader.ReadLineWithContinuation();
             }
             else
             {
-                textToLex = strReader.GetSubstring(currentTokenIndex);
+                return strReader.GetSubstring(currentTokenIndex);
             }
         }
 
