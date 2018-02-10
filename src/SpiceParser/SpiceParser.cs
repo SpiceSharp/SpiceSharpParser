@@ -243,6 +243,7 @@ namespace SpiceParser
                 stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, parent));
                 stack.Push(CreateTerminalNode((int)SpiceToken.NEWLINE, parent));
                 stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, parent));
+                stack.Push(CreateTerminalNode((int)SpiceToken.WORD, parent));
                 stack.Push(CreateTerminalNode(nextToken.TokenType, parent, nextToken.Value));
                 stack.Push(CreateTerminalNode(currentToken.TokenType, parent, currentToken.Value));
             }

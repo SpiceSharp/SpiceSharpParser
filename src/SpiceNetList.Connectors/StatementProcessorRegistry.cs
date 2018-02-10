@@ -14,6 +14,7 @@ namespace SpiceNetlist.SpiceSharpConnector
             Processors[typeof(Component)] = new ComponentProcessor();
             Processors[typeof(Model)] = new ModelProcessor();
             Processors[typeof(Control)] = new ControlProcessor();
+            Processors[typeof(SubCircuit)] = new SubcircuitProcessor();
         }
 
         public void Init()

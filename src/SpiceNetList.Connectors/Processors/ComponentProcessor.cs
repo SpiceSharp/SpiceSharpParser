@@ -9,11 +9,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
     {
         protected List<EntityGenerator> Generators = new List<EntityGenerator>();
 
+        public string NamePrefix { get; internal set; }
+
         public override void Init()
         {
             Generators.Add(new RLCGenerator());
-            Generators.Add(new VoltageSourceGenerator());
+            Generators.Add(new VoltageSourceGenerator(new EntityGenerators.Components.Waveforms.WaveformsGenerator()));
             Generators.Add(new BipolarJunctionTransistorGenerator());
+            Generators.Add(new SubCircuitGenerator(this));
         }
 
         public override void Process(Statement statement, NetList netlist)
@@ -26,9 +29,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             {
                 if (generator.GetGeneratedTypes().Contains(type))
                 {
-                    Entity entity = generator.Generate(name, type, c.Parameters, netlist);
-                    if (entity == null) throw new System.Exception();
-                    netlist.Circuit.Objects.Add(entity);
+                    //TODO: hack 
+                    Entity entity = generator.Generate((NamePrefix ?? "") + name, type, c.Parameters, netlist);
+                    if (entity != null)
+                    {
+                        netlist.Circuit.Objects.Add(entity);
+                    }
                 }
             }
         }

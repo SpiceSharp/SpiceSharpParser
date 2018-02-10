@@ -36,7 +36,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                         case "itl4":
                             if (netlist.TimeConfiguration == null) netlist.TimeConfiguration = new SpiceSharp.Simulations.TimeConfiguration();
                             netlist.TimeConfiguration.TranMaxIterations = (int)netlist.ParseDouble(value); break;
-
+                        case "itl5":
+                            //TODO: ????
+                            break;
                         case "temp":
                             // TODO: Set current temperature
                             break;

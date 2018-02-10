@@ -179,9 +179,9 @@ namespace SpiceParser
         SpiceObject CreateSubCircuit(List<ParseTreeTranslatorItem> childrenItems)
         {
             var subCkt = new SubCircuit();
-            subCkt.Name = childrenItems[1].Token.Value;
-            subCkt.Parameters = childrenItems[2].SpiceObject as ParameterCollection;
-            subCkt.Statements = childrenItems[4].SpiceObject as Statements;
+            subCkt.Name = childrenItems[2].Token.Value;
+            subCkt.Parameters = childrenItems[3].SpiceObject as ParameterCollection;
+            subCkt.Statements = childrenItems[5].SpiceObject as Statements;
             return subCkt;
         }
 

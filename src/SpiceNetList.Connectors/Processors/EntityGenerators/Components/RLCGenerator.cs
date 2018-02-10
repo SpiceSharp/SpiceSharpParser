@@ -1,9 +1,10 @@
 ﻿using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
-using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components
 {
@@ -21,12 +22,33 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return null;
         }
 
-        private Entity GenerateMut(string name, ParameterCollection parameters, NetList currentNetList)
+        public Entity GenerateMut(string name, ParameterCollection parameters, NetList currentNetList)
         {
-            return new MutualInductance(name);
+            var mut = new MutualInductance(name);
+
+            switch (parameters.Values.Count)
+            {
+                case 0: throw new Exception($"Inductor name expected for mutual inductance \"{name}\"");
+                case 1: throw new Exception("Inductor name expected");
+                case 2: throw new Exception("Coupling factor expected");
+            }
+
+            if (!(parameters.Values[0] is SingleParameter)) //TODO
+            {
+                throw new Exception("Component name expected");
+            }
+            if (!(parameters.Values[1] is SingleParameter)) //TODO
+            {
+                throw new Exception("Component name expected");
+            }
+            mut.InductorName1 = (parameters.Values[0] as SingleParameter).RawValue;
+            mut.InductorName2 = (parameters.Values[1] as SingleParameter).RawValue;
+            mut.ParameterSets.SetProperty("k", currentNetList.ParseDouble((parameters.Values[2] as SingleParameter).RawValue));
+
+            return mut;
         }
 
-        private Entity GenerateCap(string name, ParameterCollection parameters, NetList currentNetList)
+        public Entity GenerateCap(string name, ParameterCollection parameters, NetList currentNetList)
         {
             var capacitor = new Capacitor(name);
             CreateNodes(parameters, capacitor);
@@ -45,11 +67,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             }
         }
 
-        private Entity GenerateInd(string name, ParameterCollection parameters, NetList currentNetList)
+        public Entity GenerateInd(string name, ParameterCollection parameters, NetList currentNetList)
         {
             if (parameters.Values.Count != 3)
             {
-                throw new System.Exception();
+                throw new Exception();
             }
 
             var inductor = new Inductor(name);
@@ -60,22 +82,34 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return inductor;
         }
 
-        private Entity GenerateRes(string name, ParameterCollection parameters, NetList currentNetList)
+        public Entity GenerateRes(string name, ParameterCollection parameters, NetList netlist)
         {
+            var res = new Resistor(name);
+            CreateNodes(parameters, res);
+
             if (parameters.Values.Count == 3)
             {
-                var res = new Resistor(name);
-                CreateNodes(parameters, res);
-
                 var value = (parameters.Values[2] as SingleParameter).RawValue;
-                res.ParameterSets.SetProperty("resistance", currentNetList.ParseDouble(value));
-                return res;
+                res.ParameterSets.SetProperty("resistance", netlist.ParseDouble(value));
             }
             else
             {
-                //TODO !!!!!!
-                throw new System.Exception();
+                var modelName = (parameters.Values[2] as SingleParameter).RawValue;
+                res.SetModel(netlist.FindModel<ResistorModel>(modelName));
+
+                foreach (var equal in parameters.Values.Skip(2))
+                {
+                    if (equal is AssignmentParameter ap)
+                    {
+                        res.ParameterSets.SetProperty(ap.Name, netlist.ParseDouble(ap.Value));
+                    }
+                }
+
+                SpiceSharp.Components.ResistorBehaviors.BaseParameters bp = res.ParameterSets[typeof(SpiceSharp.Components.ResistorBehaviors.BaseParameters)] as SpiceSharp.Components.ResistorBehaviors.BaseParameters;
+                if (!bp.Length.Given)
+                    throw new System.Exception("L needs to be specified");
             }
+            return res;
         }
 
         public override List<string> GetGeneratedTypes()

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
-using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceSharp.Components.BipolarBehaviors;
@@ -44,19 +43,17 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                     }
                     else
                     {
-                        ModelBaseParameters mp = bjt.Model.ParameterSets[typeof(ModelBaseParameters)] as ModelBaseParameters;
-                        BaseParameters bp = bjt.ParameterSets[typeof(SpiceSharp.Components.BipolarBehaviors.BaseParameters)] as BaseParameters;
+                        BaseParameters bp = bjt.ParameterSets[typeof(BaseParameters)] as BaseParameters;
                         //TODO ?????
-                        if (bp.Area.Given == false)
+                        if (!bp.Area.Given)
                         {
                             bp.Area.Set(currentNetList.ParseDouble(s.RawValue));
                         }
                         //TODO ?????
-                        if (bp.Temperature.Given == false)
+                        if (!bp.Temperature.Given)
                         {
                             bp.Area.Set(currentNetList.ParseDouble(s.RawValue));
                         }
-
                     }
                 }
 

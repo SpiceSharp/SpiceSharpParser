@@ -61,8 +61,6 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                         }
                     }
                 }
-
-
             }
         }
     }
