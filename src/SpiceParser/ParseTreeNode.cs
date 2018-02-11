@@ -2,8 +2,6 @@
 {
     public class ParseTreeNode
     {
-        public ParseTreeNode Parent { get; }
-
         public ParseTreeNode()
         {
         }
@@ -13,9 +11,10 @@
             Parent = parent;
         }
 
+        public ParseTreeNode Parent { get; }
+
         public virtual void Accept(ParseTreeVisitor visitor)
         {
-
         }
     }
 }

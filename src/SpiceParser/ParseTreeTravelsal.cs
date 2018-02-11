@@ -23,6 +23,7 @@ namespace SpiceParser
                         {
                             stack.Push(nt.Children[i]);
                         }
+
                         visitedNodes.Add(nt);
                     }
                     else

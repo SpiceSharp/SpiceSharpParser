@@ -5,7 +5,8 @@
     /// </summary>
     public class LexerInternalRule : LexerRule
     {
-        public LexerInternalRule(string name, string regularExpression) : base(name, regularExpression)
+        public LexerInternalRule(string name, string regularExpression)
+            : base(name, regularExpression)
         {
         }
 

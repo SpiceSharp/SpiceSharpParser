@@ -16,6 +16,7 @@ namespace SpiceParser
             {
                 return token.Value.ToLower() == value.ToLower();
             }
+
             return token.Value == value;
         }
     }

@@ -6,8 +6,9 @@ namespace NLexer
     /// <summary>
     /// Builds LexerGrammar from lexer rules either of type LexerTokenRole or LexerInternalRule
     /// </summary>
-    /// <typeparam name="TLexerState"></typeparam>
-    public class LexerGrammarBuilder<TLexerState> where TLexerState: LexerState
+    /// <typeparam name="TLexerState">A type of lexer state</typeparam>
+    public class LexerGrammarBuilder<TLexerState>
+        where TLexerState : LexerState
     {
         private List<LexerRule> rules = new List<LexerRule>();
 
@@ -31,13 +32,12 @@ namespace NLexer
 
                 foreach (var privateTokenRule in this.rules.Where(rule => rule is LexerInternalRule))
                 {
-                    lexerTokenRuleCloned.RegularExpressionPattern = 
-                        lexerTokenRuleCloned.RegularExpressionPattern.Replace($"<{privateTokenRule.Name}>", privateTokenRule.RegularExpressionPattern);
+                    lexerTokenRuleCloned.RegularExpressionPattern = lexerTokenRuleCloned.RegularExpressionPattern.Replace($"<{privateTokenRule.Name}>", privateTokenRule.RegularExpressionPattern);
                 }
 
                 tokenRules.Add(lexerTokenRuleCloned);
             }
-            
+
             return new LexerGrammar<TLexerState>(tokenRules);
         }
     }

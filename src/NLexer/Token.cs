@@ -1,10 +1,24 @@
-﻿namespace NLexer
+﻿using System;
+
+namespace NLexer
 {
     public class Token
     {
-        public int TokenType { get; set; }
+        public Token(int tokenType, string value)
+        {
+            TokenType = tokenType;
+            Value = value;
+        }
 
-        public string Value { get; set; }
+        /// <summary>
+        /// Gets token type
+        /// </summary>
+        public int TokenType { get; }
+
+        /// <summary>
+        /// Gets token value
+        /// </summary>
+        public string Value { get; private set; }
 
         public int TokenLength
         {
@@ -14,8 +28,16 @@
                 {
                     return Value.Length;
                 }
-                else return 0;
+                else
+                {
+                    return 0;
+                }
             }
+        }
+
+        public void UpdateValue(string value)
+        {
+            this.Value = value;
         }
     }
 }

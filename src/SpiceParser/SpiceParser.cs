@@ -1,6 +1,6 @@
-﻿using NLexer;
+﻿using System.Collections.Generic;
+using NLexer;
 using SpiceNetlist;
-using System.Collections.Generic;
 
 namespace SpiceParser
 {
@@ -81,7 +81,7 @@ namespace SpiceParser
                     if (tn.Token.TokenType == tokens[currentTokenIndex].TokenType
                         && (tn.Token.Value == null || tn.Token.Value == tokens[currentTokenIndex].Value))
                     {
-                        tn.Token.Value = tokens[currentTokenIndex].Value;
+                        tn.Token.UpdateValue(tokens[currentTokenIndex].Value);
                         currentTokenIndex++;
                     }
                     else
@@ -126,7 +126,7 @@ namespace SpiceParser
             {
                 stack.Push(CreateTerminalNode((int)SpiceToken.EOF, parentNode));
             }
-            
+
             if (currentToken.Is(SpiceToken.NEWLINE))
             {
                 stack.Push(CreateTerminalNode((int)SpiceToken.NEWLINE, parentNode));
@@ -149,7 +149,7 @@ namespace SpiceParser
             {
                 stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, statementsNode));
                 stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENT, statementsNode));
-            }            
+            }
             else if (currentToken.Is(SpiceToken.NEWLINE))
             {
                 stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, statementsNode));
@@ -159,20 +159,20 @@ namespace SpiceParser
             {
                 stack.Push(CreateTerminalNode((int)SpiceToken.END, statementsNode));
             }
-            else if (currentToken.Is(SpiceToken.EOF)) 
+            else if (currentToken.Is(SpiceToken.EOF))
             {
-                //do nothing
+                // do nothing
             }
             else if (currentToken.Is(SpiceToken.ENDS))
             {
-                // do nothing 
+                // do nothing
             }
             else
             {
                 throw new ParseException("Error during parsing statements");
             }
         }
-    
+
         private void ProcessStatement(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode parent, Token[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
@@ -219,7 +219,6 @@ namespace SpiceParser
                 && (nextToken.Is(SpiceToken.COMMENT)
                 || nextToken.Is(SpiceToken.NEWLINE)
                 || nextToken.Is(SpiceToken.EOF)))
-
             {
                 stack.Push(CreateTerminalNode(nextToken.TokenType, parent, nextToken.Value));
                 stack.Push(CreateTerminalNode(currentToken.TokenType, parent, currentToken.Value));
@@ -229,7 +228,7 @@ namespace SpiceParser
                 throw new ParseException("Error during parsing a comment");
             }
         }
-        
+
         private void ProcessSubckt(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode parent, Token[] tokens, int currentTokenIndex)
         {
             Token currentToken = tokens[currentTokenIndex];
@@ -269,15 +268,15 @@ namespace SpiceParser
             }
             else if (currentToken.Is(SpiceToken.EOF))
             {
-                //do nothing
+                // do nothing
             }
-            else if (currentToken.Is(SpiceToken.NEWLINE)) // follow
+            else if (currentToken.Is(SpiceToken.NEWLINE))
             {
-                // do nothing 
+                // do nothing
             }
-            else if (currentToken.Is(SpiceToken.DELIMITER) && currentToken.Value == ")") // follow
+            else if (currentToken.Is(SpiceToken.DELIMITER) && currentToken.Value == ")")
             {
-                // do nothing 
+                // do nothing
             }
             else
             {
@@ -312,7 +311,7 @@ namespace SpiceParser
             }
             else
             {
-                if (currentToken.Is(SpiceToken.WORD) 
+                if (currentToken.Is(SpiceToken.WORD)
                     || currentToken.Is(SpiceToken.VALUE)
                     || currentToken.Is(SpiceToken.STRING)
                     || currentToken.Is(SpiceToken.REFERENCE)
@@ -325,7 +324,6 @@ namespace SpiceParser
                     throw new ParseException("Error during parsing a parameter");
                 }
             }
-
         }
 
         private void ProcessParameterSingle(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode parent, Token[] tokens, int currentTokenIndex)
@@ -411,12 +409,13 @@ namespace SpiceParser
             {
                 parentNode.Children.Insert(0, node);
             }
+
             return node;
         }
 
         private ParseTreeTerminalNode CreateTerminalNode(int tokenType, ParseTreeNonTerminalNode parentNode, string tokenValue = null)
         {
-            var node = new ParseTreeTerminalNode(new Token() { TokenType = tokenType, Value = tokenValue }, parentNode);
+            var node = new ParseTreeTerminalNode(new Token(tokenType, tokenValue), parentNode);
             parentNode.Children.Insert(0, node);
             return node;
         }

@@ -6,6 +6,6 @@
 
         public bool MultipleLineTokens { get; set; } = false;
 
-        public char? LineContinuationCharacter { get; set; } 
+        public char? LineContinuationCharacter { get; set; }
     }
 }

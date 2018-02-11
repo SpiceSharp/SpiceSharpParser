@@ -4,28 +4,36 @@ using System.Text.RegularExpressions;
 
 namespace NLexer
 {
-    public class Lexer<TLexerState> where TLexerState : LexerState
+    public class Lexer<TLexerState>
+        where TLexerState : LexerState
     {
-        protected LexerGrammar<TLexerState> Grammar { get; }
-        protected LexerOptions Options { get; }
-
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="Lexer{TLexerState}"/> class.
         /// </summary>
         /// <param name="grammar">Lexer grammar</param>
         /// <param name="options">Lexer options</param>
         public Lexer(LexerGrammar<TLexerState> grammar, LexerOptions options)
         {
-            Options = options;
-            Grammar = grammar ?? throw new ArgumentNullException(nameof(grammar));
+            this.Options = options;
+            this.Grammar = grammar ?? throw new ArgumentNullException(nameof(grammar));
         }
 
         /// <summary>
-        /// Get tokens for grammar
+        /// Gets lexer grammar
+        /// </summary>
+        protected LexerGrammar<TLexerState> Grammar { get; }
+
+        /// <summary>
+        /// Gets lexer options
+        /// </summary>
+        protected LexerOptions Options { get; }
+
+        /// <summary>
+        /// Gets tokens for grammar
         /// </summary>
         /// <param name="text">A text for which tokens will be returned</param>
         /// <param name="state">A state for lexer</param>
-        /// <returns></returns>
+        /// <returns>An enumerable of tokens</returns>
         public IEnumerable<Token> GetTokens(string text, TLexerState state = null)
         {
             if (text == null)
@@ -48,38 +56,36 @@ namespace NLexer
                     textToLex = GetTextToLex(strReader, currentTokenIndex);
                     getNextTextToLex = false;
                 }
-                if (String.IsNullOrEmpty(textToLex)) break;
+
+                if (string.IsNullOrEmpty(textToLex))
+                {
+                    break;
+                }
 
                 if (FindBestTokenRule(textToLex, state, out bestTokenRule, out bestMatch))
                 {
                     var tokenActionResult = bestTokenRule.LexerRuleResultAction(state);
                     if (tokenActionResult == LexerRuleResult.ReturnToken)
                     {
-                        yield return new Token()
-                        {
-                            Value = bestMatch.Value,
-                            TokenType = bestTokenRule.TokenType,
-                        };
+                        yield return new Token(bestTokenRule.TokenType, bestMatch.Value);
                         state.PreviousTokenType = bestTokenRule.TokenType;
                     }
+
                     currentTokenIndex += bestMatch.Length;
 
                     UpdateTextToLex(ref textToLex, ref getNextTextToLex, bestMatch);
                 }
-                else 
+                else
                 {
                     throw new LexerException("Can't get next token from text: '" + textToLex + "'");
                 }
             }
 
             // yield EOF token
-            yield return new Token()
-            {
-                TokenType = -1
-            };
+            yield return new Token(-1, null);
         }
 
-        void UpdateTextToLex(ref string textToLex, ref bool getNextTextToLex, Match bestMatch)
+        private void UpdateTextToLex(ref string textToLex, ref bool getNextTextToLex, Match bestMatch)
         {
             if (Options.SingleLineTokens || Options.MultipleLineTokens)
             {
@@ -92,13 +98,14 @@ namespace NLexer
             }
         }
 
-        string GetTextToLex(LexerStringReader strReader, int currentTokenIndex)
+        private string GetTextToLex(LexerStringReader strReader, int currentTokenIndex)
         {
-            if (Options.SingleLineTokens)
+            if (this.Options.SingleLineTokens)
             {
                 return strReader.ReadLine();
             }
-            if (Options.MultipleLineTokens)
+
+            if (this.Options.MultipleLineTokens)
             {
                 return strReader.ReadLineWithContinuation();
             }
@@ -108,11 +115,11 @@ namespace NLexer
             }
         }
 
-        bool FindBestTokenRule(string remainingText, TLexerState state, out LexerTokenRule<TLexerState> bestMatchTokenRule, out Match bestMatch)
+        private bool FindBestTokenRule(string remainingText, TLexerState state, out LexerTokenRule<TLexerState> bestMatchTokenRule, out Match bestMatch)
         {
             bestMatchTokenRule = null;
             bestMatch = null;
-            foreach (LexerTokenRule<TLexerState> tokenRule in Grammar.LexerRules)
+            foreach (LexerTokenRule<TLexerState> tokenRule in this.Grammar.LexerRules)
             {
                 if (tokenRule.IsActive(state))
                 {
@@ -127,6 +134,7 @@ namespace NLexer
                     }
                 }
             }
+
             return bestMatch != null;
         }
     }

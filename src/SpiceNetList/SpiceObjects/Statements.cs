@@ -7,36 +7,36 @@ namespace SpiceNetlist.SpiceObjects
 {
     public class Statements : SpiceObject, IEnumerable
     {
-        List<Statement> List { get; set; }
+        private List<Statement> list = null;
 
         public Statements()
         {
-            List = new List<Statement>();
+            list = new List<Statement>();
         }
 
         public void Clear()
         {
-            List.Clear();
+            list.Clear();
         }
 
         public void Add(Statement statement)
         {
-            List.Add(statement);
+            list.Add(statement);
         }
 
         public IEnumerator GetEnumerator()
         {
-            return List.GetEnumerator();
+            return list.GetEnumerator();
         }
 
         public void Merge(Statements sts)
         {
-            List.AddRange(sts.List);
+            list.AddRange(sts.list);
         }
 
         public IEnumerable<Statement> OrderBy(Func<Statement, int> orderByFunc)
         {
-            return List.OrderBy(orderByFunc);
+            return list.OrderBy(orderByFunc);
         }
     }
 }

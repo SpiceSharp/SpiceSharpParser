@@ -11,8 +11,20 @@ namespace SpiceParser
 
         public ParseTreeNode Node { get; set; }
 
-        public bool IsToken {  get { return Token != null; } }
+        public bool IsToken
+        {
+            get
+            {
+                return Token != null;
+            }
+        }
 
-        public bool IsSpiceObject { get { return SpiceObject != null; } }
+        public bool IsSpiceObject
+        {
+            get
+            {
+                return SpiceObject != null;
+            }
+        }
     }
 }

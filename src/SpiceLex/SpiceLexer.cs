@@ -1,12 +1,12 @@
-﻿using NLexer;
+﻿using System.Collections.Generic;
+using NLexer;
 using SpiceNetlist;
-using System.Collections.Generic;
 
 namespace SpiceLex
 {
     public class SpiceLexer
     {
-        LexerGrammar<SpiceLexerState> grammar;
+        private LexerGrammar<SpiceLexerState> grammar;
 
         public SpiceLexer()
         {
@@ -25,39 +25,57 @@ namespace SpiceLex
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceToken.COMMA, "COMMA", ","));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceToken.DELIMITER, "DELIMITER", @"(\(|\)|\|)"));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceToken.EQUAL, "EQUAL", @"="));
-            builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceToken.NEWLINE, "NEWLINE", @"(\r\n|\n|\r)",
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+                (int)SpiceToken.NEWLINE,
+                "NEWLINE",
+                @"(\r\n|\n|\r)",
                 (SpiceLexerState state) =>
                 {
                     state.LineNumber++;
                     return LexerRuleResult.ReturnToken;
                 }));
-            builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceToken.CONTINUE, "CONTINUE", @"((\r\n\+|\n\+|\r\+))",
+
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+                (int)SpiceToken.CONTINUE,
+                "CONTINUE",
+                @"((\r\n\+|\n\+|\r\+))",
                 (SpiceLexerState state) =>
                 {
                     state.LineNumber++;
                     return LexerRuleResult.IgnoreToken;
                 }));
+
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceToken.ENDS, "ENDS", ".ends"));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceToken.END, "END", ".end"));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceToken.VALUE, "VALUE", @"(([+-])?((<DIGIT>)+(\.(<DIGIT>)*)?|\.(<DIGIT>)+)(e(\+|-)?(<DIGIT>)+|[tgmkunpf](<LETTER>)*)?[vH]?)"));
-            builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceToken.COMMENT, "COMMENT", "[^\r\n]+",
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+                (int)SpiceToken.COMMENT,
+                "COMMENT",
+                "[^\r\n]+",
                 null,
-                (SpiceLexerState state) => {
+                (SpiceLexerState state) =>
+                {
                     if (state.PreviousTokenType.HasValue && state.PreviousTokenType.Value == (int)SpiceToken.ASTERIKS)
                     {
                         return LexerRuleUseState.Use;
                     }
                     return LexerRuleUseState.Skip;
                 }));
-            builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceToken.TITLE, "TITLE", "[^\r\n]+",
-              null,
-              (SpiceLexerState state) => {
-                  if (state.LineNumber == 1)
-                  {
-                      return LexerRuleUseState.Use;
-                  }
-                  return LexerRuleUseState.Skip;
-              }));
+
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+                (int)SpiceToken.TITLE,
+                "TITLE",
+                "[^\r\n]+",
+                null,
+                (SpiceLexerState state) =>
+                {
+                    if (state.LineNumber == 1)
+                    {
+                        return LexerRuleUseState.Use;
+                    }
+                    return LexerRuleUseState.Skip;
+                }));
+
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceToken.STRING, "STRING", @"""[^\r\n]+\"""));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceToken.EXPRESSION, "EXPRESSION", "{[^{}]*}"));
             builder.AddRule(new LexerTokenRule<SpiceLexerState>((int)SpiceToken.REFERENCE, "REFERENCE", "@<WORD>"));

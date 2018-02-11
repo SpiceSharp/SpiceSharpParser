@@ -8,12 +8,23 @@ namespace NLexer
         private string regularExpressionPattern;
 
         /// <summary>
-        /// Name of lexer rule
+        /// Initializes a new instance of the <see cref="LexerRule"/> class.
+        /// </summary>
+        /// <param name="name">A name of lexer rule</param>
+        /// <param name="regularExpressionPattern">A regular expression</param>
+        public LexerRule(string name, string regularExpressionPattern)
+        {
+            RegularExpressionPattern = regularExpressionPattern;
+            Name = name;
+        }
+
+        /// <summary>
+        /// Gets name of lexer rule
         /// </summary>
         public string Name { get; }
 
         /// <summary>
-        /// Regular expression of lexer rule
+        /// Gets or sets a regular expression pattern of lexer rule
         /// </summary>
         public string RegularExpressionPattern
         {
@@ -30,7 +41,7 @@ namespace NLexer
         }
 
         /// <summary>
-        /// Regex for the lexer rule regular's expression
+        /// Gets a regular expression of lexer rule
         /// </summary>
         public Regex RegularExpression
         {
@@ -43,12 +54,6 @@ namespace NLexer
 
                 return regex;
             }
-        }
-
-        public LexerRule(string name, string regularExpressionPattern)
-        {
-            RegularExpressionPattern = regularExpressionPattern;
-            Name = name;
         }
 
         internal abstract LexerRule Clone();

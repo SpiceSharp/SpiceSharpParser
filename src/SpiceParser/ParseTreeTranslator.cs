@@ -1,38 +1,38 @@
-﻿using SpiceNetlist;
+﻿using System;
+using System.Collections.Generic;
+using SpiceNetlist;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
-using System;
-using System.Collections.Generic;
 
 namespace SpiceParser
 {
     public class ParseTreeTranslator
     {
-        Dictionary<ParseTreeNode, ParseTreeTranslatorItem> TranslatorItems = new Dictionary<ParseTreeNode, ParseTreeTranslatorItem>();
-        Dictionary<string, Func<List<ParseTreeTranslatorItem>, SpiceObject>> Translators = new Dictionary<string, Func<List<ParseTreeTranslatorItem>, SpiceObject>>();
+        private Dictionary<ParseTreeNode, ParseTreeTranslatorItem> translatorItems = new Dictionary<ParseTreeNode, ParseTreeTranslatorItem>();
+        private Dictionary<string, Func<List<ParseTreeTranslatorItem>, SpiceObject>> translators = new Dictionary<string, Func<List<ParseTreeTranslatorItem>, SpiceObject>>();
 
         public ParseTreeTranslator()
         {
-            Translators.Add(SpiceGrammarSymbol.START, (List<ParseTreeTranslatorItem> nt) => CreateNetList(nt));
-            Translators.Add(SpiceGrammarSymbol.STATEMENTS, (List<ParseTreeTranslatorItem> nt) => CreateStatements(nt));
-            Translators.Add(SpiceGrammarSymbol.STATEMENT, (List<ParseTreeTranslatorItem> nt) => CreateStatement(nt));
-            Translators.Add(SpiceGrammarSymbol.MODEL, (List<ParseTreeTranslatorItem> nt) => CreateModel(nt));
-            Translators.Add(SpiceGrammarSymbol.CONTROL, (List<ParseTreeTranslatorItem> nt) => CreateControl(nt));
-            Translators.Add(SpiceGrammarSymbol.COMPONENT, (List<ParseTreeTranslatorItem> nt) => CreateComponent(nt));
-            Translators.Add(SpiceGrammarSymbol.PARAMETERS, (List<ParseTreeTranslatorItem> nt) => CreateParameters(nt));
-            Translators.Add(SpiceGrammarSymbol.PARAMETER, (List<ParseTreeTranslatorItem> nt) => CreateParameter(nt));
-            Translators.Add(SpiceGrammarSymbol.PARAMETER_SINGLE, (List<ParseTreeTranslatorItem> nt) => CreateParameterSingle(nt));
-            Translators.Add(SpiceGrammarSymbol.SUBCKT, (List<ParseTreeTranslatorItem> nt) => CreateSubCircuit(nt));
-            Translators.Add(SpiceGrammarSymbol.COMMENT_LINE, (List<ParseTreeTranslatorItem> nt) => CreateComment(nt));
-            Translators.Add(SpiceGrammarSymbol.NEW_LINE_OR_EOF, (List<ParseTreeTranslatorItem> nt) => null);
-            Translators.Add(SpiceGrammarSymbol.SUBCKT_ENDING, (List<ParseTreeTranslatorItem> nt) => null);
+            translators.Add(SpiceGrammarSymbol.START, (List<ParseTreeTranslatorItem> nt) => CreateNetList(nt));
+            translators.Add(SpiceGrammarSymbol.STATEMENTS, (List<ParseTreeTranslatorItem> nt) => CreateStatements(nt));
+            translators.Add(SpiceGrammarSymbol.STATEMENT, (List<ParseTreeTranslatorItem> nt) => CreateStatement(nt));
+            translators.Add(SpiceGrammarSymbol.MODEL, (List<ParseTreeTranslatorItem> nt) => CreateModel(nt));
+            translators.Add(SpiceGrammarSymbol.CONTROL, (List<ParseTreeTranslatorItem> nt) => CreateControl(nt));
+            translators.Add(SpiceGrammarSymbol.COMPONENT, (List<ParseTreeTranslatorItem> nt) => CreateComponent(nt));
+            translators.Add(SpiceGrammarSymbol.PARAMETERS, (List<ParseTreeTranslatorItem> nt) => CreateParameters(nt));
+            translators.Add(SpiceGrammarSymbol.PARAMETER, (List<ParseTreeTranslatorItem> nt) => CreateParameter(nt));
+            translators.Add(SpiceGrammarSymbol.PARAMETER_SINGLE, (List<ParseTreeTranslatorItem> nt) => CreateParameterSingle(nt));
+            translators.Add(SpiceGrammarSymbol.SUBCKT, (List<ParseTreeTranslatorItem> nt) => CreateSubCircuit(nt));
+            translators.Add(SpiceGrammarSymbol.COMMENT_LINE, (List<ParseTreeTranslatorItem> nt) => CreateComment(nt));
+            translators.Add(SpiceGrammarSymbol.NEW_LINE_OR_EOF, (List<ParseTreeTranslatorItem> nt) => null);
+            translators.Add(SpiceGrammarSymbol.SUBCKT_ENDING, (List<ParseTreeTranslatorItem> nt) => null);
         }
 
         /// <summary>
         /// Translates a spice parse tree to a netlist (SpiceNetList library)
         /// </summary>
-        /// <param name="root"></param>
-        /// <returns></returns>
+        /// <param name="root">A parse tree root</param>
+        /// <returns>A net list</returns>
         public NetList GetNetList(ParseTreeNode root)
         {
             var travelsal = new ParseTreeTravelsal();
@@ -46,11 +46,11 @@ namespace SpiceParser
 
                     foreach (var child in nt.Children)
                     {
-                        items.Add(TranslatorItems[child]);
+                        items.Add(translatorItems[child]);
                     }
 
-                    var treeNodeResult = Translators[nt.Name](items);
-                    TranslatorItems[treeNode] = new ParseTreeTranslatorItem()
+                    var treeNodeResult = translators[nt.Name](items);
+                    translatorItems[treeNode] = new ParseTreeTranslatorItem()
                     {
                         SpiceObject = treeNodeResult,
                         Node = treeNode
@@ -58,7 +58,7 @@ namespace SpiceParser
                 }
                 else
                 {
-                    TranslatorItems[treeNode] = new ParseTreeTranslatorItem()
+                    translatorItems[treeNode] = new ParseTreeTranslatorItem()
                     {
                         Node = treeNode,
                         Token = ((ParseTreeTerminalNode)treeNode).Token
@@ -66,10 +66,10 @@ namespace SpiceParser
                 }
             }
 
-            return TranslatorItems[root].SpiceObject as NetList;
+            return translatorItems[root].SpiceObject as NetList;
         }
 
-        SpiceObject CreateParameter(List<ParseTreeTranslatorItem> childrenItems)
+        private SpiceObject CreateParameter(List<ParseTreeTranslatorItem> childrenItems)
         {
             Parameter parameter = null;
 
@@ -115,7 +115,7 @@ namespace SpiceParser
             return parameter;
         }
 
-        SpiceObject CreateParameterSingle(List<ParseTreeTranslatorItem> childrenItems)
+        private SpiceObject CreateParameterSingle(List<ParseTreeTranslatorItem> childrenItems)
         {
             if (!childrenItems[0].IsToken)
             {
@@ -133,10 +133,11 @@ namespace SpiceParser
                 case (int)SpiceToken.IDENTIFIER:
                     return new IdentifierParameter() { RawValue = childrenItems[0].Token.Value };
             }
+
             throw new ParseException();
         }
 
-        SpiceObject CreateParameters(List<ParseTreeTranslatorItem> childrenItems)
+        private SpiceObject CreateParameters(List<ParseTreeTranslatorItem> childrenItems)
         {
             var parameters = new ParameterCollection();
 
@@ -156,19 +157,20 @@ namespace SpiceParser
             return parameters;
         }
 
-        SpiceObject CreateComponent(List<ParseTreeTranslatorItem> childrenItems)
+        private SpiceObject CreateComponent(List<ParseTreeTranslatorItem> childrenItems)
         {
             if (childrenItems.Count != 2 && childrenItems.Count != 3)
             {
                 throw new ParseException();
             }
+
             var component = new Component();
             component.Name = childrenItems[0].Token.Value;
             component.Parameters = childrenItems[1].SpiceObject as ParameterCollection;
             return component;
         }
 
-        SpiceObject CreateControl(List<ParseTreeTranslatorItem> childrenItems)
+        private SpiceObject CreateControl(List<ParseTreeTranslatorItem> childrenItems)
         {
             var control = new Control();
             control.Name = childrenItems[1].Token.Value;
@@ -176,7 +178,7 @@ namespace SpiceParser
             return control;
         }
 
-        SpiceObject CreateSubCircuit(List<ParseTreeTranslatorItem> childrenItems)
+        private SpiceObject CreateSubCircuit(List<ParseTreeTranslatorItem> childrenItems)
         {
             var subCkt = new SubCircuit();
             subCkt.Name = childrenItems[2].Token.Value;
@@ -185,23 +187,24 @@ namespace SpiceParser
             return subCkt;
         }
 
-        SpiceObject CreateComment(List<ParseTreeTranslatorItem> childrenItems)
+        private SpiceObject CreateComment(List<ParseTreeTranslatorItem> childrenItems)
         {
             var comment = new CommentLine();
             comment.Text = childrenItems[1].Token.Value;
             return comment;
         }
 
-        SpiceObject CreateStatement(List<ParseTreeTranslatorItem> childrenItems)
+        private SpiceObject CreateStatement(List<ParseTreeTranslatorItem> childrenItems)
         {
             if (childrenItems.Count == 1 && childrenItems[0].IsSpiceObject)
             {
                 return childrenItems[0].SpiceObject as Statement;
             }
+
             throw new ParseException();
         }
 
-        SpiceObject CreateModel(List<ParseTreeTranslatorItem> childrenItems)
+        private SpiceObject CreateModel(List<ParseTreeTranslatorItem> childrenItems)
         {
             var model = new Model();
             model.Name = childrenItems[2].Token.Value;
@@ -209,7 +212,7 @@ namespace SpiceParser
             return model;
         }
 
-        SpiceObject CreateStatements(List<ParseTreeTranslatorItem> childrenItems)
+        private SpiceObject CreateStatements(List<ParseTreeTranslatorItem> childrenItems)
         {
             var statements = new Statements();
 
@@ -219,6 +222,7 @@ namespace SpiceParser
                 {
                     statements.Add(st);
                 }
+
                 if (childrenItems[1].SpiceObject is Statements sts)
                 {
                     statements.Merge(sts);
@@ -244,10 +248,11 @@ namespace SpiceParser
                     }
                 }
             }
+
             return statements;
         }
 
-        SpiceObject CreateNetList(List<ParseTreeTranslatorItem> childrenItems)
+        private SpiceObject CreateNetList(List<ParseTreeTranslatorItem> childrenItems)
         {
             return new NetList()
             {

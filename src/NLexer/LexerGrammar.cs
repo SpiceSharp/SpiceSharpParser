@@ -6,16 +6,22 @@ namespace NLexer
     /// <summary>
     /// Lexer grammar. It contains a collection of lexer token rules
     /// </summary>
-    /// <typeparam name="TLexerState"></typeparam>
-    public class LexerGrammar<TLexerState> where TLexerState: LexerState
+    /// <typeparam name="TLexerState">A type of lexer state</typeparam>
+    public class LexerGrammar<TLexerState>
+        where TLexerState : LexerState
     {
-        public ICollection<LexerTokenRule<TLexerState>> LexerRules { get; private set; }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LexerGrammar{TLexerState}"/> class.
+        /// </summary>
+        /// <param name="lexerRules">A collection of lexer rules</param>
         public LexerGrammar(ICollection<LexerTokenRule<TLexerState>> lexerRules)
         {
-            if (lexerRules == null) throw new ArgumentException(nameof(lexerRules));
-
-            LexerRules = lexerRules;
+            this.LexerRules = lexerRules ?? throw new ArgumentException(nameof(lexerRules));
         }
+
+        /// <summary>
+        /// Gets lexer token rules
+        /// </summary>
+        public ICollection<LexerTokenRule<TLexerState>> LexerRules { get; }
     }
 }
