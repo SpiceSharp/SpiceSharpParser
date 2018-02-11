@@ -145,12 +145,12 @@ namespace SpiceParser
             {
                 if (childrenItems[0].SpiceObject is Parameter p)
                 {
-                    parameters.Values.Add(p);
+                    parameters.Add(p);
                 }
 
                 if (childrenItems[1].SpiceObject is ParameterCollection ps2)
                 {
-                    parameters.Values.AddRange(ps2.Values);
+                    parameters.Merge(ps2);
                 }
             }
 

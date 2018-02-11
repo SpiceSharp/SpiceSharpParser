@@ -25,6 +25,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 case "h": return GenerateCurrentControlledVoltageSource(name, type, parameters, netlist);
                 case "e": return GenerateVoltageControlledVoltageSource(name, type, parameters, netlist);
             }
+
             return null;
         }
 
@@ -33,12 +34,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             var vcvs = new VoltageControlledVoltageSource(name);
             CreateNodes(parameters, vcvs);
 
-            if (parameters.Values.Count < 5)
+            if (parameters.Count < 5)
             {
                 throw new Exception("Value expected");
             }
 
-            vcvs.ParameterSets.SetProperty("gain", netlist.ParseDouble((parameters.Values[4] as SingleParameter).RawValue));
+            vcvs.ParameterSets.SetProperty("gain", netlist.ParseDouble((parameters[4] as SingleParameter).RawValue));
             return vcvs;
         }
 
@@ -46,19 +47,19 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
         {
             var ccvs = new CurrentControlledVoltageSource(name);
             CreateNodes(parameters, ccvs);
-            switch (parameters.Values.Count)
+            switch (parameters.Count)
             {
                 case 2: throw new Exception("Voltage source expected");
                 case 3: throw new Exception("Value expected");
             }
 
-            if (!(parameters.Values[2] is WordParameter))
+            if (!(parameters[2] is WordParameter))
             {
                 throw new Exception("Component name expected");
             }
 
-            ccvs.ControllingName = (parameters.Values[3] as SingleParameter).RawValue;
-            ccvs.ParameterSets.SetProperty("gain", netlist.ParseDouble((parameters.Values[3] as SingleParameter).RawValue));
+            ccvs.ControllingName = (parameters[3] as SingleParameter).RawValue;
+            ccvs.ParameterSets.SetProperty("gain", netlist.ParseDouble((parameters[3] as SingleParameter).RawValue));
 
             return ccvs;
         }
@@ -69,27 +70,27 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             CreateNodes(parameters, vsrc);
 
             // We can have a value or just DC
-            for (int i = 2; i < parameters.Values.Count; i++)
+            for (int i = 2; i < parameters.Count; i++)
             {
                 // DC specification
-                if (i == 2 && parameters.Values[i] is SingleParameter s && s.RawValue.ToLower() == "dc")
+                if (i == 2 && parameters[i] is SingleParameter s && s.RawValue.ToLower() == "dc")
                 {
                     i++;
-                    vsrc.ParameterSets.SetProperty("dc", netlist.ParseDouble((parameters.Values[i] as SingleParameter).RawValue));
+                    vsrc.ParameterSets.SetProperty("dc", netlist.ParseDouble((parameters[i] as SingleParameter).RawValue));
                 }
-                else if (i == 2 && parameters.Values[i] is ValueParameter vp)
+                else if (i == 2 && parameters[i] is ValueParameter vp)
                 {
-                    vsrc.ParameterSets.SetProperty("dc", netlist.ParseDouble((parameters.Values[i] as SingleParameter).RawValue));
+                    vsrc.ParameterSets.SetProperty("dc", netlist.ParseDouble((parameters[i] as SingleParameter).RawValue));
                 }
 
                 // AC specification
-                else if (parameters.Values[i] is SingleParameter s2 && s2.RawValue.ToLower() == "ac")
+                else if (parameters[i] is SingleParameter s2 && s2.RawValue.ToLower() == "ac")
                 {
                     i++;
-                    vsrc.ParameterSets.SetProperty("acmag", netlist.ParseDouble((parameters.Values[i] as SingleParameter).RawValue));
+                    vsrc.ParameterSets.SetProperty("acmag", netlist.ParseDouble((parameters[i] as SingleParameter).RawValue));
 
                     // Look forward for one more value
-                    if (i + 1 < parameters.Values.Count && parameters.Values[i + 1] is ValueParameter vp2)
+                    if (i + 1 < parameters.Count && parameters[i + 1] is ValueParameter vp2)
                     {
                         i++;
                         vsrc.ParameterSets.SetProperty("acphase", netlist.ParseDouble(vp2.RawValue));
@@ -97,7 +98,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 }
 
                 // Waveforms
-                else if (parameters.Values[i] is ComplexParameter cp)
+                else if (parameters[i] is ComplexParameter cp)
                 {
                     vsrc.ParameterSets.SetProperty("waveform", waveFormGenerator.Generate(cp, netlist));
                 }

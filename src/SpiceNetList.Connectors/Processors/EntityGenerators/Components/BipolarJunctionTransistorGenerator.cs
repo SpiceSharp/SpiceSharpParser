@@ -12,23 +12,31 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
         public override Entity Generate(string name, string type, ParameterCollection parameters, NetList currentNetList)
         {
             BipolarJunctionTransistor bjt = new BipolarJunctionTransistor(name);
+
             // If the component is of the format QXXX NC NB NE MNAME off we will insert NE again before the model name
-            if (parameters.Values.Count == 5 && parameters.Values[4] is WordParameter w && w.RawValue == "off")
-                parameters.Values.Insert(3, parameters.Values[2]);
+            if (parameters.Count == 5 && parameters[4] is WordParameter w && w.RawValue == "off")
+            {
+                parameters.Insert(3, parameters[2]);
+            }
+
             // If the component is of the format QXXX NC NB NE MNAME we will insert NE again before the model name
-            if (parameters.Values.Count == 4)
-                parameters.Values.Insert(3, parameters.Values[2]);
+            if (parameters.Count == 4)
+            {
+                parameters.Insert(3, parameters[2]);
+            }
 
             CreateNodes(parameters, bjt);
 
-            if (parameters.Values.Count < 5)
-                throw new System.Exception();
-
-            bjt.SetModel((BipolarJunctionTransistorModel)currentNetList.FindModel((parameters.Values[4] as SingleParameter).RawValue));
-
-            for (int i = 5; i < parameters.Values.Count; i++)
+            if (parameters.Count < 5)
             {
-                var parameter = parameters.Values[i];
+                throw new System.Exception();
+            }
+
+            bjt.SetModel((BipolarJunctionTransistorModel)currentNetList.FindModel((parameters[4] as SingleParameter).RawValue));
+
+            for (int i = 5; i < parameters.Count; i++)
+            {
+                var parameter = parameters[i];
 
                 if (parameter is SingleParameter s)
                 {
@@ -68,7 +76,6 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 
             return bjt;
         }
-
 
         public override List<string> GetGeneratedTypes()
         {

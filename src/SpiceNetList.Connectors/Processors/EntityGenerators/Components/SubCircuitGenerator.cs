@@ -16,7 +16,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
         public override Entity Generate(string name, string type, ParameterCollection parameters, NetList netList)
         {
-            string subCircuitName = (parameters.Values[parameters.Values.Count - 1] as SingleParameter).RawValue;
+            string subCircuitName = (parameters[parameters.Count - 1] as SingleParameter).RawValue;
             var subCiruitDefiniton = netList.Definitions.Find(pred => pred.Name == subCircuitName);
             componentProcessor.NamePrefix = name + "_";
 

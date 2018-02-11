@@ -16,7 +16,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
         protected void SetParameters(Entity entity, ParameterCollection parameters, NetList currentNetList, int toSkip = 0, int count = 0)
         {
-            foreach (var parameter in parameters.Values.Skip(toSkip).Take(parameters.Values.Count - toSkip - count))
+            foreach (var parameter in parameters.Skip(toSkip).Take(parameters.Count - toSkip - count))
             {
                 if (parameter is AssignmentParameter ap)
                 {
@@ -31,7 +31,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             Identifier[] nodes = new Identifier[c.PinCount];
             for (var i = 0; i < c.PinCount; i++)
             {
-                nodes[i] = (parameters.Values[i] as SingleParameter).RawValue;
+                nodes[i] = (parameters[i] as SingleParameter).RawValue;
             }
             c.Connect(nodes);
         }

@@ -10,11 +10,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
     {
         public override void Process(Control statement, NetList netlist)
         {
-            int count = statement.Parameters.Values.Count / 4;
-            switch (statement.Parameters.Values.Count - 4 * count)
+            int count = statement.Parameters.Count / 4;
+            switch (statement.Parameters.Count - 4 * count)
             {
                 case 0:
-                    if (statement.Parameters.Values.Count == 0)
+                    if (statement.Parameters.Count == 0)
                         throw new Exception("Source st.Name expected");
                     break;
                 case 1: throw new Exception("Start value expected");
@@ -28,10 +28,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
             for (int i = 0; i < count; i++)
             {
                 SweepConfiguration sweep = new SweepConfiguration(
-                    (statement.Parameters.Values[4 * i] as SingleParameter).RawValue,
-                    netlist.ParseDouble((statement.Parameters.Values[4 * i + 1] as SingleParameter).RawValue),
-                    netlist.ParseDouble((statement.Parameters.Values[4 * i + 2] as SingleParameter).RawValue),
-                    netlist.ParseDouble((statement.Parameters.Values[4 * i + 3] as SingleParameter).RawValue));
+                    (statement.Parameters[4 * i] as SingleParameter).RawValue,
+                    netlist.ParseDouble((statement.Parameters[4 * i + 1] as SingleParameter).RawValue),
+                    netlist.ParseDouble((statement.Parameters[4 * i + 2] as SingleParameter).RawValue),
+                    netlist.ParseDouble((statement.Parameters[4 * i + 3] as SingleParameter).RawValue));
 
                 sweeps.Add(sweep);
             }

@@ -26,24 +26,24 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
         {
             var mut = new MutualInductance(name);
 
-            switch (parameters.Values.Count)
+            switch (parameters.Count)
             {
                 case 0: throw new Exception($"Inductor name expected for mutual inductance \"{name}\"");
                 case 1: throw new Exception("Inductor name expected");
                 case 2: throw new Exception("Coupling factor expected");
             }
 
-            if (!(parameters.Values[0] is SingleParameter)) //TODO
+            if (!(parameters[0] is SingleParameter)) //TODO
             {
                 throw new Exception("Component name expected");
             }
-            if (!(parameters.Values[1] is SingleParameter)) //TODO
+            if (!(parameters[1] is SingleParameter)) //TODO
             {
                 throw new Exception("Component name expected");
             }
-            mut.InductorName1 = (parameters.Values[0] as SingleParameter).RawValue;
-            mut.InductorName2 = (parameters.Values[1] as SingleParameter).RawValue;
-            mut.ParameterSets.SetProperty("k", currentNetList.ParseDouble((parameters.Values[2] as SingleParameter).RawValue));
+            mut.InductorName1 = (parameters[0] as SingleParameter).RawValue;
+            mut.InductorName2 = (parameters[1] as SingleParameter).RawValue;
+            mut.ParameterSets.SetProperty("k", currentNetList.ParseDouble((parameters[2] as SingleParameter).RawValue));
 
             return mut;
         }
@@ -53,9 +53,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             var capacitor = new Capacitor(name);
             CreateNodes(parameters, capacitor);
 
-            if (parameters.Values.Count == 3)
+            if (parameters.Count == 3)
             {
-                var capacitance = (parameters.Values[2] as SingleParameter).RawValue;
+                var capacitance = (parameters[2] as SingleParameter).RawValue;
                 capacitor.ParameterSets.SetProperty("capacitance", currentNetList.ParseDouble(capacitance));
 
                 return capacitor;
@@ -69,7 +69,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 
         public Entity GenerateInd(string name, ParameterCollection parameters, NetList currentNetList)
         {
-            if (parameters.Values.Count != 3)
+            if (parameters.Count != 3)
             {
                 throw new Exception();
             }
@@ -77,7 +77,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             var inductor = new Inductor(name);
             CreateNodes(parameters, inductor);
            
-            var inductance = (parameters.Values[2] as SingleParameter).RawValue;
+            var inductance = (parameters[2] as SingleParameter).RawValue;
             inductor.ParameterSets.SetProperty("inductance", currentNetList.ParseDouble(inductance));
             return inductor;
         }
@@ -87,17 +87,17 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             var res = new Resistor(name);
             CreateNodes(parameters, res);
 
-            if (parameters.Values.Count == 3)
+            if (parameters.Count == 3)
             {
-                var value = (parameters.Values[2] as SingleParameter).RawValue;
+                var value = (parameters[2] as SingleParameter).RawValue;
                 res.ParameterSets.SetProperty("resistance", netlist.ParseDouble(value));
             }
             else
             {
-                var modelName = (parameters.Values[2] as SingleParameter).RawValue;
+                var modelName = (parameters[2] as SingleParameter).RawValue;
                 res.SetModel(netlist.FindModel<ResistorModel>(modelName));
 
-                foreach (var equal in parameters.Values.Skip(2))
+                foreach (var equal in parameters.Skip(2))
                 {
                     if (equal is AssignmentParameter ap)
                     {

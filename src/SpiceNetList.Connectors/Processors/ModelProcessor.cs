@@ -22,9 +22,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         {
             Model model = statement as Model;
             string name = model.Name.ToLower();
-            if (model.Parameters.Values.Count > 0)
+            if (model.Parameters.Count > 0)
             {
-                if (model.Parameters.Values[0] is ComplexParameter complex)
+                if (model.Parameters[0] is ComplexParameter complex)
                 {
                     var type = complex.Name;
 
@@ -41,7 +41,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                         }
                     }
                 }
-                if (model.Parameters.Values[0] is SingleParameter single)
+                if (model.Parameters[0] is SingleParameter single)
                 {
                     var type = single.RawValue;
 
@@ -50,9 +50,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                     {
                         if (generator.GetGeneratedTypes().Contains(type))
                         {
-                            model.Parameters.Values.RemoveAt(0);
-
-                            Entity spiceSharpModel = generator.Generate(name, type, model.Parameters, netlist);
+                            Entity spiceSharpModel = generator.Generate(name, type, model.Parameters.Skip(1), netlist);
 
                             if (model != null)
                             {

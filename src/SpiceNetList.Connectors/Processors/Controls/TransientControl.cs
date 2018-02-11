@@ -12,24 +12,24 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
         {
             Transient tran = null;
 
-            switch (statement.Parameters.Values.Count)
+            switch (statement.Parameters.Count)
             {
                 case 0: throw new Exception("Step expected");
                 case 1: throw new Exception("Maximum time expected");
             }
 
-            switch (statement.Parameters.Values.Count)
+            switch (statement.Parameters.Count)
             {
                 case 2:
                     tran = new Transient("Transient -" + netlist.Simulations.Count(s => s is Transient),
-                        netlist.ParseDouble((statement.Parameters.Values[0] as ValueParameter).RawValue),
-                        netlist.ParseDouble((statement.Parameters.Values[1] as ValueParameter).RawValue));
+                        netlist.ParseDouble((statement.Parameters[0] as ValueParameter).RawValue),
+                        netlist.ParseDouble((statement.Parameters[1] as ValueParameter).RawValue));
                     break;
                 case 3:
                     tran = new Transient("Transient -" + netlist.Simulations.Count(s => s is Transient),
-                        netlist.ParseDouble((statement.Parameters.Values[0] as ValueParameter).RawValue),
-                        netlist.ParseDouble((statement.Parameters.Values[1] as ValueParameter).RawValue),
-                        netlist.ParseDouble((statement.Parameters.Values[2] as ValueParameter).RawValue));
+                        netlist.ParseDouble((statement.Parameters[0] as ValueParameter).RawValue),
+                        netlist.ParseDouble((statement.Parameters[1] as ValueParameter).RawValue),
+                        netlist.ParseDouble((statement.Parameters[2] as ValueParameter).RawValue));
                     break;
                 case 4:
                     //TODO: There is something wrong with this

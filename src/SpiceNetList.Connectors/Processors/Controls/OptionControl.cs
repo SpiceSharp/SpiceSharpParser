@@ -8,7 +8,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
     {
         public override void Process(Control statement, NetList netlist)
         {
-            foreach (var param in statement.Parameters.Values)
+            foreach (var param in statement.Parameters)
             {
                 if (param is SpiceObjects.Parameters.AssignmentParameter a)
                 {
