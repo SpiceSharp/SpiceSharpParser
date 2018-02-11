@@ -30,7 +30,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                 if (generator.GetGeneratedTypes().Contains(type))
                 {
                     //TODO: hack 
-                    Entity entity = generator.Generate((NamePrefix ?? "") + name, type, c.Parameters, netlist);
+                    Entity entity = generator.Generate((NamePrefix ?? "") + name, type, c.PinsAndParameters, netlist);
                     if (entity != null)
                     {
                         netlist.Circuit.Objects.Add(entity);

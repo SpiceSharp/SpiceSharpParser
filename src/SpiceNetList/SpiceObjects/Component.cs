@@ -4,6 +4,6 @@
     {
         public string Name { get; set; }
 
-        public ParameterCollection Parameters { get; set; }
+        public ParameterCollection PinsAndParameters { get; set; }
     }
 }

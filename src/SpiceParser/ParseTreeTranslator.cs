@@ -166,7 +166,7 @@ namespace SpiceParser
 
             var component = new Component();
             component.Name = childrenItems[0].Token.Value;
-            component.Parameters = childrenItems[1].SpiceObject as ParameterCollection;
+            component.PinsAndParameters = childrenItems[1].SpiceObject as ParameterCollection;
             return component;
         }
 
@@ -180,9 +180,52 @@ namespace SpiceParser
 
         private SpiceObject CreateSubCircuit(List<ParseTreeTranslatorItem> childrenItems)
         {
+            if (childrenItems.Count < 3)
+            {
+                throw new ParseException();
+            }
+
             var subCkt = new SubCircuit();
             subCkt.Name = childrenItems[2].Token.Value;
-            subCkt.Parameters = childrenItems[3].SpiceObject as ParameterCollection;
+
+            var allParameters = childrenItems[3].SpiceObject as ParameterCollection;
+
+            // Parse nodes and parameters
+            bool mode = true; // true = nodes, false = parameters
+            foreach (var parameter in allParameters)
+            {
+                if (mode)
+                {
+                    // After this, only parameters will follow
+                    if (parameter is SingleParameter s && s.RawValue.ToLower() == "params:")
+                    {
+                        mode = false;
+                    }
+
+                    // Parameters have started, so we will keep reading parameters
+                    else if (parameter is AssignmentParameter a)
+                    {
+                        mode = false;
+                        subCkt.Parameters.Add(a);
+                    }
+
+                    // Still reading nodes
+                    else if (parameter is SingleParameter s2)
+                    {
+                        if (s2 is WordParameter
+                            || s2 is IdentifierParameter
+                            || int.TryParse(s2.RawValue, out _))
+                        {
+                            subCkt.Pins.Add(s2.RawValue);
+                        }
+                    }
+                }
+                else if (parameter is AssignmentParameter a2)
+                {
+                    subCkt.Parameters.Add(a2);
+                }
+            }
+
             subCkt.Statements = childrenItems[5].SpiceObject as Statements;
             return subCkt;
         }
@@ -240,6 +283,7 @@ namespace SpiceParser
                     {
                         if (childrenItems[0].IsToken && childrenItems[0].Token.TokenType == (int)SpiceToken.END)
                         {
+                            // skip
                         }
                         else
                         {
