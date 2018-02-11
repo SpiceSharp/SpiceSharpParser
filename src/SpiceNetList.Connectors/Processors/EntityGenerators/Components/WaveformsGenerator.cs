@@ -12,14 +12,16 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
         public WaveformsGenerator()
         {
             pulseGenerator = new PulseGenerator();
-            sineGeneator = new SineGenerator(); 
+            sineGeneator = new SineGenerator();
         }
+
         public Waveform Generate(ComplexParameter cp, NetList netlist)
         {
             if (cp.Name.ToLower() == "sine")
             {
                 return sineGeneator.Generate(cp, netlist);
             }
+
             if (cp.Name.ToLower() == "pulse")
             {
                 return pulseGenerator.Generate(cp, netlist);

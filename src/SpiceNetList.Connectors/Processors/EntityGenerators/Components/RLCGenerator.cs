@@ -107,8 +107,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 
                 SpiceSharp.Components.ResistorBehaviors.BaseParameters bp = res.ParameterSets[typeof(SpiceSharp.Components.ResistorBehaviors.BaseParameters)] as SpiceSharp.Components.ResistorBehaviors.BaseParameters;
                 if (!bp.Length.Given)
+                {
                     throw new System.Exception("L needs to be specified");
+                }
             }
+
             return res;
         }
 

@@ -1,10 +1,10 @@
-﻿using SpiceNetlist.SpiceObjects;
+﻿using System;
+using System.Collections.Generic;
+using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components.Waveforms;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
-using System;
-using System.Collections.Generic;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components
 {
