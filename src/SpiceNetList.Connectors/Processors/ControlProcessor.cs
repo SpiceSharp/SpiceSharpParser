@@ -17,12 +17,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             ControlProcessors["op"] = new OPControl();
         }
 
-        public override void Process(Statement statement, NetList netlist)
+        public override void Process(Statement statement, ProcessingContext context)
         {
             var control = statement as Control;
             if (ControlProcessors.ContainsKey(control.Name))
             {
-                ControlProcessors[control.Name].Process(control, netlist);
+                ControlProcessors[control.Name].Process(control, context);
             }
         }
     }

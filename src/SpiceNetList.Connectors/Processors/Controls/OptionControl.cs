@@ -6,7 +6,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
     class OptionControl : SingleControlProcessor
     {
-        public override void Process(Control statement, NetList netlist)
+        public override void Process(Control statement, ProcessingContext context)
         {
             foreach (var param in statement.Parameters)
             {
@@ -18,24 +18,24 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                     switch (name)
                     {
                         case "abstol":
-                            if (netlist.BaseConfiguration == null) netlist.BaseConfiguration = new SpiceSharp.Simulations.BaseConfiguration();
-                            netlist.BaseConfiguration.AbsoluteTolerance = netlist.ParseDouble(value); break;
+                            if (context.BaseConfiguration == null) context.BaseConfiguration = new SpiceSharp.Simulations.BaseConfiguration();
+                            context.BaseConfiguration.AbsoluteTolerance = context.ParseDouble(value); break;
                         case "reltol":
-                            if (netlist.BaseConfiguration == null) netlist.BaseConfiguration = new SpiceSharp.Simulations.BaseConfiguration();
-                            netlist.BaseConfiguration.AbsoluteTolerance = netlist.ParseDouble(value); break;
+                            if (context.BaseConfiguration == null) context.BaseConfiguration = new SpiceSharp.Simulations.BaseConfiguration();
+                            context.BaseConfiguration.AbsoluteTolerance = context.ParseDouble(value); break;
                         case "gmin":
-                            if (netlist.BaseConfiguration == null) netlist.BaseConfiguration = new SpiceSharp.Simulations.BaseConfiguration();
-                            netlist.BaseConfiguration.Gmin = netlist.ParseDouble(value); break;
+                            if (context.BaseConfiguration == null) context.BaseConfiguration = new SpiceSharp.Simulations.BaseConfiguration();
+                            context.BaseConfiguration.Gmin = context.ParseDouble(value); break;
                         case "itl1":
-                            if (netlist.BaseConfiguration == null) netlist.BaseConfiguration = new SpiceSharp.Simulations.BaseConfiguration();
-                            netlist.BaseConfiguration.DCMaxIterations = (int)netlist.ParseDouble(value); break;
+                            if (context.BaseConfiguration == null) context.BaseConfiguration = new SpiceSharp.Simulations.BaseConfiguration();
+                            context.BaseConfiguration.DCMaxIterations = (int)context.ParseDouble(value); break;
                         case "itl2":
-                            if (netlist.DCConfiguration == null) netlist.DCConfiguration = new SpiceSharp.Simulations.DCConfiguration();
-                            netlist.DCConfiguration.SweepMaxIterations = (int)netlist.ParseDouble(value); break;
+                            if (context.DCConfiguration == null) context.DCConfiguration = new SpiceSharp.Simulations.DCConfiguration();
+                            context.DCConfiguration.SweepMaxIterations = (int)context.ParseDouble(value); break;
 
                         case "itl4":
-                            if (netlist.TimeConfiguration == null) netlist.TimeConfiguration = new SpiceSharp.Simulations.TimeConfiguration();
-                            netlist.TimeConfiguration.TranMaxIterations = (int)netlist.ParseDouble(value); break;
+                            if (context.TimeConfiguration == null) context.TimeConfiguration = new SpiceSharp.Simulations.TimeConfiguration();
+                            context.TimeConfiguration.TranMaxIterations = (int)context.ParseDouble(value); break;
                         case "itl5":
                             //TODO: ????
                             break;
@@ -52,8 +52,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                             {
                                 case "trap":
                                 case "trapezoidal":
-                                    if (netlist.TimeConfiguration == null) netlist.TimeConfiguration = new SpiceSharp.Simulations.TimeConfiguration();
-                                    netlist.TimeConfiguration.Method = new Trapezoidal();
+                                    if (context.TimeConfiguration == null) context.TimeConfiguration = new SpiceSharp.Simulations.TimeConfiguration();
+                                    context.TimeConfiguration.Method = new Trapezoidal();
                                     break;
                             }
                             break;
@@ -67,8 +67,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                 {
                     if (w.RawValue.ToLower() == "keepopinfo")
                     {
-                        if (netlist.FrequencyConfiguration == null) netlist.FrequencyConfiguration = new SpiceSharp.Simulations.FrequencyConfiguration();
-                        netlist.FrequencyConfiguration.KeepOpInfo = true;
+                        if (context.FrequencyConfiguration == null) context.FrequencyConfiguration = new SpiceSharp.Simulations.FrequencyConfiguration();
+                        context.FrequencyConfiguration.KeepOpInfo = true;
                     }
                 }
             }

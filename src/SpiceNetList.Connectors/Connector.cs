@@ -1,7 +1,8 @@
-﻿using SpiceNetlist.SpiceObjects;
-using SpiceSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using SpiceNetlist.SpiceObjects;
+using SpiceNetlist.SpiceSharpConnector.Processors;
+using SpiceSharp;
 
 namespace SpiceNetlist.SpiceSharpConnector
 {
@@ -21,22 +22,24 @@ namespace SpiceNetlist.SpiceSharpConnector
 
         public NetList Translate(SpiceNetlist.NetList netlist)
         {
-            NetList netList = new NetList
+            NetList result = new NetList
             {
                 Circuit = new Circuit(),
                 Title = netlist.Title
             };
 
+            var rootContext = new ProcessingContext(string.Empty, result);
+
             foreach (Statement statement in netlist.Statements.OrderBy(statement => GetStatementOrder(statement)))
-            { 
+            {
                 if (Processors.Supports(statement.GetType()))
                 {
                     StatementProcessor processor = Processors.GetProcessor(statement.GetType());
-                    processor.Process(statement, netList);
+                    processor.Process(statement, rootContext);
                 }
             }
 
-            return netList;
+            return result;
         }
 
         protected int GetStatementOrder(Statement statement)

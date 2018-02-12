@@ -1,20 +1,21 @@
 ﻿using System;
 using SpiceNetlist.SpiceObjects;
+using SpiceSharp;
 using SpiceSharp.Circuits;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators
 {
-    abstract class ModelGenerator : EntityGenerator
+    public abstract class ModelGenerator : EntityGenerator
     {
-        public override Entity Generate(string name, string type, ParameterCollection parameters, NetList currentNetList)
+        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, ProcessingContext context)
         {
-            var model = GenerateModel(name, type);
+            var model = GenerateModel(id.Name, type);
             if (model == null)
             {
                 throw new Exception();
             }
 
-            base.SetParameters(model, parameters, currentNetList);
+            context.SetParameters(model, parameters);
             return model;
         }
 

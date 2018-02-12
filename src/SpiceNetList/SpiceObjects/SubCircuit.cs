@@ -9,7 +9,7 @@ namespace SpiceNetlist.SpiceObjects
 
         public List<string> Pins { get; set; } = new List<string>();
 
-        public List<AssignmentParameter> Parameters { get; set; } = new List<AssignmentParameter>();
+        public List<AssignmentParameter> DefaultParameters { get; set; } = new List<AssignmentParameter>();
 
         public Statements Statements { get; set; }
     }

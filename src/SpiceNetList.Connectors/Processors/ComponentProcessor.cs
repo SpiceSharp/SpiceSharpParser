@@ -1,15 +1,14 @@
-﻿using SpiceNetlist.SpiceObjects;
+﻿using System.Collections.Generic;
+using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components;
+using SpiceSharp;
 using SpiceSharp.Circuits;
-using System.Collections.Generic;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
-    class ComponentProcessor : StatementProcessor
+    public class ComponentProcessor : StatementProcessor
     {
         protected List<EntityGenerator> Generators = new List<EntityGenerator>();
-
-        public string NamePrefix { get; internal set; }
 
         public override void Init()
         {
@@ -19,7 +18,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             Generators.Add(new SubCircuitGenerator(this));
         }
 
-        public override void Process(Statement statement, NetList netlist)
+        public override void Process(Statement statement, ProcessingContext context)
         {
             Component c = statement as Component;
             string name = c.Name.ToLower();
@@ -29,11 +28,16 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             {
                 if (generator.GetGeneratedTypes().Contains(type))
                 {
-                    //TODO: hack 
-                    Entity entity = generator.Generate((NamePrefix ?? "") + name, type, c.PinsAndParameters, netlist);
+                    Entity entity = generator.Generate(
+                        new Identifier(context.GenerateObjectName(name)),
+                        name,
+                        type,
+                        c.PinsAndParameters,
+                        context);
+
                     if (entity != null)
                     {
-                        netlist.Circuit.Objects.Add(entity);
+                        context.AddEntity(entity);
                     }
                 }
             }

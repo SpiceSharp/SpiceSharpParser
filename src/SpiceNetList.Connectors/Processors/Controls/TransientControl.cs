@@ -1,14 +1,13 @@
 ﻿using System;
 using SpiceNetlist.SpiceObjects;
-using SpiceSharp.Simulations;
-using System.Linq;
 using SpiceNetlist.SpiceObjects.Parameters;
+using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
-    class TransientControl : SingleControlProcessor
+    public class TransientControl : SingleControlProcessor
     {
-        public override void Process(Control statement, NetList netlist)
+        public override void Process(Control statement, ProcessingContext context)
         {
             Transient tran = null;
 
@@ -21,22 +20,23 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
             switch (statement.Parameters.Count)
             {
                 case 2:
-                    tran = new Transient("Transient -" + netlist.Simulations.Count(s => s is Transient),
-                        netlist.ParseDouble((statement.Parameters[0] as ValueParameter).RawValue),
-                        netlist.ParseDouble((statement.Parameters[1] as ValueParameter).RawValue));
+                    tran = new Transient(
+                        "Transient -" + context.SimulationsCount,
+                        context.ParseDouble((statement.Parameters[0] as ValueParameter).RawValue),
+                        context.ParseDouble((statement.Parameters[1] as ValueParameter).RawValue));
                     break;
                 case 3:
-                    tran = new Transient("Transient -" + netlist.Simulations.Count(s => s is Transient),
-                        netlist.ParseDouble((statement.Parameters[0] as ValueParameter).RawValue),
-                        netlist.ParseDouble((statement.Parameters[1] as ValueParameter).RawValue),
-                        netlist.ParseDouble((statement.Parameters[2] as ValueParameter).RawValue));
+                    tran = new Transient(
+                        "Transient -" + context.SimulationsCount,
+                        context.ParseDouble((statement.Parameters[0] as ValueParameter).RawValue),
+                        context.ParseDouble((statement.Parameters[1] as ValueParameter).RawValue),
+                        context.ParseDouble((statement.Parameters[2] as ValueParameter).RawValue));
                     break;
                 case 4:
-                    //TODO: There is something wrong with this
                     throw new Exception("TODO");
             }
 
-            netlist.Simulations.Add(tran);
+            context.AddSimulation(tran);
         }
     }
 }

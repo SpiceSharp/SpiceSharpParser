@@ -1,10 +1,10 @@
-﻿using SpiceSharp.Circuits;
+﻿using System.Collections.Generic;
+using SpiceSharp.Circuits;
 using SpiceSharp.Components;
-using System.Collections.Generic;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models
 {
-    class SwitchModelGenerator : ModelGenerator
+    public class SwitchModelGenerator : ModelGenerator
     {
         public override List<string> GetGeneratedTypes()
         {
@@ -18,6 +18,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models
                 case "sw": return new VoltageSwitchModel(name);
                 case "csw": return new CurrentSwitchModel(name);
             }
+
             return null;
         }
     }

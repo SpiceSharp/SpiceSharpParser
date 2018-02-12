@@ -2,9 +2,9 @@
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
-    class SubcircuitProcessor : StatementProcessor
+    public class SubcircuitDefinitionProcessor : StatementProcessor
     {
-        public SubcircuitProcessor()
+        public SubcircuitDefinitionProcessor()
         {
         }
 
@@ -12,10 +12,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         {
         }
 
-        public override void Process(Statement statement, NetList netlist)
+        public override void Process(Statement statement, ProcessingContext context)
         {
             var sub = statement as SubCircuit;
-            netlist.Definitions.Add(sub);
+            context.AvailableDefinitions.Add(sub);
         }
     }
 }

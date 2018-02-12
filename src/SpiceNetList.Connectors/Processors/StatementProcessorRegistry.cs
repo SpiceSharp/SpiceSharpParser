@@ -1,7 +1,7 @@
-﻿using SpiceNetlist.SpiceObjects;
-using SpiceNetlist.SpiceSharpConnector.Processors;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using SpiceNetlist.SpiceObjects;
+using SpiceNetlist.SpiceSharpConnector.Processors;
 
 namespace SpiceNetlist.SpiceSharpConnector
 {
@@ -14,7 +14,7 @@ namespace SpiceNetlist.SpiceSharpConnector
             Processors[typeof(Component)] = new ComponentProcessor();
             Processors[typeof(Model)] = new ModelProcessor();
             Processors[typeof(Control)] = new ControlProcessor();
-            Processors[typeof(SubCircuit)] = new SubcircuitProcessor();
+            Processors[typeof(SubCircuit)] = new SubcircuitDefinitionProcessor();
         }
 
         public void Init()

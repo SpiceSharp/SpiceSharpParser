@@ -15,16 +15,16 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             sineGeneator = new SineGenerator();
         }
 
-        public Waveform Generate(ComplexParameter cp, NetList netlist)
+        public Waveform Generate(ComplexParameter cp, ProcessingContext context)
         {
             if (cp.Name.ToLower() == "sine")
             {
-                return sineGeneator.Generate(cp, netlist);
+                return sineGeneator.Generate(cp, context);
             }
 
             if (cp.Name.ToLower() == "pulse")
             {
-                return pulseGenerator.Generate(cp, netlist);
+                return pulseGenerator.Generate(cp, context);
             }
 
             throw new System.Exception("Unsupported waveform");

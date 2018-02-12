@@ -4,7 +4,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
     class ParamControl : SingleControlProcessor
     {
-        public override void Process(Control statement, NetList netlist)
+        public override void Process(Control statement, ProcessingContext context)
         {
             foreach (var param in statement.Parameters)
             {
@@ -13,7 +13,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                     string name = a.Name.ToLower();
                     string value = a.Value;
 
-                    netlist.UserGlobalParameters[name] = netlist.ParseDouble(value);
+                    context.AvailableParameters[name] = context.ParseDouble(value);
                 }
             }
         }

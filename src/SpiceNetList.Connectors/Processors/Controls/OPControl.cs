@@ -7,10 +7,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
     class OPControl : SingleControlProcessor
     {
-        public override void Process(Control statement, NetList netlist)
+        public override void Process(Control statement, ProcessingContext context)
         {
-            var op = new OP(netlist.Simulations.Count(s => s is OP).ToString());
-            netlist.Simulations.Add(op);
+            var op = new OP("OP " + context.SimulationsCount.ToString());
+            context.AddSimulation(op);
         }
     }
 }

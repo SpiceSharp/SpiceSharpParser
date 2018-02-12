@@ -1,8 +1,8 @@
-﻿using SpiceNetlist.SpiceObjects;
+﻿using System.Collections.Generic;
+using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models;
 using SpiceSharp.Circuits;
-using System.Collections.Generic;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
@@ -18,7 +18,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             Generators.Add(new SwitchModelGenerator());
         }
 
-        public override void Process(Statement statement, NetList netlist)
+        public override void Process(Statement statement, ProcessingContext context)
         {
             Model model = statement as Model;
             string name = model.Name.ToLower();
@@ -32,29 +32,28 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                     {
                         if (generator.GetGeneratedTypes().Contains(type))
                         {
-                            Entity spiceSharpModel = generator.Generate(name, type, complex.Parameters, netlist);
+                            Entity spiceSharpModel = generator.Generate(new SpiceSharp.Identifier(context.GenerateObjectName(name)), name, type, complex.Parameters, context);
 
                             if (model != null)
                             {
-                                netlist.Circuit.Objects.Add(spiceSharpModel);
+                                context.AddEntity(spiceSharpModel);
                             }
                         }
                     }
                 }
+
                 if (model.Parameters[0] is SingleParameter single)
                 {
                     var type = single.RawValue;
-
-
                     foreach (var generator in Generators)
                     {
                         if (generator.GetGeneratedTypes().Contains(type))
                         {
-                            Entity spiceSharpModel = generator.Generate(name, type, model.Parameters.Skip(1), netlist);
+                            Entity spiceSharpModel = generator.Generate(new SpiceSharp.Identifier(context.GenerateObjectName(name)), name, type, model.Parameters.Skip(1), context);
 
                             if (model != null)
                             {
-                                netlist.Circuit.Objects.Add(spiceSharpModel);
+                                context.AddEntity(spiceSharpModel);
                             }
                         }
                     }

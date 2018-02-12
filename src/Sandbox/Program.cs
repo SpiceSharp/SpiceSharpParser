@@ -1,30 +1,23 @@
-﻿using SpiceLex;
-using SpiceNetlist.SpiceSharpConnector;
-using SpiceParser;
-using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-
-namespace Sandbox
+﻿namespace Sandbox
 {
-    class Program
+    using System;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Text;
+    using SpiceLex;
+    using SpiceNetlist.SpiceSharpConnector;
+    using SpiceParser;
+
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             StringBuilder st = new StringBuilder();
-            st.Append(@"Example 3 for interconnect simulation");
-            for (var i = 0; i < 10000; i++)
-            {
-                st.Append("* aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaa aaaaaaa\r\n");
-                st.Append("\n");
-            }
+            st.Append(@"Lowpass filter
 
-            Console.WriteLine("L complete");
+.end");
 
             var tokensStr = st.ToString();
-
-            Console.WriteLine("L str complete, len=" + tokensStr.Length);
 
             var s0 = new Stopwatch();
             s0.Start();
@@ -35,15 +28,20 @@ namespace Sandbox
 
             var s1 = new Stopwatch();
             s1.Start();
-            var parseTree = new SpiceParser.SpiceParser().GetParseTree(tokens);
+            var parseTree = new SpiceParser().GetParseTree(tokens);
             Console.WriteLine("Parse tree generated: " + s1.ElapsedMilliseconds + "ms");
 
-            Console.WriteLine("Translating");
             var s2 = new Stopwatch();
             s2.Start();
             var translator = new ParseTreeTranslator();
-            var netList = translator.GetNetList(parseTree);
-            Console.WriteLine(s2.ElapsedMilliseconds + "ms");
+            var context = translator.GetNetList(parseTree);
+            Console.WriteLine("Translating to NOM (Netlist Object Model):" + s2.ElapsedMilliseconds + "ms");
+
+            var s3 = new Stopwatch();
+            s3.Start();
+            var connector = new Connector();
+            var n = connector.Translate(context);
+            Console.WriteLine("Translating NOM to SpiceSharp: " + s3.ElapsedMilliseconds + "ms");
         }
     }
 }

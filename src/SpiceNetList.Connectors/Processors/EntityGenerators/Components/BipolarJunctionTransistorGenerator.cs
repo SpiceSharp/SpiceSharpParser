@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
+using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceSharp.Components.BipolarBehaviors;
@@ -9,7 +10,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 {
     class BipolarJunctionTransistorGenerator : EntityGenerator
     {
-        public override Entity Generate(string name, string type, ParameterCollection parameters, NetList currentNetList)
+        public override Entity Generate(Identifier name, string originalName, string type, ParameterCollection parameters, ProcessingContext context)
         {
             BipolarJunctionTransistor bjt = new BipolarJunctionTransistor(name);
 
@@ -25,14 +26,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 parameters.Insert(3, parameters[2]);
             }
 
-            CreateNodes(parameters, bjt);
+            context.CreateNodes(parameters, bjt);
 
             if (parameters.Count < 5)
             {
                 throw new System.Exception();
             }
 
-            bjt.SetModel((BipolarJunctionTransistorModel)currentNetList.FindModel((parameters[4] as SingleParameter).RawValue));
+            bjt.SetModel(context.FindModel<BipolarJunctionTransistorModel>((parameters[4] as SingleParameter).RawValue));
 
             for (int i = 5; i < parameters.Count; i++)
             {
@@ -55,12 +56,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                         //TODO ?????
                         if (!bp.Area.Given)
                         {
-                            bp.Area.Set(currentNetList.ParseDouble(s.RawValue));
+                            bp.Area.Set(context.ParseDouble(s.RawValue));
                         }
                         //TODO ?????
                         if (!bp.Temperature.Given)
                         {
-                            bp.Area.Set(currentNetList.ParseDouble(s.RawValue));
+                            bp.Area.Set(context.ParseDouble(s.RawValue));
                         }
                     }
                 }
@@ -69,7 +70,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 {
                     if (asg.Name.ToLower() == "ic")
                     {
-                        bjt.ParameterSets.SetProperty("ic", currentNetList.ParseDouble(asg.Value));
+                        bjt.ParameterSets.SetProperty("ic", context.ParseDouble(asg.Value));
                     }
                 }
             }

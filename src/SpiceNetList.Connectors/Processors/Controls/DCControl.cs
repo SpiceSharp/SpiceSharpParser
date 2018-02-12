@@ -1,14 +1,14 @@
-﻿using SpiceNetlist.SpiceObjects;
+﻿using System;
+using System.Collections.Generic;
+using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceSharp.Simulations;
-using System;
-using System.Collections.Generic;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
-    class DCControl : SingleControlProcessor
+    public class DCControl : SingleControlProcessor
     {
-        public override void Process(Control statement, NetList netlist)
+        public override void Process(Control statement, ProcessingContext context)
         {
             int count = statement.Parameters.Count / 4;
             switch (statement.Parameters.Count - 4 * count)
@@ -29,15 +29,15 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
             {
                 SweepConfiguration sweep = new SweepConfiguration(
                     (statement.Parameters[4 * i] as SingleParameter).RawValue,
-                    netlist.ParseDouble((statement.Parameters[4 * i + 1] as SingleParameter).RawValue),
-                    netlist.ParseDouble((statement.Parameters[4 * i + 2] as SingleParameter).RawValue),
-                    netlist.ParseDouble((statement.Parameters[4 * i + 3] as SingleParameter).RawValue));
+                    context.ParseDouble((statement.Parameters[4 * i + 1] as SingleParameter).RawValue),
+                    context.ParseDouble((statement.Parameters[4 * i + 2] as SingleParameter).RawValue),
+                    context.ParseDouble((statement.Parameters[4 * i + 3] as SingleParameter).RawValue));
 
                 sweeps.Add(sweep);
             }
 
-            DC dc = new DC("DC " + (netlist.Simulations.Count + 1), sweeps);
-            netlist.Simulations.Add(dc);
+            DC dc = new DC("DC " + (context.SimulationsCount + 1), sweeps);
+            context.AddSimulation(dc);
         }
     }
 }

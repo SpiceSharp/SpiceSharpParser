@@ -29,7 +29,7 @@ namespace SpiceParser
         }
 
         /// <summary>
-        /// Translates a spice parse tree to a netlist (SpiceNetList library)
+        /// Translates a spice parse tree to a context (SpiceNetlist library)
         /// </summary>
         /// <param name="root">A parse tree root</param>
         /// <returns>A net list</returns>
@@ -132,6 +132,8 @@ namespace SpiceParser
                     return new WordParameter() { RawValue = childrenItems[0].Token.Value };
                 case (int)SpiceToken.IDENTIFIER:
                     return new IdentifierParameter() { RawValue = childrenItems[0].Token.Value };
+                case (int)SpiceToken.EXPRESSION:
+                    return new ExpressionParameter() { RawValue = childrenItems[0].Token.Value };
             }
 
             throw new ParseException();
@@ -206,7 +208,7 @@ namespace SpiceParser
                     else if (parameter is AssignmentParameter a)
                     {
                         mode = false;
-                        subCkt.Parameters.Add(a);
+                        subCkt.DefaultParameters.Add(a);
                     }
 
                     // Still reading nodes
@@ -222,7 +224,7 @@ namespace SpiceParser
                 }
                 else if (parameter is AssignmentParameter a2)
                 {
-                    subCkt.Parameters.Add(a2);
+                    subCkt.DefaultParameters.Add(a2);
                 }
             }
 

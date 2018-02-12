@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
+using SpiceSharp;
 using SpiceSharp.Circuits;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
-    internal class SubCircuitGenerator : EntityGenerator
+    public class SubCircuitGenerator : EntityGenerator
     {
         private ComponentProcessor componentProcessor;
 
@@ -14,17 +15,18 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             this.componentProcessor = componentProcessor;
         }
 
-        public override Entity Generate(string name, string type, ParameterCollection parameters, NetList netList)
+        public override Entity Generate(Identifier id, string name, string type, ParameterCollection parameters, ProcessingContext context)
         {
-            string subCircuitName = (parameters[parameters.Count - 1] as SingleParameter).RawValue;
-            var subCiruitDefiniton = netList.Definitions.Find(pred => pred.Name == subCircuitName);
-            componentProcessor.NamePrefix = name + "_";
+            SubCircuit subCiruitDefiniton;
+            ProcessingContext newContext;
+
+            ProcessParamters(name, parameters, context, out subCiruitDefiniton, out newContext);
 
             foreach (Statement statement in subCiruitDefiniton.Statements)
             {
                 if (statement is Component c)
                 {
-                    componentProcessor.Process(statement, netList);
+                    componentProcessor.Process(statement, newContext);
                 }
             }
 
@@ -34,6 +36,48 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         public override List<string> GetGeneratedTypes()
         {
             return new List<string>() { "x" };
+        }
+
+        private static void ProcessParamters(string name, ParameterCollection parameters, ProcessingContext context, out SubCircuit subCiruitDefiniton, out ProcessingContext newContext)
+        {
+            int parametersCount = 0;
+
+            var subCktParameters = new List<AssignmentParameter>();
+            while (parameters[parameters.Count - parametersCount - 1] is AssignmentParameter a)
+            {
+                subCktParameters.Add(a);
+                parametersCount++;
+            }
+
+            var pinInstanceNames = new List<string>();
+            for (var i = 0; i < parameters.Count - parametersCount - 1; i++)
+            {
+                pinInstanceNames.Add((parameters[i] as SingleParameter).RawValue);
+            }
+
+            string subCircuitName = (parameters[parameters.Count - parametersCount - 1] as SingleParameter).RawValue;
+
+            subCiruitDefiniton = context.AvailableDefinitions.Find(pred => pred.Name == subCircuitName);
+
+            Dictionary<string, double> subCktParamters = ResolveSubcircuitParameters(context, subCiruitDefiniton, subCktParameters);
+
+            newContext = new ProcessingContext(name, context, subCiruitDefiniton, pinInstanceNames, subCktParamters);
+        }
+
+        private static Dictionary<string, double> ResolveSubcircuitParameters(ProcessingContext context, SubCircuit subCiruitDefiniton, List<AssignmentParameter> subcktParameters)
+        {
+            var newContextParameters = new Dictionary<string, double>();
+            foreach (var defaultParameter in subCiruitDefiniton.DefaultParameters)
+            {
+                newContextParameters[defaultParameter.Name] = context.ParseDouble(defaultParameter.Value);
+            }
+
+            foreach (var instanceParameter in subcktParameters)
+            {
+                newContextParameters[instanceParameter.Name] = context.ParseDouble(instanceParameter.Value);
+            }
+
+            return newContextParameters;
         }
     }
 }
