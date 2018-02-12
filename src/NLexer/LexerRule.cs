@@ -10,12 +10,12 @@ namespace NLexer
         /// <summary>
         /// Initializes a new instance of the <see cref="LexerRule"/> class.
         /// </summary>
-        /// <param name="name">A name of lexer rule</param>
+        /// <param name="ruleName">A name of lexer rule</param>
         /// <param name="regularExpressionPattern">A regular expression</param>
-        public LexerRule(string name, string regularExpressionPattern)
+        public LexerRule(string ruleName, string regularExpressionPattern)
         {
             RegularExpressionPattern = regularExpressionPattern;
-            Name = name;
+            Name = ruleName;
         }
 
         /// <summary>

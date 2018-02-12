@@ -13,17 +13,17 @@ namespace NLexer
         /// Initializes a new instance of the <see cref="LexerTokenRule{TLexerState}"/> class.
         /// </summary>
         /// <param name="tokenType">Token type</param>
-        /// <param name="name">Token name</param>
+        /// <param name="ruleName">Rule name</param>
         /// <param name="regularExpressionPattern">A token rule pattern</param>
         /// <param name="lexerRuleResultAction">A token rule token action</param>
         /// <param name="isActiveAction">A token rule active action</param>
         public LexerTokenRule(
             int tokenType,
-            string name,
+            string ruleName,
             string regularExpressionPattern,
             Func<TLexerState, LexerRuleResult> lexerRuleResultAction = null,
             Func<TLexerState, LexerRuleUseState> isActiveAction = null)
-            : base(name, regularExpressionPattern)
+            : base(ruleName, regularExpressionPattern)
         {
             TokenType = tokenType;
             LexerRuleResultAction = lexerRuleResultAction ?? new Func<TLexerState, LexerRuleResult>((state) => LexerRuleResult.ReturnToken);
