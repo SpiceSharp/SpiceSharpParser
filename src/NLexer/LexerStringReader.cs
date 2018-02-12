@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NLexer
+﻿namespace NLexer
 {
     public class LexerStringReader
     {

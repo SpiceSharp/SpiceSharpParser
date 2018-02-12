@@ -73,7 +73,7 @@ namespace NLexer
 
                     currentTokenIndex += bestMatch.Length;
 
-                    UpdateTextToLex(ref textToLex, ref getNextTextToLex, bestMatch);
+                    UpdateTextToLex(ref textToLex, ref getNextTextToLex, bestMatch.Length);
                 }
                 else
                 {
@@ -82,14 +82,17 @@ namespace NLexer
             }
 
             // yield EOF token
-            yield return new Token(-1, null);
+            yield return new Token((int)SpecialTokenType.EOF, null);
         }
 
-        private void UpdateTextToLex(ref string textToLex, ref bool getNextTextToLex, Match bestMatch)
+        /// <summary>
+        /// Updates a text to lex by skipping characters which are part of a generated token
+        /// </summary>
+        private void UpdateTextToLex(ref string textToLex, ref bool getNextTextToLex, int tokenLength)
         {
             if (Options.SingleLineTokens || Options.MultipleLineTokens)
             {
-                textToLex = textToLex.Substring(bestMatch.Length);
+                textToLex = textToLex.Substring(tokenLength);
             }
 
             if (string.IsNullOrEmpty(textToLex))
@@ -98,14 +101,16 @@ namespace NLexer
             }
         }
 
+        /// <summary>
+        /// Gets a text from which the tokens will be generated
+        /// </summary>
         private string GetTextToLex(LexerStringReader strReader, int currentTokenIndex)
         {
             if (this.Options.SingleLineTokens)
             {
                 return strReader.ReadLine();
             }
-
-            if (this.Options.MultipleLineTokens)
+            else if (this.Options.MultipleLineTokens)
             {
                 return strReader.ReadLineWithContinuation();
             }
@@ -115,6 +120,12 @@ namespace NLexer
             }
         }
 
+        /// <summary>
+        /// Finds the best matched <see cref="LexerTokenRule{TLexerState}" /> for remaining text to generate new token
+        /// </summary>
+        /// <returns>
+        /// True if there is matching <see cref="LexerTokenRule{TLexerState}" /> 
+        /// </returns>
         private bool FindBestTokenRule(string remainingText, TLexerState state, out LexerTokenRule<TLexerState> bestMatchTokenRule, out Match bestMatch)
         {
             bestMatchTokenRule = null;

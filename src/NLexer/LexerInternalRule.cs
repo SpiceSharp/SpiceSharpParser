@@ -5,12 +5,23 @@
     /// </summary>
     public class LexerInternalRule : LexerRule
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LexerInternalRule"/> class.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="regularExpression"></param>
         public LexerInternalRule(string name, string regularExpression)
             : base(name, regularExpression)
         {
         }
 
-        internal override LexerRule Clone()
+        /// <summary>
+        /// Clones the current instance
+        /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="LexerInternalRule"/>
+        /// </returns>
+        public override LexerRule Clone()
         {
             return new LexerInternalRule(this.Name, this.RegularExpressionPattern);
         }

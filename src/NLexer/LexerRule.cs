@@ -56,6 +56,6 @@ namespace NLexer
             }
         }
 
-        internal abstract LexerRule Clone();
+        public abstract LexerRule Clone();
     }
 }

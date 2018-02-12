@@ -2,6 +2,10 @@
 
 namespace NLexer
 {
+    /// <summary>
+    /// The lexer token rule class. It defines how and when a token will be generated for given regulal expression pattern
+    /// </summary>
+    /// <typeparam name="TLexerState"></typeparam>
     public class LexerTokenRule<TLexerState> : LexerRule
         where TLexerState : LexerState
     {
@@ -12,7 +16,7 @@ namespace NLexer
         /// <param name="name">Token name</param>
         /// <param name="regularExpressionPattern">A token rule pattern</param>
         /// <param name="lexerRuleResultAction">A token rule token action</param>
-        /// <param name="isActiveAction">a token rule active action</param>
+        /// <param name="isActiveAction">A token rule active action</param>
         public LexerTokenRule(
             int tokenType,
             string name,
@@ -26,20 +30,47 @@ namespace NLexer
             IsActiveAction = isActiveAction ?? new Func<TLexerState, LexerRuleUseState>((state) => LexerRuleUseState.Use);
         }
 
+        /// <summary>
+        /// The type of a generated token
+        /// </summary>
         public int TokenType { get; }
 
-        public Func<TLexerState, LexerRuleResult> LexerRuleResultAction { get; private set; }
+        /// <summary>
+        /// Specifies what to do with a generated token (return or ignore)
+        /// </summary>
+        public Func<TLexerState, LexerRuleResult> LexerRuleResultAction { get; }
 
-        protected Func<TLexerState, LexerRuleUseState> IsActiveAction { get; set; }
+        /// <summary>
+        /// Specifies whether the rule should be skipped
+        /// </summary>
+        protected Func<TLexerState, LexerRuleUseState> IsActiveAction { get; }
 
-        internal bool IsActive(TLexerState lexerState)
+        /// <summary>
+        /// Returns true if the rule is active or should be skipped
+        /// </summary>
+        /// <param name="lexerState">The curent lexer state</param>
+        /// <returns>
+        /// True if the lexer token rule is active or should be skipped
+        /// </returns>
+        public bool IsActive(TLexerState lexerState)
         {
             return IsActiveAction(lexerState) == LexerRuleUseState.Use;
         }
 
-        internal override LexerRule Clone()
+        /// <summary>
+        /// Clones the rule
+        /// </summary>
+        /// <returns>
+        /// A new instance of rule
+        /// </returns>
+        public override LexerRule Clone()
         {
-            return new LexerTokenRule<TLexerState>(this.TokenType, this.Name, this.RegularExpressionPattern, this.LexerRuleResultAction, this.IsActiveAction);
+            return new LexerTokenRule<TLexerState>(
+                this.TokenType, 
+                this.Name, 
+                this.RegularExpressionPattern, 
+                this.LexerRuleResultAction, 
+                this.IsActiveAction);
         }
     }
 }
