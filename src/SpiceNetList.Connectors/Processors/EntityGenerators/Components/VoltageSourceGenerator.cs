@@ -32,22 +32,19 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 
         public Entity GenerateVoltageControlledVoltageSource(string name, string type, ParameterCollection parameters, ProcessingContext context)
         {
-            var vcvs = new VoltageControlledVoltageSource(name);
-            context.CreateNodes(parameters, vcvs);
-
             if (parameters.Count < 5)
             {
                 throw new Exception("Value expected");
             }
 
-            vcvs.ParameterSets.SetProperty("gain", context.ParseDouble((parameters[4] as SingleParameter).RawValue));
+            var vcvs = new VoltageControlledVoltageSource(name);
+            context.CreateNodes(parameters, vcvs);
+            vcvs.ParameterSets.SetProperty("gain", context.ParseDouble(parameters.GetString(4)));
             return vcvs;
         }
 
         public Entity GenerateCurrentControlledVoltageSource(string name, string type, ParameterCollection parameters, ProcessingContext context)
         {
-            var ccvs = new CurrentControlledVoltageSource(name);
-            context.CreateNodes(parameters, ccvs);
             switch (parameters.Count)
             {
                 case 2: throw new Exception("Voltage source expected");
@@ -59,8 +56,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 throw new Exception("Component name expected");
             }
 
-            ccvs.ControllingName = (parameters[3] as SingleParameter).RawValue;
-            ccvs.ParameterSets.SetProperty("gain", context.ParseDouble((parameters[3] as SingleParameter).RawValue));
+            var ccvs = new CurrentControlledVoltageSource(name);
+            context.CreateNodes(parameters, ccvs);
+
+            ccvs.ControllingName = parameters.GetString(3);
+            ccvs.ParameterSets.SetProperty("gain", context.ParseDouble(parameters.GetString(4)));
 
             return ccvs;
         }
@@ -77,18 +77,18 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 if (i == 2 && parameters[i] is SingleParameter s && s.RawValue.ToLower() == "dc")
                 {
                     i++;
-                    vsrc.ParameterSets.SetProperty("dc", context.ParseDouble((parameters[i] as SingleParameter).RawValue));
+                    vsrc.ParameterSets.SetProperty("dc", context.ParseDouble(parameters.GetString(i)));
                 }
                 else if (i == 2 && parameters[i] is ValueParameter vp)
                 {
-                    vsrc.ParameterSets.SetProperty("dc", context.ParseDouble((parameters[i] as SingleParameter).RawValue));
+                    vsrc.ParameterSets.SetProperty("dc", context.ParseDouble(parameters.GetString(i)));
                 }
 
                 // AC specification
                 else if (parameters[i] is SingleParameter s2 && s2.RawValue.ToLower() == "ac")
                 {
                     i++;
-                    vsrc.ParameterSets.SetProperty("acmag", context.ParseDouble((parameters[i] as SingleParameter).RawValue));
+                    vsrc.ParameterSets.SetProperty("acmag", context.ParseDouble(parameters.GetString(i)));
 
                     // Look forward for one more value
                     if (i + 1 < parameters.Count && parameters[i + 1] is ValueParameter vp2)

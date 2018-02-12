@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceNetlist.SpiceObjects.Parameters;
 
 namespace SpiceNetlist.SpiceObjects
 {
@@ -67,6 +68,17 @@ namespace SpiceNetlist.SpiceObjects
             var result = new ParameterCollection();
             result.Values.AddRange(this.Values.Take(count));
             return result;
-        }        
+        }
+
+        public string GetString(int parameterIndex)
+        {
+            var singleParameter = this[parameterIndex] as SingleParameter;
+            if (singleParameter == null)
+            {
+                throw new Exception("Parameter [" + parameterIndex + "] is not string parameter");
+            }
+
+            return singleParameter.RawValue;
+        }
     }
 }

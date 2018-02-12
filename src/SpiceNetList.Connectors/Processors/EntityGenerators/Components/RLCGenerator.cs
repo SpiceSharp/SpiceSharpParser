@@ -34,7 +34,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 case 2: throw new Exception("Coupling factor expected");
             }
 
-            if (!(parameters[0] is SingleParameter)) 
+            if (!(parameters[0] is SingleParameter))
             {
                 throw new Exception("Component name expected");
             }
@@ -44,9 +44,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 throw new Exception("Component name expected");
             }
 
-            mut.InductorName1 = (parameters[0] as SingleParameter).RawValue;
-            mut.InductorName2 = (parameters[1] as SingleParameter).RawValue;
-            mut.ParameterSets.SetProperty("k", context.ParseDouble((parameters[2] as SingleParameter).RawValue));
+            mut.InductorName1 = parameters.GetString(0);
+            mut.InductorName2 = parameters.GetString(1);
+            mut.ParameterSets.SetProperty("k", context.ParseDouble(parameters.GetString(2)));
 
             return mut;
         }
@@ -58,8 +58,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 
             if (parameters.Count == 3)
             {
-                var capacitance = (parameters[2] as SingleParameter).RawValue;
-                capacitor.ParameterSets.SetProperty("capacitance", context.ParseDouble(capacitance));
+                capacitor.ParameterSets.SetProperty("capacitance", context.ParseDouble(parameters.GetString(2)));
 
                 return capacitor;
             }
@@ -80,8 +79,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             var inductor = new Inductor(name);
             context.CreateNodes(parameters, inductor);
 
-            var inductance = (parameters[2] as SingleParameter).RawValue;
-            inductor.ParameterSets.SetProperty("inductance", context.ParseDouble(inductance));
+            inductor.ParameterSets.SetProperty("inductance", context.ParseDouble(parameters.GetString(2)));
             return inductor;
         }
 
@@ -92,13 +90,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 
             if (parameters.Count == 3)
             {
-                var value = (parameters[2] as SingleParameter).RawValue;
-                res.ParameterSets.SetProperty("resistance", context.ParseDouble(value));
+                res.ParameterSets.SetProperty("resistance", context.ParseDouble(parameters.GetString(2)));
             }
             else
             {
-                var modelName = (parameters[2] as SingleParameter).RawValue;
-                res.SetModel(context.FindModel<ResistorModel>(modelName));
+                res.SetModel(context.FindModel<ResistorModel>(parameters.GetString(2)));
 
                 foreach (var equal in parameters.Skip(2))
                 {

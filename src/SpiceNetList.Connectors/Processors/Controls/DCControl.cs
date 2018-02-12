@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
-using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
@@ -11,11 +10,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
         public override void Process(Control statement, ProcessingContext context)
         {
             int count = statement.Parameters.Count / 4;
-            switch (statement.Parameters.Count - 4 * count)
+            switch (statement.Parameters.Count - (4 * count))
             {
                 case 0:
                     if (statement.Parameters.Count == 0)
+                    {
                         throw new Exception("Source st.Name expected");
+                    }
                     break;
                 case 1: throw new Exception("Start value expected");
                 case 2: throw new Exception("Stop value expected");
@@ -28,10 +29,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
             for (int i = 0; i < count; i++)
             {
                 SweepConfiguration sweep = new SweepConfiguration(
-                    (statement.Parameters[4 * i] as SingleParameter).RawValue,
-                    context.ParseDouble((statement.Parameters[4 * i + 1] as SingleParameter).RawValue),
-                    context.ParseDouble((statement.Parameters[4 * i + 2] as SingleParameter).RawValue),
-                    context.ParseDouble((statement.Parameters[4 * i + 3] as SingleParameter).RawValue));
+                    statement.Parameters.GetString(4 * i),
+                    context.ParseDouble(statement.Parameters.GetString((4 * i) + 1)),
+                    context.ParseDouble(statement.Parameters.GetString((4 * i) + 2)),
+                    context.ParseDouble(statement.Parameters.GetString((4 * i) + 3)));
 
                 sweeps.Add(sweep);
             }

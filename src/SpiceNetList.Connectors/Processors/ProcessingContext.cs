@@ -119,7 +119,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             Identifier[] nodes = new Identifier[component.PinCount];
             for (var i = 0; i < component.PinCount; i++)
             {
-                var pinName = (parameters[i] as SingleParameter).RawValue;
+                string pinName = parameters.GetString(i);
                 nodes[i] = GenerateNodeName(pinName);
             }
 

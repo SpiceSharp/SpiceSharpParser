@@ -52,10 +52,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             var pinInstanceNames = new List<string>();
             for (var i = 0; i < parameters.Count - parametersCount - 1; i++)
             {
-                pinInstanceNames.Add((parameters[i] as SingleParameter).RawValue);
+                pinInstanceNames.Add(parameters.GetString(i));
             }
 
-            string subCircuitName = (parameters[parameters.Count - parametersCount - 1] as SingleParameter).RawValue;
+            string subCircuitName = parameters.GetString(parameters.Count - parametersCount - 1);
 
             subCiruitDefiniton = context.AvailableDefinitions.Find(pred => pred.Name == subCircuitName);
 
