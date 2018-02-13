@@ -14,10 +14,10 @@ namespace SpiceParser
         {
             if (caseInsensitive)
             {
-                return token.Value.ToLower() == value.ToLower();
+                return token.Lexem.ToLower() == value.ToLower();
             }
 
-            return token.Value == value;
+            return token.Lexem == value;
         }
     }
 }

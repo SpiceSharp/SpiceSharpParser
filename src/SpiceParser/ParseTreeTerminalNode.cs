@@ -14,7 +14,7 @@ namespace SpiceParser
 
         public override string ToString()
         {
-            return "Terminal: [" + ((Token.Value == "\r\n" || Token.Value == "\n") ? "newline" : Token.Value) + "]";
+            return "Terminal: [" + ((Token.Lexem == "\r\n" || Token.Lexem == "\n") ? "newline" : Token.Lexem) + "]";
         }
 
         public override void Accept(ParseTreeVisitor visitor)

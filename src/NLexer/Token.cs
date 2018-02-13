@@ -1,13 +1,14 @@
-﻿using System;
-
-namespace NLexer
+﻿namespace NLexer
 {
     public class Token
     {
-        public Token(int tokenType, string value)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Token"/> class.
+        /// </summary>
+        public Token(int tokenType, string lexem)
         {
             TokenType = tokenType;
-            Value = value;
+            Lexem = lexem;
         }
 
         /// <summary>
@@ -16,17 +17,20 @@ namespace NLexer
         public int TokenType { get; }
 
         /// <summary>
-        /// Gets token value
+        /// Gets token lexem
         /// </summary>
-        public string Value { get; private set; }
+        public string Lexem { get; private set; }
 
-        public int TokenLength
+        /// <summary>
+        /// Gets th length of lexem
+        /// </summary>
+        public int Length
         {
             get
             {
-                if (Value != null)
+                if (Lexem != null)
                 {
-                    return Value.Length;
+                    return Lexem.Length;
                 }
                 else
                 {
@@ -35,9 +39,13 @@ namespace NLexer
             }
         }
 
-        public void UpdateValue(string value)
+        /// <summary>
+        /// Updates <see cref="Token"/>'s lexem
+        /// </summary>
+        /// <param name="lexem"></param>
+        public void UpdateLexem(string lexem)
         {
-            this.Value = value;
+            this.Lexem = lexem;
         }
     }
 }

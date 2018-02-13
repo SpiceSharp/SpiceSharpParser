@@ -85,28 +85,28 @@ namespace SpiceParser
                         && childrenItems[0].Token.TokenType == (int)SpiceToken.WORD
                         && childrenItems[1].IsToken
                         && childrenItems[1].Token.TokenType == (int)SpiceToken.DELIMITER
-                        && childrenItems[1].Token.Value == "("
+                        && childrenItems[1].Token.Lexem == "("
                         && childrenItems[2].IsSpiceObject
                         && childrenItems[2].SpiceObject is ParameterCollection
                         && childrenItems[3].Token.TokenType == (int)SpiceToken.DELIMITER
-                        && childrenItems[3].Token.Value == ")")
+                        && childrenItems[3].Token.Lexem == ")")
                     {
                         parameter = new ComplexParameter()
                         {
-                            Name = childrenItems[0].Token.Value,
+                            Name = childrenItems[0].Token.Lexem,
                             Parameters = childrenItems[2].SpiceObject as ParameterCollection
                         };
                     }
 
                     if (childrenItems[0].IsToken
                         && childrenItems[0].Token.TokenType == (int)SpiceToken.WORD
-                        && childrenItems[1].Token.Value == "="
+                        && childrenItems[1].Token.Lexem == "="
                         && childrenItems[2].Token.TokenType == (int)SpiceToken.VALUE)
                     {
                         parameter = new AssignmentParameter()
                         {
-                            Name = childrenItems[0].Token.Value,
-                            Value = childrenItems[2].Token.Value,
+                            Name = childrenItems[0].Token.Lexem,
+                            Value = childrenItems[2].Token.Lexem,
                         };
                     }
                 }
@@ -125,15 +125,15 @@ namespace SpiceParser
             switch (childrenItems[0].Token.TokenType)
             {
                 case (int)SpiceToken.REFERENCE:
-                    return new ReferenceParameter() { RawValue = childrenItems[0].Token.Value };
+                    return new ReferenceParameter() { RawValue = childrenItems[0].Token.Lexem };
                 case (int)SpiceToken.VALUE:
-                    return new ValueParameter() { RawValue = childrenItems[0].Token.Value };
+                    return new ValueParameter() { RawValue = childrenItems[0].Token.Lexem };
                 case (int)SpiceToken.WORD:
-                    return new WordParameter() { RawValue = childrenItems[0].Token.Value };
+                    return new WordParameter() { RawValue = childrenItems[0].Token.Lexem };
                 case (int)SpiceToken.IDENTIFIER:
-                    return new IdentifierParameter() { RawValue = childrenItems[0].Token.Value };
+                    return new IdentifierParameter() { RawValue = childrenItems[0].Token.Lexem };
                 case (int)SpiceToken.EXPRESSION:
-                    return new ExpressionParameter() { RawValue = childrenItems[0].Token.Value };
+                    return new ExpressionParameter() { RawValue = childrenItems[0].Token.Lexem };
             }
 
             throw new ParseException();
@@ -167,7 +167,7 @@ namespace SpiceParser
             }
 
             var component = new Component();
-            component.Name = childrenItems[0].Token.Value;
+            component.Name = childrenItems[0].Token.Lexem;
             component.PinsAndParameters = childrenItems[1].SpiceObject as ParameterCollection;
             return component;
         }
@@ -175,7 +175,7 @@ namespace SpiceParser
         private SpiceObject CreateControl(List<ParseTreeTranslatorItem> childrenItems)
         {
             var control = new Control();
-            control.Name = childrenItems[1].Token.Value;
+            control.Name = childrenItems[1].Token.Lexem;
             control.Parameters = childrenItems[2].SpiceObject as ParameterCollection;
             return control;
         }
@@ -188,7 +188,7 @@ namespace SpiceParser
             }
 
             var subCkt = new SubCircuit();
-            subCkt.Name = childrenItems[2].Token.Value;
+            subCkt.Name = childrenItems[2].Token.Lexem;
 
             var allParameters = childrenItems[3].SpiceObject as ParameterCollection;
 
@@ -235,7 +235,7 @@ namespace SpiceParser
         private SpiceObject CreateComment(List<ParseTreeTranslatorItem> childrenItems)
         {
             var comment = new CommentLine();
-            comment.Text = childrenItems[1].Token.Value;
+            comment.Text = childrenItems[1].Token.Lexem;
             return comment;
         }
 
@@ -252,7 +252,7 @@ namespace SpiceParser
         private SpiceObject CreateModel(List<ParseTreeTranslatorItem> childrenItems)
         {
             var model = new Model();
-            model.Name = childrenItems[2].Token.Value;
+            model.Name = childrenItems[2].Token.Lexem;
             model.Parameters = childrenItems[3].SpiceObject as ParameterCollection;
             return model;
         }
@@ -302,7 +302,7 @@ namespace SpiceParser
         {
             return new NetList()
             {
-                Title = childrenItems[0].Token.Value,
+                Title = childrenItems[0].Token.Lexem,
                 Statements = childrenItems[1].SpiceObject as Statements
             };
         }

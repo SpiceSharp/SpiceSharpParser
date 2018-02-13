@@ -79,9 +79,9 @@ namespace SpiceParser
                 if (currentNode is ParseTreeTerminalNode tn)
                 {
                     if (tn.Token.TokenType == tokens[currentTokenIndex].TokenType
-                        && (tn.Token.Value == null || tn.Token.Value == tokens[currentTokenIndex].Value))
+                        && (tn.Token.Lexem == null || tn.Token.Lexem == tokens[currentTokenIndex].Lexem))
                     {
-                        tn.Token.UpdateValue(tokens[currentTokenIndex].Value);
+                        tn.Token.UpdateLexem(tokens[currentTokenIndex].Lexem);
                         currentTokenIndex++;
                     }
                     else
@@ -220,8 +220,8 @@ namespace SpiceParser
                 || nextToken.Is(SpiceToken.NEWLINE)
                 || nextToken.Is(SpiceToken.EOF)))
             {
-                stack.Push(CreateTerminalNode(nextToken.TokenType, parent, nextToken.Value));
-                stack.Push(CreateTerminalNode(currentToken.TokenType, parent, currentToken.Value));
+                stack.Push(CreateTerminalNode(nextToken.TokenType, parent, nextToken.Lexem));
+                stack.Push(CreateTerminalNode(currentToken.TokenType, parent, currentToken.Lexem));
             }
             else
             {
@@ -243,8 +243,8 @@ namespace SpiceParser
                 stack.Push(CreateTerminalNode((int)SpiceToken.NEWLINE, parent));
                 stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, parent));
                 stack.Push(CreateTerminalNode((int)SpiceToken.WORD, parent));
-                stack.Push(CreateTerminalNode(nextToken.TokenType, parent, nextToken.Value));
-                stack.Push(CreateTerminalNode(currentToken.TokenType, parent, currentToken.Value));
+                stack.Push(CreateTerminalNode(nextToken.TokenType, parent, nextToken.Lexem));
+                stack.Push(CreateTerminalNode(currentToken.TokenType, parent, currentToken.Lexem));
             }
             else
             {
@@ -274,7 +274,7 @@ namespace SpiceParser
             {
                 // do nothing
             }
-            else if (currentToken.Is(SpiceToken.DELIMITER) && currentToken.Value == ")")
+            else if (currentToken.Is(SpiceToken.DELIMITER) && currentToken.Lexem == ")")
             {
                 // do nothing
             }
