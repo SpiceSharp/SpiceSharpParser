@@ -4,7 +4,7 @@ using SpiceSharp.Components;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models
 {
-    class RLCModelGenerator : ModelGenerator
+    public class RLCModelGenerator : ModelGenerator
     {
         public override List<string> GetGeneratedTypes()
         {

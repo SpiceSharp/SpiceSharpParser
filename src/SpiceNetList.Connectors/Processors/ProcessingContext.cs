@@ -89,12 +89,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             var context = this;
             while (context != null)
             {
-                var currentPath = context.GetPath();
-                var model = (T)this.netlist.Circuit.Objects.FirstOrDefault(e => e.Name.Name == (currentPath + modelName) && e is T);
+                var modelNameToSearch = (context.GetPath() + modelName).ToLower();
 
-                if (model != null)
+                Entity model;
+                if (this.netlist.Circuit.Objects.TryGetEntity(new Identifier(modelNameToSearch), out model))
                 {
-                    return model;
+                    return (T)model;
                 }
 
                 context = context.Parent;
@@ -109,7 +109,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             {
                 if (parameter is AssignmentParameter ap)
                 {
-                    entity.ParameterSets.SetProperty(ap.Name, this.ParseDouble(ap.Value));
+                    try
+                    {
+                        entity.ParameterSets.SetProperty(ap.Name, this.ParseDouble(ap.Value));
+                    }
+                    catch(Exception ex)
+                    {
+                        this.netlist.Warnings.Add(ex.ToString());
+                    }
                 }
             }
         }

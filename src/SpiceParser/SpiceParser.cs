@@ -293,7 +293,7 @@ namespace SpiceParser
             {
                 if (nextToken.Is(SpiceToken.EQUAL))
                 {
-                    stack.Push(CreateTerminalNode((int)SpiceToken.VALUE, parent));
+                    stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, parent));
                     stack.Push(CreateTerminalNode(nextToken.TokenType, parent));
                     stack.Push(CreateTerminalNode(currentToken.TokenType, parent));
                 }
@@ -314,6 +314,7 @@ namespace SpiceParser
                 if (currentToken.Is(SpiceToken.WORD)
                     || currentToken.Is(SpiceToken.VALUE)
                     || currentToken.Is(SpiceToken.STRING)
+                    || currentToken.Is(SpiceToken.IDENTIFIER)
                     || currentToken.Is(SpiceToken.REFERENCE)
                     || currentToken.Is(SpiceToken.EXPRESSION))
                 {
@@ -354,7 +355,7 @@ namespace SpiceParser
             if (currentToken.Is(SpiceToken.DOT)
                 && nextToken.Is(SpiceToken.WORD)
                 && nextToken.Equal("model", true)
-                && nextNextToken.Is(SpiceToken.WORD))
+                && (nextNextToken.Is(SpiceToken.WORD) || nextNextToken.Is(SpiceToken.IDENTIFIER)))
             {
                 stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.NEW_LINE_OR_EOF, parent));
                 stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, parent));

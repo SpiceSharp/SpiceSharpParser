@@ -4,7 +4,7 @@ using SpiceSharp.Components;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models
 {
-    class BipolarModelGenerator : ModelGenerator
+    public class BipolarModelGenerator : ModelGenerator
     {
         public override List<string> GetGeneratedTypes()
         {
@@ -14,10 +14,16 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models
         internal override Entity GenerateModel(string name, string type)
         {
             BipolarJunctionTransistorModel model = new BipolarJunctionTransistorModel(name);
-            if (type == "npn")
+
+            if (type.ToLower() == "npn")
+            {
                 model.ParameterSets.SetProperty("npn", true);
-            else if (type == "pnp")
+            }
+            else if (type.ToLower() == "pnp")
+            {
                 model.ParameterSets.SetProperty("pnp", true);
+            }
+
             return model;
         }
     }

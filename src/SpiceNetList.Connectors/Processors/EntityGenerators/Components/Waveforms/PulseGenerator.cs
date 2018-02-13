@@ -4,7 +4,7 @@ using SpiceSharp.Components;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components.Waveforms
 {
-    class PulseGenerator
+    public class PulseGenerator
     {
         internal Waveform Generate(ComplexParameter parameter, ProcessingContext context)
         {

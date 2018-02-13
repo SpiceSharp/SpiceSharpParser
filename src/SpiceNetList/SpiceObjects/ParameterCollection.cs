@@ -80,5 +80,15 @@ namespace SpiceNetlist.SpiceObjects
 
             return singleParameter.RawValue;
         }
+
+        public ParameterCollection Clone()
+        {
+            return new ParameterCollection() { Values = new List<Parameter>(this.Values) };
+        }
+
+        public void Remove(int index)
+        {
+            this.Values.RemoveAt(index);
+        }
     }
 }

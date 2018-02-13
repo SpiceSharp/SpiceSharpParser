@@ -12,10 +12,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
         public override void Init()
         {
+            var waveFormsGenerators = new EntityGenerators.Components.Waveforms.WaveformsGenerator();
             Generators.Add(new RLCGenerator());
-            Generators.Add(new VoltageSourceGenerator(new EntityGenerators.Components.Waveforms.WaveformsGenerator()));
+            Generators.Add(new VoltageSourceGenerator(waveFormsGenerators));
             Generators.Add(new BipolarJunctionTransistorGenerator());
+            Generators.Add(new DiodeGenerator());
             Generators.Add(new SubCircuitGenerator(this));
+            Generators.Add(new CurrentSourceGenerator(waveFormsGenerators));
         }
 
         public override void Process(Statement statement, ProcessingContext context)
@@ -24,6 +27,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             string name = c.Name.ToLower();
             string type = name[0].ToString();
 
+            bool generated = false;
             foreach (var generator in Generators)
             {
                 if (generator.GetGeneratedTypes().Contains(type))
@@ -35,11 +39,18 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                         c.PinsAndParameters,
                         context);
 
+                    generated = true;
+
                     if (entity != null)
                     {
                         context.AddEntity(entity);
                     }
                 }
+            }
+
+            if (generated == false)
+            {
+                throw new System.Exception("Unsupported element: " + name);
             }
         }
     }

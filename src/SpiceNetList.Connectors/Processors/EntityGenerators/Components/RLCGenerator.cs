@@ -55,18 +55,39 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
         {
             var capacitor = new Capacitor(name);
             context.CreateNodes(parameters, capacitor);
+            var clonedParameters = parameters.Clone();
+
+            for (int i = 3; i < clonedParameters.Count; i++)
+            {
+                if (parameters[i] is AssignmentParameter asg)
+                {
+                    if (asg.Name.ToLower() == "ic")
+                    {
+                        double ic = context.ParseDouble(asg.Value);
+                        capacitor.ParameterSets.SetProperty("ic", ic);
+                        clonedParameters.Remove(i);
+                        break;
+                    }
+                }
+            }
 
             if (parameters.Count == 3)
             {
                 capacitor.ParameterSets.SetProperty("capacitance", context.ParseDouble(parameters.GetString(2)));
-
-                return capacitor;
             }
             else
             {
-                //TODO !!!!!
-                throw new System.Exception();
+                capacitor.SetModel(context.FindModel<CapacitorModel>(parameters.GetString(2)));
+                context.SetParameters(capacitor, clonedParameters, 2);
+
+                var bp = capacitor.ParameterSets[typeof(SpiceSharp.Components.CapacitorBehaviors.BaseParameters)] as SpiceSharp.Components.CapacitorBehaviors.BaseParameters;
+                if (!bp.Length.Given)
+                {
+                    throw new Exception("L needs to be specified");
+                }
             }
+
+            return capacitor;
         }
 
         public Entity GenerateInd(string name, ParameterCollection parameters, ProcessingContext context)

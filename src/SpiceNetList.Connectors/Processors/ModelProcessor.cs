@@ -26,7 +26,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             {
                 if (model.Parameters[0] is ComplexParameter complex)
                 {
-                    var type = complex.Name;
+                    var type = complex.Name.ToLower();
 
                     foreach (var generator in Generators)
                     {

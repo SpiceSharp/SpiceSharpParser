@@ -4,7 +4,7 @@ using SpiceSharp.Components;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models
 {
-    class DiodeModelGenerator : ModelGenerator
+    public class DiodeModelGenerator : ModelGenerator
     {
         public override List<string> GetGeneratedTypes()
         {

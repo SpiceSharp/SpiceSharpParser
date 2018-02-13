@@ -172,12 +172,12 @@ namespace SpiceParser
 
                     if (childrenValues[0] is TerminalEvaluationValue nameEval && nameEval.Token.Is(SpiceToken.WORD)
                         && childrenValues[1] is TerminalEvaluationValue t5 && t5.Token.Lexem == "="
-                        && childrenValues[2] is TerminalEvaluationValue valueEval && valueEval.Token.Is(SpiceToken.VALUE))
+                        && childrenValues[2] is NonTerminalEvaluationValue value && value.SpiceObject is SingleParameter s)
                     {
                         parameter = new AssignmentParameter()
                         {
                             Name = nameEval.Token.Lexem,
-                            Value = valueEval.Token.Lexem
+                            Value = s.RawValue
                         };
                     }
                 }

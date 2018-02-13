@@ -1,9 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using SpiceNetlist.SpiceObjects;
-using SpiceNetlist.SpiceSharpConnector.Expressions;
 using SpiceSharp;
-using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector
@@ -16,7 +12,9 @@ namespace SpiceNetlist.SpiceSharpConnector
 
         public List<Simulation> Simulations { get; set; } = new List<Simulation>();
 
-        public List<string> Comments { get; set; }
+        public List<string> Comments { get; set; } = new List<string>();
+
+        public List<string> Warnings { get; set; } = new List<string>();
 
         internal BaseConfiguration BaseConfiguration { get; set; }
 

@@ -8,7 +8,7 @@ using SpiceSharp.Components.BipolarBehaviors;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components
 {
-    class BipolarJunctionTransistorGenerator : EntityGenerator
+    public class BipolarJunctionTransistorGenerator : EntityGenerator
     {
         public override Entity Generate(Identifier name, string originalName, string type, ParameterCollection parameters, ProcessingContext context)
         {
