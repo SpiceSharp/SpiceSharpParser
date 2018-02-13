@@ -1,6 +1,9 @@
 ﻿namespace SpiceParser
 {
-    public class ParseTreeNode
+    /// <summary>
+    /// A tree node in parse tree
+    /// </summary>
+    public abstract class ParseTreeNode
     {
         public ParseTreeNode()
         {
@@ -11,10 +14,9 @@
             Parent = parent;
         }
 
+        /// <summary>
+        /// Gets the parent of the tree node
+        /// </summary>
         public ParseTreeNode Parent { get; }
-
-        public virtual void Accept(ParseTreeVisitor visitor)
-        {
-        }
     }
 }

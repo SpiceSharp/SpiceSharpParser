@@ -2,6 +2,9 @@
 
 namespace SpiceParser
 {
+    /// <summary>
+    /// Non terminal node in parse tree
+    /// </summary>
     public class ParseTreeNonTerminalNode : ParseTreeNode
     {
         public ParseTreeNonTerminalNode(ParseTreeNode parent, string name)
@@ -11,18 +14,14 @@ namespace SpiceParser
             Name = name;
         }
 
-        public string Name { get; set; }
+        /// <summary>
+        /// Gets name of non terminal
+        /// </summary>
+        public string Name { get; }
 
-        public List<ParseTreeNode> Children { get; set; }
-
-        public override void Accept(ParseTreeVisitor visitor)
-        {
-            foreach (var node in Children)
-            {
-                node.Accept(visitor);
-            }
-
-            visitor.VisitParseTreeNonTerminal(this);
-        }
+        /// <summary>
+        /// Gets children of non terminal
+        /// </summary>
+        public List<ParseTreeNode> Children { get; }
     }
 }

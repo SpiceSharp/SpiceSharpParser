@@ -5,11 +5,20 @@ namespace SpiceParser
 {
     public class ParseTreeTravelsal
     {
-        public IEnumerable<ParseTreeNode> GetIterativePostOrder(ParseTreeNode currentNode)
+        /// <summary>
+        /// Returns an enumerable of parse tree nodes in post order
+        /// </summary>
+        /// <param name="rootNode">
+        /// The root node of tree
+        /// </param>
+        /// <returns>
+        /// An enumrable of parse tree nodes in post order
+        /// </returns>
+        public IEnumerable<ParseTreeNode> GetIterativePostOrder(ParseTreeNode rootNode)
         {
             var visitedNodes = new HashSet<ParseTreeNode>();
             var stack = new Stack<ParseTreeNode>();
-            stack.Push(currentNode);
+            stack.Push(rootNode);
 
             while (stack.TryPeek(out ParseTreeNode node))
             {
