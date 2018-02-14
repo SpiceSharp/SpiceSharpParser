@@ -1,5 +1,6 @@
 # SpiceSharp-tools (in development)
 Various libraries for use with SpiceSharp
+<img src="https://travis-ci.org/marcin-golebiowski/SpiceSharp-tools.svg?branch=master"/>
 
 ## NLexer 
 A general lexer library for .NET Core
