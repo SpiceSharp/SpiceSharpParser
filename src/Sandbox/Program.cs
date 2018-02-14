@@ -6,22 +6,28 @@
     using System.Text;
     using SpiceLex;
     using SpiceNetlist.SpiceSharpConnector;
+    using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage;
     using SpiceParser;
+    using SpiceSharp.Simulations;
 
     public class Program
     {
         public static void Main(string[] args)
         {
             StringBuilder st = new StringBuilder();
-            st.Append(@"Lowpass filter
-
+            st.Append(@"FILER
+C1 OUT 0 100
+R1 IN OUT 1000
+V1 IN 0 10
+.TRAN 1e-8 10e-2
+.SAVE V(OUT)
 .end");
 
             var tokensStr = st.ToString();
 
             var s0 = new Stopwatch();
             s0.Start();
-            SpiceLexer lexer = new SpiceLexer();
+            SpiceLexer lexer = new SpiceLexer(new NLexer.SpiceLexerOptions() { HasTitle = true });
             var tokensEnumerable = lexer.GetTokens(tokensStr);
             var tokens = tokensEnumerable.ToArray();
             Console.WriteLine("Lexer: " + s0.ElapsedMilliseconds + "ms");
@@ -33,8 +39,8 @@
 
             var s2 = new Stopwatch();
             s2.Start();
-            var translator = new ParseTreeTranslator();
-            var context = translator.GetNetList(parseTree);
+            var eval = new ParseTreeEvaluator();
+            var context = eval.Evaluate(parseTree);
             Console.WriteLine("Translating to NOM (Netlist Object Model):" + s2.ElapsedMilliseconds + "ms");
 
             var s3 = new Stopwatch();
@@ -42,6 +48,18 @@
             var connector = new Connector();
             var n = connector.Translate(context);
             Console.WriteLine("Translating NOM to SpiceSharp: " + s3.ElapsedMilliseconds + "ms");
+
+            var sim = n.Simulations[0];
+            n.Circuit.Nodes.InitialConditions["out"] = 0.0;
+
+            var voltageExport = n.Exports[0] as VoltageExport;
+            sim.OnExportSimulationData += (object sender, ExportDataEventArgs data) =>
+            {
+                Console.WriteLine(data.Time + ";" + voltageExport.Extract() + ";");
+            };
+
+            sim.Run(n.Circuit);
         }
+
     }
 }
