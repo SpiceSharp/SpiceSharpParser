@@ -9,10 +9,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
     public class SubCircuitGenerator : EntityGenerator
     {
         private ComponentProcessor componentProcessor;
+        private ModelProcessor modelProcessor;
 
-        public SubCircuitGenerator(ComponentProcessor componentProcessor)
+        public SubCircuitGenerator(ComponentProcessor componentProcessor, ModelProcessor modelProcessor)
         {
             this.componentProcessor = componentProcessor;
+            this.modelProcessor = modelProcessor;
         }
 
         public override Entity Generate(Identifier id, string name, string type, ParameterCollection parameters, ProcessingContext context)
@@ -22,11 +24,16 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
             ProcessParamters(name, parameters, context, out subCiruitDefiniton, out newContext);
 
-            foreach (Statement statement in subCiruitDefiniton.Statements)
+            foreach (Statement statement in subCiruitDefiniton.Statements.OrderBy(s => (s is Model ? 0 : 1)))
             {
                 if (statement is Component c)
                 {
                     componentProcessor.Process(statement, newContext);
+                }
+
+                if (statement is Model m)
+                {
+                    modelProcessor.Process(statement, newContext);
                 }
             }
 

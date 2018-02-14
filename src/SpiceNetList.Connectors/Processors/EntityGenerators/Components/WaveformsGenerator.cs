@@ -15,7 +15,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             sineGeneator = new SineGenerator();
         }
 
-        public Waveform Generate(ComplexParameter cp, ProcessingContext context)
+        public Waveform Generate(BracketParameter cp, ProcessingContext context)
         {
             if (cp.Name.ToLower() == "sine")
             {

@@ -14,14 +14,14 @@ namespace SpiceLex
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceLexer"/> class.
         /// </summary>
-        public SpiceLexer()
+        public SpiceLexer(SpiceLexerOptions options)
         {
             var builder = new LexerGrammarBuilder<SpiceLexerState>();
 
             builder.AddRule(new LexerInternalRule("LETTER", "[a-z]"));
             builder.AddRule(new LexerInternalRule("CHARACTER", "[a-z0-9]"));
             builder.AddRule(new LexerInternalRule("DIGIT", "[0-9]"));
-            builder.AddRule(new LexerInternalRule("SPECIAL", "[_,\\.\\:\\!%\\#\\-;\\<>\\^]"));
+            builder.AddRule(new LexerInternalRule("SPECIAL", "[_\\.\\:\\!%\\#\\-;\\<>\\^]"));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceToken.WHITESPACE,
@@ -126,7 +126,7 @@ namespace SpiceLex
                 null,
                 (SpiceLexerState state) =>
                 {
-                    if (state.LineNumber == 1)
+                    if (state.LineNumber == 1 && options.HasTitle)
                     {
                         return LexerRuleUseState.Use;
                     }

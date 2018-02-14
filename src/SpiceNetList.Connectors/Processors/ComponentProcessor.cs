@@ -8,8 +8,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
     public class ComponentProcessor : StatementProcessor
     {
+        private readonly ModelProcessor modelProcessor;
         protected List<EntityGenerator> Generators = new List<EntityGenerator>();
 
+        public ComponentProcessor(ModelProcessor modelProcessor)
+        {
+            this.modelProcessor = modelProcessor;
+        }
         public override void Init()
         {
             var waveFormsGenerators = new EntityGenerators.Components.Waveforms.WaveformsGenerator();
@@ -18,7 +23,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             Generators.Add(new VoltageSourceGenerator(waveFormsGenerators));
             Generators.Add(new BipolarJunctionTransistorGenerator());
             Generators.Add(new DiodeGenerator());
-            Generators.Add(new SubCircuitGenerator(this));
+            Generators.Add(new SubCircuitGenerator(this, modelProcessor));
             Generators.Add(new CurrentSourceGenerator(waveFormsGenerators));
             Generators.Add(new SwitchGenerator());
         }

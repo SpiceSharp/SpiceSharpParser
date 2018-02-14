@@ -6,6 +6,7 @@ using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceNetlist.SpiceSharpConnector.Expressions;
 using SpiceSharp;
 using SpiceSharp.Circuits;
+using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
@@ -58,6 +59,17 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             {
                 return netlist.Simulations.Count;
             }
+        }
+
+
+        internal Simulation GetSimulation()
+        {
+            return this.netlist.Simulations[0];
+        }
+
+        public void AddExport(Export export)
+        {
+            netlist.Exports.Add(export);
         }
 
         public void AddEntity(Entity entity)
@@ -138,7 +150,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             return GetPath() + objectName;
         }
 
-        private string GenerateNodeName(string pinName)
+        public string GenerateNodeName(string pinName)
         {
             if (pinName == "0")
             {
@@ -156,11 +168,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
                 if (map.ContainsKey(pinName))
                 {
-                    return map[pinName];
+                    return map[pinName].ToLower();
                 }
             }
 
-            return GetPath() + pinName;
+            return (GetPath() + pinName).ToLower();
         }
 
         private string GetPath()

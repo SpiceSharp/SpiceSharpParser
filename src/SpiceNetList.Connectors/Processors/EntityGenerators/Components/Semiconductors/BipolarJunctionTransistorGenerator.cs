@@ -33,7 +33,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 throw new System.Exception();
             }
 
-            bjt.SetModel(context.FindModel<BipolarJunctionTransistorModel>(parameters.GetString(4)));
+            var model = context.FindModel<BipolarJunctionTransistorModel>(parameters.GetString(4));
+            bjt.SetModel(model);
 
             for (int i = 5; i < parameters.Count; i++)
             {

@@ -92,7 +92,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                         isrc.ParameterSets.SetProperty("acphase", context.ParseDouble(v2.RawValue));
                     }
                 }
-                else if (parameters[i] is ComplexParameter cp)
+                else if (parameters[i] is BracketParameter cp)
                 {
                     isrc.ParameterSets.SetProperty("waveform", waveFormGenerator.Generate(cp, context));
                 }

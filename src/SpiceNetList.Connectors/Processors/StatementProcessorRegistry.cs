@@ -11,8 +11,10 @@ namespace SpiceNetlist.SpiceSharpConnector
 
         public StatementProcessorRegistry()
         {
-            Processors[typeof(Component)] = new ComponentProcessor();
-            Processors[typeof(Model)] = new ModelProcessor();
+            var modelProcessor = new ModelProcessor();
+
+            Processors[typeof(Component)] = new ComponentProcessor(modelProcessor);
+            Processors[typeof(Model)] = modelProcessor;
             Processors[typeof(Control)] = new ControlProcessor();
             Processors[typeof(SubCircuit)] = new SubcircuitDefinitionProcessor();
         }

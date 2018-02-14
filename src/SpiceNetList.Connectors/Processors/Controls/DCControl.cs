@@ -29,10 +29,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
             for (int i = 0; i < count; i++)
             {
                 SweepConfiguration sweep = new SweepConfiguration(
-                    statement.Parameters.GetString(4 * i),
-                    context.ParseDouble(statement.Parameters.GetString((4 * i) + 1)),
-                    context.ParseDouble(statement.Parameters.GetString((4 * i) + 2)),
-                    context.ParseDouble(statement.Parameters.GetString((4 * i) + 3)));
+                    statement.Parameters.GetString(4 * i).ToLower(),
+                    context.ParseDouble(statement.Parameters.GetString((4 * i) + 1).ToLower()),
+                    context.ParseDouble(statement.Parameters.GetString((4 * i) + 2).ToLower()),
+                    context.ParseDouble(statement.Parameters.GetString((4 * i) + 3).ToLower()));
 
                 sweeps.Add(sweep);
             }

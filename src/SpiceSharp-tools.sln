@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2026
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceLex", "SpiceLex\SpiceLex.csproj", "{1FA2317A-9B54-4877-ABCF-2C6D31F8B738}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLexer", "NLexer\NLexer.csproj", "{4E305CF6-20AB-4DF3-912F-B18E403D535B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLexer.Tests", "NLexer.Tests\NLexer.Tests.csproj", "{134418DF-D95F-4996-AAE5-2F7744C6F43A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiceSharp", "..\..\SpiceSharp\SpiceSharp\SpiceSharp.csproj", "{080D88DB-051E-499B-A02B-EAA36DE52853}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{134418DF-D95F-4996-AAE5-2F7744C6F43A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{134418DF-D95F-4996-AAE5-2F7744C6F43A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{134418DF-D95F-4996-AAE5-2F7744C6F43A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{080D88DB-051E-499B-A02B-EAA36DE52853}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{080D88DB-051E-499B-A02B-EAA36DE52853}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{080D88DB-051E-499B-A02B-EAA36DE52853}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{080D88DB-051E-499B-A02B-EAA36DE52853}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

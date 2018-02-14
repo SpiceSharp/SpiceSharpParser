@@ -15,14 +15,15 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             ControlProcessors["tran"] = new TransientControl();
             ControlProcessors["dc"] = new DCControl();
             ControlProcessors["op"] = new OPControl();
+            ControlProcessors["save"] = new SaveControl();
         }
 
         public override void Process(Statement statement, ProcessingContext context)
         {
             var control = statement as Control;
-            if (ControlProcessors.ContainsKey(control.Name))
+            if (ControlProcessors.ContainsKey(control.Name.ToLower()))
             {
-                ControlProcessors[control.Name].Process(control, context);
+                ControlProcessors[control.Name.ToLower()].Process(control, context);
             }
         }
     }

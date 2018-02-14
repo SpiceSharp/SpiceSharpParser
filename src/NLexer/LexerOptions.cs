@@ -5,7 +5,7 @@
         /// <summary>
         /// Specifies that all tokens' lexems are 'single-line'
         /// </summary>
-        public bool SingleLineTokens { get; set; } = false;
+        public bool SingleLineTokens { get; set; } = true;
 
         /// <summary>
         /// Specifies that token's lexem can be 'multi-line'

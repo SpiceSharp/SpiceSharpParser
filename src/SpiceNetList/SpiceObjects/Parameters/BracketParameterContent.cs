@@ -1,9 +1,9 @@
 ﻿namespace SpiceNetlist.SpiceObjects.Parameters
 {
-    public class ComplexParameter : Parameter
+    public class BracketParameterContent : SpiceObject
     {
-        public string Name { get; set; }
-
         public ParameterCollection Parameters { get; set; }
+
+        public Vector Vector { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using SpiceSharp.Circuits;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
-    class ModelProcessor : StatementProcessor
+    public class ModelProcessor : StatementProcessor
     {
         protected List<EntityGenerator> Generators = new List<EntityGenerator>();
 
@@ -24,15 +24,15 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             string name = model.Name.ToLower();
             if (model.Parameters.Count > 0)
             {
-                if (model.Parameters[0] is ComplexParameter complex)
+                if (model.Parameters[0] is BracketParameter b)
                 {
-                    var type = complex.Name.ToLower();
+                    var type = b.Name.ToLower();
 
                     foreach (var generator in Generators)
                     {
                         if (generator.GetGeneratedTypes().Contains(type))
                         {
-                            Entity spiceSharpModel = generator.Generate(new SpiceSharp.Identifier(context.GenerateObjectName(name)), name, type, complex.Parameters, context);
+                            Entity spiceSharpModel = generator.Generate(new SpiceSharp.Identifier(context.GenerateObjectName(name)), name, type, b.Content.Parameters, context);
 
                             if (model != null)
                             {

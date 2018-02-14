@@ -35,6 +35,8 @@ namespace SpiceParser
             evaluators.Add(SpiceGrammarSymbol.COMPONENT, (List<EvaluationValue> nt) => CreateComponent(nt));
             evaluators.Add(SpiceGrammarSymbol.PARAMETERS, (List<EvaluationValue> nt) => CreateParameters(nt));
             evaluators.Add(SpiceGrammarSymbol.PARAMETER, (List<EvaluationValue> nt) => CreateParameter(nt));
+            evaluators.Add(SpiceGrammarSymbol.VECTOR, (List<EvaluationValue> nt) => CreateVector(nt));
+            evaluators.Add(SpiceGrammarSymbol.BRACKET_CONTENT, (List<EvaluationValue> nt) => CreateBracketParameterContent(nt));
             evaluators.Add(SpiceGrammarSymbol.PARAMETER_SINGLE, (List<EvaluationValue> nt) => CreateParameterSingle(nt));
             evaluators.Add(SpiceGrammarSymbol.SUBCKT, (List<EvaluationValue> nt) => CreateSubCircuit(nt));
             evaluators.Add(SpiceGrammarSymbol.COMMENT_LINE, (List<EvaluationValue> nt) => CreateComment(nt));
@@ -137,7 +139,7 @@ namespace SpiceParser
         }
 
         /// <summary>
-        /// Returns new instance of <see cref="SingleParameter"/> or <see cref="ComplexParameter"/> or <see cref="AssignmentParameter"/>
+        /// Returns new instance of <see cref="SingleParameter"/> or <see cref="BracketParameter"/> or <see cref="AssignmentParameter"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.PARAMETER"/> parse tree node
         /// </summary>
         private SpiceObject CreateParameter(List<EvaluationValue> childrenValues)
@@ -158,15 +160,15 @@ namespace SpiceParser
                         && t2.Token.Is(SpiceToken.DELIMITER)
                         && t2.Token.Lexem == "("
                         && childrenValues[2] is NonTerminalEvaluationValue nt1
-                        && nt1.SpiceObject is ParameterCollection
+                        && nt1.SpiceObject is BracketParameterContent bc
                         && childrenValues[3] is TerminalEvaluationValue t3
                         && t3.Token.Is(SpiceToken.DELIMITER)
                         && t3.Token.Lexem == ")")
                     {
-                        parameter = new ComplexParameter()
+                        parameter = new BracketParameter()
                         {
                             Name = t1.Token.Lexem,
-                            Parameters = nt1.SpiceObject as ParameterCollection
+                            Content = bc
                         };
                     }
 
@@ -359,6 +361,68 @@ namespace SpiceParser
             model.Name = GetLexem(childrenValues, 2);
             model.Parameters = GetSpiceObject<ParameterCollection>(childrenValues, 3);
             return model;
+        }
+
+        /// <summary>
+        /// Returns new instance of <see cref="Vector"/>
+        /// from the values of children nodes of <see cref="SpiceGrammarSymbol.VECTOR"/> parse tree node
+        /// </summary>
+        private SpiceObject CreateVector(List<EvaluationValue> childrenValues)
+        {
+            var vector = new Vector();
+
+            if (childrenValues.Count == 3)
+            {
+                if (childrenValues[0] is NonTerminalEvaluationValue nt && nt.SpiceObject is SingleParameter p)
+                {
+                    vector.Elements.Add(p);
+                }
+
+                if (childrenValues[2] is NonTerminalEvaluationValue nt2 && nt2.SpiceObject is Vector ps2)
+                {
+                    vector.Elements.AddRange(ps2.Elements);
+                }
+            }
+            else
+            {
+                if (childrenValues[0] is NonTerminalEvaluationValue nt && nt.SpiceObject is SingleParameter p)
+                {
+                    vector.Elements.Add(p);
+                }
+            }
+
+            return vector;
+        }
+
+        /// <summary>
+        /// Returns new instance of <see cref="BracketParameterContent"/>
+        /// from the values of children nodes of <see cref="SpiceGrammarSymbol.BRACKET_CONTENT"/> parse tree node
+        /// </summary>
+        private SpiceObject CreateBracketParameterContent(List<EvaluationValue> childrenValues)
+        {
+            var content = new BracketParameterContent();
+
+            if (childrenValues.Count == 1)
+            {
+                if (childrenValues[0] is NonTerminalEvaluationValue nt)
+                {
+                    if (nt.SpiceObject is Vector v)
+                    {
+                        content.Vector = v;
+                    }
+
+                    if (nt.SpiceObject is ParameterCollection p)
+                    {
+                        content.Parameters = p;
+                    }
+                }
+            }
+            else
+            {
+                throw new ParseException();
+            }
+
+            return content;
         }
 
         /// <summary>

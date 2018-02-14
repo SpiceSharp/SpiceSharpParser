@@ -6,17 +6,17 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 {
     public class PulseGenerator
     {
-        internal Waveform Generate(ComplexParameter parameter, ProcessingContext context)
+        internal Waveform Generate(BracketParameter parameter, ProcessingContext context)
         {
             var w = new Pulse();
 
-            w.InitialValue.Set(context.ParseDouble(parameter.Parameters.GetString(0)));
-            w.PulsedValue.Set(context.ParseDouble(parameter.Parameters.GetString(1)));
-            w.Delay.Set(context.ParseDouble(parameter.Parameters.GetString(2)));
-            w.RiseTime.Set(context.ParseDouble(parameter.Parameters.GetString(3)));
-            w.FallTime.Set(context.ParseDouble(parameter.Parameters.GetString(4)));
-            w.PulseWidth.Set(context.ParseDouble(parameter.Parameters.GetString(5)));
-            w.Period.Set(context.ParseDouble(parameter.Parameters.GetString(6)));
+            w.InitialValue.Set(context.ParseDouble(parameter.Content.Parameters.GetString(0)));
+            w.PulsedValue.Set(context.ParseDouble(parameter.Content.Parameters.GetString(1)));
+            w.Delay.Set(context.ParseDouble(parameter.Content.Parameters.GetString(2)));
+            w.RiseTime.Set(context.ParseDouble(parameter.Content.Parameters.GetString(3)));
+            w.FallTime.Set(context.ParseDouble(parameter.Content.Parameters.GetString(4)));
+            w.PulseWidth.Set(context.ParseDouble(parameter.Content.Parameters.GetString(5)));
+            w.Period.Set(context.ParseDouble(parameter.Content.Parameters.GetString(6)));
 
             return w;
         }
