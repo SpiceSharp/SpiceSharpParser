@@ -13,12 +13,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         public override void Init()
         {
             var waveFormsGenerators = new EntityGenerators.Components.Waveforms.WaveformsGenerator();
+
             Generators.Add(new RLCGenerator());
             Generators.Add(new VoltageSourceGenerator(waveFormsGenerators));
             Generators.Add(new BipolarJunctionTransistorGenerator());
             Generators.Add(new DiodeGenerator());
             Generators.Add(new SubCircuitGenerator(this));
             Generators.Add(new CurrentSourceGenerator(waveFormsGenerators));
+            Generators.Add(new SwitchGenerator());
         }
 
         public override void Process(Statement statement, ProcessingContext context)
