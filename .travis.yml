@@ -3,7 +3,5 @@ sudo: required
 mono: none
 dotnet: 2.0.0
 script:
-  - ./src/build.sh
-before_install:
-  - chmod +x ./src/build.sh
-
+  - dotnet restore
+  - dotnet build ./src/SpiceSharp-tools.sln
