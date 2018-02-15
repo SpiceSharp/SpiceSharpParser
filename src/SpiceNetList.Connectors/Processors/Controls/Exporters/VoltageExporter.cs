@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
 {
-    class VoltageExporter
+    public class VoltageExporter
     {
         public Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, ProcessingContext context)
         {
@@ -47,9 +47,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
             {
                 case "v": ve = new VoltageExport(simulation, node, reference); break;
                 case "vr": ve = new VoltageRealExport(simulation, node, reference); break;
-                //case "vi": ve = new VoltageImaginaryExport(node, reference); break;
-                //case "vdb": ve = new VoltageDecibelExport(node, reference); break;
-                //case "vp": ve = new VoltagePhaseExport(node, reference); break;
+                case "vi": ve = new VoltageImaginaryExport(simulation, node, reference); break;
+                case "vdb": ve = new VoltageDecibelExport(simulation, node, reference); break;
+                case "vp": ve = new VoltagePhaseExport(simulation, node, reference); break;
             }
 
             return ve;

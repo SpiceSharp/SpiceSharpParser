@@ -19,7 +19,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
         /// </summary>
         public Identifier Reference { get; }
 
-        private readonly RealVoltageExport ExportImpl;
+        private readonly ComplexVoltageExport ExportImpl;
+
+        private readonly RealVoltageExport ExportRealImpl;
 
         /// <summary>
         /// Constructor
@@ -30,7 +32,17 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
         {
             Node = node;
             Reference = reference;
-            ExportImpl = new RealVoltageExport(simulation, node, reference);
+
+            /// TODO: Refactor this!!!!!
+            if (simulation is DC || simulation is OP || simulation is Transient)
+            {
+                ExportRealImpl = new RealVoltageExport(simulation, node, reference);
+            }
+            else
+            {
+
+                ExportImpl = new ComplexVoltageExport(simulation, node, reference);
+            }
         }
 
         /// <summary>
@@ -46,11 +58,16 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
         /// <summary>
         /// Read the voltage and write to the output
         /// </summary>
-        /// <param name="stream">Stream</param>
-        /// <param name="ckt">Circuit</param>
         public override double Extract()
         {
-            return this.ExportImpl.Value;
+            if (this.ExportImpl != null)
+            {
+                return this.ExportImpl.Value.Real;
+            }
+            else
+            {
+                return this.ExportRealImpl.Value;
+            }
         }
     }
 }

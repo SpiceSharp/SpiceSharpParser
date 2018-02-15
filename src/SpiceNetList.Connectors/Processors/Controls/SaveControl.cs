@@ -12,17 +12,17 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
         {
             foreach (var parameter in statement.Parameters)
             {
-                if (parameter is BracketParameter b)
+                if (parameter is BracketParameter bracketParameter)
                 {
-                    context.AddExport(GenerateExport(b, context.GetCurrentSimulation(), context));
+                    context.AddExport(GenerateExport(bracketParameter, context.GetCurrentSimulation(), context));
                 }
             }
         }
 
-        private Export GenerateExport(BracketParameter b, Simulation simulation, ProcessingContext context)
+        private Export GenerateExport(BracketParameter parameter, Simulation simulation, ProcessingContext context)
         {
             var vE = new VoltageExporter();
-            return vE.CreateExport(b.Name, b.Content.Parameters, simulation, context);
+            return vE.CreateExport(parameter.Name, parameter.Content.Parameters, simulation, context);
         }
     }
 }

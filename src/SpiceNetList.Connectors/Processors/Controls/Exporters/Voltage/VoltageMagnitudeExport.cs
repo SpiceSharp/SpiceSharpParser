@@ -1,5 +1,6 @@
 ﻿using SpiceSharp;
 using SpiceSharp.Parser.Readers;
+using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
 {
@@ -18,15 +19,19 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
         /// </summary>
         public Identifier Reference { get; }
 
+        private readonly ComplexVoltageExport ExportImpl;
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="node">Positive node</param>
         /// <param name="reference">Negative reference node</param>
-        public VoltageMagnitudeExport(Identifier node, Identifier reference = null)
+        public VoltageMagnitudeExport(Simulation simulation, Identifier node, Identifier reference = null)
         {
             Node = node;
             Reference = reference;
+
+            ExportImpl = new ComplexVoltageExport(simulation, node, reference);
         }
 
         /// <summary>
@@ -46,7 +51,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
         /// <returns></returns>
         public override double Extract()
         {
-            return double.NaN;
+            return ExportImpl.Value.Magnitude;
         }
     }
 }
