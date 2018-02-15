@@ -15,10 +15,16 @@
         public static void Main(string[] args)
         {
             StringBuilder st = new StringBuilder();
-            st.Append(@"FILER
-C1 OUT 0 100
-R1 IN OUT 1000
-V1 IN 0 10
+            st.Append(@"FILTER
+
+.SUBCKT filter input output params: C=100 R=1000 V=10
+C1 output 0 C
+R1 input output R
+V1 input 0 V
+.ENDS filter
+
+X1 IN OUT filter C=100 R=10 V=1
+
 .TRAN 1e-8 10e-2
 .SAVE V(OUT)
 .end");

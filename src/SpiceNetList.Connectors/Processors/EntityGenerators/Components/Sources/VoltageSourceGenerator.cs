@@ -78,7 +78,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 {
                     vsrc.ParameterSets.SetProperty("dc", context.ParseDouble(parameters.GetString(i + 1)));
                 }
-                else if (i == 2 && parameters[i] is ValueParameter vp)
+                else if (i == 2 && (parameters[i] is ValueParameter vp || parameters[i] is WordParameter w))
                 {
                     vsrc.ParameterSets.SetProperty("dc", context.ParseDouble(parameters.GetString(i)));
                 }
@@ -89,10 +89,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                     vsrc.ParameterSets.SetProperty("acmag", context.ParseDouble(parameters.GetString(i)));
 
                     // Look forward for one more value
-                    if (i + 1 < parameters.Count && parameters[i + 1] is ValueParameter vp2)
+                    if (i + 1 < parameters.Count && (parameters[i + 1] is ValueParameter || parameters[i+1] is WordParameter))
                     {
                         i++;
-                        vsrc.ParameterSets.SetProperty("acphase", context.ParseDouble(vp2.RawValue));
+                        vsrc.ParameterSets.SetProperty("acphase", context.ParseDouble(parameters.GetString(i+1)));
                     }
                 }
 
@@ -101,7 +101,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 {
                     vsrc.ParameterSets.SetProperty("waveform", waveFormGenerator.Generate(cp, context));
                 }
-                else if (parameters[i] is WordParameter w && w.RawValue != "dc")
+                else if (parameters[i] is WordParameter w2 && w2.RawValue != "dc")
                 {
                     throw new Exception();
                 }
