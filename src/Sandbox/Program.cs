@@ -40,13 +40,13 @@ V1 IN 0 10
             var s2 = new Stopwatch();
             s2.Start();
             var eval = new ParseTreeEvaluator();
-            var context = eval.Evaluate(parseTree);
+            var netlist = eval.Evaluate(parseTree) as SpiceNetlist.NetList;
             Console.WriteLine("Translating to NOM (Netlist Object Model):" + s2.ElapsedMilliseconds + "ms");
 
             var s3 = new Stopwatch();
             s3.Start();
             var connector = new Connector();
-            var n = connector.Translate(context);
+            var n = connector.Translate(netlist);
             Console.WriteLine("Translating NOM to SpiceSharp: " + s3.ElapsedMilliseconds + "ms");
 
             var sim = n.Simulations[0];

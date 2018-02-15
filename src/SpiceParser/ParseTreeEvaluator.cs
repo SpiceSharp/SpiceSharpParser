@@ -36,6 +36,7 @@ namespace SpiceParser
             evaluators.Add(SpiceGrammarSymbol.PARAMETERS, (List<EvaluationValue> nt) => CreateParameters(nt));
             evaluators.Add(SpiceGrammarSymbol.PARAMETER, (List<EvaluationValue> nt) => CreateParameter(nt));
             evaluators.Add(SpiceGrammarSymbol.VECTOR, (List<EvaluationValue> nt) => CreateVector(nt));
+            evaluators.Add(SpiceGrammarSymbol.VECTOR_CONTINUE, (List<EvaluationValue> nt) => CreateVectorContinue(nt));
             evaluators.Add(SpiceGrammarSymbol.BRACKET_CONTENT, (List<EvaluationValue> nt) => CreateBracketParameterContent(nt));
             evaluators.Add(SpiceGrammarSymbol.PARAMETER_SINGLE, (List<EvaluationValue> nt) => CreateParameterSingle(nt));
             evaluators.Add(SpiceGrammarSymbol.SUBCKT, (List<EvaluationValue> nt) => CreateSubCircuit(nt));
@@ -49,7 +50,7 @@ namespace SpiceParser
         /// </summary>
         /// <param name="root">A parse tree root</param>
         /// <returns>A net list</returns>
-        public NetList Evaluate(ParseTreeNode root)
+        public SpiceObject Evaluate(ParseTreeNode root)
         {
             var travelsal = new ParseTreeTravelsal();
 
@@ -87,7 +88,7 @@ namespace SpiceParser
 
             if (treeNodesValues[root] is NonTerminalEvaluationValue rootNt)
             {
-                return rootNt.SpiceObject as NetList;
+                return rootNt.SpiceObject;
             }
             else
             {
@@ -148,7 +149,11 @@ namespace SpiceParser
 
             if (childrenValues.Count > 0)
             {
-                if (childrenValues[0] is NonTerminalEvaluationValue nt && nt.SpiceObject is SingleParameter sp)
+                if (childrenValues[0] is NonTerminalEvaluationValue nt && nt.SpiceObject is VectorParameter v)
+                {
+                    parameter = v;
+                }
+                else if (childrenValues[0] is NonTerminalEvaluationValue nt2 && nt2.SpiceObject is SingleParameter sp)
                 {
                     parameter = sp;
                 }
@@ -364,30 +369,54 @@ namespace SpiceParser
         }
 
         /// <summary>
-        /// Returns new instance of <see cref="Vector"/>
+        /// Returns new instance of <see cref="VectorParameter"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.VECTOR"/> parse tree node
         /// </summary>
         private SpiceObject CreateVector(List<EvaluationValue> childrenValues)
         {
-            var vector = new Vector();
+            var vector = new VectorParameter();
 
-            if (childrenValues.Count == 3)
+            if (childrenValues.Count == 4)
             {
                 if (childrenValues[0] is NonTerminalEvaluationValue nt && nt.SpiceObject is SingleParameter p)
                 {
                     vector.Elements.Add(p);
                 }
 
-                if (childrenValues[2] is NonTerminalEvaluationValue nt2 && nt2.SpiceObject is Vector ps2)
+                if (childrenValues[2] is NonTerminalEvaluationValue nt2 && nt2.SpiceObject is SingleParameter p2)
                 {
-                    vector.Elements.AddRange(ps2.Elements);
+                    vector.Elements.Add(p2);
+                }
+
+                if (childrenValues[2] is NonTerminalEvaluationValue nt3 && nt3.SpiceObject is VectorParameter v)
+                {
+                    vector.Elements.AddRange(v.Elements);
+                }
+            }
+
+            return vector;
+        }
+
+        /// <summary>
+        /// Returns new instance of <see cref="VectorParameter"/>
+        /// from the values of children nodes of <see cref="SpiceGrammarSymbol.VECTOR_CONTINUE"/> parse tree node
+        /// </summary>
+        private SpiceObject CreateVectorContinue(List<EvaluationValue> childrenValues)
+        {
+            var vector = new VectorParameter();
+
+            if (childrenValues.Count == 3)
+            {
+                if (childrenValues[1] is NonTerminalEvaluationValue nt2 && nt2.SpiceObject is SingleParameter ps2)
+                {
+                    vector.Elements.Add(ps2);
                 }
             }
             else
             {
-                if (childrenValues[0] is NonTerminalEvaluationValue nt && nt.SpiceObject is SingleParameter p)
+                if (childrenValues.Count == 1 && childrenValues[0] is NonTerminalEvaluationValue nt && nt.SpiceObject is VectorParameter p)
                 {
-                    vector.Elements.Add(p);
+                    vector.Elements.AddRange(p.Elements);
                 }
             }
 
@@ -406,11 +435,6 @@ namespace SpiceParser
             {
                 if (childrenValues[0] is NonTerminalEvaluationValue nt)
                 {
-                    if (nt.SpiceObject is Vector v)
-                    {
-                        content.Vector = v;
-                    }
-
                     if (nt.SpiceObject is ParameterCollection p)
                     {
                         content.Parameters = p;

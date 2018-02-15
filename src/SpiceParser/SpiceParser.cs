@@ -10,10 +10,11 @@ namespace SpiceParser
         /// Generates a parse tree for SPICE grammar
         /// </summary>
         /// <param name="tokens">An array of tokens</param>
+        /// <param name="rootSymbol">A root symbol of parse tree</param>
         /// <returns>
         /// A parse tree
         /// </returns>
-        public ParseTreeNode GetParseTree(Token[] tokens)
+        public ParseTreeNonTerminalNode GetParseTree(Token[] tokens, string rootSymbol = SpiceGrammarSymbol.START)
         {
             if (tokens == null)
             {
@@ -22,7 +23,7 @@ namespace SpiceParser
 
             var stack = new Stack<ParseTreeNode>();
 
-            var root = CreateNonTerminalNode(SpiceGrammarSymbol.START, null);
+            var root = CreateNonTerminalNode(rootSymbol, null);
             stack.Push(root);
 
             int currentTokenIndex = 0;
@@ -66,6 +67,9 @@ namespace SpiceParser
                             break;
                         case SpiceGrammarSymbol.VECTOR:
                             ProcessVector(stack, ntn, tokens, currentTokenIndex);
+                            break;
+                        case SpiceGrammarSymbol.VECTOR_CONTINUE:
+                            ProcessVectorContinue(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case SpiceGrammarSymbol.PARAMETERS:
                             ProcessParameters(stack, ntn, tokens, currentTokenIndex);
@@ -218,17 +222,25 @@ namespace SpiceParser
 
         private void ProcessVector(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode parent, Token[] tokens, int currentTokenIndex)
         {
+            stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.VECTOR_CONTINUE, parent));
+            stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, parent));
+            stack.Push(CreateTerminalNode((int)SpiceToken.COMMA, parent, ","));
+            stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, parent));
+        }
+
+        private void ProcessVectorContinue(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode parent, Token[] tokens, int currentTokenIndex)
+        {
             var currentToken = tokens[currentTokenIndex];
-            var nextToken = tokens[currentTokenIndex + 1];
-            if (nextToken.Is(SpiceToken.COMMA))
+
+            if (currentToken.Is(SpiceToken.DELIMITER) && currentToken.Lexem == ")")
             {
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.VECTOR, parent));
-                stack.Push(CreateTerminalNode((int)SpiceToken.COMMA, parent, ","));
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, parent));
+                // follow
             }
             else
             {
+                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.VECTOR_CONTINUE, parent));
                 stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, parent));
+                stack.Push(CreateTerminalNode((int)SpiceToken.COMMA, parent, ","));
             }
         }
 
@@ -308,21 +320,7 @@ namespace SpiceParser
 
         private void ProcessBracketContent(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode parent, Token[] tokens, int currentTokenIndex)
         {
-            var currentToken = tokens[currentTokenIndex];
-            var nextToken = tokens[currentTokenIndex + 1];
-
-            if (nextToken.Is(SpiceToken.COMMA))
-            {
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.VECTOR, parent));
-            }
-            else if (nextToken.Is(SpiceToken.DELIMITER) && nextToken.Lexem == ")")
-            {
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.VECTOR, parent));
-            }
-            else
-            {
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, parent));
-            }
+            stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, parent));
         }
 
         private void ProcessParameter(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode parent, Token[] tokens, int currentTokenIndex)
@@ -330,7 +328,11 @@ namespace SpiceParser
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
 
-            if (currentToken.Is(SpiceToken.WORD))
+            if (nextToken.Is(SpiceToken.COMMA))
+            {
+                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.VECTOR, parent));
+            }
+            else if (currentToken.Is(SpiceToken.WORD))
             {
                 if (nextToken.Is(SpiceToken.EQUAL))
                 {

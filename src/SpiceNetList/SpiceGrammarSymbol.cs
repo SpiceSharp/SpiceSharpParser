@@ -16,6 +16,7 @@
         public const string PARAMETER = "PARAMETER";
         public const string PARAMETER_SINGLE = "PARAMETER-SINGLE";
         public const string VECTOR = "VECTOR";
+        public const string VECTOR_CONTINUE = "VECTOR-CONTINUE";
         public const string BRACKET_CONTENT = "BRACKET_CONTENT";
     }
 }

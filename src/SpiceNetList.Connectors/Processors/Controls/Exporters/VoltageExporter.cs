@@ -1,4 +1,5 @@
 ﻿using SpiceNetlist.SpiceObjects;
+using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage;
 using SpiceSharp;
 using SpiceSharp.Parser.Readers;
@@ -10,22 +11,35 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
 {
     class VoltageExporter
     {
-        public Export CreateExport(string type, Vector vector, Simulation simulation, ProcessingContext context)
+        public Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, ProcessingContext context)
         {
+            if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
+            {
+                throw new Exception("Voltage exports should have vector or single parameter");
+            }
+
             // Get the nodes
             Identifier node, reference = null;
-            switch (vector.Elements.Count)
+            if (parameters[0] is VectorParameter vector)
             {
-                case 0:
-                    throw new Exception("Node expected");
-                case 2:
-                    reference = new Identifier(context.GenerateNodeName(vector.Elements[1].RawValue));
-                    goto case 1;
-                case 1:
-                    node = new Identifier(context.GenerateNodeName(vector.Elements[0].RawValue));
-                    break;
-                default:
-                    throw new Exception("Too many nodes specified");
+                switch (vector.Elements.Count)
+                {
+                    case 0:
+                        throw new Exception("Node expected");
+                    case 2:
+                        reference = new Identifier(context.GenerateNodeName(vector.Elements[1].RawValue));
+                        goto case 1;
+                    case 1:
+                        node = new Identifier(context.GenerateNodeName(vector.Elements[0].RawValue));
+                        break;
+                    default:
+                        throw new Exception("Too many nodes specified");
+                }
+            }
+            else
+            {
+                var singleParameter = parameters[0] as SingleParameter;
+                node = new Identifier(context.GenerateNodeName(singleParameter.RawValue));
             }
 
             Export ve = null;
