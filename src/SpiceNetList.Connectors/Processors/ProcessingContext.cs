@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceNetlist.SpiceSharpConnector.Expressions;
@@ -45,13 +44,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
         public ProcessingContext Parent { get; }
 
-        public BaseConfiguration BaseConfiguration { get; set; }
-
-        public FrequencyConfiguration FrequencyConfiguration { get; set; }
-
-        public TimeConfiguration TimeConfiguration { get; set; }
-
-        public DCConfiguration DCConfiguration { get; set; }
+        public GlobalConfiguration GlobalConfiguration { get; set; } = new GlobalConfiguration();
 
         public int SimulationsCount
         {
@@ -61,8 +54,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             }
         }
 
-
-        internal Simulation GetSimulation()
+        /// <summary>
+        /// TODO
+        /// </summary>
+        internal Simulation GetCurrentSimulation()
         {
             return this.netlist.Simulations[0];
         }
@@ -115,7 +110,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             return null;
         }
 
-        public void SetParameters(Entity entity, ParameterCollection parameters, int toSkip = 0, int count = 0)
+        public void SetEntityParameters(Entity entity, ParameterCollection parameters, int toSkip = 0, int count = 0)
         {
             foreach (var parameter in parameters.Skip(toSkip).Take(parameters.Count - toSkip - count))
             {

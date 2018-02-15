@@ -2,7 +2,7 @@
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
-    class ParamControl : SingleControlProcessor
+    public class ParamControl : SingleControlProcessor
     {
         public override void Process(Control statement, ProcessingContext context)
         {

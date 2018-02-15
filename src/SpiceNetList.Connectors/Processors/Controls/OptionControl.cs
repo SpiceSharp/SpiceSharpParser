@@ -4,7 +4,7 @@ using SpiceSharp.IntegrationMethods;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
-    class OptionControl : SingleControlProcessor
+    public class OptionControl : SingleControlProcessor
     {
         public override void Process(Control statement, ProcessingContext context)
         {
@@ -18,46 +18,36 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                     switch (name)
                     {
                         case "abstol":
-                            if (context.BaseConfiguration == null) context.BaseConfiguration = new SpiceSharp.Simulations.BaseConfiguration();
-                            context.BaseConfiguration.AbsoluteTolerance = context.ParseDouble(value); break;
+                            context.GlobalConfiguration.AbsoluteTolerance = context.ParseDouble(value); break;
                         case "reltol":
-                            if (context.BaseConfiguration == null) context.BaseConfiguration = new SpiceSharp.Simulations.BaseConfiguration();
-                            context.BaseConfiguration.AbsoluteTolerance = context.ParseDouble(value); break;
+                            context.GlobalConfiguration.RelTolerance = context.ParseDouble(value); break;
                         case "gmin":
-                            if (context.BaseConfiguration == null) context.BaseConfiguration = new SpiceSharp.Simulations.BaseConfiguration();
-                            context.BaseConfiguration.Gmin = context.ParseDouble(value); break;
+                            context.GlobalConfiguration.Gmin = context.ParseDouble(value); break;
                         case "itl1":
-                            if (context.BaseConfiguration == null) context.BaseConfiguration = new SpiceSharp.Simulations.BaseConfiguration();
-                            context.BaseConfiguration.DCMaxIterations = (int)context.ParseDouble(value); break;
+                            context.GlobalConfiguration.DCMaxIterations = (int)context.ParseDouble(value); break;
                         case "itl2":
-                            if (context.DCConfiguration == null) context.DCConfiguration = new SpiceSharp.Simulations.DCConfiguration();
-                            context.DCConfiguration.SweepMaxIterations = (int)context.ParseDouble(value); break;
-
+                            context.GlobalConfiguration.SweepMaxIterations = (int)context.ParseDouble(value); break;
                         case "itl4":
-                            if (context.TimeConfiguration == null) context.TimeConfiguration = new SpiceSharp.Simulations.TimeConfiguration();
-                            context.TimeConfiguration.TranMaxIterations = (int)context.ParseDouble(value); break;
+                            context.GlobalConfiguration.TranMaxIterations = (int)context.ParseDouble(value); break;
                         case "itl5":
-                            //TODO: ????
+                            // TODO: ????
                             break;
                         case "temp":
                             // TODO: Set current temperature
                             break;
-
                         case "tnom":
                             // TODO: Set nominal temperature
                             break;
-
                         case "method":
                             switch (value.ToLower())
                             {
                                 case "trap":
                                 case "trapezoidal":
-                                    if (context.TimeConfiguration == null) context.TimeConfiguration = new SpiceSharp.Simulations.TimeConfiguration();
-                                    context.TimeConfiguration.Method = new Trapezoidal();
+                                    context.GlobalConfiguration.Method = new Trapezoidal();
                                     break;
                             }
-                            break;
 
+                            break;
                         default:
                             throw new Exception();
                     }
@@ -67,8 +57,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                 {
                     if (w.RawValue.ToLower() == "keepopinfo")
                     {
-                        if (context.FrequencyConfiguration == null) context.FrequencyConfiguration = new SpiceSharp.Simulations.FrequencyConfiguration();
-                        context.FrequencyConfiguration.KeepOpInfo = true;
+                        context.GlobalConfiguration.KeepOpInfo = true;
                     }
                 }
             }

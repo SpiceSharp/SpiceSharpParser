@@ -78,7 +78,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             else
             {
                 capacitor.SetModel(context.FindModel<CapacitorModel>(parameters.GetString(2)));
-                context.SetParameters(capacitor, clonedParameters, 2);
+                context.SetEntityParameters(capacitor, clonedParameters, 2);
 
                 var bp = capacitor.ParameterSets[typeof(SpiceSharp.Components.CapacitorBehaviors.BaseParameters)] as SpiceSharp.Components.CapacitorBehaviors.BaseParameters;
                 if (!bp.Length.Given)

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using SpiceNetlist.SpiceObjects;
+﻿using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters;
 using SpiceSharp.Parser.Readers;
@@ -8,7 +6,7 @@ using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
-    class SaveControl : SingleControlProcessor
+    public class SaveControl : SingleControlProcessor
     {
         public override void Process(Control statement, ProcessingContext context)
         {
@@ -16,7 +14,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
             {
                 if (parameter is BracketParameter b)
                 {
-                    context.AddExport(GenerateExport(b, context.GetSimulation(), context));
+                    context.AddExport(GenerateExport(b, context.GetCurrentSimulation(), context));
                 }
             }
         }

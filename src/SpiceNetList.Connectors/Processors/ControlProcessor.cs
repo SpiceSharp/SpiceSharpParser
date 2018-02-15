@@ -1,5 +1,6 @@
 ﻿using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceSharpConnector.Processors.Controls;
+using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations;
 using System.Collections.Generic;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
