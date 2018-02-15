@@ -4,7 +4,7 @@ using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector
 {
-    public class NetList : SpiceObject
+    public class NetList
     {
         public string Title { get; set; }
 
