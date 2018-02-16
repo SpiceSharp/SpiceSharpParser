@@ -82,6 +82,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 {
                     vsrc.ParameterSets.SetProperty("dc", context.ParseDouble(parameters.GetString(i)));
                 }
+
                 // AC specification
                 else if (parameters[i] is SingleParameter s2 && s2.RawValue.ToLower() == "ac")
                 {
@@ -89,10 +90,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                     vsrc.ParameterSets.SetProperty("acmag", context.ParseDouble(parameters.GetString(i)));
 
                     // Look forward for one more value
-                    if (i + 1 < parameters.Count && (parameters[i + 1] is ValueParameter || parameters[i+1] is WordParameter))
+                    if (i + 1 < parameters.Count && (parameters[i + 1] is ValueParameter || parameters[i + 1] is WordParameter))
                     {
                         i++;
-                        vsrc.ParameterSets.SetProperty("acphase", context.ParseDouble(parameters.GetString(i+1)));
+                        vsrc.ParameterSets.SetProperty("acphase", context.ParseDouble(parameters.GetString(i)));
                     }
                 }
 

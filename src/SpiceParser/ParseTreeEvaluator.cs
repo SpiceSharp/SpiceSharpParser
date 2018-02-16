@@ -8,7 +8,7 @@ using SpiceParser.Evaluation;
 namespace SpiceParser
 {
     /// <summary>
-    /// Evaluates a spice parse tree to SOM (Spice Object Model - SpiceNetlist library)
+    /// Evaluates a spice parse tree to Spice Object Model - SpiceNetlist library
     /// </summary>
     public class ParseTreeEvaluator
     {
@@ -37,12 +37,19 @@ namespace SpiceParser
             evaluators.Add(SpiceGrammarSymbol.PARAMETER, (List<EvaluationValue> nt) => CreateParameter(nt));
             evaluators.Add(SpiceGrammarSymbol.VECTOR, (List<EvaluationValue> nt) => CreateVector(nt));
             evaluators.Add(SpiceGrammarSymbol.VECTOR_CONTINUE, (List<EvaluationValue> nt) => CreateVectorContinue(nt));
-            evaluators.Add(SpiceGrammarSymbol.BRACKET_CONTENT, (List<EvaluationValue> nt) => CreateBracketParameterContent(nt));
+            evaluators.Add(SpiceGrammarSymbol.PARAMETER_BRACKET, (List<EvaluationValue> nt) => CreateBracketParameter(nt));
+            evaluators.Add(SpiceGrammarSymbol.PARAMETER_BRACKET_CONTENT, (List<EvaluationValue> nt) => CreateBracketParameterContent(nt));
+            evaluators.Add(SpiceGrammarSymbol.PARAMETER_EQUAL, (List<EvaluationValue> nt) => CreateAssigmentParameter(nt));
+            evaluators.Add(SpiceGrammarSymbol.PARAMETER_EQUAL_SINGLE, (List<EvaluationValue> nt) => CreateAssigmentSimpleParameter(nt));
+            evaluators.Add(SpiceGrammarSymbol.PARAMETER_EQUAL_SEQUANCE, (List<EvaluationValue> nt) => CreateAssigmentParameters(nt));
+            evaluators.Add(SpiceGrammarSymbol.PARAMETER_EQUAL_SEQUANCE_CONTINUE, (List<EvaluationValue> nt) => CreateAssigmentParametersContinue(nt));
+            evaluators.Add(SpiceGrammarSymbol.PARAMETER_SINGLE_SEQUENCE, (List<EvaluationValue> nt) => CreateSingleParameters(nt));
+            evaluators.Add(SpiceGrammarSymbol.PARAMETER_SINGLE_SEQUENCE_CONTINUE, (List<EvaluationValue> nt) => CreateSingleParametersContinue(nt));
             evaluators.Add(SpiceGrammarSymbol.PARAMETER_SINGLE, (List<EvaluationValue> nt) => CreateParameterSingle(nt));
             evaluators.Add(SpiceGrammarSymbol.SUBCKT, (List<EvaluationValue> nt) => CreateSubCircuit(nt));
+            evaluators.Add(SpiceGrammarSymbol.SUBCKT_ENDING, (List<EvaluationValue> nt) => null);
             evaluators.Add(SpiceGrammarSymbol.COMMENT_LINE, (List<EvaluationValue> nt) => CreateComment(nt));
             evaluators.Add(SpiceGrammarSymbol.NEW_LINE_OR_EOF, (List<EvaluationValue> nt) => null);
-            evaluators.Add(SpiceGrammarSymbol.SUBCKT_ENDING, (List<EvaluationValue> nt) => null);
         }
 
         /// <summary>
@@ -67,6 +74,11 @@ namespace SpiceParser
                     foreach (var child in nt.Children)
                     {
                         items.Add(treeNodesValues[child]);
+                    }
+
+                    if (!evaluators.ContainsKey(nt.Name))
+                    {
+                        throw new ParseException("Unsupported evaluation of parse tree node");
                     }
 
                     var treeNodeResult = evaluators[nt.Name](items);
@@ -140,14 +152,17 @@ namespace SpiceParser
         }
 
         /// <summary>
-        /// Returns new instance of <see cref="SingleParameter"/> or <see cref="BracketParameter"/> or <see cref="AssignmentParameter"/>
+        /// Returns new instance of <see cref="SingleParameter"/>
+        /// or <see cref="BracketParameter"/> 
+        /// or <see cref="AssignmentParameter"/>
+        /// or <see cref="VectorParameter"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.PARAMETER"/> parse tree node
         /// </summary>
         private SpiceObject CreateParameter(List<EvaluationValue> childrenValues)
         {
             Parameter parameter = null;
 
-            if (childrenValues.Count > 0)
+            if (childrenValues.Count == 1)
             {
                 if (childrenValues[0] is NonTerminalEvaluationValue nt && nt.SpiceObject is VectorParameter v)
                 {
@@ -157,36 +172,13 @@ namespace SpiceParser
                 {
                     parameter = sp;
                 }
-                else
+                else if (childrenValues[0] is NonTerminalEvaluationValue nt3 && nt3.SpiceObject is BracketParameter bp)
                 {
-                    if (childrenValues[0] is TerminalEvaluationValue t1
-                        && t1.Token.Is(SpiceToken.WORD)
-                        && childrenValues[1] is TerminalEvaluationValue t2
-                        && t2.Token.Is(SpiceToken.DELIMITER)
-                        && t2.Token.Lexem == "("
-                        && childrenValues[2] is NonTerminalEvaluationValue nt1
-                        && nt1.SpiceObject is BracketParameterContent bc
-                        && childrenValues[3] is TerminalEvaluationValue t3
-                        && t3.Token.Is(SpiceToken.DELIMITER)
-                        && t3.Token.Lexem == ")")
-                    {
-                        parameter = new BracketParameter()
-                        {
-                            Name = t1.Token.Lexem,
-                            Content = bc
-                        };
-                    }
-
-                    if (childrenValues[0] is TerminalEvaluationValue nameEval && nameEval.Token.Is(SpiceToken.WORD)
-                        && childrenValues[1] is TerminalEvaluationValue t5 && t5.Token.Lexem == "="
-                        && childrenValues[2] is NonTerminalEvaluationValue value && value.SpiceObject is SingleParameter s)
-                    {
-                        parameter = new AssignmentParameter()
-                        {
-                            Name = nameEval.Token.Lexem,
-                            Value = s.RawValue
-                        };
-                    }
+                    parameter = bp;
+                } 
+                else if (childrenValues[0] is NonTerminalEvaluationValue nt4 && nt4.SpiceObject is AssignmentParameter ap)
+                {
+                    parameter = ap;
                 }
             }
 
@@ -424,20 +416,20 @@ namespace SpiceParser
         }
 
         /// <summary>
-        /// Returns new instance of <see cref="BracketParameterContent"/>
-        /// from the values of children nodes of <see cref="SpiceGrammarSymbol.BRACKET_CONTENT"/> parse tree node
+        /// Returns new instance of <see cref="BracketParameter"/>
+        /// from the values of children nodes of <see cref="SpiceGrammarSymbol.PARAMETER_BRACKET"/> parse tree node
         /// </summary>
-        private SpiceObject CreateBracketParameterContent(List<EvaluationValue> childrenValues)
+        private SpiceObject CreateBracketParameter(List<EvaluationValue> childrenValues)
         {
-            var content = new BracketParameterContent();
-
-            if (childrenValues.Count == 1)
+            var parameter = new BracketParameter();
+            if (childrenValues.Count == 4)
             {
-                if (childrenValues[0] is NonTerminalEvaluationValue nt)
+                parameter.Name = (childrenValues[0] as TerminalEvaluationValue).Token.Lexem;
+                if (childrenValues[2] is NonTerminalEvaluationValue nt)
                 {
                     if (nt.SpiceObject is ParameterCollection p)
                     {
-                        content.Parameters = p;
+                        parameter.Parameters = p;
                     }
                 }
             }
@@ -446,7 +438,202 @@ namespace SpiceParser
                 throw new ParseException();
             }
 
-            return content;
+            return parameter;
+        }
+
+        /// <summary>
+        /// Returns new instance of <see cref="ParameterCollection"/>
+        /// from the values of children nodes of <see cref="SpiceGrammarSymbol.BRACKET_CONTENT"/> parse tree node
+        /// </summary>
+        private SpiceObject CreateBracketParameterContent(List<EvaluationValue> childrenValues)
+        {
+            var parameters = new ParameterCollection();
+
+            if (childrenValues.Count == 0)
+            {
+                return parameters;
+            }
+
+            if (childrenValues.Count == 1 && childrenValues[0] is NonTerminalEvaluationValue nt)
+            {
+                if (nt.SpiceObject is ParameterCollection c)
+                {
+                    parameters.Merge(c);
+                }
+
+                if (nt.SpiceObject is Parameter p)
+                {
+                    parameters.Add(p);
+                }
+            }
+            else
+            {
+                throw new ParseException();
+            }
+
+            return parameters;
+        }
+
+        private SpiceObject CreateAssigmentParametersContinue(List<EvaluationValue> childrenValues)
+        {
+            if (childrenValues.Count == 2)
+            {
+                var parameters = new ParameterCollection();
+
+                if (childrenValues[0] is NonTerminalEvaluationValue nt1 && nt1.SpiceObject is AssignmentParameter ap)
+                {
+                    parameters.Add(ap);
+                }
+
+                if (childrenValues[1] is NonTerminalEvaluationValue nt2 && nt2.SpiceObject is ParameterCollection p)
+                {
+                    parameters.Merge(p);
+                }
+
+                return parameters;
+            }
+            else
+            {
+                if (childrenValues.Count != 0)
+                {
+                    throw new ParseException();
+                }
+                return new ParameterCollection();
+            }
+        }
+
+        private SpiceObject CreateAssigmentParameters(List<EvaluationValue> childrenValues)
+        {
+            if (childrenValues.Count == 2)
+            {
+                var parameters = new ParameterCollection();
+
+                if (childrenValues[0] is NonTerminalEvaluationValue nt1 && nt1.SpiceObject is AssignmentParameter ap)
+                {
+                    parameters.Add(ap);
+                }
+
+                if (childrenValues[1] is NonTerminalEvaluationValue nt2 && nt2.SpiceObject is ParameterCollection p)
+                {
+                    parameters.Merge(p);
+                }
+
+                return parameters;
+            }
+            else
+            {
+                throw new ParseException();
+            }
+        }
+
+        private SpiceObject CreateSingleParametersContinue(List<EvaluationValue> childrenValues)
+        {
+            if (childrenValues.Count == 2)
+            {
+                var parameters = new ParameterCollection();
+
+                if (childrenValues[0] is NonTerminalEvaluationValue nt1 && nt1.SpiceObject is SingleParameter sp)
+                {
+                    parameters.Add(sp);
+                }
+
+                if (childrenValues[1] is NonTerminalEvaluationValue nt2 && nt2.SpiceObject is ParameterCollection p)
+                {
+                    parameters.Merge(p);
+                }
+
+                return parameters;
+            }
+            else
+            {
+                if (childrenValues.Count != 0)
+                {
+                    throw new ParseException();
+                }
+                return new ParameterCollection();
+            }
+        }
+
+        private SpiceObject CreateSingleParameters(List<EvaluationValue> childrenValues)
+        {
+            if (childrenValues.Count == 2)
+            {
+                var parameters = new ParameterCollection();
+
+                if (childrenValues[0] is NonTerminalEvaluationValue nt1 && nt1.SpiceObject is SingleParameter sp)
+                {
+                    parameters.Add(sp);
+                }
+
+                if (childrenValues[1] is NonTerminalEvaluationValue nt2 && nt2.SpiceObject is ParameterCollection p)
+                {
+                    parameters.Merge(p);
+                }
+
+                return parameters;
+            }
+            else
+            {
+                throw new ParseException();
+            }
+        }
+
+
+        private SpiceObject CreateAssigmentSimpleParameter(List<EvaluationValue> childrenValues)
+        {
+            if (childrenValues.Count == 3)
+            {
+                var assigmentParameter = new AssignmentParameter();
+                assigmentParameter.Name = (childrenValues[0] as TerminalEvaluationValue).Token.Lexem;
+                assigmentParameter.Value = ((childrenValues[2] as NonTerminalEvaluationValue).SpiceObject as SingleParameter).RawValue;
+
+                return assigmentParameter;
+            }
+            else
+            {
+                throw new ParseException();
+            }
+        }
+
+        private SpiceObject CreateAssigmentParameter(List<EvaluationValue> childrenValues)
+        {
+            if (childrenValues.Count == 1)
+            {
+                if (childrenValues[0] is NonTerminalEvaluationValue nt1 && nt1.SpiceObject is AssignmentParameter ap)
+                {
+                    return ap;
+                }
+                else
+                {
+                    throw new ParseException();
+                }
+            }
+            else
+            {
+                if (childrenValues.Count == 6)
+                {
+                    // v(2) = 3
+                    var assigmentParameter = new AssignmentParameter();
+                    assigmentParameter.Name = (childrenValues[0] as TerminalEvaluationValue).Token.Lexem;
+                    assigmentParameter.Arguments.Add(((childrenValues[2] as NonTerminalEvaluationValue).SpiceObject as SingleParameter).RawValue);
+                    assigmentParameter.Value = ((childrenValues[5] as NonTerminalEvaluationValue).SpiceObject as SingleParameter).RawValue;
+
+                    return assigmentParameter;
+                }
+
+                if (childrenValues.Count == 8)
+                {
+                    // v(2,3) = 4
+                    var assigmentParameter = new AssignmentParameter();
+                    assigmentParameter.Name = (childrenValues[0] as TerminalEvaluationValue).Token.Lexem;
+                    assigmentParameter.Arguments.Add(((childrenValues[2] as NonTerminalEvaluationValue).SpiceObject as SingleParameter).RawValue);
+                    assigmentParameter.Arguments.Add(((childrenValues[4] as NonTerminalEvaluationValue).SpiceObject as SingleParameter).RawValue);
+                    assigmentParameter.Value = ((childrenValues[7] as NonTerminalEvaluationValue).SpiceObject as SingleParameter).RawValue;
+
+                    return assigmentParameter;
+                }
+                throw new ParseException();
+            }
         }
 
         /// <summary>

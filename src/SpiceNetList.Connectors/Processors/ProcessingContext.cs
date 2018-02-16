@@ -77,6 +77,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             netlist.Simulations.Add(simulation);
         }
 
+        internal void SetICVoltage(string nodeName, string value)
+        {
+            netlist.Circuit.Nodes.InitialConditions[this.GenerateNodeName(nodeName)] = this.ParseDouble(value);
+        }
+
         public double ParseDouble(string value)
         {
             if (AvailableParameters.ContainsKey(value))

@@ -22,7 +22,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
         private Export GenerateExport(BracketParameter parameter, Simulation simulation, ProcessingContext context)
         {
             var vE = new VoltageExporter();
-            return vE.CreateExport(parameter.Name, parameter.Content.Parameters, simulation, context);
+            return vE.CreateExport(parameter.Name, parameter.Parameters, simulation, context);
         }
     }
 }

@@ -4,6 +4,6 @@
     {
         public string Name { get; set; }
 
-        public BracketParameterContent Content { get; set; }
+        public ParameterCollection Parameters { get; set; }
     }
 }

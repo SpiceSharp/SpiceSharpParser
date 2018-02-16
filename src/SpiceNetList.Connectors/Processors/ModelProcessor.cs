@@ -32,7 +32,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                     {
                         if (generator.GetGeneratedTypes().Contains(type))
                         {
-                            Entity spiceSharpModel = generator.Generate(new SpiceSharp.Identifier(context.GenerateObjectName(name)), name, type, b.Content.Parameters, context);
+                            Entity spiceSharpModel = generator.Generate(
+                                new SpiceSharp.Identifier(context.GenerateObjectName(name)),
+                                name,
+                                type,
+                                b.Parameters,
+                                context);
 
                             if (model != null)
                             {
