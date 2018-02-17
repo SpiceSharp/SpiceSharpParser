@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
-using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.VoltageExports;
+using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.CurrentExports;
 using SpiceSharp;
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
 {
-    public class VoltageExporter
+    public class CurrentExporter
     {
         public Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, ProcessingContext context)
         {
-            if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
+            if (parameters.Count != 1 || !(parameters[0] is SingleParameter))
             {
-                throw new Exception("Voltage exports should have vector or single parameter");
+                throw new Exception("Current exports should single parameter");
             }
 
             // Get the nodes
@@ -26,9 +26,6 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
                 {
                     case 0:
                         throw new Exception("Node expected");
-                    case 2:
-                        reference = new Identifier(context.GenerateNodeName(vector.Elements[1].Image));
-                        goto case 1;
                     case 1:
                         node = new Identifier(context.GenerateNodeName(vector.Elements[0].Image));
                         break;
@@ -41,23 +38,23 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
                 node = new Identifier(context.GenerateNodeName(parameters.GetString(0)));
             }
 
-            Export ve = null;
+            Export ce = null;
             switch (type.ToLower())
             {
-                case "v": ve = new VoltageExport(simulation, node, reference); break;
-                case "vr": ve = new VoltageRealExport(simulation, node, reference); break;
-                case "vi": ve = new VoltageImaginaryExport(simulation, node, reference); break;
-                case "vm": ve = new VoltageMagnitudeExport(simulation, node, reference); break;
-                case "vdb": ve = new VoltageDecibelExport(simulation, node, reference); break;
-                case "vp": ve = new VoltagePhaseExport(simulation, node, reference); break;
+                case "i": ce = new CurrentExport(simulation, node); break;
+                case "ir": ce = new CurrentRealExport(simulation, node); break;
+                case "ii": ce = new CurrentImaginaryExport(simulation, node); break;
+                case "im": ce = new CurrentMagnitudeExport(simulation, node); break;
+                case "idb": ce = new CurrentDecibelExport(simulation, node); break;
+                case "ip": ce = new CurrentPhaseExport(simulation, node); break;
             }
 
-            return ve;
+            return ce;
         }
 
         public List<string> GetGeneratedTypes()
         {
-            return new List<string>() { "v", "vr", "vi", "vm", "vdb", "vp" };
+            return new List<string>() { "i", "ir", "ii", "im", "idb", "ip" };
         }
     }
 }

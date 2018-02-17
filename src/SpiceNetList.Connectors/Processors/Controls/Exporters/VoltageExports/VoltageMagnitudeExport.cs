@@ -2,12 +2,12 @@
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
 
-namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
+namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.VoltageExports
 {
     /// <summary>
-    /// Phase of a complex voltage export.
+    /// Magnitude of a complex voltage export.
     /// </summary>
-    public class VoltagePhaseExport : Export
+    public class VoltageMagnitudeExport : Export
     {
         /// <summary>
         /// The main node
@@ -26,7 +26,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
         /// </summary>
         /// <param name="node">Positive node</param>
         /// <param name="reference">Negative reference node</param>
-        public VoltagePhaseExport(Simulation simulation, Identifier node, Identifier reference = null)
+        public VoltageMagnitudeExport(Simulation simulation, Identifier node, Identifier reference = null)
         {
             Node = node;
             Reference = reference;
@@ -37,12 +37,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
         /// <summary>
         /// Get the type name
         /// </summary>
-        public override string TypeName => "degrees";
+        public override string TypeName => "voltage";
 
         /// <summary>
-        /// Gets get the name
+        /// Get the name
         /// </summary>
-        public override string Name => "vp(" + Node + (Reference == null ? "" : ", " + Reference) + ")";
+        public override string Name => "vm(" + Node + (Reference == null ? "" : ", " + Reference) + ")";
 
         /// <summary>
         /// Extract
@@ -51,7 +51,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
         /// <returns></returns>
         public override double Extract()
         {
-            return ExportImpl.Phase;
+            return ExportImpl.Value.Magnitude;
         }
     }
 }

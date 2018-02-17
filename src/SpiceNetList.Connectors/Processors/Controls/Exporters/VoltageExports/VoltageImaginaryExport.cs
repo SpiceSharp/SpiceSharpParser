@@ -2,12 +2,12 @@
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
 
-namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
+namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.VoltageExports
 {
     /// <summary>
-    /// Real part of a complex voltage export.
+    /// Imaginary part of a complex voltage export.
     /// </summary>
-    public class VoltageRealExport : Export
+    public class VoltageImaginaryExport : Export
     {
         /// <summary>
         /// The main node
@@ -19,18 +19,19 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
         /// </summary>
         public Identifier Reference { get; }
 
-        protected RealVoltageExport ExportImpl { get; }
+        private readonly ComplexVoltageExport ExportImpl;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="node">Positive node</param>
         /// <param name="reference">Negative reference node</param>
-        public VoltageRealExport(Simulation simulation, Identifier node, Identifier reference = null)
+        public VoltageImaginaryExport(Simulation simulation, Identifier node, Identifier reference = null)
         {
             Node = node;
             Reference = reference;
-            ExportImpl = new RealVoltageExport(simulation, node, reference);
+
+            ExportImpl = new ComplexVoltageExport(simulation, node, reference);
         }
 
         /// <summary>
@@ -41,14 +42,16 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
         /// <summary>
         /// Get the name
         /// </summary>
-        public override string Name => "vr(" + Node + (Reference == null ? "" : ", " + Reference) + ")";
+        public override string Name => "vi(" + Node + (Reference == null ? "" : ", " + Reference) + ")";
 
         /// <summary>
         /// Extract
         /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public override double Extract()
         {
-            return this.ExportImpl.Value;
+            return ExportImpl.Value.Imaginary;
         }
     }
 }

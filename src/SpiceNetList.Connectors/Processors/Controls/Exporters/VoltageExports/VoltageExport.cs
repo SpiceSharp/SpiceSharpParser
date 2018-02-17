@@ -2,7 +2,7 @@
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
 
-namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
+namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.VoltageExports
 {
     /// <summary>
     /// Voltage export.
