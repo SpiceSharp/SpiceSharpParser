@@ -2,5 +2,6 @@
 {
     public class ValueParameter : SingleParameter
     {
+        public ValueParameter(string value) : base(value) { }
     }
 }

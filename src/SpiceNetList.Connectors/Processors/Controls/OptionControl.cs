@@ -55,7 +55,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 
                 if (param is SpiceObjects.Parameters.WordParameter w)
                 {
-                    if (w.RawValue.ToLower() == "keepopinfo")
+                    if (w.Image.ToLower() == "keepopinfo")
                     {
                         context.GlobalConfiguration.KeepOpInfo = true;
                     }

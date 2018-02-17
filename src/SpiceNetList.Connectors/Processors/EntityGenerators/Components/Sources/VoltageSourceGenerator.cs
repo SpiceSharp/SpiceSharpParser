@@ -74,20 +74,20 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             for (int i = 2; i < parameters.Count; i++)
             {
                 // DC specification
-                if (i == 2 && parameters[i] is SingleParameter s && s.RawValue.ToLower() == "dc" && i != parameters.Count - 1)
+                if (i == 2 && parameters[i] is SingleParameter s && s.Image.ToLower() == "dc" && i != parameters.Count - 1)
                 {
                     vsrc.ParameterSets.SetProperty("dc", context.ParseDouble(parameters.GetString(i + 1)));
                 }
                 else if (i == 2 && (parameters[i] is ValueParameter vp || parameters[i] is WordParameter w))
                 {
-                    if ((parameters[i] as SingleParameter).RawValue != "dc")
+                    if (parameters[i].Image != "dc")
                     {
                         vsrc.ParameterSets.SetProperty("dc", context.ParseDouble(parameters.GetString(i)));
                     }
                 }
 
                 // AC specification
-                else if (parameters[i] is SingleParameter s2 && s2.RawValue.ToLower() == "ac")
+                else if (parameters[i] is SingleParameter s2 && s2.Image.ToLower() == "ac")
                 {
                     i++;
                     vsrc.ParameterSets.SetProperty("acmag", context.ParseDouble(parameters.GetString(i)));
@@ -105,7 +105,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 {
                     vsrc.ParameterSets.SetProperty("waveform", waveFormGenerator.Generate(cp, context));
                 }
-                else if (parameters[i] is WordParameter w2 && w2.RawValue != "dc")
+                else if (parameters[i] is WordParameter w2 && w2.Image != "dc")
                 {
                     throw new Exception();
                 }

@@ -2,5 +2,6 @@
 {
     public class WordParameter : SingleParameter
     {
+        public WordParameter(string word) : base(word) { }
     }
 }

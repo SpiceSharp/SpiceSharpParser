@@ -27,10 +27,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
                     case 0:
                         throw new Exception("Node expected");
                     case 2:
-                        reference = new Identifier(context.GenerateNodeName(vector.Elements[1].RawValue));
+                        reference = new Identifier(context.GenerateNodeName(vector.Elements[1].Image));
                         goto case 1;
                     case 1:
-                        node = new Identifier(context.GenerateNodeName(vector.Elements[0].RawValue));
+                        node = new Identifier(context.GenerateNodeName(vector.Elements[0].Image));
                         break;
                     default:
                         throw new Exception("Too many nodes specified");
@@ -39,7 +39,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
             else
             {
                 var singleParameter = parameters[0] as SingleParameter;
-                node = new Identifier(context.GenerateNodeName(singleParameter.RawValue));
+                node = new Identifier(context.GenerateNodeName(singleParameter.Image));
             }
 
             Export ve = null;

@@ -9,5 +9,7 @@ namespace SpiceNetlist.SpiceObjects.Parameters
         public List<string> Arguments { get; set; } = new List<string>();
 
         public string Value { get; set; }
+
+        public override string Image => Name + "(" + string.Join(",", Arguments) + ")=" + Value;
     }
 }

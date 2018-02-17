@@ -76,7 +76,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 }
                 else if (i == 2 && parameters[i] is ValueParameter v)
                 {
-                    isrc.ParameterSets.SetProperty("dc", context.ParseDouble(v.RawValue));
+                    isrc.ParameterSets.SetProperty("dc", context.ParseDouble(v.Image));
                 }
 
                 // AC specification
@@ -89,7 +89,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                     if (i + 1 < parameters.Count && parameters[i + 1] is ValueParameter v2)
                     {
                         i++;
-                        isrc.ParameterSets.SetProperty("acphase", context.ParseDouble(v2.RawValue));
+                        isrc.ParameterSets.SetProperty("acphase", context.ParseDouble(v2.Image));
                     }
                 }
                 else if (parameters[i] is BracketParameter cp)

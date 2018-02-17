@@ -25,11 +25,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             {
                 if (parameters[i] is WordParameter w)
                 {
-                    if (w.RawValue.ToLower() == "on")
+                    if (w.Image.ToLower() == "on")
                     {
                         diode.ParameterSets.SetProperty("off", false);
                     }
-                    else if (w.RawValue.ToLower() == "off")
+                    else if (w.Image.ToLower() == "off")
                     {
                         diode.ParameterSets.SetProperty("off", true);
                     }

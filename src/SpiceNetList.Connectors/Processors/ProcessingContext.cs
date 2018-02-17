@@ -117,7 +117,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
         public void SetEntityParameters(Entity entity, ParameterCollection parameters, int toSkip = 0, int count = 0)
         {
-            foreach (var parameter in parameters.Skip(toSkip).Take(parameters.Count - toSkip - count))
+            foreach (SpiceNetlist.SpiceObjects.Parameter parameter in parameters.Skip(toSkip).Take(parameters.Count - toSkip - count))
             {
                 if (parameter is AssignmentParameter ap)
                 {
@@ -133,7 +133,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                 }
                 else
                 {
-                    this.netlist.Warnings.Add("Unknown parameter: " + ((SingleParameter)parameter).RawValue);
+                    this.netlist.Warnings.Add("Unknown parameter: " + parameter.Image);
                 }
             }
         }

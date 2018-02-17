@@ -49,7 +49,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
                 if (model.Parameters[0] is SingleParameter single)
                 {
-                    var type = single.RawValue;
+                    var type = single.Image;
                     foreach (var generator in Generators)
                     {
                         if (generator.GetGeneratedTypes().Contains(type))

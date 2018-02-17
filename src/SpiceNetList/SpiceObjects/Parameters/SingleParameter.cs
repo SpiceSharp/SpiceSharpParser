@@ -2,6 +2,13 @@
 {
     public abstract class SingleParameter : Parameter
     {
-        public string RawValue { get; set; }
+        private string rawString;
+
+        public SingleParameter(string rawString)
+        {
+            this.rawString = rawString;
+        }
+
+        public override string Image => this.rawString;
     }
 }

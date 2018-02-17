@@ -78,7 +78,7 @@ namespace SpiceNetlist.SpiceObjects
                 throw new Exception("Parameter [" + parameterIndex + "] is not string parameter");
             }
 
-            return singleParameter.RawValue;
+            return singleParameter.Image;
         }
 
         public ParameterCollection Clone()

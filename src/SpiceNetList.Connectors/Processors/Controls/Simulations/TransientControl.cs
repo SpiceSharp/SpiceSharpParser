@@ -22,15 +22,15 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
                 case 2:
                     tran = new Transient(
                         (context.SimulationsCount + 1) + " - Transient",
-                        context.ParseDouble((statement.Parameters[0] as ValueParameter).RawValue),
-                        context.ParseDouble((statement.Parameters[1] as ValueParameter).RawValue));
+                        context.ParseDouble(statement.Parameters[0].Image),
+                        context.ParseDouble(statement.Parameters[1].Image));
                     break;
                 case 3:
                     tran = new Transient(
                         (context.SimulationsCount + 1) + " - Transient",
-                        context.ParseDouble((statement.Parameters[0] as ValueParameter).RawValue),
-                        context.ParseDouble((statement.Parameters[1] as ValueParameter).RawValue),
-                        context.ParseDouble((statement.Parameters[2] as ValueParameter).RawValue));
+                        context.ParseDouble(statement.Parameters[0].Image),
+                        context.ParseDouble(statement.Parameters[1].Image),
+                        context.ParseDouble(statement.Parameters[2].Image));
                     break;
                 case 4:
                     throw new Exception("Wrong number of parameters for .tran");

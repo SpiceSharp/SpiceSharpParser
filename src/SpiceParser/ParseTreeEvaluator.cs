@@ -196,19 +196,19 @@ namespace SpiceParser
         {
             if (childrenValues[0] is TerminalEvaluationValue t)
             {
-                var rawValue = t.Token.Lexem;
+                var lexemValue = t.Token.Lexem;
                 switch (t.Token.TokenType)
                 {
                     case (int)SpiceTokenType.REFERENCE:
-                        return new ReferenceParameter() { RawValue = rawValue };
+                        return new ReferenceParameter(lexemValue);
                     case (int)SpiceTokenType.VALUE:
-                        return new ValueParameter() { RawValue = rawValue };
+                        return new ValueParameter(lexemValue);
                     case (int)SpiceTokenType.WORD:
-                        return new WordParameter() { RawValue = rawValue };
+                        return new WordParameter(lexemValue);
                     case (int)SpiceTokenType.IDENTIFIER:
-                        return new IdentifierParameter() { RawValue = rawValue };
+                        return new IdentifierParameter(lexemValue);
                     case (int)SpiceTokenType.EXPRESSION:
-                        return new ExpressionParameter() { RawValue = rawValue };
+                        return new ExpressionParameter(lexemValue);
                 }
             }
 
@@ -291,7 +291,7 @@ namespace SpiceParser
                 if (mode)
                 {
                     // After this, only parameters will follow
-                    if (parameter is SingleParameter s && s.RawValue.ToLower() == "params:")
+                    if (parameter is SingleParameter s && s.Image.ToLower() == "params:")
                     {
                         mode = false;
                     }
@@ -308,9 +308,9 @@ namespace SpiceParser
                     {
                         if (s2 is WordParameter
                             || s2 is IdentifierParameter
-                            || int.TryParse(s2.RawValue, out _))
+                            || int.TryParse(s2.Image, out _))
                         {
-                            subCkt.Pins.Add(s2.RawValue);
+                            subCkt.Pins.Add(s2.Image);
                         }
                     }
                 }
@@ -600,7 +600,7 @@ namespace SpiceParser
             {
                 var assigmentParameter = new AssignmentParameter();
                 assigmentParameter.Name = (childrenValues[0] as TerminalEvaluationValue).Token.Lexem;
-                assigmentParameter.Value = ((childrenValues[2] as NonTerminalEvaluationValue).SpiceObject as SingleParameter).RawValue;
+                assigmentParameter.Value = ((childrenValues[2] as NonTerminalEvaluationValue).SpiceObject as SingleParameter).Image;
 
                 return assigmentParameter;
             }
@@ -634,8 +634,8 @@ namespace SpiceParser
                     // v(2) = 3
                     var assigmentParameter = new AssignmentParameter();
                     assigmentParameter.Name = (childrenValues[0] as TerminalEvaluationValue).Token.Lexem;
-                    assigmentParameter.Arguments.Add(((childrenValues[2] as NonTerminalEvaluationValue).SpiceObject as SingleParameter).RawValue);
-                    assigmentParameter.Value = ((childrenValues[5] as NonTerminalEvaluationValue).SpiceObject as SingleParameter).RawValue;
+                    assigmentParameter.Arguments.Add(((childrenValues[2] as NonTerminalEvaluationValue).SpiceObject as SingleParameter).Image);
+                    assigmentParameter.Value = ((childrenValues[5] as NonTerminalEvaluationValue).SpiceObject as SingleParameter).Image;
 
                     return assigmentParameter;
                 }
@@ -645,9 +645,9 @@ namespace SpiceParser
                     // v(2,3) = 4
                     var assigmentParameter = new AssignmentParameter();
                     assigmentParameter.Name = (childrenValues[0] as TerminalEvaluationValue).Token.Lexem;
-                    assigmentParameter.Arguments.Add(((childrenValues[2] as NonTerminalEvaluationValue).SpiceObject as SingleParameter).RawValue);
-                    assigmentParameter.Arguments.Add(((childrenValues[4] as NonTerminalEvaluationValue).SpiceObject as SingleParameter).RawValue);
-                    assigmentParameter.Value = ((childrenValues[7] as NonTerminalEvaluationValue).SpiceObject as SingleParameter).RawValue;
+                    assigmentParameter.Arguments.Add(((childrenValues[2] as NonTerminalEvaluationValue).SpiceObject as SingleParameter).Image);
+                    assigmentParameter.Arguments.Add(((childrenValues[4] as NonTerminalEvaluationValue).SpiceObject as SingleParameter).Image);
+                    assigmentParameter.Value = ((childrenValues[7] as NonTerminalEvaluationValue).SpiceObject as SingleParameter).Image;
 
                     return assigmentParameter;
                 }

@@ -2,5 +2,6 @@
 {
     public class IdentifierParameter : SingleParameter
     {
+        public IdentifierParameter(string identifier) : base(identifier) { }
     }
 }

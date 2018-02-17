@@ -15,7 +15,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             BipolarJunctionTransistor bjt = new BipolarJunctionTransistor(name);
 
             // If the component is of the format QXXX NC NB NE MNAME off we will insert NE again before the model name
-            if (parameters.Count == 5 && parameters[4] is WordParameter w && w.RawValue == "off")
+            if (parameters.Count == 5 && parameters[4] is WordParameter w && w.Image == "off")
             {
                 parameters.Insert(3, parameters[2]);
             }
@@ -44,7 +44,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 {
                     if (s is WordParameter)
                     {
-                        switch (s.RawValue.ToLower())
+                        switch (s.Image.ToLower())
                         {
                             case "on": bjt.ParameterSets.SetProperty("off", false); break;
                             case "off": bjt.ParameterSets.SetProperty("on", false); break;
@@ -57,12 +57,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                         //TODO ?????
                         if (!bp.Area.Given)
                         {
-                            bp.Area.Set(context.ParseDouble(s.RawValue));
+                            bp.Area.Set(context.ParseDouble(s.Image));
                         }
                         //TODO ?????
                         if (!bp.Temperature.Given)
                         {
-                            bp.Area.Set(context.ParseDouble(s.RawValue));
+                            bp.Area.Set(context.ParseDouble(s.Image));
                         }
                     }
                 }
