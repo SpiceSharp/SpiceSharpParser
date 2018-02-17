@@ -1,4 +1,4 @@
-﻿using SpiceNetlist;
+﻿using SpiceGrammar;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
 using Xunit;
@@ -22,7 +22,7 @@ namespace SpiceParser.Tests
             };
 
             var parser = new SpiceParser();
-            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceNetlist.SpiceGrammarSymbol.PARAMETER);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
 
             // Act
             ParseTreeEvaluator eval = new ParseTreeEvaluator();
@@ -51,7 +51,7 @@ namespace SpiceParser.Tests
             };
 
             var parser = new SpiceParser();
-            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceNetlist.SpiceGrammarSymbol.PARAMETER);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
 
             // Act
             ParseTreeEvaluator eval = new ParseTreeEvaluator();
@@ -82,7 +82,7 @@ namespace SpiceParser.Tests
             };
 
             var parser = new SpiceParser();
-            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceNetlist.SpiceGrammarSymbol.PARAMETER);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
 
             // Act
             ParseTreeEvaluator eval = new ParseTreeEvaluator();
@@ -113,7 +113,7 @@ namespace SpiceParser.Tests
             };
 
             var parser = new SpiceParser();
-            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceNetlist.SpiceGrammarSymbol.PARAMETER);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
 
             // Act
             ParseTreeEvaluator eval = new ParseTreeEvaluator();

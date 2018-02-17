@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using NLexer;
-using SpiceNetlist;
+using SpiceGrammar;
 
-namespace SpiceLex
+namespace SpiceLexer
 {
     /// <summary>
     /// A lexer for Spice netlists

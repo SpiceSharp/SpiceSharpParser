@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using NLexer;
-using SpiceNetlist;
+using SpiceGrammar;
 
 namespace SpiceParser
 {

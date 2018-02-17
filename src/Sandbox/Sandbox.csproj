@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NLexer\NLexer.csproj" />
-    <ProjectReference Include="..\SpiceLex\SpiceLex.csproj" />
+    <ProjectReference Include="..\SpiceLexer\SpiceLexer.csproj" />
     <ProjectReference Include="..\SpiceNetList.Connectors\SpiceNetlist.SpiceSharpConnector.csproj" />
     <ProjectReference Include="..\SpiceNetList\SpiceNetlist.csproj" />
     <ProjectReference Include="..\SpiceParser\SpiceParser.csproj" />

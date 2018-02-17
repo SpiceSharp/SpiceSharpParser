@@ -1,5 +1,5 @@
 ﻿using NLexer;
-using SpiceNetlist;
+using SpiceGrammar;
 
 namespace SpiceParser
 {

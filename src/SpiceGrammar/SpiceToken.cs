@@ -1,4 +1,4 @@
-﻿namespace SpiceNetlist
+﻿namespace SpiceGrammar
 {
     public enum SpiceToken
     {

@@ -1,4 +1,4 @@
-﻿namespace NLexer
+﻿namespace SpiceLexer
 {
     public class SpiceLexerOptions
     {

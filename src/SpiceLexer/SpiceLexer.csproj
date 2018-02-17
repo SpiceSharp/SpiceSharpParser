@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NLexer\NLexer.csproj" />
+    <ProjectReference Include="..\SpiceGrammar\SpiceGrammar.csproj" />
     <ProjectReference Include="..\SpiceNetList\SpiceNetlist.csproj" />
   </ItemGroup>
 

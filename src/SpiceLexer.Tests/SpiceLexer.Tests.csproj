@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SpiceLex\SpiceLex.csproj" />
+    <ProjectReference Include="..\SpiceLexer\SpiceLexer.csproj" />
   </ItemGroup>
 
 </Project>

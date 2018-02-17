@@ -1,9 +1,8 @@
-using SpiceLex;
-using SpiceNetlist;
+using SpiceGrammar;
 using System.Linq;
 using Xunit;
 
-namespace SpiceSharpLex.Tests
+namespace SpiceLexer.Tests
 {
     public class SpiceLexerTest
     {
@@ -11,7 +10,7 @@ namespace SpiceSharpLex.Tests
         public void VectorTest()
         {
             var tokensStr = "v(3,0)";
-            SpiceLexer lexer = new SpiceLexer(new NLexer.SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.Equal(7, tokens.Length);
@@ -21,7 +20,7 @@ namespace SpiceSharpLex.Tests
         public void TitleTest()
         {
             var tokensStr = "Example of title";
-            SpiceLexer lexer = new SpiceLexer(new NLexer.SpiceLexerOptions { HasTitle = true });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = true });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.Equal(2, tokens.Length);

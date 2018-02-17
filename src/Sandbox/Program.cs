@@ -4,10 +4,10 @@
     using System.Diagnostics;
     using System.Linq;
     using System.Text;
-    using SpiceLex;
+    using SpiceLexer;
     using SpiceNetlist.SpiceSharpConnector;
-    using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage;
     using SpiceParser;
+    using SpiceSharp.Parser.Readers;
     using SpiceSharp.Simulations;
 
     public class Program
@@ -15,25 +15,34 @@
         public static void Main(string[] args)
         {
             StringBuilder st = new StringBuilder();
-            st.Append(@"FILTER
+            st.Append(@"Lowpass filter
 
-.SUBCKT filter input output params: C=100 R=1000 V=10
-C1 output 0 C
-R1 input output R
-V1 input 0 V
-.ENDS filter
+V1 net2 net1 dc 0 ac 24 0
+V2 net1 0 dc 24
+X1 net2 net3 lcfilter C=100
+L2 net3 out 250m
+Rload out 0 1k
 
-X1 IN OUT filter C=100 R=10 V=1
+.SUBCKT lcfilter IN OUT params: L=100 C=10
+L1 IN OUT {L*1m}
+C1 OUT 0 {C*1u}
+.ENDS lcfilter
 
-.TRAN 1e-8 10e-2
-.SAVE V(OUT)
-.end");
+* Do Simulation
+.ac lin 30 500 15k
+.save v(out)
+
+.end
+
+
+
+");
 
             var tokensStr = st.ToString();
 
             var s0 = new Stopwatch();
             s0.Start();
-            SpiceLexer lexer = new SpiceLexer(new NLexer.SpiceLexerOptions() { HasTitle = true });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions() { HasTitle = true });
             var tokensEnumerable = lexer.GetTokens(tokensStr);
             var tokens = tokensEnumerable.ToArray();
             Console.WriteLine("Lexer: " + s0.ElapsedMilliseconds + "ms");
@@ -47,21 +56,27 @@ X1 IN OUT filter C=100 R=10 V=1
             s2.Start();
             var eval = new ParseTreeEvaluator();
             var netlist = eval.Evaluate(parseTree) as SpiceNetlist.NetList;
-            Console.WriteLine("Translating to NOM (Netlist Object Model):" + s2.ElapsedMilliseconds + "ms");
+            Console.WriteLine("Translating to Netlist Object Model:" + s2.ElapsedMilliseconds + "ms");
 
             var s3 = new Stopwatch();
             s3.Start();
             var connector = new Connector();
             var n = connector.Translate(netlist);
-            Console.WriteLine("Translating NOM to SpiceSharp: " + s3.ElapsedMilliseconds + "ms");
+            Console.WriteLine("Translating  Netlist Object Model to SpiceSharp: " + s3.ElapsedMilliseconds + "ms");
 
             var sim = n.Simulations[0];
-            n.Circuit.Nodes.InitialConditions["out"] = 0.0;
 
-            var voltageExport = n.Exports[0] as VoltageExport;
+            var voltageExport = n.Exports[0] as Export;
             sim.OnExportSimulationData += (object sender, ExportDataEventArgs data) =>
             {
-                Console.WriteLine(data.Time + ";" + voltageExport.Extract() + ";");
+                try
+                {
+                    Console.WriteLine(data.Time + ";" + voltageExport.Extract() + ";");
+                }
+                catch
+                {
+                    Console.WriteLine(voltageExport.Extract() + ";");
+                }
             };
 
             sim.Run(n.Circuit);

@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceLex", "SpiceLex\SpiceLex.csproj", "{1FA2317A-9B54-4877-ABCF-2C6D31F8B738}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceLex.Tests", "SpiceLex.Tests\SpiceLex.Tests.csproj", "{9B559C57-4880-402E-A215-5D5BC7C54CC6}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceNetlist", "SpiceNetList\SpiceNetlist.csproj", "{D3E556E1-C134-47E2-BC6D-3B54B0BA4C83}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceParser", "SpiceParser\SpiceParser.csproj", "{8ED4C1D1-FD30-40D2-BBFC-86C7C9B7ADD7}"
@@ -19,7 +15,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLexer", "NLexer\NLexer.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLexer.Tests", "NLexer.Tests\NLexer.Tests.csproj", "{134418DF-D95F-4996-AAE5-2F7744C6F43A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiceParser.Tests", "SpiceParser.Tests\SpiceParser.Tests.csproj", "{CBF7BB81-1E2D-46FE-AC07-0BB0B1FF98D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceParser.Tests", "SpiceParser.Tests\SpiceParser.Tests.csproj", "{CBF7BB81-1E2D-46FE-AC07-0BB0B1FF98D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiceGrammar", "SpiceGrammar\SpiceGrammar.csproj", "{81D4B425-730E-41F0-BC6E-9DE63E25CD17}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceLexer", "SpiceLexer\SpiceLexer.csproj", "{8885F624-804D-43A8-A9D4-003D5796E7FA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceLexer.Tests", "SpiceLexer.Tests\SpiceLexer.Tests.csproj", "{47F22280-811B-4C7D-938A-263ADA895F6A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,14 +29,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1FA2317A-9B54-4877-ABCF-2C6D31F8B738}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1FA2317A-9B54-4877-ABCF-2C6D31F8B738}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1FA2317A-9B54-4877-ABCF-2C6D31F8B738}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1FA2317A-9B54-4877-ABCF-2C6D31F8B738}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9B559C57-4880-402E-A215-5D5BC7C54CC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B559C57-4880-402E-A215-5D5BC7C54CC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B559C57-4880-402E-A215-5D5BC7C54CC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B559C57-4880-402E-A215-5D5BC7C54CC6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D3E556E1-C134-47E2-BC6D-3B54B0BA4C83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D3E556E1-C134-47E2-BC6D-3B54B0BA4C83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3E556E1-C134-47E2-BC6D-3B54B0BA4C83}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -63,6 +57,18 @@ Global
 		{CBF7BB81-1E2D-46FE-AC07-0BB0B1FF98D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBF7BB81-1E2D-46FE-AC07-0BB0B1FF98D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBF7BB81-1E2D-46FE-AC07-0BB0B1FF98D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81D4B425-730E-41F0-BC6E-9DE63E25CD17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81D4B425-730E-41F0-BC6E-9DE63E25CD17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81D4B425-730E-41F0-BC6E-9DE63E25CD17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81D4B425-730E-41F0-BC6E-9DE63E25CD17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8885F624-804D-43A8-A9D4-003D5796E7FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8885F624-804D-43A8-A9D4-003D5796E7FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8885F624-804D-43A8-A9D4-003D5796E7FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8885F624-804D-43A8-A9D4-003D5796E7FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47F22280-811B-4C7D-938A-263ADA895F6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47F22280-811B-4C7D-938A-263ADA895F6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47F22280-811B-4C7D-938A-263ADA895F6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47F22280-811B-4C7D-938A-263ADA895F6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
