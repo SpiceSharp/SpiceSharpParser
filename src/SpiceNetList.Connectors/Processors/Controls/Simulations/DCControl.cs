@@ -7,6 +7,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 {
     public class DCControl : SimulationControl
     {
+        public override string Type => "dc";
+
         public override void Process(Control statement, ProcessingContext context)
         {
             int count = statement.Parameters.Count / 4;

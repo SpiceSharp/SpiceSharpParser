@@ -1,8 +1,9 @@
-﻿using SpiceSharp.Simulations;
+﻿using SpiceNetlist.SpiceObjects;
+using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 {
-    public abstract class SimulationControl : SingleControlProcessor
+    public abstract class SimulationControl : BaseControl
     {
         protected void SetBaseParameters(BaseConfiguration baseConfiguration, ProcessingContext context)
         {

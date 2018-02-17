@@ -5,36 +5,52 @@ using System.Collections.Generic;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
-    public class ControlProcessor : StatementProcessor
+    public class ControlsProcessor : StatementProcessor<Control>
     {
-        Dictionary<string, SingleControlProcessor> ControlProcessors = new Dictionary<string, SingleControlProcessor>();
+        protected List<BaseControl> controls = new List<BaseControl>();
 
-        public override void Init()
+        public ControlsProcessor()
         {
-            ControlProcessors["options"] = new OptionControl();
-            ControlProcessors["param"] = new ParamControl();
-            ControlProcessors["tran"] = new TransientControl();
-            ControlProcessors["ac"] = new ACControl();
-            ControlProcessors["dc"] = new DCControl();
-            ControlProcessors["op"] = new OPControl();
-            ControlProcessors["save"] = new SaveControl();
-            ControlProcessors["ic"] = new ICControl();
+            controls.AddRange(new List<BaseControl>()
+            {
+                new ParamControl(),
+                new OptionControl(),
+                new TransientControl(),
+                new ACControl(),
+                new DCControl(),
+                new OPControl(),
+                new SaveControl(),
+                new ICControl()
+            });
         }
 
-        public override void Process(Statement statement, ProcessingContext context)
+        public override void Process(Control statement, ProcessingContext context)
         {
-            var control = statement as Control;
-            string type = control.Name.ToLower();
+            string type = statement.Name.ToLower();
 
-            if (ControlProcessors.ContainsKey(type))
+            foreach (var control in controls)
             {
-                ControlProcessors[type].Process(control, context);
+                if (control.Type == type)
+                {
+                    control.Process(statement, context);
+                }
             }
         }
 
-        public List<string> GetOrder()
+        internal int GetSubOrder(Control c)
         {
-            return new List<string>() { "options", "param", "ic", "ac", "dc", "op", "tran", "save" };
+            int i = 0;
+            foreach (var control in controls)
+            {
+                if (control.Type == c.Name.ToLower())
+                {
+                    return i;
+                }
+
+                i++;
+            }
+
+            return 0;
         }
     }
 }

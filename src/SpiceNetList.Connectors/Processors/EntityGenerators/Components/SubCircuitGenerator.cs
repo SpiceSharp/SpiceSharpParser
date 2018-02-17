@@ -28,12 +28,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             {
                 if (statement is Component c)
                 {
-                    componentProcessor.Process(statement, newContext);
+                    componentProcessor.Process(c, newContext);
                 }
 
                 if (statement is Model m)
                 {
-                    modelProcessor.Process(statement, newContext);
+                    modelProcessor.Process(m, newContext);
                 }
             }
 

@@ -3,10 +3,19 @@ using SpiceNetlist.SpiceSharpConnector.Processors;
 
 namespace SpiceNetlist.SpiceSharpConnector
 {
-    public abstract class StatementProcessor
+    public abstract class StatementProcessor<TStatement> : IStatementProcessor
+        where TStatement : Statement
     {
-        public abstract void Process(Statement statement, ProcessingContext context);
+        public abstract void Process(TStatement statement, ProcessingContext context);
 
-        public abstract void Init();
+        public void Process(Statement statement, ProcessingContext context)
+        {
+            this.Process((TStatement)statement, context);
+        }
+    }
+
+    public interface IStatementProcessor
+    {
+        void Process(Statement statement, ProcessingContext context);
     }
 }

@@ -49,6 +49,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
                 case "vi": ve = new VoltageImaginaryExport(simulation, node, reference); break;
                 case "vm": ve = new VoltageMagnitudeExport(simulation, node, reference); break;
                 case "vdb": ve = new VoltageDecibelExport(simulation, node, reference); break;
+                case "vph":
                 case "vp": ve = new VoltagePhaseExport(simulation, node, reference); break;
             }
 
@@ -57,7 +58,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
 
         public List<string> GetGeneratedTypes()
         {
-            return new List<string>() { "v", "vr", "vi", "vm", "vdb", "vp" };
+            return new List<string>() { "v", "vr", "vi", "vm", "vdb", "vp", "vph" };
         }
     }
 }

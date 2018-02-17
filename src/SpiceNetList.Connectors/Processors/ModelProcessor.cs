@@ -6,61 +6,73 @@ using SpiceSharp.Circuits;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
-    public class ModelProcessor : StatementProcessor
+    public class ModelProcessor : StatementProcessor<Model>
     {
+        // TODO: Refactor
         protected List<EntityGenerator> Generators = new List<EntityGenerator>();
+        protected Dictionary<string, EntityGenerator> GeneratorsByType = new Dictionary<string, EntityGenerator>();
 
-        public override void Init()
+        public ModelProcessor()
         {
             Generators.Add(new RLCModelGenerator());
             Generators.Add(new DiodeModelGenerator());
             Generators.Add(new BipolarModelGenerator());
             Generators.Add(new SwitchModelGenerator());
+
+            foreach (var generator in Generators)
+            {
+                foreach (var type in generator.GetGeneratedTypes())
+                {
+                    GeneratorsByType[type] = generator;
+                }
+            }
         }
 
-        public override void Process(Statement statement, ProcessingContext context)
+        public override void Process(Model statement, ProcessingContext context)
         {
-            Model model = statement as Model;
-            string name = model.Name.ToLower();
-            if (model.Parameters.Count > 0)
+            string name = statement.Name.ToLower();
+            if (statement.Parameters.Count > 0)
             {
-                if (model.Parameters[0] is BracketParameter b)
+                if (statement.Parameters[0] is BracketParameter b)
                 {
                     var type = b.Name.ToLower();
 
-                    foreach (var generator in Generators)
+                    if (!GeneratorsByType.ContainsKey(type))
                     {
-                        if (generator.GetGeneratedTypes().Contains(type))
-                        {
-                            Entity spiceSharpModel = generator.Generate(
-                                new SpiceSharp.Identifier(context.GenerateObjectName(name)),
-                                name,
-                                type,
-                                b.Parameters,
-                                context);
+                        throw new System.Exception("Unsupported model type");
+                    }
 
-                            if (model != null)
-                            {
-                                context.AddEntity(spiceSharpModel);
-                            }
-                        }
+                    var generator = GeneratorsByType[type];
+
+                    Entity spiceSharpModel = generator.Generate(
+                        new SpiceSharp.Identifier(context.GenerateObjectName(name)),
+                        name,
+                        type,
+                        b.Parameters,
+                        context);
+
+                    if (statement != null)
+                    {
+                        context.AddEntity(spiceSharpModel);
                     }
                 }
 
-                if (model.Parameters[0] is SingleParameter single)
+                if (statement.Parameters[0] is SingleParameter single)
                 {
                     var type = single.Image;
-                    foreach (var generator in Generators)
-                    {
-                        if (generator.GetGeneratedTypes().Contains(type))
-                        {
-                            Entity spiceSharpModel = generator.Generate(new SpiceSharp.Identifier(context.GenerateObjectName(name)), name, type, model.Parameters.Skip(1), context);
 
-                            if (model != null)
-                            {
-                                context.AddEntity(spiceSharpModel);
-                            }
-                        }
+                    if (!GeneratorsByType.ContainsKey(type))
+                    {
+                        throw new System.Exception("Unsupported model type");
+                    }
+
+                    var generator = GeneratorsByType[type];
+
+                    Entity spiceSharpModel = generator.Generate(new SpiceSharp.Identifier(context.GenerateObjectName(name)), name, type, statement.Parameters.Skip(1), context);
+
+                    if (statement != null)
+                    {
+                        context.AddEntity(spiceSharpModel);
                     }
                 }
             }

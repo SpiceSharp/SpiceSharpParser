@@ -4,8 +4,10 @@ using SpiceSharp.IntegrationMethods;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
-    public class OptionControl : SingleControlProcessor
+    public class OptionControl : BaseControl
     {
+        public override string Type => "option";
+
         public override void Process(Control statement, ProcessingContext context)
         {
             foreach (var param in statement.Parameters)

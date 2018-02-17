@@ -6,17 +6,18 @@ using SpiceSharp.Circuits;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
-    public class ComponentProcessor : StatementProcessor
+    public class ComponentProcessor : StatementProcessor<Component>
     {
         private readonly ModelProcessor modelProcessor;
+
+        // TODO: Refactor
         protected List<EntityGenerator> Generators = new List<EntityGenerator>();
+        protected Dictionary<string, EntityGenerator> GeneratorsByType = new Dictionary<string, EntityGenerator>();
 
         public ComponentProcessor(ModelProcessor modelProcessor)
         {
             this.modelProcessor = modelProcessor;
-        }
-        public override void Init()
-        {
+
             var waveFormsGenerators = new EntityGenerators.Components.Waveforms.WaveformsGenerator();
 
             Generators.Add(new RLCGenerator());
@@ -26,38 +27,38 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             Generators.Add(new SubCircuitGenerator(this, modelProcessor));
             Generators.Add(new CurrentSourceGenerator(waveFormsGenerators));
             Generators.Add(new SwitchGenerator());
-        }
 
-        public override void Process(Statement statement, ProcessingContext context)
-        {
-            Component c = statement as Component;
-            string name = c.Name.ToLower();
-            string type = name[0].ToString();
-
-            bool generated = false;
             foreach (var generator in Generators)
             {
-                if (generator.GetGeneratedTypes().Contains(type))
+                foreach (var type in generator.GetGeneratedTypes())
                 {
-                    Entity entity = generator.Generate(
-                        new Identifier(context.GenerateObjectName(name)),
-                        name,
-                        type,
-                        c.PinsAndParameters,
-                        context);
-
-                    generated = true;
-
-                    if (entity != null)
-                    {
-                        context.AddEntity(entity);
-                    }
+                    GeneratorsByType[type] = generator;
                 }
             }
+        }
 
-            if (generated == false)
+        public override void Process(Component statement, ProcessingContext context)
+        {
+            string name = statement.Name.ToLower();
+            string type = name[0].ToString();
+
+            if (!GeneratorsByType.ContainsKey(type))
             {
-                throw new System.Exception("Unsupported element: " + name);
+                throw new System.Exception("Unsupported component type");
+            }
+
+            var generator = GeneratorsByType[type];
+
+            Entity entity = generator.Generate(
+                new Identifier(context.GenerateObjectName(name)),
+                name,
+                type,
+                statement.PinsAndParameters,
+                context);
+
+            if (entity != null)
+            {
+                context.AddEntity(entity);
             }
         }
     }

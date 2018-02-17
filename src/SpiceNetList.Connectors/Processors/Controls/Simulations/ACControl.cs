@@ -8,6 +8,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 {
     public class ACControl : SimulationControl
     {
+        public override string Type => "ac";
+
         public override void Process(Control statement, ProcessingContext context)
         {
             switch (statement.Parameters.Count)

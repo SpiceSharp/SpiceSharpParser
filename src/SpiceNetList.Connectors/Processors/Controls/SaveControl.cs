@@ -6,8 +6,10 @@ using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
-    public class SaveControl : SingleControlProcessor
+    public class SaveControl : BaseControl
     {
+        public override string Type => "save";
+
         public override void Process(Control statement, ProcessingContext context)
         {
             foreach (var parameter in statement.Parameters)

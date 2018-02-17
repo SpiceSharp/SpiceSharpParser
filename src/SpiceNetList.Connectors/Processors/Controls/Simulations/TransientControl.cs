@@ -7,6 +7,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 {
     public class TransientControl : SimulationControl
     {
+        public override string Type => "tran";
+
         public override void Process(Control statement, ProcessingContext context)
         {
             Transient tran = null;

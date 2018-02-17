@@ -2,8 +2,10 @@
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
-    public class ParamControl : SingleControlProcessor
+    public class ParamControl : BaseControl
     {
+        public override string Type => "param";
+
         public override void Process(Control statement, ProcessingContext context)
         {
             foreach (var param in statement.Parameters)
