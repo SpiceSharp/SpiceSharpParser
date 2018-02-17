@@ -461,11 +461,6 @@ namespace SpiceParser
                 {
                     parameters.Merge(c);
                 }
-
-                if (nt.SpiceObject is Parameter p)
-                {
-                    parameters.Add(p);
-                }
             }
             else
             {

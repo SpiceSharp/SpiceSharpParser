@@ -430,43 +430,7 @@ namespace SpiceParser
 
         private void ProcessParameterBracketContent(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, Token[] tokens, int currentTokenIndex)
         {
-            var currentToken = tokens[currentTokenIndex];
-            var nextToken = tokens[currentTokenIndex + 1];
-
-            if (nextToken.Is(SpiceToken.COMMA))
-            {
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.VECTOR, current));
-            }
-            else
-            {
-                if (nextToken.Is(SpiceToken.EQUAL))
-                {
-                    stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_EQUAL_SEQUANCE, current));
-                }
-                else
-                {
-                    if (currentToken.Is(SpiceToken.VALUE)
-                        || currentToken.Is(SpiceToken.WORD)
-                        || currentToken.Is(SpiceToken.STRING)
-                        || currentToken.Is(SpiceToken.IDENTIFIER)
-                        || currentToken.Is(SpiceToken.REFERENCE)
-                        || currentToken.Is(SpiceToken.EXPRESSION))
-                    {
-                        stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE_SEQUENCE, current));
-                    }
-                    else
-                    {
-                        if (currentToken.Is(SpiceToken.DELIMITER) && currentToken.Lexem == ")")
-                        {
-                            // follow
-                        }
-                        else
-                        {
-                            throw new ParseException("Error during parsing a parameter");
-                        }
-                    }
-                }
-            }
+            stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, current));
         }
 
         private void ProcessParameter(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, Token[] tokens, int currentTokenIndex)

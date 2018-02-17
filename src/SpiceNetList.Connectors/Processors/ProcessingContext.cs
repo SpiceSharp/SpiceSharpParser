@@ -125,10 +125,15 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                     {
                         entity.ParameterSets.SetProperty(ap.Name, this.ParseDouble(ap.Value));
                     }
+
                     catch(Exception ex)
                     {
                         this.netlist.Warnings.Add(ex.ToString());
                     }
+                }
+                else
+                {
+                    this.netlist.Warnings.Add("Unknown parameter: " + ((SingleParameter)parameter).RawValue);
                 }
             }
         }

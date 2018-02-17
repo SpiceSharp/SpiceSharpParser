@@ -19,20 +19,13 @@ namespace SpiceParser.Tests
                 new NLexer.Token((int)SpiceToken.WORD, "12")
             };
 
-            try
-            {
-                var parser = new SpiceParser();
-                ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.PARAMETER);
+            var parser = new SpiceParser();
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.PARAMETER);
 
-                var child = root.Children[0] as ParseTreeNonTerminalNode;
-                Assert.NotNull(child);
-                Assert.Equal(SpiceGrammarSymbol.PARAMETER_EQUAL, child.Name);
-                Assert.Equal(6, child.Children.Count);
-            }
-            catch (Exception ex)
-            {
-                Assert.True(false, "Exception during parsing parameter equal");
-            }
+            var child = root.Children[0] as ParseTreeNonTerminalNode;
+            Assert.NotNull(child);
+            Assert.Equal(SpiceGrammarSymbol.PARAMETER_EQUAL, child.Name);
+            Assert.Equal(6, child.Children.Count);
         }
 
         [Fact]
@@ -50,19 +43,13 @@ namespace SpiceParser.Tests
                 new NLexer.Token((int)SpiceToken.WORD, "12")
             };
 
-            try
-            {
-                var parser = new SpiceParser();
-                ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.PARAMETER);
-                var child = root.Children[0] as ParseTreeNonTerminalNode;
-                Assert.NotNull(child);
-                Assert.Equal(SpiceGrammarSymbol.PARAMETER_EQUAL, child.Name);
-                Assert.Equal(8, child.Children.Count);
-            }
-            catch (Exception ex)
-            {
-                Assert.True(false, "Exception during parsing parameter equal");
-            }
+
+            var parser = new SpiceParser();
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.PARAMETER);
+            var child = root.Children[0] as ParseTreeNonTerminalNode;
+            Assert.NotNull(child);
+            Assert.Equal(SpiceGrammarSymbol.PARAMETER_EQUAL, child.Name);
+            Assert.Equal(8, child.Children.Count);
         }
 
         [Fact]
@@ -75,28 +62,21 @@ namespace SpiceParser.Tests
                 new NLexer.Token((int)SpiceToken.VALUE, "12")
             };
 
-            try
-            {
-                var parser = new SpiceParser();
-                ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.PARAMETER);
+            var parser = new SpiceParser();
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.PARAMETER);
 
-                var child = root.Children[0] as ParseTreeNonTerminalNode;
-                Assert.NotNull(child);
-                Assert.Equal(SpiceGrammarSymbol.PARAMETER_EQUAL, child.Name);
-                Assert.Single(child.Children);
-                var paramater_equal_single = (root.Children[0] as ParseTreeNonTerminalNode).Children[0] as ParseTreeNonTerminalNode;
-                Assert.NotNull(paramater_equal_single);
-                Assert.Equal(SpiceGrammarSymbol.PARAMETER_EQUAL_SINGLE, paramater_equal_single.Name);
-            }
-            catch (Exception ex)
-            {
-                Assert.True(false, "Exception during parsing parameter equal");
-            }
+            var child = root.Children[0] as ParseTreeNonTerminalNode;
+            Assert.NotNull(child);
+            Assert.Equal(SpiceGrammarSymbol.PARAMETER_EQUAL, child.Name);
+            Assert.Single(child.Children);
+            var paramater_equal_single = (root.Children[0] as ParseTreeNonTerminalNode).Children[0] as ParseTreeNonTerminalNode;
+            Assert.NotNull(paramater_equal_single);
+            Assert.Equal(SpiceGrammarSymbol.PARAMETER_EQUAL_SINGLE, paramater_equal_single.Name);
         }
 
 
-       [Fact]
-        public void BracketSingleParametersTest()
+        [Fact]
+        public void ParameterBracketSingleParametersTest()
         {
             // pulse(4 0 1ns 1ns 1ns 20ns 40ns)
             var vectorTokens = new NLexer.Token[]
@@ -111,19 +91,12 @@ namespace SpiceParser.Tests
                 new NLexer.Token((int)SpiceToken.DELIMITER, ")")
             };
 
-            try
-            {
-                var parser = new SpiceParser();
-                ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
-            }
-            catch (Exception ex)
-            {
-                Assert.True(false, "Exception during parsing bracket parameter: " + ex.ToString());
-            }
+            var parser = new SpiceParser();
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
         }
 
         [Fact]
-        public void BracketParameterTest()
+        public void ParameterBracketTest()
         {
             var vectorTokens = new NLexer.Token[]
             {
@@ -135,24 +108,18 @@ namespace SpiceParser.Tests
                 new NLexer.Token((int)SpiceToken.DELIMITER, ")")
             };
 
-            try
-            {
-                var parser = new SpiceParser();
-                ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
+            var parser = new SpiceParser();
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
 
-                var child = tree.Children[0] as ParseTreeNonTerminalNode;
-                Assert.NotNull(child);
-                Assert.Equal(SpiceGrammarSymbol.PARAMETER_BRACKET, child.Name);
-                Assert.Equal(4, child.Children.Count);
-            }
-            catch (Exception ex)
-            {
-                Assert.True(false, "Exception during parsing bracket parameter");
-            }
+            var child = tree.Children[0] as ParseTreeNonTerminalNode;
+            Assert.NotNull(child);
+            Assert.Equal(SpiceGrammarSymbol.PARAMETER_BRACKET, child.Name);
+            Assert.Equal(4, child.Children.Count);
+
         }
 
         [Fact]
-        public void BracketParameterEqualSeqenceTest()
+        public void ParameterBracketEqualSeqenceTest()
         {
             var vectorTokens = new NLexer.Token[]
             {
@@ -167,24 +134,18 @@ namespace SpiceParser.Tests
                 new NLexer.Token((int)SpiceToken.DELIMITER, ")")
             };
 
-            try
-            {
-                var parser = new SpiceParser();
-                ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
 
-                var child = tree.Children[0] as ParseTreeNonTerminalNode;
-                Assert.NotNull(child);
-                Assert.Equal(SpiceGrammarSymbol.PARAMETER_BRACKET, child.Name);
-                Assert.Equal(4, child.Children.Count);
-            }
-            catch (Exception ex)
-            {
-                Assert.True(false, "Exception during parsing bracket parameter");
-            }
+            var parser = new SpiceParser();
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
+
+            var child = tree.Children[0] as ParseTreeNonTerminalNode;
+            Assert.NotNull(child);
+            Assert.Equal(SpiceGrammarSymbol.PARAMETER_BRACKET, child.Name);
+            Assert.Equal(4, child.Children.Count);
         }
 
         [Fact]
-        public void VectorTest()
+        public void BraketParameterVectorTest()
         {
             var vectorTokens = new NLexer.Token[]
             {
@@ -196,15 +157,35 @@ namespace SpiceParser.Tests
                 new NLexer.Token((int)SpiceToken.DELIMITER, ")")
             };
 
-            try
+            var parser = new SpiceParser();
+            ParseTreeNonTerminalNode root = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
+        }
+
+        [Fact]
+        public void BraketParameterMixedTest()
+        {
+            var vectorTokens = new NLexer.Token[]
             {
-                var parser = new SpiceParser();
-                ParseTreeNonTerminalNode root = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
-            }
-            catch (Exception ex)
-            {
-                Assert.True(false, "Exception during parsing vector tokens");
-            }
+                new NLexer.Token((int)SpiceToken.WORD, "d"),
+                new NLexer.Token((int)SpiceToken.DELIMITER, "("),
+                new NLexer.Token((int)SpiceToken.VALUE, "1"),
+                new NLexer.Token((int)SpiceToken.WORD, "tt"),
+                new NLexer.Token((int)SpiceToken.EQUAL, "="),
+                new NLexer.Token((int)SpiceToken.VALUE, "0.75ns"),
+                new NLexer.Token((int)SpiceToken.DELIMITER, ")")
+            };
+
+
+            var parser = new SpiceParser();
+            ParseTreeNonTerminalNode root = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
+
+            var child = root.Children[0] as ParseTreeNonTerminalNode;
+            Assert.NotNull(child);
+            Assert.Equal(SpiceGrammarSymbol.PARAMETER_BRACKET, child.Name);
+            Assert.Equal(4, child.Children.Count);
+            var parameters = (child.Children[2] as ParseTreeNonTerminalNode).Children[0] as ParseTreeNonTerminalNode;
+            Assert.Equal(SpiceGrammarSymbol.PARAMETERS, parameters.Name);
+            Assert.Equal(2, parameters.Children.Count);
         }
     }
 }
