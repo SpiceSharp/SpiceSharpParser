@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace SpiceNetlist.SpiceObjects
 {
-    public class Statements : SpiceObject, IEnumerable
+    public class Statements : Statement, IEnumerable
     {
         private List<Statement> list = null;
 

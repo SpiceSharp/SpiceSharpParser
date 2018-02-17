@@ -4,7 +4,7 @@ using SpiceSharp;
 
 namespace SpiceNetlist.SpiceSharpConnector
 {
-    public class Processor
+    public class Processor : StatementProcessor<Statements>
     {
         private ModelProcessor modelProcessor;
         private ComponentProcessor componentProcessor;
@@ -19,26 +19,16 @@ namespace SpiceNetlist.SpiceSharpConnector
             componentProcessor = new ComponentProcessor(modelProcessor);
         }
 
-        internal NetList Process(SpiceNetlist.NetList netlist)
+        public override void Process(Statements statements, ProcessingContext context)
         {
-            NetList result = new NetList
-            {
-                Circuit = new Circuit(),
-                Title = netlist.Title
-            };
-
-            var rootContext = new ProcessingContext(string.Empty, result);
-
-            foreach (Statement statement in netlist.Statements.OrderBy(StatementOrder))
+            foreach (Statement statement in statements.OrderBy(StatementOrder))
             {
                 var processor = GetProcessor(statement);
                 if (processor != null)
                 {
-                    processor.Process(statement, rootContext);
+                    processor.Process(statement, context);
                 }
             }
-
-            return result;
         }
 
         private int StatementOrder(Statement statement)
