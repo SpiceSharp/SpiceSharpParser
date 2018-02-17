@@ -1,4 +1,5 @@
 ﻿using SpiceGrammar;
+using SpiceLexer;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
 using Xunit;
@@ -11,14 +12,14 @@ namespace SpiceParser.Tests
         public void BracketParameterWithVectorTest()
         {
             // Arrange
-            var vectorTokens = new NLexer.Token[]
+            var vectorTokens = new SpiceToken[]
             {
-                new NLexer.Token((int)SpiceToken.WORD, "v"),
-                new NLexer.Token((int)SpiceToken.DELIMITER, "("),
-                new NLexer.Token((int)SpiceToken.WORD, "out"),
-                new NLexer.Token((int)SpiceToken.COMMA, ","),
-                new NLexer.Token((int)SpiceToken.WORD, "0"),
-                new NLexer.Token((int)SpiceToken.DELIMITER, ")")
+                new SpiceToken(SpiceTokenType.WORD, "v"),
+                new SpiceToken(SpiceTokenType.DELIMITER, "("),
+                new SpiceToken(SpiceTokenType.WORD, "out"),
+                new SpiceToken(SpiceTokenType.COMMA, ","),
+                new SpiceToken(SpiceTokenType.WORD, "0"),
+                new SpiceToken(SpiceTokenType.DELIMITER, ")")
             };
 
             var parser = new SpiceParser();
@@ -40,14 +41,14 @@ namespace SpiceParser.Tests
         public void BracketParameterWithSingleParametersTest()
         {
             // Arrange
-            var vectorTokens = new NLexer.Token[]
+            var vectorTokens = new SpiceToken[]
             {
-                new NLexer.Token((int)SpiceToken.WORD, "pulse"),
-                new NLexer.Token((int)SpiceToken.DELIMITER, "("),
-                new NLexer.Token((int)SpiceToken.VALUE, "1"),
-                new NLexer.Token((int)SpiceToken.VALUE, "2"),
-                new NLexer.Token((int)SpiceToken.VALUE, "3"),
-                new NLexer.Token((int)SpiceToken.DELIMITER, ")")
+                new SpiceToken(SpiceTokenType.WORD, "pulse"),
+                new SpiceToken(SpiceTokenType.DELIMITER, "("),
+                new SpiceToken(SpiceTokenType.VALUE, "1"),
+                new SpiceToken(SpiceTokenType.VALUE, "2"),
+                new SpiceToken(SpiceTokenType.VALUE, "3"),
+                new SpiceToken(SpiceTokenType.DELIMITER, ")")
             };
 
             var parser = new SpiceParser();
@@ -69,16 +70,16 @@ namespace SpiceParser.Tests
         public void AssigmentParameterWithVectorTest()
         {
             // Arrange
-            var vectorTokens = new NLexer.Token[]
+            var vectorTokens = new SpiceToken[]
             {
-                new NLexer.Token((int)SpiceToken.WORD, "v"),
-                new NLexer.Token((int)SpiceToken.DELIMITER, "("),
-                new NLexer.Token((int)SpiceToken.WORD, "out"),
-                new NLexer.Token((int)SpiceToken.COMMA, ","),
-                new NLexer.Token((int)SpiceToken.WORD, "0"),
-                new NLexer.Token((int)SpiceToken.DELIMITER, ")"),
-                new NLexer.Token((int)SpiceToken.EQUAL, "="),
-                new NLexer.Token((int)SpiceToken.VALUE, "13"),
+                new SpiceToken(SpiceTokenType.WORD, "v"),
+                new SpiceToken(SpiceTokenType.DELIMITER, "("),
+                new SpiceToken(SpiceTokenType.WORD, "out"),
+                new SpiceToken(SpiceTokenType.COMMA, ","),
+                new SpiceToken(SpiceTokenType.WORD, "0"),
+                new SpiceToken(SpiceTokenType.DELIMITER, ")"),
+                new SpiceToken(SpiceTokenType.EQUAL, "="),
+                new SpiceToken(SpiceTokenType.VALUE, "13"),
             };
 
             var parser = new SpiceParser();
@@ -99,17 +100,17 @@ namespace SpiceParser.Tests
         public void BracketParameterWithAssigmentsTest()
         {
             // Arrange
-            var vectorTokens = new NLexer.Token[]
+            var vectorTokens = new SpiceToken[]
             {
-                new NLexer.Token((int)SpiceToken.WORD, "v"),
-                new NLexer.Token((int)SpiceToken.DELIMITER, "("),
-                new NLexer.Token((int)SpiceToken.WORD, "n1"),
-                new NLexer.Token((int)SpiceToken.EQUAL, "="),
-                new NLexer.Token((int)SpiceToken.VALUE, "2"),
-                new NLexer.Token((int)SpiceToken.WORD, "n3"),
-                new NLexer.Token((int)SpiceToken.EQUAL, "="),
-                new NLexer.Token((int)SpiceToken.VALUE, "3"),
-                new NLexer.Token((int)SpiceToken.DELIMITER, ")")
+                new SpiceToken(SpiceTokenType.WORD, "v"),
+                new SpiceToken(SpiceTokenType.DELIMITER, "("),
+                new SpiceToken(SpiceTokenType.WORD, "n1"),
+                new SpiceToken(SpiceTokenType.EQUAL, "="),
+                new SpiceToken(SpiceTokenType.VALUE, "2"),
+                new SpiceToken(SpiceTokenType.WORD, "n3"),
+                new SpiceToken(SpiceTokenType.EQUAL, "="),
+                new SpiceToken(SpiceTokenType.VALUE, "3"),
+                new SpiceToken(SpiceTokenType.DELIMITER, ")")
             };
 
             var parser = new SpiceParser();

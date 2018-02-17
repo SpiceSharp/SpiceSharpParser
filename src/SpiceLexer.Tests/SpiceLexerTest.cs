@@ -25,8 +25,18 @@ namespace SpiceLexer.Tests
 
             Assert.Equal(2, tokens.Length);
 
-            Assert.True(tokens[0].TokenType == (int)SpiceToken.TITLE);
-            Assert.True(tokens[1].TokenType == -1);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.TITLE);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
+        public void LineContinuationTest()
+        {
+            var tokensStr = "Example of title\nseq.part1\n+seq.part2\n+seq.part3\n";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = true });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.Equal(7, tokens.Length);
         }
     }
 }

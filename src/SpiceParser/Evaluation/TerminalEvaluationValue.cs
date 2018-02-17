@@ -1,4 +1,4 @@
-﻿using NLexer;
+﻿using SpiceLexer;
 
 namespace SpiceParser.Evaluation
 {
@@ -10,6 +10,6 @@ namespace SpiceParser.Evaluation
         /// <summary>
         /// Gets or sets value of terminal node
         /// </summary>
-        public Token Token { get; set; }
+        public SpiceToken Token { get; set; }
     }
 }

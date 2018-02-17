@@ -1,6 +1,6 @@
 ﻿namespace SpiceGrammar
 {
-    public enum SpiceToken
+    public enum SpiceTokenType
     {
         EOF = -1,
         ASTERIKS = 0,

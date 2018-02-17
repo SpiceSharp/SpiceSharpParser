@@ -1,4 +1,4 @@
-﻿using NLexer;
+﻿using SpiceLexer;
 
 namespace SpiceParser
 {
@@ -10,7 +10,7 @@ namespace SpiceParser
         /// <summary>
         /// Initializes a new instance of the <see cref="ParseTreeTerminalNode"/> class.
         /// </summary>
-        public ParseTreeTerminalNode(Token token, ParseTreeNonTerminalNode parent)
+        public ParseTreeTerminalNode(SpiceToken token, ParseTreeNonTerminalNode parent)
             : base(parent)
         {
             this.Token = token;
@@ -19,7 +19,7 @@ namespace SpiceParser
         /// <summary>
         /// Gets the token for the node
         /// </summary>
-        public Token Token { get; }
+        public SpiceToken Token { get; }
 
         /// <summary>
         /// Returns a string representation of the parse tree node

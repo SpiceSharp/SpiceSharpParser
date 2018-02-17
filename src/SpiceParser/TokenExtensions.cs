@@ -1,13 +1,14 @@
 ﻿using NLexer;
 using SpiceGrammar;
+using SpiceLexer;
 
 namespace SpiceParser
 {
     public static class TokenExtensions
     {
-        public static bool Is(this Token token, SpiceToken type)
+        public static bool Is(this SpiceToken token, SpiceTokenType type)
         {
-            return token.TokenType == (int)type;
+            return token.SpiceTokenType == type;
         }
 
         public static bool Equal(this Token token, string value, bool caseInsensitive)

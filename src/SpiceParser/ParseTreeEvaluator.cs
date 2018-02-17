@@ -199,15 +199,15 @@ namespace SpiceParser
                 var rawValue = t.Token.Lexem;
                 switch (t.Token.TokenType)
                 {
-                    case (int)SpiceToken.REFERENCE:
+                    case (int)SpiceTokenType.REFERENCE:
                         return new ReferenceParameter() { RawValue = rawValue };
-                    case (int)SpiceToken.VALUE:
+                    case (int)SpiceTokenType.VALUE:
                         return new ValueParameter() { RawValue = rawValue };
-                    case (int)SpiceToken.WORD:
+                    case (int)SpiceTokenType.WORD:
                         return new WordParameter() { RawValue = rawValue };
-                    case (int)SpiceToken.IDENTIFIER:
+                    case (int)SpiceTokenType.IDENTIFIER:
                         return new IdentifierParameter() { RawValue = rawValue };
-                    case (int)SpiceToken.EXPRESSION:
+                    case (int)SpiceTokenType.EXPRESSION:
                         return new ExpressionParameter() { RawValue = rawValue };
                 }
             }
@@ -662,7 +662,7 @@ namespace SpiceParser
                     }
                     else
                     {
-                        if (childrenValues[0] is TerminalEvaluationValue t1 && t1.Token.Is(SpiceToken.END))
+                        if (childrenValues[0] is TerminalEvaluationValue t1 && t1.Token.Is(SpiceTokenType.END))
                         {
                             // skip
                         }
