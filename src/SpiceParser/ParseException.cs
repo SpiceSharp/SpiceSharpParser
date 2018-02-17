@@ -2,21 +2,19 @@
 
 namespace SpiceParser
 {
-    [Serializable]
     public class ParseException : Exception
     {
-        public ParseException()
-        {
-        }
-
-        public ParseException(string message)
+        public ParseException(string message, int lineNumber)
             : base(message)
         {
+            LineNumber = lineNumber;
         }
 
-        public ParseException(string message, Exception inner)
-            : base(message, inner)
+        public int LineNumber { get; }
+
+        public override string ToString()
         {
+            return "Parse exception in line= " + LineNumber + ", message=" + Message;
         }
     }
 }

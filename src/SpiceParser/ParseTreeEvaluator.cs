@@ -79,7 +79,7 @@ namespace SpiceParser
 
                     if (!evaluators.ContainsKey(nt.Name))
                     {
-                        throw new ParseException("Unsupported evaluation of parse tree node");
+                        throw new EvaluationException("Unsupported evaluation of parse tree node");
                     }
 
                     var treeNodeResult = evaluators[nt.Name](items);
@@ -119,7 +119,7 @@ namespace SpiceParser
                 return t.Token.Lexem;
             }
 
-            throw new ParseException("Wrong evaluation type");
+            throw new EvaluationException("Wrong evaluation type");
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace SpiceParser
                 }
             }
 
-            throw new ParseException("Wrong evaluation type");
+            throw new EvaluationException("Wrong evaluation type");
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace SpiceParser
                 }
             }
 
-            throw new ParseException();
+            throw new EvaluationException("Error during translating parse tree to Spice Object Model");
         }
 
         /// <summary>
@@ -247,7 +247,7 @@ namespace SpiceParser
         {
             if (childrenValues.Count != 2 && childrenValues.Count != 3)
             {
-                throw new ParseException();
+                throw new EvaluationException("Error during translating parse tree to Spice Object Model");
             }
 
             var component = new Component();
@@ -276,7 +276,7 @@ namespace SpiceParser
         {
             if (childrenValues.Count < 3)
             {
-                throw new ParseException();
+                throw new EvaluationException("Error during translating parse tree to Spice Object Model");
             }
 
             var subCkt = new SubCircuit();
@@ -346,7 +346,7 @@ namespace SpiceParser
                 return GetSpiceObject<Statement>(childrenValues, 0);
             }
 
-            throw new ParseException();
+            throw new EvaluationException("Error during translating parse tree to Spice Object Model");
         }
 
         /// <summary>
@@ -436,7 +436,7 @@ namespace SpiceParser
             }
             else
             {
-                throw new ParseException();
+                throw new EvaluationException("Error during translating parse tree to Spice Object Model");
             }
 
             return parameter;
@@ -464,12 +464,16 @@ namespace SpiceParser
             }
             else
             {
-                throw new ParseException();
+                throw new EvaluationException("Error during translating parse tree to Spice Object Model");
             }
 
             return parameters;
         }
 
+        /// <summary>
+        /// Returns new instance of <see cref="ParameterCollection"/>
+        /// from the values of children nodes of <see cref="SpiceGrammarSymbol.PARAMETER_EQUAL_SEQUANCE_CONTINUE"/> parse tree node
+        /// </summary>
         private SpiceObject CreateAssigmentParametersContinue(List<EvaluationValue> childrenValues)
         {
             if (childrenValues.Count == 2)
@@ -492,12 +496,16 @@ namespace SpiceParser
             {
                 if (childrenValues.Count != 0)
                 {
-                    throw new ParseException();
+                    throw new EvaluationException("Error during translating parse tree to Spice Object Model");
                 }
                 return new ParameterCollection();
             }
         }
 
+        /// <summary>
+        /// Returns new instance of <see cref="ParameterCollection"/>
+        /// from the values of children nodes of <see cref="SpiceGrammarSymbol.PARAMETER_EQUAL_SEQUANCE"/> parse tree node
+        /// </summary>
         private SpiceObject CreateAssigmentParameters(List<EvaluationValue> childrenValues)
         {
             if (childrenValues.Count == 2)
@@ -518,10 +526,14 @@ namespace SpiceParser
             }
             else
             {
-                throw new ParseException();
+                throw new EvaluationException("Error during translating parse tree to Spice Object Model");
             }
         }
 
+        /// <summary>
+        /// Returns new instance of <see cref="ParameterCollection"/>
+        /// from the values of children nodes of <see cref="SpiceGrammarSymbol.PARAMETER_SINGLE_SEQUENCE"/> parse tree node
+        /// </summary>
         private SpiceObject CreateSingleParametersContinue(List<EvaluationValue> childrenValues)
         {
             if (childrenValues.Count == 2)
@@ -544,12 +556,16 @@ namespace SpiceParser
             {
                 if (childrenValues.Count != 0)
                 {
-                    throw new ParseException();
+                    throw new EvaluationException("Error during translating parse tree to Spice Object Model");
                 }
                 return new ParameterCollection();
             }
         }
 
+        /// <summary>
+        /// Returns new instance of <see cref="ParameterCollection"/>
+        /// from the values of children nodes of <see cref="SpiceGrammarSymbol.PARAMETER_EQUAL_SEQUANCE"/> parse tree node
+        /// </summary>
         private SpiceObject CreateSingleParameters(List<EvaluationValue> childrenValues)
         {
             if (childrenValues.Count == 2)
@@ -570,11 +586,14 @@ namespace SpiceParser
             }
             else
             {
-                throw new ParseException();
+                throw new EvaluationException("Error during translating parse tree to Spice Object Model");
             }
         }
 
-
+        /// <summary>
+        /// Returns new instance of <see cref="AssignmentParameter"/>
+        /// from the values of children nodes of <see cref="SpiceGrammarSymbol.PARAMETER_EQUAL_SINGLE"/> parse tree node
+        /// </summary>
         private SpiceObject CreateAssigmentSimpleParameter(List<EvaluationValue> childrenValues)
         {
             if (childrenValues.Count == 3)
@@ -587,10 +606,14 @@ namespace SpiceParser
             }
             else
             {
-                throw new ParseException();
+                throw new EvaluationException("Error during translating parse tree to Spice Object Model");
             }
         }
 
+        /// <summary>
+        /// Returns new instance of <see cref="AssignmentParameter"/>
+        /// from the values of children nodes of <see cref="SpiceGrammarSymbol.PARAMETER_EQUAL"/> parse tree node
+        /// </summary>
         private SpiceObject CreateAssigmentParameter(List<EvaluationValue> childrenValues)
         {
             if (childrenValues.Count == 1)
@@ -601,7 +624,7 @@ namespace SpiceParser
                 }
                 else
                 {
-                    throw new ParseException();
+                    throw new EvaluationException("Error during translating parse tree to Spice Object Model");
                 }
             }
             else
@@ -628,7 +651,7 @@ namespace SpiceParser
 
                     return assigmentParameter;
                 }
-                throw new ParseException();
+                throw new EvaluationException("Error during translating parse tree to Spice Object Model");
             }
         }
 
@@ -668,7 +691,7 @@ namespace SpiceParser
                         }
                         else
                         {
-                            throw new ParseException();
+                            throw new EvaluationException("Error during translating parse tree to Spice Object Model");
                         }
                     }
                 }
