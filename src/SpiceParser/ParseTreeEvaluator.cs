@@ -595,7 +595,11 @@ namespace SpiceParser
 
             if (values.Count == 2)
             {
-                statements.Add(values.GetSpiceObject<Statement>(0));
+                if (values.TryToGetSpiceObject<Statement>(0, out Statement st))
+                {
+                    statements.Add(st);
+                }
+
                 statements.Merge(values.GetSpiceObject<Statements>(1));
             }
             else
