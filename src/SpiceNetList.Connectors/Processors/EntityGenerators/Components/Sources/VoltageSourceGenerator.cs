@@ -80,7 +80,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 }
                 else if (i == 2 && (parameters[i] is ValueParameter vp || parameters[i] is WordParameter w))
                 {
-                    vsrc.ParameterSets.SetProperty("dc", context.ParseDouble(parameters.GetString(i)));
+                    if ((parameters[i] as SingleParameter).RawValue != "dc")
+                    {
+                        vsrc.ParameterSets.SetProperty("dc", context.ParseDouble(parameters.GetString(i)));
+                    }
                 }
 
                 // AC specification
