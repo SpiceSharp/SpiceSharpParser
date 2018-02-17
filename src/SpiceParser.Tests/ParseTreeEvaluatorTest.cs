@@ -9,6 +9,54 @@ namespace SpiceParser.Tests
     public class ParseTreeEvaluatorTest
     {
         [Fact]
+        public void VectorTest()
+        {
+            // Arrange
+            var vectorTokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.VALUE, "1"),
+                new SpiceToken(SpiceTokenType.COMMA, ","),
+                new SpiceToken(SpiceTokenType.VALUE, "2"),
+                new SpiceToken(SpiceTokenType.COMMA, ","),
+                new SpiceToken(SpiceTokenType.VALUE, "3"),
+            };
+
+            var parser = new SpiceParser();
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.VECTOR);
+
+            // Act
+            ParseTreeEvaluator eval = new ParseTreeEvaluator();
+            var spiceObject = eval.Evaluate(tree) as VectorParameter;
+
+            Assert.Equal(3, spiceObject.Elements.Count);
+        }
+
+        [Fact]
+        public void VectorLongerTest()
+        {
+            // Arrange
+            var vectorTokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.VALUE, "1"),
+                new SpiceToken(SpiceTokenType.COMMA, ","),
+                new SpiceToken(SpiceTokenType.VALUE, "2"),
+                new SpiceToken(SpiceTokenType.COMMA, ","),
+                new SpiceToken(SpiceTokenType.VALUE, "3"),
+                new SpiceToken(SpiceTokenType.COMMA, ","),
+                new SpiceToken(SpiceTokenType.VALUE, "4"),
+            };
+
+            var parser = new SpiceParser();
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.VECTOR);
+
+            // Act
+            ParseTreeEvaluator eval = new ParseTreeEvaluator();
+            var spiceObject = eval.Evaluate(tree) as VectorParameter;
+
+            Assert.Equal(4, spiceObject.Elements.Count);
+        }
+
+        [Fact]
         public void BracketParameterWithVectorTest()
         {
             // Arrange

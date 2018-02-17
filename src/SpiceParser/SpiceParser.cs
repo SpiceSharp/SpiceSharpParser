@@ -252,6 +252,8 @@ namespace SpiceParser
 
         private void ProcessVectorContinue(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
+            if (currentTokenIndex >= tokens.Length) return; // empty
+
             var currentToken = tokens[currentTokenIndex];
 
             if (currentToken.Is(SpiceTokenType.DELIMITER) && currentToken.Lexem == ")")
