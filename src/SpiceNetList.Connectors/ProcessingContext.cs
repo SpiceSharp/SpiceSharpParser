@@ -8,7 +8,7 @@ using SpiceSharp.Circuits;
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
 
-namespace SpiceNetlist.SpiceSharpConnector.Processors
+namespace SpiceNetlist.SpiceSharpConnector
 {
     public class ProcessingContext
     {

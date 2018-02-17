@@ -1,6 +1,6 @@
 ﻿using SpiceSharp.IntegrationMethods;
 
-namespace SpiceNetlist.SpiceSharpConnector.Processors
+namespace SpiceNetlist.SpiceSharpConnector
 {
     public class GlobalConfiguration
     {

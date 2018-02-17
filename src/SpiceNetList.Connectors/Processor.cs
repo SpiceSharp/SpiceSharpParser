@@ -1,11 +1,10 @@
-﻿using System;
-using SpiceNetlist.SpiceObjects;
+﻿using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceSharpConnector.Processors;
 using SpiceSharp;
 
 namespace SpiceNetlist.SpiceSharpConnector
 {
-    class Processor
+    public class Processor
     {
         private ModelProcessor modelProcessor;
         private ComponentProcessor componentProcessor;
