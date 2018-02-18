@@ -10,17 +10,16 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         protected EntityGeneratorRegistry registry = new EntityGeneratorRegistry();
         private ModelProcessor modelProcessor;
 
-        public ComponentProcessor(ModelProcessor modelProcessor)
+        public ComponentProcessor(ModelProcessor modelProcessor, WaveformGenerator waveformGenerator)
         {
             this.modelProcessor = modelProcessor;
 
-            var waveFormsGenerators = new EntityGenerators.Components.Waveforms.WaveformsGenerator();
             registry.Add(new RLCGenerator());
-            registry.Add(new VoltageSourceGenerator(waveFormsGenerators));
+            registry.Add(new VoltageSourceGenerator(waveformGenerator));
             registry.Add(new BipolarJunctionTransistorGenerator());
             registry.Add(new DiodeGenerator());
             registry.Add(new SubCircuitGenerator(this, modelProcessor));
-            registry.Add(new CurrentSourceGenerator(waveFormsGenerators));
+            registry.Add(new CurrentSourceGenerator(waveformGenerator));
             registry.Add(new SwitchGenerator());
         }
 

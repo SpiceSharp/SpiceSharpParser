@@ -1,7 +1,7 @@
 ﻿using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceSharp.Components;
 
-namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components.Waveforms
+namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
     public class SineGenerator
     {

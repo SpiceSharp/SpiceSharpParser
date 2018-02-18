@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
-using SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components.Waveforms;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
@@ -11,9 +10,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 {
     public class VoltageSourceGenerator : EntityGenerator
     {
-        private readonly WaveformsGenerator waveFormGenerator;
+        private readonly WaveformGenerator waveFormGenerator;
 
-        public VoltageSourceGenerator(WaveformsGenerator waveFormGenerator)
+        public VoltageSourceGenerator(WaveformGenerator waveFormGenerator)
         {
             this.waveFormGenerator = waveFormGenerator;
         }

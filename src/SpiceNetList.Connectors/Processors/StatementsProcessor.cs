@@ -8,13 +8,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         private ComponentProcessor componentProcessor;
         private SubcircuitDefinitionProcessor subcircuitDefinitionProcessor;
         private ControlProcessor controlProcessor;
+        private WaveformGenerator waveformGenerator;
 
         public StatementsProcessor()
         {
             modelProcessor = new ModelProcessor();
             controlProcessor = new ControlProcessor();
             subcircuitDefinitionProcessor = new SubcircuitDefinitionProcessor();
-            componentProcessor = new ComponentProcessor(modelProcessor);
+            componentProcessor = new ComponentProcessor(modelProcessor, waveformGenerator);
         }
 
         public override void Process(Statements statements, ProcessingContext context)

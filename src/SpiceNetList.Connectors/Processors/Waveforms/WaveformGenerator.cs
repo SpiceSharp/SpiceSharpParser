@@ -1,15 +1,14 @@
-﻿using SpiceNetlist.SpiceObjects;
-using SpiceNetlist.SpiceObjects.Parameters;
+﻿using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceSharp.Components;
 
-namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components.Waveforms
+namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
-    public class WaveformsGenerator
+    public class WaveformGenerator
     {
         private PulseGenerator pulseGenerator;
         private SineGenerator sineGeneator;
 
-        public WaveformsGenerator()
+        public WaveformGenerator()
         {
             pulseGenerator = new PulseGenerator();
             sineGeneator = new SineGenerator();
