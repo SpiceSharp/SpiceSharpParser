@@ -1,41 +1,32 @@
 ﻿using SpiceNetlist.SpiceObjects;
-using SpiceNetlist.SpiceSharpConnector.Processors.Controls;
-using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
     public class ControlProcessor : StatementProcessor<Control>
     {
-        protected ControlsRegistry registry = new ControlsRegistry();
-
-        public ControlProcessor()
+        public ControlProcessor(ControlRegistry registry)
         {
-            registry.Add(new ParamControl());
-            registry.Add(new OptionControl());
-            registry.Add(new TransientControl());
-            registry.Add(new ACControl());
-            registry.Add(new DCControl());
-            registry.Add(new OPControl());
-            registry.Add(new SaveControl());
-            registry.Add(new ICControl());
+            Registry = registry;
         }
+
+        public ControlRegistry Registry { get; }
 
         public override void Process(Control statement, ProcessingContext context)
         {
             string type = statement.Name.ToLower();
 
-            if (!registry.Supports(type))
+            if (!Registry.Supports(type))
             {
                 throw new System.Exception("Unsupported control");
             }
 
-            registry.GetControl(type).Process(statement, context);
+            Registry.GetControl(type).Process(statement, context);
         }
 
         internal int GetSubOrder(Control statement)
         {
             string type = statement.Name.ToLower();
-            return registry.IndexOf(type);
+            return Registry.IndexOf(type);
         }
     }
 }

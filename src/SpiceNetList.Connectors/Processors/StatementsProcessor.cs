@@ -4,22 +4,34 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
     public class StatementsProcessor : StatementProcessor<Statements>
     {
-        private ModelProcessor modelProcessor;
-        private ComponentProcessor componentProcessor;
-        private SubcircuitDefinitionProcessor subcircuitDefinitionProcessor;
-        private ControlProcessor controlProcessor;
-        private WaveformGenerator waveformGenerator;
-        private CommentProcessor commentProcessor;
-
-        public StatementsProcessor()
+        public StatementsProcessor(EntityGeneratorRegistry modelRegistry, EntityGeneratorRegistry componentRegistry, ControlRegistry controlsRegistry, WaveformRegistry waveformsRegistry)
         {
-            modelProcessor = new ModelProcessor();
-            controlProcessor = new ControlProcessor();
-            subcircuitDefinitionProcessor = new SubcircuitDefinitionProcessor();
-            componentProcessor = new ComponentProcessor(modelProcessor, waveformGenerator);
-            commentProcessor = new CommentProcessor();
+            ModelProcessor = new ModelProcessor(modelRegistry);
+            WaveformProcessor = new WaveformProcessor(waveformsRegistry);
+            ControlProcessor = new ControlProcessor(controlsRegistry);
+
+            SubcircuitDefinitionProcessor = new SubcircuitDefinitionProcessor();
+            ComponentProcessor = new ComponentProcessor(ModelProcessor, WaveformProcessor, componentRegistry);
+            CommentProcessor = new CommentProcessor();
         }
 
+        public ModelProcessor ModelProcessor { get; }
+
+        public WaveformProcessor WaveformProcessor { get; }
+
+        public ComponentProcessor ComponentProcessor { get; }
+
+        public SubcircuitDefinitionProcessor SubcircuitDefinitionProcessor { get; }
+
+        public ControlProcessor ControlProcessor { get; }
+
+        public CommentProcessor CommentProcessor { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="statements"></param>
+        /// <param name="context"></param>
         public override void Process(Statements statements, ProcessingContext context)
         {
             foreach (Statement statement in statements.OrderBy(StatementOrder))
@@ -51,7 +63,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
             if (statement is Control c)
             {
-                return 0 + controlProcessor.GetSubOrder(c);
+                return 0 + ControlProcessor.GetSubOrder(c);
             }
 
             if (statement is CommentLine)
@@ -66,27 +78,27 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         {
             if (statement is Model)
             {
-                return modelProcessor;
+                return ModelProcessor;
             }
 
             if (statement is Component)
             {
-                return componentProcessor;
+                return ComponentProcessor;
             }
 
             if (statement is SubCircuit)
             {
-                return subcircuitDefinitionProcessor;
+                return SubcircuitDefinitionProcessor;
             }
 
             if (statement is Control)
             {
-                return controlProcessor;
+                return ControlProcessor;
             }
 
             if (statement is CommentLine)
             {
-                return commentProcessor;
+                return CommentProcessor;
             }
 
             throw new System.Exception("Unsupported statement");

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using SpiceNetlist.SpiceSharpConnector.Processors;
 
-namespace SpiceNetlist.SpiceSharpConnector.Processors
+namespace SpiceNetlist.SpiceSharpConnector
 {
     public class EntityGeneratorRegistry
     {
@@ -32,7 +33,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             return generatorsByType.ContainsKey(type);
         }
 
-        internal EntityGenerator GetGenerator(string type)
+        public EntityGenerator GetGenerator(string type)
         {
             return generatorsByType[type];
         }

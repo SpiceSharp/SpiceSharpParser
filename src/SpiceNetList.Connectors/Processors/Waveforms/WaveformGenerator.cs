@@ -1,32 +1,12 @@
 ﻿using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceSharp.Components;
 
-namespace SpiceNetlist.SpiceSharpConnector.Processors
+namespace SpiceNetlist.SpiceSharpConnector.Processors.Waveforms
 {
-    public class WaveformGenerator
+    public abstract class WaveformGenerator
     {
-        private PulseGenerator pulseGenerator;
-        private SineGenerator sineGeneator;
+        public abstract string Type { get; }
 
-        public WaveformGenerator()
-        {
-            pulseGenerator = new PulseGenerator();
-            sineGeneator = new SineGenerator();
-        }
-
-        public Waveform Generate(BracketParameter cp, ProcessingContext context)
-        {
-            if (cp.Name.ToLower() == "sine")
-            {
-                return sineGeneator.Generate(cp, context);
-            }
-
-            if (cp.Name.ToLower() == "pulse")
-            {
-                return pulseGenerator.Generate(cp, context);
-            }
-
-            throw new System.Exception("Unsupported waveform");
-        }
+        public abstract Waveform Generate(BracketParameter bracketParameter, ProcessingContext context);
     }
 }

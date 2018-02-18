@@ -1,11 +1,13 @@
 ﻿using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceSharp.Components;
 
-namespace SpiceNetlist.SpiceSharpConnector.Processors
+namespace SpiceNetlist.SpiceSharpConnector.Processors.Waveforms
 {
-    public class SineGenerator
+    public class SineGenerator : WaveformGenerator
     {
-        internal Waveform Generate(BracketParameter bracketParameter, ProcessingContext context)
+        public override string Type => "sine";
+
+        public override Waveform Generate(BracketParameter bracketParameter, ProcessingContext context)
         {
             var sine = new Sine();
 

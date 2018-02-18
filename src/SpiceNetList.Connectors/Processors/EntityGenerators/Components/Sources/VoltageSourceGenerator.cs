@@ -10,9 +10,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 {
     public class VoltageSourceGenerator : EntityGenerator
     {
-        private readonly WaveformGenerator waveFormGenerator;
+        private readonly WaveformProcessor waveFormGenerator;
 
-        public VoltageSourceGenerator(WaveformGenerator waveFormGenerator)
+        public VoltageSourceGenerator(WaveformProcessor waveFormGenerator)
         {
             this.waveFormGenerator = waveFormGenerator;
         }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
-using SpiceNetlist.SpiceSharpConnector.Expressions;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Parser.Readers;
@@ -22,7 +21,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             this.AvailableParameters = new Dictionary<string, double>();
         }
 
-        public ProcessingContext(string contextName, ProcessingContext parent, SubCircuit currentSubciruit, List<string> pinInstanceNames, Dictionary<string, double> availableParameters)
+        public ProcessingContext(string contextName, ProcessingContext parent, SubCircuit currentSubciruit, List<string> pinInstanceNames, Dictionary<string, double> availableParameters) 
         {
             this.ContextName = contextName;
             this.Netlist = parent.Netlist;
@@ -158,8 +157,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             {
                 return AvailableParameters[value];
             }
-
-            SpiceExpression spiceExpressionParser = new SpiceExpression();
+            var spiceExpressionParser = new SpiceSharpConnector.Expressions.SpiceExpression();
             spiceExpressionParser.Parameters = AvailableParameters;
 
             return spiceExpressionParser.Parse(value.Trim('{', '}'));
@@ -262,6 +260,6 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             }
 
             return (Path + pinName).ToLower();
-        }        
+        }
     }
 }

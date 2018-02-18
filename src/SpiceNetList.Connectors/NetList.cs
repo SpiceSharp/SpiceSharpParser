@@ -4,6 +4,9 @@ using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector
 {
+    /// <summary>
+    /// A netlist
+    /// </summary>
     public class NetList
     {
         public string Title { get; set; }

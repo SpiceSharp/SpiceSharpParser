@@ -1,32 +1,17 @@
-﻿using System.Collections.Generic;
-using SpiceNetlist.SpiceObjects;
+﻿using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
-using SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models;
 using SpiceSharp.Circuits;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
     public class ModelProcessor : StatementProcessor<Model>
     {
-        // TODO: Refactor
-        protected List<EntityGenerator> Generators = new List<EntityGenerator>();
-        protected Dictionary<string, EntityGenerator> GeneratorsByType = new Dictionary<string, EntityGenerator>();
-
-        public ModelProcessor()
+        public ModelProcessor(EntityGeneratorRegistry registry)
         {
-            Generators.Add(new RLCModelGenerator());
-            Generators.Add(new DiodeModelGenerator());
-            Generators.Add(new BipolarModelGenerator());
-            Generators.Add(new SwitchModelGenerator());
-
-            foreach (var generator in Generators)
-            {
-                foreach (var type in generator.GetGeneratedTypes())
-                {
-                    GeneratorsByType[type] = generator;
-                }
-            }
+            Registry = registry;
         }
+
+        public EntityGeneratorRegistry Registry { get; }
 
         public override void Process(Model statement, ProcessingContext context)
         {
@@ -37,12 +22,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                 {
                     var type = b.Name.ToLower();
 
-                    if (!GeneratorsByType.ContainsKey(type))
+                    if (!Registry.Supports(type))
                     {
                         throw new System.Exception("Unsupported model type");
                     }
 
-                    var generator = GeneratorsByType[type];
+                    var generator = Registry.GetGenerator(type);
 
                     Entity spiceSharpModel = generator.Generate(
                         new SpiceSharp.Identifier(context.GenerateObjectName(name)),
@@ -61,12 +46,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                 {
                     var type = single.Image;
 
-                    if (!GeneratorsByType.ContainsKey(type))
+                    if (!Registry.Supports(type))
                     {
                         throw new System.Exception("Unsupported model type");
                     }
 
-                    var generator = GeneratorsByType[type];
+                    var generator = Registry.GetGenerator(type);
 
                     Entity spiceSharpModel = generator.Generate(new SpiceSharp.Identifier(context.GenerateObjectName(name)), name, type, statement.Parameters.Skip(1), context);
 

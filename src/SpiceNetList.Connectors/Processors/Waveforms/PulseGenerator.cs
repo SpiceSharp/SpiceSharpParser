@@ -1,11 +1,14 @@
 ﻿using SpiceNetlist.SpiceObjects.Parameters;
+using SpiceNetlist.SpiceSharpConnector.Processors.Waveforms;
 using SpiceSharp.Components;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
-    public class PulseGenerator
+    public class PulseGenerator : WaveformGenerator
     {
-        internal Waveform Generate(BracketParameter bracketParam, ProcessingContext context)
+        public override string Type => "pulse";
+
+        public override Waveform Generate(BracketParameter bracketParam, ProcessingContext context)
         {
             var w = new Pulse();
 

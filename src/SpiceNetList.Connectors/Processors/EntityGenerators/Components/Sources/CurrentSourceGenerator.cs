@@ -10,9 +10,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 {
     public class CurrentSourceGenerator : EntityGenerator
     {
-        private readonly WaveformGenerator waveFormGenerator;
+        private readonly WaveformProcessor waveFormGenerator;
 
-        public CurrentSourceGenerator(WaveformGenerator waveFormGenerator)
+        public CurrentSourceGenerator(WaveformProcessor waveFormGenerator)
         {
             this.waveFormGenerator = waveFormGenerator;
         }

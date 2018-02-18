@@ -1,16 +1,16 @@
-﻿using SpiceNetlist.SpiceSharpConnector.Processors.Controls;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SpiceNetlist.SpiceSharpConnector.Processors.Controls;
 
-namespace SpiceNetlist.SpiceSharpConnector.Processors
+namespace SpiceNetlist.SpiceSharpConnector
 {
-    public class ControlsRegistry
+    public class ControlRegistry
     {
         private List<BaseControl> controls = new List<BaseControl>();
         private List<string> controlsType = new List<string>();
 
         private Dictionary<string, BaseControl> controlsByType = new Dictionary<string, BaseControl>();
 
-        public ControlsRegistry()
+        public ControlRegistry()
         {
         }
 
@@ -25,12 +25,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             return controlsByType.ContainsKey(type);
         }
 
-        internal BaseControl GetControl(string type)
+        public BaseControl GetControl(string type)
         {
             return controlsByType[type];
         }
 
-        internal int IndexOf(string type)
+        public int IndexOf(string type)
         {
             return controlsType.IndexOf(type);
         }
