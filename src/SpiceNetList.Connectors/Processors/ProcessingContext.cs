@@ -110,6 +110,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         }
 
         /// <summary>
+        /// Adds comment
+        /// </summary>
+        public void AddComment(CommentLine statement)
+        {
+            this.Netlist.Comments.Add(statement.Text);
+        }
+
+        /// <summary>
         /// Adds export to netlist
         /// </summary>
         public void AddExport(Export export)
@@ -254,6 +262,6 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             }
 
             return (Path + pinName).ToLower();
-        }
+        }        
     }
 }

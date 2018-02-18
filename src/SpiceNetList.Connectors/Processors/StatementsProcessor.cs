@@ -9,6 +9,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         private SubcircuitDefinitionProcessor subcircuitDefinitionProcessor;
         private ControlProcessor controlProcessor;
         private WaveformGenerator waveformGenerator;
+        private CommentProcessor commentProcessor;
 
         public StatementsProcessor()
         {
@@ -16,6 +17,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             controlProcessor = new ControlProcessor();
             subcircuitDefinitionProcessor = new SubcircuitDefinitionProcessor();
             componentProcessor = new ComponentProcessor(modelProcessor, waveformGenerator);
+            commentProcessor = new CommentProcessor();
         }
 
         public override void Process(Statements statements, ProcessingContext context)
@@ -84,7 +86,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
             if (statement is CommentLine)
             {
-                return null;
+                return commentProcessor;
             }
 
             throw new System.Exception("Unsupported statement");
