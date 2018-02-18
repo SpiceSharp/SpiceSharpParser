@@ -77,28 +77,26 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 {
                     vsrc.ParameterSets.SetProperty("dc", context.ParseDouble(parameters.GetString(i + 1)));
                 }
-                else if (i == 2 && (parameters[i] is ValueParameter vp || parameters[i] is WordParameter w))
+                else if (i == 2 && (parameters[i] is ValueParameter vp || parameters[i] is WordParameter w) && parameters[i].Image != "dc" && parameters[i].Image != "ac")
                 {
-                    if (parameters[i].Image != "dc")
-                    {
-                        vsrc.ParameterSets.SetProperty("dc", context.ParseDouble(parameters.GetString(i)));
-                    }
+                    vsrc.ParameterSets.SetProperty("dc", context.ParseDouble(parameters.GetString(i)));
                 }
-
                 // AC specification
                 else if (parameters[i] is SingleParameter s2 && s2.Image.ToLower() == "ac")
                 {
                     i++;
-                    vsrc.ParameterSets.SetProperty("acmag", context.ParseDouble(parameters.GetString(i)));
-
-                    // Look forward for one more value
-                    if (i + 1 < parameters.Count && (parameters[i + 1] is ValueParameter || parameters[i + 1] is WordParameter))
+                    if (i < parameters.Count)
                     {
-                        i++;
-                        vsrc.ParameterSets.SetProperty("acphase", context.ParseDouble(parameters.GetString(i)));
+                        vsrc.ParameterSets.SetProperty("acmag", context.ParseDouble(parameters.GetString(i)));
+
+                        // Look forward for one more value
+                        if (i + 1 < parameters.Count && (parameters[i + 1] is ValueParameter || parameters[i + 1] is WordParameter))
+                        {
+                            i++;
+                            vsrc.ParameterSets.SetProperty("acphase", context.ParseDouble(parameters.GetString(i)));
+                        }
                     }
                 }
-
                 // Waveforms
                 else if (parameters[i] is BracketParameter cp)
                 {

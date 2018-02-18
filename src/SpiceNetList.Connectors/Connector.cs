@@ -68,6 +68,7 @@ namespace SpiceNetlist.SpiceSharpConnector
             Controls.Add(new ACControl());
             Controls.Add(new DCControl());
             Controls.Add(new OPControl());
+            Controls.Add(new NoiseControl());
             Controls.Add(new SaveControl());
             Controls.Add(new ICControl());
 

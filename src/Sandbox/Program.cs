@@ -15,29 +15,24 @@
         public static void Main(string[] args)
         {
             StringBuilder st = new StringBuilder();
-            st.Append(@"Lowpass filter
+            st.Append(@"BJT Noise Test
 
-V1 net2 net1 dc 0 ac 24 0
-V2 net1 0 dc 24
-X1 net2 net3 lcfilter C=100
-L2 net3 out 250m
-Rload out 0 1k
+vcc 4 0 50
+vin 1 0 ac
 
-.SUBCKT lcfilter IN OUT params: L=100 C=10
-L1 IN OUT {L*1m}
-C1 OUT 0 {C*1u}
-.ENDS lcfilter
+ccouple 1 2 1
 
-* Do Simulation
-.ac lin 30 500 15k
-.save v(out)
+ibias 0 2 100u
 
+rload 4 3 1k
+
+q1 3 2 0 0 test
+
+.model test npn kf=1e-20 af=1 bf=100 rb=10
+.noise v(3) vin dec 10 10 100k 1
+.save v(1)
 .end
-
-
-
 ");
-
             var tokensStr = st.ToString();
 
             var s0 = new Stopwatch();
@@ -64,23 +59,14 @@ C1 OUT 0 {C*1u}
             var n = connector.Translate(netlist);
             Console.WriteLine("Translating  Netlist Object Model to SpiceSharp: " + s3.ElapsedMilliseconds + "ms");
 
-            var sim = n.Simulations[0];
+            Console.WriteLine("Done");
 
-            var voltageExport = n.Exports[0] as Export;
-            sim.OnExportSimulationData += (object sender, ExportDataEventArgs data) =>
-            {
-                try
-                {
-                    Console.WriteLine(data.Time + ";" + voltageExport.Extract() + ";");
-                }
-                catch
-                {
-                    Console.WriteLine(voltageExport.Extract() + ";");
-                }
+            var export = n.Exports[0];
+
+            n.Simulations[0].OnExportSimulationData += (object sender, ExportDataEventArgs e) => {
+                Console.WriteLine(export.Extract());
             };
-
-            sim.Run(n.Circuit);
+            n.Simulations[0].Run(n.Circuit);
         }
-
     }
 }
