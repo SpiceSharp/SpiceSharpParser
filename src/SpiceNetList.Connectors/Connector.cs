@@ -2,6 +2,7 @@
 using SpiceNetlist.SpiceSharpConnector.Processors.Controls;
 using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations;
 using SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components;
+using SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components.Semiconductors;
 using SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models;
 using SpiceNetlist.SpiceSharpConnector.Processors.Waveforms;
 using SpiceSharp;
@@ -61,6 +62,7 @@ namespace SpiceNetlist.SpiceSharpConnector
             Models.Add(new DiodeModelGenerator());
             Models.Add(new BipolarModelGenerator());
             Models.Add(new SwitchModelGenerator());
+            Models.Add(new MosfetModelGenerator());
 
             Controls.Add(new ParamControl());
             Controls.Add(new OptionControl());
@@ -78,6 +80,7 @@ namespace SpiceNetlist.SpiceSharpConnector
             Components.Add(new SwitchGenerator());
             Components.Add(new BipolarJunctionTransistorGenerator());
             Components.Add(new DiodeGenerator());
+            Components.Add(new MosfetGenerator());
             Components.Add(new SubCircuitGenerator(StatementsProcessor.ComponentProcessor, StatementsProcessor.ModelProcessor));
         }
 

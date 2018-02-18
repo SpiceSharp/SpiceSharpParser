@@ -12,6 +12,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         {
             var w = new Pulse();
 
+            if (bracketParam.Parameters.Count != 7)
+            {
+                throw new System.Exception("Wrong number of arguments for pulse");
+            }
+
             w.InitialValue.Set(context.ParseDouble(bracketParam.Parameters.GetString(0)));
             w.PulsedValue.Set(context.ParseDouble(bracketParam.Parameters.GetString(1)));
             w.Delay.Set(context.ParseDouble(bracketParam.Parameters.GetString(2)));
