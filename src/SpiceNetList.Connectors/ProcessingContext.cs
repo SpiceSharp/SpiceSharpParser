@@ -12,76 +12,138 @@ namespace SpiceNetlist.SpiceSharpConnector
 {
     public class ProcessingContext
     {
-        private NetList netlist;
-        private string name;
-        private readonly SubCircuit subDef;
-        private readonly List<string> pinInstanceNames;
+        private string currentPath = null;
 
-        public ProcessingContext(string name, NetList netlist)
+        public ProcessingContext(string contextName, NetList netlist)
         {
-            this.name = name;
-            this.netlist = netlist;
-            this.AvailableDefinitions = new List<SubCircuit>();
+            this.ContextName = contextName;
+            this.Netlist = netlist;
+            this.AvailableSubcircuits = new List<SubCircuit>();
             this.AvailableParameters = new Dictionary<string, double>();
         }
 
-        public ProcessingContext(string name, ProcessingContext parent, SubCircuit subDef, List<string> pinInstanceNames, Dictionary<string, double> availableParameters)
+        public ProcessingContext(string contextName, ProcessingContext parent, SubCircuit currentSubciruit, List<string> pinInstanceNames, Dictionary<string, double> availableParameters)
         {
-            this.name = name;
-            this.netlist = parent.netlist;
+            this.ContextName = contextName;
+            this.Netlist = parent.Netlist;
             this.Parent = parent;
-            this.subDef = subDef;
-            this.pinInstanceNames = pinInstanceNames;
-
-            this.AvailableDefinitions = new List<SubCircuit>();
-            this.AvailableDefinitions.AddRange(parent.AvailableDefinitions);
+            this.CurrrentSubCircuit = currentSubciruit;
+            this.PinInstanceNames = pinInstanceNames;
+            this.AvailableSubcircuits = new List<SubCircuit>();
+            this.AvailableSubcircuits.AddRange(parent.AvailableSubcircuits);
             this.AvailableParameters = availableParameters;
         }
 
-        public List<SubCircuit> AvailableDefinitions { get; }
-
+        /// <summary>
+        /// Gets dictionary of available
+        /// </summary>
         public Dictionary<string, double> AvailableParameters { get; }
-
-        public ProcessingContext Parent { get; }
 
         public GlobalConfiguration GlobalConfiguration { get; set; } = new GlobalConfiguration();
 
+        public List<SubCircuit> AvailableSubcircuits { get; }
+
+        /// <summary>
+        /// Gets numer of simulations
+        /// </summary>
         public int SimulationsCount
         {
             get
             {
-                return netlist.Simulations.Count;
+                return Netlist.Simulations.Count;
             }
         }
 
         /// <summary>
-        /// TODO
+        /// Gets first simulation
         /// </summary>
-        internal Simulation GetCurrentSimulation()
+        public Simulation FirstSimulation
         {
-            return this.netlist.Simulations[0];
+            get
+            {
+                return Netlist.Simulations[0];
+            }
         }
 
+        protected NetList Netlist { get; }
+
+        protected string ContextName { get; }
+
+        protected SubCircuit CurrrentSubCircuit { get; }
+
+        protected List<string> PinInstanceNames { get; }
+
+        protected ProcessingContext Parent { get;  }
+
+        /// <summary>
+        /// Gets the path of the context
+        /// </summary>
+        protected string Path
+        {
+            get
+            {
+                if (currentPath == null)
+                {
+                    List<string> path = new List<string>() { ContextName };
+
+                    var context = this;
+                    while (context.Parent != null)
+                    {
+                        path.Insert(0, context.Parent.ContextName);
+                        context = context.Parent;
+                    }
+
+                    var result = string.Empty;
+                    foreach (var pathPart in path)
+                    {
+                        if (pathPart != string.Empty)
+                        {
+                            result += pathPart + ".";
+                        }
+                    }
+
+                    currentPath = result;
+                }
+
+                return currentPath;
+            }
+        }
+
+        /// <summary>
+        /// Adds export to netlist
+        /// </summary>
         public void AddExport(Export export)
         {
-            netlist.Exports.Add(export);
+            Netlist.Exports.Add(export);
         }
 
+        /// <summary>
+        /// Adds entity to netlist
+        /// </summary>
         public void AddEntity(Entity entity)
         {
-            netlist.Circuit.Objects.Add(entity);
+            Netlist.Circuit.Objects.Add(entity);
         }
 
+        /// <summary>
+        /// Adds simulation to netlist
+        /// </summary>
         public void AddSimulation(BaseSimulation simulation)
         {
-            netlist.Simulations.Add(simulation);
+            Netlist.Simulations.Add(simulation);
         }
 
-        internal void SetICVoltage(string nodeName, string value)
+        /// <summary>
+        /// Sets voltage initial condition for node
+        /// </summary>
+        public void SetICVoltage(string nodeName, string value)
         {
-            netlist.Circuit.Nodes.InitialConditions[this.GenerateNodeName(nodeName)] = this.ParseDouble(value);
+            Netlist.Circuit.Nodes.InitialConditions[this.GenerateNodeName(nodeName)] = this.ParseDouble(value);
         }
 
+        /// <summary>
+        /// Parses value to double
+        /// </summary>
         public double ParseDouble(string value)
         {
             if (AvailableParameters.ContainsKey(value))
@@ -95,16 +157,19 @@ namespace SpiceNetlist.SpiceSharpConnector
             return spiceExpressionParser.Parse(value.Trim('{', '}'));
         }
 
+        /// <summary>
+        /// Find model in the context and in parent contexts
+        /// </summary>
         public T FindModel<T>(string modelName)
             where T : Entity
         {
             var context = this;
             while (context != null)
             {
-                var modelNameToSearch = (context.GetPath() + modelName).ToLower();
+                var modelNameToSearch = (context.Path + modelName).ToLower();
 
                 Entity model;
-                if (this.netlist.Circuit.Objects.TryGetEntity(new Identifier(modelNameToSearch), out model))
+                if (Netlist.Circuit.Objects.TryGetEntity(new Identifier(modelNameToSearch), out model))
                 {
                     return (T)model;
                 }
@@ -115,9 +180,12 @@ namespace SpiceNetlist.SpiceSharpConnector
             return null;
         }
 
-        public void SetEntityParameters(Entity entity, ParameterCollection parameters, int toSkip = 0, int count = 0)
+        /// <summary>
+        /// Sets entity parameters
+        /// </summary>
+        public void SetEntityParameters(Entity entity, ParameterCollection parameters, int toSkip = 0)
         {
-            foreach (SpiceNetlist.SpiceObjects.Parameter parameter in parameters.Skip(toSkip).Take(parameters.Count - toSkip - count))
+            foreach (SpiceObjects.Parameter parameter in parameters.Skip(toSkip).Take(parameters.Count - toSkip))
             {
                 if (parameter is AssignmentParameter ap)
                 {
@@ -125,20 +193,22 @@ namespace SpiceNetlist.SpiceSharpConnector
                     {
                         entity.ParameterSets.SetProperty(ap.Name, this.ParseDouble(ap.Value));
                     }
-
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
-                        this.netlist.Warnings.Add(ex.ToString());
+                        Netlist.Warnings.Add(ex.ToString());
                     }
                 }
                 else
                 {
-                    this.netlist.Warnings.Add("Unknown parameter: " + parameter.Image);
+                    Netlist.Warnings.Add("Unknown parameter: " + parameter.Image);
                 }
             }
         }
 
-        public void CreateNodes(ParameterCollection parameters, SpiceSharp.Components.Component component)
+        /// <summary>
+        /// Creates nodes for component
+        /// </summary>
+        public void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters)
         {
             Identifier[] nodes = new Identifier[component.PinCount];
             for (var i = 0; i < component.PinCount; i++)
@@ -150,11 +220,17 @@ namespace SpiceNetlist.SpiceSharpConnector
             component.Connect(nodes);
         }
 
+        /// <summary>
+        /// Generates object name for current context
+        /// </summary>
         public string GenerateObjectName(string objectName)
         {
-            return GetPath() + objectName;
+            return Path + objectName;
         }
 
+        /// <summary>
+        /// Generates node name for current context
+        /// </summary>
         public string GenerateNodeName(string pinName)
         {
             if (pinName == "0")
@@ -162,13 +238,13 @@ namespace SpiceNetlist.SpiceSharpConnector
                 return pinName;
             }
 
-            if (this.subDef != null)
+            if (this.CurrrentSubCircuit != null)
             {
                 Dictionary<string, string> map = new Dictionary<string, string>();
 
-                for (var i = 0; i < this.subDef.Pins.Count; i++)
+                for (var i = 0; i < this.CurrrentSubCircuit.Pins.Count; i++)
                 {
-                    map[this.subDef.Pins[i]] = this.pinInstanceNames[i];
+                    map[this.CurrrentSubCircuit.Pins[i]] = this.PinInstanceNames[i];
                 }
 
                 if (map.ContainsKey(pinName))
@@ -177,30 +253,7 @@ namespace SpiceNetlist.SpiceSharpConnector
                 }
             }
 
-            return (GetPath() + pinName).ToLower();
-        }
-
-        private string GetPath()
-        {
-            List<string> path = new List<string>() { name };
-
-            var context = this;
-            while (context.Parent != null)
-            {
-                path.Insert(0, context.Parent.name);
-                context = context.Parent;
-            }
-
-            var prefix = string.Empty;
-            foreach (var pathPart in path)
-            {
-                if (pathPart != "")
-                {
-                    prefix += pathPart + ".";
-                }
-            }
-
-            return prefix;
+            return (Path + pinName).ToLower();
         }
     }
 }

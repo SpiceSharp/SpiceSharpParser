@@ -16,7 +16,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
             {
                 if (parameter is BracketParameter bracketParameter)
                 {
-                    context.AddExport(GenerateExport(bracketParameter, context.GetCurrentSimulation(), context));
+                    context.AddExport(GenerateExport(bracketParameter, context.FirstSimulation, context));
                 }
             }
         }

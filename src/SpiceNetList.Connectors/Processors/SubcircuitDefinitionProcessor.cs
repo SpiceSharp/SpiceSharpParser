@@ -10,7 +10,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
         public override void Process(SubCircuit statement, ProcessingContext context)
         {
-            context.AvailableDefinitions.Add(statement);
+            context.AvailableSubcircuits.Add(statement);
         }
     }
 }

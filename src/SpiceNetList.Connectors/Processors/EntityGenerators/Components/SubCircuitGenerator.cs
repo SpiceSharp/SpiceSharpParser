@@ -64,7 +64,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
             string subCircuitName = parameters.GetString(parameters.Count - parametersCount - 1);
 
-            subCiruitDefiniton = context.AvailableDefinitions.Find(pred => pred.Name == subCircuitName);
+            subCiruitDefiniton = context.AvailableSubcircuits.Find(pred => pred.Name == subCircuitName);
+
+            if (subCiruitDefiniton == null)
+            {
+                throw new System.Exception("Can't find " + subCircuitName + " subcircuit");
+            }
 
             Dictionary<string, double> subCktParamters = ResolveSubcircuitParameters(context, subCiruitDefiniton, subCktParameters);
 
