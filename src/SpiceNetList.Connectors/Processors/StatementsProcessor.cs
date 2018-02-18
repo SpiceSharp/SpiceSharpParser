@@ -1,17 +1,16 @@
 ﻿using SpiceNetlist.SpiceObjects;
-using SpiceNetlist.SpiceSharpConnector.Processors;
 using SpiceSharp;
 
-namespace SpiceNetlist.SpiceSharpConnector
+namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
-    public class Processor : StatementProcessor<Statements>
+    public class StatementsProcessor : StatementProcessor<Statements>
     {
         private ModelProcessor modelProcessor;
         private ComponentProcessor componentProcessor;
         private SubcircuitDefinitionProcessor subcircuitDefinitionProcessor;
         private ControlsProcessor controlProcessor;
 
-        public Processor()
+        public StatementsProcessor()
         {
             modelProcessor = new ModelProcessor();
             controlProcessor = new ControlsProcessor();

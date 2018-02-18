@@ -1,4 +1,5 @@
-﻿using SpiceSharp;
+﻿using SpiceNetlist.SpiceSharpConnector.Processors;
+using SpiceSharp;
 
 namespace SpiceNetlist.SpiceSharpConnector
 {
@@ -12,7 +13,7 @@ namespace SpiceNetlist.SpiceSharpConnector
                 Title = netlist.Title
             };
 
-            var processor = new Processor();
+            var processor = new StatementsProcessor();
             var processingContext = new ProcessingContext(string.Empty, result);
 
             processor.Process(netlist.Statements, processingContext);
