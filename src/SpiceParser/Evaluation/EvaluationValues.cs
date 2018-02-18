@@ -6,7 +6,6 @@ namespace SpiceParser.Evaluation
 {
     public class EvaluationValues : List<EvaluationValue>
     {
-
         /// <summary>
         /// Gets lexem from specific EvaluationValue item
         /// </summary>
@@ -15,6 +14,19 @@ namespace SpiceParser.Evaluation
             if (this[index] is TerminalEvaluationValue t)
             {
                 return t.Token.Lexem;
+            }
+
+            throw new EvaluationException("Wrong evaluation type");
+        }
+
+        /// <summary>
+        /// Gets lexem line numeber from specific EvaluationValue item
+        /// </summary>
+        public int GetLexemLineNumber(int index)
+        {
+            if (this[index] is TerminalEvaluationValue t)
+            {
+                return t.Token.LineNumber;
             }
 
             throw new EvaluationException("Wrong evaluation type");

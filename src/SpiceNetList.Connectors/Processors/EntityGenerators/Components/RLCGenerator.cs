@@ -54,7 +54,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
         public Entity GenerateCap(string name, ParameterCollection parameters, ProcessingContext context)
         {
             var capacitor = new Capacitor(name);
-            context.CreateNodes(parameters, capacitor);
+            context.CreateNodes(capacitor, parameters);
             var clonedParameters = parameters.Clone();
 
             for (int i = 3; i < clonedParameters.Count; i++)
@@ -98,7 +98,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             }
 
             var inductor = new Inductor(name);
-            context.CreateNodes(parameters, inductor);
+            context.CreateNodes(inductor, parameters);
 
             inductor.ParameterSets.SetProperty("inductance", context.ParseDouble(parameters.GetString(2)));
             return inductor;
@@ -107,7 +107,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
         public Entity GenerateRes(string name, ParameterCollection parameters, ProcessingContext context)
         {
             var res = new Resistor(name);
-            context.CreateNodes(parameters, res);
+            context.CreateNodes(res, parameters);
 
             if (parameters.Count == 3)
             {

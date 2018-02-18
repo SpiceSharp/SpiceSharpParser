@@ -217,6 +217,7 @@ namespace SpiceParser
             var component = new Component();
             component.Name = values.GetLexem(0);
             component.PinsAndParameters = values.GetSpiceObject<ParameterCollection>(1);
+            component.LineNumber = values.GetLexemLineNumber(0);
             return component;
         }
 
@@ -229,6 +230,7 @@ namespace SpiceParser
             var control = new Control();
             control.Name = values.GetLexem(1);
             control.Parameters = values.GetSpiceObject<ParameterCollection>(2);
+            control.LineNumber = values.GetLexemLineNumber(1);
             return control;
         }
 
@@ -245,6 +247,7 @@ namespace SpiceParser
 
             var subCkt = new SubCircuit();
             subCkt.Name = values.GetLexem(2);
+            subCkt.LineNumber = values.GetLexemLineNumber(2);
 
             var allParameters = values.GetSpiceObject<ParameterCollection>(3);
 
@@ -296,6 +299,7 @@ namespace SpiceParser
         {
             var comment = new CommentLine();
             comment.Text = values.GetLexem(1);
+            comment.LineNumber = values.GetLexemLineNumber(1);
             return comment;
         }
 
@@ -322,6 +326,7 @@ namespace SpiceParser
             var model = new Model();
             model.Name = values.GetLexem(2);
             model.Parameters = values.GetSpiceObject<ParameterCollection>(3);
+            model.LineNumber = values.GetLexemLineNumber(2);
             return model;
         }
 

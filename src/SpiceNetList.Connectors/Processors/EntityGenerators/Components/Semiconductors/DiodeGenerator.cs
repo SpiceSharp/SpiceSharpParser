@@ -17,7 +17,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             }
 
             Diode diode = new Diode(name);
-            context.CreateNodes(parameters, diode);
+            context.CreateNodes(diode, parameters);
             diode.SetModel(context.FindModel<DiodeModel>(parameters.GetString(2)));
 
             // Read the rest of the parameters

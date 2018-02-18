@@ -38,7 +38,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             }
 
             var vcvs = new VoltageControlledVoltageSource(name);
-            context.CreateNodes(parameters, vcvs);
+            context.CreateNodes(vcvs, parameters);
             vcvs.ParameterSets.SetProperty("gain", context.ParseDouble(parameters.GetString(4)));
             return vcvs;
         }
@@ -57,7 +57,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             }
 
             var ccvs = new CurrentControlledVoltageSource(name);
-            context.CreateNodes(parameters, ccvs);
+            context.CreateNodes(ccvs, parameters);
 
             ccvs.ControllingName = parameters.GetString(3);
             ccvs.ParameterSets.SetProperty("gain", context.ParseDouble(parameters.GetString(4)));
@@ -68,7 +68,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
         public Entity GenerateVoltageSource(string name, string type, ParameterCollection parameters, ProcessingContext context)
         {
             var vsrc = new VoltageSource(name);
-            context.CreateNodes(parameters, vsrc);
+            context.CreateNodes(vsrc, parameters);
 
             // We can have a value or just DC
             for (int i = 2; i < parameters.Count; i++)

@@ -33,7 +33,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
         public Entity GenerateCurrentControlledCurrentSource(string name, string type, ParameterCollection parameters, ProcessingContext context)
         {
             CurrentControlledCurrentSource cccs = new CurrentControlledCurrentSource(name);
-            context.CreateNodes(parameters, cccs);
+            context.CreateNodes(cccs, parameters);
 
             switch (parameters.Count)
             {
@@ -54,7 +54,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             }
 
             VoltageControlledCurrentSource vccs = new VoltageControlledCurrentSource(name);
-            context.CreateNodes(parameters, vccs);
+            context.CreateNodes(vccs, parameters);
             vccs.ParameterSets.SetProperty("gain", context.ParseDouble(parameters.GetString(4)));
 
             return vccs;
@@ -63,7 +63,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
         public Entity GenerateCurrentSource(string name, string type, ParameterCollection parameters, ProcessingContext context)
         {
             CurrentSource isrc = new CurrentSource(name);
-            context.CreateNodes(parameters, isrc);
+            context.CreateNodes(isrc, parameters);
 
             // We can have a value or just DC
             for (int i = 2; i < parameters.Count; i++)

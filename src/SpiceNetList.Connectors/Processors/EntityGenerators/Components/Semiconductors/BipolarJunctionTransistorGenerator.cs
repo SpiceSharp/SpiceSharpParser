@@ -26,7 +26,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 parameters.Insert(3, parameters[2]);
             }
 
-            context.CreateNodes(parameters, bjt);
+            context.CreateNodes(bjt, parameters);
 
             if (parameters.Count < 5)
             {

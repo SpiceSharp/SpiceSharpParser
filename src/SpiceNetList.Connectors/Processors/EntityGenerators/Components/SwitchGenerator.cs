@@ -24,7 +24,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
         public Entity GenerateVoltageSwitch(string name, ParameterCollection parameters, ProcessingContext context)
         {
             VoltageSwitch vsw = new VoltageSwitch(name);
-            context.CreateNodes(parameters, vsw);
+            context.CreateNodes(vsw, parameters);
 
             // Read the model
             if (parameters.Count < 5)
@@ -62,7 +62,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 case 3: throw new Exception("Model expected");
             }
 
-            context.CreateNodes(parameters, csw);
+            context.CreateNodes(csw, parameters);
 
             // Get the controlling voltage source
             if (parameters[2] is WordParameter || parameters[2] is IdentifierParameter)
