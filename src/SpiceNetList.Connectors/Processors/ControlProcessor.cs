@@ -1,56 +1,41 @@
 ﻿using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceSharpConnector.Processors.Controls;
 using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations;
-using System.Collections.Generic;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
-    public class ControlsProcessor : StatementProcessor<Control>
+    public class ControlProcessor : StatementProcessor<Control>
     {
-        protected List<BaseControl> controls = new List<BaseControl>();
+        protected ControlsRegistry registry = new ControlsRegistry();
 
-        public ControlsProcessor()
+        public ControlProcessor()
         {
-            controls.AddRange(new List<BaseControl>()
-            {
-                new ParamControl(),
-                new OptionControl(),
-                new TransientControl(),
-                new ACControl(),
-                new DCControl(),
-                new OPControl(),
-                new SaveControl(),
-                new ICControl()
-            });
+            registry.Add(new ParamControl());
+            registry.Add(new OptionControl());
+            registry.Add(new TransientControl());
+            registry.Add(new ACControl());
+            registry.Add(new DCControl());
+            registry.Add(new OPControl());
+            registry.Add(new SaveControl());
+            registry.Add(new ICControl());
         }
 
         public override void Process(Control statement, ProcessingContext context)
         {
             string type = statement.Name.ToLower();
 
-            foreach (var control in controls)
+            if (!registry.Supports(type))
             {
-                if (control.Type == type)
-                {
-                    control.Process(statement, context);
-                }
+                throw new System.Exception("Unsupported control");
             }
+
+            registry.GetControl(type).Process(statement, context);
         }
 
-        internal int GetSubOrder(Control c)
+        internal int GetSubOrder(Control statement)
         {
-            int i = 0;
-            foreach (var control in controls)
-            {
-                if (control.Type == c.Name.ToLower())
-                {
-                    return i;
-                }
-
-                i++;
-            }
-
-            return 0;
+            string type = statement.Name.ToLower();
+            return registry.IndexOf(type);
         }
     }
 }

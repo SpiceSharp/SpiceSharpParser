@@ -1,5 +1,4 @@
 ﻿using SpiceNetlist.SpiceObjects;
-using SpiceSharp;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
@@ -8,12 +7,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         private ModelProcessor modelProcessor;
         private ComponentProcessor componentProcessor;
         private SubcircuitDefinitionProcessor subcircuitDefinitionProcessor;
-        private ControlsProcessor controlProcessor;
+        private ControlProcessor controlProcessor;
 
         public StatementsProcessor()
         {
             modelProcessor = new ModelProcessor();
-            controlProcessor = new ControlsProcessor();
+            controlProcessor = new ControlProcessor();
             subcircuitDefinitionProcessor = new SubcircuitDefinitionProcessor();
             componentProcessor = new ComponentProcessor(modelProcessor);
         }
