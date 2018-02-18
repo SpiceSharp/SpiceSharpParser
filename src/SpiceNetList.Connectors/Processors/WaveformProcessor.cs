@@ -20,7 +20,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                 throw new System.Exception("Unsupported waveform");
             }
 
-            return Registry.GetGenerator(type).Generate(cp, context);
+            return Registry.Get(type).Generate(cp, context);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                 throw new System.Exception("Unsupported control");
             }
 
-            Registry.GetControl(type).Process(statement, context);
+            Registry.Get(type).Process(statement, context);
         }
 
         internal int GetSubOrder(Control statement)

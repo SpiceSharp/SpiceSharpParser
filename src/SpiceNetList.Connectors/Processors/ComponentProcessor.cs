@@ -26,7 +26,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                 throw new System.Exception("Unsupported component type");
             }
 
-            var generator = ComponentRegistry.GetGenerator(componentType);
+            var generator = ComponentRegistry.Get(componentType);
 
             Entity entity = generator.Generate(
                 new Identifier(context.GenerateObjectName(componentName)),

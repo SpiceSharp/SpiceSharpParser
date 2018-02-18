@@ -27,7 +27,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                         throw new System.Exception("Unsupported model type");
                     }
 
-                    var generator = Registry.GetGenerator(type);
+                    var generator = Registry.Get(type);
 
                     Entity spiceSharpModel = generator.Generate(
                         new SpiceSharp.Identifier(context.GenerateObjectName(name)),
@@ -51,7 +51,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                         throw new System.Exception("Unsupported model type");
                     }
 
-                    var generator = Registry.GetGenerator(type);
+                    var generator = Registry.Get(type);
 
                     Entity spiceSharpModel = generator.Generate(new SpiceSharp.Identifier(context.GenerateObjectName(name)), name, type, statement.Parameters.Skip(1), context);
 
