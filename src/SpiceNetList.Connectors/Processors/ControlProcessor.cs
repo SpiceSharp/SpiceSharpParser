@@ -17,10 +17,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
             if (!Registry.Supports(type))
             {
-                throw new System.Exception("Unsupported control");
+                context.AddWarning("Unsupported control: " + statement.Name + " at " + statement.LineNumber + " line");
             }
-
-            Registry.Get(type).Process(statement, context);
+            else
+            {
+                Registry.Get(type).Process(statement, context);
+            }
         }
 
         internal int GetSubOrder(Control statement)

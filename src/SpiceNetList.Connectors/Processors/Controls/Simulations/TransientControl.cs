@@ -1,6 +1,5 @@
 ﻿using System;
 using SpiceNetlist.SpiceObjects;
-using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
@@ -38,7 +37,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
                     throw new Exception("Wrong number of parameters for .tran");
             }
 
-            SetBaseParameters(tran.BaseConfiguration, context);
+            SetBaseParameters(tran.ParameterSets.Get<BaseConfiguration>(), context);
             SetTransientParamters(tran, context);
             context.AddSimulation(tran);
         }

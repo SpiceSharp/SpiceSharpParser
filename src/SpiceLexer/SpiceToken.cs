@@ -1,4 +1,5 @@
-﻿using NLexer;
+﻿using System;
+using NLexer;
 using SpiceGrammar;
 
 namespace SpiceLexer
@@ -15,8 +16,13 @@ namespace SpiceLexer
             SpiceTokenType = tokenType;
         }
 
-        public int LineNumber { get; }
+        public int LineNumber { get; private set; }
 
         public SpiceTokenType SpiceTokenType { get; }
+
+        public void UpdateLineNumber(int lineNumber)
+        {
+            this.LineNumber = lineNumber;
+        }
     }
 }

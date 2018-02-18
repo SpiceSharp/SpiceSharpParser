@@ -6,7 +6,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
     public class OptionControl : BaseControl
     {
-        public override string Type => "option";
+        public override string Type => "options";
 
         public override void Process(Control statement, ProcessingContext context)
         {
@@ -51,7 +51,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 
                             break;
                         default:
-                            throw new Exception();
+                            context.AddWarning("Unsupported option: " + name);
+                            break;
                     }
                 }
 

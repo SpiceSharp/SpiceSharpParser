@@ -20,7 +20,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             this.AvailableSubcircuits = new List<SubCircuit>();
             this.AvailableParameters = new Dictionary<string, double>();
         }
-
+        
         public ProcessingContext(string contextName, ProcessingContext parent, SubCircuit currentSubciruit, List<string> pinInstanceNames, Dictionary<string, double> availableParameters) 
         {
             this.ContextName = contextName;
@@ -106,6 +106,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
                 return currentPath;
             }
+        }
+
+        /// <summary>
+        /// Adds warning
+        /// </summary>
+        public void AddWarning(string warning)
+        {
+            this.Netlist.Warnings.Add(warning);
         }
 
         /// <summary>

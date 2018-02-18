@@ -114,6 +114,7 @@ namespace SpiceParser
                         && (tn.Token.Lexem == null || tn.Token.Lexem == tokens[currentTokenIndex].Lexem))
                     {
                         tn.Token.UpdateLexem(tokens[currentTokenIndex].Lexem);
+                        tn.Token.UpdateLineNumber(tokens[currentTokenIndex].LineNumber);
                         currentTokenIndex++;
                     }
                     else
@@ -585,7 +586,7 @@ namespace SpiceParser
 
         private ParseTreeTerminalNode CreateTerminalNode(SpiceTokenType tokenType, ParseTreeNonTerminalNode currentNode, string tokenValue = null)
         {
-            var node = new ParseTreeTerminalNode(new SpiceToken(tokenType, tokenValue, 0), currentNode);
+            var node = new ParseTreeTerminalNode(new SpiceToken(tokenType, tokenValue), currentNode);
             currentNode.Children.Insert(0, node);
             return node;
         }
