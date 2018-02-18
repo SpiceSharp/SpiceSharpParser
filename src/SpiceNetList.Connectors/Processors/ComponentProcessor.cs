@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using SpiceNetlist.SpiceObjects;
+﻿using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components;
 using SpiceSharp;
 using SpiceSharp.Circuits;
@@ -8,51 +7,39 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
     public class ComponentProcessor : StatementProcessor<Component>
     {
-        private readonly ModelProcessor modelProcessor;
-
-        // TODO: Refactor
-        protected List<EntityGenerator> Generators = new List<EntityGenerator>();
-        protected Dictionary<string, EntityGenerator> GeneratorsByType = new Dictionary<string, EntityGenerator>();
+        protected EntityGeneratorRegistry registry = new EntityGeneratorRegistry();
+        private ModelProcessor modelProcessor;
 
         public ComponentProcessor(ModelProcessor modelProcessor)
         {
             this.modelProcessor = modelProcessor;
 
             var waveFormsGenerators = new EntityGenerators.Components.Waveforms.WaveformsGenerator();
-
-            Generators.Add(new RLCGenerator());
-            Generators.Add(new VoltageSourceGenerator(waveFormsGenerators));
-            Generators.Add(new BipolarJunctionTransistorGenerator());
-            Generators.Add(new DiodeGenerator());
-            Generators.Add(new SubCircuitGenerator(this, modelProcessor));
-            Generators.Add(new CurrentSourceGenerator(waveFormsGenerators));
-            Generators.Add(new SwitchGenerator());
-
-            foreach (var generator in Generators)
-            {
-                foreach (var type in generator.GetGeneratedTypes())
-                {
-                    GeneratorsByType[type] = generator;
-                }
-            }
+            registry.Add(new RLCGenerator());
+            registry.Add(new VoltageSourceGenerator(waveFormsGenerators));
+            registry.Add(new BipolarJunctionTransistorGenerator());
+            registry.Add(new DiodeGenerator());
+            registry.Add(new SubCircuitGenerator(this, modelProcessor));
+            registry.Add(new CurrentSourceGenerator(waveFormsGenerators));
+            registry.Add(new SwitchGenerator());
         }
 
         public override void Process(Component statement, ProcessingContext context)
         {
-            string name = statement.Name.ToLower();
-            string type = name[0].ToString();
+            string componentName = statement.Name.ToLower();
+            string componentType = componentName[0].ToString();
 
-            if (!GeneratorsByType.ContainsKey(type))
+            if (!registry.Supports(componentType))
             {
                 throw new System.Exception("Unsupported component type");
             }
 
-            var generator = GeneratorsByType[type];
+            var generator = registry.GetGenerator(componentType);
 
             Entity entity = generator.Generate(
-                new Identifier(context.GenerateObjectName(name)),
-                name,
-                type,
+                new Identifier(context.GenerateObjectName(componentName)),
+                componentName,
+                componentType,
                 statement.PinsAndParameters,
                 context);
 
