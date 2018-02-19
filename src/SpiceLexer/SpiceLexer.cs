@@ -16,6 +16,7 @@ namespace SpiceLexer
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceLexer"/> class.
         /// </summary>
+        /// <param name="options">options for lexer</param>
         public SpiceLexer(SpiceLexerOptions options)
         {
             this.options = options ?? throw new System.ArgumentNullException(nameof(options));
@@ -32,7 +33,7 @@ namespace SpiceLexer
         public IEnumerable<SpiceToken> GetTokens(string netlistText)
         {
             var state = new SpiceLexerState();
-            var lexer = new Lexer<SpiceLexerState>(this.grammar, new LexerOptions(true, '+'));
+            var lexer = new Lexer<SpiceLexerState>(grammar, new LexerOptions(true, '+'));
 
             foreach (var token in lexer.GetTokens(netlistText, state))
             {
@@ -188,7 +189,7 @@ namespace SpiceLexer
                     "An identifier",
                     "((<CHARACTER>|_)(<CHARACTER>|<SPECIAL>)*)"));
 
-            this.grammar = builder.GetGrammar();
+            grammar = builder.GetGrammar();
         }
     }
 }
