@@ -16,7 +16,7 @@ namespace NLexer
         /// <param name="lexerRules">A collection of lexer rules</param>
         public LexerGrammar(ICollection<LexerTokenRule<TLexerState>> lexerRules)
         {
-            this.LexerRules = lexerRules ?? throw new ArgumentException(nameof(lexerRules));
+            LexerRules = lexerRules ?? throw new ArgumentException(nameof(lexerRules));
         }
 
         /// <summary>

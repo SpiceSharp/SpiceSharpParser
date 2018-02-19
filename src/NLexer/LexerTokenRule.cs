@@ -66,10 +66,10 @@ namespace NLexer
         public override LexerRule Clone()
         {
             return new LexerTokenRule<TLexerState>(
-                this.TokenType, 
-                this.Name, 
-                this.RegularExpressionPattern, 
-                this.LexerRuleResultAction, 
+                this.TokenType,
+                this.Name,
+                this.RegularExpressionPattern,
+                this.LexerRuleResultAction,
                 this.IsActiveAction);
         }
     }

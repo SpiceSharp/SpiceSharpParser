@@ -2,6 +2,9 @@
 
 namespace NLexer
 {
+    /// <summary>
+    /// Base class for token rules in <see cref="LexerGrammar{TLexerState}"/>.
+    /// </summary>
     public abstract class LexerRule
     {
         private Regex regex;
@@ -56,6 +59,12 @@ namespace NLexer
             }
         }
 
+        /// <summary>
+        /// Clones the rule
+        /// </summary>
+        /// <returns>
+        /// Clone of the rule
+        /// </returns>
         public abstract LexerRule Clone();
     }
 }

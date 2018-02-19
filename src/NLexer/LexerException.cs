@@ -2,10 +2,15 @@
 
 namespace NLexer
 {
-    [Serializable]
+    /// <summary>
+    /// Exception during lexing
+    /// </summary>
     public class LexerException : Exception
     {
-        public LexerException() : base() { }
+        public LexerException()
+            : base()
+        {
+        }
 
         public LexerException(string message)
             : base(message)

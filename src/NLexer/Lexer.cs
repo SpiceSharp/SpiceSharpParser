@@ -4,6 +4,10 @@ using System.Text.RegularExpressions;
 
 namespace NLexer
 {
+    /// <summary>
+    /// General lexer. It produces tokens from given text
+    /// </summary>
+    /// <typeparam name="TLexerState">Type of lexer state</typeparam>
     public class Lexer<TLexerState>
         where TLexerState : LexerState
     {
@@ -14,8 +18,8 @@ namespace NLexer
         /// <param name="options">Lexer options</param>
         public Lexer(LexerGrammar<TLexerState> grammar, LexerOptions options)
         {
-            this.Options = options;
-            this.Grammar = grammar ?? throw new ArgumentNullException(nameof(grammar));
+            Options = options;
+            Grammar = grammar ?? throw new ArgumentNullException(nameof(grammar));
         }
 
         /// <summary>
@@ -90,10 +94,7 @@ namespace NLexer
         /// </summary>
         private void UpdateTextToLex(ref string textToLex, ref bool getNextTextToLex, int tokenLength)
         {
-            if (Options.SingleLineTokens || Options.MultipleLineTokens)
-            {
-                textToLex = textToLex.Substring(tokenLength);
-            }
+            textToLex = textToLex.Substring(tokenLength);
 
             if (string.IsNullOrEmpty(textToLex))
             {
@@ -106,11 +107,11 @@ namespace NLexer
         /// </summary>
         private string GetTextToLex(LexerStringReader strReader, int currentTokenIndex)
         {
-            if (this.Options.SingleLineTokens)
+            if (Options.MultipleLineTokens == false)
             {
                 return strReader.ReadLine();
             }
-            else if (this.Options.MultipleLineTokens)
+            else if (Options.MultipleLineTokens)
             {
                 return strReader.ReadLineWithContinuation();
             }
@@ -124,13 +125,13 @@ namespace NLexer
         /// Finds the best matched <see cref="LexerTokenRule{TLexerState}" /> for remaining text to generate new token
         /// </summary>
         /// <returns>
-        /// True if there is matching <see cref="LexerTokenRule{TLexerState}" /> 
+        /// True if there is matching <see cref="LexerTokenRule{TLexerState}" />
         /// </returns>
         private bool FindBestTokenRule(string remainingText, TLexerState state, out LexerTokenRule<TLexerState> bestMatchTokenRule, out Match bestMatch)
         {
             bestMatchTokenRule = null;
             bestMatch = null;
-            foreach (LexerTokenRule<TLexerState> tokenRule in this.Grammar.LexerRules)
+            foreach (LexerTokenRule<TLexerState> tokenRule in Grammar.LexerRules)
             {
                 if (tokenRule.IsActive(state))
                 {

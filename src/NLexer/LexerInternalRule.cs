@@ -8,10 +8,10 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="LexerInternalRule"/> class.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="regularExpression"></param>
-        public LexerInternalRule(string name, string regularExpression)
-            : base(name, regularExpression)
+        /// <param name="ruleName">Name of the rule</param>
+        /// <param name="regularExpression">Regular expression</param>
+        public LexerInternalRule(string ruleName, string regularExpression)
+            : base(ruleName, regularExpression)
         {
         }
 

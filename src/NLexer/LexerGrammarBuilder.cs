@@ -32,7 +32,7 @@ namespace NLexer
         }
 
         /// <summary>
-        /// Gets the generated grammar 
+        /// Gets the generated grammar
         /// </summary>
         /// <returns>
         /// A new grammar that contains rules that were added
@@ -41,13 +41,13 @@ namespace NLexer
         {
             var tokenRules = new List<LexerTokenRule<TLexerState>>();
 
-            foreach (var lexerTokenRule in this.rules.Where(
-                rule => rule.GetType().IsGenericType 
+            foreach (var lexerTokenRule in rules.Where(
+                rule => rule.GetType().IsGenericType
                 && rule.GetType().GetGenericTypeDefinition() == typeof(LexerTokenRule<>)))
             {
                 var lexerTokenRuleCloned = lexerTokenRule.Clone() as LexerTokenRule<TLexerState>;
 
-                foreach (var privateTokenRule in this.rules.Where(rule => rule is LexerInternalRule))
+                foreach (var privateTokenRule in rules.Where(rule => rule is LexerInternalRule))
                 {
                     lexerTokenRuleCloned.RegularExpressionPattern = lexerTokenRuleCloned.RegularExpressionPattern.Replace($"<{privateTokenRule.Name}>", privateTokenRule.RegularExpressionPattern);
                 }

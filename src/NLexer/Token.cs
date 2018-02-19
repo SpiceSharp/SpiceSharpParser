@@ -1,5 +1,8 @@
 ﻿namespace NLexer
 {
+    /// <summary>
+    /// A token produces by <see cref="Lexer{TLexerState}"/>
+    /// </summary>
     public class Token
     {
         /// <summary>
@@ -42,7 +45,7 @@
         /// <summary>
         /// Updates <see cref="Token"/>'s lexem
         /// </summary>
-        /// <param name="lexem"></param>
+        /// <param name="lexem">A new value of lexem</param>
         public void UpdateLexem(string lexem)
         {
             this.Lexem = lexem;

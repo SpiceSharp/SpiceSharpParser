@@ -11,7 +11,7 @@
         Use = 0,
 
         /// <summary>
-        /// Skipp rule
+        /// Skip rule
         /// </summary>
         Skip = 1
     }

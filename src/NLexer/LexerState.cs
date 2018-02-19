@@ -5,6 +5,9 @@
     /// </summary>
     public class LexerState
     {
-        public int? PreviousTokenType { get; set; }
+        /// <summary>
+        /// Gets or sets type of previously generated token
+        /// </summary>
+        public int PreviousTokenType { get; set; } = 0;
     }
 }

@@ -1,5 +1,8 @@
 ﻿namespace NLexer
 {
+    /// <summary>
+    /// Allows fast reading of text lines
+    /// </summary>
     public class LexerStringReader
     {
         private readonly string str = null;
@@ -95,6 +98,13 @@
             return result;
         }
 
+        /// <summary>
+        /// Gets the substring of all text
+        /// </summary>
+        /// <param name="startIndex">Start index of the substrign</param>
+        /// <returns>
+        /// A string
+        /// </returns>
         public string GetSubstring(int startIndex)
         {
             return new string(strCharacters, startIndex, strCharacters.Length - startIndex);

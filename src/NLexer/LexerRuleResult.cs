@@ -5,7 +5,14 @@
     /// </summary>
     public enum LexerRuleResult
     {
+        /// <summary>
+        /// Specifies that the token is retured if it's a best match
+        /// </summary>
         ReturnToken,
+
+        /// <summary>
+        /// Specifies that the token is ignored
+        /// </summary>
         IgnoreToken
     }
 }
