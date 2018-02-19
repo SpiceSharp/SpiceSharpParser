@@ -32,7 +32,7 @@ namespace SpiceLexer
         public IEnumerable<SpiceToken> GetTokens(string netlistText)
         {
             var state = new SpiceLexerState();
-            var lexer = new Lexer<SpiceLexerState>(this.grammar, new LexerOptions(false, true, '+'));
+            var lexer = new Lexer<SpiceLexerState>(this.grammar, new LexerOptions(true, '+'));
 
             foreach (var token in lexer.GetTokens(netlistText, state))
             {
@@ -40,6 +40,9 @@ namespace SpiceLexer
             }
         }
 
+        /// <summary>
+        /// Builds Spice lexer grammar
+        /// </summary>
         private void BuildGrammar()
         {
             var builder = new LexerGrammarBuilder<SpiceLexerState>();
@@ -128,7 +131,7 @@ namespace SpiceLexer
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.VALUE,
                 "A value",
-                @"(([+-])?((<DIGIT>)+(\.(<DIGIT>)*)?|\.(<DIGIT>)+)(e(\+|-)?(<DIGIT>)+|[tgmkunpf](<LETTER>)*)?[vH]?)"));
+                @"(([+-])?((<DIGIT>)+(\.(<DIGIT>)*)?|\.(<DIGIT>)+)(e(\+|-)?(<DIGIT>)+|[tgmkunpf](<LETTER>)*)?)"));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.COMMENT,
@@ -137,7 +140,7 @@ namespace SpiceLexer
                 null,
                 (SpiceLexerState state) =>
                 {
-                    if (state.PreviousTokenType.HasValue && state.PreviousTokenType.Value == (int)SpiceTokenType.ASTERIKS)
+                    if (state.PreviousTokenType != (int)SpecialTokenType.Unknown && state.PreviousTokenType == (int)SpiceTokenType.ASTERIKS)
                     {
                         return LexerRuleUseState.Use;
                     }

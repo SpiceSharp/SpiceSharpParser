@@ -6,8 +6,13 @@
     public enum SpecialTokenType
     {
         /// <summary>
-        /// Token that represents the end of file
+        /// Represents 'the end of file' token type
         /// </summary>
-        EOF = -1
+        EOF = -1,
+
+        /// <summary>
+        /// Represents unknown token type
+        /// </summary>
+        Unknown = 0
     }
 }
