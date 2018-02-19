@@ -1,13 +1,22 @@
-﻿using SpiceNetlist.SpiceObjects.Parameters;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
+using SpiceNetlist.SpiceObjects.Parameters;
 
 namespace SpiceNetlist.SpiceObjects
 {
+    /// <summary>
+    /// A vector parameter
+    /// </summary>
     public class VectorParameter : Parameter
     {
+        /// <summary>
+        /// Gets or sets the elements of the vector
+        /// </summary>
         public List<SingleParameter> Elements { get; set; } = new List<SingleParameter>();
 
+        /// <summary>
+        /// Gets the string represenation of the vector
+        /// </summary>
         public override string Image
         {
             get
