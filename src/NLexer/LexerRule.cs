@@ -15,10 +15,11 @@ namespace NLexer
         /// </summary>
         /// <param name="ruleName">A name of lexer rule</param>
         /// <param name="regularExpressionPattern">A regular expression</param>
-        public LexerRule(string ruleName, string regularExpressionPattern)
+        public LexerRule(string ruleName, string regularExpressionPattern, bool ignoreCase)
         {
             RegularExpressionPattern = regularExpressionPattern;
             Name = ruleName;
+            IgnoreCase = ignoreCase;
         }
 
         /// <summary>
@@ -27,19 +28,24 @@ namespace NLexer
         public string Name { get; }
 
         /// <summary>
+        /// Gets a value indicating whether case of characters in regular expression is ignored
+        /// </summary>
+        public bool IgnoreCase { get; }
+
+        /// <summary>
         /// Gets or sets a regular expression pattern of lexer rule
         /// </summary>
         public string RegularExpressionPattern
         {
             get
             {
-                return this.regularExpressionPattern;
+                return regularExpressionPattern;
             }
 
             set
             {
-                this.regularExpressionPattern = value;
-                this.regex = null;
+                regularExpressionPattern = value;
+                regex = null;
             }
         }
 
@@ -52,7 +58,14 @@ namespace NLexer
             {
                 if (regex == null)
                 {
-                    regex = new Regex("^" + RegularExpressionPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                    RegexOptions options = RegexOptions.Compiled;
+
+                    if (IgnoreCase)
+                    {
+                        options |= RegexOptions.IgnoreCase;
+                    }
+
+                    regex = new Regex("^" + RegularExpressionPattern, options);
                 }
 
                 return regex;

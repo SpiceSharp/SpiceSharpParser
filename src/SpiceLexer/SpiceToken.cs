@@ -4,6 +4,9 @@ using SpiceGrammar;
 
 namespace SpiceLexer
 {
+    /// <summary>
+    /// A token from spice netlist
+    /// </summary>
     public class SpiceToken : Token
     {
         /// <summary>
@@ -16,10 +19,20 @@ namespace SpiceLexer
             SpiceTokenType = tokenType;
         }
 
+        /// <summary>
+        /// Token's line number
+        /// </summary>
         public int LineNumber { get; private set; }
 
+        /// <summary>
+        /// Token's type
+        /// </summary>
         public SpiceTokenType SpiceTokenType { get; }
 
+        /// <summary>
+        /// Updates the line number
+        /// </summary>
+        /// <param name="lineNumber">New line number</param>
         public void UpdateLineNumber(int lineNumber)
         {
             this.LineNumber = lineNumber;

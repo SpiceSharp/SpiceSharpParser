@@ -10,8 +10,9 @@
         /// </summary>
         /// <param name="ruleName">Name of the rule</param>
         /// <param name="regularExpression">Regular expression</param>
-        public LexerInternalRule(string ruleName, string regularExpression)
-            : base(ruleName, regularExpression)
+        /// <param name="ignoreCase">Ignore case</param>
+        public LexerInternalRule(string ruleName, string regularExpression, bool ignoreCase)
+            : base(ruleName, regularExpression, ignoreCase)
         {
         }
 
@@ -23,7 +24,7 @@
         /// </returns>
         public override LexerRule Clone()
         {
-            return new LexerInternalRule(this.Name, this.RegularExpressionPattern);
+            return new LexerInternalRule(this.Name, this.RegularExpressionPattern, this.IgnoreCase);
         }
     }
 }

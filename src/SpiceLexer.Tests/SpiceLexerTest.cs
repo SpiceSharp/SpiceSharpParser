@@ -38,5 +38,77 @@ namespace SpiceLexer.Tests
 
             Assert.Equal(7, tokens.Length);
         }
+
+        [Fact]
+        public void Value1Text()
+        {
+            var tokensStr = "1picofarad";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.True(tokens.Length == 2);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.VALUE);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
+        public void Value2Text()
+        {
+            var tokensStr = "1pVolt";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.True(tokens.Length == 2);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.VALUE);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
+        public void Value3Text()
+        {
+            var tokensStr = "1e-12F";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.True(tokens.Length == 2);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.VALUE);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
+        public void Value4Text()
+        {
+            var tokensStr = "123.3k";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.True(tokens.Length == 2);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.VALUE);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
+        public void Value5Text()
+        {
+            var tokensStr = "1e-12";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.True(tokens.Length == 2);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.VALUE);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
+        public void Value6Text()
+        {
+            var tokensStr = "4.00000E+000";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.True(tokens.Length == 2);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.VALUE);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
     }
 }

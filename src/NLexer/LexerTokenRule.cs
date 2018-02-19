@@ -5,7 +5,7 @@ namespace NLexer
     /// <summary>
     /// The lexer token rule class. It defines how and when a token will be generated for given regulal expression pattern
     /// </summary>
-    /// <typeparam name="TLexerState"></typeparam>
+    /// <typeparam name="TLexerState">Type of lexer state</typeparam>
     public class LexerTokenRule<TLexerState> : LexerRule
         where TLexerState : LexerState
     {
@@ -17,13 +17,15 @@ namespace NLexer
         /// <param name="regularExpressionPattern">A token rule pattern</param>
         /// <param name="lexerRuleResultAction">A token rule token action</param>
         /// <param name="isActiveAction">A token rule active action</param>
+        /// <param name="ignoreCase">Ignore case</param>
         public LexerTokenRule(
             int tokenType,
             string ruleName,
             string regularExpressionPattern,
             Func<TLexerState, LexerRuleResult> lexerRuleResultAction = null,
-            Func<TLexerState, LexerRuleUseState> isActiveAction = null)
-            : base(ruleName, regularExpressionPattern)
+            Func<TLexerState, LexerRuleUseState> isActiveAction = null,
+            bool ignoreCase = true)
+            : base(ruleName, regularExpressionPattern, ignoreCase)
         {
             TokenType = tokenType;
             LexerRuleResultAction = lexerRuleResultAction ?? new Func<TLexerState, LexerRuleResult>((state) => LexerRuleResult.ReturnToken);
@@ -31,17 +33,17 @@ namespace NLexer
         }
 
         /// <summary>
-        /// The type of a generated token
+        ///  Gets the type of a generated token
         /// </summary>
         public int TokenType { get; }
 
         /// <summary>
-        /// Specifies what to do with a generated token (return or ignore)
+        /// Gets specifies what to do with a generated token (return or ignore)
         /// </summary>
         public Func<TLexerState, LexerRuleResult> LexerRuleResultAction { get; }
 
         /// <summary>
-        /// Specifies whether the rule should be skipped
+        /// Gets specifies whether the rule should be skipped
         /// </summary>
         protected Func<TLexerState, LexerRuleUseState> IsActiveAction { get; }
 
@@ -66,11 +68,12 @@ namespace NLexer
         public override LexerRule Clone()
         {
             return new LexerTokenRule<TLexerState>(
-                this.TokenType,
-                this.Name,
-                this.RegularExpressionPattern,
-                this.LexerRuleResultAction,
-                this.IsActiveAction);
+                TokenType,
+                Name,
+                RegularExpressionPattern,
+                LexerRuleResultAction,
+                IsActiveAction,
+                IgnoreCase);
         }
     }
 }
