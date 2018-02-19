@@ -114,6 +114,9 @@ namespace SpiceParser
         /// Returns new instance of <see cref="NetList"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.START"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="NetList"/>
+        /// </returns>
         private SpiceObject CreateNetList(EvaluationValues values)
         {
             return new NetList()
@@ -125,16 +128,20 @@ namespace SpiceParser
 
         /// <summary>
         /// Returns new instance of <see cref="SingleParameter"/>
-        /// or <see cref="BracketParameter"/> 
+        /// or <see cref="BracketParameter"/>
         /// or <see cref="AssignmentParameter"/>
         /// or <see cref="VectorParameter"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.PARAMETER"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="SingleParameter"/>
+        /// </returns>
         private SpiceObject CreateParameter(EvaluationValues values)
         {
             if (values.Count == 1)
             {
-                if (values.TryToGetSpiceObject(0, out VectorParameter vp)) {
+                if (values.TryToGetSpiceObject(0, out VectorParameter vp))
+                {
                     return vp;
                 }
 
@@ -163,6 +170,9 @@ namespace SpiceParser
         /// or <see cref="ExpressionParameter"/> or <see cref="IdentifierParameter"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.PARAMETER_SINGLE"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="SingleParameter"/>
+        /// </returns>
         private SpiceObject CreateParameterSingle(EvaluationValues values)
         {
             if (values[0] is TerminalEvaluationValue t)
@@ -190,6 +200,9 @@ namespace SpiceParser
         /// Returns new instance of <see cref="ParameterCollection"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.PARAMETERS"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="ParameterCollection"/>
+        /// </returns>
         private SpiceObject CreateParameters(EvaluationValues values)
         {
             var parameters = new ParameterCollection();
@@ -207,6 +220,9 @@ namespace SpiceParser
         /// Creates an instance of <see cref="Component"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.COMPONENT"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="Component"/>
+        /// </returns>
         private SpiceObject CreateComponent(EvaluationValues values)
         {
             if (values.Count != 2 && values.Count != 3)
@@ -225,6 +241,9 @@ namespace SpiceParser
         /// Returns new instance of <see cref="Control"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.CONTROL"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="Control"/>
+        /// </returns>
         private SpiceObject CreateControl(EvaluationValues values)
         {
             var control = new Control();
@@ -238,6 +257,9 @@ namespace SpiceParser
         /// Returns new instance of <see cref="SubCircuit"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.SUBCKT"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="SubCircuit"/>
+        /// </returns>
         private SpiceObject CreateSubCircuit(EvaluationValues values)
         {
             if (values.Count < 3)
@@ -295,6 +317,9 @@ namespace SpiceParser
         /// Returns new instance of <see cref="CommentLine"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.COMMENT_LINE"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="CommentLine"/>
+        /// </returns>
         private SpiceObject CreateComment(EvaluationValues values)
         {
             var comment = new CommentLine();
@@ -307,6 +332,9 @@ namespace SpiceParser
         /// Returns new instance of <see cref="Statement"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.STATEMENT"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A instance of <see cref="Statement"/>
+        /// </returns>
         private SpiceObject CreateStatement(EvaluationValues values)
         {
             if (values.Count == 1)
@@ -321,6 +349,9 @@ namespace SpiceParser
         /// Returns new instance of <see cref="Model"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.MODEL"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="Model"/>
+        /// </returns>
         private SpiceObject CreateModel(EvaluationValues values)
         {
             var model = new Model();
@@ -334,6 +365,9 @@ namespace SpiceParser
         /// Returns new instance of <see cref="VectorParameter"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.VECTOR"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="VectorParameter"/>
+        /// </returns>
         private SpiceObject CreateVector(EvaluationValues values)
         {
             var vector = new VectorParameter();
@@ -352,6 +386,9 @@ namespace SpiceParser
         /// Returns new instance of <see cref="VectorParameter"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.VECTOR_CONTINUE"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="VectorParameter"/>
+        /// </returns>
         private SpiceObject CreateVectorContinue(EvaluationValues values)
         {
             var vector = new VectorParameter();
@@ -369,6 +406,9 @@ namespace SpiceParser
         /// Returns new instance of <see cref="BracketParameter"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.PARAMETER_BRACKET"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="BracketParameter"/>
+        /// </returns>
         private SpiceObject CreateBracketParameter(EvaluationValues values)
         {
             var parameter = new BracketParameter();
@@ -389,6 +429,9 @@ namespace SpiceParser
         /// Returns new instance of <see cref="ParameterCollection"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.BRACKET_CONTENT"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="ParameterCollection"/>
+        /// </returns>
         private SpiceObject CreateBracketParameterContent(EvaluationValues values)
         {
             var parameters = new ParameterCollection();
@@ -414,6 +457,9 @@ namespace SpiceParser
         /// Returns new instance of <see cref="ParameterCollection"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.PARAMETER_EQUAL_SEQUANCE_CONTINUE"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="ParameterCollection"/>
+        /// </returns>
         private SpiceObject CreateAssigmentParametersContinue(EvaluationValues values)
         {
             if (values.Count == 2)
@@ -438,6 +484,7 @@ namespace SpiceParser
                 {
                     throw new EvaluationException("Error during translating parse tree to Spice Object Model");
                 }
+
                 return new ParameterCollection();
             }
         }
@@ -446,6 +493,9 @@ namespace SpiceParser
         /// Returns new instance of <see cref="ParameterCollection"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.PARAMETER_EQUAL_SEQUANCE"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="ParameterCollection"/>
+        /// </returns>
         private SpiceObject CreateAssigmentParameters(EvaluationValues values)
         {
             if (values.Count == 2)
@@ -474,6 +524,9 @@ namespace SpiceParser
         /// Returns new instance of <see cref="ParameterCollection"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.PARAMETER_SINGLE_SEQUENCE"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="ParameterCollection"/>
+        /// </returns>
         private SpiceObject CreateSingleParametersContinue(EvaluationValues values)
         {
             if (values.Count == 2)
@@ -507,6 +560,9 @@ namespace SpiceParser
         /// Returns new instance of <see cref="ParameterCollection"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.PARAMETER_EQUAL_SEQUANCE"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="ParameterCollection"/>
+        /// </returns>
         private SpiceObject CreateSingleParameters(EvaluationValues values)
         {
             if (values.Count == 2)
@@ -535,6 +591,9 @@ namespace SpiceParser
         /// Returns new instance of <see cref="AssignmentParameter"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.PARAMETER_EQUAL_SINGLE"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="AssignmentParameter"/>
+        /// </returns>
         private SpiceObject CreateAssigmentSimpleParameter(EvaluationValues values)
         {
             if (values.Count == 3)
@@ -555,6 +614,9 @@ namespace SpiceParser
         /// Returns new instance of <see cref="AssignmentParameter"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.PARAMETER_EQUAL"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A instance of <see cref="AssignmentParameter"/>
+        /// </returns>
         private SpiceObject CreateAssigmentParameter(EvaluationValues values)
         {
             if (values.Count == 1)
@@ -594,6 +656,9 @@ namespace SpiceParser
         /// Returns new instance of <see cref="Statements"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.STATEMENTS"/> parse tree node
         /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="Statements"/>
+        /// </returns>
         private SpiceObject CreateStatements(EvaluationValues values)
         {
             var statements = new Statements();

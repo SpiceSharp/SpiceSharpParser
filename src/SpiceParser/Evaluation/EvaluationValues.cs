@@ -4,11 +4,18 @@ using SpiceNetlist;
 
 namespace SpiceParser.Evaluation
 {
+    /// <summary>
+    /// A collection of <see cref="EvaluationValue"/> items.
+    /// </summary>
     public class EvaluationValues : List<EvaluationValue>
     {
         /// <summary>
-        /// Gets lexem from specific EvaluationValue item
+        /// Gets lexem from the <see cref="EvaluationValue"/> at the specied index
         /// </summary>
+        /// <param name="index">An index of the item</param>
+        /// <returns>
+        /// A lexem
+        /// </returns>
         public string GetLexem(int index)
         {
             if (this[index] is TerminalEvaluationValue t)
@@ -20,8 +27,12 @@ namespace SpiceParser.Evaluation
         }
 
         /// <summary>
-        /// Gets lexem line numeber from specific EvaluationValue item
+        /// Gets line number from the <see cref="EvaluationValue"/> at the specied index
         /// </summary>
+        /// <param name="index">An index of the item</param>
+        /// <returns>
+        /// A line number of the lexem
+        /// </returns>
         public int GetLexemLineNumber(int index)
         {
             if (this[index] is TerminalEvaluationValue t)
@@ -33,8 +44,13 @@ namespace SpiceParser.Evaluation
         }
 
         /// <summary>
-        /// Gets token from specific EvaluationValue item
+        /// Tries to gets a <see cref="SpiceToken"/> from specific <see cref="Evaluation.EvaluationValue"/> item
         /// </summary>
+        /// <param name="index">An index of the item</param>
+        /// <param name="result">A spice token</param>
+        /// <returns>
+        /// True if spice token can be returned
+        /// </returns>
         public bool TryToGetToken(int index, out SpiceToken result)
         {
             if (this[index] is TerminalEvaluationValue t)
@@ -48,12 +64,13 @@ namespace SpiceParser.Evaluation
         }
 
         /// <summary>
-        /// TODO
+        /// Tries to gets a <see cref="SpiceObject"/> from specific <see cref="Evaluation.EvaluationValue"/> item
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="index"></param>
-        /// <param name="result"></param>
-        /// <returns></returns>
+        /// <param name="index">An index of the item</param>
+        /// <param name="result">A spice token</param>
+        /// <returns>
+        /// True if spice token can be returned
+        /// </returns>
         public bool TryToGetSpiceObject<T>(int index, out T result)
             where T : SpiceObject
         {
@@ -68,8 +85,13 @@ namespace SpiceParser.Evaluation
         }
 
         /// <summary>
-        /// Gets SpiceObject from specific EvaluationValue item
+        /// Gets a <see cref="SpiceObject"/> from specific <see cref="Evaluation.EvaluationValue"/> item
         /// </summary>
+        /// <typeparam name="T">Type of <see cref="SpiceObject"/> to look</typeparam>
+        /// <param name="index">An index of the item</param>
+        /// <returns>
+        /// A reference to <see cref="T"/> spice object
+        /// </returns>
         public T GetSpiceObject<T>(int index)
             where T : SpiceObject
         {

@@ -10,10 +10,12 @@ namespace SpiceParser
         /// <summary>
         /// Initializes a new instance of the <see cref="ParseTreeTerminalNode"/> class.
         /// </summary>
+        /// <param name="token">A token for the terminal node</param>
+        /// <param name="parent">A parent of the teminal node</param>
         public ParseTreeTerminalNode(SpiceToken token, ParseTreeNonTerminalNode parent)
             : base(parent)
         {
-            this.Token = token;
+            Token = token;
         }
 
         /// <summary>
@@ -24,6 +26,9 @@ namespace SpiceParser
         /// <summary>
         /// Returns a string representation of the parse tree node
         /// </summary>
+        /// <returns>
+        /// A string represenation of the terminal node
+        /// </returns>
         public override string ToString()
         {
             return "Terminal: [" + ((Token.Lexem == "\r\n" || Token.Lexem == "\n") ? "newline" : Token.Lexem) + "]";

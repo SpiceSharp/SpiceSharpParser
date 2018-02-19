@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace SpiceParser
 {
+    /// <summary>
+    /// Allows to enumerate parse tree nodes in specific orders
+    /// </summary>
     public class ParseTreeTravelsal
     {
         /// <summary>
