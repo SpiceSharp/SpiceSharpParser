@@ -6,17 +6,12 @@ namespace NLexer.Tests
 {
     public class LexerTest
     {
-        public class LexerTestState : LexerState
-        {
-            public int LineNumber = 0;
-        }
-
         [Fact]
         public void EmptyGrammarEmptyText()
         {
             LexerGrammar<LexerTestState> grammar = new LexerGrammar<LexerTestState>(new List<LexerTokenRule<LexerTestState>>());
             Lexer<LexerTestState> lexer = new Lexer<LexerTestState>(grammar, new LexerOptions(false, null));
-            var tokens = lexer.GetTokens("");
+            var tokens = lexer.GetTokens(string.Empty);
             Assert.Single(tokens);
         }
 
@@ -34,12 +29,16 @@ namespace NLexer.Tests
             LexerGrammar<LexerTestState> grammar = new LexerGrammar<LexerTestState>(new List<LexerTokenRule<LexerTestState>>()
                 {
                     new LexerTokenRule<LexerTestState>(1, "Text", "[a-zA-Z0-9]*"),
-                    new LexerTokenRule<LexerTestState>(2, "NewLine", "\n",
-                        (LexerTestState state) => {
+                    new LexerTokenRule<LexerTestState>(
+                        2,
+                        "NewLine",
+                        "\n",
+                        (LexerTestState state) =>
+                        {
                             state.LineNumber++;
-                            return LexerRuleResult.ReturnToken; })
-                }
-            );
+                            return LexerRuleResult.ReturnToken;
+                        })
+                });
 
             Lexer<LexerTestState> lexer = new Lexer<LexerTestState>(grammar, new LexerOptions(false, null));
             var s = new LexerTestState();
@@ -47,6 +46,11 @@ namespace NLexer.Tests
             Assert.Equal(5, tokens.Count());
 
             Assert.Equal(2, s.LineNumber);
+        }
+
+        public class LexerTestState : LexerState
+        {
+            public int LineNumber { get; set; } = 0;
         }
     }
 }
