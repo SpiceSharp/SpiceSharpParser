@@ -6,10 +6,21 @@ using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
+    /// <summary>
+    /// Processes .SAVE command from Spice netlist.
+    /// </summary>
     public class SaveControl : BaseControl
     {
-        public override string Type => "save";
+        /// <summary>
+        /// Gets the type of genera
+        /// </summary>
+        public override string TypeName => "save";
 
+        /// <summary>
+        /// Processes <see cref="Control"/> statement and modifies the context
+        /// </summary>
+        /// <param name="statement">A statement to process</param>
+        /// <param name="context">A context to modify</param>
         public override void Process(Control statement, ProcessingContext context)
         {
             foreach (var parameter in statement.Parameters)

@@ -13,12 +13,12 @@ namespace SpiceSharp.Parser.Readers
         public abstract double Extract();
 
         /// <summary>
-        /// Get the type name
+        /// Gets the type name
         /// </summary>
         public abstract string TypeName { get; }
 
         /// <summary>
-        /// Get the name based on the properties
+        /// Gets the name based on the properties
         /// </summary>
         public abstract string Name { get; }
 

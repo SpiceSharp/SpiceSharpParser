@@ -14,6 +14,9 @@ namespace SpiceNetlist.SpiceSharpConnector
     /// </summary>
     public class Connector
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Connector"/> class.
+        /// </summary>
         public Connector()
         {
             Controls = new ControlRegistry();
@@ -51,6 +54,22 @@ namespace SpiceNetlist.SpiceSharpConnector
         protected StatementsProcessor StatementsProcessor { get; }
 
         /// <summary>
+        /// Translates Netlist object mode to SpiceSharp netlist
+        /// </summary>
+        /// <param name="netlist">A object model of the netlist</param>
+        /// <returns>
+        /// A new SpiceSharp netlist
+        /// </returns>
+        public NetList Translate(SpiceNetlist.NetList netlist)
+        {
+            NetList result = new NetList(new Circuit(), netlist.Title);
+
+            var processingContext = new ProcessingContext(string.Empty, result);
+            StatementsProcessor.Process(netlist.Statements, processingContext);
+            return result;
+        }
+
+        /// <summary>
         /// Init registries
         /// </summary>
         protected virtual void InitRegistries()
@@ -82,22 +101,6 @@ namespace SpiceNetlist.SpiceSharpConnector
             Components.Add(new DiodeGenerator());
             Components.Add(new MosfetGenerator());
             Components.Add(new SubCircuitGenerator(StatementsProcessor.ComponentProcessor, StatementsProcessor.ModelProcessor));
-        }
-
-        /// <summary>
-        /// Translates Netlist object mode to SpiceSharp netlist
-        /// </summary>
-        public NetList Translate(SpiceNetlist.NetList netlist)
-        {
-            NetList result = new NetList
-            {
-                Circuit = new Circuit(),
-                Title = netlist.Title
-            };
-
-            var processingContext = new ProcessingContext(string.Empty, result);
-            StatementsProcessor.Process(netlist.Statements, processingContext);
-            return result;
         }
     }
 }

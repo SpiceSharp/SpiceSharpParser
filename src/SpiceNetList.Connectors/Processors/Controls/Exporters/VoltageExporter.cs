@@ -9,8 +9,21 @@ using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
 {
+    /// <summary>
+    /// Generates voltage <see cref="Export"/>
+    /// </summary>
     public class VoltageExporter
     {
+        /// <summary>
+        /// Creates a new voltage export
+        /// </summary>
+        /// <param name="type">A type of export</param>
+        /// <param name="parameters">A parameters of export</param>
+        /// <param name="simulation">A simulation for export</param>
+        /// <param name="context">A context</param>
+        /// <returns>
+        /// A new export
+        /// </returns>
         public Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, ProcessingContext context)
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
@@ -56,6 +69,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
             return ve;
         }
 
+        /// <summary>
+        /// Gets supported voltage exports
+        /// </summary>
+        /// <returns>
+        /// A list of supported voltage exports
+        /// </returns>
         public List<string> GetGeneratedTypes()
         {
             return new List<string>() { "v", "vr", "vi", "vm", "vdb", "vp", "vph" };

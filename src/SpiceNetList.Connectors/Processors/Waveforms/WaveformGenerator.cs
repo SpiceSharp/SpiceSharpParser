@@ -1,13 +1,27 @@
 ﻿using SpiceNetlist.SpiceObjects.Parameters;
-using SpiceNetlist.SpiceSharpConnector.Common;
+using SpiceNetlist.SpiceSharpConnector.Processors.Common;
 using SpiceSharp.Components;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Waveforms
 {
-    public abstract class WaveformGenerator : ITyped
+    /// <summary>
+    /// Generates a waveform
+    /// </summary>
+    public abstract class WaveformGenerator : IGenerator
     {
-        public abstract string Type { get; }
+        /// <summary>
+        /// Gets the type name of generated waveform
+        /// </summary>
+        public abstract string TypeName { get; }
 
+        /// <summary>
+        /// Generats a new waveform
+        /// </summary>
+        /// <param name="bracketParameter">A parameter for waveform</param>
+        /// <param name="context">A context</param>
+        /// <returns>
+        /// A new waveform
+        /// </returns>
         public abstract Waveform Generate(BracketParameter bracketParameter, ProcessingContext context);
     }
 }

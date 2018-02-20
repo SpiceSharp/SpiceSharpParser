@@ -3,6 +3,9 @@ using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 {
+    /// <summary>
+    /// Base for all control simulation processors
+    /// </summary>
     public abstract class SimulationControl : BaseControl
     {
         protected void SetBaseParameters(BaseConfiguration baseConfiguration, ProcessingContext context)

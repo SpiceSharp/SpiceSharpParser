@@ -3,10 +3,21 @@ using SpiceSharp.Components;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Waveforms
 {
+    /// <summary>
+    /// Generator for sinusoidal waveform
+    /// </summary>
     public class SineGenerator : WaveformGenerator
     {
-        public override string Type => "sine";
+        public override string TypeName => "sine";
 
+        /// <summary>
+        /// Generats a new sinusoidal waveform
+        /// </summary>
+        /// <param name="bracketParameter">A parameter for waveform</param>
+        /// <param name="context">A context</param>
+        /// <returns>
+        /// A new waveform
+        /// </returns>
         public override Waveform Generate(BracketParameter bracketParameter, ProcessingContext context)
         {
             var sine = new Sine();

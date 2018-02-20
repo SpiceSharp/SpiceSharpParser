@@ -1,11 +1,17 @@
 ﻿using SpiceNetlist.SpiceObjects;
-using SpiceNetlist.SpiceSharpConnector.Common;
+using SpiceNetlist.SpiceSharpConnector.Processors.Common;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
-    public abstract class BaseControl : StatementProcessor<Control>, ITyped
+    /// <summary>
+    /// Base for all control processors
+    /// </summary>
+    public abstract class BaseControl : StatementProcessor<Control>, IGenerator
     {
-        public abstract string Type
+        /// <summary>
+        /// Gets name of Spice element
+        /// </summary>
+        public abstract string TypeName
         {
             get;
         }

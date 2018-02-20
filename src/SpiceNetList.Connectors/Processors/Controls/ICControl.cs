@@ -2,10 +2,21 @@
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
+    /// <summary>
+    /// Processes .IC command from Spice netlist.
+    /// </summary>
     public class ICControl : BaseControl
     {
-        public override string Type => "ic";
+        /// <summary>
+        /// Gets name of Spice element
+        /// </summary>
+        public override string TypeName => "ic";
 
+        /// <summary>
+        /// Processes <see cref="Control"/> statement and modifies the context
+        /// </summary>
+        /// <param name="statement">A statement to process</param>
+        /// <param name="context">A context to modify</param>
         public override void Process(Control statement, ProcessingContext context)
         {
             foreach (var param in statement.Parameters)

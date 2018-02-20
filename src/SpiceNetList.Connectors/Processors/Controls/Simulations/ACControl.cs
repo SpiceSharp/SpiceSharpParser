@@ -1,15 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
-using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 {
+    /// <summary>
+    /// Processes .AC command from Spice netlist.
+    /// </summary>
     public class ACControl : SimulationControl
     {
-        public override string Type => "ac";
+        public override string TypeName => "ac";
 
+        /// <summary>
+        /// Processes <see cref="Control"/> statement and modifies the context
+        /// </summary>
+        /// <param name="statement">A statement to process</param>
+        /// <param name="context">A context to modify</param>
         public override void Process(Control statement, ProcessingContext context)
         {
             switch (statement.Parameters.Count)

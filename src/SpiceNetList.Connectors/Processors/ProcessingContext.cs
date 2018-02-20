@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
+using SpiceNetlist.SpiceSharpConnector.Processors.Expressions;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Parser.Readers;
@@ -38,7 +39,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// </summary>
         public Dictionary<string, double> AvailableParameters { get; }
 
-        public GlobalConfiguration GlobalConfiguration { get; set; } = new GlobalConfiguration();
+        public SimulationConfiguration GlobalConfiguration { get; set; } = new SimulationConfiguration();
 
         public List<SubCircuit> AvailableSubcircuits { get; }
 
@@ -165,7 +166,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             {
                 return AvailableParameters[value];
             }
-            var spiceExpressionParser = new SpiceSharpConnector.Expressions.SpiceExpression();
+            var spiceExpressionParser = new SpiceExpression();
             spiceExpressionParser.Parameters = AvailableParameters;
 
             return spiceExpressionParser.Parse(value.Trim('{', '}'));

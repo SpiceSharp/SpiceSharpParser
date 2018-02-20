@@ -4,10 +4,21 @@ using SpiceSharp.Components;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
+    /// <summary>
+    /// Generator for pulse waveform
+    /// </summary>
     public class PulseGenerator : WaveformGenerator
     {
-        public override string Type => "pulse";
+        public override string TypeName => "pulse";
 
+        /// <summary>
+        /// Generats a new waveform
+        /// </summary>
+        /// <param name="bracketParam">A parameter for waveform</param>
+        /// <param name="context">A context</param>
+        /// <returns>
+        /// A new waveform
+        /// </returns>
         public override Waveform Generate(BracketParameter bracketParam, ProcessingContext context)
         {
             var w = new Pulse();

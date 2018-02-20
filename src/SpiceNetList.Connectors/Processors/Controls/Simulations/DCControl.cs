@@ -5,10 +5,18 @@ using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 {
+    /// <summary>
+    /// Processes .DC command from Spice netlist.
+    /// </summary>
     public class DCControl : SimulationControl
     {
-        public override string Type => "dc";
+        public override string TypeName => "dc";
 
+        /// <summary>
+        /// Processes <see cref="Control"/> statement and modifies the context
+        /// </summary>
+        /// <param name="statement">A statement to process</param>
+        /// <param name="context">A context to modify</param>
         public override void Process(Control statement, ProcessingContext context)
         {
             int count = statement.Parameters.Count / 4;
