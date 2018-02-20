@@ -4,7 +4,7 @@ using SpiceSharp.Simulations;
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 {
     /// <summary>
-    /// Processes .OP command from Spice netlist.
+    /// Processes .OP <see cref="Control"/> from spice netlist object model.
     /// </summary>
     public class OPControl : SimulationControl
     {

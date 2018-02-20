@@ -21,7 +21,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             this.AvailableSubcircuits = new List<SubCircuit>();
             this.AvailableParameters = new Dictionary<string, double>();
         }
-        
+
         public ProcessingContext(string contextName, ProcessingContext parent, SubCircuit currentSubciruit, List<string> pinInstanceNames, Dictionary<string, double> availableParameters) 
         {
             this.ContextName = contextName;

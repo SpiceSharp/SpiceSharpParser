@@ -7,7 +7,7 @@ using SpiceSharp.Simulations;
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
     /// <summary>
-    /// Processes .SAVE command from Spice netlist.
+    /// Processes .SAVE <see cref="Control"/> from spice netlist object model.
     /// </summary>
     public class SaveControl : BaseControl
     {

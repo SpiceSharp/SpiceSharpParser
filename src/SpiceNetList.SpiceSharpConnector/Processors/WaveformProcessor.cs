@@ -10,6 +10,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             Registry = registry;
         }
 
+        /// <summary>
+        /// Gets the current waveform registry
+        /// </summary>
         public WaveformRegistry Registry { get; }
 
         public Waveform Generate(BracketParameter cp, ProcessingContext context)

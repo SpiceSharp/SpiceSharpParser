@@ -2,6 +2,9 @@
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
+    /// <summary>
+    /// Processes all <see cref="SubCircuit"/> from spice netlist object model.
+    /// </summary>
     public class SubcircuitDefinitionProcessor : StatementProcessor<SubCircuit>
     {
         public SubcircuitDefinitionProcessor()

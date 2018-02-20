@@ -7,7 +7,7 @@ using SpiceSharp.Simulations;
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 {
     /// <summary>
-    /// Processes .NOISE command from Spice netlist.
+    /// Processes .NOISE <see cref="Control"/> from spice netlist object model.
     /// </summary>
     public class NoiseControl : SimulationControl
     {

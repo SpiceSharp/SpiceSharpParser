@@ -5,7 +5,7 @@ using SpiceSharp.Simulations;
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 {
     /// <summary>
-    /// Processes .AC command from Spice netlist.
+    /// Processes .AC <see cref="Control"/> from spice netlist object model.
     /// </summary>
     public class ACControl : SimulationControl
     {

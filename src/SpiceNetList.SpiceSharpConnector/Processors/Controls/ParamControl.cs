@@ -2,6 +2,9 @@
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
+    /// <summary>
+    /// Processes .PARAM <see cref="Control"/> from spice netlist object model.
+    /// </summary>
     public class ParamControl : BaseControl
     {
         public override string TypeName => "param";

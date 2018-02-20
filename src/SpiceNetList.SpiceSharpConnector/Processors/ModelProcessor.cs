@@ -4,15 +4,30 @@ using SpiceSharp.Circuits;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
+    /// <summary>
+    /// Processes all supported <see cref="Model"/> from spice netlist object model.
+    /// </summary>
     public class ModelProcessor : StatementProcessor<Model>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModelProcessor"/> class.
+        /// </summary>
+        /// <param name="registry">The registry</param>
         public ModelProcessor(EntityGeneratorRegistry registry)
         {
             Registry = registry;
         }
 
+        /// <summary>
+        /// Gets the registry
+        /// </summary>
         public EntityGeneratorRegistry Registry { get; }
 
+        /// <summary>
+        /// Processes a model statement and modifies the context
+        /// </summary>
+        /// <param name="statement">A statement to process</param>
+        /// <param name="context">A context to modifify</param>
         public override void Process(Model statement, ProcessingContext context)
         {
             string name = statement.Name.ToLower();
@@ -26,7 +41,6 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                     {
                         throw new System.Exception("Unsupported model type");
                     }
-
                     var generator = Registry.Get(type);
 
                     Entity spiceSharpModel = generator.Generate(
@@ -36,7 +50,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                         b.Parameters,
                         context);
 
-                    if (statement != null)
+                    if (spiceSharpModel != null)
                     {
                         context.AddEntity(spiceSharpModel);
                     }
@@ -52,10 +66,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                     }
 
                     var generator = Registry.Get(type);
-
                     Entity spiceSharpModel = generator.Generate(new SpiceSharp.Identifier(context.GenerateObjectName(name)), name, type, statement.Parameters.Skip(1), context);
 
-                    if (statement != null)
+                    if (spiceSharpModel != null)
                     {
                         context.AddEntity(spiceSharpModel);
                     }

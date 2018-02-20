@@ -2,8 +2,18 @@
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
+    /// <summary>
+    /// Processes all <see cref="Statement"/> from spice netlist object model.
+    /// </summary>
     public class StatementsProcessor : StatementProcessor<Statements>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StatementsProcessor"/> class.
+        /// </summary>
+        /// <param name="modelRegistry">A model registry</param>
+        /// <param name="componentRegistry">A component registry</param>
+        /// <param name="controlsRegistry">A controls registry</param>
+        /// <param name="waveformsRegistry">A waveform registry</param>
         public StatementsProcessor(EntityGeneratorRegistry modelRegistry, EntityGeneratorRegistry componentRegistry, ControlRegistry controlsRegistry, WaveformRegistry waveformsRegistry)
         {
             ModelProcessor = new ModelProcessor(modelRegistry);
@@ -15,23 +25,41 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             CommentProcessor = new CommentProcessor();
         }
 
+        /// <summary>
+        /// Gets the current model processor
+        /// </summary>
         public ModelProcessor ModelProcessor { get; }
 
+        /// <summary>
+        /// Gets the current waveform processor
+        /// </summary>
         public WaveformProcessor WaveformProcessor { get; }
 
+        /// <summary>
+        /// Gets the current component processor
+        /// </summary>
         public ComponentProcessor ComponentProcessor { get; }
 
+        /// <summary>
+        /// Gets the current subcircuit processor
+        /// </summary>
         public SubcircuitDefinitionProcessor SubcircuitDefinitionProcessor { get; }
 
+        /// <summary>
+        /// Gets the current control processor
+        /// </summary>
         public ControlProcessor ControlProcessor { get; }
 
+        /// <summary>
+        /// Gets the current comment processor
+        /// </summary>
         public CommentProcessor CommentProcessor { get; }
 
         /// <summary>
-        /// 
+        /// Processes statemets and modifes the context
         /// </summary>
-        /// <param name="statements"></param>
-        /// <param name="context"></param>
+        /// <param name="statements">The statements to process</param>
+        /// <param name="context">The context to modify</param>
         public override void Process(Statements statements, ProcessingContext context)
         {
             foreach (Statement statement in statements.OrderBy(StatementOrder))

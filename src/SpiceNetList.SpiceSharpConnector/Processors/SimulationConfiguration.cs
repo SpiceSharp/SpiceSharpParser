@@ -2,9 +2,6 @@
 
 namespace SpiceNetlist.SpiceSharpConnector
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class SimulationConfiguration
     {
         public double? AbsoluteTolerance { get; internal set; }

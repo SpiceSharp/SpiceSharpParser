@@ -3,7 +3,7 @@
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
     /// <summary>
-    /// Processes .IC command from Spice netlist.
+    /// Processes .IC <see cref="Control"/> from spice netlist object model.
     /// </summary>
     public class ICControl : BaseControl
     {

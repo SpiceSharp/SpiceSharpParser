@@ -1,11 +1,10 @@
-﻿using System;
-using SpiceNetlist.SpiceObjects;
+﻿using SpiceNetlist.SpiceObjects;
 using SpiceSharp.IntegrationMethods;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
     /// <summary>
-    /// Processes .OPTIONS command from Spice netlist.
+    /// Processes .OPTIONS <see cref="Control"/> from spice netlist object model.
     /// </summary>
     public class OptionControl : BaseControl
     {

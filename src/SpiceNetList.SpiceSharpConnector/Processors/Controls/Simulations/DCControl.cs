@@ -6,7 +6,7 @@ using SpiceSharp.Simulations;
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 {
     /// <summary>
-    /// Processes .DC command from Spice netlist.
+    /// Processes .DC <see cref="Control"/> from spice netlist object model.
     /// </summary>
     public class DCControl : SimulationControl
     {
