@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceNetlist", "SpiceNetLis
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceParser", "SpiceParser\SpiceParser.csproj", "{8ED4C1D1-FD30-40D2-BBFC-86C7C9B7ADD7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceNetlist.SpiceSharpConnector", "SpiceNetList.Connectors\SpiceNetlist.SpiceSharpConnector.csproj", "{05303B98-FFD6-40EE-80A7-E7B7825F079B}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox", "Sandbox\Sandbox.csproj", "{5AE6934D-2D49-4D94-B782-37BB5173A361}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLexer", "NLexer\NLexer.csproj", "{4E305CF6-20AB-4DF3-912F-B18E403D535B}"
@@ -17,11 +15,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLexer.Tests", "NLexer.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceParser.Tests", "SpiceParser.Tests\SpiceParser.Tests.csproj", "{CBF7BB81-1E2D-46FE-AC07-0BB0B1FF98D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiceGrammar", "SpiceGrammar\SpiceGrammar.csproj", "{81D4B425-730E-41F0-BC6E-9DE63E25CD17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceGrammar", "SpiceGrammar\SpiceGrammar.csproj", "{81D4B425-730E-41F0-BC6E-9DE63E25CD17}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceLexer", "SpiceLexer\SpiceLexer.csproj", "{8885F624-804D-43A8-A9D4-003D5796E7FA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceLexer.Tests", "SpiceLexer.Tests\SpiceLexer.Tests.csproj", "{47F22280-811B-4C7D-938A-263ADA895F6A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceNetlist.SpiceSharpConnector", "SpiceNetList.SpiceSharpConnector\SpiceNetlist.SpiceSharpConnector.csproj", "{4D0F86C5-A8BB-46ED-A935-F0FB918E13E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +37,6 @@ Global
 		{8ED4C1D1-FD30-40D2-BBFC-86C7C9B7ADD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8ED4C1D1-FD30-40D2-BBFC-86C7C9B7ADD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8ED4C1D1-FD30-40D2-BBFC-86C7C9B7ADD7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{05303B98-FFD6-40EE-80A7-E7B7825F079B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{05303B98-FFD6-40EE-80A7-E7B7825F079B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{05303B98-FFD6-40EE-80A7-E7B7825F079B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{05303B98-FFD6-40EE-80A7-E7B7825F079B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5AE6934D-2D49-4D94-B782-37BB5173A361}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5AE6934D-2D49-4D94-B782-37BB5173A361}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AE6934D-2D49-4D94-B782-37BB5173A361}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -69,6 +65,10 @@ Global
 		{47F22280-811B-4C7D-938A-263ADA895F6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47F22280-811B-4C7D-938A-263ADA895F6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47F22280-811B-4C7D-938A-263ADA895F6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D0F86C5-A8BB-46ED-A935-F0FB918E13E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D0F86C5-A8BB-46ED-A935-F0FB918E13E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D0F86C5-A8BB-46ED-A935-F0FB918E13E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D0F86C5-A8BB-46ED-A935-F0FB918E13E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
