@@ -27,17 +27,17 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                     switch (name)
                     {
                         case "abstol":
-                            context.GlobalConfiguration.AbsoluteTolerance = context.ParseDouble(value); break;
+                            context.SimulationConfiguration.AbsoluteTolerance = context.ParseDouble(value); break;
                         case "reltol":
-                            context.GlobalConfiguration.RelTolerance = context.ParseDouble(value); break;
+                            context.SimulationConfiguration.RelTolerance = context.ParseDouble(value); break;
                         case "gmin":
-                            context.GlobalConfiguration.Gmin = context.ParseDouble(value); break;
+                            context.SimulationConfiguration.Gmin = context.ParseDouble(value); break;
                         case "itl1":
-                            context.GlobalConfiguration.DCMaxIterations = (int)context.ParseDouble(value); break;
+                            context.SimulationConfiguration.DCMaxIterations = (int)context.ParseDouble(value); break;
                         case "itl2":
-                            context.GlobalConfiguration.SweepMaxIterations = (int)context.ParseDouble(value); break;
+                            context.SimulationConfiguration.SweepMaxIterations = (int)context.ParseDouble(value); break;
                         case "itl4":
-                            context.GlobalConfiguration.TranMaxIterations = (int)context.ParseDouble(value); break;
+                            context.SimulationConfiguration.TranMaxIterations = (int)context.ParseDouble(value); break;
                         case "itl5":
                             // TODO: ????
                             break;
@@ -52,7 +52,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                             {
                                 case "trap":
                                 case "trapezoidal":
-                                    context.GlobalConfiguration.Method = new Trapezoidal();
+                                    context.SimulationConfiguration.Method = new Trapezoidal();
                                     break;
                             }
 
@@ -67,7 +67,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                 {
                     if (w.Image.ToLower() == "keepopinfo")
                     {
-                        context.GlobalConfiguration.KeepOpInfo = true;
+                        context.SimulationConfiguration.KeepOpInfo = true;
                     }
                 }
             }

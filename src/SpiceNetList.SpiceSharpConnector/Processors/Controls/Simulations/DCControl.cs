@@ -59,9 +59,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 
         private void SetDcParameters(DCConfiguration dCConfiguration, ProcessingContext context)
         {
-            if (context.GlobalConfiguration.SweepMaxIterations.HasValue)
+            if (context.SimulationConfiguration.SweepMaxIterations.HasValue)
             {
-                dCConfiguration.SweepMaxIterations = context.GlobalConfiguration.SweepMaxIterations.Value;
+                dCConfiguration.SweepMaxIterations = context.SimulationConfiguration.SweepMaxIterations.Value;
             }
         }
     }

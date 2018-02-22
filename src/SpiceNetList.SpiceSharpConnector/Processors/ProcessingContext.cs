@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
-using SpiceNetlist.SpiceSharpConnector.Processors.Expressions;
+using SpiceNetlist.SpiceSharpConnector.Processors.Evaluation;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Parser.Readers;
@@ -10,37 +10,63 @@ using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
+    /// <summary>
+    /// Processing context
+    /// </summary>
     public class ProcessingContext
     {
         private string currentPath = null;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProcessingContext"/> class.
+        /// </summary>
+        /// <param name="contextName">The name of context</param>
+        /// <param name="netlist">The netlist for context</param>
         public ProcessingContext(string contextName, NetList netlist)
         {
-            this.ContextName = contextName;
-            this.Netlist = netlist;
-            this.AvailableSubcircuits = new List<SubCircuit>();
-            this.AvailableParameters = new Dictionary<string, double>();
-        }
-
-        public ProcessingContext(string contextName, ProcessingContext parent, SubCircuit currentSubciruit, List<string> pinInstanceNames, Dictionary<string, double> availableParameters) 
-        {
-            this.ContextName = contextName;
-            this.Netlist = parent.Netlist;
-            this.Parent = parent;
-            this.CurrrentSubCircuit = currentSubciruit;
-            this.PinInstanceNames = pinInstanceNames;
-            this.AvailableSubcircuits = new List<SubCircuit>();
-            this.AvailableSubcircuits.AddRange(parent.AvailableSubcircuits);
-            this.AvailableParameters = availableParameters;
+            ContextName = contextName;
+            Netlist = netlist;
+            AvailableSubcircuits = new List<SubCircuit>();
+            AvailableParameters = new Dictionary<string, double>();
+            Evaluator = new Evaluator(AvailableParameters);
         }
 
         /// <summary>
-        /// Gets dictionary of available
+        /// Initializes a new instance of the <see cref="ProcessingContext"/> class.
+        /// </summary>
+        /// <param name="contextName">The name of context</param>
+        /// <param name="netlist">The netlist for context</param>
+        public ProcessingContext(string contextName, ProcessingContext parent, SubCircuit currentSubciruit, List<string> pinInstanceNames, Dictionary<string, double> availableParameters) 
+        {
+            ContextName = contextName;
+            Netlist = parent.Netlist;
+            Parent = parent;
+            CurrrentSubCircuit = currentSubciruit;
+            PinInstanceNames = pinInstanceNames;
+            AvailableSubcircuits = new List<SubCircuit>();
+            AvailableSubcircuits.AddRange(parent.AvailableSubcircuits);
+            AvailableParameters = availableParameters;
+            Evaluator = new Evaluator(AvailableParameters);
+        }
+
+        /// <summary>
+        /// Gets the available paremeters values
         /// </summary>
         public Dictionary<string, double> AvailableParameters { get; }
 
-        public SimulationConfiguration GlobalConfiguration { get; set; } = new SimulationConfiguration();
+        /// <summary>
+        /// Gets the evaluator
+        /// </summary>
+        public Evaluator Evaluator { get; }
 
+        /// <summary>
+        /// Gets the current simulation configuration
+        /// </summary>
+        public SimulationConfiguration SimulationConfiguration { get; } = new SimulationConfiguration();
+
+        /// <summary>
+        /// Gets the available definions of subcircuits
+        /// </summary>
         public List<SubCircuit> AvailableSubcircuits { get; }
 
         /// <summary>
@@ -65,14 +91,29 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             }
         }
 
+        /// <summary>
+        /// Gets the netlist
+        /// </summary>
         protected NetList Netlist { get; }
 
+        /// <summary>
+        /// Gets the context name
+        /// </summary>
         protected string ContextName { get; }
 
+        /// <summary>
+        /// Gets the current subcircuit
+        /// </summary>
         protected SubCircuit CurrrentSubCircuit { get; }
 
+        /// <summary>
+        /// Gets the names of pinds for the current subcircuit
+        /// </summary>
         protected List<string> PinInstanceNames { get; }
 
+        /// <summary>
+        /// Gets the parent of the context
+        /// </summary>
         protected ProcessingContext Parent { get;  }
 
         /// <summary>
@@ -154,22 +195,15 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// </summary>
         public void SetICVoltage(string nodeName, string value)
         {
-            Netlist.Circuit.Nodes.InitialConditions[this.GenerateNodeName(nodeName)] = this.ParseDouble(value);
+            Netlist.Circuit.Nodes.InitialConditions[this.GenerateNodeName(nodeName)] = Evaluator.EvaluteDouble(value);
         }
 
         /// <summary>
-        /// Parses value to double
+        /// Evaluates the value to double
         /// </summary>
         public double ParseDouble(string value)
         {
-            if (AvailableParameters.ContainsKey(value))
-            {
-                return AvailableParameters[value];
-            }
-            var spiceExpressionParser = new SpiceExpression();
-            spiceExpressionParser.Parameters = AvailableParameters;
-
-            return spiceExpressionParser.Parse(value.Trim('{', '}'));
+            return Evaluator.EvaluteDouble(value);
         }
 
         /// <summary>
@@ -206,7 +240,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                 {
                     try
                     {
-                        entity.ParameterSets.SetProperty(ap.Name, this.ParseDouble(ap.Value));
+                        entity.ParameterSets.SetProperty(ap.Name, Evaluator.EvaluteDouble(ap.Value));
                     }
                     catch (Exception ex)
                     {
@@ -253,13 +287,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                 return pinName;
             }
 
-            if (this.CurrrentSubCircuit != null)
+            if (CurrrentSubCircuit != null)
             {
                 Dictionary<string, string> map = new Dictionary<string, string>();
 
                 for (var i = 0; i < this.CurrrentSubCircuit.Pins.Count; i++)
                 {
-                    map[this.CurrrentSubCircuit.Pins[i]] = this.PinInstanceNames[i];
+                    map[CurrrentSubCircuit.Pins[i]] = this.PinInstanceNames[i];
                 }
 
                 if (map.ContainsKey(pinName))

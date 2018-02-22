@@ -10,24 +10,24 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
     {
         protected void SetBaseParameters(BaseConfiguration baseConfiguration, ProcessingContext context)
         {
-            if (context.GlobalConfiguration.Gmin.HasValue)
+            if (context.SimulationConfiguration.Gmin.HasValue)
             {
-                baseConfiguration.Gmin = context.GlobalConfiguration.Gmin.Value;
+                baseConfiguration.Gmin = context.SimulationConfiguration.Gmin.Value;
             }
 
-            if (context.GlobalConfiguration.AbsoluteTolerance.HasValue)
+            if (context.SimulationConfiguration.AbsoluteTolerance.HasValue)
             {
-                baseConfiguration.AbsoluteTolerance = context.GlobalConfiguration.AbsoluteTolerance.Value;
+                baseConfiguration.AbsoluteTolerance = context.SimulationConfiguration.AbsoluteTolerance.Value;
             }
 
-            if (context.GlobalConfiguration.RelTolerance.HasValue)
+            if (context.SimulationConfiguration.RelTolerance.HasValue)
             {
-                baseConfiguration.RelativeTolerance = context.GlobalConfiguration.RelTolerance.Value;
+                baseConfiguration.RelativeTolerance = context.SimulationConfiguration.RelTolerance.Value;
             }
 
-            if (context.GlobalConfiguration.DCMaxIterations.HasValue)
+            if (context.SimulationConfiguration.DCMaxIterations.HasValue)
             {
-                baseConfiguration.DCMaxIterations = context.GlobalConfiguration.DCMaxIterations.Value;
+                baseConfiguration.DCMaxIterations = context.SimulationConfiguration.DCMaxIterations.Value;
             }
         }
     }

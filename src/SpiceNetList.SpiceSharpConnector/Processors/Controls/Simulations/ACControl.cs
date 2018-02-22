@@ -49,9 +49,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 
         private void SetACParameters(FrequencyConfiguration frequencyConfiguration, ProcessingContext context)
         {
-            if (context.GlobalConfiguration.KeepOpInfo.HasValue)
+            if (context.SimulationConfiguration.KeepOpInfo.HasValue)
             {
-                frequencyConfiguration.KeepOpInfo = context.GlobalConfiguration.KeepOpInfo.Value;
+                frequencyConfiguration.KeepOpInfo = context.SimulationConfiguration.KeepOpInfo.Value;
             }
         }
     }

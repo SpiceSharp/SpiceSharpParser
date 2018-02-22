@@ -52,14 +52,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 
         private void SetTransientParamters(Transient tran, ProcessingContext context)
         {
-            if (context.GlobalConfiguration.Method != null)
+            if (context.SimulationConfiguration.Method != null)
             {
-                tran.TimeConfiguration.Method = context.GlobalConfiguration.Method;
+                tran.TimeConfiguration.Method = context.SimulationConfiguration.Method;
             }
 
-            if (context.GlobalConfiguration.TranMaxIterations.HasValue)
+            if (context.SimulationConfiguration.TranMaxIterations.HasValue)
             {
-                tran.TimeConfiguration.TranMaxIterations = context.GlobalConfiguration.TranMaxIterations.Value;
+                tran.TimeConfiguration.TranMaxIterations = context.SimulationConfiguration.TranMaxIterations.Value;
             }
         }
     }
