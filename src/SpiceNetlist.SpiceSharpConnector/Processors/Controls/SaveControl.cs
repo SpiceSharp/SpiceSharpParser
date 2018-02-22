@@ -1,6 +1,6 @@
 ﻿using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
-using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters;
+using SpiceNetlist.SpiceSharpConnector.Registries;
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
 
@@ -12,9 +12,20 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
     public class SaveControl : BaseControl
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SaveControl"/> class.
+        /// </summary>
+        /// <param name="registry">The exporter registry</param>
+        public SaveControl(ExporterRegistry registry)
+        {
+            Registry = registry;
+        }
+
+        /// <summary>
         /// Gets the type of genera
         /// </summary>
         public override string TypeName => "save";
+
+        protected ExporterRegistry Registry { get; }
 
         /// <summary>
         /// Processes <see cref="Control"/> statement and modifies the context
@@ -34,17 +45,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 
         private Export GenerateExport(BracketParameter parameter, Simulation simulation, ProcessingContext context)
         {
-            var voltageExport = new VoltageExporter();
-            var currentExport = new CurrentExporter();
             string type = parameter.Name.ToLower();
 
-            if (voltageExport.GetGeneratedTypes().Contains(type))
+            if (Registry.Supports(type))
             {
-                return voltageExport.CreateExport(parameter.Name, parameter.Parameters, simulation, context);
-            }
-            else if (currentExport.GetGeneratedTypes().Contains(type))
-            {
-                return currentExport.CreateExport(parameter.Name, parameter.Parameters, simulation, context);
+                return Registry.Get(type).CreateExport(type, parameter.Parameters, simulation, context);
             }
 
             throw new System.Exception("Unsuported save");

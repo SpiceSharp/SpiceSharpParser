@@ -12,7 +12,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
     /// <summary>
     /// Generates a current <see cref="Export"/>
     /// </summary>
-    public class CurrentExporter
+    public class CurrentExporter : Exporter
     {
         /// <summary>
         /// Creates a new current export
@@ -24,7 +24,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
         /// <returns>
         /// A new export
         /// </returns>
-        public Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, ProcessingContext context)
+        public override Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, ProcessingContext context)
         {
             if (parameters.Count != 1 || !(parameters[0] is SingleParameter))
             {
@@ -71,7 +71,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
         /// <returns>
         /// A list of supported current exports
         /// </returns>
-        public List<string> GetGeneratedTypes()
+        public override List<string> GetSupportedTypes()
         {
             return new List<string>() { "i", "ir", "ii", "im", "idb", "ip" };
         }

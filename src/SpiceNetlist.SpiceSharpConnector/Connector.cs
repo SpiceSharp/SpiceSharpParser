@@ -1,10 +1,12 @@
 ﻿using SpiceNetlist.SpiceSharpConnector.Processors;
 using SpiceNetlist.SpiceSharpConnector.Processors.Controls;
+using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters;
 using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations;
 using SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components;
 using SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components.Semiconductors;
 using SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models;
 using SpiceNetlist.SpiceSharpConnector.Processors.Waveforms;
+using SpiceNetlist.SpiceSharpConnector.Registries;
 using SpiceSharp;
 
 namespace SpiceNetlist.SpiceSharpConnector
@@ -23,30 +25,37 @@ namespace SpiceNetlist.SpiceSharpConnector
             Components = new EntityGeneratorRegistry();
             Models = new EntityGeneratorRegistry();
             Waveforms = new WaveformRegistry();
+            Exporters = new ExporterRegistry();
+
             StatementsProcessor = new StatementsProcessor(Models, Components, Controls, Waveforms);
 
             InitRegistries();
         }
 
         /// <summary>
-        /// Gets registry of supported waveforms
+        /// Gets the registry of supported waveforms
         /// </summary>
         public WaveformRegistry Waveforms { get; }
 
         /// <summary>
-        /// Gets registry of supported controls
+        /// Gets the registry of supported controls
         /// </summary>
         public ControlRegistry Controls { get; }
 
         /// <summary>
-        /// Gets registry of supported components
+        /// Gets the registry of supported components
         /// </summary>
         public EntityGeneratorRegistry Components { get; }
 
         /// <summary>
-        /// Gets registry of supported models
+        /// Gets the registry of supported models
         /// </summary>
         public EntityGeneratorRegistry Models { get; }
+
+        /// <summary>
+        /// Gets the registry of supported exporters
+        /// </summary>
+        public ExporterRegistry Exporters { get; }
 
         /// <summary>
         /// Gets main processor
@@ -77,6 +86,9 @@ namespace SpiceNetlist.SpiceSharpConnector
             Waveforms.Add(new SineGenerator());
             Waveforms.Add(new PulseGenerator());
 
+            Exporters.Add(new VoltageExporter());
+            Exporters.Add(new CurrentExporter());
+
             Models.Add(new RLCModelGenerator());
             Models.Add(new DiodeModelGenerator());
             Models.Add(new BipolarModelGenerator());
@@ -90,7 +102,7 @@ namespace SpiceNetlist.SpiceSharpConnector
             Controls.Add(new DCControl());
             Controls.Add(new OPControl());
             Controls.Add(new NoiseControl());
-            Controls.Add(new SaveControl());
+            Controls.Add(new SaveControl(Exporters));
             Controls.Add(new ICControl());
 
             Components.Add(new RLCGenerator());

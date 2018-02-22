@@ -12,7 +12,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
     /// <summary>
     /// Generates voltage <see cref="Export"/>
     /// </summary>
-    public class VoltageExporter
+    public class VoltageExporter : Exporter
     {
         /// <summary>
         /// Creates a new voltage export
@@ -24,7 +24,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
         /// <returns>
         /// A new export
         /// </returns>
-        public Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, ProcessingContext context)
+        public override Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, ProcessingContext context)
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
             {
@@ -75,7 +75,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
         /// <returns>
         /// A list of supported voltage exports
         /// </returns>
-        public List<string> GetGeneratedTypes()
+        public override List<string> GetSupportedTypes()
         {
             return new List<string>() { "v", "vr", "vi", "vm", "vdb", "vp", "vph" };
         }
