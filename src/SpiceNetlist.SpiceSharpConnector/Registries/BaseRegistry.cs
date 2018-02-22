@@ -35,10 +35,13 @@ namespace SpiceNetlist.SpiceSharpConnector
             if (ElementsByType.ContainsKey(element.TypeName))
             {
                 var currentElement = ElementsByType[element.TypeName];
-                Elements.Remove(currentElement);
+                var index = Elements.IndexOf(currentElement);
+                Elements.RemoveAt(index);
+                ElementsTypes.RemoveAt(index);
             }
 
             Elements.Add(element);
+            ElementsTypes.Add(element.TypeName);
             ElementsByType[element.TypeName] = element;
         }
 

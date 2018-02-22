@@ -707,7 +707,7 @@ namespace SpiceParser
             }
             else
             {
-                throw new ParseException("Error during parsing a model. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                throw new ParseException("Error during parsing a model, line=" + currentToken.LineNumber, currentToken.LineNumber);
             }
         }
 

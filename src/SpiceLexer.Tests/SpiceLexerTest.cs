@@ -135,5 +135,29 @@ namespace SpiceLexer.Tests
             Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.VALUE);
             Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
         }
+
+        [Fact]
+        public void Value7Text()
+        {
+            var tokensStr = ".568";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.True(tokens.Length == 2);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.VALUE);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
+        public void IdentifierTest()
+        {
+            var tokensStr = "1N914";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.True(tokens.Length == 2);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.IDENTIFIER);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
     }
 }
