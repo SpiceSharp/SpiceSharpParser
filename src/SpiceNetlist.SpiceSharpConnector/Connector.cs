@@ -60,9 +60,9 @@ namespace SpiceNetlist.SpiceSharpConnector
         /// <returns>
         /// A new SpiceSharp netlist
         /// </returns>
-        public NetList Translate(SpiceNetlist.NetList netlist)
+        public Netlist Translate(SpiceNetlist.Netlist netlist)
         {
-            NetList result = new NetList(new Circuit(), netlist.Title);
+            Netlist result = new Netlist(new Circuit(), netlist.Title);
 
             var processingContext = new ProcessingContext(string.Empty, result);
             StatementsProcessor.Process(netlist.Statements, processingContext);

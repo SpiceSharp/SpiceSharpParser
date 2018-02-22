@@ -5,7 +5,7 @@ namespace SpiceNetlist
     /// <summary>
     /// Spice netlist
     /// </summary>
-    public class NetList : SpiceObject
+    public class Netlist : SpiceObject
     {
         /// <summary>
         /// Gets or sets title of the netlist

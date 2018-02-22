@@ -8,10 +8,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
     public abstract class EntityGenerator : IGenerator
     {
-        public string TypeName => string.Join(".", GetGeneratedTypes());
+        public string TypeName => string.Join(".", GetGeneratedSpiceTypes());
 
         public abstract Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, ProcessingContext context);
 
-        public abstract List<string> GetGeneratedTypes();
+        public abstract List<string> GetGeneratedSpiceTypes();
     }
 }

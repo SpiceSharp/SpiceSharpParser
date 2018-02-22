@@ -79,7 +79,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return bjt;
         }
 
-        public override List<string> GetGeneratedTypes()
+        public override List<string> GetGeneratedSpiceTypes()
         {
             return new List<string>() { "q" };
         }

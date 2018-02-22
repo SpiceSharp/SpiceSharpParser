@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SpiceNetList.SpiceSharpConnector\SpiceNetlist.SpiceSharpConnector.csproj" />
+    <ProjectReference Include="..\SpiceNetlist.SpiceSharpConnector\SpiceNetlist.SpiceSharpConnector.csproj" />
   </ItemGroup>
 
 </Project>

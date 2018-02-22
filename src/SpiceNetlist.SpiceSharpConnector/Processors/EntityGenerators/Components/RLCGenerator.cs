@@ -135,7 +135,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return res;
         }
 
-        public override List<string> GetGeneratedTypes()
+        public override List<string> GetGeneratedSpiceTypes()
         {
             return new List<string> { "r", "l", "c", "k" };
         }

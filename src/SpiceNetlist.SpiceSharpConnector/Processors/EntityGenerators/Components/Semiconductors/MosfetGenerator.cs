@@ -77,7 +77,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
         /// </summary>
         public Dictionary<Type, Func<Identifier, Entity, SpiceSharp.Components.Component>> Mosfets { get; } = new Dictionary<Type, Func<Identifier, Entity, SpiceSharp.Components.Component>>();
 
-        public override List<string> GetGeneratedTypes()
+        public override List<string> GetGeneratedSpiceTypes()
         {
             return new List<string>() { "m" };
         }

@@ -78,7 +78,7 @@ vb 32 0 dc -20
             var s2 = new Stopwatch();
             s2.Start();
             var eval = new ParseTreeEvaluator();
-            var netlist = eval.Evaluate(parseTree) as SpiceNetlist.NetList;
+            var netlist = eval.Evaluate(parseTree) as SpiceNetlist.Netlist;
             Console.WriteLine("Translating to Netlist Object Model:" + s2.ElapsedMilliseconds + "ms");
 
             var s3 = new Stopwatch();

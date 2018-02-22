@@ -23,7 +23,7 @@ namespace SpiceNetlist.SpiceSharpConnector
         /// </param>
         public override void Add(EntityGenerator generator)
         {
-            foreach (var type in generator.GetGeneratedTypes())
+            foreach (var type in generator.GetGeneratedSpiceTypes())
             {
                 if (ElementsByType.ContainsKey(type))
                 {

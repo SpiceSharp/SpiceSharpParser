@@ -7,6 +7,31 @@ namespace SpiceLexer.Tests
     public class SpiceLexerTest
     {
         [Fact]
+        public void TwoStringTest()
+        {
+            var tokensStr = "\"ele1\"\"ele2\"";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.Equal(3, tokens.Length);
+
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.STRING);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.STRING);
+            Assert.True(tokens[2].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
+        public void StringQuotedTest()
+        {
+            var tokensStr = "\"ele1\\\"ele2\\\"\"";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+            Assert.Equal(2, tokens.Length);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.STRING);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
         public void VectorTest()
         {
             var tokensStr = "v(3,0)";

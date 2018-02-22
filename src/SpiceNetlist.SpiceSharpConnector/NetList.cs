@@ -7,14 +7,14 @@ namespace SpiceNetlist.SpiceSharpConnector
     /// <summary>
     /// A SpiceSharp netlist
     /// </summary>
-    public class NetList
+    public class Netlist
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NetList"/> class.
+        /// Initializes a new instance of the <see cref="Netlist"/> class.
         /// </summary>
         /// <param name="circuit">The SpiceSharp circuit for the netlist</param>
         /// <param name="title">The title of the netlist</param>
-        public NetList(Circuit circuit, string title)
+        public Netlist(Circuit circuit, string title)
         {
             Circuit = circuit;
             Title = title;

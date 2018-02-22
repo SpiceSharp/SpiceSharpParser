@@ -29,7 +29,7 @@ namespace SpiceParser
         /// </summary>
         public ParseTreeEvaluator()
         {
-            evaluators.Add(SpiceGrammarSymbol.START, (EvaluationValues nt) => CreateNetList(nt));
+            evaluators.Add(SpiceGrammarSymbol.START, (EvaluationValues nt) => CreateNetlist(nt));
             evaluators.Add(SpiceGrammarSymbol.STATEMENTS, (EvaluationValues nt) => CreateStatements(nt));
             evaluators.Add(SpiceGrammarSymbol.STATEMENT, (EvaluationValues nt) => CreateStatement(nt));
             evaluators.Add(SpiceGrammarSymbol.MODEL, (EvaluationValues nt) => CreateModel(nt));
@@ -111,15 +111,15 @@ namespace SpiceParser
         }
 
         /// <summary>
-        /// Returns new instance of <see cref="NetList"/>
+        /// Returns new instance of <see cref="Netlist"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.START"/> parse tree node
         /// </summary>
         /// <returns>
-        /// A new instance of <see cref="NetList"/>
+        /// A new instance of <see cref="Netlist"/>
         /// </returns>
-        private SpiceObject CreateNetList(EvaluationValues values)
+        private SpiceObject CreateNetlist(EvaluationValues values)
         {
-            return new NetList()
+            return new Netlist()
             {
                 Title = values.GetLexem(0),
                 Statements = values.GetSpiceObject<Statements>(1)

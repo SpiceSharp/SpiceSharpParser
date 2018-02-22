@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceNetlist", "SpiceNetList\SpiceNetlist.csproj", "{D3E556E1-C134-47E2-BC6D-3B54B0BA4C83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceNetlist", "SpiceNetlist\SpiceNetlist.csproj", "{D3E556E1-C134-47E2-BC6D-3B54B0BA4C83}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceParser", "SpiceParser\SpiceParser.csproj", "{8ED4C1D1-FD30-40D2-BBFC-86C7C9B7ADD7}"
 EndProject
@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceLexer", "SpiceLexer\Sp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceLexer.Tests", "SpiceLexer.Tests\SpiceLexer.Tests.csproj", "{47F22280-811B-4C7D-938A-263ADA895F6A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceNetlist.SpiceSharpConnector", "SpiceNetList.SpiceSharpConnector\SpiceNetlist.SpiceSharpConnector.csproj", "{4D0F86C5-A8BB-46ED-A935-F0FB918E13E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceNetlist.SpiceSharpConnector", "SpiceNetlist.SpiceSharpConnector\SpiceNetlist.SpiceSharpConnector.csproj", "{4D0F86C5-A8BB-46ED-A935-F0FB918E13E2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiceNetlist.SpiceSharpConnector.Tests", "SpiceNetlist.SpiceSharpConnector.Tests\SpiceNetlist.SpiceSharpConnector.Tests.csproj", "{3CF68752-A9AC-436F-A3C2-810BB03998A5}"
 EndProject

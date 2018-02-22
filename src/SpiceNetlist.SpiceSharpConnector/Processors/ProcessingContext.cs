@@ -22,7 +22,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// </summary>
         /// <param name="contextName">The name of context</param>
         /// <param name="netlist">The netlist for context</param>
-        public ProcessingContext(string contextName, NetList netlist)
+        public ProcessingContext(string contextName, Netlist netlist)
         {
             ContextName = contextName;
             Netlist = netlist;
@@ -94,7 +94,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <summary>
         /// Gets the netlist
         /// </summary>
-        protected NetList Netlist { get; }
+        protected Netlist Netlist { get; }
 
         /// <summary>
         /// Gets the context name

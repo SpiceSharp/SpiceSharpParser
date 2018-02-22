@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SpiceNetList\SpiceNetlist.csproj" />
+    <ProjectReference Include="..\SpiceNetlist\SpiceNetlist.csproj" />
   </ItemGroup>
 
   <ItemGroup>

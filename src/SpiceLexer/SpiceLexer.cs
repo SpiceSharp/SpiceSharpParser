@@ -170,7 +170,7 @@ namespace SpiceLexer
                 new LexerTokenRule<SpiceLexerState>(
                     (int)SpiceTokenType.STRING,
                     "A string with quotation marks",
-                    @"""[^\r\n]+\""",
+                    "\"(?:[^\"\\\\]|\\\\.)*\"",
                     ignoreCase: options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(

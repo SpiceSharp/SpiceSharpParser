@@ -40,7 +40,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             return null;
         }
 
-        public override List<string> GetGeneratedTypes()
+        public override List<string> GetGeneratedSpiceTypes()
         {
             return new List<string>() { "x" };
         }

@@ -6,7 +6,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models
 {
     public class DiodeModelGenerator : ModelGenerator
     {
-        public override List<string> GetGeneratedTypes()
+        public override List<string> GetGeneratedSpiceTypes()
         {
             return new List<string>() { "d" };
         }
