@@ -175,5 +175,33 @@ namespace SpiceParser.Tests
             Assert.True(((BracketParameter)spiceObject).Parameters[0] is AssignmentParameter);
             Assert.True(((BracketParameter)spiceObject).Parameters[1] is AssignmentParameter);
         }
+
+        [Fact]
+        public void ComponentTest()
+        {
+            // Arrange
+            var vectorTokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.WORD, "L1"),
+                new SpiceToken(SpiceTokenType.VALUE, "5"),
+                new SpiceToken(SpiceTokenType.VALUE, "3"),
+                new SpiceToken(SpiceTokenType.VALUE, "3MH"),
+            };
+
+            var parser = new SpiceParser();
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.COMPONENT);
+
+            // Act
+            ParseTreeEvaluator eval = new ParseTreeEvaluator();
+            var spiceObject = eval.Evaluate(tree);
+
+            // Assert
+            Assert.IsType<Component>(spiceObject);
+            Assert.True(((Component)spiceObject).Name == "L1");
+            Assert.True(((Component)spiceObject).PinsAndParameters.Count == 3);
+            Assert.True(((Component)spiceObject).PinsAndParameters[0] is ValueParameter);
+            Assert.True(((Component)spiceObject).PinsAndParameters[1] is ValueParameter);
+            Assert.True(((Component)spiceObject).PinsAndParameters[2] is ValueParameter);
+        }
     }
 }

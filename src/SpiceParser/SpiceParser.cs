@@ -173,6 +173,12 @@ namespace SpiceParser
         /// <param name="currentTokenIndex">A index of the current token</param>
         private void ProcessNewLineOrEOF(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
+            if (currentTokenIndex >= tokens.Length)
+            {
+                // follow - no tokens
+                return;
+            }
+
             var currentToken = tokens[currentTokenIndex];
             if (currentToken.Is(SpiceTokenType.EOF))
             {
@@ -399,6 +405,12 @@ namespace SpiceParser
         /// <param name="currentTokenIndex">A index of the current token</param>
         private void ProcessParameters(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
+            if (currentTokenIndex >= tokens.Length)
+            {
+                // follow - no tokens - EOT
+                return;
+            }
+
             var currentToken = tokens[currentTokenIndex];
 
             if (currentToken.Is(SpiceTokenType.WORD)
@@ -588,6 +600,23 @@ namespace SpiceParser
         private void ProcessParameter(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
+            if (currentTokenIndex == tokens.Length - 1)
+            {
+                if (currentToken.Is(SpiceTokenType.VALUE)
+                        || currentToken.Is(SpiceTokenType.STRING)
+                        || currentToken.Is(SpiceTokenType.IDENTIFIER)
+                        || currentToken.Is(SpiceTokenType.REFERENCE)
+                        || currentToken.Is(SpiceTokenType.EXPRESSION))
+                {
+                    stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, current));
+                    return;
+                }
+                else
+                {
+                    throw new ParseException("Error during parsing a paremeter. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                }
+            }
+
             var nextToken = tokens[currentTokenIndex + 1];
 
             if (nextToken.Is(SpiceTokenType.COMMA))
