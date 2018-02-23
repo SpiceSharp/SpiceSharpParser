@@ -15,4 +15,4 @@ A object model library for spice netlists
 A parser library for spice netlists. It generates a parse tree from array of tokens and a object model of netlist (SpiceNetListLibrary)
 
 ## SpiceNetlist.SpiceSharpConnector
-Maps a object model of netlist to Spice#
+Maps a object model of netlist to SpiceSharp
