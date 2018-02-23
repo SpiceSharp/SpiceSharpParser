@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceSharp;
@@ -68,13 +69,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
                                 var output = new Identifier(v.Elements[0].Image);
                                 var reference = new Identifier(v.Elements[1].Image);
                                 var input = new Identifier(statement.Parameters[2].Image);
-                                noise = new Noise("Noise " + (context.SimulationsCount + 1), output, reference, input, sweep);
+                                noise = new Noise("Noise " + (context.Simulations.Count() + 1), output, reference, input, sweep);
                             }
                             else if (bracket.Parameters[0] is SingleParameter s)
                             {
                                 var output = new Identifier(s.Image);
                                 var input = new Identifier(statement.Parameters[1].Image);
-                                noise = new Noise("Noise " + (context.SimulationsCount + 1), output, input, sweep);
+                                noise = new Noise("Noise " + (context.Simulations.Count() + 1), output, input, sweep);
                             }
 
                             break;

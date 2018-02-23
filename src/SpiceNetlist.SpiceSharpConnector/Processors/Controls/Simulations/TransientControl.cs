@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using SpiceNetlist.SpiceObjects;
 using SpiceSharp.Simulations;
 
@@ -30,13 +31,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
             {
                 case 2:
                     tran = new Transient(
-                        (context.SimulationsCount + 1) + " - Transient",
+                        (context.Simulations.Count() + 1) + " - Transient",
                         context.ParseDouble(statement.Parameters[0].Image),
                         context.ParseDouble(statement.Parameters[1].Image));
                     break;
                 case 3:
                     tran = new Transient(
-                        (context.SimulationsCount + 1) + " - Transient",
+                        (context.Simulations.Count() + 1) + " - Transient",
                         context.ParseDouble(statement.Parameters[0].Image),
                         context.ParseDouble(statement.Parameters[1].Image),
                         context.ParseDouble(statement.Parameters[2].Image));

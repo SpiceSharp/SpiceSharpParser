@@ -3,6 +3,7 @@ using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceNetlist.SpiceSharpConnector.Registries;
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
+using System.Linq;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
@@ -38,7 +39,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
             {
                 if (parameter is BracketParameter bracketParameter)
                 {
-                    context.AddExport(GenerateExport(bracketParameter, context.FirstSimulation, context));
+                    context.AddExport(GenerateExport(bracketParameter, context.Simulations.First(), context));
                 }
             }
         }

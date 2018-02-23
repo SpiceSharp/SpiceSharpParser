@@ -103,6 +103,7 @@ namespace SpiceNetlist.SpiceSharpConnector
             Controls.Add(new OPControl());
             Controls.Add(new NoiseControl());
             Controls.Add(new SaveControl(Exporters));
+            Controls.Add(new PlotControl(Exporters));
             Controls.Add(new ICControl());
 
             Components.Add(new RLCGenerator());

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using SpiceNetlist.SpiceObjects;
 using SpiceSharp.Simulations;
 
@@ -35,9 +36,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 
             switch (type)
             {
-                case "lin": ac = new AC((context.SimulationsCount + 1) + " - DC", new SpiceSharp.Simulations.Sweeps.LinearSweep(start, stop, (int)numberSteps)); break;
-                case "oct": ac = new AC((context.SimulationsCount + 1) + " - DC", new SpiceSharp.Simulations.Sweeps.OctaveSweep(start, stop, (int)numberSteps)); break;
-                case "dec": ac = new AC((context.SimulationsCount + 1) + " - DC", new SpiceSharp.Simulations.Sweeps.DecadeSweep(start, stop, (int)numberSteps)); break;
+                case "lin": ac = new AC((context.Simulations.Count() + 1) + " - AC", new SpiceSharp.Simulations.Sweeps.LinearSweep(start, stop, (int)numberSteps)); break;
+                case "oct": ac = new AC((context.Simulations.Count() + 1) + " - AC", new SpiceSharp.Simulations.Sweeps.OctaveSweep(start, stop, (int)numberSteps)); break;
+                case "dec": ac = new AC((context.Simulations.Count() + 1) + " - AC", new SpiceSharp.Simulations.Sweeps.DecadeSweep(start, stop, (int)numberSteps)); break;
                 default:
                     throw new Exception("LIN, DEC or OCT expected");
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SpiceNetlist.SpiceObjects;
 using SpiceSharp.Simulations;
 
@@ -49,7 +50,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
                 sweeps.Add(sweep);
             }
 
-            DC dc = new DC((context.SimulationsCount + 1) + " - DC", sweeps);
+            DC dc = new DC((context.Simulations.Count() + 1) + " - DC", sweeps);
 
             SetBaseParameters(dc.BaseConfiguration, context);
             SetDcParameters(dc.DCConfiguration, context);

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Plots;
 using SpiceSharp;
 using SpiceSharp.Simulations;
 
@@ -49,5 +50,10 @@ namespace SpiceNetlist.SpiceSharpConnector
         /// Gets the list of exports from the netlist
         /// </summary>
         public List<SpiceSharp.Parser.Readers.Export> Exports { get; } = new List<SpiceSharp.Parser.Readers.Export>();
+
+        /// <summary>
+        /// Gets the list of generated plots
+        /// </summary>
+        public List<Plot> Plots { get; } = new List<Plot>();
     }
 }

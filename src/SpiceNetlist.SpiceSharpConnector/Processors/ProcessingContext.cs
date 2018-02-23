@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
+using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Plots;
 using SpiceNetlist.SpiceSharpConnector.Processors.Evaluation;
 using SpiceSharp;
 using SpiceSharp.Circuits;
@@ -70,24 +71,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         public List<SubCircuit> AvailableSubcircuits { get; }
 
         /// <summary>
-        /// Gets numer of simulations
+        /// Gets the created simulations
         /// </summary>
-        public int SimulationsCount
+        public IEnumerable<Simulation> Simulations
         {
             get
             {
-                return Netlist.Simulations.Count;
-            }
-        }
-
-        /// <summary>
-        /// Gets first simulation
-        /// </summary>
-        public Simulation FirstSimulation
-        {
-            get
-            {
-                return Netlist.Simulations[0];
+                return Netlist.Simulations;
             }
         }
 
@@ -172,6 +162,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         public void AddExport(Export export)
         {
             Netlist.Exports.Add(export);
+        }
+
+        /// <summary>
+        /// Adds plot to netlist
+        /// </summary>
+        public void AddPlot(Plot plot)
+        {
+            Netlist.Plots.Add(plot);
         }
 
         /// <summary>
