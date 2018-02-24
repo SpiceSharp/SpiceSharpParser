@@ -31,7 +31,7 @@ namespace SpiceNetlist.Runner
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
+            Application.Current.Shutdown();
         }
 
         private void Run_Click(object sender, RoutedEventArgs e)
@@ -41,23 +41,19 @@ namespace SpiceNetlist.Runner
                 var netlist = SpiceHelper.GetNetList(this.txtEditor.Text);
                 SpiceHelper.RunAllSimulations(netlist);
 
-                MessageBox.Show("Netlist was successfully run", "Info", MessageBoxButton.OK);
-
                 if (netlist.Plots.Count > 0)
                 {
-                    MessageBox.Show("Netlist has a plot");
-
-                    bool positive = SpiceHelper.IsPlotPositive(netlist.Plots[0]);
-
-                    PlotWindow window = new PlotWindow(netlist.Plots[0], positive);
-                   
-                    window.Show();
+                    foreach (var plot in netlist.Plots)
+                    {
+                        bool positive = SpiceHelper.IsPlotPositive(plot);
+                        PlotWindow window = new PlotWindow(plot, positive);
+                        window.Show();
+                    }
                 }
-
             }
             catch(Exception ex)
             {
-                MessageBox.Show("Netlist was failed to run", "Info", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Netlist was failed to run: " + ex.ToString(), "Info", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             
         }

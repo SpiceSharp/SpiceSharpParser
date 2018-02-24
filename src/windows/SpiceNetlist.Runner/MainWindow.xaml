@@ -19,7 +19,6 @@
                     <TextBlock Name="txtStatus" Width="53" />
                 </StatusBarItem>
             </StatusBar>
-            <TextBlock Name="txtLogs" Background="LightGray" Height="100" Width="Auto" DockPanel.Dock="Bottom"/>
             <TextBox Name="txtEditor" AcceptsReturn="True" />
         </DockPanel>
     </DockPanel>
