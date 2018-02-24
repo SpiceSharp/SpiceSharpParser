@@ -6,18 +6,22 @@
         xmlns:local="clr-namespace:SpiceNetlist.Runner"
         mc:Ignorable="d"
         Title="SpiceNetlist runner (Spice#)" Height="350" Width="525">
-    <DockPanel>
+    <DockPanel Height="Auto" Name="stackPanel1" Width="Auto" LastChildFill="True">
         <Menu IsMainMenu="True" DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="_Exit" Click="Exit_Click" />
             </MenuItem>
             <MenuItem Header="_Run" Click="Run_Click"/>
         </Menu>
-        <StatusBar DockPanel.Dock="Bottom">
-            <StatusBarItem>
-                <TextBlock Name="lblCursorPosition" />
-            </StatusBarItem>
-        </StatusBar>
-        <TextBox AcceptsReturn="True" Name="txtEditor" />
+        <DockPanel Height="Auto" Name="stackPanel2" Width="Auto" >
+            <StatusBar DockPanel.Dock="Bottom" Height="23">
+                <StatusBarItem>
+                    <TextBlock Name="txtStatus" Width="53" />
+                </StatusBarItem>
+            </StatusBar>
+            <TextBlock Name="txtLogs" Background="LightGray" Height="100" Width="Auto" DockPanel.Dock="Bottom"/>
+            <TextBox Name="txtEditor" AcceptsReturn="True" />
+        </DockPanel>
     </DockPanel>
+
 </Window>

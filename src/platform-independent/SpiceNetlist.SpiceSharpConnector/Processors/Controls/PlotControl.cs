@@ -66,7 +66,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 
             for (var i = 0; i < exports.Count; i++)
             {
-                plot.Series.Add(new Series());
+                plot.Series.Add(new Series(exports[i].Name));
             }
 
             simulationToPlot.OnExportSimulationData += (object sender, ExportDataEventArgs e) =>

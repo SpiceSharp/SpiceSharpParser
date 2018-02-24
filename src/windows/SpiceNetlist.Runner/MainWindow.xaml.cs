@@ -39,22 +39,20 @@ namespace SpiceNetlist.Runner
 
             try
             {
-                string netList = txtEditor.Text;
+                var netlist = SpiceHelper.GetNetList(this.txtEditor.Text);
+                SpiceHelper.RunAllSimulations(netlist);
 
-                var lexer = new SpiceLexer.SpiceLexer(new SpiceLexerOptions { HasTitle = true });
-                var tokensEnumerable = lexer.GetTokens(netList);
-                var tokens = tokensEnumerable.ToArray();
+                MessageBox.Show("Netlist was successfully run", "Info", MessageBoxButton.OK);
 
-                var parseTree = new SpiceParser.SpiceParser().GetParseTree(tokens);
+                if (netlist.Plots.Count > 0)
+                {
+                    MessageBox.Show("Netlist has a plot");
 
-                var eval = new ParseTreeEvaluator();
-                var netlist = eval.Evaluate(parseTree) as SpiceNetlist.Netlist;
+                    PlotWindow window = new PlotWindow(netlist.Plots[0]);
+                   
+                    window.Show();
+                }
 
-                var connector = new Connector();
-                var n = connector.Translate(netlist);
-
-                n.Simulations[0].Run(n.Circuit);
-                MessageBox.Show("Netlist was run", "Info", MessageBoxButton.OK);
             }
             catch(Exception ex)
             {

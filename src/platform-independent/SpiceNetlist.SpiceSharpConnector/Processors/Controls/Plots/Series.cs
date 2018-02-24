@@ -10,14 +10,17 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Plots
         /// <summary>
         /// Initializes a new instance of the <see cref="Series"/> class.
         /// </summary>
-        public Series()
+        public Series(string name)
         {
             Points = new List<Point>();
+            Name = name;
         }
 
         /// <summary>
         /// Gets the series points
         /// </summary>
         public List<Point> Points { get; }
+
+        public string Name { get; }
     }
 }
