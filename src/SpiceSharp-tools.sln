@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceNetlist", "SpiceNetlist\SpiceNetlist.csproj", "{D3E556E1-C134-47E2-BC6D-3B54B0BA4C83}"
 EndProject
@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceLexer.Tests", "SpiceLe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceNetlist.SpiceSharpConnector", "SpiceNetlist.SpiceSharpConnector\SpiceNetlist.SpiceSharpConnector.csproj", "{4D0F86C5-A8BB-46ED-A935-F0FB918E13E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiceNetlist.SpiceSharpConnector.Tests", "SpiceNetlist.SpiceSharpConnector.Tests\SpiceNetlist.SpiceSharpConnector.Tests.csproj", "{3CF68752-A9AC-436F-A3C2-810BB03998A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceNetlist.SpiceSharpConnector.Tests", "SpiceNetlist.SpiceSharpConnector.Tests\SpiceNetlist.SpiceSharpConnector.Tests.csproj", "{3CF68752-A9AC-436F-A3C2-810BB03998A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiceNetlist.Runner", "SpiceNetlist.Runner\SpiceNetlist.Runner.csproj", "{1A786E30-E2F4-4C4C-AD9E-2D296D810BA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{3CF68752-A9AC-436F-A3C2-810BB03998A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CF68752-A9AC-436F-A3C2-810BB03998A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CF68752-A9AC-436F-A3C2-810BB03998A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A786E30-E2F4-4C4C-AD9E-2D296D810BA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A786E30-E2F4-4C4C-AD9E-2D296D810BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A786E30-E2F4-4C4C-AD9E-2D296D810BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A786E30-E2F4-4C4C-AD9E-2D296D810BA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

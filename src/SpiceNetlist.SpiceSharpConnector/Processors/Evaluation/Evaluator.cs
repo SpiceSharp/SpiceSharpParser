@@ -41,7 +41,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
                 return Parameters[value];
             }
 
-            if (value.StartsWith('{') && value.EndsWith('}'))
+            if (value.StartsWith("{", System.StringComparison.Ordinal) && value.EndsWith("}", System.StringComparison.Ordinal))
             {
                 value = value.Substring(1, value.Length - 2);
             }

@@ -22,8 +22,10 @@ namespace SpiceParser
             var stack = new Stack<ParseTreeNode>();
             stack.Push(rootNode);
 
-            while (stack.TryPeek(out ParseTreeNode node))
+            while (stack.Count > 0)
             {
+                var node = stack.Peek();
+
                 if (node is ParseTreeNonTerminalNode nt)
                 {
                     if (!visitedNodes.Contains(nt))
