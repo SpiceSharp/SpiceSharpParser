@@ -3,6 +3,6 @@ sudo: required
 mono: none
 dotnet: 2.0.0
 script:
-  - cd ./src/
+  - cd ./src/platform-independent
   - dotnet restore
   - dotnet build

@@ -101,20 +101,28 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SpiceLexer\SpiceLexer.csproj">
-      <Project>{8885f624-804d-43a8-a9d4-003d5796e7fa}</Project>
+    <ProjectReference Include="..\..\platform-independent\NLexer\NLexer.csproj">
+      <Project>{0663ac9d-3d27-4513-86a2-1ca6de91ed2e}</Project>
+      <Name>NLexer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\platform-independent\SpiceGrammar\SpiceGrammar.csproj">
+      <Project>{87fa4c39-2752-4019-97db-eb4073ca24bb}</Project>
+      <Name>SpiceGrammar</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\platform-independent\SpiceLexer\SpiceLexer.csproj">
+      <Project>{4c8fa83e-ce45-4bc1-a6a7-a64ddf9dadfd}</Project>
       <Name>SpiceLexer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SpiceNetlist.SpiceSharpConnector\SpiceNetlist.SpiceSharpConnector.csproj">
-      <Project>{4d0f86c5-a8bb-46ed-a935-f0fb918e13e2}</Project>
+    <ProjectReference Include="..\..\platform-independent\SpiceNetlist.SpiceSharpConnector\SpiceNetlist.SpiceSharpConnector.csproj">
+      <Project>{a4b1fc7d-037f-42eb-b157-d797f90a3fee}</Project>
       <Name>SpiceNetlist.SpiceSharpConnector</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SpiceNetlist\SpiceNetlist.csproj">
-      <Project>{D3E556E1-C134-47E2-BC6D-3B54B0BA4C83}</Project>
+    <ProjectReference Include="..\..\platform-independent\SpiceNetlist\SpiceNetlist.csproj">
+      <Project>{b2ff6104-d6fc-48d1-b5da-15dc5379f6d3}</Project>
       <Name>SpiceNetlist</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SpiceParser\SpiceParser.csproj">
-      <Project>{8ed4c1d1-fd30-40d2-bbfc-86c7c9b7add7}</Project>
+    <ProjectReference Include="..\..\platform-independent\SpiceParser\SpiceParser.csproj">
+      <Project>{57410e5e-808f-47a9-86ca-f55cf089b903}</Project>
       <Name>SpiceParser</Name>
     </ProjectReference>
   </ItemGroup>

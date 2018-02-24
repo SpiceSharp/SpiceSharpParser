@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <Reference Include="SpiceSharp">
-      <HintPath>..\..\libs\SpiceSharp.dll</HintPath>
+      <HintPath>..\..\..\libs\SpiceSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
 
