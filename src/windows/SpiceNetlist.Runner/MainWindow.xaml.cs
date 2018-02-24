@@ -36,7 +36,6 @@ namespace SpiceNetlist.Runner
 
         private void Run_Click(object sender, RoutedEventArgs e)
         {
-
             try
             {
                 var netlist = SpiceHelper.GetNetList(this.txtEditor.Text);
@@ -48,7 +47,9 @@ namespace SpiceNetlist.Runner
                 {
                     MessageBox.Show("Netlist has a plot");
 
-                    PlotWindow window = new PlotWindow(netlist.Plots[0]);
+                    bool positive = SpiceHelper.IsPlotPositive(netlist.Plots[0]);
+
+                    PlotWindow window = new PlotWindow(netlist.Plots[0], positive);
                    
                     window.Show();
                 }

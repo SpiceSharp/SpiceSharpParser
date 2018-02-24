@@ -1,6 +1,8 @@
 ﻿using SpiceLexer;
 using SpiceNetlist.SpiceSharpConnector;
+using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Plots;
 using SpiceParser;
+using System;
 using System.Linq;
 
 namespace SpiceNetlist.Runner
@@ -31,5 +33,22 @@ namespace SpiceNetlist.Runner
                 simulation.Run(netlist.Circuit);
             }
         }
+
+        internal static bool IsPlotPositive(Plot plot)
+        {
+            for (var i = 0; i < plot.Series.Count; i++)
+            {
+                for (var j = 0; j < plot.Series[i].Points.Count; j++)
+                {
+                    var y = plot.Series[i].Points[j].Y;
+                    if (y <= 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
     }
 }
+ 

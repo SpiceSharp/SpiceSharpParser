@@ -1,4 +1,5 @@
-﻿using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Plots;
+﻿using Microsoft.Win32;
+using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Plots;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +23,12 @@ namespace SpiceNetlist.Runner
     {
         public Plot Plot { get; }
 
-        public PlotWindow(Plot plot)
+        public PlotWindow(Plot plot, bool enableYLogAxis)
         {
             Plot = plot;
             InitializeComponent();
             DataContext = new PlotViewModel(plot, false, false);
+            this.y.IsEnabled = enableYLogAxis;
         }
 
         private void CheckBox_Click(object sender, RoutedEventArgs e)
@@ -40,6 +42,19 @@ namespace SpiceNetlist.Runner
         {
             PlotViewModel model = new PlotViewModel(Plot, this.x.IsChecked.Value, this.y.IsChecked.Value);
             this.DataContext = model;
+        }
+
+        private void save_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog()
+            {
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                this.plot.SaveBitmap(dialog.FileName);
+                MessageBox.Show("Zapisano");
+            }
         }
     }
 }
