@@ -24,16 +24,38 @@ namespace SpiceNetlist.Runner
                 }
             }
 
+            string xUnit = null;
+            string yUnit = null;
+            if (plot.Series.Count == 1)
+            {
+                xUnit = plot.Series[0].XUnit;
+                yUnit = plot.Series[0].YUnit;
+            }
+            else
+            {
+                for (var i = 0; i < tmp.Series.Count; i++)
+                {
+                    tmp.Series[i].Title += plot.Series[i].YUnit;
+                }
+            }
+
+
             if (xLog)
             {
-                tmp.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom });
-                tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+                tmp.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom, Unit = xUnit });
+            }
+            else
+            {
+                tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Unit = xUnit });
             }
 
             if (yLog)
             {
-                tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
-                tmp.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left });
+                tmp.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left, Unit = yUnit });
+            }
+            else
+            {
+                tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Unit = yUnit });
             }
 
             Model = tmp;

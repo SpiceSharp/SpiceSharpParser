@@ -44,29 +44,29 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
             {
                 if (type == "dc" && simulation is DC)
                 {
-                    CreatePlot(statement, context, simulation);
+                    CreatePlot(statement, context, simulation, "Voltage (V)");
                 }
 
                 if (type == "tran" && simulation is Transient)
                 {
-                    CreatePlot(statement, context, simulation);
+                    CreatePlot(statement, context, simulation, "Time (s)");
                 }
 
                 if (type == "ac" && simulation is AC)
                 {
-                    CreatePlot(statement, context, simulation);
+                    CreatePlot(statement, context, simulation, "Frequency (Hz)");
                 }
             }
         }
 
-        private void CreatePlot(Control statement, ProcessingContext context, Simulation simulationToPlot)
+        private void CreatePlot(Control statement, ProcessingContext context, Simulation simulationToPlot, string xUnit)
         {
             var plot = new Plot(simulationToPlot.Name.ToString());
             List<Export> exports = GenerateExports(statement.Parameters.Skip(1), simulationToPlot, context);
 
             for (var i = 0; i < exports.Count; i++)
             {
-                plot.Series.Add(new Series(exports[i].Name));
+                plot.Series.Add(new Series(exports[i].Name) { XUnit = xUnit, YUnit = exports[i].QuantityUnit });
             }
 
             simulationToPlot.OnExportSimulationData += (object sender, ExportDataEventArgs e) =>

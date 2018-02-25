@@ -22,6 +22,9 @@ namespace SpiceSharp.Parser.Readers
         /// </summary>
         public abstract string Name { get; }
 
+
+        public abstract string QuantityUnit { get; }
+
         /// <summary>
         /// Gets or sets the type of simulation that the export should act on
         /// eg. "tran", "dc", etc. Default is null (any simulation/optional)

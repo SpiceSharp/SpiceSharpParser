@@ -41,6 +41,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Current
         public override string TypeName => "current";
 
         /// <summary>
+        /// Gets the quantity unit
+        /// </summary>
+        public override string QuantityUnit => "Current (A)";
+
+        /// <summary>
         /// Get the name based on the properties
         /// </summary>
         public override string Name => "i(" + Source + ")";

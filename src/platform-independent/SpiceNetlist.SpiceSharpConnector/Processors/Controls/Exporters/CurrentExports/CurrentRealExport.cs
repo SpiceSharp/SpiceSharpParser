@@ -37,6 +37,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Current
         public override string Name => "ir(" + Source + ")";
 
         /// <summary>
+        /// Gets the quantity unit
+        /// </summary>
+        public override string QuantityUnit => "Current (A)";
+
+        /// <summary>
         /// Extract
         /// </summary>
         public override double Extract()

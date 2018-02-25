@@ -56,6 +56,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
         public override string Name => "v(" + Node.ToString() + (Reference == null ? "" : ", " + Reference.ToString()) + ")";
 
         /// <summary>
+        /// Gets the quantity unit
+        /// </summary>
+        public override string QuantityUnit => "Voltage (V)";
+
+        /// <summary>
         /// Read the voltage and write to the output
         /// </summary>
         public override double Extract()

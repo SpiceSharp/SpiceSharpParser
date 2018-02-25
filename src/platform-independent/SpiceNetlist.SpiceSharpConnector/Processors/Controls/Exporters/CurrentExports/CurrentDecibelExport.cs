@@ -37,6 +37,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Current
         public override string Name => "idb(" + Source + ")";
 
         /// <summary>
+        /// Gets the quantity unit
+        /// </summary>
+        public override string QuantityUnit => "Current (db A)";
+
+        /// <summary>
         /// Extract
         /// </summary>
         public override double Extract()

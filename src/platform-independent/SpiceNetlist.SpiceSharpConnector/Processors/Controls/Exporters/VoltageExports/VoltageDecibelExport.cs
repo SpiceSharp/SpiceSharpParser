@@ -45,6 +45,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
         public override string Name => "vdb(" + Node + (Reference == null ? "" : ", " + Reference) + ")";
 
         /// <summary>
+        /// Gets the quantity unit
+        /// </summary>
+        public override string QuantityUnit => "Voltage (db V)";
+
+        /// <summary>
         /// Extract
         /// </summary>
         /// <param name="data"></param>

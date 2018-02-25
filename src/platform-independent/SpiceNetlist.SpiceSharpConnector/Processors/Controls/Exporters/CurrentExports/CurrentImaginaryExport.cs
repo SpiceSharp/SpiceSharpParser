@@ -38,6 +38,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Current
         public override string Name => "ii(" + Source + ")";
 
         /// <summary>
+        /// Gets the quantity unit
+        /// </summary>
+        public override string QuantityUnit => "Amps";
+
+        /// <summary>
         /// Extract
         /// </summary>
         public override double Extract()

@@ -21,6 +21,19 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Plots
         /// </summary>
         public List<Point> Points { get; }
 
+        /// <summary>
+        /// Gets the name of series
+        /// </summary>
         public string Name { get; }
+
+        /// <summary>
+        /// Gets the x-unit
+        /// </summary>
+        public string XUnit { get; set; }
+
+        /// <summary>
+        /// Gets the y-unit
+        /// </summary>
+        public string YUnit { get; set; }
     }
 }
