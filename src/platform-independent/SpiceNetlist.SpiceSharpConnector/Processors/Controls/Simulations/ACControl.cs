@@ -27,7 +27,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
                 case 3: throw new Exception("Stopping frequency expected");
             }
 
-            AC ac;
+            Ac ac;
 
             string type = statement.Parameters.GetString(0);
             var numberSteps = context.ParseDouble(statement.Parameters.GetString(1));
@@ -36,9 +36,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 
             switch (type)
             {
-                case "lin": ac = new AC((context.Simulations.Count() + 1) + " - AC", new SpiceSharp.Simulations.Sweeps.LinearSweep(start, stop, (int)numberSteps)); break;
-                case "oct": ac = new AC((context.Simulations.Count() + 1) + " - AC", new SpiceSharp.Simulations.Sweeps.OctaveSweep(start, stop, (int)numberSteps)); break;
-                case "dec": ac = new AC((context.Simulations.Count() + 1) + " - AC", new SpiceSharp.Simulations.Sweeps.DecadeSweep(start, stop, (int)numberSteps)); break;
+                case "lin": ac = new Ac((context.Simulations.Count() + 1) + " - AC", new SpiceSharp.Simulations.Sweeps.LinearSweep(start, stop, (int)numberSteps)); break;
+                case "oct": ac = new Ac((context.Simulations.Count() + 1) + " - AC", new SpiceSharp.Simulations.Sweeps.OctaveSweep(start, stop, (int)numberSteps)); break;
+                case "dec": ac = new Ac((context.Simulations.Count() + 1) + " - AC", new SpiceSharp.Simulations.Sweeps.DecadeSweep(start, stop, (int)numberSteps)); break;
                 default:
                     throw new Exception("LIN, DEC or OCT expected");
             }

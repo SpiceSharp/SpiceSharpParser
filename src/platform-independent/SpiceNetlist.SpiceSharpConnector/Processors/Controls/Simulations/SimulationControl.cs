@@ -27,7 +27,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 
             if (context.SimulationConfiguration.DCMaxIterations.HasValue)
             {
-                baseConfiguration.DCMaxIterations = context.SimulationConfiguration.DCMaxIterations.Value;
+                baseConfiguration.DcMaxIterations = context.SimulationConfiguration.DCMaxIterations.Value;
             }
         }
     }

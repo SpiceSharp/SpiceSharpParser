@@ -18,7 +18,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
         /// <param name="context">A context to modify</param>
         public override void Process(Control statement, ProcessingContext context)
         {
-            var op = new OP((context.Simulations.Count() + 1).ToString() + " - OP");
+            var op = new Op((context.Simulations.Count() + 1).ToString() + " - OP");
 
             SetBaseParameters(op.BaseConfiguration, context);
             context.AddSimulation(op);

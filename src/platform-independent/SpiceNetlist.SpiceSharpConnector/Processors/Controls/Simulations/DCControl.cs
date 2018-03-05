@@ -50,15 +50,15 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
                 sweeps.Add(sweep);
             }
 
-            DC dc = new DC((context.Simulations.Count() + 1) + " - DC", sweeps);
+            Dc dc = new Dc((context.Simulations.Count() + 1) + " - DC", sweeps);
 
             SetBaseParameters(dc.BaseConfiguration, context);
-            SetDcParameters(dc.DCConfiguration, context);
+            SetDcParameters(dc.DcConfiguration, context);
 
             context.AddSimulation(dc);
         }
 
-        private void SetDcParameters(DCConfiguration dCConfiguration, ProcessingContext context)
+        private void SetDcParameters(DcConfiguration dCConfiguration, ProcessingContext context)
         {
             if (context.SimulationConfiguration.SweepMaxIterations.HasValue)
             {
