@@ -14,13 +14,23 @@ namespace SpiceNetlist.Runner
           
             for (var i = 0; i < plot.Series.Count; i++)
             {
-                var series = new LineSeries { Title = plot.Series[i].Name, MarkerType = MarkerType.None };
-                tmp.Series.Add(series);
-
-                for (var j = 0; j < plot.Series[i].Points.Count; j++)
+                if (plot.Series[i].Points.Count > 1)
                 {
-                    var y = plot.Series[i].Points[j].Y;
-                    series.Points.Add(new DataPoint(plot.Series[i].Points[j].X, y));
+                    var series = new LineSeries { Title = plot.Series[i].Name, MarkerType = MarkerType.None };
+                    tmp.Series.Add(series);
+
+                    for (var j = 0; j < plot.Series[i].Points.Count; j++)
+                    {
+                        var y = plot.Series[i].Points[j].Y;
+                        series.Points.Add(new DataPoint(plot.Series[i].Points[j].X, y));
+                    }
+                }
+                else
+                {
+                    var series = new ScatterSeries { Title = plot.Series[i].Name, MarkerType = MarkerType.Cross };
+                    var scatterSeries = new ScatterSeries { MarkerType = MarkerType.Circle };
+                    scatterSeries.Points.Add(new ScatterPoint(plot.Series[i].Points[0].X, plot.Series[i].Points[0].Y));
+                    tmp.Series.Add(scatterSeries);
                 }
             }
 
