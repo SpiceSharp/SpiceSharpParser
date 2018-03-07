@@ -25,6 +25,19 @@ namespace SpiceNetlist.SpiceObjects.Parameters
         /// <summary>
         /// Gets the string represenation of the parameter
         /// </summary>
-        public override string Image => Name + "(" + string.Join(",", Arguments) + ")=" + Value;
+        public override string Image
+        {
+            get
+            {
+                if (Arguments.Count > 0)
+                {
+                    return Name + "(" + string.Join(",", Arguments) + ") =" + Value;
+                }
+                else
+                {
+                    return Name + "=" + Value;
+                }
+            }
+        }
     }
 }

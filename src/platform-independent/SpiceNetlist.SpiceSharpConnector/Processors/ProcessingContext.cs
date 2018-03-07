@@ -280,9 +280,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// </summary>
         public string GenerateNodeName(string pinName)
         {
-            if (pinName == "0")
+            if (pinName == "0" || pinName == "gnd" || pinName == "GND")
             {
-                return pinName;
+                return pinName.ToUpper();
             }
 
             if (CurrrentSubCircuit != null)
