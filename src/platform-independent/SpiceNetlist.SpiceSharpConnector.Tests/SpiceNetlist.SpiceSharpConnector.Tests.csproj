@@ -17,4 +17,10 @@
     <ProjectReference Include="..\SpiceNetlist.SpiceSharpConnector\SpiceNetlist.SpiceSharpConnector.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="SpiceSharp">
+      <HintPath>..\..\..\libs\SpiceSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
