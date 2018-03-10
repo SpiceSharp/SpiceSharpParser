@@ -20,7 +20,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
             {
                 if (param is SpiceObjects.Parameters.AssignmentParameter a)
                 {
-                    string name = a.Name.ToLower();
+                    string name = a.Name;
                     string value = a.Value;
 
                     context.AvailableParameters[name] = context.ParseDouble(value);

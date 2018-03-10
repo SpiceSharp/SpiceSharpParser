@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
 {
@@ -15,6 +16,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         {
             Parameters = parameters;
             ExpressionParser = new SpiceExpression();
+            ExpressionParser.Parameters = Parameters;
+            Registry = new List<Tuple<SpiceSharp.Parameter, string>>();
         }
 
         /// <summary>
@@ -27,6 +30,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         /// </summary>
         protected SpiceExpression ExpressionParser { get; }
 
+
+        protected List<Tuple<SpiceSharp.Parameter, string>> Registry { get; }
+
         /// <summary>
         /// Evalues a specific string to double
         /// </summary>
@@ -34,7 +40,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         /// <returns>
         /// A double value
         /// </returns>
-        public double EvaluteDouble(string value)
+        public double EvaluteDouble(string value, SpiceSharp.Parameter parameter = null)
         {
             if (Parameters.ContainsKey(value))
             {
@@ -46,9 +52,20 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
                 value = value.Substring(1, value.Length - 2);
             }
 
-            ExpressionParser.Parameters = Parameters;
+            Registry.Add(new Tuple<SpiceSharp.Parameter, string>(parameter, value));
 
             return ExpressionParser.Parse(value);
+        }
+
+        public void Refresh()
+        {
+            foreach (var parameter in Registry)
+            {
+                if (parameter.Item1 != null)
+                {
+                    parameter.Item1.Set(ExpressionParser.Parse(parameter.Item2));
+                }
+            }
         }
     }
 }

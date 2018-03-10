@@ -91,7 +91,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                         throw new System.Exception("DC Sweeps > 1");
                     }
 
-                    x = dc.Sweeps[0].CurrentValue;
+                    x = e.SweepValue;
                 }
 
                 for (var i = 0; i < exports.Count; i++)

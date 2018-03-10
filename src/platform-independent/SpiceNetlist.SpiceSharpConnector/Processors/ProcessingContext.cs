@@ -199,9 +199,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <summary>
         /// Evaluates the value to double
         /// </summary>
-        public double ParseDouble(string value)
+        public double ParseDouble(string value, SpiceSharp.Parameter parameter = null)
         {
-            return Evaluator.EvaluteDouble(value);
+            return Evaluator.EvaluteDouble(value, parameter);
         }
 
         /// <summary>

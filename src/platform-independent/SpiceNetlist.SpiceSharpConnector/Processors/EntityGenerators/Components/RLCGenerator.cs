@@ -111,7 +111,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 
             if (parameters.Count == 3)
             {
-                res.ParameterSets.SetProperty("resistance", context.ParseDouble(parameters.GetString(2)));
+                var bp = res.ParameterSets[typeof(SpiceSharp.Components.ResistorBehaviors.BaseParameters)] as SpiceSharp.Components.ResistorBehaviors.BaseParameters;
+                res.ParameterSets.SetProperty("resistance", context.ParseDouble(parameters.GetString(2), bp.Resistance));
             }
             else
             {
