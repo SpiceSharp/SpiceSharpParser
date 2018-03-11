@@ -38,7 +38,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 
             var vcvs = new VoltageControlledVoltageSource(name);
             context.CreateNodes(vcvs, parameters);
-            vcvs.ParameterSets.SetProperty("gain", context.ParseDouble(parameters.GetString(4)));
+            context.SetProperty(vcvs, "gain", parameters.GetString(4));
+
             return vcvs;
         }
 
@@ -59,8 +60,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             context.CreateNodes(ccvs, parameters);
 
             ccvs.ControllingName = parameters.GetString(3);
-            ccvs.ParameterSets.SetProperty("gain", context.ParseDouble(parameters.GetString(4)));
-
+            context.SetProperty(ccvs, "gain", parameters.GetString(4));
             return ccvs;
         }
 
@@ -75,11 +75,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 // DC specification
                 if (i == 2 && parameters[i] is SingleParameter s && s.Image.ToLower() == "dc" && i != parameters.Count - 1)
                 {
-                    vsrc.ParameterSets.SetProperty("dc", context.ParseDouble(parameters.GetString(i + 1)));
+                    context.SetProperty(vsrc, "dc", parameters.GetString(i + 1));
                 }
-                else if (i == 2 && (parameters[i] is ValueParameter vp || parameters[i] is WordParameter w) && parameters[i].Image != "dc" && parameters[i].Image != "ac")
+                else if (i == 2 && parameters[i] is SingleParameter vp && parameters[i].Image != "dc" && parameters[i].Image != "ac")
                 {
-                    vsrc.ParameterSets.SetProperty("dc", context.ParseDouble(parameters.GetString(i)));
+                    context.SetProperty(vsrc, "dc", parameters.GetString(i));
                 }
                 // AC specification
                 else if (parameters[i] is SingleParameter s2 && s2.Image.ToLower() == "ac")
@@ -87,13 +87,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                     i++;
                     if (i < parameters.Count)
                     {
-                        vsrc.ParameterSets.SetProperty("acmag", context.ParseDouble(parameters.GetString(i)));
+                        context.SetProperty(vsrc, "acmag", parameters.GetString(i));
 
                         // Look forward for one more value
                         if (i + 1 < parameters.Count && (parameters[i + 1] is ValueParameter || parameters[i + 1] is WordParameter))
                         {
                             i++;
-                            vsrc.ParameterSets.SetProperty("acphase", context.ParseDouble(parameters.GetString(i)));
+                            context.SetProperty(vsrc, "acphase", parameters.GetString(i));
                         }
                     }
                 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SpiceSharp;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
 {
@@ -17,7 +18,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
             Parameters = parameters;
             ExpressionParser = new SpiceExpression();
             ExpressionParser.Parameters = Parameters;
-            Registry = new List<Tuple<SpiceSharp.Parameter, string>>();
+            Registry = new List<Tuple<SpiceSharp.Parameter, string, string>>();
         }
 
         /// <summary>
@@ -30,8 +31,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         /// </summary>
         protected SpiceExpression ExpressionParser { get; }
 
-
-        protected List<Tuple<SpiceSharp.Parameter, string>> Registry { get; }
+        protected List<Tuple<SpiceSharp.Parameter, string, string>> Registry { get; }
 
         /// <summary>
         /// Evalues a specific string to double
@@ -40,21 +40,26 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         /// <returns>
         /// A double value
         /// </returns>
-        public double EvaluteDouble(string value, SpiceSharp.Parameter parameter = null)
+        public double EvaluteDouble(string value)
         {
             if (Parameters.ContainsKey(value))
             {
                 return Parameters[value];
             }
 
+            value = Strip(value);
+
+            return ExpressionParser.Parse(value);
+        }
+
+        private static string Strip(string value)
+        {
             if (value.StartsWith("{", System.StringComparison.Ordinal) && value.EndsWith("}", System.StringComparison.Ordinal))
             {
                 value = value.Substring(1, value.Length - 2);
             }
 
-            Registry.Add(new Tuple<SpiceSharp.Parameter, string>(parameter, value));
-
-            return ExpressionParser.Parse(value);
+            return value;
         }
 
         public void Refresh()
@@ -63,8 +68,16 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
             {
                 if (parameter.Item1 != null)
                 {
-                    parameter.Item1.Set(ExpressionParser.Parse(parameter.Item2));
+                    parameter.Item1.Set(ExpressionParser.Parse(Strip(parameter.Item2)));
                 }
+            }
+        }
+
+        internal void EnableRefresh(string name, Parameter parameter, string value)
+        {
+            if (parameter != null)
+            {
+                Registry.Add(new Tuple<SpiceSharp.Parameter, string, string>(parameter, value, name));
             }
         }
     }

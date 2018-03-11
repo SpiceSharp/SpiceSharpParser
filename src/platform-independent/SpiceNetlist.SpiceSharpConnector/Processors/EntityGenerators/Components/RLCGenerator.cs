@@ -46,7 +46,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 
             mut.InductorName1 = parameters.GetString(0);
             mut.InductorName2 = parameters.GetString(1);
-            mut.ParameterSets.SetProperty("k", context.ParseDouble(parameters.GetString(2)));
+
+            context.SetProperty(mut, "k", parameters.GetString(2));
 
             return mut;
         }
@@ -63,8 +64,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 {
                     if (asg.Name.ToLower() == "ic")
                     {
-                        double ic = context.ParseDouble(asg.Value);
-                        capacitor.ParameterSets.SetProperty("ic", ic);
+                        context.SetProperty(capacitor, "ic", asg.Value);
                         clonedParameters.Remove(i);
                         break;
                     }
@@ -73,7 +73,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 
             if (parameters.Count == 3)
             {
-                capacitor.ParameterSets.SetProperty("capacitance", context.ParseDouble(parameters.GetString(2)));
+                context.SetProperty(capacitor, "capacitance", parameters.GetString(2));
             }
             else
             {
@@ -100,7 +100,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             var inductor = new Inductor(name);
             context.CreateNodes(inductor, parameters);
 
-            inductor.ParameterSets.SetProperty("inductance", context.ParseDouble(parameters.GetString(2)));
+            context.SetProperty(inductor, "inductance", parameters.GetString(2));
+
             return inductor;
         }
 
@@ -111,8 +112,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 
             if (parameters.Count == 3)
             {
-                var bp = res.ParameterSets[typeof(SpiceSharp.Components.ResistorBehaviors.BaseParameters)] as SpiceSharp.Components.ResistorBehaviors.BaseParameters;
-                res.ParameterSets.SetProperty("resistance", context.ParseDouble(parameters.GetString(2), bp.Resistance));
+                context.SetProperty(res, "resistance", parameters.GetString(2));
             }
             else
             {
@@ -122,7 +122,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 {
                     if (equal is AssignmentParameter ap)
                     {
-                        res.ParameterSets.SetProperty(ap.Name, context.ParseDouble(ap.Value));
+                        context.SetProperty(res, ap.Name, ap.Value);
                     }
                 }
 

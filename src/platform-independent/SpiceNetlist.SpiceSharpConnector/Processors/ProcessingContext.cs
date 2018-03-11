@@ -199,9 +199,16 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <summary>
         /// Evaluates the value to double
         /// </summary>
-        public double ParseDouble(string value, SpiceSharp.Parameter parameter = null)
+        public double ParseDouble(string value)
         {
-            return Evaluator.EvaluteDouble(value, parameter);
+            return Evaluator.EvaluteDouble(value);
+        }
+
+        public void SetProperty(Entity entity, string propertyName, string rawValue)
+        {
+            var value = this.Evaluator.EvaluteDouble(rawValue);
+            entity.ParameterSets.SetProperty(propertyName, value, out SpiceSharp.Parameter param);
+            Evaluator.EnableRefresh(propertyName, param, rawValue);
         }
 
         /// <summary>
@@ -238,7 +245,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                 {
                     try
                     {
-                        entity.ParameterSets.SetProperty(ap.Name, Evaluator.EvaluteDouble(ap.Value));
+                        entity.ParameterSets.SetProperty(ap.Name, Evaluator.EvaluteDouble(ap.Value), out SpiceSharp.Parameter param);
+                        this.Evaluator.EnableRefresh(ap.Name, param, ap.Value);
                     }
                     catch (Exception ex)
                     {

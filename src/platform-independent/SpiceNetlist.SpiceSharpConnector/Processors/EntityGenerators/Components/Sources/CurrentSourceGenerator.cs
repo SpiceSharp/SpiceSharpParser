@@ -41,7 +41,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             }
 
             cccs.ControllingName = new Identifier(parameters.GetString(2));
-            cccs.ParameterSets.SetProperty("gain", context.ParseDouble(parameters.GetString(3)));
+            context.SetProperty(cccs, "gain", parameters.GetString(3));
             return cccs;
         }
 
@@ -54,7 +54,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 
             VoltageControlledCurrentSource vccs = new VoltageControlledCurrentSource(name);
             context.CreateNodes(vccs, parameters);
-            vccs.ParameterSets.SetProperty("gain", context.ParseDouble(parameters.GetString(4)));
+            context.SetProperty(vccs, "gain", parameters.GetString(4));
 
             return vccs;
         }
@@ -71,24 +71,24 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 if (i == 2 && parameters.GetString(2).ToLower() == "dc")
                 {
                     i++;
-                    isrc.ParameterSets.SetProperty("dc", context.ParseDouble(parameters.GetString(i)));
+                    context.SetProperty(isrc, "dc", parameters.GetString(i));
                 }
-                else if (i == 2 && parameters[i] is ValueParameter v)
+                else if (i == 2 && parameters[i] is SingleParameter v)
                 {
-                    isrc.ParameterSets.SetProperty("dc", context.ParseDouble(v.Image));
+                    context.SetProperty(isrc, "dc", v.Image);
                 }
 
                 // AC specification
                 else if (parameters.GetString(i).ToLower() == "ac")
                 {
                     i++;
-                    isrc.ParameterSets.SetProperty("acmag", context.ParseDouble(parameters.GetString(i)));
+                    context.SetProperty(isrc, "acmag", parameters.GetString(i));
 
                     // Look forward for one more value
-                    if (i + 1 < parameters.Count && parameters[i + 1] is ValueParameter v2)
+                    if (i + 1 < parameters.Count && parameters[i + 1] is SingleParameter v2)
                     {
                         i++;
-                        isrc.ParameterSets.SetProperty("acphase", context.ParseDouble(v2.Image));
+                        context.SetProperty(isrc, "acphase", v2.Image);
                     }
                 }
                 else if (parameters[i] is BracketParameter cp)
