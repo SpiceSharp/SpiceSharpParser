@@ -1,11 +1,12 @@
 ﻿using SpiceNetlist.SpiceObjects;
+using SpiceNetlist.SpiceSharpConnector.Registries;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
     /// <summary>
     /// Processes all <see cref="Statement"/> from spice netlist object model.
     /// </summary>
-    public class StatementsProcessor : StatementProcessor<Statements>
+    public class StatementsProcessor : StatementProcessor<Statements>, IStatementsProcessor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StatementsProcessor"/> class.
@@ -14,14 +15,18 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <param name="componentRegistry">A component registry</param>
         /// <param name="controlsRegistry">A controls registry</param>
         /// <param name="waveformsRegistry">A waveform registry</param>
-        public StatementsProcessor(EntityGeneratorRegistry modelRegistry, EntityGeneratorRegistry componentRegistry, ControlRegistry controlsRegistry, WaveformRegistry waveformsRegistry)
+        public StatementsProcessor(
+            IEntityGeneratorRegistry modelRegistry,
+            IEntityGeneratorRegistry componentRegistry,
+            IControlRegistry controlsRegistry,
+            IWaveformRegistry waveformsRegistry)
         {
             ModelProcessor = new ModelProcessor(modelRegistry);
             WaveformProcessor = new WaveformProcessor(waveformsRegistry);
             ControlProcessor = new ControlProcessor(controlsRegistry);
 
             SubcircuitDefinitionProcessor = new SubcircuitDefinitionProcessor();
-            ComponentProcessor = new ComponentProcessor(ModelProcessor, WaveformProcessor, componentRegistry);
+            ComponentProcessor = new ComponentProcessor(ModelProcessor, componentRegistry);
             CommentProcessor = new CommentProcessor();
         }
 
@@ -72,6 +77,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             }
         }
 
+        //TODO: refactor this
         private int StatementOrder(Statement statement)
         {
             if (statement is Model)
@@ -102,6 +108,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             return -1;
         }
 
+        // TODO: Refactor this
         private IStatementProcessor GetProcessor(Statement statement)
         {
             if (statement is Model)

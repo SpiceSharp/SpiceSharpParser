@@ -1,5 +1,6 @@
 ﻿using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
+using SpiceNetlist.SpiceSharpConnector.Registries;
 using SpiceSharp.Circuits;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
@@ -13,7 +14,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// Initializes a new instance of the <see cref="ModelProcessor"/> class.
         /// </summary>
         /// <param name="registry">The registry</param>
-        public ModelProcessor(EntityGeneratorRegistry registry)
+        public ModelProcessor(IEntityGeneratorRegistry registry)
         {
             Registry = registry;
         }
@@ -21,7 +22,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <summary>
         /// Gets the registry
         /// </summary>
-        public EntityGeneratorRegistry Registry { get; }
+        public IEntityGeneratorRegistry Registry { get; }
 
         /// <summary>
         /// Processes a model statement and modifies the context

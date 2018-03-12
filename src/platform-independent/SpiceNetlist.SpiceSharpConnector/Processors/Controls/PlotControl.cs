@@ -19,7 +19,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
         /// Initializes a new instance of the <see cref="PlotControl"/> class.
         /// </summary>
         /// <param name="registry">The exporter registry</param>
-        public PlotControl(ExporterRegistry registry)
+        public PlotControl(IExporterRegistry registry)
         {
             Registry = registry;
         }
@@ -29,7 +29,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
         /// </summary>
         public override string TypeName => "plot";
 
-        protected ExporterRegistry Registry { get; }
+        /// <summary>
+        /// Gets the registry
+        /// </summary>
+        protected IExporterRegistry Registry { get; }
 
         /// <summary>
         /// Processes <see cref="Control"/> statement and modifies the context

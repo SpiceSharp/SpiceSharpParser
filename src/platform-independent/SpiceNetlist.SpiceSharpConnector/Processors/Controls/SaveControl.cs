@@ -16,7 +16,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
         /// Initializes a new instance of the <see cref="SaveControl"/> class.
         /// </summary>
         /// <param name="registry">The exporter registry</param>
-        public SaveControl(ExporterRegistry registry)
+        public SaveControl(IExporterRegistry registry)
         {
             Registry = registry;
         }
@@ -26,7 +26,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
         /// </summary>
         public override string TypeName => "save";
 
-        protected ExporterRegistry Registry { get; }
+        protected IExporterRegistry Registry { get; }
 
         /// <summary>
         /// Processes <see cref="Control"/> statement and modifies the context

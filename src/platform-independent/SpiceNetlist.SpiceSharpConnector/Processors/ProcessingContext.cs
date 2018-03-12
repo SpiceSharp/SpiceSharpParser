@@ -18,6 +18,15 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
     {
         private string currentPath = null;
 
+        public ProcessingContext()
+        {
+            ContextName = string.Empty;
+            Netlist = new Netlist(new Circuit(), string.Empty);
+            AvailableSubcircuits = new List<SubCircuit>();
+            AvailableParameters = new Dictionary<string, double>();
+            Evaluator = new Evaluator(AvailableParameters);
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessingContext"/> class.
         /// </summary>
@@ -35,9 +44,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessingContext"/> class.
         /// </summary>
-        /// <param name="contextName">The name of context</param>
-        /// <param name="netlist">The netlist for context</param>
-        public ProcessingContext(string contextName, ProcessingContext parent, SubCircuit currentSubciruit, List<string> pinInstanceNames, Dictionary<string, double> availableParameters) 
+        public ProcessingContext(string contextName, 
+            ProcessingContext parent, 
+            SubCircuit currentSubciruit, 
+            List<string> pinInstanceNames, 
+            Dictionary<string, double> availableParameters)
         {
             ContextName = contextName;
             Netlist = parent.Netlist;

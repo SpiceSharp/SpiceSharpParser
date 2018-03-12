@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using SpiceNetlist.SpiceSharpConnector.Processors.Common;
 
-namespace SpiceNetlist.SpiceSharpConnector
+namespace SpiceNetlist.SpiceSharpConnector.Registries
 {
     /// <summary>
-    /// Base class for all registries
+    /// Registry with base functionalities
     /// </summary>
     /// <typeparam name="TElement">
     /// Type of the registry element
@@ -12,7 +12,6 @@ namespace SpiceNetlist.SpiceSharpConnector
     public class BaseRegistry<TElement>
         where TElement : IGenerator
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseRegistry{TElement}"/> class.
         /// </summary>
@@ -20,10 +19,30 @@ namespace SpiceNetlist.SpiceSharpConnector
         {
         }
 
+        /// <summary>
+        /// Gets the count of elements in registry
+        /// </summary>
+        public int Count
+        {
+            get
+            {
+                return Elements.Count;
+            }
+        }
+
+        /// <summary>
+        /// Gets the elements of the registry
+        /// </summary>
         protected List<TElement> Elements { get; } = new List<TElement>();
 
+        /// <summary>
+        /// Gets the types of elements in the registry
+        /// </summary>
         protected List<string> ElementsTypes { get; } = new List<string>();
 
+        /// <summary>
+        /// Gets the mapping type to element
+        /// </summary>
         protected Dictionary<string, TElement> ElementsByType { get; } = new Dictionary<string, TElement>();
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using SpiceNetlist.SpiceObjects;
+using SpiceNetlist.SpiceSharpConnector.Registries;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
@@ -11,7 +12,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// Initializes a new instance of the <see cref="ControlProcessor"/> class.
         /// </summary>
         /// <param name="registry">Th registry</param>
-        public ControlProcessor(ControlRegistry registry)
+        public ControlProcessor(IControlRegistry registry)
         {
             Registry = registry;
         }
@@ -19,7 +20,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <summary>
         /// Gets the registry
         /// </summary>
-        public ControlRegistry Registry { get; }
+        public IControlRegistry Registry { get; }
 
         /// <summary>
         /// Processes a control statement and modifies the context

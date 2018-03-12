@@ -1,7 +1,7 @@
 using SpiceNetlist.SpiceSharpConnector.Processors.Evaluation;
 using Xunit;
 
-namespace SpiceNetlist.SpiceSharpConnector.Tests
+namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.Evaluation
 {
     public class EvaluatorTest
     {

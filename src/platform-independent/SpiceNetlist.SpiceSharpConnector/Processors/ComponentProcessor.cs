@@ -1,4 +1,5 @@
 ﻿using SpiceNetlist.SpiceObjects;
+using SpiceNetlist.SpiceSharpConnector.Registries;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 
@@ -11,7 +12,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
     {
         private ModelProcessor modelProcessor;
 
-        public ComponentProcessor(ModelProcessor modelProcessor, WaveformProcessor waveformGenerator, EntityGeneratorRegistry componentRegistry)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ComponentProcessor"/> class.
+        /// </summary>
+        /// <param name="modelProcessor">A model processor</param>
+        /// <param name="componentRegistry">A component registry</param>
+        public ComponentProcessor(ModelProcessor modelProcessor, IEntityGeneratorRegistry componentRegistry)
         {
             this.modelProcessor = modelProcessor;
             ComponentRegistry = componentRegistry;
@@ -20,7 +26,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <summary>
         /// Gets the component registry
         /// </summary>
-        public EntityGeneratorRegistry ComponentRegistry { get; }
+        public IEntityGeneratorRegistry ComponentRegistry { get; }
 
         /// <summary>
         /// Processes a component statement and modifies the context

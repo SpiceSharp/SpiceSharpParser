@@ -1,12 +1,12 @@
 ﻿using System;
 using SpiceNetlist.SpiceSharpConnector.Processors;
 
-namespace SpiceNetlist.SpiceSharpConnector
+namespace SpiceNetlist.SpiceSharpConnector.Registries
 {
     /// <summary>
     /// Registry for <see cref="EntityGenerator"/>s
     /// </summary>
-    public class EntityGeneratorRegistry : BaseRegistry<EntityGenerator>
+    public class EntityGeneratorRegistry : BaseRegistry<EntityGenerator>, IEntityGeneratorRegistry
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityGeneratorRegistry"/> class.

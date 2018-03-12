@@ -2,7 +2,7 @@
 using SpiceNetlist.SpiceSharpConnector.Processors.Waveforms;
 using SpiceSharp.Components;
 
-namespace SpiceNetlist.SpiceSharpConnector.Processors
+namespace SpiceNetlist.SpiceSharpConnector.Processors.Waveforms
 {
     /// <summary>
     /// Generator for pulse waveform
