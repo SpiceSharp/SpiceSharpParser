@@ -21,11 +21,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
         public IEvaluator Evaluator { get; protected set; }
 
-        public INetlistAdder Adder { get; protected set; }
+        public virtual INetlistAdder Adder { get; protected set; }
 
         public Netlist Netlist { get; protected set; }
 
-        public NameGenerator NameGenerator { get; protected set; }
+        public virtual NameGenerator NameGenerator { get; protected set; }
 
         public string Path { get; protected set; }
 
