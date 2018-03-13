@@ -112,7 +112,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models
             }
 
             // Read all the parameters
-            context.SetEntityParameters(model, clonedParameters);
+            context.SetParameters(model, clonedParameters);
 
             return model;
         }

@@ -67,7 +67,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 
             // The rest is all just parameters
             context.CreateNodes(mosfet, parameters);
-            context.SetEntityParameters(mosfet, parameters, 5);
+            context.SetParameters(mosfet, parameters, 5);
             return mosfet;
         }
 

@@ -10,10 +10,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         /// <summary>
         /// Initializes a new instance of the <see cref="Evaluator"/> class.
         /// </summary>
-        /// <param name="parameters">Available parameters values</param>
-        public Evaluator(Dictionary<string, double> parameters)
+        public Evaluator()
         {
-            Parameters = parameters;
+            Parameters = new Dictionary<string, double>();
 
             ExpressionParser = new SpiceExpression
             {
@@ -21,6 +20,19 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
             };
 
             Registry = new ExpressionRegistry();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Evaluator"/> class.
+        /// </summary>
+        /// <param name="parentEvaluator">Parent evaluator</param>
+        public Evaluator(IEvaluator parentEvaluator)
+            : this()
+        {
+            foreach (var parameterName in parentEvaluator.GetParameterNames())
+            {
+                Parameters[parameterName] = parentEvaluator.GetParameterValue(parameterName);
+            }
         }
 
         /// <summary>
@@ -45,7 +57,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         /// <returns>
         /// A double value
         /// </returns>
-        public double EvaluteDouble(string expression)
+        public double EvaluateDouble(string expression)
         {
             if (Parameters.ContainsKey(expression))
             {
@@ -67,12 +79,58 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         }
 
         /// <summary>
+        /// Sets the parameter value to the value of expression and updates the values expressions
+        /// </summary>
+        /// <param name="parameterName">A name of parameter</param>
+        /// <param name="expression">A value of parameter</param>
+        public void SetParameter(string parameterName, string expression)
+        {
+            Parameters[parameterName] = EvaluateDouble(expression);
+            Refresh(parameterName);
+        }
+
+        /// <summary>
         /// Adds double expression to registry that will be updated when value of parameter change
         /// </summary>
         /// <param name="expression">An expression to add</param>
         public void AddDynamicExpression(DoubleExpression expression)
         {
             Registry.Add(expression);
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether there is a parameter in evaluator with given name
+        /// </summary>
+        /// <param name="parameterName">A parameter name</param>
+        /// <returns>
+        /// True if there is parameter
+        /// </returns>
+        public bool HasParameter(string parameterName)
+        {
+            return Parameters.ContainsKey(parameterName);
+        }
+
+        /// <summary>
+        /// Gets the value of parameter
+        /// </summary>
+        /// <param name="parameterName">A parameter name</param>
+        /// <returns>
+        /// A value of parameter
+        /// </returns>
+        public double GetParameterValue(string parameterName)
+        {
+            return Parameters[parameterName];
+        }
+
+        /// <summary>
+        /// Gets the names of parameters
+        /// </summary>
+        /// <returns>
+        /// The names of paramaters
+        /// </returns>
+        public IEnumerable<string> GetParameterNames()
+        {
+            return Parameters.Keys;
         }
 
         /// <summary>
@@ -89,5 +147,6 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
                 setter(ExpressionParser.Parse(expression));
             }
         }
+
     }
 }

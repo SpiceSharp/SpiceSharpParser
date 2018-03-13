@@ -10,12 +10,11 @@
         /// </summary>
         /// <param name="evaluator">An evaluator</param>
         /// <param name="parameterName">A parameter name</param>
-        /// <param name="initialValue">Initial value of parameter</param>
-        public EvaluationParameter(IEvaluator evaluator, string parameterName, double initialValue)
+        public EvaluationParameter(IEvaluator evaluator, string parameterName)
         {
             ParameterName = parameterName ?? throw new System.ArgumentNullException(nameof(parameterName));
             Evaluator = evaluator ?? throw new System.ArgumentNullException(nameof(evaluator));
-            Value = initialValue;
+            Value = evaluator.GetParameterValue(parameterName);
         }
 
         /// <summary>

@@ -10,7 +10,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.Evaluation
         public void SetCallsSetParameter()
         {
             var evaluator = Substitute.For<IEvaluator>();
-            var parameter = new EvaluationParameter(evaluator, "a", 1);
+            evaluator.GetParameterValue(Arg.Any<string>()).Returns(1);
+            var parameter = new EvaluationParameter(evaluator, "a");
             parameter.Set(12);
 
             evaluator.Received().SetParameter("a", 12);
@@ -20,7 +21,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.Evaluation
         public void SetDontCallSetParameter()
         {
             var evaluator = Substitute.For<IEvaluator>();
-            var parameter = new EvaluationParameter(evaluator, "a", 1);
+            evaluator.GetParameterValue(Arg.Any<string>()).Returns(1);
+
+            var parameter = new EvaluationParameter(evaluator, "a");
             parameter.Set(1);
 
             evaluator.DidNotReceive().SetParameter("a", 1);

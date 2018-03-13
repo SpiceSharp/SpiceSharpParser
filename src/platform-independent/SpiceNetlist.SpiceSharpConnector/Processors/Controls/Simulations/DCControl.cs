@@ -56,12 +56,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
             dc.OnParameterSearch += (sender, e) => 
             {
                 string sweepParameterName = e.Name.Name;
-                if (context.AvailableParameters.ContainsKey(sweepParameterName))
+                if (context.Evaluator.HasParameter(sweepParameterName))
                 {
-                    e.Result = new EvaluationParameter(
-                        context.Evaluator,
-                        sweepParameterName,
-                        context.AvailableParameters[sweepParameterName]);
+                    e.Result = new EvaluationParameter(context.Evaluator, sweepParameterName);
                 }
             };
 

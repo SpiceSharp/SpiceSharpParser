@@ -41,7 +41,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             }
 
             cccs.ControllingName = new Identifier(parameters.GetString(2));
-            context.SetProperty(cccs, "gain", parameters.GetString(3));
+            context.SetParameter(cccs, "gain", parameters.GetString(3));
             return cccs;
         }
 
@@ -54,7 +54,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 
             VoltageControlledCurrentSource vccs = new VoltageControlledCurrentSource(name);
             context.CreateNodes(vccs, parameters);
-            context.SetProperty(vccs, "gain", parameters.GetString(4));
+            context.SetParameter(vccs, "gain", parameters.GetString(4));
 
             return vccs;
         }
@@ -71,24 +71,24 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 if (i == 2 && parameters.GetString(2).ToLower() == "dc")
                 {
                     i++;
-                    context.SetProperty(isrc, "dc", parameters.GetString(i));
+                    context.SetParameter(isrc, "dc", parameters.GetString(i));
                 }
                 else if (i == 2 && parameters[i] is SingleParameter v)
                 {
-                    context.SetProperty(isrc, "dc", v.Image);
+                    context.SetParameter(isrc, "dc", v.Image);
                 }
 
                 // AC specification
                 else if (parameters.GetString(i).ToLower() == "ac")
                 {
                     i++;
-                    context.SetProperty(isrc, "acmag", parameters.GetString(i));
+                    context.SetParameter(isrc, "acmag", parameters.GetString(i));
 
                     // Look forward for one more value
                     if (i + 1 < parameters.Count && parameters[i + 1] is SingleParameter v2)
                     {
                         i++;
-                        context.SetProperty(isrc, "acphase", v2.Image);
+                        context.SetParameter(isrc, "acphase", v2.Image);
                     }
                 }
                 else if (parameters[i] is BracketParameter cp)

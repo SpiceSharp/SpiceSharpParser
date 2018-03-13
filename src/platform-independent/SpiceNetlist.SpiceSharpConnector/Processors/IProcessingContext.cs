@@ -14,14 +14,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
     {
         string ContextName { get; }
 
-        Evaluator Evaluator { get; }
-
-        Dictionary<string, double> AvailableParameters { get; }
-
-        IEnumerable<Simulation> Simulations
-        {
-            get;
-        }
+        IEnumerable<Simulation> Simulations { get; }
 
         string Path { get; }
 
@@ -32,6 +25,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         List<SubCircuit> AvailableSubcircuits { get; }
 
         SimulationConfiguration SimulationConfiguration { get; }
+
+        IEvaluator Evaluator { get; }
 
         void AddWarning(string warning);
 
@@ -45,16 +40,16 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
         void AddSimulation(BaseSimulation simulation);
 
-        void SetICVoltage(string nodeName, string value);
-
         double ParseDouble(string expression);
 
-        void SetProperty(Entity entity, string propertyName, string expression);
+        void SetICVoltage(string nodeName, string value);
+
+        void SetParameter(Entity entity, string propertyName, string expression);
+
+        void SetParameters(Entity entity, ParameterCollection parameters, int toSkip = 0);
 
         T FindModel<T>(string modelName)
             where T : Entity;
-
-        void SetEntityParameters(Entity entity, ParameterCollection parameters, int toSkip = 0);
 
         void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters);
 

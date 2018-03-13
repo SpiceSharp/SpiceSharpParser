@@ -15,7 +15,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators
                 throw new Exception();
             }
 
-            context.SetEntityParameters(model, parameters);
+            context.SetParameters(model, parameters);
             return model;
         }
 

@@ -1,5 +1,6 @@
 using SpiceNetlist.SpiceSharpConnector.Processors.Evaluation;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.Evaluation
@@ -7,14 +8,42 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.Evaluation
     public class EvaluatorTest
     {
         [Fact]
+        public void GetParameterNames()
+        {
+            // arrange
+            var p = new Evaluator();
+            p.SetParameter("a", 1);
+            p.SetParameter("xyz", 13.0);
+
+            Assert.Equal(2, p.GetParameterNames().Count());
+        }
+
+        [Fact]
+        public void ParentEvalautor()
+        {
+            // arrange
+            var p = new Evaluator();
+            p.SetParameter("a", 1);
+
+            // act and assert
+            var v = new Evaluator(p);
+
+            v.SetParameter("xyz", 13.0);
+            Assert.Equal(1, v.GetParameterValue("a"));
+
+            v.SetParameter("a", 2);
+            Assert.Equal(2, v.GetParameterValue("a"));
+            Assert.Equal(1, p.GetParameterValue("a"));
+        }
+
+        [Fact]
         public void AddDynamicExpressionTest()
         {
             // arrange
-            var parameters = new System.Collections.Generic.Dictionary<string, double>();
-            parameters["xyz"] = 13.0;
-            var v = new Evaluator(parameters);
-            double expressionValue = 0;
+            var v = new Evaluator();
+            v.SetParameter("xyz", 13.0);
 
+            double expressionValue = 0;
             // act
             v.AddDynamicExpression(new DoubleExpression("xyz +1", (double newValue) => { expressionValue = newValue; }));
             v.SetParameter("xyz", 14);
@@ -26,39 +55,24 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.Evaluation
         [Fact]
         public void EvaluatorFailsWhenThereCurrlyBraces()
         {
-            var parameters = new System.Collections.Generic.Dictionary<string, double>();
-
-            Evaluator v = new Evaluator(parameters);
-            Assert.Throws<Exception>(() => v.EvaluteDouble("{1}"));
+            Evaluator v = new Evaluator();
+            Assert.Throws<Exception>(() => v.EvaluateDouble("{1}"));
         }
 
         [Fact]
         public void EvaluatorParameterTest()
         {
-            var parameters = new System.Collections.Generic.Dictionary<string, double>();
-            parameters["xyz"] = 13.0;
+            Evaluator v = new Evaluator();
+            v.SetParameter("xyz", 13.0);
 
-            Evaluator v = new Evaluator(parameters);
-            Assert.Equal(14, v.EvaluteDouble("xyz + 1"));
-        }
-
-        [Fact]
-        public void EvaluatorExpressionTest()
-        {
-            var parameters = new System.Collections.Generic.Dictionary<string, double>();
-            parameters["xyz"] = 13.0;
-
-            Evaluator v = new Evaluator(parameters);
-            Assert.Equal(14, v.EvaluteDouble("xyz + 1"));
+            Assert.Equal(14, v.EvaluateDouble("xyz + 1"));
         }
 
         [Fact]
         public void EvaluatorSuffixTest()
         {
-            var parameters = new System.Collections.Generic.Dictionary<string, double>();
-
-            Evaluator v = new Evaluator(parameters);
-            Assert.Equal(2, v.EvaluteDouble("1V + 1"));
+            Evaluator v = new Evaluator();
+            Assert.Equal(2, v.EvaluateDouble("1V + 1"));
         }
     }
 }

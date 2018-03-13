@@ -38,7 +38,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 
             var vcvs = new VoltageControlledVoltageSource(name);
             context.CreateNodes(vcvs, parameters);
-            context.SetProperty(vcvs, "gain", parameters.GetString(4));
+            context.SetParameter(vcvs, "gain", parameters.GetString(4));
 
             return vcvs;
         }
@@ -60,7 +60,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             context.CreateNodes(ccvs, parameters);
 
             ccvs.ControllingName = parameters.GetString(3);
-            context.SetProperty(ccvs, "gain", parameters.GetString(4));
+            context.SetParameter(ccvs, "gain", parameters.GetString(4));
             return ccvs;
         }
 
@@ -75,11 +75,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 // DC specification
                 if (i == 2 && parameters[i] is SingleParameter s && s.Image.ToLower() == "dc" && i != parameters.Count - 1)
                 {
-                    context.SetProperty(vsrc, "dc", parameters.GetString(i + 1));
+                    context.SetParameter(vsrc, "dc", parameters.GetString(i + 1));
                 }
                 else if (i == 2 && parameters[i] is SingleParameter vp && parameters[i].Image != "dc" && parameters[i].Image != "ac")
                 {
-                    context.SetProperty(vsrc, "dc", parameters.GetString(i));
+                    context.SetParameter(vsrc, "dc", parameters.GetString(i));
                 }
                 // AC specification
                 else if (parameters[i] is SingleParameter s2 && s2.Image.ToLower() == "ac")
@@ -87,13 +87,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                     i++;
                     if (i < parameters.Count)
                     {
-                        context.SetProperty(vsrc, "acmag", parameters.GetString(i));
+                        context.SetParameter(vsrc, "acmag", parameters.GetString(i));
 
                         // Look forward for one more value
                         if (i + 1 < parameters.Count && (parameters[i + 1] is ValueParameter || parameters[i + 1] is WordParameter))
                         {
                             i++;
-                            context.SetProperty(vsrc, "acphase", parameters.GetString(i));
+                            context.SetParameter(vsrc, "acphase", parameters.GetString(i));
                         }
                     }
                 }

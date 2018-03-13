@@ -21,9 +21,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                 if (param is SpiceObjects.Parameters.AssignmentParameter a)
                 {
                     string name = a.Name;
-                    string value = a.Value;
+                    string expression = a.Value;
 
-                    context.AvailableParameters[name] = context.ParseDouble(value);
+                    context.Evaluator.SetParameter(name, expression);
                 }
             }
         }

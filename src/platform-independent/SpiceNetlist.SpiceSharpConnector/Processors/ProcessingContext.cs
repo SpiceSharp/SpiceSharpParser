@@ -23,8 +23,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             ContextName = string.Empty;
             Netlist = new Netlist(new Circuit(), string.Empty);
             AvailableSubcircuits = new List<SubCircuit>();
-            AvailableParameters = new Dictionary<string, double>();
-            Evaluator = new Evaluator(AvailableParameters);
+            Evaluator = new Evaluator();
         }
 
         /// <summary>
@@ -37,8 +36,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             ContextName = contextName;
             Netlist = netlist;
             AvailableSubcircuits = new List<SubCircuit>();
-            AvailableParameters = new Dictionary<string, double>();
-            Evaluator = new Evaluator(AvailableParameters);
+            Evaluator = new Evaluator();
         }
 
         /// <summary>
@@ -57,19 +55,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             PinInstanceNames = pinInstanceNames;
             AvailableSubcircuits = new List<SubCircuit>();
             AvailableSubcircuits.AddRange(parent.AvailableSubcircuits);
-            AvailableParameters = availableParameters;
-            Evaluator = new Evaluator(AvailableParameters);
+            Evaluator = new Evaluator(parent.Evaluator);
         }
-
-        /// <summary>
-        /// Gets the available paremeters values
-        /// </summary>
-        public Dictionary<string, double> AvailableParameters { get; }
 
         /// <summary>
         /// Gets the evaluator
         /// </summary>
-        public Evaluator Evaluator { get; }
+        public IEvaluator Evaluator { get; }
 
         /// <summary>
         /// Gets the current simulation configuration
@@ -204,7 +196,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// </summary>
         public void SetICVoltage(string nodeName, string value)
         {
-            Netlist.Circuit.Nodes.InitialConditions[this.GenerateNodeName(nodeName)] = Evaluator.EvaluteDouble(value);
+            Netlist.Circuit.Nodes.InitialConditions[this.GenerateNodeName(nodeName)] = Evaluator.EvaluateDouble(value);
         }
 
         /// <summary>
@@ -216,18 +208,25 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// </returns>
         public double ParseDouble(string expression)
         {
-            return Evaluator.EvaluteDouble(expression);
+            try
+            {
+                return Evaluator.EvaluateDouble(expression);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Exception during evaluation of expression: " + expression);
+            }
         }
 
         /// <summary>
-        /// Sets the property of entity and enables updates
+        /// Sets the parameter of entity and enables updates
         /// </summary>
         /// <param name="entity">An entity of parameter</param>
         /// <param name="propertyName">A property name</param>
         /// <param name="expression">An expression</param>
-        public void SetProperty(Entity entity, string propertyName, string expression)
+        public void SetParameter(Entity entity, string propertyName, string expression)
         {
-            entity.SetParameter(propertyName, Evaluator.EvaluteDouble(expression));
+            entity.SetParameter(propertyName, Evaluator.EvaluateDouble(expression));
 
             var setter = entity.ParameterSets.GetSetter(propertyName);
             // re-evaluation makes sense only if there is a setter
@@ -263,7 +262,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <summary>
         /// Sets entity parameters
         /// </summary>
-        public void SetEntityParameters(Entity entity, ParameterCollection parameters, int toSkip = 0)
+        public void SetParameters(Entity entity, ParameterCollection parameters, int toSkip = 0)
         {
             foreach (SpiceObjects.Parameter parameter in parameters.Skip(toSkip).Take(parameters.Count - toSkip))
             {
@@ -271,7 +270,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                 {
                     try
                     {
-                        this.SetProperty(entity, ap.Name, ap.Value);
+                        this.SetParameter(entity, ap.Name, ap.Value);
                     }
                     catch (Exception ex)
                     {

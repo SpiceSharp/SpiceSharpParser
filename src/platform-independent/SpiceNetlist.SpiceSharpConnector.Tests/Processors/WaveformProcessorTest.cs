@@ -16,7 +16,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors
         {
             // arrange
             var waveFormGenerator = Substitute.For<WaveformGenerator>();
-            waveFormGenerator.Generate(Arg.Any<BracketParameter>(), Arg.Any<ProcessingContext>()).Returns(new Sine());
+            waveFormGenerator.Generate(Arg.Any<BracketParameter>(), Arg.Any<IProcessingContext>()).Returns(new Sine());
 
             var waveFormRegistry = Substitute.For<IWaveformRegistry>();
             waveFormRegistry.Supports("func").Returns(true);
@@ -24,7 +24,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors
 
             var bracketParameter = new SpiceObjects.Parameters.BracketParameter();
             bracketParameter.Name = "func";
-            var processingContext = Substitute.For<ProcessingContext>();
+            var processingContext = Substitute.For<IProcessingContext>();
 
             // act
             WaveformProcessor waveformProcessor = new WaveformProcessor(waveFormRegistry);
