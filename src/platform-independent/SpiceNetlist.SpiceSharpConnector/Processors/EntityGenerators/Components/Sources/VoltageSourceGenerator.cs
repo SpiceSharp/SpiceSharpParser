@@ -100,7 +100,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 // Waveforms
                 else if (parameters[i] is BracketParameter cp)
                 {
-                    vsrc.ParameterSets.SetProperty("waveform", waveFormGenerator.Generate(cp, context));
+                    vsrc.SetParameter("waveform", waveFormGenerator.Generate(cp, context));
                 }
                 else if (parameters[i] is WordParameter w2 && w2.Image != "dc")
                 {

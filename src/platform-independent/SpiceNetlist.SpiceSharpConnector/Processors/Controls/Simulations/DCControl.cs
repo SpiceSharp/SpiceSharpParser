@@ -52,7 +52,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
                 sweeps.Add(sweep);
             }
 
-            Dc dc = new Dc((context.Simulations.Count() + 1) + " - DC", sweeps);
+            DC dc = new DC((context.Simulations.Count() + 1) + " - DC", sweeps);
             dc.OnParameterSearch += (sender, e) => 
             {
                 string sweepParameterName = e.Name.Name;

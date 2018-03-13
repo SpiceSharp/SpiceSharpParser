@@ -18,8 +18,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models
                 var m = new Mosfet1Model(name);
                 switch (type)
                 {
-                    case "nmos": m.ParameterSets.SetProperty("nmos", true); break;
-                    case "pmos": m.ParameterSets.SetProperty("pmos", true); break;
+                    case "nmos": m.SetParameter("nmos", true); break;
+                    case "pmos": m.SetParameter("pmos", true); break;
                 }
                 return m;
             });
@@ -28,8 +28,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models
                 var m = new Mosfet2Model(name);
                 switch (type)
                 {
-                    case "nmos": m.ParameterSets.SetProperty("nmos", true); break;
-                    case "pmos": m.ParameterSets.SetProperty("pmos", true); break;
+                    case "nmos": m.SetParameter("nmos", true); break;
+                    case "pmos": m.SetParameter("pmos", true); break;
                 }
                 return m;
             });
@@ -38,8 +38,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models
                 var m = new Mosfet3Model(name);
                 switch (type)
                 {
-                    case "nmos": m.ParameterSets.SetProperty("nmos", true); break;
-                    case "pmos": m.ParameterSets.SetProperty("pmos", true); break;
+                    case "nmos": m.SetParameter("nmos", true); break;
+                    case "pmos": m.SetParameter("pmos", true); break;
                 }
                 return m;
             });

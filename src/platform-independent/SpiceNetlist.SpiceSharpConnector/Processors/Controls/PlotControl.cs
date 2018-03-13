@@ -45,7 +45,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 
             foreach (var simulation in context.Simulations)
             {
-                if (type == "dc" && simulation is Dc)
+                if (type == "dc" && simulation is DC)
                 {
                     CreatePlot(statement, context, simulation, "Voltage (V)");
                 }
@@ -55,7 +55,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                     CreatePlot(statement, context, simulation, "Time (s)");
                 }
 
-                if (type == "ac" && simulation is Ac)
+                if (type == "ac" && simulation is AC)
                 {
                     CreatePlot(statement, context, simulation, "Frequency (Hz)");
                 }
@@ -81,12 +81,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                     x = e.Time;
                 }
 
-                if (simulationToPlot is Ac)
+                if (simulationToPlot is AC)
                 {
                     x = e.Frequency;
                 }
 
-                if (simulationToPlot is Dc dc)
+                if (simulationToPlot is DC dc)
                 {
                     if (dc.Sweeps.Count > 1)
                     {

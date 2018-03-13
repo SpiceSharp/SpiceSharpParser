@@ -27,11 +27,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 {
                     if (w.Image.ToLower() == "on")
                     {
-                        diode.ParameterSets.SetProperty("off", false);
+                        diode.SetParameter("off", false);
                     }
                     else if (w.Image.ToLower() == "off")
                     {
-                        diode.ParameterSets.SetProperty("off", true);
+                        diode.SetParameter("off", true);
                     }
                     else
                     {
@@ -43,7 +43,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 {
                     if (asg.Name.ToLower() == "ic")
                     {
-                        diode.ParameterSets.SetProperty("ic", context.ParseDouble(asg.Value));
+                        diode.SetParameter("ic", context.ParseDouble(asg.Value));
                     }
                 }
 

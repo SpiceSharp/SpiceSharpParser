@@ -24,7 +24,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Current
             Source = source;
 
             /// TODO: Refactor this!!!!!
-            if (simulation is Dc || simulation is Op || simulation is Transient)
+            if (simulation is DC || simulation is OP || simulation is Transient)
             {
                 ExportRealImpl = new RealPropertyExport(simulation, source, "i");
             }

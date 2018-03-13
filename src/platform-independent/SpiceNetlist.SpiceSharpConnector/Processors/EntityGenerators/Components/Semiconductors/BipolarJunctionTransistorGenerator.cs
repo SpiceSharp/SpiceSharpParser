@@ -46,8 +46,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                     {
                         switch (s.Image.ToLower())
                         {
-                            case "on": bjt.ParameterSets.SetProperty("off", false); break;
-                            case "off": bjt.ParameterSets.SetProperty("on", false); break;
+                            case "on": bjt.SetParameter("off", false); break;
+                            case "off": bjt.SetParameter("on", false); break;
                             default: throw new System.Exception();
                         }
                     }
@@ -71,7 +71,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 {
                     if (asg.Name.ToLower() == "ic")
                     {
-                        bjt.ParameterSets.SetProperty("ic", context.ParseDouble(asg.Value));
+                        bjt.SetParameter("ic", context.ParseDouble(asg.Value));
                     }
                 }
             }

@@ -18,7 +18,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
             Parameters = parameters;
             ExpressionParser = new SpiceExpression();
             ExpressionParser.Parameters = Parameters;
-            Registry = new List<Tuple<SpiceSharp.Parameter, string, string>>();
+            Registry = new List<Tuple<Action<double>, string, string>>();
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         /// </summary>
         protected SpiceExpression ExpressionParser { get; }
 
-        protected List<Tuple<SpiceSharp.Parameter, string, string>> Registry { get; }
+        protected List<Tuple<Action<double>, string, string>> Registry { get; }
 
         /// <summary>
         /// Evalues a specific string to double
@@ -68,16 +68,16 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
             {
                 if (parameter.Item1 != null)
                 {
-                    parameter.Item1.Set(ExpressionParser.Parse(Strip(parameter.Item2)));
+                    parameter.Item1(ExpressionParser.Parse(Strip(parameter.Item2)));
                 }
             }
         }
 
-        internal void EnableRefresh(string name, Parameter parameter, string value)
+        internal void EnableRefresh(string name, Action<double> setter, string value)
         {
-            if (parameter != null)
+            if (setter != null)
             {
-                Registry.Add(new Tuple<SpiceSharp.Parameter, string, string>(parameter, value, name));
+                Registry.Add(new Tuple<Action<double>, string, string>(setter, value, name));
             }
         }
     }

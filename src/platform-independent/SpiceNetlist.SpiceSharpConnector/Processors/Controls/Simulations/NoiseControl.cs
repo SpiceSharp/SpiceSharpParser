@@ -47,9 +47,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 
             switch (type)
             {
-                case "lin": sweep = new SpiceSharp.Simulations.Sweeps.LinearSweep(start, stop, (int)numberSteps); break;
-                case "oct": sweep = new SpiceSharp.Simulations.Sweeps.OctaveSweep(start, stop, (int)numberSteps); break;
-                case "dec": sweep = new SpiceSharp.Simulations.Sweeps.DecadeSweep(start, stop, (int)numberSteps); break;
+                case "lin": sweep = new SpiceSharp.Simulations.LinearSweep(start, stop, (int)numberSteps); break;
+                case "oct": sweep = new SpiceSharp.Simulations.OctaveSweep(start, stop, (int)numberSteps); break;
+                case "dec": sweep = new SpiceSharp.Simulations.DecadeSweep(start, stop, (int)numberSteps); break;
                 default:
                     throw new Exception("LIN, DEC or OCT expected");
             }

@@ -17,11 +17,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models
 
             if (type.ToLower() == "npn")
             {
-                model.ParameterSets.SetProperty("npn", true);
+                model.SetParameter("npn", true);
             }
             else if (type.ToLower() == "pnp")
             {
-                model.ParameterSets.SetProperty("pnp", true);
+                model.SetParameter("pnp", true);
             }
 
             return model;

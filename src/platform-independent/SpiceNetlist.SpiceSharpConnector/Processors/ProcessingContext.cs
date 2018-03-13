@@ -218,8 +218,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         public void SetProperty(Entity entity, string propertyName, string rawValue)
         {
             var value = this.Evaluator.EvaluteDouble(rawValue);
-            entity.ParameterSets.SetProperty(propertyName, value, out SpiceSharp.Parameter param);
-            Evaluator.EnableRefresh(propertyName, param, rawValue);
+
+            entity.SetParameter(propertyName, value);
+            var setter = entity.ParameterSets.GetSetter(propertyName);
+            Evaluator.EnableRefresh(propertyName, setter, rawValue);
         }
 
         /// <summary>
@@ -256,8 +258,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                 {
                     try
                     {
-                        entity.ParameterSets.SetProperty(ap.Name, Evaluator.EvaluteDouble(ap.Value), out SpiceSharp.Parameter param);
-                        this.Evaluator.EnableRefresh(ap.Name, param, ap.Value);
+                        this.SetProperty(entity, ap.Name, ap.Value);
                     }
                     catch (Exception ex)
                     {
