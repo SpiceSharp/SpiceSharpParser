@@ -1,3 +1,4 @@
+using NLexer;
 using SpiceGrammar;
 using System.Linq;
 using Xunit;
@@ -6,6 +7,15 @@ namespace SpiceLexer.Tests
 {
     public class SpiceLexerTest
     {
+        [Fact]
+        public void LexerException()
+        {
+            // lexer can't find matching token for remaining text '}'
+            var tokensStr = "V1 in gnd 10}";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            Assert.Throws<LexerException>(() => lexer.GetTokens(tokensStr).ToArray());
+        }
+
         [Fact]
         public void TwoStringTest()
         {
