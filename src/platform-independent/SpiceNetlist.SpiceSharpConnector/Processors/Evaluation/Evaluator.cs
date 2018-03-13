@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using SpiceSharp;
+﻿using System.Collections.Generic;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
 {
     /// <summary>
     /// Evalues strings to double
     /// </summary>
-    public class Evaluator
+    public class Evaluator : IEvaluator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Evaluator"/> class.
@@ -16,9 +14,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         public Evaluator(Dictionary<string, double> parameters)
         {
             Parameters = parameters;
-            ExpressionParser = new SpiceExpression();
-            ExpressionParser.Parameters = Parameters;
-            Registry = new List<Tuple<Action<double>, string, string>>();
+
+            ExpressionParser = new SpiceExpression
+            {
+                Parameters = Parameters
+            };
+
+            Registry = new ExpressionRegistry();
         }
 
         /// <summary>
@@ -31,53 +33,60 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         /// </summary>
         protected SpiceExpression ExpressionParser { get; }
 
-        protected List<Tuple<Action<double>, string, string>> Registry { get; }
+        /// <summary>
+        /// Gets the evaluator registry
+        /// </summary>
+        protected ExpressionRegistry Registry { get; }
 
         /// <summary>
         /// Evalues a specific string to double
         /// </summary>
-        /// <param name="value">A string to evaluate</param>
+        /// <param name="expression">An expression to evaluate</param>
         /// <returns>
         /// A double value
         /// </returns>
-        public double EvaluteDouble(string value)
+        public double EvaluteDouble(string expression)
         {
-            if (Parameters.ContainsKey(value))
+            if (Parameters.ContainsKey(expression))
             {
-                return Parameters[value];
+                return Parameters[expression];
             }
 
-            value = Strip(value);
-
-            return ExpressionParser.Parse(value);
+            return ExpressionParser.Parse(expression);
         }
 
-        private static string Strip(string value)
+        /// <summary>
+        /// Sets the parameter value and updates the values expressions
+        /// </summary>
+        /// <param name="parameterName">A name of parameter</param>
+        /// <param name="value">A value of parameter</param>
+        public void SetParameter(string parameterName, double value)
         {
-            if (value.StartsWith("{", System.StringComparison.Ordinal) && value.EndsWith("}", System.StringComparison.Ordinal))
-            {
-                value = value.Substring(1, value.Length - 2);
-            }
-
-            return value;
+            Parameters[parameterName] = value;
+            Refresh(parameterName);
         }
 
-        public void Refresh()
+        /// <summary>
+        /// Adds double expression to registry that will be updated when value of parameter change
+        /// </summary>
+        /// <param name="expression">An expression to add</param>
+        public void AddDynamicExpression(DoubleExpression expression)
         {
-            foreach (var parameter in Registry)
-            {
-                if (parameter.Item1 != null)
-                {
-                    parameter.Item1(ExpressionParser.Parse(Strip(parameter.Item2)));
-                }
-            }
+            Registry.Add(expression);
         }
 
-        internal void EnableRefresh(string name, Action<double> setter, string value)
+        /// <summary>
+        /// Refreshes expressions in evaluator that contains given parameter
+        /// </summary>
+        /// <param name="parameterName">A parameter name</param>
+        private void Refresh(string parameterName)
         {
-            if (setter != null)
+            foreach (DoubleExpression definion in Registry.GetDependedExpressions(parameterName))
             {
-                Registry.Add(new Tuple<Action<double>, string, string>(setter, value, name));
+                var setter = definion.Setter;
+                var expression = definion.Expression;
+
+                setter(ExpressionParser.Parse(expression));
             }
         }
     }

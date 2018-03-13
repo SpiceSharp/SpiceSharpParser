@@ -210,18 +210,31 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <summary>
         /// Evaluates the value to double
         /// </summary>
-        public double ParseDouble(string value)
+        /// <param name="expression">Expressin to evaluate</param>
+        /// <returns>
+        /// A value of expression
+        /// </returns>
+        public double ParseDouble(string expression)
         {
-            return Evaluator.EvaluteDouble(value);
+            return Evaluator.EvaluteDouble(expression);
         }
 
-        public void SetProperty(Entity entity, string propertyName, string rawValue)
+        /// <summary>
+        /// Sets the property of entity and enables updates
+        /// </summary>
+        /// <param name="entity">An entity of parameter</param>
+        /// <param name="propertyName">A property name</param>
+        /// <param name="expression">An expression</param>
+        public void SetProperty(Entity entity, string propertyName, string expression)
         {
-            var value = this.Evaluator.EvaluteDouble(rawValue);
+            entity.SetParameter(propertyName, Evaluator.EvaluteDouble(expression));
 
-            entity.SetParameter(propertyName, value);
             var setter = entity.ParameterSets.GetSetter(propertyName);
-            Evaluator.EnableRefresh(propertyName, setter, rawValue);
+            // re-evaluation makes sense only if there is a setter
+            if (setter != null)
+            {
+                Evaluator.AddDynamicExpression(new DoubleExpression(expression, setter));
+            }
         }
 
         /// <summary>

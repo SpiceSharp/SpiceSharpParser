@@ -147,7 +147,15 @@ namespace SpiceNetlist.SpiceObjects
                 throw new Exception("Parameter [" + parameterIndex + "] is not string parameter");
             }
 
-            return singleParameter.Image;
+            if (singleParameter is ExpressionParameter ep)
+            {
+                // trim '{' and '}' from start and end
+                return ep.Image.Substring(1, ep.Image.Length - 2);
+            }
+            else
+            {
+                return singleParameter.Image;
+            }
         }
 
         /// <summary>

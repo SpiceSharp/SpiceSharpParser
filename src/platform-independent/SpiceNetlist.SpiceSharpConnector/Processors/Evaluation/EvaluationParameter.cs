@@ -1,53 +1,47 @@
 ﻿namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
 {
+    /// <summary>
+    /// An parameter that triggers re-evaluation when changed
+    /// </summary>
     public class EvaluationParameter : SpiceSharp.Parameter
     {
-        public EvaluationParameter(Evaluator evaluator, string sweepParameterName)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EvaluationParameter"/> class.
+        /// </summary>
+        /// <param name="evaluator">An evaluator</param>
+        /// <param name="parameterName">A parameter name</param>
+        /// <param name="initialValue">Initial value of parameter</param>
+        public EvaluationParameter(IEvaluator evaluator, string parameterName, double initialValue)
         {
-            SweepParameterName = sweepParameterName;
-            Evaluator = evaluator;
+            ParameterName = parameterName ?? throw new System.ArgumentNullException(nameof(parameterName));
+            Evaluator = evaluator ?? throw new System.ArgumentNullException(nameof(evaluator));
+            Value = initialValue;
         }
 
-        public Evaluator Evaluator { get; }
+        /// <summary>
+        /// Gets the evaluator
+        /// </summary>
+        protected IEvaluator Evaluator { get; }
 
-        public string SweepParameterName { get; }
+        /// <summary>
+        /// Gets the parameter name
+        /// </summary>
+        protected string ParameterName { get; }
 
-        public override object Clone()
-        {
-            return base.Clone();
-        }
-
-        public override void CopyFrom(SpiceSharp.Parameter source)
-        {
-            base.CopyFrom(source);
-        }
-
-        public override void CopyTo(SpiceSharp.Parameter target)
-        {
-            base.CopyTo(target);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return object.ReferenceEquals(this, obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
+        /// <summary>
+        /// Sets the value of paramater
+        /// </summary>
+        /// <param name="value">A value to set</param>
         public override void Set(double value)
         {
+#pragma warning disable RECS0018 // Comparison of floating point numbers with equality operator
+            if (Value != value)
+#pragma warning restore RECS0018 // Comparison of floating point numbers with equality operator
+            {
+                Evaluator.SetParameter(ParameterName, value);
+            }
+
             base.Set(value);
-
-            Evaluator.Parameters[SweepParameterName] = value;
-            Evaluator.Refresh();
-        }
-
-        public override string ToString()
-        {
-            return base.ToString();
         }
     }
 }
