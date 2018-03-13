@@ -65,7 +65,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// </summary>
         /// <param name="statements">The statements to process</param>
         /// <param name="context">The context to modify</param>
-        public override void Process(Statements statements, ProcessingContext context)
+        public override void Process(Statements statements, IProcessingContext context)
         {
             foreach (Statement statement in statements.OrderBy(StatementOrder))
             {

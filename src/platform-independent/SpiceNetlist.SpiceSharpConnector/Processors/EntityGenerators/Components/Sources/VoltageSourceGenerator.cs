@@ -17,7 +17,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             this.waveFormGenerator = waveFormGenerator;
         }
 
-        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, ProcessingContext context)
+        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, IProcessingContext context)
         {
             switch (type)
             {
@@ -29,7 +29,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return null;
         }
 
-        public Entity GenerateVoltageControlledVoltageSource(string name, string type, ParameterCollection parameters, ProcessingContext context)
+        public Entity GenerateVoltageControlledVoltageSource(string name, string type, ParameterCollection parameters, IProcessingContext context)
         {
             if (parameters.Count < 5)
             {
@@ -43,7 +43,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return vcvs;
         }
 
-        public Entity GenerateCurrentControlledVoltageSource(string name, string type, ParameterCollection parameters, ProcessingContext context)
+        public Entity GenerateCurrentControlledVoltageSource(string name, string type, ParameterCollection parameters, IProcessingContext context)
         {
             switch (parameters.Count)
             {
@@ -64,7 +64,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return ccvs;
         }
 
-        public Entity GenerateVoltageSource(string name, string type, ParameterCollection parameters, ProcessingContext context)
+        public Entity GenerateVoltageSource(string name, string type, ParameterCollection parameters, IProcessingContext context)
         {
             var vsrc = new VoltageSource(name);
             context.CreateNodes(vsrc, parameters);

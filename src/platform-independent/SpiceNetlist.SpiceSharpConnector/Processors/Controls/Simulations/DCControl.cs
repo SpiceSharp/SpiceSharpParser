@@ -20,7 +20,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
-        public override void Process(Control statement, ProcessingContext context)
+        public override void Process(Control statement, IProcessingContext context)
         {
             int count = statement.Parameters.Count / 4;
             switch (statement.Parameters.Count - (4 * count))
@@ -71,7 +71,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
             context.AddSimulation(dc);
         }
 
-        private void SetDcParameters(DcConfiguration dCConfiguration, ProcessingContext context)
+        private void SetDcParameters(DcConfiguration dCConfiguration, IProcessingContext context)
         {
             if (context.SimulationConfiguration.SweepMaxIterations.HasValue)
             {

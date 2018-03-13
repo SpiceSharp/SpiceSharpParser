@@ -14,7 +14,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
     /// <summary>
     /// Processing context
     /// </summary>
-    public class ProcessingContext
+    public class ProcessingContext : IProcessingContext
     {
         private string currentPath = null;
 
@@ -44,8 +44,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessingContext"/> class.
         /// </summary>
-        public ProcessingContext(string contextName, 
-            ProcessingContext parent, 
+        public ProcessingContext(string contextName,
+            IProcessingContext parent, 
             SubCircuit currentSubciruit, 
             List<string> pinInstanceNames, 
             Dictionary<string, double> availableParameters)
@@ -95,12 +95,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <summary>
         /// Gets the netlist
         /// </summary>
-        protected Netlist Netlist { get; }
+        public Netlist Netlist { get; }
 
         /// <summary>
         /// Gets the context name
         /// </summary>
-        protected string ContextName { get; }
+        public string ContextName { get; }
 
         /// <summary>
         /// Gets the current subcircuit
@@ -113,14 +113,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         protected List<string> PinInstanceNames { get; }
 
         /// <summary>
-        /// Gets the parent of the context
+        /// Gets or sets the parent of the context
         /// </summary>
-        protected ProcessingContext Parent { get;  }
+        public IProcessingContext Parent { get; set; }
 
         /// <summary>
         /// Gets the path of the context
         /// </summary>
-        protected string Path
+        public string Path
         {
             get
             {
@@ -128,7 +128,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                 {
                     List<string> path = new List<string>() { ContextName };
 
-                    var context = this;
+                    IProcessingContext context = this;
                     while (context.Parent != null)
                     {
                         path.Insert(0, context.Parent.ContextName);
@@ -243,7 +243,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         public T FindModel<T>(string modelName)
             where T : Entity
         {
-            var context = this;
+            IProcessingContext context = this;
             while (context != null)
             {
                 var modelNameToSearch = (context.Path + modelName).ToLower();

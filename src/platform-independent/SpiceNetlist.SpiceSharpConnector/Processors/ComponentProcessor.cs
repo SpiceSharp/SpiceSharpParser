@@ -33,7 +33,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modifify</param>
-        public override void Process(Component statement, ProcessingContext context)
+        public override void Process(Component statement, IProcessingContext context)
         {
             string componentName = statement.Name.ToLower();
             string componentType = componentName[0].ToString();

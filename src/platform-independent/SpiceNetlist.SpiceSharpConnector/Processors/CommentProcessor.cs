@@ -16,7 +16,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modifify</param>
-        public override void Process(CommentLine statement, ProcessingContext context)
+        public override void Process(CommentLine statement, IProcessingContext context)
         {
             context.AddComment(statement);
         }

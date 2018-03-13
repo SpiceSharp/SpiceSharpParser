@@ -19,7 +19,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
-        public override void Process(Control statement, ProcessingContext context)
+        public override void Process(Control statement, IProcessingContext context)
         {
             Noise noise = null;
 

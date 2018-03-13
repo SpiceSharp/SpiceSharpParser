@@ -10,7 +10,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 {
     public class BipolarJunctionTransistorGenerator : EntityGenerator
     {
-        public override Entity Generate(Identifier name, string originalName, string type, ParameterCollection parameters, ProcessingContext context)
+        public override Entity Generate(Identifier name, string originalName, string type, ParameterCollection parameters, IProcessingContext context)
         {
             BipolarJunctionTransistor bjt = new BipolarJunctionTransistor(name);
 

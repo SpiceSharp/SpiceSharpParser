@@ -7,7 +7,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators
 {
     public abstract class ModelGenerator : EntityGenerator
     {
-        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, ProcessingContext context)
+        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, IProcessingContext context)
         {
             var model = GenerateModel(id.Name, type);
             if (model == null)

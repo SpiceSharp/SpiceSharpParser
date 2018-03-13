@@ -29,7 +29,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modifify</param>
-        public override void Process(Model statement, ProcessingContext context)
+        public override void Process(Model statement, IProcessingContext context)
         {
             string name = statement.Name.ToLower();
             if (statement.Parameters.Count > 0)

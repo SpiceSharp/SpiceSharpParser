@@ -17,7 +17,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             this.modelProcessor = modelProcessor;
         }
 
-        public override Entity Generate(Identifier id, string name, string type, ParameterCollection parameters, ProcessingContext context)
+        public override Entity Generate(Identifier id, string name, string type, ParameterCollection parameters, IProcessingContext context)
         {
             SubCircuit subCiruitDefiniton;
             ProcessingContext newContext;
@@ -45,7 +45,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             return new List<string>() { "x" };
         }
 
-        private static void ProcessParamters(string name, ParameterCollection parameters, ProcessingContext context, out SubCircuit subCiruitDefiniton, out ProcessingContext newContext)
+        private static void ProcessParamters(string name, ParameterCollection parameters, IProcessingContext context, out SubCircuit subCiruitDefiniton, out ProcessingContext newContext)
         {
             int parametersCount = 0;
 
@@ -76,7 +76,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             newContext = new ProcessingContext(name, context, subCiruitDefiniton, pinInstanceNames, subCktParamters);
         }
 
-        private static Dictionary<string, double> ResolveSubcircuitParameters(ProcessingContext context, SubCircuit subCiruitDefiniton, List<AssignmentParameter> subcktParameters)
+        private static Dictionary<string, double> ResolveSubcircuitParameters(IProcessingContext context, SubCircuit subCiruitDefiniton, List<AssignmentParameter> subcktParameters)
         {
             var newContextParameters = new Dictionary<string, double>();
             foreach (var defaultParameter in subCiruitDefiniton.DefaultParameters)

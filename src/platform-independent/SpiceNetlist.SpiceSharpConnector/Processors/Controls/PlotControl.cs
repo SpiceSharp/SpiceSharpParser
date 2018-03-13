@@ -39,7 +39,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
-        public override void Process(Control statement, ProcessingContext context)
+        public override void Process(Control statement, IProcessingContext context)
         {
             string type = statement.Parameters[0].Image.ToLower();
 
@@ -62,7 +62,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
             }
         }
 
-        private void CreatePlot(Control statement, ProcessingContext context, Simulation simulationToPlot, string xUnit)
+        private void CreatePlot(Control statement, IProcessingContext context, Simulation simulationToPlot, string xUnit)
         {
             var plot = new Plot(simulationToPlot.Name.ToString());
             List<Export> exports = GenerateExports(statement.Parameters.Skip(1), simulationToPlot, context);
@@ -106,7 +106,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
             context.AddPlot(plot);
         }
 
-        private List<Export> GenerateExports(ParameterCollection parameterCollection, Simulation simulationToPlot, ProcessingContext context)
+        private List<Export> GenerateExports(ParameterCollection parameterCollection, Simulation simulationToPlot, IProcessingContext context)
         {
             List<Export> result = new List<Export>();
             foreach (var parameter in parameterCollection)
@@ -120,7 +120,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
             return result;
         }
 
-        private Export GenerateExport(BracketParameter parameter, Simulation simulation, ProcessingContext context)
+        private Export GenerateExport(BracketParameter parameter, Simulation simulation, IProcessingContext context)
         {
             string type = parameter.Name.ToLower();
 

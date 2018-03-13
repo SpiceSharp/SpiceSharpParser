@@ -18,7 +18,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Waveforms
         /// <returns>
         /// A new waveform
         /// </returns>
-        public override Waveform Generate(BracketParameter bracketParameter, ProcessingContext context)
+        public override Waveform Generate(BracketParameter bracketParameter, IProcessingContext context)
         {
             var sine = new Sine();
 

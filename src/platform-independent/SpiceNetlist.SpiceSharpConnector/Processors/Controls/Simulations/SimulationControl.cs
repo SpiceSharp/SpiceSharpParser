@@ -8,7 +8,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
     /// </summary>
     public abstract class SimulationControl : BaseControl
     {
-        protected void SetBaseParameters(BaseConfiguration baseConfiguration, ProcessingContext context)
+        protected void SetBaseParameters(BaseConfiguration baseConfiguration, IProcessingContext context)
         {
             if (context.SimulationConfiguration.Gmin.HasValue)
             {

@@ -19,7 +19,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Waveforms
         /// <returns>
         /// A new waveform
         /// </returns>
-        public override Waveform Generate(BracketParameter bracketParam, ProcessingContext context)
+        public override Waveform Generate(BracketParameter bracketParam, IProcessingContext context)
         {
             var w = new Pulse();
 
