@@ -10,7 +10,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 {
     public class SwitchGenerator : EntityGenerator
     {
-        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, IProcessingContext context)
+        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, ProcessingContextBase context)
         {
             switch (type)
             {
@@ -21,7 +21,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return null;
         }
 
-        public Entity GenerateVoltageSwitch(string name, ParameterCollection parameters, IProcessingContext context)
+        public Entity GenerateVoltageSwitch(string name, ParameterCollection parameters, ProcessingContextBase context)
         {
             VoltageSwitch vsw = new VoltageSwitch(name);
             context.CreateNodes(vsw, parameters);
@@ -53,7 +53,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return vsw;
         }
 
-        public Entity GenerateCurrentSwitch(string name, ParameterCollection parameters, IProcessingContext context)
+        public Entity GenerateCurrentSwitch(string name, ParameterCollection parameters, ProcessingContextBase context)
         {
             CurrentSwitch csw = new CurrentSwitch(name);
             switch (parameters.Count)

@@ -36,7 +36,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             });
         }
 
-        public override Entity Generate(Identifier entityName, string originalName, string type, ParameterCollection parameters, IProcessingContext context)
+        public override Entity Generate(Identifier entityName, string originalName, string type, ParameterCollection parameters, ProcessingContextBase context)
         {
             // Errors
             switch (parameters.Count)

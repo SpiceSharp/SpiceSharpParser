@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceSharp;
@@ -17,7 +18,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             this.modelProcessor = modelProcessor;
         }
 
-        public override Entity Generate(Identifier id, string name, string type, ParameterCollection parameters, IProcessingContext context)
+        public override Entity Generate(Identifier id, string name, string type, ParameterCollection parameters, ProcessingContextBase context)
         {
             SubCircuit subCiruitDefiniton;
             ProcessingContext newContext;
@@ -45,7 +46,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             return new List<string>() { "x" };
         }
 
-        private static void ProcessParamters(string name, ParameterCollection parameters, IProcessingContext context, out SubCircuit subCiruitDefiniton, out ProcessingContext newContext)
+        private static void ProcessParamters(string name, ParameterCollection parameters, ProcessingContextBase context, out SubCircuit subCiruitDefiniton, out ProcessingContext newContext)
         {
             int parametersCount = 0;
 
@@ -71,12 +72,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                 throw new System.Exception("Can't find " + subCircuitName + " subcircuit");
             }
 
+            newContext = new ProcessingContext(name, context, subCiruitDefiniton, pinInstanceNames);
+
             Dictionary<string, double> subCktParamters = ResolveSubcircuitParameters(context, subCiruitDefiniton, subCktParameters);
 
-            newContext = new ProcessingContext(name, context, subCiruitDefiniton, pinInstanceNames, subCktParamters);
+            newContext.Evaluator.SetParameters(subCktParamters);
         }
 
-        private static Dictionary<string, double> ResolveSubcircuitParameters(IProcessingContext context, SubCircuit subCiruitDefiniton, List<AssignmentParameter> subcktParameters)
+        private static Dictionary<string, double> ResolveSubcircuitParameters(ProcessingContextBase context, SubCircuit subCiruitDefiniton, List<AssignmentParameter> subcktParameters)
         {
             var newContextParameters = new Dictionary<string, double>();
             foreach (var defaultParameter in subCiruitDefiniton.DefaultParameters)

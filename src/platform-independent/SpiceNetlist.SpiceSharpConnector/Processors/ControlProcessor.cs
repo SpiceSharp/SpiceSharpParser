@@ -27,13 +27,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modifify</param>
-        public override void Process(Control statement, IProcessingContext context)
+        public override void Process(Control statement, ProcessingContextBase context)
         {
             string type = statement.Name.ToLower();
 
             if (!Registry.Supports(type))
             {
-                context.AddWarning("Unsupported control: " + statement.Name + " at " + statement.LineNumber + " line");
+                context.Adder.AddWarning("Unsupported control: " + statement.Name + " at " + statement.LineNumber + " line");
             }
             else
             {

@@ -28,7 +28,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <returns>
         /// An new instance of waveform
         /// </returns>
-        public Waveform Generate(BracketParameter cp, IProcessingContext context)
+        public Waveform Generate(BracketParameter cp, ProcessingContextBase context)
         {
             string type = cp.Name.ToLower();
             if (!Registry.Supports(cp.Name))

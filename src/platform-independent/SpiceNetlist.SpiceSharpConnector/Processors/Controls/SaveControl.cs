@@ -33,18 +33,18 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
-        public override void Process(Control statement, IProcessingContext context)
+        public override void Process(Control statement, ProcessingContextBase context)
         {
             foreach (var parameter in statement.Parameters)
             {
                 if (parameter is BracketParameter bracketParameter)
                 {
-                    context.AddExport(GenerateExport(bracketParameter, context.Simulations.First(), context));
+                    context.Adder.AddExport(GenerateExport(bracketParameter, context.Simulations.First(), context));
                 }
             }
         }
 
-        private Export GenerateExport(BracketParameter parameter, Simulation simulation, IProcessingContext context)
+        private Export GenerateExport(BracketParameter parameter, Simulation simulation, ProcessingContextBase context)
         {
             string type = parameter.Name.ToLower();
 

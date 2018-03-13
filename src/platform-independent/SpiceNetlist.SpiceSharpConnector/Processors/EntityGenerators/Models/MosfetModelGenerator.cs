@@ -56,7 +56,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models
             return new List<string>() { "nmos", "pmos" };
         }
 
-        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, IProcessingContext context)
+        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, ProcessingContextBase context)
         {
             var clonedParameters = parameters.Clone();
             switch (clonedParameters.Count)

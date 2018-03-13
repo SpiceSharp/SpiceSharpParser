@@ -23,7 +23,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
         /// <returns>
         /// A new export
         /// </returns>
-        public abstract Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, IProcessingContext context);
+        public abstract Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, ProcessingContextBase context);
 
         /// <summary>
         /// Gets supported exports

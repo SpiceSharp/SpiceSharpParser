@@ -4,6 +4,6 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
     public interface IStatementsProcessor
     {
-        void Process(Statements statements, IProcessingContext context);
+        void Process(Statements statements, ProcessingContextBase context);
     }
 }

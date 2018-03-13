@@ -17,7 +17,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
-        public override void Process(Control statement, IProcessingContext context)
+        public override void Process(Control statement, ProcessingContextBase context)
         {
             switch (statement.Parameters.Count)
             {
@@ -45,10 +45,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 
             SetBaseParameters(ac.BaseConfiguration, context);
             SetACParameters(ac.FrequencyConfiguration, context);
-            context.AddSimulation(ac);
+            context.Adder.AddSimulation(ac);
         }
 
-        private void SetACParameters(FrequencyConfiguration frequencyConfiguration, IProcessingContext context)
+        private void SetACParameters(FrequencyConfiguration frequencyConfiguration, ProcessingContextBase context)
         {
             if (context.SimulationConfiguration.KeepOpInfo.HasValue)
             {

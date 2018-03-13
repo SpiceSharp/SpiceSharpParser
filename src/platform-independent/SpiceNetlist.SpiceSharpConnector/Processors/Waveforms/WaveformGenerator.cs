@@ -22,6 +22,6 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Waveforms
         /// <returns>
         /// A new waveform
         /// </returns>
-        public abstract Waveform Generate(BracketParameter bracketParameter, IProcessingContext context);
+        public abstract Waveform Generate(BracketParameter bracketParameter, ProcessingContextBase context);
     }
 }

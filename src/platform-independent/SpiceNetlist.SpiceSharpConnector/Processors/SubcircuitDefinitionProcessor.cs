@@ -19,7 +19,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A processing context</param>
-        public override void Process(SubCircuit statement, IProcessingContext context)
+        public override void Process(SubCircuit statement, ProcessingContextBase context)
         {
             context.AvailableSubcircuits.Add(statement);
         }

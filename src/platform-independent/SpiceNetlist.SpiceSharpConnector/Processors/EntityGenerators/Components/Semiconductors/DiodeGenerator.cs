@@ -9,7 +9,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 {
     public class DiodeGenerator : EntityGenerator
     {
-        public override Entity Generate(Identifier name, string originalName, string type, ParameterCollection parameters, IProcessingContext context)
+        public override Entity Generate(Identifier name, string originalName, string type, ParameterCollection parameters, ProcessingContextBase context)
         {
             if (parameters.Count < 3)
             {

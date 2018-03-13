@@ -134,6 +134,23 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         }
 
         /// <summary>
+        /// Sets the parameters values and updates the values expressions
+        /// </summary>
+        /// <param name="parameters">A dictionary of parameter values</param>
+        public void SetParameters(Dictionary<string, double> parameters)
+        {
+            foreach (var parameter in parameters)
+            {
+                Parameters[parameter.Key] = parameter.Value;
+            }
+
+            foreach (var parameter in parameters)
+            {
+                Refresh(parameter.Key);
+            }
+        }
+
+        /// <summary>
         /// Refreshes expressions in evaluator that contains given parameter
         /// </summary>
         /// <param name="parameterName">A parameter name</param>
@@ -147,6 +164,5 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
                 setter(ExpressionParser.Parse(expression));
             }
         }
-
     }
 }

@@ -17,7 +17,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
-        public override void Process(Control statement, IProcessingContext context)
+        public override void Process(Control statement, ProcessingContextBase context)
         {
             Transient tran = null;
 
@@ -48,10 +48,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 
             SetBaseParameters(tran.ParameterSets.Get<BaseConfiguration>(), context);
             SetTransientParamters(tran, context);
-            context.AddSimulation(tran);
+            context.Adder.AddSimulation(tran);
         }
 
-        private void SetTransientParamters(Transient tran, IProcessingContext context)
+        private void SetTransientParamters(Transient tran, ProcessingContextBase context)
         {
             if (context.SimulationConfiguration.Method != null)
             {

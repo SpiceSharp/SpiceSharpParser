@@ -33,7 +33,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modifify</param>
-        public override void Process(Component statement, IProcessingContext context)
+        public override void Process(Component statement, ProcessingContextBase context)
         {
             string componentName = statement.Name.ToLower();
             string componentType = componentName[0].ToString();
@@ -46,7 +46,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             var generator = ComponentRegistry.Get(componentType);
 
             Entity entity = generator.Generate(
-                new Identifier(context.GenerateObjectName(componentName)),
+                new Identifier(context.NameGenerator.GenerateObjectName(componentName)),
                 componentName,
                 componentType,
                 statement.PinsAndParameters,
@@ -54,7 +54,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
             if (entity != null)
             {
-                context.AddEntity(entity);
+                context.Adder.AddEntity(entity);
             }
         }
     }

@@ -61,5 +61,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         /// The names of paramaters
         /// </returns>
         IEnumerable<string> GetParameterNames();
+
+        /// <summary>
+        /// Sets the parameters values and updates the values expressions
+        /// </summary>
+        /// <param name="parameters">A dictionary of parameter values</param>
+        void SetParameters(Dictionary<string, double> parameters);
     }
 }
