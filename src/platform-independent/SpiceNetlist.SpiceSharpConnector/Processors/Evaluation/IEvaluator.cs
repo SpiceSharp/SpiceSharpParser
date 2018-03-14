@@ -11,16 +11,18 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         /// Adds double expression to registry that will be updated when value of parameter change
         /// </summary>
         /// <param name="expression">An expression to add</param>
+        /// <param name="parameters">Parameters in expression</param>
         void AddDynamicExpression(DoubleExpression expression);
 
         /// <summary>
         /// Evalues a specific string to double
         /// </summary>
         /// <param name="expression">An expression to evaluate</param>
+        /// <param name="parameters">Found parameters in expression</param>
         /// <returns>
         /// A double value
         /// </returns>
-        double EvaluateDouble(string expression);
+        double EvaluateDouble(string expression, out List<string> parameters);
 
         /// <summary>
         /// Sets the parameter value and updates the values expressions

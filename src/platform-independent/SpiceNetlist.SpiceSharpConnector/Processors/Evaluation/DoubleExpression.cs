@@ -14,14 +14,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         /// <param name="setter">An action to run when expression is re-evaluated</param>
         public DoubleExpression(string expression, Action<double> setter)
         {
-            Expression = expression ?? throw new ArgumentNullException(nameof(expression));
+            ValueExpression = expression ?? throw new ArgumentNullException(nameof(expression));
             Setter = setter ?? throw new ArgumentNullException(nameof(setter));
         }
 
         /// <summary>
-        /// Gets an expression value
+        /// Gets an expression 
         /// </summary>
-        public string Expression { get; }
+        public string ValueExpression { get; }
 
         /// <summary>
         /// Gets an action to run when expression is re-evaluated

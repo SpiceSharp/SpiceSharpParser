@@ -44,6 +44,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.Evaluation
             v.SetParameter("xyz", 13.0);
 
             double expressionValue = 0;
+
             // act
             v.AddDynamicExpression(new DoubleExpression("xyz +1", (double newValue) => { expressionValue = newValue; }));
             v.SetParameter("xyz", 14);
@@ -53,26 +54,42 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.Evaluation
         }
 
         [Fact]
-        public void EvaluatorFailsWhenThereCurrlyBraces()
+        public void EvaluateFailsWhenThereCurrlyBraces()
         {
             Evaluator v = new Evaluator();
-            Assert.Throws<Exception>(() => v.EvaluateDouble("{1}"));
+            Assert.Throws<Exception>(() => v.EvaluateDouble("{1}", out _));
         }
 
         [Fact]
-        public void EvaluatorParameterTest()
+        public void EvaluateParameterTest()
         {
             Evaluator v = new Evaluator();
             v.SetParameter("xyz", 13.0);
 
-            Assert.Equal(14, v.EvaluateDouble("xyz + 1"));
+            Assert.Equal(14, v.EvaluateDouble("xyz + 1", out _));
         }
 
         [Fact]
-        public void EvaluatorSuffixTest()
+        public void EvaluateReturnsParameterTest()
+        {
+            // prepare
+            Evaluator v = new Evaluator();
+            v.SetParameter("xyz", 13.0);
+            v.SetParameter("a", 1.0);
+
+            // act
+            v.EvaluateDouble("xyz + 1 + a", out var parameters);
+
+            // assert
+            Assert.Contains("a", parameters);
+            Assert.Contains("xyz", parameters);
+        }
+
+        [Fact]
+        public void EvaluateSuffixTest()
         {
             Evaluator v = new Evaluator();
-            Assert.Equal(2, v.EvaluateDouble("1V + 1"));
+            Assert.Equal(2, v.EvaluateDouble("1V + 1", out _));
         }
     }
 }

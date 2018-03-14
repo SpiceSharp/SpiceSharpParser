@@ -103,9 +103,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <summary>
         /// Sets voltage initial condition for node
         /// </summary>
-        public override void SetICVoltage(string nodeName, string value)
+        public override void SetICVoltage(string nodeName, string expression)
         {
-            Netlist.Circuit.Nodes.InitialConditions[NameGenerator.GenerateNodeName(nodeName)] = Evaluator.EvaluateDouble(value);
+            Netlist.Circuit.Nodes.InitialConditions[NameGenerator.GenerateNodeName(nodeName)] = Evaluator.EvaluateDouble(expression, out _);
+
+            // TODO: Add dynamic parameter support :)
         }
 
         /// <summary>
@@ -119,7 +121,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         {
             try
             {
-                return Evaluator.EvaluateDouble(expression);
+                return Evaluator.EvaluateDouble(expression, out _);
             }
             catch (Exception)
             {
@@ -135,13 +137,33 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <param name="expression">An expression</param>
         public override void SetParameter(Entity entity, string propertyName, string expression)
         {
-            entity.SetParameter(propertyName, Evaluator.EvaluateDouble(expression));
+            entity.SetParameter(propertyName, Evaluator.EvaluateDouble(expression, out var parameters));
 
             var setter = entity.ParameterSets.GetSetter(propertyName);
             // re-evaluation makes sense only if there is a setter
             if (setter != null)
             {
                 Evaluator.AddDynamicExpression(new DoubleExpression(expression, setter));
+            }
+
+            // find parameter to see if it's temperature dependent. if it's then add all expression parameters to TemperatureParameters
+            if (parameters != null && parameters.Count > 0)
+            {
+                var parameter = entity.ParameterSets.GetParameter(propertyName);
+                if (parameter != null)
+                {
+                    var attribute = entity.ParameterSets.GetParameterAttribute(propertyName);
+                    if (attribute != null)
+                    {
+                        if (attribute.IsTemperatureDepended)
+                        {
+                            foreach (var param in parameters)
+                            {
+                                TemperatureParameters.Add(param);
+                            }
+                        }
+                    }
+                }
             }
         }
 

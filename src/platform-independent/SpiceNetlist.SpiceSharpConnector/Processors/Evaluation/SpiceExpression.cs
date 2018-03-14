@@ -196,8 +196,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         /// Parse an expression
         /// </summary>
         /// <returns></returns>
-        public double Parse(string expression)
+        public double Parse(string expression, out List<string> expressionParameters)
         {
+            expressionParameters = new List<string>();
             // Initialize for parsing the expression
             i = 0;
             input = expression;
@@ -362,6 +363,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
                         else if (Parameters != null)
                         {
                             string id = sb.ToString();
+                            expressionParameters.Add(id);
                             output.Push(Parameters[id]);
                             infixPostfix = true;
                         }

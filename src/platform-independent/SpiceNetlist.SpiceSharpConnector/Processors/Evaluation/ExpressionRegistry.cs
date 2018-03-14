@@ -4,7 +4,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
 {
     public class ExpressionRegistry
     {
-        List<DoubleExpression> expressions = new List<DoubleExpression>();
+        readonly Dictionary<string, List<DoubleExpression>> expressions = new Dictionary<string, List<DoubleExpression>>();
 
         /// <summary>
         /// Gets expressions that depend on given parameter
@@ -15,18 +15,34 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         /// </returns>
         public IEnumerable<DoubleExpression> GetDependedExpressions(string parameterName)
         {
-            //TODO: implement someday something better
-
-            return expressions;
+            if (expressions.ContainsKey(parameterName))
+            {
+                return expressions[parameterName];
+            }
+            else
+            {
+                return new List<DoubleExpression>();
+            }
         }
 
         /// <summary>
         /// Adds an expression to registry
         /// </summary>
         /// <param name="expression">An expression to add</param>
-        public void Add(DoubleExpression expression)
+        /// <param name="expressionParameters">A list of expression parameters</param>
+        public void Add(DoubleExpression expression, List<string> expressionParameters)
         {
-            expressions.Add(expression);
+            foreach (var parameter in expressionParameters)
+            {
+                if (expressions.ContainsKey(parameter))
+                {
+                    expressions[parameter].Add(expression);
+                }
+                else
+                {
+                    expressions[parameter] = new List<DoubleExpression>() { expression };
+                }
+            }
         }
     }
 }

@@ -58,6 +58,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
                 string sweepParameterName = e.Name.Name;
                 if (context.Evaluator.HasParameter(sweepParameterName))
                 {
+                    e.TemperatureNeeded = context.TemperatureParameters.Contains(sweepParameterName);
                     e.Result = new EvaluationParameter(context.Evaluator, sweepParameterName);
                 }
             };

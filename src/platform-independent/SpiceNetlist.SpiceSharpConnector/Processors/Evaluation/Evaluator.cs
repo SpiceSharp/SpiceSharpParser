@@ -54,17 +54,19 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         /// Evalues a specific string to double
         /// </summary>
         /// <param name="expression">An expression to evaluate</param>
+        /// <param name="expressionParameters">Found parameters in expression</param>
         /// <returns>
         /// A double value
         /// </returns>
-        public double EvaluateDouble(string expression)
+        public double EvaluateDouble(string expression, out List<string> expressionParameters)
         {
             if (Parameters.ContainsKey(expression))
             {
+                expressionParameters = new List<string>() { expression };
                 return Parameters[expression];
             }
 
-            return ExpressionParser.Parse(expression);
+            return ExpressionParser.Parse(expression, out expressionParameters);
         }
 
         /// <summary>
@@ -85,7 +87,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         /// <param name="expression">A value of parameter</param>
         public void SetParameter(string parameterName, string expression)
         {
-            Parameters[parameterName] = EvaluateDouble(expression);
+            Parameters[parameterName] = EvaluateDouble(expression, out _);
             Refresh(parameterName);
         }
 
@@ -95,7 +97,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         /// <param name="expression">An expression to add</param>
         public void AddDynamicExpression(DoubleExpression expression)
         {
-            Registry.Add(expression);
+            EvaluateDouble(expression.ValueExpression, out var parameters);
+            Registry.Add(expression, parameters);
         }
 
         /// <summary>
@@ -159,9 +162,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
             foreach (DoubleExpression definion in Registry.GetDependedExpressions(parameterName))
             {
                 var setter = definion.Setter;
-                var expression = definion.Expression;
+                var expression = definion.ValueExpression;
 
-                setter(ExpressionParser.Parse(expression));
+                setter(ExpressionParser.Parse(expression, out _));
             }
         }
     }

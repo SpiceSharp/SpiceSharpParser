@@ -17,11 +17,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
         public List<SubCircuit> AvailableSubcircuits { get; protected set; }
 
+        public HashSet<string> TemperatureParameters { get; } = new HashSet<string>();
+
         public SimulationConfiguration SimulationConfiguration { get; } = new SimulationConfiguration();
 
-        public IEvaluator Evaluator { get; protected set; }
+        public IEvaluator Evaluator { get; set; }
 
-        public virtual INetlistAdder Adder { get; protected set; }
+        public virtual INetlistAdder Adder { get; set; }
 
         public Netlist Netlist { get; protected set; }
 
