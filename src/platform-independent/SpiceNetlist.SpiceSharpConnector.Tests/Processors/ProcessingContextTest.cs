@@ -1,4 +1,5 @@
 ﻿using NSubstitute;
+using SpiceNetlist.SpiceSharpConnector.Context;
 using SpiceNetlist.SpiceSharpConnector.Processors;
 using SpiceNetlist.SpiceSharpConnector.Processors.Evaluation;
 using SpiceSharp.Components;
@@ -13,9 +14,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors
         public void SetTemperatureDependedParameterTest()
         {
             // prepare
-            var context = new ProcessingContext();
             var evaluator = Substitute.For<IEvaluator>();
-
             evaluator.EvaluateDouble("a+1", out _).Returns(
                 x =>
                 {
@@ -23,7 +22,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors
                     return 1.0;
                 });
 
-            context.Evaluator = evaluator;
+            var resultService = Substitute.For<IResultService>();
+            var context = new ProcessingContext(string.Empty, evaluator, resultService, new NodeNameGenerator(), new ObjectNameGenerator(string.Empty));
 
             // act
             var resistor = new Resistor("R1");

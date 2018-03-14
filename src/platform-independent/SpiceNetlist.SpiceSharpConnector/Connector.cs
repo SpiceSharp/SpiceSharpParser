@@ -1,5 +1,7 @@
 ﻿using SpiceNetlist.SpiceSharpConnector.Processors;
+using SpiceNetlist.SpiceSharpConnector.Processors.Evaluation;
 using SpiceSharp;
+using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector
 {
@@ -43,7 +45,17 @@ namespace SpiceNetlist.SpiceSharpConnector
             var result = new Netlist(new Circuit(), netlist.Title);
 
             // Create processing context
-            var processingContext = new ProcessingContext(string.Empty, result);
+            var evaluator = new Evaluator();
+            var resultService = new ResultService(result);
+            var nodeNameGenerator = new NodeNameGenerator();
+            var objectNameGenerator = new ObjectNameGenerator(string.Empty);
+
+            var processingContext = new ProcessingContext(
+                string.Empty,
+                evaluator,
+                resultService,
+                nodeNameGenerator,
+                objectNameGenerator);
 
             // Process statements form input netlist using created context
             StatementsProcessor.Process(netlist.Statements, processingContext);

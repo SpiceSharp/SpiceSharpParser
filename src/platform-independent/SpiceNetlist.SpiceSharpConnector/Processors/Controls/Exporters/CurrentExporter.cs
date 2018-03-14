@@ -6,6 +6,7 @@ using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.CurrentExpo
 using SpiceSharp;
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
+using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
 {
@@ -24,7 +25,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
         /// <returns>
         /// A new export
         /// </returns>
-        public override Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, ProcessingContextBase context)
+        public override Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, IProcessingContext context)
         {
             if (parameters.Count != 1 || !(parameters[0] is SingleParameter))
             {
@@ -40,7 +41,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
                     case 0:
                         throw new Exception("Node expected");
                     case 1:
-                        node = new Identifier(context.NameGenerator.GenerateNodeName(vector.Elements[0].Image));
+                        node = new Identifier(context.NodeNameGenerator.GenerateNodeName(vector.Elements[0].Image));
                         break;
                     default:
                         throw new Exception("Too many nodes specified");
@@ -48,7 +49,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
             }
             else
             {
-                node = new Identifier(context.NameGenerator.GenerateNodeName(parameters.GetString(0)));
+                node = new Identifier(context.NodeNameGenerator.GenerateNodeName(parameters.GetString(0)));
             }
 
             Export ce = null;

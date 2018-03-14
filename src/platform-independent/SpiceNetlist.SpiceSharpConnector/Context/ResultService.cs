@@ -1,21 +1,33 @@
-﻿using SpiceNetlist.SpiceObjects;
+﻿using System.Collections.Generic;
+using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Plots;
+using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
 
-namespace SpiceNetlist.SpiceSharpConnector.Processors
+namespace SpiceNetlist.SpiceSharpConnector.Context
 {
-    public class NetlistAdder : INetlistAdder
+    public class ResultService : IResultService
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NetlistAdder"/> class.
+        /// Initializes a new instance of the <see cref="ResultService"/> class.
         /// </summary>
         /// <param name="netlist">A netlist</param>
-        public NetlistAdder(Netlist netlist)
+        public ResultService(Netlist netlist)
         {
             Netlist = netlist;
         }
+
+        /// <summary>
+        /// Gets simulation configuration
+        /// </summary>
+        public SimulationConfiguration SimulationConfiguration => new SimulationConfiguration();
+
+        /// <summary>
+        /// Gets all simulations
+        /// </summary>
+        public IEnumerable<Simulation> Simulations => Netlist.Simulations;
 
         /// <summary>
         /// Gets th netlist where things are added
@@ -74,6 +86,29 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         public void AddSimulation(BaseSimulation simulation)
         {
             Netlist.Simulations.Add(simulation);
+        }
+
+        /// <summary>
+        /// Sets the initial voltage
+        /// </summary>
+        /// <param name="nodeName">The node name</param>
+        /// <param name="initialVoltage">The initial voltage</param>
+        public void SetInitialVoltageCondition(string nodeName, double initialVoltage)
+        {
+            Netlist.Circuit.Nodes.InitialConditions[nodeName] = initialVoltage;
+        }
+
+        /// <summary>
+        /// Finds the object
+        /// </summary>
+        /// <param name="objectName">The object name</param>
+        /// <param name="entity">The found entity</param>
+        /// <returns>
+        /// True if found
+        /// </returns>
+        public bool FindObject(string objectName, out Entity entity)
+        {
+            return Netlist.Circuit.Objects.TryGetEntity(new Identifier(objectName), out entity);
         }
     }
 }

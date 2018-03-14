@@ -5,12 +5,13 @@ using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components
 {
     public class RLCGenerator : EntityGenerator
     {
-        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, ProcessingContextBase context)
+        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, IProcessingContext context)
         {
             switch (type)
             {
@@ -23,7 +24,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return null;
         }
 
-        public Entity GenerateMut(string name, ParameterCollection parameters, ProcessingContextBase context)
+        public Entity GenerateMut(string name, ParameterCollection parameters, IProcessingContext context)
         {
             var mut = new MutualInductance(name);
 
@@ -52,7 +53,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return mut;
         }
 
-        public Entity GenerateCap(string name, ParameterCollection parameters, ProcessingContextBase context)
+        public Entity GenerateCap(string name, ParameterCollection parameters, IProcessingContext context)
         {
             var capacitor = new Capacitor(name);
             context.CreateNodes(capacitor, parameters);
@@ -90,7 +91,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return capacitor;
         }
 
-        public Entity GenerateInd(string name, ParameterCollection parameters, ProcessingContextBase context)
+        public Entity GenerateInd(string name, ParameterCollection parameters, IProcessingContext context)
         {
             if (parameters.Count != 3)
             {
@@ -105,7 +106,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return inductor;
         }
 
-        public Entity GenerateRes(string name, ParameterCollection parameters, ProcessingContextBase context)
+        public Entity GenerateRes(string name, ParameterCollection parameters, IProcessingContext context)
         {
             var res = new Resistor(name);
             context.CreateNodes(res, parameters);

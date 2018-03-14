@@ -4,6 +4,7 @@ using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceSharp;
 using SpiceSharp.Simulations;
+using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 {
@@ -19,7 +20,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
-        public override void Process(Control statement, ProcessingContextBase context)
+        public override void Process(Control statement, IProcessingContext context)
         {
             Noise noise = null;
 
@@ -69,13 +70,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
                                 var output = new Identifier(v.Elements[0].Image);
                                 var reference = new Identifier(v.Elements[1].Image);
                                 var input = new Identifier(statement.Parameters[2].Image);
-                                noise = new Noise("Noise " + (context.Simulations.Count() + 1), output, reference, input, sweep);
+                                noise = new Noise("Noise " + (context.Result.Simulations.Count() + 1), output, reference, input, sweep);
                             }
                             else if (bracket.Parameters[0] is SingleParameter s)
                             {
                                 var output = new Identifier(s.Image);
                                 var input = new Identifier(statement.Parameters[1].Image);
-                                noise = new Noise("Noise " + (context.Simulations.Count() + 1), output, input, sweep);
+                                noise = new Noise("Noise " + (context.Result.Simulations.Count() + 1), output, input, sweep);
                             }
 
                             break;
@@ -93,7 +94,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
                 throw new Exception("Invalid output");
             }
 
-            context.Adder.AddSimulation(noise);
+            context.Result.AddSimulation(noise);
         }
     }
 }

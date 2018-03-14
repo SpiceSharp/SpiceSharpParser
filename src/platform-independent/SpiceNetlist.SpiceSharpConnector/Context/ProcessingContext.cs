@@ -5,109 +5,86 @@ using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceNetlist.SpiceSharpConnector.Processors.Evaluation;
 using SpiceSharp;
 using SpiceSharp.Circuits;
-using SpiceSharp.Simulations;
 
-namespace SpiceNetlist.SpiceSharpConnector.Processors
+namespace SpiceNetlist.SpiceSharpConnector.Context
 {
     /// <summary>
     /// Processing context
     /// </summary>
-    public class ProcessingContext : ProcessingContextBase
+    public class ProcessingContext : IProcessingContext
     {
-        public ProcessingContext()
-        {
-            ContextName = string.Empty;
-            Path = GetPath();
-            Netlist = new Netlist(new Circuit(), string.Empty);
-            AvailableSubcircuits = new List<SubCircuit>();
-            Evaluator = new Evaluator();
-            Adder = new NetlistAdder(Netlist);
-            NameGenerator = new NameGenerator(Path);
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessingContext"/> class.
         /// </summary>
-        /// <param name="contextName">The name of context</param>
-        /// <param name="netlist">The netlist for context</param>
-        public ProcessingContext(string contextName, Netlist netlist)
+        public ProcessingContext(
+            string contextName,
+            IEvaluator evaluator,
+            IResultService resultService,
+            NodeNameGenerator nodeNameGenerator,
+            ObjectNameGenerator objectNameGenerator,
+            IProcessingContext parent = null)
         {
-            ContextName = contextName;
-            Path = GetPath();
-            Netlist = netlist;
-            AvailableSubcircuits = new List<SubCircuit>();
-            Evaluator = new Evaluator();
-            Adder = new NetlistAdder(netlist);
-            NameGenerator = new NameGenerator(Path);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProcessingContext"/> class.
-        /// </summary>
-        public ProcessingContext(string contextName,
-            ProcessingContextBase parent,
-            SubCircuit currentSubciruit,
-            List<string> pinInstanceNames)
-        {
-            ContextName = contextName;
+            ContextName = contextName ?? throw new ArgumentNullException(nameof(contextName));
+            Evaluator = evaluator ?? throw new ArgumentNullException(nameof(evaluator));
+            Result = resultService ?? throw new ArgumentNullException(nameof(resultService));
+            NodeNameGenerator = nodeNameGenerator ?? throw new ArgumentNullException(nameof(nodeNameGenerator));
+            ObjectNameGenerator = objectNameGenerator ?? throw new ArgumentNullException(nameof(objectNameGenerator));
             Parent = parent;
-            Netlist = parent.Netlist;
-            Path = GetPath();
-            AvailableSubcircuits = new List<SubCircuit>();
-            AvailableSubcircuits.AddRange(parent.AvailableSubcircuits);
-            Evaluator = new Evaluator(parent.Evaluator);
-            Adder = new NetlistAdder(parent.Netlist);
-            NameGenerator = new NameGenerator(Path, currentSubciruit, pinInstanceNames);
-        }
 
-        /// <summary>
-        /// Gets the created simulations
-        /// </summary>
-        public override IEnumerable<Simulation> Simulations
-        {
-            get
+            if (Parent != null)
             {
-                return Netlist.Simulations;
+                AvailableSubcircuits.AddRange(Parent.AvailableSubcircuits);
             }
         }
 
         /// <summary>
-        /// Gets the path of the context
+        /// Gets or sets the name of context
         /// </summary>
-        /// <returns>
-        /// The path of context
-        /// </returns>
-        public string GetPath()
-        {
-            List<string> path = new List<string>() { ContextName };
+        public string ContextName { get; protected set; }
 
-            ProcessingContextBase context = this;
-            while (context.Parent != null)
-            {
-                path.Insert(0, context.Parent.ContextName);
-                context = context.Parent;
-            }
+        /// <summary>
+        /// Gets or sets the parent of context
+        /// </summary>
+        public IProcessingContext Parent { get; protected set; }
 
-            var result = string.Empty;
-            foreach (var pathPart in path)
-            {
-                if (pathPart != string.Empty)
-                {
-                    result += pathPart + ".";
-                }
-            }
+        /// <summary>
+        /// Gets available subcircuits in context
+        /// </summary>
+        public List<SubCircuit> AvailableSubcircuits { get; } = new List<SubCircuit>();
 
-            return result;
-        }
+        /// <summary>
+        /// Gets the names of parameters that when changed should trigger temperature behaviors to run
+        /// </summary>
+        public HashSet<string> TemperatureParameters { get; } = new HashSet<string>();
+
+        /// <summary>
+        /// Gets or set the evaluator
+        /// </summary>
+        public IEvaluator Evaluator { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the result service
+        /// </summary>
+        public IResultService Result { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the node name generator
+        /// </summary>
+        public NodeNameGenerator NodeNameGenerator { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the object name generator
+        /// </summary>
+        public ObjectNameGenerator ObjectNameGenerator { get; protected set; }
 
         /// <summary>
         /// Sets voltage initial condition for node
         /// </summary>
-        public override void SetICVoltage(string nodeName, string expression)
+        /// <param name="nodeName">Name of node</param>
+        /// <param name="expression">Expression</param>
+        public void SetICVoltage(string nodeName, string expression)
         {
-            Netlist.Circuit.Nodes.InitialConditions[NameGenerator.GenerateNodeName(nodeName)] = Evaluator.EvaluateDouble(expression, out _);
-
-            // TODO: Add dynamic parameter support :)
+            Result.SetInitialVoltageCondition(NodeNameGenerator.GenerateNodeName(nodeName), Evaluator.EvaluateDouble(expression, out _));
         }
 
         /// <summary>
@@ -117,7 +94,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <returns>
         /// A value of expression
         /// </returns>
-        public override double ParseDouble(string expression)
+        public double ParseDouble(string expression)
         {
             try
             {
@@ -135,7 +112,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <param name="entity">An entity of parameter</param>
         /// <param name="propertyName">A property name</param>
         /// <param name="expression">An expression</param>
-        public override void SetParameter(Entity entity, string propertyName, string expression)
+        public void SetParameter(Entity entity, string propertyName, string expression)
         {
             entity.SetParameter(propertyName, Evaluator.EvaluateDouble(expression, out var parameters));
 
@@ -170,15 +147,15 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <summary>
         /// Find model in the context and in parent contexts
         /// </summary>
-        public override T FindModel<T>(string modelName)
+        public T FindModel<T>(string modelName) where T : Entity
         {
-            ProcessingContextBase context = this;
+            IProcessingContext context = this;
             while (context != null)
             {
-                var modelNameToSearch = NameGenerator.GenerateObjectName(context.Path, modelName);
+                var modelNameToSearch = context.ObjectNameGenerator.GenerateObjectName(modelName);
 
                 Entity model;
-                if (Netlist.Circuit.Objects.TryGetEntity(new Identifier(modelNameToSearch), out model))
+                if (Result.FindObject(modelNameToSearch, out model))
                 {
                     return (T)model;
                 }
@@ -192,7 +169,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <summary>
         /// Sets entity parameters
         /// </summary>
-        public override void SetParameters(Entity entity, ParameterCollection parameters, int toSkip = 0)
+        public void SetParameters(Entity entity, ParameterCollection parameters, int toSkip = 0)
         {
             foreach (SpiceObjects.Parameter parameter in parameters.Skip(toSkip).Take(parameters.Count - toSkip))
             {
@@ -204,12 +181,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                     }
                     catch (Exception ex)
                     {
-                        Adder.AddWarning(ex.ToString());
+                        Result.AddWarning(ex.ToString());
                     }
                 }
                 else
                 {
-                    Adder.AddWarning("Unknown parameter: " + parameter.Image);
+                    Result.AddWarning("Unknown parameter: " + parameter.Image);
                 }
             }
         }
@@ -217,13 +194,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <summary>
         /// Creates nodes for component
         /// </summary>
-        public override void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters)
+        public void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters)
         {
             Identifier[] nodes = new Identifier[component.PinCount];
             for (var i = 0; i < component.PinCount; i++)
             {
                 string pinName = parameters.GetString(i);
-                nodes[i] = NameGenerator.GenerateNodeName(pinName);
+                nodes[i] = NodeNameGenerator.GenerateNodeName(pinName);
             }
 
             component.Connect(nodes);

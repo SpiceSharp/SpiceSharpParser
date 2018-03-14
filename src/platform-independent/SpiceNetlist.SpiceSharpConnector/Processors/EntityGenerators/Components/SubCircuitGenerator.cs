@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
+using SpiceNetlist.SpiceSharpConnector.Context;
+using SpiceNetlist.SpiceSharpConnector.Processors.Evaluation;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 
@@ -18,12 +20,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             this.modelProcessor = modelProcessor;
         }
 
-        public override Entity Generate(Identifier id, string name, string type, ParameterCollection parameters, ProcessingContextBase context)
+        public override Entity Generate(Identifier id, string name, string type, ParameterCollection parameters, IProcessingContext context)
         {
             SubCircuit subCiruitDefiniton;
-            ProcessingContext newContext;
-
-            ProcessParamters(name, parameters, context, out subCiruitDefiniton, out newContext);
+            ProcessingContext newContext = ProcessParamters(name, parameters, context, out subCiruitDefiniton);
 
             foreach (Statement statement in subCiruitDefiniton.Statements.OrderBy(s => (s is Model ? 0 : 1)))
             {
@@ -46,7 +46,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             return new List<string>() { "x" };
         }
 
-        private static void ProcessParamters(string name, ParameterCollection parameters, ProcessingContextBase context, out SubCircuit subCiruitDefiniton, out ProcessingContext newContext)
+        private static ProcessingContext ProcessParamters(string name, ParameterCollection parameters, IProcessingContext context, out SubCircuit subCiruitDefiniton)
         {
             int parametersCount = 0;
 
@@ -69,17 +69,19 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
             if (subCiruitDefiniton == null)
             {
-                throw new System.Exception("Can't find " + subCircuitName + " subcircuit");
+                throw new Exception("Can't find " + subCircuitName + " subcircuit");
             }
 
-            newContext = new ProcessingContext(name, context, subCiruitDefiniton, pinInstanceNames);
+            var newEvaluator = new Evaluator(context.Evaluator);
+            newEvaluator.SetParameters(ResolveSubcircuitParameters(context, subCiruitDefiniton, subCktParameters));
 
-            Dictionary<string, double> subCktParamters = ResolveSubcircuitParameters(context, subCiruitDefiniton, subCktParameters);
+            var subcircuitNodeNameGenerator = new NodeNameGenerator(subCiruitDefiniton, pinInstanceNames);
+            var subcircuitObjectNameGenerator = new ObjectNameGenerator(context.ObjectNameGenerator.Prefix + "." + name);
 
-            newContext.Evaluator.SetParameters(subCktParamters);
+            return new ProcessingContext(name, newEvaluator, context.Result, subcircuitNodeNameGenerator, subcircuitObjectNameGenerator, context);
         }
 
-        private static Dictionary<string, double> ResolveSubcircuitParameters(ProcessingContextBase context, SubCircuit subCiruitDefiniton, List<AssignmentParameter> subcktParameters)
+        private static Dictionary<string, double> ResolveSubcircuitParameters(IProcessingContext context, SubCircuit subCiruitDefiniton, List<AssignmentParameter> subcktParameters)
         {
             var newContextParameters = new Dictionary<string, double>();
             foreach (var defaultParameter in subCiruitDefiniton.DefaultParameters)

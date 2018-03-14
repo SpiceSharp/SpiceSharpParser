@@ -3,6 +3,7 @@ using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceSharpConnector.Processors.Common;
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
+using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
 {
@@ -23,7 +24,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
         /// <returns>
         /// A new export
         /// </returns>
-        public abstract Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, ProcessingContextBase context);
+        public abstract Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, IProcessingContext context);
 
         /// <summary>
         /// Gets supported exports

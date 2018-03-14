@@ -1,6 +1,7 @@
 ﻿using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceNetlist.SpiceSharpConnector.Processors.Common;
 using SpiceSharp.Components;
+using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Waveforms
 {
@@ -22,6 +23,6 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Waveforms
         /// <returns>
         /// A new waveform
         /// </returns>
-        public abstract Waveform Generate(BracketParameter bracketParameter, ProcessingContextBase context);
+        public abstract Waveform Generate(BracketParameter bracketParameter, IProcessingContext context);
     }
 }

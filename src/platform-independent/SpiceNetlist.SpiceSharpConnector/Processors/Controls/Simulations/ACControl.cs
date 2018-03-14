@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using SpiceNetlist.SpiceObjects;
+using SpiceNetlist.SpiceSharpConnector.Context;
 using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
@@ -17,7 +18,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
-        public override void Process(Control statement, ProcessingContextBase context)
+        public override void Process(Control statement, IProcessingContext context)
         {
             switch (statement.Parameters.Count)
             {
@@ -36,23 +37,23 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 
             switch (type)
             {
-                case "lin": ac = new AC((context.Simulations.Count() + 1) + " - AC", new SpiceSharp.Simulations.LinearSweep(start, stop, (int)numberSteps)); break;
-                case "oct": ac = new AC((context.Simulations.Count() + 1) + " - AC", new SpiceSharp.Simulations.OctaveSweep(start, stop, (int)numberSteps)); break;
-                case "dec": ac = new AC((context.Simulations.Count() + 1) + " - AC", new SpiceSharp.Simulations.DecadeSweep(start, stop, (int)numberSteps)); break;
+                case "lin": ac = new AC((context.Result.Simulations.Count() + 1) + " - AC", new SpiceSharp.Simulations.LinearSweep(start, stop, (int)numberSteps)); break;
+                case "oct": ac = new AC((context.Result.Simulations.Count() + 1) + " - AC", new SpiceSharp.Simulations.OctaveSweep(start, stop, (int)numberSteps)); break;
+                case "dec": ac = new AC((context.Result.Simulations.Count() + 1) + " - AC", new SpiceSharp.Simulations.DecadeSweep(start, stop, (int)numberSteps)); break;
                 default:
                     throw new Exception("LIN, DEC or OCT expected");
             }
 
             SetBaseParameters(ac.BaseConfiguration, context);
             SetACParameters(ac.FrequencyConfiguration, context);
-            context.Adder.AddSimulation(ac);
+            context.Result.AddSimulation(ac);
         }
 
-        private void SetACParameters(FrequencyConfiguration frequencyConfiguration, ProcessingContextBase context)
+        private void SetACParameters(FrequencyConfiguration frequencyConfiguration, IProcessingContext context)
         {
-            if (context.SimulationConfiguration.KeepOpInfo.HasValue)
+            if (context.Result.SimulationConfiguration.KeepOpInfo.HasValue)
             {
-                frequencyConfiguration.KeepOpInfo = context.SimulationConfiguration.KeepOpInfo.Value;
+                frequencyConfiguration.KeepOpInfo = context.Result.SimulationConfiguration.KeepOpInfo.Value;
             }
         }
     }

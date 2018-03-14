@@ -4,6 +4,7 @@ using SpiceNetlist.SpiceSharpConnector.Registries;
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
 using System.Linq;
+using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
@@ -33,18 +34,18 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
-        public override void Process(Control statement, ProcessingContextBase context)
+        public override void Process(Control statement, IProcessingContext context)
         {
             foreach (var parameter in statement.Parameters)
             {
                 if (parameter is BracketParameter bracketParameter)
                 {
-                    context.Adder.AddExport(GenerateExport(bracketParameter, context.Simulations.First(), context));
+                    context.Result.AddExport(GenerateExport(bracketParameter, context.Result.Simulations.First(), context));
                 }
             }
         }
 
-        private Export GenerateExport(BracketParameter parameter, Simulation simulation, ProcessingContextBase context)
+        private Export GenerateExport(BracketParameter parameter, Simulation simulation, IProcessingContext context)
         {
             string type = parameter.Name.ToLower();
 

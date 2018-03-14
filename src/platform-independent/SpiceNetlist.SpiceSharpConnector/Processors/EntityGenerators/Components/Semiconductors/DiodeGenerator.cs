@@ -4,12 +4,13 @@ using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components
 {
     public class DiodeGenerator : EntityGenerator
     {
-        public override Entity Generate(Identifier name, string originalName, string type, ParameterCollection parameters, ProcessingContextBase context)
+        public override Entity Generate(Identifier name, string originalName, string type, ParameterCollection parameters, IProcessingContext context)
         {
             if (parameters.Count < 3)
             {

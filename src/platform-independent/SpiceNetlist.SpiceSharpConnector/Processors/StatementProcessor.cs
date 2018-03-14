@@ -1,4 +1,5 @@
 ﻿using SpiceNetlist.SpiceObjects;
+using SpiceNetlist.SpiceSharpConnector.Context;
 using SpiceNetlist.SpiceSharpConnector.Processors;
 
 namespace SpiceNetlist.SpiceSharpConnector
@@ -15,14 +16,14 @@ namespace SpiceNetlist.SpiceSharpConnector
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modifify</param>
-        public abstract void Process(TStatement statement, ProcessingContextBase context);
+        public abstract void Process(TStatement statement, IProcessingContext context);
 
         /// <summary>
         /// Processes a statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modifify</param>
-        public void Process(Statement statement, ProcessingContextBase context)
+        public void Process(Statement statement, IProcessingContext context)
         {
             this.Process((TStatement)statement, context);
         }
@@ -33,6 +34,6 @@ namespace SpiceNetlist.SpiceSharpConnector
     /// </summary>
     public interface IStatementProcessor
     {
-        void Process(Statement statement, ProcessingContextBase context);
+        void Process(Statement statement, IProcessingContext context);
     }
 }

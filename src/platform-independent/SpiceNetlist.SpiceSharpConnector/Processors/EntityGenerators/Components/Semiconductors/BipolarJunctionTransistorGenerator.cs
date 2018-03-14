@@ -4,13 +4,14 @@ using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using SpiceNetlist.SpiceSharpConnector.Context;
 using SpiceSharp.Components.BipolarBehaviors;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components
 {
     public class BipolarJunctionTransistorGenerator : EntityGenerator
     {
-        public override Entity Generate(Identifier name, string originalName, string type, ParameterCollection parameters, ProcessingContextBase context)
+        public override Entity Generate(Identifier name, string originalName, string type, ParameterCollection parameters, IProcessingContext context)
         {
             BipolarJunctionTransistor bjt = new BipolarJunctionTransistor(name);
 

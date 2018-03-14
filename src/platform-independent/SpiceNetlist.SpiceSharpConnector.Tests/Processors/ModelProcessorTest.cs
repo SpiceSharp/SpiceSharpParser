@@ -1,6 +1,7 @@
 using NSubstitute;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
+using SpiceNetlist.SpiceSharpConnector.Context;
 using SpiceNetlist.SpiceSharpConnector.Processors;
 using SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models;
 using SpiceNetlist.SpiceSharpConnector.Processors.Waveforms;
@@ -25,17 +26,18 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors
                 Arg.Any<string>(),
                 "npn",
                 Arg.Any<ParameterCollection>(),
-                Arg.Any<ProcessingContextBase>()).Returns(new BipolarJunctionTransistorModel(new Identifier("test")));
+                Arg.Any<IProcessingContext>()).Returns(new BipolarJunctionTransistorModel(new Identifier("test")));
 
             var registry = Substitute.For<IEntityGeneratorRegistry>();
             registry.Supports("npn").Returns(true);
             registry.Get("npn").Returns(generator);
 
-            var processingContext = Substitute.For<ProcessingContextBase>();
-            processingContext.NameGenerator.Returns(new NameGenerator("path"));
+            var processingContext = Substitute.For<IProcessingContext>();
+            processingContext.NodeNameGenerator.Returns(new NodeNameGenerator());
+            processingContext.ObjectNameGenerator.Returns(new ObjectNameGenerator(string.Empty));
 
-            var adder = Substitute.For<INetlistAdder>();
-            processingContext.Adder.Returns(adder);
+            var resultService = Substitute.For<IResultService>();
+            processingContext.Result.Returns(resultService);
 
             // act
             ModelProcessor processor = new ModelProcessor(registry);
@@ -43,7 +45,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors
             processor.Process(model, processingContext);
 
             //assert
-            adder.Received().AddEntity(Arg.Is<Entity>((Entity e) => e.Name.Name == "test"));
+            resultService.Received().AddEntity(Arg.Is<Entity>((Entity e) => e.Name.Name == "test"));
         }
     }
 }

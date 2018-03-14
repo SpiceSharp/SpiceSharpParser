@@ -1,5 +1,6 @@
 ﻿using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceSharpConnector.Registries;
+using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
@@ -27,13 +28,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modifify</param>
-        public override void Process(Control statement, ProcessingContextBase context)
+        public override void Process(Control statement, IProcessingContext context)
         {
             string type = statement.Name.ToLower();
 
             if (!Registry.Supports(type))
             {
-                context.Adder.AddWarning("Unsupported control: " + statement.Name + " at " + statement.LineNumber + " line");
+                context.Result.AddWarning("Unsupported control: " + statement.Name + " at " + statement.LineNumber + " line");
             }
             else
             {

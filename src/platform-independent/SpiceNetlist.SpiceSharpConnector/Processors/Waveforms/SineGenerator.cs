@@ -1,5 +1,6 @@
 ﻿using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceSharp.Components;
+using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Waveforms
 {
@@ -18,7 +19,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Waveforms
         /// <returns>
         /// A new waveform
         /// </returns>
-        public override Waveform Generate(BracketParameter bracketParameter, ProcessingContextBase context)
+        public override Waveform Generate(BracketParameter bracketParameter, IProcessingContext context)
         {
             var sine = new Sine();
 

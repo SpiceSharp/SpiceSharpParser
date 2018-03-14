@@ -2,28 +2,24 @@
 using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
 
-namespace SpiceNetlist.SpiceSharpConnector.Processors
+namespace SpiceNetlist.SpiceSharpConnector.Context
 {
-    public class NameGenerator
+    public class NodeNameGenerator
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NameGenerator"/> class.
+        /// Initializes a new instance of the <see cref="NodeNameGenerator"/> class.
         /// </summary>
-        /// <param name="path">The path of context</param>
-        public NameGenerator(string path)
+        public NodeNameGenerator()
         {
-            Path = path;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NameGenerator"/> class.
+        /// Initializes a new instance of the <see cref="NodeNameGenerator"/> class.
         /// </summary>
-        /// <param name="path">The path of context </param>
         /// <param name="currentSubCircuit">The current subcircuit</param>
         /// <param name="pinInstanceNames">The names of pins</param>
-        public NameGenerator(string path, SubCircuit currentSubCircuit, List<string> pinInstanceNames)
+        public NodeNameGenerator(SubCircuit currentSubCircuit, List<string> pinInstanceNames)
         {
-            Path = path;
             CurrentSubCircuit = currentSubCircuit;
             PinInstanceNames = pinInstanceNames;
         }
@@ -37,36 +33,6 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// Gets the names of pinds for the current subcircuit
         /// </summary>
         protected List<string> PinInstanceNames { get; }
-
-        /// <summary>
-        /// Gets the path of circuit context
-        /// </summary>
-        protected string Path { get; }
-
-        /// <summary>
-        /// Generates  object name for current context
-        /// </summary>
-        /// <param name="objectName">Name of object</param>
-        /// <returns>
-        /// A object name for current context
-        /// </returns>
-        public string GenerateObjectName(string objectName)
-        {
-            return Path + objectName;
-        }
-
-        /// <summary>
-        /// Generates object name for given context
-        /// </summary>
-        /// <param name="path">Path of context</param>
-        /// <param name="objectName">Name of object</param>
-        /// <returns>
-        /// A object name for given context
-        /// </returns>
-        public string GenerateObjectName(string path, string objectName)
-        {
-            return path + objectName;
-        }
 
         /// <summary>
         /// Generates node name for current context
@@ -97,7 +63,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                 }
             }
 
-            return (Path + pinName).ToLower();
+            return pinName.ToLower();
         }
     }
 }

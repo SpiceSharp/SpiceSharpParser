@@ -5,6 +5,7 @@ using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components
 {
@@ -17,7 +18,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             this.waveFormGenerator = waveFormGenerator;
         }
 
-        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, ProcessingContextBase context)
+        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, IProcessingContext context)
         {
             switch (type)
             {
@@ -29,7 +30,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return null;
         }
 
-        public Entity GenerateCurrentControlledCurrentSource(string name, string type, ParameterCollection parameters, ProcessingContextBase context)
+        public Entity GenerateCurrentControlledCurrentSource(string name, string type, ParameterCollection parameters, IProcessingContext context)
         {
             CurrentControlledCurrentSource cccs = new CurrentControlledCurrentSource(name);
             context.CreateNodes(cccs, parameters);
@@ -45,7 +46,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return cccs;
         }
 
-        public Entity GenerateVoltageControlledCurrentSource(string name, string type, ParameterCollection parameters, ProcessingContextBase context)
+        public Entity GenerateVoltageControlledCurrentSource(string name, string type, ParameterCollection parameters, IProcessingContext context)
         {
             if (parameters.Count < 5)
             {
@@ -59,7 +60,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return vccs;
         }
 
-        public Entity GenerateCurrentSource(string name, string type, ParameterCollection parameters, ProcessingContextBase context)
+        public Entity GenerateCurrentSource(string name, string type, ParameterCollection parameters, IProcessingContext context)
         {
             CurrentSource isrc = new CurrentSource(name);
             context.CreateNodes(isrc, parameters);

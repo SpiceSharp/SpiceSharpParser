@@ -1,4 +1,5 @@
 ﻿using SpiceNetlist.SpiceObjects;
+using SpiceNetlist.SpiceSharpConnector.Context;
 using SpiceNetlist.SpiceSharpConnector.Registries;
 using SpiceSharp;
 using SpiceSharp.Circuits;
@@ -33,7 +34,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modifify</param>
-        public override void Process(Component statement, ProcessingContextBase context)
+        public override void Process(Component statement, IProcessingContext context)
         {
             string componentName = statement.Name.ToLower();
             string componentType = componentName[0].ToString();
@@ -46,7 +47,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             var generator = ComponentRegistry.Get(componentType);
 
             Entity entity = generator.Generate(
-                new Identifier(context.NameGenerator.GenerateObjectName(componentName)),
+                new Identifier(context.ObjectNameGenerator.GenerateObjectName(componentName)),
                 componentName,
                 componentType,
                 statement.PinsAndParameters,
@@ -54,7 +55,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
             if (entity != null)
             {
-                context.Adder.AddEntity(entity);
+                context.Result.AddEntity(entity);
             }
         }
     }

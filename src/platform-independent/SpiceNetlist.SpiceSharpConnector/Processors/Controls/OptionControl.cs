@@ -1,5 +1,6 @@
 ﻿using SpiceNetlist.SpiceObjects;
 using SpiceSharp.IntegrationMethods;
+using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
@@ -15,7 +16,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
-        public override void Process(Control statement, ProcessingContextBase context)
+        public override void Process(Control statement, IProcessingContext context)
         {
             foreach (var param in statement.Parameters)
             {
@@ -27,17 +28,17 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                     switch (name)
                     {
                         case "abstol":
-                            context.SimulationConfiguration.AbsoluteTolerance = context.ParseDouble(value); break;
+                            context.Result.SimulationConfiguration.AbsoluteTolerance = context.ParseDouble(value); break;
                         case "reltol":
-                            context.SimulationConfiguration.RelTolerance = context.ParseDouble(value); break;
+                            context.Result.SimulationConfiguration.RelTolerance = context.ParseDouble(value); break;
                         case "gmin":
-                            context.SimulationConfiguration.Gmin = context.ParseDouble(value); break;
+                            context.Result.SimulationConfiguration.Gmin = context.ParseDouble(value); break;
                         case "itl1":
-                            context.SimulationConfiguration.DCMaxIterations = (int)context.ParseDouble(value); break;
+                            context.Result.SimulationConfiguration.DCMaxIterations = (int)context.ParseDouble(value); break;
                         case "itl2":
-                            context.SimulationConfiguration.SweepMaxIterations = (int)context.ParseDouble(value); break;
+                            context.Result.SimulationConfiguration.SweepMaxIterations = (int)context.ParseDouble(value); break;
                         case "itl4":
-                            context.SimulationConfiguration.TranMaxIterations = (int)context.ParseDouble(value); break;
+                            context.Result.SimulationConfiguration.TranMaxIterations = (int)context.ParseDouble(value); break;
                         case "itl5":
                             // TODO: ????
                             break;
@@ -52,13 +53,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                             {
                                 case "trap":
                                 case "trapezoidal":
-                                    context.SimulationConfiguration.Method = new Trapezoidal();
+                                    context.Result.SimulationConfiguration.Method = new Trapezoidal();
                                     break;
                             }
 
                             break;
                         default:
-                            context.Adder.AddWarning("Unsupported option: " + name);
+                            context.Result.AddWarning("Unsupported option: " + name);
                             break;
                     }
                 }
@@ -67,7 +68,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                 {
                     if (w.Image.ToLower() == "keepopinfo")
                     {
-                        context.SimulationConfiguration.KeepOpInfo = true;
+                        context.Result.SimulationConfiguration.KeepOpInfo = true;
                     }
                 }
             }

@@ -4,6 +4,7 @@ using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using System;
 using System.Collections.Generic;
+using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components.Semiconductors
 {
@@ -36,7 +37,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             });
         }
 
-        public override Entity Generate(Identifier entityName, string originalName, string type, ParameterCollection parameters, ProcessingContextBase context)
+        public override Entity Generate(Identifier entityName, string originalName, string type, ParameterCollection parameters, IProcessingContext context)
         {
             // Errors
             switch (parameters.Count)

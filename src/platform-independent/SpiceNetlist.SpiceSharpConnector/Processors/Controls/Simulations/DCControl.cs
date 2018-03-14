@@ -5,6 +5,7 @@ using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceSharpConnector.Processors.Evaluation;
 using SpiceSharp;
 using SpiceSharp.Simulations;
+using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 {
@@ -20,7 +21,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
-        public override void Process(Control statement, ProcessingContextBase context)
+        public override void Process(Control statement, IProcessingContext context)
         {
             int count = statement.Parameters.Count / 4;
             switch (statement.Parameters.Count - (4 * count))
@@ -52,7 +53,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
                 sweeps.Add(sweep);
             }
 
-            DC dc = new DC((context.Simulations.Count() + 1) + " - DC", sweeps);
+            DC dc = new DC((context.Result.Simulations.Count() + 1) + " - DC", sweeps);
             dc.OnParameterSearch += (sender, e) => 
             {
                 string sweepParameterName = e.Name.Name;
@@ -66,14 +67,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
             SetBaseParameters(dc.BaseConfiguration, context);
             SetDcParameters(dc.DcConfiguration, context);
 
-            context.Adder.AddSimulation(dc);
+            context.Result.AddSimulation(dc);
         }
 
-        private void SetDcParameters(DcConfiguration dCConfiguration, ProcessingContextBase context)
+        private void SetDcParameters(DcConfiguration dCConfiguration, IProcessingContext context)
         {
-            if (context.SimulationConfiguration.SweepMaxIterations.HasValue)
+            if (context.Result.SimulationConfiguration.SweepMaxIterations.HasValue)
             {
-                dCConfiguration.SweepMaxIterations = context.SimulationConfiguration.SweepMaxIterations.Value;
+                dCConfiguration.SweepMaxIterations = context.Result.SimulationConfiguration.SweepMaxIterations.Value;
             }
         }
     }

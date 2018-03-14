@@ -1,5 +1,6 @@
 ﻿using SpiceNetlist.SpiceObjects;
 using SpiceSharp.Simulations;
+using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 {
@@ -8,26 +9,26 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
     /// </summary>
     public abstract class SimulationControl : BaseControl
     {
-        protected void SetBaseParameters(BaseConfiguration baseConfiguration, ProcessingContextBase context)
+        protected void SetBaseParameters(BaseConfiguration baseConfiguration, IProcessingContext context)
         {
-            if (context.SimulationConfiguration.Gmin.HasValue)
+            if (context.Result.SimulationConfiguration.Gmin.HasValue)
             {
-                baseConfiguration.Gmin = context.SimulationConfiguration.Gmin.Value;
+                baseConfiguration.Gmin = context.Result.SimulationConfiguration.Gmin.Value;
             }
 
-            if (context.SimulationConfiguration.AbsoluteTolerance.HasValue)
+            if (context.Result.SimulationConfiguration.AbsoluteTolerance.HasValue)
             {
-                baseConfiguration.AbsoluteTolerance = context.SimulationConfiguration.AbsoluteTolerance.Value;
+                baseConfiguration.AbsoluteTolerance = context.Result.SimulationConfiguration.AbsoluteTolerance.Value;
             }
 
-            if (context.SimulationConfiguration.RelTolerance.HasValue)
+            if (context.Result.SimulationConfiguration.RelTolerance.HasValue)
             {
-                baseConfiguration.RelativeTolerance = context.SimulationConfiguration.RelTolerance.Value;
+                baseConfiguration.RelativeTolerance = context.Result.SimulationConfiguration.RelTolerance.Value;
             }
 
-            if (context.SimulationConfiguration.DCMaxIterations.HasValue)
+            if (context.Result.SimulationConfiguration.DCMaxIterations.HasValue)
             {
-                baseConfiguration.DcMaxIterations = context.SimulationConfiguration.DCMaxIterations.Value;
+                baseConfiguration.DcMaxIterations = context.Result.SimulationConfiguration.DCMaxIterations.Value;
             }
         }
     }

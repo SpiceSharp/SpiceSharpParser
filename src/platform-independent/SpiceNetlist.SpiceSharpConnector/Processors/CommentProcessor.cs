@@ -1,4 +1,5 @@
 ﻿using SpiceNetlist.SpiceObjects;
+using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
@@ -16,9 +17,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modifify</param>
-        public override void Process(CommentLine statement, ProcessingContextBase context)
+        public override void Process(CommentLine statement, IProcessingContext context)
         {
-            context.Adder.AddComment(statement);
+            context.Result.AddComment(statement);
         }
     }
 }

@@ -5,6 +5,7 @@ using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models
 {
@@ -56,7 +57,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models
             return new List<string>() { "nmos", "pmos" };
         }
 
-        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, ProcessingContextBase context)
+        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, IProcessingContext context)
         {
             var clonedParameters = parameters.Clone();
             switch (clonedParameters.Count)

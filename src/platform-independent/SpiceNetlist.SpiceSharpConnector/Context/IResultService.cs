@@ -2,11 +2,16 @@
 using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Plots;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
+using System.Collections.Generic;
 
-namespace SpiceNetlist.SpiceSharpConnector.Processors
+namespace SpiceNetlist.SpiceSharpConnector.Context
 {
-    public interface INetlistAdder
+    public interface IResultService
     {
+        SimulationConfiguration SimulationConfiguration { get; }
+
+        IEnumerable<Simulation> Simulations { get; }
+
         void AddWarning(string warning);
 
         void AddComment(CommentLine statement);
@@ -18,5 +23,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         void AddEntity(Entity entity);
 
         void AddSimulation(BaseSimulation simulation);
+
+        void SetInitialVoltageCondition(string nodeName, double initialVoltage);
+
+        bool FindObject(string modelNameToSearch, out Entity model);
     }
 }

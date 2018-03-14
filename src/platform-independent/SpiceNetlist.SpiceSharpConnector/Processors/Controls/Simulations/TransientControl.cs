@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using SpiceNetlist.SpiceObjects;
+using SpiceNetlist.SpiceSharpConnector.Context;
 using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
@@ -17,7 +18,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
-        public override void Process(Control statement, ProcessingContextBase context)
+        public override void Process(Control statement, IProcessingContext context)
         {
             Transient tran = null;
 
@@ -31,13 +32,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
             {
                 case 2:
                     tran = new Transient(
-                        (context.Simulations.Count() + 1) + " - Transient",
+                        (context.Result.Simulations.Count() + 1) + " - Transient",
                         context.ParseDouble(statement.Parameters[0].Image),
                         context.ParseDouble(statement.Parameters[1].Image));
                     break;
                 case 3:
                     tran = new Transient(
-                        (context.Simulations.Count() + 1) + " - Transient",
+                        (context.Result.Simulations.Count() + 1) + " - Transient",
                         context.ParseDouble(statement.Parameters[0].Image),
                         context.ParseDouble(statement.Parameters[1].Image),
                         context.ParseDouble(statement.Parameters[2].Image));
@@ -48,19 +49,19 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 
             SetBaseParameters(tran.ParameterSets.Get<BaseConfiguration>(), context);
             SetTransientParamters(tran, context);
-            context.Adder.AddSimulation(tran);
+            context.Result.AddSimulation(tran);
         }
 
-        private void SetTransientParamters(Transient tran, ProcessingContextBase context)
+        private void SetTransientParamters(Transient tran, IProcessingContext context)
         {
-            if (context.SimulationConfiguration.Method != null)
+            if (context.Result.SimulationConfiguration.Method != null)
             {
-                tran.TimeConfiguration.Method = context.SimulationConfiguration.Method;
+                tran.TimeConfiguration.Method = context.Result.SimulationConfiguration.Method;
             }
 
-            if (context.SimulationConfiguration.TranMaxIterations.HasValue)
+            if (context.Result.SimulationConfiguration.TranMaxIterations.HasValue)
             {
-                tran.TimeConfiguration.TranMaxIterations = context.SimulationConfiguration.TranMaxIterations.Value;
+                tran.TimeConfiguration.TranMaxIterations = context.Result.SimulationConfiguration.TranMaxIterations.Value;
             }
         }
     }

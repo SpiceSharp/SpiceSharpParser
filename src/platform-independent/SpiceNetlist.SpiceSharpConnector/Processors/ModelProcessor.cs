@@ -2,6 +2,7 @@
 using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceNetlist.SpiceSharpConnector.Registries;
 using SpiceSharp.Circuits;
+using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
@@ -29,7 +30,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modifify</param>
-        public override void Process(Model statement, ProcessingContextBase context)
+        public override void Process(Model statement, IProcessingContext context)
         {
             string name = statement.Name;
 
@@ -46,7 +47,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                     var generator = Registry.Get(type);
 
                     Entity spiceSharpModel = generator.Generate(
-                        new SpiceSharp.Identifier(context.NameGenerator.GenerateObjectName(name)),
+                        new SpiceSharp.Identifier(context.ObjectNameGenerator.GenerateObjectName(name)),
                         name,
                         type,
                         b.Parameters,
@@ -54,7 +55,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
                     if (spiceSharpModel != null)
                     {
-                        context.Adder.AddEntity(spiceSharpModel);
+                        context.Result.AddEntity(spiceSharpModel);
                     }
                 }
 
@@ -68,11 +69,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                     }
 
                     var generator = Registry.Get(type);
-                    Entity spiceSharpModel = generator.Generate(new SpiceSharp.Identifier(context.NameGenerator.GenerateObjectName(name)), name, type, statement.Parameters.Skip(1), context);
+                    Entity spiceSharpModel = generator.Generate(new SpiceSharp.Identifier(context.ObjectNameGenerator.GenerateObjectName(name)), name, type, statement.Parameters.Skip(1), context);
 
                     if (spiceSharpModel != null)
                     {
-                        context.Adder.AddEntity(spiceSharpModel);
+                        context.Result.AddEntity(spiceSharpModel);
                     }
                 }
             }
