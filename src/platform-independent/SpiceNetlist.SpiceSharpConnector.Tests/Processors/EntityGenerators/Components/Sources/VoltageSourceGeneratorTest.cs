@@ -55,6 +55,33 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
         }
 
         [Fact]
+        public void GenerateDCACVoltageSourceTest()
+        {
+            var generator = new VoltageSourceGenerator(Substitute.For<IWaveformProcessor>());
+
+            var parameters = new ParameterCollection
+            {
+                new ValueParameter("1"), // pin
+                new ValueParameter("0"), // pin
+                new WordParameter("Dc"), // dc
+                new ValueParameter("1.2"), // dc-value
+                new WordParameter("Ac"), // ac
+                new ValueParameter("12"), // ac-magnitude
+                new ValueParameter("0"), // ac-phase
+            };
+
+            var context = Substitute.For<IProcessingContext>();
+            var entity = generator.Generate(new SpiceSharp.Identifier("x1.v1"), "v1", "v", parameters, context);
+
+            Assert.NotNull(entity);
+            Assert.IsType<VoltageSource>(entity);
+
+            context.Received().SetParameter(entity, "dc", "1.2");
+            context.Received().SetParameter(entity, "acmag", "12");
+            context.Received().SetParameter(entity, "acphase", "0");
+        }
+
+        [Fact]
         public void GeneratACVoltageSourceTest()
         {
             var generator = new VoltageSourceGenerator(Substitute.For<IWaveformProcessor>());
