@@ -168,7 +168,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 }
                 else
                 {
-                    throw new WrongParameterException("Wrong parameter at the position " + (i + 1) + " for voltage source: " + parameters[i].Image);
+                    if (parameters[i].Image.ToLower() != "dc")
+                    {
+                        throw new WrongParameterException("Wrong parameter at the position " + (i + 1) + " for voltage source: " + parameters[i].Image);
+                    }
                 }
             }
 

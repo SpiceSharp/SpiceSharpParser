@@ -110,9 +110,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         public void SetParameter(Entity entity, string parameterName, string expression)
         {
             var value = Evaluator.EvaluateDouble(expression, out var parameters);
-            entity.SetParameter(parameterName, value);
+            entity.SetParameter(parameterName.ToLower(), value);
 
-            var setter = entity.ParameterSets.GetSetter(parameterName);
+            var setter = entity.ParameterSets.GetSetter(parameterName.ToLower());
             // re-evaluation makes sense only if there is a setter
             if (setter != null)
             {

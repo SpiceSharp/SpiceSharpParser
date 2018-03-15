@@ -6,6 +6,7 @@ using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceNetlist.SpiceSharpConnector.Context;
+using SpiceNetlist.SpiceSharpConnector.Exceptions;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components
 {
@@ -117,20 +118,29 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             }
             else
             {
+                if (parameters[2] is SingleParameter == false)
+                {
+                    throw new WrongParameterTypeException(name, "Semiconductor resistor requires a valid model name");
+                }
+
                 res.SetModel(context.FindModel<ResistorModel>(parameters.GetString(2)));
 
-                foreach (var equal in parameters.Skip(2))
+                foreach (var equal in parameters.Skip(3))
                 {
                     if (equal is AssignmentParameter ap)
                     {
                         context.SetParameter(res, ap.Name, ap.Value);
                     }
+                    else
+                    {
+                        throw new WrongParameterException("Only assigment parameters for semiconductor resistor are valid");
+                    }
                 }
 
-                SpiceSharp.Components.ResistorBehaviors.BaseParameters bp = res.ParameterSets[typeof(SpiceSharp.Components.ResistorBehaviors.BaseParameters)] as SpiceSharp.Components.ResistorBehaviors.BaseParameters;
-                if (!bp.Length.Given)
+                var lengthParameter = res.ParameterSets.GetParameter("l") as GivenParameter;
+                if (lengthParameter == null || !lengthParameter.Given)
                 {
-                    throw new System.Exception("L needs to be specified");
+                    throw new GeneralConnectorException("l needs to be specified");
                 }
             }
 
