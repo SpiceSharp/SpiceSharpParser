@@ -58,12 +58,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                         //TODO ?????
                         if (!bp.Area.Given)
                         {
-                            bp.Area.Set(context.ParseDouble(s.Image));
+                            bp.Area.Value = context.ParseDouble(s.Image);
                         }
                         //TODO ?????
                         if (!bp.Temperature.Given)
                         {
-                            bp.Area.Set(context.ParseDouble(s.Image));
+                            bp.Area.Value = context.ParseDouble(s.Image);
                         }
                     }
                 }

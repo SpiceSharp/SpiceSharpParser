@@ -29,13 +29,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Waveforms
                 throw new System.Exception("Wrong number of arguments for pulse");
             }
 
-            w.InitialValue.Set(context.ParseDouble(bracketParam.Parameters.GetString(0)));
-            w.PulsedValue.Set(context.ParseDouble(bracketParam.Parameters.GetString(1)));
-            w.Delay.Set(context.ParseDouble(bracketParam.Parameters.GetString(2)));
-            w.RiseTime.Set(context.ParseDouble(bracketParam.Parameters.GetString(3)));
-            w.FallTime.Set(context.ParseDouble(bracketParam.Parameters.GetString(4)));
-            w.PulseWidth.Set(context.ParseDouble(bracketParam.Parameters.GetString(5)));
-            w.Period.Set(context.ParseDouble(bracketParam.Parameters.GetString(6)));
+            w.InitialValue.Value = context.ParseDouble(bracketParam.Parameters.GetString(0));
+            w.PulsedValue.Value = context.ParseDouble(bracketParam.Parameters.GetString(1));
+            w.Delay.Value = context.ParseDouble(bracketParam.Parameters.GetString(2));
+            w.RiseTime.Value = context.ParseDouble(bracketParam.Parameters.GetString(3));
+            w.FallTime.Value = context.ParseDouble(bracketParam.Parameters.GetString(4));
+            w.PulseWidth.Value = context.ParseDouble(bracketParam.Parameters.GetString(5));
+            w.Period.Value = context.ParseDouble(bracketParam.Parameters.GetString(6));
 
             return w;
         }

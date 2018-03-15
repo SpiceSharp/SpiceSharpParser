@@ -13,8 +13,6 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
 
         List<SubCircuit> AvailableSubcircuits { get; }
 
-        HashSet<string> TemperatureParameters { get; }
-
         IEvaluator Evaluator { get; }
 
         IResultService Result { get; }

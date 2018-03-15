@@ -3,7 +3,7 @@
     /// <summary>
     /// An parameter that triggers re-evaluation when changed
     /// </summary>
-    public class EvaluationParameter : SpiceSharp.Parameter
+    public class EvaluationParameter : SpiceSharp.GivenParameter
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EvaluationParameter"/> class.
@@ -13,8 +13,23 @@
         public EvaluationParameter(IEvaluator evaluator, string parameterName)
         {
             ParameterName = parameterName ?? throw new System.ArgumentNullException(nameof(parameterName));
-            Evaluator = evaluator ?? throw new System.ArgumentNullException(nameof(evaluator));
-            Value = evaluator.GetParameterValue(parameterName);
+            Evaluator = evaluator ?? throw new System.ArgumentNullException(nameof(evaluator));        }
+
+        /// <summary>
+        /// Gets or sets the value of parameter
+        /// </summary>
+        public override double Value
+        {
+            get
+            {
+                return base.Value;
+            }
+
+            set
+            {
+                Evaluator.SetParameter(ParameterName, value);
+                base.Value = value;
+            }
         }
 
         /// <summary>
@@ -28,19 +43,12 @@
         protected string ParameterName { get; }
 
         /// <summary>
-        /// Sets the value of paramater
+        /// Clones the parameter
         /// </summary>
-        /// <param name="value">A value to set</param>
-        public override void Set(double value)
+        /// <returns></returns>
+        public override object Clone()
         {
-#pragma warning disable RECS0018 // Comparison of floating point numbers with equality operator
-            if (Value != value)
-#pragma warning restore RECS0018 // Comparison of floating point numbers with equality operator
-            {
-                Evaluator.SetParameter(ParameterName, value);
-            }
-
-            base.Set(value);
+            return new EvaluationParameter(Evaluator, ParameterName);
         }
     }
 }

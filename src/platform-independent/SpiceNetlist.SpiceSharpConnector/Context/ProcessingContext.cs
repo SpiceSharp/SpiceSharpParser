@@ -53,12 +53,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         public List<SubCircuit> AvailableSubcircuits { get; } = new List<SubCircuit>();
 
         /// <summary>
-        /// Gets the names of parameters that when changed should trigger temperature behaviors to run
-        /// </summary>
-        public HashSet<string> TemperatureParameters { get; } = new HashSet<string>();
-
-        /// <summary>
-        /// Gets or set the evaluator
+        /// Gets or sets the evaluator
         /// </summary>
         public IEvaluator Evaluator { get; protected set; }
 
@@ -121,26 +116,6 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
             if (setter != null)
             {
                 Evaluator.AddDynamicExpression(new DoubleExpression(expression, setter));
-            }
-
-            // find parameter to see if it's temperature dependent. if it's then add all expression parameters to TemperatureParameters
-            if (parameters != null && parameters.Count > 0)
-            {
-                var parameter = entity.ParameterSets.GetParameter(propertyName);
-                if (parameter != null)
-                {
-                    var attribute = entity.ParameterSets.GetParameterAttribute(propertyName);
-                    if (attribute != null)
-                    {
-                        if (attribute.IsTemperatureDepended)
-                        {
-                            foreach (var param in parameters)
-                            {
-                                TemperatureParameters.Add(param);
-                            }
-                        }
-                    }
-                }
             }
         }
 

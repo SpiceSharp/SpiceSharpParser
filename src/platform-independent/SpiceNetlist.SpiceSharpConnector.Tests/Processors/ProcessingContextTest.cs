@@ -19,7 +19,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors
                 x =>
                 {
                     x[1] = new List<string>() { "a" };
-                    return 1.0;
+                    return 1.1;
                 });
 
             var resultService = Substitute.For<IResultService>();
@@ -30,7 +30,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors
             context.SetParameter(resistor, "resistance", "a+1");
 
             // assert 
-            Assert.Contains("a", context.TemperatureParameters);
+            Assert.Equal(1.1, resistor.ParameterSets.GetParameter("resistance").Value);
         }
     }
 }
