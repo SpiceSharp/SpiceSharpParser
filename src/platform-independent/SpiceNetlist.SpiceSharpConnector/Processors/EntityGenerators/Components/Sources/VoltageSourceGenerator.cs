@@ -130,7 +130,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                     context.SetParameter(vsrc, "dc", parameters.GetString(i + 1));
                     i++;
                 }
-                else if (i == 2 && parameters[i] is SingleParameter vp && parameters[i].Image != "dc" && parameters[i].Image != "ac")
+                else if (i == 2 && parameters[i] is SingleParameter vp && parameters[i].Image.ToLower() != "dc" && parameters[i].Image.ToLower() != "ac")
                 {
                     context.SetParameter(vsrc, "dc", parameters.GetString(i));
                 }
