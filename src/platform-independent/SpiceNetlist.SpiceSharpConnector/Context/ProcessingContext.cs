@@ -79,7 +79,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         /// <param name="expression">Expression</param>
         public void SetICVoltage(string nodeName, string expression)
         {
-            Result.SetInitialVoltageCondition(NodeNameGenerator.GenerateNodeName(nodeName), Evaluator.EvaluateDouble(expression, out _));
+            Result.SetInitialVoltageCondition(NodeNameGenerator.Generate(nodeName), Evaluator.EvaluateDouble(expression, out _));
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
             IProcessingContext context = this;
             while (context != null)
             {
-                var modelNameToSearch = context.ObjectNameGenerator.GenerateObjectName(modelName);
+                var modelNameToSearch = context.ObjectNameGenerator.Generate(modelName);
 
                 Entity model;
                 if (Result.FindObject(modelNameToSearch, out model))
@@ -152,7 +152,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
                 {
                     try
                     {
-                        this.SetParameter(entity, ap.Name, ap.Value);
+                        SetParameter(entity, ap.Name, ap.Value);
                     }
                     catch (Exception ex)
                     {
@@ -175,7 +175,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
             for (var i = 0; i < component.PinCount; i++)
             {
                 string pinName = parameters.GetString(i);
-                nodes[i] = NodeNameGenerator.GenerateNodeName(pinName);
+                nodes[i] = NodeNameGenerator.Generate(pinName);
             }
 
             component.Connect(nodes);

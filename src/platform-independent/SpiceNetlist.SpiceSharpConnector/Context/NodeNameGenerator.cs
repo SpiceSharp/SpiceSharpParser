@@ -20,8 +20,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         /// <param name="pinInstanceNames">The names of pins</param>
         public NodeNameGenerator(SubCircuit currentSubCircuit, List<string> pinInstanceNames)
         {
-            CurrentSubCircuit = currentSubCircuit;
-            PinInstanceNames = pinInstanceNames;
+            CurrentSubCircuit = currentSubCircuit ?? throw new ArgumentNullException(nameof(currentSubCircuit));
+            PinInstanceNames = pinInstanceNames ?? throw new ArgumentNullException(nameof(pinInstanceNames));
         }
 
         /// <summary>
@@ -35,13 +35,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         protected List<string> PinInstanceNames { get; }
 
         /// <summary>
-        /// Generates node name for current context
+        /// Generates node name
         /// </summary>
         /// <param name="pinName">Pin name</param>
         /// <returns>
         /// Node name for current context
         /// </returns>
-        public string GenerateNodeName(string pinName)
+        public string Generate(string pinName)
         {
             if (pinName == "0" || pinName == "gnd" || pinName == "GND")
             {

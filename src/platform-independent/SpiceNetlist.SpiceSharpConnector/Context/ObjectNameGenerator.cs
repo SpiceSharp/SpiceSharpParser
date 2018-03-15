@@ -9,23 +9,27 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectNameGenerator"/> class.
         /// </summary>
+        /// <param name="prefix">Naming prefix</param>
         public ObjectNameGenerator(string prefix)
         {
-            Prefix = prefix;
+            Prefix = prefix ?? throw new ArgumentNullException(nameof(prefix));
         }
 
+        /// <summary>
+        /// Gets the prefix for names
+        /// </summary>
         public string Prefix { get; }
 
         /// <summary>
-        /// Generates object name
+        /// Generates entity object name
         /// </summary>
-        /// <param name="name">Name of object</param>
+        /// <param name="entityName">Name of entity</param>
         /// <returns>
-        /// A object name for current context
+        /// A object name for entity
         /// </returns>
-        public string GenerateObjectName(string name)
+        public string Generate(string entityName)
         {
-            return Prefix + name;
+            return Prefix + entityName;
         }
     }
 }
