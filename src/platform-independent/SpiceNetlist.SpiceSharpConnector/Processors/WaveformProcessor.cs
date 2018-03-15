@@ -5,7 +5,7 @@ using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
-    public class WaveformProcessor
+    public class WaveformProcessor : IWaveformProcessor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WaveformProcessor"/> class.
