@@ -164,7 +164,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
                 var setter = definion.Setter;
                 var expression = definion.ValueExpression;
 
-                setter(ExpressionParser.Parse(expression, out _));
+                var newValue = ExpressionParser.Parse(expression, out _);
+                setter(newValue);
             }
         }
     }
