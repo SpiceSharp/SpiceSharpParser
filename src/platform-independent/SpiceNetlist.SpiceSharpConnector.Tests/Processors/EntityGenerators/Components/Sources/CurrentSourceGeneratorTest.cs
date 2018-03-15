@@ -9,12 +9,12 @@ using Xunit;
 
 namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Components.Sources
 {
-    public class VoltageSourceGeneratorTest
+    public class CurrentSourceGeneratorTest
     {
         [Fact]
-        public void GenerateDCVoltageSourceWithoutDCTest()
+        public void GenerateDCCurrentSourceWithoutDCTest()
         {
-            var generator = new VoltageSourceGenerator(Substitute.For<IWaveformProcessor>());
+            var generator = new CurrentSourceGenerator(Substitute.For<IWaveformProcessor>());
 
             var parameters = new ParameterCollection
             {
@@ -24,18 +24,18 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var context = Substitute.For<IProcessingContext>();
-            var entity = generator.Generate(new SpiceSharp.Identifier("x1.v1"), "v1", "v", parameters, context);
+            var entity = generator.Generate(new SpiceSharp.Identifier("x1.i1"), "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
-            Assert.IsType<VoltageSource>(entity);
+            Assert.IsType<CurrentSource>(entity);
 
             context.Received().SetParameter(entity, "dc", "1.2");
         }
 
         [Fact]
-        public void GenerateDCVoltageSourceWithDCTest()
+        public void GenerateDCCurrentSourceWithDCTest()
         {
-            var generator = new VoltageSourceGenerator(Substitute.For<IWaveformProcessor>());
+            var generator = new CurrentSourceGenerator(Substitute.For<IWaveformProcessor>());
 
             var parameters = new ParameterCollection
             {
@@ -46,18 +46,18 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var context = Substitute.For<IProcessingContext>();
-            var entity = generator.Generate(new SpiceSharp.Identifier("x1.v1"), "v1", "v", parameters, context);
+            var entity = generator.Generate(new SpiceSharp.Identifier("x1.i1"), "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
-            Assert.IsType<VoltageSource>(entity);
+            Assert.IsType<CurrentSource>(entity);
 
             context.Received().SetParameter(entity, "dc", "1.2");
         }
 
         [Fact]
-        public void GenerateDCVoltageSourceWithoutVoltageTest()
+        public void GenerateDCCurrentSourceWithoutCurrentTest()
         {
-            var generator = new VoltageSourceGenerator(Substitute.For<IWaveformProcessor>());
+            var generator = new CurrentSourceGenerator(Substitute.For<IWaveformProcessor>());
 
             var parameters = new ParameterCollection
             {
@@ -67,16 +67,16 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var context = Substitute.For<IProcessingContext>();
-            var entity = generator.Generate(new SpiceSharp.Identifier("x1.v1"), "v1", "v", parameters, context);
+            var entity = generator.Generate(new SpiceSharp.Identifier("x1.i1"), "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
-            Assert.IsType<VoltageSource>(entity);
+            Assert.IsType<CurrentSource>(entity);
         }
 
         [Fact]
-        public void GenerateDCACVoltageSourceTest()
+        public void GenerateDCACCurrentSourceTest()
         {
-            var generator = new VoltageSourceGenerator(Substitute.For<IWaveformProcessor>());
+            var generator = new CurrentSourceGenerator(Substitute.For<IWaveformProcessor>());
 
             var parameters = new ParameterCollection
             {
@@ -90,10 +90,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var context = Substitute.For<IProcessingContext>();
-            var entity = generator.Generate(new SpiceSharp.Identifier("x1.v1"), "v1", "v", parameters, context);
+            var entity = generator.Generate(new SpiceSharp.Identifier("x1.i1"), "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
-            Assert.IsType<VoltageSource>(entity);
+            Assert.IsType<CurrentSource>(entity);
 
             context.Received().SetParameter(entity, "dc", "1.2");
             context.Received().SetParameter(entity, "acmag", "12");
@@ -101,9 +101,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
         }
 
         [Fact]
-        public void GeneratACVoltageSourceTest()
+        public void GeneratACCurrentSourceTest()
         {
-            var generator = new VoltageSourceGenerator(Substitute.For<IWaveformProcessor>());
+            var generator = new CurrentSourceGenerator(Substitute.For<IWaveformProcessor>());
 
             var parameters = new ParameterCollection
             {
@@ -114,18 +114,18 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var context = Substitute.For<IProcessingContext>();
-            var entity = generator.Generate(new SpiceSharp.Identifier("x1.v1"), "v1", "v", parameters, context);
+            var entity = generator.Generate(new SpiceSharp.Identifier("x1.i1"), "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
-            Assert.IsType<VoltageSource>(entity);
+            Assert.IsType<CurrentSource>(entity);
 
             context.Received().SetParameter(entity, "acmag", "13");
         }
 
         [Fact]
-        public void GeneratACVoltageSourceWithPhaseTest()
+        public void GeneratACCurrentSourceWithPhaseTest()
         {
-            var generator = new VoltageSourceGenerator(Substitute.For<IWaveformProcessor>());
+            var generator = new CurrentSourceGenerator(Substitute.For<IWaveformProcessor>());
 
             var parameters = new ParameterCollection
             {
@@ -137,19 +137,19 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var context = Substitute.For<IProcessingContext>();
-            var entity = generator.Generate(new SpiceSharp.Identifier("x1.v1"), "v1", "v", parameters, context);
+            var entity = generator.Generate(new SpiceSharp.Identifier("x1.i1"), "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
-            Assert.IsType<VoltageSource>(entity);
+            Assert.IsType<CurrentSource>(entity);
 
             context.Received().SetParameter(entity, "acmag", "13");
             context.Received().SetParameter(entity, "acphase", "2");
         }
 
         [Fact]
-        public void GeneratCCVSTest()
+        public void GeneratCCCSTest()
         {
-            var generator = new VoltageSourceGenerator(Substitute.For<IWaveformProcessor>());
+            var generator = new CurrentSourceGenerator(Substitute.For<IWaveformProcessor>());
 
             var parameters = new ParameterCollection
             {
@@ -160,18 +160,18 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var context = Substitute.For<IProcessingContext>();
-            var entity = generator.Generate(new SpiceSharp.Identifier("x1.h1"), "h1", "h", parameters, context);
+            var entity = generator.Generate(new SpiceSharp.Identifier("x1.f1"), "f1", "f", parameters, context);
 
             Assert.NotNull(entity);
-            Assert.IsType<CurrentControlledVoltageSource>(entity);
-            Assert.Equal("v1", ((CurrentControlledVoltageSource)entity).ControllingName.Name);
+            Assert.IsType<CurrentControlledCurrentSource>(entity);
+            Assert.Equal("v1", ((CurrentControlledCurrentSource)entity).ControllingName.Name);
             context.Received().SetParameter(entity, "gain", "3");
         }
 
         [Fact]
-        public void GeneratVCVSTest()
+        public void GeneratCCVSTest()
         {
-            var generator = new VoltageSourceGenerator(Substitute.For<IWaveformProcessor>());
+            var generator = new CurrentSourceGenerator(Substitute.For<IWaveformProcessor>());
 
             var parameters = new ParameterCollection
             {
@@ -183,10 +183,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var context = Substitute.For<IProcessingContext>();
-            var entity = generator.Generate(new SpiceSharp.Identifier("x1.e1"), "e1", "e", parameters, context);
+            var entity = generator.Generate(new SpiceSharp.Identifier("x1.g1"), "g1", "g", parameters, context);
 
             Assert.NotNull(entity);
-            Assert.IsType<VoltageControlledVoltageSource>(entity);
+            Assert.IsType<VoltageControlledCurrentSource>(entity);
             context.Received().SetParameter(entity, "gain", "1.3");
         }
     }
