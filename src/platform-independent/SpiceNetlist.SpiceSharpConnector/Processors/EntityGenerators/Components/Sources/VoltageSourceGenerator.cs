@@ -52,6 +52,17 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
         }
 
         /// <summary>
+        /// Gets generated Spice types by generator
+        /// </summary>
+        /// <returns>
+        /// Generated Spice Types
+        /// </returns>
+        public override IEnumerable<string> GetGeneratedSpiceTypes()
+        {
+            return new List<string>() { "v", "h", "e" };
+        }
+
+        /// <summary>
         /// Generates new voltage controlled voltage source
         /// </summary>
         /// <param name="name">The name of voltage source to generate</param>
@@ -176,17 +187,6 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             }
 
             return vsrc;
-        }
-
-        /// <summary>
-        /// Gets the generated types
-        /// </summary>
-        /// <returns>
-        /// A list of generated types
-        /// </returns>
-        public override List<string> GetGeneratedSpiceTypes()
-        {
-            return new List<string>() { "v", "h", "e" };
         }
     }
 }

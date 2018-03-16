@@ -80,7 +80,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return bjt;
         }
 
-        public override List<string> GetGeneratedSpiceTypes()
+        /// <summary>
+        /// Gets the generated types
+        /// </summary>
+        /// <returns>
+        /// A list of generated types
+        /// </returns>
+        public override IEnumerable<string> GetGeneratedSpiceTypes()
         {
             return new List<string>() { "q" };
         }

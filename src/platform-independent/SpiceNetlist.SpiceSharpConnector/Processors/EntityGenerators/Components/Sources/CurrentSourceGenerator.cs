@@ -50,6 +50,17 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
         }
 
         /// <summary>
+        /// Gets the generated types
+        /// </summary>
+        /// <returns>
+        /// A list of generated types
+        /// </returns>
+        public override IEnumerable<string> GetGeneratedSpiceTypes()
+        {
+            return new List<string>() { "i", "g", "f" };
+        }
+
+        /// <summary>
         /// Generates a new current controlled current source
         /// </summary>
         /// <param name="name">Name of generated current controlled current source</param>
@@ -166,17 +177,6 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             }
 
             return isrc;
-        }
-
-        /// <summary>
-        /// Gets the generated types
-        /// </summary>
-        /// <returns>
-        /// A list of generated types
-        /// </returns>
-        public override List<string> GetGeneratedSpiceTypes()
-        {
-            return new List<string>() { "i", "g", "f" };
         }
     }
 }

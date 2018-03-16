@@ -70,7 +70,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return diode;
         }
 
-        public override List<string> GetGeneratedSpiceTypes()
+        /// <summary>
+        /// Gets generated Spice types by generator
+        /// </summary>
+        /// <returns>
+        /// Generated Spice types
+        /// </returns>
+        public override IEnumerable<string> GetGeneratedSpiceTypes()
         {
             return new List<string>() { "d" };
         }

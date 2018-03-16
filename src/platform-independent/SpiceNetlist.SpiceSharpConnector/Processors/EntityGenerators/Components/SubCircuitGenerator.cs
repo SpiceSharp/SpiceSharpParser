@@ -41,7 +41,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             return null;
         }
 
-        public override List<string> GetGeneratedSpiceTypes()
+        /// <summary>
+        /// Gets generated Spice types by generator
+        /// </summary>
+        /// <returns>
+        /// Generated Spice types
+        /// </returns>
+        public override IEnumerable<string> GetGeneratedSpiceTypes()
         {
             return new List<string>() { "x" };
         }

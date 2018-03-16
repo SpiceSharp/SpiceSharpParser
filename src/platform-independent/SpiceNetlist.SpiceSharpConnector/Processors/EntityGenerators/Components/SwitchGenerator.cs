@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
+using SpiceNetlist.SpiceSharpConnector.Context;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
-using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components
 {
@@ -20,6 +20,17 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Gets generated Spice types by generator
+        /// </summary>
+        /// <returns>
+        /// Generated Spice types
+        /// </returns>
+        public override IEnumerable<string> GetGeneratedSpiceTypes()
+        {
+            return new List<string> { "s", "w" };
         }
 
         public Entity GenerateVoltageSwitch(string name, ParameterCollection parameters, IProcessingContext context)
@@ -95,11 +106,6 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             }
 
             return csw;
-        }
-
-        public override List<string> GetGeneratedSpiceTypes()
-        {
-            return new List<string> { "s", "w" };
         }
     }
 }

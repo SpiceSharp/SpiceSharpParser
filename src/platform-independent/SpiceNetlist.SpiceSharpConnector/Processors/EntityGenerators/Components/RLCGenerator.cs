@@ -25,6 +25,17 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return null;
         }
 
+        /// <summary>
+        /// Gets generated Spice types by generator
+        /// </summary>
+        /// <returns>
+        /// Generated Spice types
+        /// </returns>
+        public override IEnumerable<string> GetGeneratedSpiceTypes()
+        {
+            return new List<string> { "r", "l", "c", "k" };
+        }
+
         public Entity GenerateMut(string name, ParameterCollection parameters, IProcessingContext context)
         {
             var mut = new MutualInductance(name);
@@ -145,11 +156,6 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             }
 
             return res;
-        }
-
-        public override List<string> GetGeneratedSpiceTypes()
-        {
-            return new List<string> { "r", "l", "c", "k" };
         }
     }
 }

@@ -1,13 +1,18 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
-using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models
 {
     public class SwitchModelGenerator : ModelGenerator
     {
-        public override List<string> GetGeneratedSpiceTypes()
+        /// <summary>
+        /// Gets generated Spice types by generator
+        /// </summary>
+        /// <returns>
+        /// Generated Spice Types
+        /// </returns>
+        public override IEnumerable<string> GetGeneratedSpiceTypes()
         {
             return new List<string>() { "sw", "csw" };
         }

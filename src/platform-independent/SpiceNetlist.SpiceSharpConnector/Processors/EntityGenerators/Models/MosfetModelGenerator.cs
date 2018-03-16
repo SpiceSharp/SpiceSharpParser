@@ -52,7 +52,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models
         /// </summary>
         public Dictionary<int, Func<Identifier, string, string, Entity>> Levels { get; } = new Dictionary<int, Func<Identifier, string, string, Entity>>();
 
-        public override List<string> GetGeneratedSpiceTypes()
+        /// <summary>
+        /// Gets generated Spice types by generator
+        /// </summary>
+        /// <returns>
+        /// Generated Spice types
+        /// </returns>
+        public override IEnumerable<string> GetGeneratedSpiceTypes()
         {
             return new List<string>() { "nmos", "pmos" };
         }
