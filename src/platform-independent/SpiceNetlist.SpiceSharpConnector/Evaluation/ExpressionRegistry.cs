@@ -13,7 +13,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Evaluation
         /// <returns>
         /// An enumerable of expressions
         /// </returns>
-        public IEnumerable<DoubleExpression> GetDependedExpressions(string parameterName)
+        public IEnumerable<DoubleExpression> GetDependentExpressions(string parameterName)
         {
             if (expressions.ContainsKey(parameterName))
             {

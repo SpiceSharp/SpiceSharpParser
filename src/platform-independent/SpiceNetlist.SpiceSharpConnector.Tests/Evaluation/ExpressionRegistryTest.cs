@@ -12,7 +12,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Evaluation
             var registry = new ExpressionRegistry();
             registry.Add(new DoubleExpression("1", (double d) => { }), new System.Collections.Generic.List<string>());
 
-            Assert.Empty(registry.GetDependedExpressions("test"));
+            Assert.Empty(registry.GetDependentExpressions("test"));
         }
 
         [Fact]
@@ -21,7 +21,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Evaluation
             var registry = new ExpressionRegistry();
             registry.Add(new DoubleExpression("x+1", (double d) => { }), new System.Collections.Generic.List<string>() { "x" });
 
-            Assert.Single(registry.GetDependedExpressions("x"));
+            Assert.Single(registry.GetDependentExpressions("x"));
         }
 
         [Fact]
@@ -32,8 +32,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Evaluation
             registry.Add(new DoubleExpression("y+1", (double d) => { }), new System.Collections.Generic.List<string>() { "y" });
             registry.Add(new DoubleExpression("x+1", (double d) => { }), new System.Collections.Generic.List<string>() { "x" });
 
-            Assert.Single(registry.GetDependedExpressions("y"));
-            Assert.Equal(2, registry.GetDependedExpressions("x").Count());
+            Assert.Single(registry.GetDependentExpressions("y"));
+            Assert.Equal(2, registry.GetDependentExpressions("x").Count());
         }
 
         [Fact]
@@ -44,8 +44,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Evaluation
             registry.Add(new DoubleExpression("y+x+1", (double d) => { }), new System.Collections.Generic.List<string>() { "y", "x" });
             registry.Add(new DoubleExpression("x+1", (double d) => { }), new System.Collections.Generic.List<string>() { "x" });
 
-            Assert.Equal(2, registry.GetDependedExpressions("y").Count());
-            Assert.Equal(3, registry.GetDependedExpressions("x").Count());
+            Assert.Equal(2, registry.GetDependentExpressions("y").Count());
+            Assert.Equal(3, registry.GetDependentExpressions("x").Count());
         }
     }
 }

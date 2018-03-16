@@ -159,7 +159,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Evaluation
         /// <param name="parameterName">A parameter name</param>
         private void Refresh(string parameterName)
         {
-            foreach (DoubleExpression definion in Registry.GetDependedExpressions(parameterName))
+            foreach (DoubleExpression definion in Registry.GetDependentExpressions(parameterName))
             {
                 var setter = definion.Setter;
                 var expression = definion.ValueExpression;
