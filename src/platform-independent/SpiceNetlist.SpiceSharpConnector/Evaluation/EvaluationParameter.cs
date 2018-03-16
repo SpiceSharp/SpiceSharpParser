@@ -1,4 +1,4 @@
-﻿namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
+﻿namespace SpiceNetlist.SpiceSharpConnector.Evaluation
 {
     /// <summary>
     /// An parameter that triggers re-evaluation when changed

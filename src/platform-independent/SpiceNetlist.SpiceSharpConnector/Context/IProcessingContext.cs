@@ -1,7 +1,7 @@
-﻿using SpiceNetlist.SpiceObjects;
-using SpiceNetlist.SpiceSharpConnector.Processors.Evaluation;
+﻿using System.Collections.Generic;
+using SpiceNetlist.SpiceObjects;
+using SpiceNetlist.SpiceSharpConnector.Evaluation;
 using SpiceSharp.Circuits;
-using System.Collections.Generic;
 
 namespace SpiceNetlist.SpiceSharpConnector.Context
 {

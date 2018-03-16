@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
+namespace SpiceNetlist.SpiceSharpConnector.Evaluation
 {
     /// <summary>
     /// @author: Sven Boulanger

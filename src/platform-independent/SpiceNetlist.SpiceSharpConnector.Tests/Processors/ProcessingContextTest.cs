@@ -1,7 +1,7 @@
 ﻿using NSubstitute;
 using SpiceNetlist.SpiceSharpConnector.Context;
+using SpiceNetlist.SpiceSharpConnector.Evaluation;
 using SpiceNetlist.SpiceSharpConnector.Processors;
-using SpiceNetlist.SpiceSharpConnector.Processors.Evaluation;
 using SpiceSharp.Components;
 using System.Collections.Generic;
 using Xunit;

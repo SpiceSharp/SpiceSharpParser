@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
-using SpiceNetlist.SpiceSharpConnector.Processors.Evaluation;
+using SpiceNetlist.SpiceSharpConnector.Evaluation;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 

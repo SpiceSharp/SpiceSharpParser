@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using SpiceNetlist.SpiceObjects;
-using SpiceNetlist.SpiceSharpConnector.Processors.Evaluation;
+using SpiceNetlist.SpiceSharpConnector.Context;
+using SpiceNetlist.SpiceSharpConnector.Evaluation;
 using SpiceSharp;
 using SpiceSharp.Simulations;
-using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 {

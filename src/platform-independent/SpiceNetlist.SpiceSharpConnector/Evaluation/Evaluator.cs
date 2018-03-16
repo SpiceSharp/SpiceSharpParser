@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
+namespace SpiceNetlist.SpiceSharpConnector.Evaluation
 {
     /// <summary>
     /// Evalues strings to double

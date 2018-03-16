@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
+namespace SpiceNetlist.SpiceSharpConnector.Evaluation
 {
     /// <summary>
     /// A representation of expression with double value

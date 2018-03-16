@@ -1,7 +1,7 @@
-﻿using SpiceNetlist.SpiceSharpConnector.Processors;
-using SpiceNetlist.SpiceSharpConnector.Processors.Evaluation;
-using SpiceSharp;
+﻿using SpiceNetlist.SpiceSharpConnector.Evaluation;
+using SpiceNetlist.SpiceSharpConnector.Processors;
 using SpiceNetlist.SpiceSharpConnector.Context;
+using SpiceSharp;
 
 namespace SpiceNetlist.SpiceSharpConnector
 {
