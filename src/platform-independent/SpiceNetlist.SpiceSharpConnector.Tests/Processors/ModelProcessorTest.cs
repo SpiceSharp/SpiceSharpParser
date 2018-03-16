@@ -3,8 +3,6 @@ using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceNetlist.SpiceSharpConnector.Context;
 using SpiceNetlist.SpiceSharpConnector.Processors;
-using SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models;
-using SpiceNetlist.SpiceSharpConnector.Processors.Waveforms;
 using SpiceNetlist.SpiceSharpConnector.Registries;
 using SpiceSharp;
 using SpiceSharp.Circuits;
@@ -24,9 +22,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors
             generator.Generate(
                 Arg.Any<Identifier>(),
                 Arg.Any<string>(),
-                "npn",
+                Arg.Any<string>(),
                 Arg.Any<ParameterCollection>(),
-                Arg.Any<IProcessingContext>()).Returns(new BipolarJunctionTransistorModel(new Identifier("test")));
+                Arg.Any<IProcessingContext>()).Returns(x => new BipolarJunctionTransistorModel((Identifier)x[0]));
 
             var registry = Substitute.For<IEntityGeneratorRegistry>();
             registry.Supports("npn").Returns(true);
@@ -41,11 +39,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors
 
             // act
             ModelProcessor processor = new ModelProcessor(registry);
-            var model = new SpiceObjects.Model() { Name = "2N2222", Parameters = new ParameterCollection() { new BracketParameter() { Name = "NPN" } } };
+            var model = new SpiceObjects.Model() { Name = "2Na2222", Parameters = new ParameterCollection() { new BracketParameter() { Name = "NPN" } } };
             processor.Process(model, processingContext);
 
             //assert
-            resultService.Received().AddEntity(Arg.Is<Entity>((Entity e) => e.Name.Name == "test"));
+            generator.Received().Generate(new Identifier("2Na2222"), "2Na2222", "npn", Arg.Any<ParameterCollection>(), Arg.Any<IProcessingContext>());
+            resultService.Received().AddEntity(Arg.Is<Entity>((Entity e) => e.Name.Name == "2Na2222"));
         }
     }
 }
