@@ -680,7 +680,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
             public FunctionOperator(Func<Stack<double>, double> func)
                 : base(IdFunction, byte.MaxValue, false)
             {
-                Function = func;
+                Function = func ?? throw new ArgumentNullException(nameof(func));
             }
 
             /// <summary>
