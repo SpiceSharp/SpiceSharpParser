@@ -3,8 +3,10 @@
     /// <summary>
     /// An parameter that triggers re-evaluation when changed
     /// </summary>
-    public class EvaluationParameter : SpiceSharp.GivenParameter
+    public class EvaluationParameter : SpiceSharp.Parameter
     {
+        private double rawValue;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EvaluationParameter"/> class.
         /// </summary>
@@ -22,13 +24,13 @@
         {
             get
             {
-                return base.Value;
+                return rawValue;
             }
 
             set
             {
                 Evaluator.SetParameter(ParameterName, value);
-                base.Value = value;
+                rawValue = value;
             }
         }
 
@@ -45,7 +47,9 @@
         /// <summary>
         /// Clones the parameter
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// A clone of parameter
+        /// </returns>
         public override object Clone()
         {
             return new EvaluationParameter(Evaluator, ParameterName);
