@@ -15,10 +15,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors
         {
             // prepare
             var evaluator = Substitute.For<IEvaluator>();
-            evaluator.EvaluateDouble("a+1", out _).Returns(
+            evaluator.EvaluateDouble("a+1").Returns(
                 x =>
                 {
-                    x[1] = new List<string>() { "a" };
                     return 1.1;
                 });
 
@@ -38,7 +37,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors
         {
             // prepare
             var evaluator = Substitute.For<IEvaluator>();
-            evaluator.EvaluateDouble("1", out _).Returns(1);
+            evaluator.EvaluateDouble("1").Returns(1);
 
             var resultService = Substitute.For<IResultService>();
             var context = new ProcessingContext(string.Empty, 

@@ -11,18 +11,17 @@ namespace SpiceNetlist.SpiceSharpConnector.Evaluation
         /// Adds double expression to registry that will be updated when value of parameter change
         /// </summary>
         /// <param name="expression">An expression to add</param>
-        /// <param name="parameters">Parameters in expression</param>
-        void AddDynamicExpression(DoubleExpression expression);
+        /// <param name="parameters">Parameters of expression</param>
+        void AddDynamicExpression(DoubleExpression expression, IEnumerable<string> parameters);
 
         /// <summary>
-        /// Evalues a specific string to double
+        /// Evaluates a specific string to double
         /// </summary>
         /// <param name="expression">An expression to evaluate</param>
-        /// <param name="parameters">Found parameters in expression</param>
         /// <returns>
         /// A double value
         /// </returns>
-        double EvaluateDouble(string expression, out List<string> parameters);
+        double EvaluateDouble(string expression);
 
         /// <summary>
         /// Sets the parameter value and updates the values expressions
@@ -37,6 +36,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Evaluation
         /// <param name="parameterName">A name of parameter</param>
         /// <param name="expression">A parameter expression </param>
         void SetParameter(string parameterName, string expression);
+
+        /// <summary>
+        /// Sets the parameters values and updates the values expressions
+        /// </summary>
+        /// <param name="parameters">A dictionary of parameter values</param>
+        void SetParameters(Dictionary<string, double> parameters);
 
         /// <summary>
         /// Returns a value indicating whether there is a parameter in evaluator with given name
@@ -65,9 +70,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Evaluation
         IEnumerable<string> GetParameterNames();
 
         /// <summary>
-        /// Sets the parameters values and updates the values expressions
+        /// Gets the variables in expression
         /// </summary>
-        /// <param name="parameters">A dictionary of parameter values</param>
-        void SetParameters(Dictionary<string, double> parameters);
+        /// <param name="expression">The expression to check</param>
+        /// <returns>
+        /// A list of variables from expression
+        /// </returns>
+        IEnumerable<string> GetVariables(string expression);
     }
 }

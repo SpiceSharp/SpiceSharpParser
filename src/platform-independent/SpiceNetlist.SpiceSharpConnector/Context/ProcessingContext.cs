@@ -79,7 +79,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         /// <param name="expression">Expression</param>
         public void SetICVoltage(string nodeName, string expression)
         {
-            Result.SetInitialVoltageCondition(NodeNameGenerator.Generate(nodeName), Evaluator.EvaluateDouble(expression, out _));
+            //TODO: Add dynamic 
+            Result.SetInitialVoltageCondition(NodeNameGenerator.Generate(nodeName), Evaluator.EvaluateDouble(expression));
         }
 
         /// <summary>
@@ -93,7 +94,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         {
             try
             {
-                return Evaluator.EvaluateDouble(expression, out _);
+                return Evaluator.EvaluateDouble(expression);
             }
             catch (Exception)
             {
@@ -109,14 +110,16 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         /// <param name="expression">An expression</param>
         public void SetParameter(Entity entity, string parameterName, string expression)
         {
-            var value = Evaluator.EvaluateDouble(expression, out var parameters);
+            var value = Evaluator.EvaluateDouble(expression);
             entity.SetParameter(parameterName.ToLower(), value);
 
+            var variables = Evaluator.GetVariables(expression);
             var setter = entity.ParameterSets.GetSetter(parameterName.ToLower());
+
             // re-evaluation makes sense only if there is a setter
             if (setter != null)
             {
-                Evaluator.AddDynamicExpression(new DoubleExpression(expression, setter));
+                Evaluator.AddDynamicExpression(new DoubleExpression(expression, setter), variables);
             }
         }
 

@@ -30,7 +30,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Evaluation
         /// </summary>
         /// <param name="expression">An expression to add</param>
         /// <param name="expressionParameters">A list of expression parameters</param>
-        public void Add(DoubleExpression expression, List<string> expressionParameters)
+        public void Add(DoubleExpression expression, IEnumerable<string> expressionParameters)
         {
             foreach (var parameter in expressionParameters)
             {

@@ -46,7 +46,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Evaluation
             double expressionValue = 0;
 
             // act
-            v.AddDynamicExpression(new DoubleExpression("xyz +1", (double newValue) => { expressionValue = newValue; }));
+            v.AddDynamicExpression(new DoubleExpression("xyz +1", (double newValue) => { expressionValue = newValue; }), new string[] { "xyz" });
             v.SetParameter("xyz", 14);
 
             // assert
@@ -57,7 +57,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Evaluation
         public void EvaluateFailsWhenThereCurrlyBraces()
         {
             Evaluator v = new Evaluator();
-            Assert.Throws<Exception>(() => v.EvaluateDouble("{1}", out _));
+            Assert.Throws<Exception>(() => v.EvaluateDouble("{1}"));
         }
 
         [Fact]
@@ -66,11 +66,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Evaluation
             Evaluator v = new Evaluator();
             v.SetParameter("xyz", 13.0);
 
-            Assert.Equal(14, v.EvaluateDouble("xyz + 1", out _));
+            Assert.Equal(14, v.EvaluateDouble("xyz + 1"));
         }
 
         [Fact]
-        public void EvaluateReturnsParameterTest()
+        public void GetVariablesTest()
         {
             // prepare
             Evaluator v = new Evaluator();
@@ -78,7 +78,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Evaluation
             v.SetParameter("a", 1.0);
 
             // act
-            v.EvaluateDouble("xyz + 1 + a", out var parameters);
+            var parameters = v.GetVariables("xyz + 1 + a");
 
             // assert
             Assert.Contains("a", parameters);
@@ -89,7 +89,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Evaluation
         public void EvaluateSuffixTest()
         {
             Evaluator v = new Evaluator();
-            Assert.Equal(2, v.EvaluateDouble("1V + 1", out _));
+            Assert.Equal(2, v.EvaluateDouble("1V + 1"));
         }
     }
 }

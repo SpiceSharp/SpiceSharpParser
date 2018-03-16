@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace SpiceNetlist.SpiceSharpConnector.Evaluation
@@ -111,6 +112,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Evaluation
         public Dictionary<string, double> Parameters { get; set; }
 
         /// <summary>
+        /// Gets the variables used in last parsed expression
+        /// </summary>
+        public Collection<string> Variables { get; protected set; }
+
+
+        /// <summary>
         /// Gets all supported functions
         /// </summary>
         private Dictionary<string, FunctionOperator> Functions { get; } = new Dictionary<string, FunctionOperator>
@@ -153,11 +160,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Evaluation
         /// Parse an expression
         /// </summary>
         /// <param name="expression">The expression</param>
-        /// <param name="expressionParameters">Parameters appearing in the expression</param>
         /// <returns>Returns the result of the expression</returns>
-        public double Parse(string expression, out List<string> expressionParameters)
+        public double Parse(string expression)
         {
-            expressionParameters = new List<string>();
+            Variables = new Collection<string>();
 
             // Initialize for parsing the expression
             index = 0;
@@ -367,7 +373,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Evaluation
                         else if (Parameters != null)
                         {
                             string id = sb.ToString();
-                            expressionParameters.Add(id);
+                            Variables.Add(id);
                             outputStack.Push(Parameters[id]);
                             infixPostfix = true;
                         }

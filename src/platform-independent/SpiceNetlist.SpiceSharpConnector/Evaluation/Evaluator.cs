@@ -54,19 +54,17 @@ namespace SpiceNetlist.SpiceSharpConnector.Evaluation
         /// Evalues a specific string to double
         /// </summary>
         /// <param name="expression">An expression to evaluate</param>
-        /// <param name="expressionParameters">Found parameters in expression</param>
         /// <returns>
         /// A double value
         /// </returns>
-        public double EvaluateDouble(string expression, out List<string> expressionParameters)
+        public double EvaluateDouble(string expression)
         {
             if (Parameters.ContainsKey(expression))
             {
-                expressionParameters = new List<string>() { expression };
                 return Parameters[expression];
             }
 
-            return ExpressionParser.Parse(expression, out expressionParameters);
+            return ExpressionParser.Parse(expression);
         }
 
         /// <summary>
@@ -87,7 +85,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Evaluation
         /// <param name="expression">A value of parameter</param>
         public void SetParameter(string parameterName, string expression)
         {
-            Parameters[parameterName] = EvaluateDouble(expression, out _);
+            Parameters[parameterName] = EvaluateDouble(expression);
             Refresh(parameterName);
         }
 
@@ -95,9 +93,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Evaluation
         /// Adds double expression to registry that will be updated when value of parameter change
         /// </summary>
         /// <param name="expression">An expression to add</param>
-        public void AddDynamicExpression(DoubleExpression expression)
+        /// <param name="parameters">Parameters of expression</param>
+        public void AddDynamicExpression(DoubleExpression expression, IEnumerable<string> parameters)
         {
-            EvaluateDouble(expression.ValueExpression, out var parameters);
             Registry.Add(expression, parameters);
         }
 
@@ -154,6 +152,20 @@ namespace SpiceNetlist.SpiceSharpConnector.Evaluation
         }
 
         /// <summary>
+        /// Gets the variables in expression
+        /// </summary>
+        /// <param name="expression">The expression to check</param>
+        /// <returns>
+        /// A list of variables from expression
+        /// </returns>
+        public IEnumerable<string> GetVariables(string expression)
+        {
+            ExpressionParser.Parse(expression);
+
+            return ExpressionParser.Variables;
+        }
+
+        /// <summary>
         /// Refreshes expressions in evaluator that contains given parameter
         /// </summary>
         /// <param name="parameterName">A parameter name</param>
@@ -164,7 +176,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Evaluation
                 var setter = definion.Setter;
                 var expression = definion.ValueExpression;
 
-                var newValue = ExpressionParser.Parse(expression, out _);
+                var newValue = ExpressionParser.Parse(expression);
                 setter(newValue);
             }
         }
