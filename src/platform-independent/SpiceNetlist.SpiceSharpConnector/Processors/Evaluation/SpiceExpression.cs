@@ -5,7 +5,7 @@ using System.Text;
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
 {
     /// <summary>
-    /// @author: Sven Boulanger 
+    /// @author: Sven Boulanger
     /// A very light-weight and fast expression parser made for parsing Spice expressions
     /// It is based on Dijkstra's Shunting Yard algorithm. It is very fast for parsing expressions only once.
     /// The parser is also not very expressive for errors, so only use it for relatively simple expressions.
@@ -31,191 +31,153 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
     public class SpiceExpression
     {
         /// <summary>
-        /// Operator description
-        /// </summary>
-        private class Operator
-        {
-            public byte ID;
-            public byte Precedence;
-            public bool leftAssociative;
-
-            /// <summary>
-            /// Constructor
-            /// </summary>
-            /// <param name="id">The operator ID</param>
-            /// <param name="precedence">The operator precedence</param>
-            /// <param name="la">Is the operator left-associative?</param>
-            public Operator(byte id, byte precedence, bool la)
-            {
-                ID = id;
-                Precedence = precedence;
-                leftAssociative = la;
-            }
-        }
-
-        /// <summary>
-        /// Function description
-        /// </summary>
-        private class FunctionOperator : Operator
-        {
-            public Function Func;
-
-            /// <summary>
-            /// Constructor
-            /// </summary>
-            /// <param name="func">The function</param>
-            public FunctionOperator(Function func)
-                : base(ID_FUNCTION, byte.MaxValue, false)
-            {
-                Func = func;
-            }
-        }
-
-        /// <summary>
-        /// Delegate for functions
-        /// </summary>
-        /// <param name="output">The output stack</param>
-        /// <returns></returns>
-        private delegate double Function(Stack<double> output);
-
-        /// <summary>
         /// Precedence levels
         /// </summary>
-        private const byte PRE_CONDITIONAL = 1;
-        private const byte PRE_CONDITIONAL_OR = 2;
-        private const byte PRE_CONDITIONAL_AND = 3;
-        private const byte PRE_LOGICAL_OR = 4;
-        private const byte PRE_LOGICAL_XOR = 5;
-        private const byte PRE_LOGICAL_AND = 6;
-        private const byte PRE_EQUALITY = 7;
-        private const byte PRE_RELATIONAL = 8;
-        private const byte PRE_SHIFT = 9;
-        private const byte PRE_ADDITIVE = 10;
-        private const byte PRE_MULTIPLICATIVE = 11;
-        private const byte PRE_UNARY = 12;
-        private const byte PRE_PRIMARY = 13;
+        private const byte PrecedenceConditional = 1;
+        private const byte PrecedenceConditionalOr = 2;
+        private const byte PrecedenceConditionalAnd = 3;
+        private const byte PrecedenceLogicalOr = 4;
+        private const byte PrecedenceLogicalXor = 5;
+        private const byte PrecedenceLogicalAnd = 6;
+        private const byte PrecedenceEquality = 7;
+        private const byte PrecedenceRelational = 8;
+        private const byte PrecedenceShift = 9;
+        private const byte PrecedenceAdditive = 10;
+        private const byte PrecedenceMultiplicative = 11;
+        private const byte PrecedenceUnary = 12;
+        private const byte PrecedencePrimary = 13;
 
         /// <summary>
         /// Operator ID's
         /// </summary>
-        private const byte ID_POSITIVE = 0;
-        private const byte ID_NEGATIVE = 1;
-        private const byte ID_NOT = 2;
-        private const byte ID_ADD = 3;
-        private const byte ID_SUBTRACT = 4;
-        private const byte ID_MULTIPLY = 5;
-        private const byte ID_DIVIDE = 6;
-        private const byte ID_MODULO = 7;
-        private const byte ID_EQUALS = 8;
-        private const byte ID_INEQUALS = 9;
-        private const byte ID_OPENCONDITIONAL = 10;
-        private const byte ID_CLOSEDCONDITIONAL = 11;
-        private const byte ID_CONDITIONAL_OR = 12;
-        private const byte ID_CONDITIONAL_AND = 13;
-        private const byte ID_LESS = 14;
-        private const byte ID_LESSEQUAL = 15;
-        private const byte ID_GREATER = 16;
-        private const byte ID_GREATEREQUAL = 17;
-        private const byte ID_LEFTBRACKET = 18;
-        private const byte ID_FUNCTION = 19;
+        private const byte IdPositive = 0;
+        private const byte IdNegative = 1;
+        private const byte IdNot = 2;
+        private const byte IdAdd = 3;
+        private const byte IdSubtract = 4;
+        private const byte IdMultiply = 5;
+        private const byte IdDivide = 6;
+        private const byte IdModulo = 7;
+        private const byte IdEquals = 8;
+        private const byte IdInequals = 9;
+        private const byte IdOpenConditional = 10;
+        private const byte IdClosedConditional = 11;
+        private const byte IdConditionalOr = 12;
+        private const byte IdConditionalAnd = 13;
+        private const byte IdLess = 14;
+        private const byte IdLessOrEqual = 15;
+        private const byte IdGreater = 16;
+        private const byte IdGreaterOrEqual = 17;
+        private const byte IdLeftBracket = 18;
+        private const byte IdFunction = 19;
 
         /// <summary>
         /// Operators
         /// </summary>
-        private static Operator OP_POSITIVE = new Operator(ID_POSITIVE, PRE_UNARY, false);
-        private static Operator OP_NEGATIVE = new Operator(ID_NEGATIVE, PRE_UNARY, false);
-        private static Operator OP_NOT = new Operator(ID_NOT, PRE_UNARY, false);
-
-        private static Operator OP_ADD = new Operator(ID_ADD, PRE_ADDITIVE, true);
-        private static Operator OP_SUBTRACT = new Operator(ID_SUBTRACT, PRE_ADDITIVE, true);
-        private static Operator OP_MULTIPLY = new Operator(ID_MULTIPLY, PRE_MULTIPLICATIVE, true);
-        private static Operator OP_DIVIDE = new Operator(ID_DIVIDE, PRE_MULTIPLICATIVE, true);
-        private static Operator OP_MODULO = new Operator(ID_MODULO, PRE_MULTIPLICATIVE, true);
-        private static Operator OP_EQUALS = new Operator(ID_EQUALS, PRE_EQUALITY, true);
-        private static Operator OP_INEQUALS = new Operator(ID_INEQUALS, PRE_EQUALITY, true);
-        private static Operator OP_OPENCONDITIONAL = new Operator(ID_OPENCONDITIONAL, PRE_CONDITIONAL, false);
-        private static Operator OP_CLOSEDCONDITIONAL = new Operator(ID_CLOSEDCONDITIONAL, PRE_CONDITIONAL, false);
-        private static Operator OP_CONDITIONAL_OR = new Operator(ID_CONDITIONAL_OR, PRE_CONDITIONAL_OR, true);
-        private static Operator OP_CONDITIONAL_AND = new Operator(ID_CONDITIONAL_AND, PRE_CONDITIONAL_AND, true);
-        private static Operator OP_LESS = new Operator(ID_LESS, PRE_RELATIONAL, true);
-        private static Operator OP_LESSEQUAL = new Operator(ID_LESSEQUAL, PRE_RELATIONAL, true);
-        private static Operator OP_GREATER = new Operator(ID_GREATER, PRE_RELATIONAL, true);
-        private static Operator OP_GREATEREQUAL = new Operator(ID_GREATEREQUAL, PRE_RELATIONAL, true);
-        private static Operator OP_LEFTBRACKET = new Operator(ID_LEFTBRACKET, byte.MaxValue, false);
-
-        /// <summary>
-        /// The parameters for expressions
-        /// </summary>
-        public Dictionary<string, double> Parameters { get; set; }
-
-        /// <summary>
-        /// Functions
-        /// </summary>
-        private Dictionary<string, FunctionOperator> Functions { get; } = new Dictionary<string, FunctionOperator>()
-        {
-            { "min", new FunctionOperator((Stack<double> output) => Math.Min(output.Pop(), output.Pop())) },
-            { "max", new FunctionOperator((Stack<double> output) => Math.Max(output.Pop(), output.Pop())) },
-            { "abs", new FunctionOperator((Stack<double> output) => Math.Abs(output.Pop())) },
-            { "sqrt", new FunctionOperator((Stack<double> output) => Math.Sqrt(output.Pop())) },
-            { "exp", new FunctionOperator((Stack<double> output) => Math.Exp(output.Pop())) },
-            { "log", new FunctionOperator((Stack<double> output) => Math.Log(output.Pop())) },
-            { "log10", new FunctionOperator((Stack<double> output) => Math.Log10(output.Pop())) },
-            { "pow", new FunctionOperator((Stack<double> output) => {
-                double b = output.Pop();
-                double a = output.Pop();
-                return Math.Pow(a, b);
-            }) },
-            { "cos", new FunctionOperator((Stack<double> output) => Math.Cos(output.Pop())) },
-            { "sin", new FunctionOperator((Stack<double> output) => Math.Sin(output.Pop())) },
-            { "tan", new FunctionOperator((Stack<double> output) => Math.Tan(output.Pop())) },
-            { "cosh", new FunctionOperator((Stack<double> output) => Math.Cosh(output.Pop())) },
-            { "sinh", new FunctionOperator((Stack<double> output) => Math.Sinh(output.Pop())) },
-            { "tanh", new FunctionOperator((Stack<double> output) => Math.Tanh(output.Pop())) },
-            { "acos", new FunctionOperator((Stack<double> output) => Math.Acos(output.Pop())) },
-            { "asin", new FunctionOperator((Stack<double> output) => Math.Asin(output.Pop())) },
-            { "atan", new FunctionOperator((Stack<double> output) => Math.Atan(output.Pop())) },
-            { "atan2", new FunctionOperator((Stack<double> output) => {
-                double b = output.Pop();
-                double a = output.Pop();
-                return Math.Atan2(a, b);
-            }) }
-        };
+        private static readonly Operator OperatorPositive = new Operator(IdPositive, PrecedenceUnary, false);
+        private static readonly Operator OperatorNegative = new Operator(IdNegative, PrecedenceUnary, false);
+        private static readonly Operator OperatorNot = new Operator(IdNot, PrecedenceUnary, false);
+        private static readonly Operator OperatorAdd = new Operator(IdAdd, PrecedenceAdditive, true);
+        private static readonly Operator OperatorSubtract = new Operator(IdSubtract, PrecedenceAdditive, true);
+        private static readonly Operator OperatorMultiply = new Operator(IdMultiply, PrecedenceMultiplicative, true);
+        private static readonly Operator OperatorDivide = new Operator(IdDivide, PrecedenceMultiplicative, true);
+        private static readonly Operator OperatorModulo = new Operator(IdModulo, PrecedenceMultiplicative, true);
+        private static readonly Operator OperatorEquals = new Operator(IdEquals, PrecedenceEquality, true);
+        private static readonly Operator OperatorInequals = new Operator(IdInequals, PrecedenceEquality, true);
+        private static readonly Operator OperatorOpenConditional = new Operator(IdOpenConditional, PrecedenceConditional, false);
+        private static readonly Operator OperatorClosedConditional = new Operator(IdClosedConditional, PrecedenceConditional, false);
+        private static readonly Operator OperatorConditionalOr = new Operator(IdConditionalOr, PrecedenceConditionalOr, true);
+        private static readonly Operator OperatorConditionalAnd = new Operator(IdConditionalAnd, PrecedenceConditionalAnd, true);
+        private static readonly Operator OperatorLess = new Operator(IdLess, PrecedenceRelational, true);
+        private static readonly Operator OperatorLessOrEqual = new Operator(IdLessOrEqual, PrecedenceRelational, true);
+        private static readonly Operator OperatorGreater = new Operator(IdGreater, PrecedenceRelational, true);
+        private static readonly Operator OperatorGreaterOrEqual = new Operator(IdGreaterOrEqual, PrecedenceRelational, true);
+        private static readonly Operator OperatorLeftBracket = new Operator(IdLeftBracket, byte.MaxValue, false);
 
         /// <summary>
         /// Private variables
         /// </summary>
-        private int i = 0;
+        private readonly Stack<double> outputStack = new Stack<double>();
+        private readonly Stack<Operator> operatorStack = new Stack<Operator>();
+        private readonly StringBuilder sb = new StringBuilder();
+        private int index;
         private string input;
-        private StringBuilder sb = new StringBuilder();
-        private bool infixPostfix = false;
-        Stack<double> output = new Stack<double>();
-        Stack<Operator> operators = new Stack<Operator>();
-        private int count = 0;
+        private bool infixPostfix;
+        private int count;
+
+        /// <summary>
+        /// Gets or sets the parameters used for expressions
+        /// </summary>
+        public Dictionary<string, double> Parameters { get; set; }
+
+        /// <summary>
+        /// Gets all supported functions
+        /// </summary>
+        private Dictionary<string, FunctionOperator> Functions { get; } = new Dictionary<string, FunctionOperator>
+        {
+            { "min", new FunctionOperator(stack => Math.Min(stack.Pop(), stack.Pop())) },
+            { "max", new FunctionOperator(stack => Math.Max(stack.Pop(), stack.Pop())) },
+            { "abs", new FunctionOperator(stack => Math.Abs(stack.Pop())) },
+            { "sqrt", new FunctionOperator(stack => Math.Sqrt(stack.Pop())) },
+            { "exp", new FunctionOperator(stack => Math.Exp(stack.Pop())) },
+            { "log", new FunctionOperator(stack => Math.Log(stack.Pop())) },
+            { "log10", new FunctionOperator(stack => Math.Log10(stack.Pop())) },
+            {
+                "pow", new FunctionOperator(stack =>
+                {
+                    var b = stack.Pop();
+                    var a = stack.Pop();
+                    return Math.Pow(a, b);
+                })
+            },
+            { "cos", new FunctionOperator(stack => Math.Cos(stack.Pop())) },
+            { "sin", new FunctionOperator(stack => Math.Sin(stack.Pop())) },
+            { "tan", new FunctionOperator(stack => Math.Tan(stack.Pop())) },
+            { "cosh", new FunctionOperator(stack => Math.Cosh(stack.Pop())) },
+            { "sinh", new FunctionOperator(stack => Math.Sinh(stack.Pop())) },
+            { "tanh", new FunctionOperator(stack => Math.Tanh(stack.Pop())) },
+            { "acos", new FunctionOperator(stack => Math.Acos(stack.Pop())) },
+            { "asin", new FunctionOperator(stack => Math.Asin(stack.Pop())) },
+            { "atan", new FunctionOperator(stack => Math.Atan(stack.Pop())) },
+            {
+                "atan2", new FunctionOperator(stack =>
+                {
+                    var b = stack.Pop();
+                    var a = stack.Pop();
+                    return Math.Atan2(a, b);
+                })
+            }
+        };
 
         /// <summary>
         /// Parse an expression
         /// </summary>
-        /// <returns></returns>
+        /// <param name="expression">The expression</param>
+        /// <param name="expressionParameters">Parameters appearing in the expression</param>
+        /// <returns>Returns the result of the expression</returns>
         public double Parse(string expression, out List<string> expressionParameters)
         {
             expressionParameters = new List<string>();
+
             // Initialize for parsing the expression
-            i = 0;
-            input = expression;
+            index = 0;
+            input = expression ?? throw new ArgumentNullException(nameof(expression));
             infixPostfix = false;
-            output.Clear();
-            operators.Clear();
+            outputStack.Clear();
+            operatorStack.Clear();
             count = input.Length;
 
             // Parse the expression
-            while (i < count)
+            while (index < count)
             {
                 // Skip spaces
-                while (i < count && input[i] == ' ')
-                    i++;
+                while (index < count && input[index] == ' ')
+                {
+                    index++;
+                }
 
                 // Parse a double
-                char c = input[i];
+                char c = input[index];
 
                 // Parse a binary operator
                 if (infixPostfix)
@@ -224,102 +186,141 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
                     infixPostfix = false;
                     switch (c)
                     {
-                        case '+': PushOperator(OP_ADD); break;
-                        case '-': PushOperator(OP_SUBTRACT); break;
-                        case '*': PushOperator(OP_MULTIPLY); break;
-                        case '/': PushOperator(OP_DIVIDE); break;
-                        case '%': PushOperator(OP_MODULO); break;
+                        case '+': PushOperator(OperatorAdd); break;
+                        case '-': PushOperator(OperatorSubtract); break;
+                        case '*': PushOperator(OperatorMultiply); break;
+                        case '/': PushOperator(OperatorDivide); break;
+                        case '%': PushOperator(OperatorModulo); break;
                         case '=':
-                            i++;
-                            if (i < count && input[i] == '=')
-                                PushOperator(OP_EQUALS);
+                            index++;
+                            if (index < count && input[index] == '=')
+                            {
+                                PushOperator(OperatorEquals);
+                            }
                             else
+                            {
                                 goto default;
+                            }
+
                             break;
                         case '!':
-                            i++;
-                            if (i < count && input[i] == '=')
-                                PushOperator(OP_INEQUALS);
+                            index++;
+                            if (index < count && input[index] == '=')
+                            {
+                                PushOperator(OperatorInequals);
+                            }
                             else
+                            {
                                 goto default;
+                            }
+
                             break;
-                        case '?': PushOperator(OP_OPENCONDITIONAL); break;
+                        case '?': PushOperator(OperatorOpenConditional); break;
                         case ':':
                             // Evaluate to an open conditional
-                            while (operators.Count > 0)
+                            while (operatorStack.Count > 0)
                             {
-                                if (operators.Peek().ID == ID_OPENCONDITIONAL)
+                                if (operatorStack.Peek().Id == IdOpenConditional)
+                                {
                                     break;
-                                Evaluate(operators.Pop());
+                                }
+
+                                Evaluate(operatorStack.Pop());
                             }
-                            operators.Pop();
-                            operators.Push(OP_CLOSEDCONDITIONAL);
+
+                            operatorStack.Pop();
+                            operatorStack.Push(OperatorClosedConditional);
                             break;
                         case '|':
-                            i++;
-                            if (i < count && input[i] == '|')
-                                PushOperator(OP_CONDITIONAL_OR);
+                            index++;
+                            if (index < count && input[index] == '|')
+                            {
+                                PushOperator(OperatorConditionalOr);
+                            }
                             else
+                            {
                                 goto default;
+                            }
+
                             break;
                         case '&':
-                            i++;
-                            if (i < count && input[i] == '&')
-                                PushOperator(OP_CONDITIONAL_AND);
+                            index++;
+                            if (index < count && input[index] == '&')
+                            {
+                                PushOperator(OperatorConditionalAnd);
+                            }
                             else
+                            {
                                 goto default;
+                            }
+
                             break;
                         case '<':
-                            if (i + 1 < count && input[i + 1] == '=')
+                            if (index + 1 < count && input[index + 1] == '=')
                             {
-                                PushOperator(OP_LESSEQUAL);
-                                i++;
+                                PushOperator(OperatorLessOrEqual);
+                                index++;
                             }
                             else
-                                PushOperator(OP_LESS);
+                            {
+                                PushOperator(OperatorLess);
+                            }
+
                             break;
                         case '>':
-                            if (i + 1 < count && input[i + 1] == '=')
+                            if (index + 1 < count && input[index + 1] == '=')
                             {
-                                PushOperator(OP_GREATEREQUAL);
-                                i++;
+                                PushOperator(OperatorGreaterOrEqual);
+                                index++;
                             }
                             else
-                                PushOperator(OP_GREATER);
+                            {
+                                PushOperator(OperatorGreater);
+                            }
+
                             break;
 
                         case ')':
                             // Evaluate until the matching opening bracket
-                            while (operators.Count > 0)
+                            while (operatorStack.Count > 0)
                             {
-                                if (operators.Peek().ID == ID_LEFTBRACKET)
+                                if (operatorStack.Peek().Id == IdLeftBracket)
                                 {
-                                    operators.Pop();
-                                    break;
-                                } else if (operators.Peek().ID == ID_FUNCTION)
-                                {
-                                    FunctionOperator op = (FunctionOperator)operators.Pop();
-                                    output.Push(op.Func(output));
+                                    operatorStack.Pop();
                                     break;
                                 }
-                                Evaluate(operators.Pop());
+
+                                if (operatorStack.Peek().Id == IdFunction)
+                                {
+                                    FunctionOperator op = (FunctionOperator)operatorStack.Pop();
+                                    outputStack.Push(op.Function(outputStack));
+                                    break;
+                                }
+
+                                Evaluate(operatorStack.Pop());
                             }
+
                             infixPostfix = true;
                             break;
 
                         case ',':
                             // Function argument
-                            while (operators.Count > 0)
+                            while (operatorStack.Count > 0)
                             {
-                                if (operators.Peek().ID == ID_FUNCTION)
+                                if (operatorStack.Peek().Id == IdFunction)
+                                {
                                     break;
-                                Evaluate(operators.Pop());
+                                }
+
+                                Evaluate(operatorStack.Pop());
                             }
+
                             break;
                         default:
                             throw new Exception("Unrecognized operator");
                     }
-                    i++;
+
+                    index++;
                 }
 
                 // Parse a unary operator
@@ -327,7 +328,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
                 {
                     if (c == '.' || (c >= '0' && c <= '9'))
                     {
-                        output.Push(ParseDouble());
+                        outputStack.Push(ParseDouble());
                         infixPostfix = true;
                     }
 
@@ -335,40 +336,45 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
                     else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
                     {
                         sb.Clear();
-                        sb.Append(input[i++]);
-                        while (i < count)
+                        sb.Append(input[index++]);
+                        while (index < count)
                         {
-                            c = input[i];
+                            c = input[index];
                             if ((c >= '0' && c <= '9') ||
                                 (c >= 'a' && c <= 'z') ||
                                 (c >= 'A' && c <= 'Z') ||
                                 c == '_')
                             {
                                 sb.Append(c);
-                                i++;
+                                index++;
                             }
                             else
+                            {
                                 break;
+                            }
                         }
-                        if (i < count && input[i] == '(')
+
+                        if (index < count && input[index] == '(')
                         {
-                            i++;
+                            index++;
 
                             // "cos(10)+sin(-1)*max(tanh(1),sinh(1))"
                             // Benchmark switch statements on function name: 1,000,000 -> 2400ms
                             // Benchmark switch on first character + if/else function name: 1,000,000 -> 2200ms
                             // Benchmark using Dictionary<>: 1,000,000 -> 2200ms -- I chose this option
-                            operators.Push(Functions[sb.ToString()]);
+                            operatorStack.Push(Functions[sb.ToString()]);
                         }
                         else if (Parameters != null)
                         {
                             string id = sb.ToString();
                             expressionParameters.Add(id);
-                            output.Push(Parameters[id]);
+                            outputStack.Push(Parameters[id]);
                             infixPostfix = true;
                         }
                         else
+                        {
                             throw new Exception("No parameters");
+                        }
                     }
 
                     // Prefix operators
@@ -376,96 +382,122 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
                     {
                         switch (c)
                         {
-                            case '+': PushOperator(OP_POSITIVE); break;
-                            case '-': PushOperator(OP_NEGATIVE); break;
-                            case '!': PushOperator(OP_NOT); break;
-                            case '(': PushOperator(OP_LEFTBRACKET); break;
+                            case '+': PushOperator(OperatorPositive); break;
+                            case '-': PushOperator(OperatorNegative); break;
+                            case '!': PushOperator(OperatorNot); break;
+                            case '(': PushOperator(OperatorLeftBracket); break;
                             default:
                                 throw new Exception("Unrecognized unary operator");
                         }
-                        i++;
+
+                        index++;
                     }
                 }
             }
 
             // Evaluate all that is left on the stack
-            while (operators.Count > 0)
-                Evaluate(operators.Pop());
-            if (output.Count > 1)
+            while (operatorStack.Count > 0)
+            {
+                Evaluate(operatorStack.Pop());
+            }
+
+            if (outputStack.Count > 1)
+            {
                 throw new Exception("Invalid expression");
-            return output.Pop();
+            }
+
+            return outputStack.Pop();
         }
 
         /// <summary>
         /// Evaluate operators with precedence
         /// </summary>
-        /// <param name="precedence">Precedence</param>
+        /// <param name="op">Operator</param>
         private void PushOperator(Operator op)
         {
-            while (operators.Count > 0)
+            while (operatorStack.Count > 0)
             {
                 // Stop evaluation
-                Operator o = operators.Peek();
-                if (o.Precedence < op.Precedence || !o.leftAssociative)
+                Operator o = operatorStack.Peek();
+                if (o.Precedence < op.Precedence || !o.LeftAssociative)
+                {
                     break;
-                Evaluate(operators.Pop());
+                }
+
+                Evaluate(operatorStack.Pop());
             }
-            operators.Push(op);
+
+            operatorStack.Push(op);
         }
-        
+
         /// <summary>
         /// Evaluate an operator
         /// </summary>
         /// <param name="op">Operator</param>
         private void Evaluate(Operator op)
         {
-            double a, b, c;
-            switch (op.ID)
+            double a, b;
+            switch (op.Id)
             {
-                case ID_POSITIVE: break;
-                case ID_NEGATIVE: output.Push(-output.Pop()); break;
-                case ID_NOT:
-                    a = output.Pop();
-                    output.Push(a == 0.0 ? 1.0 : 0.0);
+                case IdPositive: break;
+                case IdNegative: outputStack.Push(-outputStack.Pop()); break;
+                case IdNot:
+                    a = outputStack.Pop();
+                    outputStack.Push(a.Equals(0.0) ? 1.0 : 0.0);
                     break;
-                case ID_ADD: output.Push(output.Pop() + output.Pop()); break;
-                case ID_SUBTRACT:
-                    b = output.Pop();
-                    a = output.Pop();
-                    output.Push(a - b);
+                case IdAdd: outputStack.Push(outputStack.Pop() + outputStack.Pop()); break;
+                case IdSubtract:
+                    b = outputStack.Pop();
+                    a = outputStack.Pop();
+                    outputStack.Push(a - b);
                     break;
-                case ID_MULTIPLY: output.Push(output.Pop() * output.Pop()); break;
-                case ID_DIVIDE:
-                    b = output.Pop();
-                    a = output.Pop();
-                    output.Push(a / b);
+                case IdMultiply: outputStack.Push(outputStack.Pop() * outputStack.Pop()); break;
+                case IdDivide:
+                    b = outputStack.Pop();
+                    a = outputStack.Pop();
+                    outputStack.Push(a / b);
                     break;
-                case ID_MODULO:
-                    b = output.Pop();
-                    a = output.Pop();
-                    output.Push(a % b);
+                case IdModulo:
+                    b = outputStack.Pop();
+                    a = outputStack.Pop();
+                    outputStack.Push(a % b);
                     break;
-                case ID_EQUALS: output.Push(output.Pop() == output.Pop() ? 1.0 : 0.0); break;
-                case ID_INEQUALS: output.Push(output.Pop() != output.Pop() ? 1.0 : 0.0); break;
-                case ID_CONDITIONAL_AND:
-                    b = output.Pop();
-                    a = output.Pop();
-                    output.Push((a != 0.0) && (b != 0.0) ? 1.0 : 0.0); break;
-                case ID_CONDITIONAL_OR:
-                    b = output.Pop();
-                    a = output.Pop();
-                    output.Push((a != 0.0) || (b != 0.0) ? 1.0 : 0.0); break;
-                case ID_LESS: output.Push(output.Pop() > output.Pop() ? 1.0 : 0.0); break;
-                case ID_LESSEQUAL: output.Push(output.Pop() >= output.Pop() ? 1.0 : 0.0); break;
-                case ID_GREATER: output.Push(output.Pop() < output.Pop() ? 1.0 : 0.0); break;
-                case ID_GREATEREQUAL: output.Push(output.Pop() <= output.Pop() ? 1.0 : 0.0); break;
-                case ID_CLOSEDCONDITIONAL:
-                    c = output.Pop();
-                    b = output.Pop();
-                    a = output.Pop();
-                    output.Push(a > 0.0 ? b : c);
+                case IdEquals: outputStack.Push(outputStack.Pop().Equals(outputStack.Pop()) ? 1.0 : 0.0); break;
+                case IdInequals: outputStack.Push(!outputStack.Pop().Equals(outputStack.Pop()) ? 1.0 : 0.0); break;
+                case IdConditionalAnd:
+                    b = outputStack.Pop();
+                    a = outputStack.Pop();
+                    outputStack.Push(!a.Equals(0.0) && !b.Equals(0.0) ? 1.0 : 0.0); break;
+                case IdConditionalOr:
+                    b = outputStack.Pop();
+                    a = outputStack.Pop();
+                    outputStack.Push(!a.Equals(0.0) || !b.Equals(0.0) ? 1.0 : 0.0); break;
+                case IdLess:
+                    b = outputStack.Pop();
+                    a = outputStack.Pop();
+                    outputStack.Push(a < b ? 1.0 : 0.0);
                     break;
-                case ID_OPENCONDITIONAL: throw new Exception("Unmatched conditional");
+                case IdLessOrEqual:
+                    b = outputStack.Pop();
+                    a = outputStack.Pop();
+                    outputStack.Push(a <= b ? 1.0 : 0.0);
+                    break;
+                case IdGreater:
+                    b = outputStack.Pop();
+                    a = outputStack.Pop();
+                    outputStack.Push(a > b ? 1.0 : 0.0);
+                    break;
+                case IdGreaterOrEqual:
+                    b = outputStack.Pop();
+                    a = outputStack.Pop();
+                    outputStack.Push(a >= b ? 1.0 : 0.0); break;
+                case IdClosedConditional:
+                    var c = outputStack.Pop();
+                    b = outputStack.Pop();
+                    a = outputStack.Pop();
+                    outputStack.Push(a > 0.0 ? b : c);
+                    break;
+                case IdOpenConditional: throw new Exception("Unmatched conditional");
                 default:
                    throw new Exception("Unrecognized operator");
             }
@@ -474,111 +506,187 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Evaluation
         /// <summary>
         /// Parse a double value at the current position
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Parse result</returns>
         private double ParseDouble()
         {
             // Read integer part
             double value = 0.0;
-            while (i < count && (input[i] >= '0' && input[i] <= '9'))
-                value = value * 10.0 + (input[i++] - '0');
+            while (index < count && (input[index] >= '0' && input[index] <= '9'))
+            {
+                value = (value * 10.0) + (input[index++] - '0');
+            }
 
             // Read decimal part
-            if (i < count && input[i] == '.')
+            if (index < count && input[index] == '.')
             {
-                i++;
+                index++;
                 double mult = 1.0;
-                while (i < count && (input[i] >= '0' && input[i] <= '9'))
+                while (index < count && (input[index] >= '0' && input[index] <= '9'))
                 {
-                    value = value * 10.0 + (input[i++] - '0');
+                    value = (value * 10.0) + (input[index++] - '0');
                     mult = mult * 10.0;
                 }
+
                 value /= mult;
             }
 
-            if (i < count)
+            if (index < count)
             {
                 // Scientific notation
-                if (input[i] == 'e' || input[i] == 'E')
+                if (input[index] == 'e' || input[index] == 'E')
                 {
-                    i++;
-                    int exponent = 0;
-                    bool neg = false;
-                    if (i < count && (input[i] == '+' || input[i] == '-'))
+                    index++;
+                    var exponent = 0;
+                    var neg = false;
+                    if (index < count && (input[index] == '+' || input[index] == '-'))
                     {
-                        if (input[i] == '-')
+                        if (input[index] == '-')
+                        {
                             neg = true;
-                        i++;
+                        }
+
+                        index++;
                     }
 
                     // Get the exponent
-                    while (i < count && (input[i] >= '0' && input[i] <= '9'))
-                        exponent = exponent * 10 + (input[i++] - '0');
+                    while (index < count && (input[index] >= '0' && input[index] <= '9'))
+                    {
+                        exponent = (exponent * 10) + (input[index++] - '0');
+                    }
 
                     // Integer exponentation
-                    double mult = 1.0;
-                    double b = 10.0;
+                    var mult = 1.0;
+                    var b = 10.0;
                     while (exponent != 0)
                     {
                         if ((exponent & 0x01) == 0x01)
+                        {
                             mult *= b;
+                        }
+
                         b *= b;
                         exponent >>= 1;
                     }
+
                     if (neg)
+                    {
                         value /= mult;
+                    }
                     else
+                    {
                         value *= mult;
-                        
+                    }
                 }
                 else
                 {
                     // Spice modifiers
-                    switch (input[i])
+                    switch (input[index])
                     {
                         case 't':
-                        case 'T': value *= 1.0e12; i++; break;
+                        case 'T': value *= 1.0e12; index++; break;
                         case 'g':
-                        case 'G': value *= 1.0e9; i++; break;
+                        case 'G': value *= 1.0e9; index++; break;
+                        case 'x':
+                        case 'X': value *= 1.0e6; index++; break;
                         case 'k':
-                        case 'K': value *= 1.0e3; i++; break;
+                        case 'K': value *= 1.0e3; index++; break;
                         case 'u':
-                        case 'U': value /= 1.0e6; i++; break;
+                        case 'U': value /= 1.0e6; index++; break;
                         case 'n':
-                        case 'N': value /= 1.0e9; i++; break;
+                        case 'N': value /= 1.0e9; index++; break;
                         case 'p':
-                        case 'P': value /= 1.0e12; i++; break;
+                        case 'P': value /= 1.0e12; index++; break;
                         case 'f':
-                        case 'F': value /= 1.0e15; i++; break;
+                        case 'F': value /= 1.0e15; index++; break;
                         case 'm':
                         case 'M':
-                            if (i + 2 < count &&
-                                (input[i + 1] == 'e' || input[i + 1] == 'E') &&
-                                (input[i + 2] == 'g' || input[i + 2] == 'G'))
+                            if (index + 2 < count &&
+                                (input[index + 1] == 'e' || input[index + 1] == 'E') &&
+                                (input[index + 2] == 'g' || input[index + 2] == 'G'))
                             {
                                 value *= 1.0e6;
-                                i += 3;
+                                index += 3;
                             }
-                            else if (i + 2 < count &&
-                                (input[i + 1] == 'i' || input[i + 1] == 'I') &&
-                                (input[i + 2] == 'l' || input[i + 2] == 'L'))
+                            else if (index + 2 < count &&
+                                (input[index + 1] == 'i' || input[index + 1] == 'I') &&
+                                (input[index + 2] == 'l' || input[index + 2] == 'L'))
                             {
                                 value *= 25.4e-6;
-                                i += 3;
+                                index += 3;
                             }
                             else
                             {
                                 value /= 1.0e3;
-                                i++;
+                                index++;
                             }
+
                             break;
                     }
                 }
 
                 // Any trailing letters are ignored
-                while (i < count && ((input[i] >= 'a' && input[i] <= 'z') || (input[i] >= 'A' && input[i] <= 'Z')))
-                    i++;
+                while (index < count && ((input[index] >= 'a' && input[index] <= 'z') || (input[index] >= 'A' && input[index] <= 'Z')))
+                {
+                    index++;
+                }
             }
+
             return value;
+        }
+
+        /// <summary>
+        /// Operator description
+        /// </summary>
+        private class Operator
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Operator"/> class.
+            /// </summary>
+            /// <param name="id">The operator ID</param>
+            /// <param name="precedence">The operator precedence</param>
+            /// <param name="la">Is the operator left-associative?</param>
+            public Operator(byte id, byte precedence, bool la)
+            {
+                Id = id;
+                Precedence = precedence;
+                LeftAssociative = la;
+            }
+
+            /// <summary>
+            /// Gets operator identifier
+            /// </summary>
+            public byte Id { get; }
+
+            /// <summary>
+            /// Gets operator precedence
+            /// </summary>
+            public byte Precedence { get; }
+
+            /// <summary>
+            /// Gets a value indicating whether the operator is left-associative or not
+            /// </summary>
+            public bool LeftAssociative { get; }
+        }
+
+        /// <summary>
+        /// Function description
+        /// </summary>
+        private class FunctionOperator : Operator
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="FunctionOperator"/> class.
+            /// </summary>
+            /// <param name="func">The function</param>
+            public FunctionOperator(Func<Stack<double>, double> func)
+                : base(IdFunction, byte.MaxValue, false)
+            {
+                Function = func ?? throw new ArgumentNullException(nameof(func));
+            }
+
+            /// <summary>
+            /// Gets the function evaluation
+            /// </summary>
+            public Func<Stack<double>, double> Function { get; }
         }
     }
 }
