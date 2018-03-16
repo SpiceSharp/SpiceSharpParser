@@ -27,7 +27,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             ControlProcessor = new ControlProcessor(controlsRegistry);
 
             SubcircuitDefinitionProcessor = new SubcircuitDefinitionProcessor();
-            ComponentProcessor = new ComponentProcessor(ModelProcessor, componentRegistry);
+            ComponentProcessor = new ComponentProcessor(componentRegistry);
             CommentProcessor = new CommentProcessor();
         }
 

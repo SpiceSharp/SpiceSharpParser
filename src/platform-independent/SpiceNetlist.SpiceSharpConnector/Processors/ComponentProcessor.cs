@@ -9,18 +9,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
     /// <summary>
     /// Processes all supported <see cref="Component"/> from spice netlist object model.
     /// </summary>
-    public class ComponentProcessor : StatementProcessor<Component>
+    public class ComponentProcessor : StatementProcessor<Component>, IComponentProcessor
     {
-        private ModelProcessor modelProcessor;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ComponentProcessor"/> class.
         /// </summary>
-        /// <param name="modelProcessor">A model processor</param>
         /// <param name="componentRegistry">A component registry</param>
-        public ComponentProcessor(ModelProcessor modelProcessor, IEntityGeneratorRegistry componentRegistry)
+        public ComponentProcessor(IEntityGeneratorRegistry componentRegistry)
         {
-            this.modelProcessor = modelProcessor;
             ComponentRegistry = componentRegistry;
         }
 
@@ -36,8 +32,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <param name="context">A context to modifify</param>
         public override void Process(Component statement, IProcessingContext context)
         {
-            string componentName = statement.Name.ToLower();
-            string componentType = componentName[0].ToString();
+            string componentName = statement.Name;
+            string componentType = componentName[0].ToString().ToLower();
 
             if (!ComponentRegistry.Supports(componentType))
             {

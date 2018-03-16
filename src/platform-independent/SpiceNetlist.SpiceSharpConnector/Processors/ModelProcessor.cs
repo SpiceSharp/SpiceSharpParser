@@ -1,15 +1,15 @@
 ﻿using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceNetlist.SpiceSharpConnector.Registries;
-using SpiceSharp.Circuits;
 using SpiceNetlist.SpiceSharpConnector.Context;
+using SpiceSharp.Circuits;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
     /// <summary>
     /// Processes all supported <see cref="Model"/> from spice netlist object model.
     /// </summary>
-    public class ModelProcessor : StatementProcessor<Model>
+    public class ModelProcessor : StatementProcessor<Model>, IModelProcessor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelProcessor"/> class.
@@ -44,6 +44,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                     {
                         throw new System.Exception("Unsupported model type");
                     }
+
                     var generator = Registry.Get(type);
 
                     Entity spiceSharpModel = generator.Generate(
