@@ -1,7 +1,7 @@
 ﻿using SpiceNetlist.SpiceObjects.Parameters;
+using SpiceNetlist.SpiceSharpConnector.Context;
 using SpiceNetlist.SpiceSharpConnector.Registries;
 using SpiceSharp.Components;
-using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
@@ -32,7 +32,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         public Waveform Generate(BracketParameter cp, IProcessingContext context)
         {
             string type = cp.Name.ToLower();
-            if (!Registry.Supports(cp.Name))
+            if (!Registry.Supports(type))
             {
                 throw new System.Exception("Unsupported waveform");
             }

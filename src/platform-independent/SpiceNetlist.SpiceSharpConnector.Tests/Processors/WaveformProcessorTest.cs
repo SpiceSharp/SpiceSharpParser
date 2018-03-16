@@ -24,7 +24,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors
             waveFormRegistry.Get(Arg.Any<string>()).Returns(waveFormGenerator);
 
             var bracketParameter = new SpiceObjects.Parameters.BracketParameter();
-            bracketParameter.Name = "func";
+            bracketParameter.Name = "FUNc";
             var processingContext = Substitute.For<IProcessingContext>();
 
             // act
