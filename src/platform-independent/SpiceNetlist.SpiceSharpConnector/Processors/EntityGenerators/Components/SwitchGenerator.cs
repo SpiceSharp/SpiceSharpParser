@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceNetlist.SpiceSharpConnector.Context;
+using SpiceNetlist.SpiceSharpConnector.Exceptions;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
@@ -33,7 +34,16 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return new List<string> { "s", "w" };
         }
 
-        public Entity GenerateVoltageSwitch(string name, ParameterCollection parameters, IProcessingContext context)
+        /// <summary>
+        /// Generates a voltage switch
+        /// </summary>
+        /// <param name="name">Name of voltage switch to generate</param>
+        /// <param name="parameters">Parameters for voltage switch</param>
+        /// <param name="context">Processing context</param>
+        /// <returns>
+        /// A new voltage switch
+        /// </returns>
+        protected Entity GenerateVoltageSwitch(string name, ParameterCollection parameters, IProcessingContext context)
         {
             VoltageSwitch vsw = new VoltageSwitch(name);
             context.CreateNodes(vsw, parameters);
@@ -41,10 +51,18 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             // Read the model
             if (parameters.Count < 5)
             {
-                throw new Exception("Model expected");
+                throw new WrongParametersCountException("Model expected");
             }
 
-            vsw.SetModel(context.FindModel<VoltageSwitchModel>(parameters.GetString(4)));
+            var model = context.FindModel<VoltageSwitchModel>(parameters.GetString(4));
+            if (model != null)
+            {
+                vsw.SetModel(model);
+            }
+            else
+            {
+                throw new GeneralConnectorException("Couln't find model for current switch");
+            }
 
             // Optional ON or OFF
             if (parameters.Count == 6)
@@ -61,17 +79,34 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                         throw new Exception("ON or OFF expected");
                 }
             }
+            else
+            {
+                throw new WrongParametersCountException("Too many parameters for voltage switch");
+            }
 
             return vsw;
         }
 
-        public Entity GenerateCurrentSwitch(string name, ParameterCollection parameters, IProcessingContext context)
+        /// <summary>
+        /// Generates a current switch
+        /// </summary>
+        /// <param name="name">Name of current switch</param>
+        /// <param name="parameters">Parameters of current switch</param>
+        /// <param name="context">Processing context</param>
+        /// <returns>
+        /// A new instance of current switch
+        /// </returns>
+        protected Entity GenerateCurrentSwitch(string name, ParameterCollection parameters, IProcessingContext context)
         {
             CurrentSwitch csw = new CurrentSwitch(name);
             switch (parameters.Count)
             {
-                case 2: throw new Exception("Voltage source expected");
-                case 3: throw new Exception("Model expected");
+                case 2: throw new WrongParametersCountException(name, "Voltage source expected");
+                case 3: throw new WrongParametersCountException(name, "Model expected");
+                case 4: break;
+                case 5: break;
+                default:
+                    throw new WrongParametersCountException(name, "Wrong parameter count for current switch");
             }
 
             context.CreateNodes(csw, parameters);
@@ -83,11 +118,19 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             }
             else
             {
-                throw new Exception("Voltage source name expected");
+                throw new WrongParameterTypeException("Voltage source name expected");
             }
 
             // Get the model
-            csw.SetModel(context.FindModel<CurrentSwitchModel>(parameters.GetString(3)));
+            var model = context.FindModel<CurrentSwitchModel>(parameters.GetString(3));
+            if (model != null)
+            {
+                csw.SetModel(model);
+            }
+            else
+            {
+                throw new GeneralConnectorException("Couln't find model for current switch");
+            }
 
             // Optional on or off
             if (parameters.Count > 4)
@@ -101,7 +144,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                         csw.SetParameter("off", true); // TODO check this
                         break;
                     default:
-                        throw new Exception("ON or OFF expected");
+                        throw new GeneralConnectorException("ON or OFF expected");
                 }
             }
 
