@@ -179,6 +179,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             Assert.IsType<Capacitor>(cap);
 
             context.Received().SetParameter(cap, "L", "10u");
+            Assert.Equal(12, cap.ParameterSets.GetParameter("ic").Value);
+
         }
     }
 }
