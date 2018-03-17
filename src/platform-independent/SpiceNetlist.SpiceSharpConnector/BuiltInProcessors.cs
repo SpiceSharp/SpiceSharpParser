@@ -60,7 +60,7 @@ namespace SpiceNetlist.SpiceSharpConnector
                 components.Add(new BipolarJunctionTransistorGenerator());
                 components.Add(new DiodeGenerator());
                 components.Add(new MosfetGenerator());
-                components.Add(new SubCircuitGenerator(statementsProcessor.ComponentProcessor, statementsProcessor.ModelProcessor));
+                components.Add(new SubCircuitGenerator(statementsProcessor.ComponentProcessor, statementsProcessor.ModelProcessor, statementsProcessor.ControlProcessor));
 
                 return statementsProcessor;
             }

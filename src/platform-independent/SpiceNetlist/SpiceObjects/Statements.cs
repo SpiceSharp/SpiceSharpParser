@@ -8,7 +8,7 @@ namespace SpiceNetlist.SpiceObjects
     /// <summary>
     /// Ordered collection of statements
     /// </summary>
-    public class Statements : Statement, IEnumerable
+    public class Statements : Statement, IEnumerable<Statement>
     {
         private List<Statement> list = null;
 
@@ -43,7 +43,18 @@ namespace SpiceNetlist.SpiceObjects
         /// <returns>
         /// A new enumerator
         /// </returns>
-        public IEnumerator GetEnumerator()
+        public IEnumerator<Statement> GetEnumerator()
+        {
+            return list.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Gets the enumerator
+        /// </summary>
+        /// <returns>
+        /// A new enumerator
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return list.GetEnumerator();
         }

@@ -1,13 +1,13 @@
 ﻿using SpiceNetlist.SpiceObjects;
-using SpiceNetlist.SpiceSharpConnector.Registries;
 using SpiceNetlist.SpiceSharpConnector.Context;
+using SpiceNetlist.SpiceSharpConnector.Registries;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
 {
     /// <summary>
     /// Processes all supported <see cref="Control"/> from spice netlist object model.
     /// </summary>
-    public class ControlProcessor : StatementProcessor<Control>
+    public class ControlProcessor : StatementProcessor<Control>, IControlProcessor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ControlProcessor"/> class.
