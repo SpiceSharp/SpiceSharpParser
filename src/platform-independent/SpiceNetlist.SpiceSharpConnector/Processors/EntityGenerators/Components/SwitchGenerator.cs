@@ -70,10 +70,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 switch (parameters.GetString(5).ToLower())
                 {
                     case "on":
-                        vsw.SetParameter("on", true); // TODO check this
+                        vsw.ParameterSets.SetParameter("on");
                         break;
                     case "off":
-                        vsw.SetParameter("off", true); // TODO check this
+                        vsw.ParameterSets.SetParameter("off");
                         break;
                     default:
                         throw new Exception("ON or OFF expected");
@@ -138,10 +138,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 switch (parameters.GetString(4).ToLower())
                 {
                     case "on":
-                        csw.SetParameter("on", true); // TODO check this
+                        csw.ParameterSets.SetParameter("on");
                         break;
                     case "off":
-                        csw.SetParameter("off", true); // TODO check this
+                        csw.ParameterSets.SetParameter("off");
                         break;
                     default:
                         throw new GeneralConnectorException("ON or OFF expected");

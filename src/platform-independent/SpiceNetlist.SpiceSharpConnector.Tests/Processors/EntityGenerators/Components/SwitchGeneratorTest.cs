@@ -15,6 +15,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
         [Fact]
         public void GenerateVoltageSwitch()
         {
+            var evaluator = new Evaluator();
             var context = Substitute.For<IProcessingContext>();
             context.FindModel<VoltageSwitchModel>(Arg.Any<string>()).Returns(new VoltageSwitchModel("SModel"));
 
@@ -33,12 +34,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
 
             Assert.NotNull(@switch);
             Assert.IsType<VoltageSwitch>(@switch);
-            Assert.Equal(1.0, @switch.ParameterSets.GetParameter("on").Value);
+            Assert.True(@switch.ParameterSets.Get<SpiceSharp.Components.VoltageSwitchBehaviors.BaseParameters>().ZeroState);
         }
 
         [Fact]
         public void GenerateCurrentSwitch()
         {
+            var evaluator = new Evaluator();
             var context = Substitute.For<IProcessingContext>();
             context.FindModel<CurrentSwitchModel>(Arg.Any<string>()).Returns(new CurrentSwitchModel("WModel"));
 
@@ -56,7 +58,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
 
             Assert.NotNull(@switch);
             Assert.IsType<CurrentSwitch>(@switch);
-            Assert.Equal(1.0, @switch.ParameterSets.GetParameter("on").Value);
+            Assert.True(@switch.ParameterSets.Get<SpiceSharp.Components.CurrentSwitchBehaviors.BaseParameters>().ZeroState);
         }
     }
 }
