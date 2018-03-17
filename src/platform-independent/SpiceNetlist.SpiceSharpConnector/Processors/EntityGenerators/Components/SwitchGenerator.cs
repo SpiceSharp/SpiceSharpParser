@@ -79,7 +79,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                         throw new Exception("ON or OFF expected");
                 }
             }
-            else
+            else if (parameters.Count > 6)
             {
                 throw new WrongParametersCountException("Too many parameters for voltage switch");
             }
