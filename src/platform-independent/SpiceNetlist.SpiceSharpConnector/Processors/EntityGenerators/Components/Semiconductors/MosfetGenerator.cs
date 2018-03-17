@@ -5,6 +5,7 @@ using SpiceSharp.Components;
 using System;
 using System.Collections.Generic;
 using SpiceNetlist.SpiceSharpConnector.Context;
+using SpiceNetlist.SpiceSharpConnector.Extensions;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components.Semiconductors
 {

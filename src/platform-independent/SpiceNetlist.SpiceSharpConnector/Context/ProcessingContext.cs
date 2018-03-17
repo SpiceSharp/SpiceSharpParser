@@ -144,32 +144,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
 
             return null;
         }
-
-        /// <summary>
-        /// Sets entity parameters
-        /// </summary>
-        public void SetParameters(Entity entity, ParameterCollection parameters)
-        {
-            foreach (SpiceObjects.Parameter parameter in parameters)
-            {
-                if (parameter is AssignmentParameter ap)
-                {
-                    try
-                    {
-                        SetParameter(entity, ap.Name, ap.Value);
-                    }
-                    catch (Exception ex)
-                    {
-                        Result.AddWarning(ex.ToString());
-                    }
-                }
-                else
-                {
-                    Result.AddWarning("Unknown parameter: " + parameter.Image);
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Creates nodes for component
         /// </summary>

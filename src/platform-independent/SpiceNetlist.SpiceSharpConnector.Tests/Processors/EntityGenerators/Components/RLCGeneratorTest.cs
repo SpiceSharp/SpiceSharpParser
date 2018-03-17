@@ -120,17 +120,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
         {
             var evaluator = new Evaluator();
             var context = Substitute.For<IProcessingContext>();
-            context.When(a => a.SetParameters(
+            context.When(a => a.SetParameter(
                Arg.Any<Capacitor>(),
-               Arg.Any<ParameterCollection>()
-               )).Do(x => {
-                   foreach (var parameter in (ParameterCollection)x[1])
-                   {
-                       if (parameter is AssignmentParameter ag)
-                       {
-                           ((Entity)x[0]).SetParameter(ag.Name.ToLower(), evaluator.EvaluateDouble(ag.Value));
-                       }
-                   }
+               Arg.Any<string>(),
+               Arg.Any<string>()
+               )).Do(x =>
+               {
+                   ((Entity)x[0]).SetParameter(((string)x[1]).ToLower(), evaluator.EvaluateDouble((string)x[2]));
                });
 
             var parameters = new ParameterCollection
@@ -156,18 +152,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
         {
             var evaluator = new Evaluator();
             var context = Substitute.For<IProcessingContext>();
-            context.When(a => a.SetParameters(
-                Arg.Any<Capacitor>(),
-                Arg.Any<ParameterCollection>()
-                )).Do(x => {
-                    foreach (var parameter in (ParameterCollection)x[1])
-                    {
-                        if (parameter is AssignmentParameter ag) {
-                            ((Entity)x[0]).SetParameter(ag.Name.ToLower(), evaluator.EvaluateDouble(ag.Value));
-                        }
-                    }
-                });
-
+            context.When(a => a.SetParameter(
+               Arg.Any<Capacitor>(),
+               Arg.Any<string>(),
+               Arg.Any<string>()
+               )).Do(x =>
+               {
+                   ((Entity)x[0]).SetParameter(((string)x[1]).ToLower(), evaluator.EvaluateDouble((string)x[2]));
+               });
             context.FindModel<CapacitorModel>(Arg.Any<string>()).Returns(new CapacitorModel("CModel"));
 
             var parameters = new ParameterCollection
@@ -186,9 +178,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             Assert.NotNull(cap);
             Assert.IsType<Capacitor>(cap);
 
-            context.Received().SetParameters(cap, Arg.Is<ParameterCollection>(
-               p => ((AssignmentParameter)p[0]).Name == "L" &&
-                    ((AssignmentParameter)p[0]).Value == "10u"));
+            context.Received().SetParameter(cap, "L", "10u");
         }
     }
 }

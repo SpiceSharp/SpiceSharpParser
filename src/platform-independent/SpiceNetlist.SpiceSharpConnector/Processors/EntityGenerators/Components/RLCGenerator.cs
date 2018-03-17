@@ -4,6 +4,7 @@ using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceNetlist.SpiceSharpConnector.Context;
 using SpiceNetlist.SpiceSharpConnector.Exceptions;
+using SpiceNetlist.SpiceSharpConnector.Extensions;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;

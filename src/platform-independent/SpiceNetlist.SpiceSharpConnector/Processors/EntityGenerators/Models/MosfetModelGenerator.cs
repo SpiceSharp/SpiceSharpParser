@@ -6,6 +6,7 @@ using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceNetlist.SpiceSharpConnector.Context;
+using SpiceNetlist.SpiceSharpConnector.Extensions;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Models
 {

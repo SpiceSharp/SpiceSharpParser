@@ -3,7 +3,7 @@ using SpiceNetlist.SpiceObjects;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceNetlist.SpiceSharpConnector.Context;
-
+using SpiceNetlist.SpiceSharpConnector.Extensions;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators
 {
