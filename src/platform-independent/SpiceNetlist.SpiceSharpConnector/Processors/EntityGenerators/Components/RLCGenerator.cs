@@ -2,16 +2,30 @@
 using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
+using SpiceNetlist.SpiceSharpConnector.Context;
+using SpiceNetlist.SpiceSharpConnector.Exceptions;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
-using SpiceNetlist.SpiceSharpConnector.Context;
-using SpiceNetlist.SpiceSharpConnector.Exceptions;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components
 {
+    /// <summary>
+    /// Generator for resistors, capacitors, inductors and mutual inductance
+    /// </summary>
     public class RLCGenerator : EntityGenerator
     {
+        /// <summary>
+        /// Generates a new resistor, capacitor, inductor or mutual inductance
+        /// </summary>
+        /// <param name="id">The identifier for identity</param>
+        /// <param name="originalName">Original name of entity</param>
+        /// <param name="type">The type of entity</param>
+        /// <param name="parameters">Parameters for entity</param>
+        /// <param name="context">Processing context</param>
+        /// <returns>
+        /// A new instance of entity
+        /// </returns>
         public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, IProcessingContext context)
         {
             switch (type)
@@ -36,25 +50,34 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return new List<string> { "r", "l", "c", "k" };
         }
 
-        public Entity GenerateMut(string name, ParameterCollection parameters, IProcessingContext context)
+        /// <summary>
+        /// Generates a new mutual inductance
+        /// </summary>
+        /// <param name="name">The name of generated mutual inductance</param>
+        /// <param name="parameters">Parameters and pins for mutual inductance</param>
+        /// <param name="context">Processing context</param>
+        /// <returns>
+        /// A new instance of mutual inductance
+        /// </returns>
+        protected Entity GenerateMut(string name, ParameterCollection parameters, IProcessingContext context)
         {
             var mut = new MutualInductance(name);
 
             switch (parameters.Count)
             {
-                case 0: throw new Exception($"Inductor name expected for mutual inductance \"{name}\"");
-                case 1: throw new Exception("Inductor name expected");
-                case 2: throw new Exception("Coupling factor expected");
+                case 0: throw new WrongParametersCountException(name, $"Inductor name expected for mutual inductance \"{name}\"");
+                case 1: throw new WrongParametersCountException(name, "Inductor name expected");
+                case 2: throw new WrongParametersCountException(name, "Coupling factor expected");
             }
 
             if (!(parameters[0] is SingleParameter))
             {
-                throw new Exception("Component name expected");
+                throw new WrongParameterTypeException(name, "Component name expected");
             }
 
             if (!(parameters[1] is SingleParameter))
             {
-                throw new Exception("Component name expected");
+                throw new WrongParameterTypeException(name, "Component name expected");
             }
 
             mut.InductorName1 = parameters.GetString(0);
@@ -65,49 +88,89 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return mut;
         }
 
-        public Entity GenerateCap(string name, ParameterCollection parameters, IProcessingContext context)
+        /// <summary>
+        ///  Generates a new capacitor
+        /// </summary>
+        /// <param name="name">Name of capacitor to generate</param>
+        /// <param name="parameters">Parameters and pins for capacitor</param>
+        /// <param name="context">Processing context</param>
+        /// <returns>
+        /// A new instance of capacitor
+        /// </returns>
+        protected Entity GenerateCap(string name, ParameterCollection parameters, IProcessingContext context)
         {
             var capacitor = new Capacitor(name);
             context.CreateNodes(capacitor, parameters);
-            var clonedParameters = parameters.Clone();
-
-            for (int i = 3; i < clonedParameters.Count; i++)
-            {
-                if (parameters[i] is AssignmentParameter asg)
-                {
-                    if (asg.Name.ToLower() == "ic")
-                    {
-                        context.SetParameter(capacitor, "ic", asg.Value);
-                        clonedParameters.Remove(i);
-                        break;
-                    }
-                }
-            }
 
             if (parameters.Count == 3)
             {
-                context.SetParameter(capacitor, "capacitance", parameters.GetString(2));
+                // CXXXXXXX N1 N2 VALUE
+                if (parameters[2] is ExpressionParameter || parameters[2] is ValueParameter)
+                {
+                    context.SetParameter(capacitor, "capacitance", parameters.GetString(2));
+                }
+                else
+                {
+                    throw new WrongParameterTypeException(name, "Wrong parameter value for capacitance");
+                }
             }
             else
             {
-                capacitor.SetModel(context.FindModel<CapacitorModel>(parameters.GetString(2)));
-                context.SetParameters(capacitor, clonedParameters, 2);
+                // CXXXXXXX N1 N2 <VALUE> <MNAME> <L=LENGTH> <W=WIDTH> <IC=VAL>
 
-                var bp = capacitor.ParameterSets[typeof(SpiceSharp.Components.CapacitorBehaviors.BaseParameters)] as SpiceSharp.Components.CapacitorBehaviors.BaseParameters;
-                if (!bp.Length.Given)
+                // Examples:
+                // CMOD 3 7 CMODEL L = 10u W = 1u
+                // CMOD 3 7 CMODEL L = 10u W = 1u IC=1
+                // CMOD 3 7 1.3 IC=1
+
+                bool modelBased = false;
+                if (parameters[2] is ExpressionParameter || parameters[2] is ValueParameter)
                 {
-                    throw new Exception("L needs to be specified");
+                    context.SetParameter(capacitor, "capacitance", parameters.GetString(2));
+                }
+                else
+                {
+                    var model = context.FindModel<CapacitorModel>(parameters.GetString(2));
+                    if (model != null)
+                    {
+                        modelBased = true;
+                        capacitor.SetModel(model);
+                    }
+                    else
+                    {
+                        throw new GeneralConnectorException("Count't find capacitor model for " + name);
+                    }
+                }
+
+                context.SetParameters(capacitor, parameters.Skip(3));
+
+                if (modelBased)
+                {
+                    var bp = capacitor.ParameterSets[typeof(SpiceSharp.Components.CapacitorBehaviors.BaseParameters)] as SpiceSharp.Components.CapacitorBehaviors.BaseParameters;
+                    if (!bp.Length.Given)
+                    {
+                        throw new GeneralConnectorException("L needs to be specified");
+                    }
                 }
             }
 
             return capacitor;
         }
 
-        public Entity GenerateInd(string name, ParameterCollection parameters, IProcessingContext context)
+        /// <summary>
+        /// Generates a new inductor
+        /// </summary>
+        /// <param name="name">Name of inductor to generate</param>
+        /// <param name="parameters">Parameters and pins for inductor</param>
+        /// <param name="context">Processing context</param>
+        /// <returns>
+        /// A new instance of inductor
+        /// </returns>
+        protected Entity GenerateInd(string name, ParameterCollection parameters, IProcessingContext context)
         {
             if (parameters.Count != 3)
             {
-                throw new Exception();
+                throw new WrongParametersCountException("Inductor expects 3 parameters/pins");
             }
 
             var inductor = new Inductor(name);
@@ -118,7 +181,16 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             return inductor;
         }
 
-        public Entity GenerateRes(string name, ParameterCollection parameters, IProcessingContext context)
+        /// <summary>
+        /// Generate resistor
+        /// </summary>
+        /// <param name="name">Name of resistor to generate</param>
+        /// <param name="parameters">Parameters and pins for resistor</param>
+        /// <param name="context">Processing context</param>
+        /// <returns>
+        /// A new instance of resistor
+        /// </returns>
+        protected Entity GenerateRes(string name, ParameterCollection parameters, IProcessingContext context)
         {
             var res = new Resistor(name);
             context.CreateNodes(res, parameters);

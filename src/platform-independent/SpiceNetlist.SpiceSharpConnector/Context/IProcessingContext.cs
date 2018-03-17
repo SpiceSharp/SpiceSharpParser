@@ -27,7 +27,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
 
         void SetParameter(Entity entity, string propertyName, string expression);
 
-        void SetParameters(Entity entity, ParameterCollection parameters, int toSkip = 0);
+        void SetParameters(Entity entity, ParameterCollection parameters);
 
         T FindModel<T>(string modelName)
             where T : Entity;

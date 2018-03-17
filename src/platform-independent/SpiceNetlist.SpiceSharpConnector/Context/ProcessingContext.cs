@@ -148,9 +148,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         /// <summary>
         /// Sets entity parameters
         /// </summary>
-        public void SetParameters(Entity entity, ParameterCollection parameters, int toSkip = 0)
+        public void SetParameters(Entity entity, ParameterCollection parameters)
         {
-            foreach (SpiceObjects.Parameter parameter in parameters.Skip(toSkip).Take(parameters.Count - toSkip))
+            foreach (SpiceObjects.Parameter parameter in parameters)
             {
                 if (parameter is AssignmentParameter ap)
                 {
