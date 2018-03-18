@@ -165,8 +165,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             var newEvaluator = new Evaluator(context.Evaluator);
             newEvaluator.SetParameters(CreateSubcircuitParameters(context, subCircuitDefiniton, subCktParameters));
 
-            var subcircuitNodeNameGenerator = new NodeNameGenerator(subCircuitDefiniton, pinInstanceNames);
-            var subcircuitObjectNameGenerator = new ObjectNameGenerator(string.Format("{0}.{1}", context.ObjectNameGenerator.Prefix, subcircuitName));
+            var subcircuitNodeNameGenerator = new NodeNameGenerator(subcircuitName, subCircuitDefiniton, pinInstanceNames);
+            var subcircuitObjectNameGenerator = context.ObjectNameGenerator.CreateChildGenerator(subcircuitName);
 
             return new ProcessingContext(subcircuitName, newEvaluator, context.Result, subcircuitNodeNameGenerator, subcircuitObjectNameGenerator, context);
         }

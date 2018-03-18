@@ -6,7 +6,7 @@ using SpiceSharp.Components;
 using System.Collections.Generic;
 using Xunit;
 
-namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors
+namespace SpiceNetlist.SpiceSharpConnector.Tests.Context
 {
     public class ProcessingContextTest
     {

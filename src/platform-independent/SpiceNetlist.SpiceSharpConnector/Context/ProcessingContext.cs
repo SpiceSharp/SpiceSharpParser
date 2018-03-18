@@ -20,8 +20,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
             string contextName,
             IEvaluator evaluator,
             IResultService resultService,
-            NodeNameGenerator nodeNameGenerator,
-            ObjectNameGenerator objectNameGenerator,
+            INodeNameGenerator nodeNameGenerator,
+            IObjectNameGenerator objectNameGenerator,
             IProcessingContext parent = null)
         {
             ContextName = contextName ?? throw new ArgumentNullException(nameof(contextName));
@@ -65,12 +65,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         /// <summary>
         /// Gets or sets the node name generator
         /// </summary>
-        public NodeNameGenerator NodeNameGenerator { get; protected set; }
+        public INodeNameGenerator NodeNameGenerator { get; protected set; }
 
         /// <summary>
         /// Gets or sets the object name generator
         /// </summary>
-        public ObjectNameGenerator ObjectNameGenerator { get; protected set; }
+        public IObjectNameGenerator ObjectNameGenerator { get; protected set; }
 
         /// <summary>
         /// Sets voltage initial condition for node

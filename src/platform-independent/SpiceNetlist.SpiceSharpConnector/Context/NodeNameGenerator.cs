@@ -4,8 +4,10 @@ using SpiceNetlist.SpiceObjects;
 
 namespace SpiceNetlist.SpiceSharpConnector.Context
 {
-    public class NodeNameGenerator
+    public class NodeNameGenerator : INodeNameGenerator
     {
+        private Dictionary<string, string> pinMap = new Dictionary<string, string>();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NodeNameGenerator"/> class.
         /// </summary>
@@ -16,54 +18,73 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         /// <summary>
         /// Initializes a new instance of the <see cref="NodeNameGenerator"/> class.
         /// </summary>
+        /// <param name="subCircuitName">The name of subcircuit</param>
         /// <param name="currentSubCircuit">The current subcircuit</param>
         /// <param name="pinInstanceNames">The names of pins</param>
-        public NodeNameGenerator(SubCircuit currentSubCircuit, List<string> pinInstanceNames)
+        public NodeNameGenerator(string subCircuitName, SubCircuit currentSubCircuit, List<string> pinInstanceNames)
         {
-            CurrentSubCircuit = currentSubCircuit ?? throw new ArgumentNullException(nameof(currentSubCircuit));
+            SubCircuitName = subCircuitName;
+            SubCircuit = currentSubCircuit ?? throw new ArgumentNullException(nameof(currentSubCircuit));
             PinInstanceNames = pinInstanceNames ?? throw new ArgumentNullException(nameof(pinInstanceNames));
+
+            for (var i = 0; i < SubCircuit.Pins.Count; i++)
+            {
+                pinMap[SubCircuit.Pins[i]] = PinInstanceNames[i];
+            }
         }
 
         /// <summary>
-        /// Gets the current subcircuit
+        /// Gets the subcircuit name
         /// </summary>
-        protected SubCircuit CurrentSubCircuit { get; }
+        public string SubCircuitName { get; }
+
+        /// <summary>
+        /// Gets the subcircuit of this node name generator
+        /// </summary>
+        public SubCircuit SubCircuit { get; }
 
         /// <summary>
         /// Gets the names of pinds for the current subcircuit
         /// </summary>
-        protected List<string> PinInstanceNames { get; }
+        public List<string> PinInstanceNames { get; }
 
         /// <summary>
         /// Generates node name
         /// </summary>
         /// <param name="pinName">Pin name</param>
         /// <returns>
-        /// Node name for current context
+        /// Node name
         /// </returns>
         public string Generate(string pinName)
         {
-            if (pinName == "0" || pinName == "gnd" || pinName == "GND")
+            if (pinName is null)
+            {
+                throw new ArgumentNullException(nameof(pinName));
+            }
+
+            if (pinName == "0")
+            {
+                return "0";
+            }
+
+            if (pinName.ToLower() == "gnd")
             {
                 return pinName.ToUpper();
             }
 
-            if (CurrentSubCircuit != null)
+            if (SubCircuit != null)
             {
-                Dictionary<string, string> map = new Dictionary<string, string>();
-
-                for (var i = 0; i < CurrentSubCircuit.Pins.Count; i++)
+                if (pinMap.ContainsKey(pinName))
                 {
-                    map[CurrentSubCircuit.Pins[i]] = PinInstanceNames[i];
+                    return pinMap[pinName];
                 }
-
-                if (map.ContainsKey(pinName))
+                else
                 {
-                    return map[pinName].ToLower();
+                    return string.Format("{0}.{1}", SubCircuitName, pinName);
                 }
             }
 
-            return pinName.ToLower();
+            return pinName;
         }
     }
 }
