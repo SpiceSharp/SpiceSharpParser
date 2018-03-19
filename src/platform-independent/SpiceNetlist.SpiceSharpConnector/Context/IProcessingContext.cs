@@ -33,51 +33,54 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         IResultService Result { get; }
 
         /// <summary>
-        /// 
+        /// Gets the node name generator
         /// </summary>
         INodeNameGenerator NodeNameGenerator { get; }
 
         /// <summary>
-        /// 
+        /// Gets the object name generator
         /// </summary>
         IObjectNameGenerator ObjectNameGenerator { get; }
 
         /// <summary>
-        /// 
+        /// Parses an expression to double
         /// </summary>
-        /// <param name="expression"></param>
-        /// <returns></returns>
+        /// <param name="expression">Expression to parse</param>
+        /// <returns>
+        /// A value of expression
+        /// </returns>
         double ParseDouble(string expression);
 
         /// <summary>
-        /// 
+        /// Sets voltage initial condition for node
         /// </summary>
-        /// <param name="nodeName"></param>
-        /// <param name="expression"></param>
+        /// <param name="nodeName">Name of node</param>
+        /// <param name="expression">Expression</param>
         void SetICVoltage(string nodeName, string expression);
 
         /// <summary>
-        /// 
+        /// Sets the parameter of entity and enables updates
         /// </summary>
-        /// <param name="entity"></param>
-        /// <param name="propertyName"></param>
-        /// <param name="expression"></param>
-        void SetParameter(Entity entity, string propertyName, string expression);
+        /// <param name="entity">An entity of parameter</param>
+        /// <param name="parameterName">A parameter name</param>
+        /// <param name="expression">An expression</param>
+        void SetParameter(Entity entity, string parameterName, string expression);
 
         /// <summary>
-        /// 
+        /// Finds model in the context and in parent contexts
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="modelName"></param>
-        /// <returns></returns>
+        /// <param name="modelName">Name of model to find</param>
+        /// <returns>
+        /// A reference to model
+        /// </returns>
         T FindModel<T>(string modelName)
             where T : Entity;
 
         /// <summary>
-        /// 
+        /// Creates nodes for a component
         /// </summary>
-        /// <param name="component"></param>
-        /// <param name="parameters"></param>
+        /// <param name="component">A component</param>
+        /// <param name="parameters">Parameters of component</param>
         void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters);
     }
 }

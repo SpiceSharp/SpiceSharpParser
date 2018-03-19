@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
-using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceNetlist.SpiceSharpConnector.Evaluation;
 using SpiceSharp;
 using SpiceSharp.Circuits;
@@ -16,6 +15,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessingContext"/> class.
         /// </summary>
+        /// <param name="contextName">Name of the context</param>
+        /// <param name="evaluator">Evaluator for the context</param>
+        /// <param name="resultService">Result service for the context</param>
+        /// <param name="nodeNameGenerator">Node name generator for the context</param>
+        /// <param name="objectNameGenerator">Object name generator for the context</param>
+        /// <param name="parent">Parent of th econtext</param>
         public ProcessingContext(
             string contextName,
             IEvaluator evaluator,
@@ -84,9 +89,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         }
 
         /// <summary>
-        /// Evaluates the value to double
+        /// Parses an expression to double
         /// </summary>
-        /// <param name="expression">Expressin to evaluate</param>
+        /// <param name="expression">Expression to parse</param>
         /// <returns>
         /// A value of expression
         /// </returns>
@@ -124,9 +129,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         }
 
         /// <summary>
-        /// Find model in the context and in parent contexts
+        /// Finds model in the context and in parent contexts
         /// </summary>
-        public T FindModel<T>(string modelName) where T : Entity
+        /// <param name="modelName">Name of model to find</param>
+        /// <returns>
+        /// A reference to model
+        /// </returns>
+        public T FindModel<T>(string modelName)
+            where T : Entity
         {
             IProcessingContext context = this;
             while (context != null)
@@ -144,10 +154,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
 
             return null;
         }
-        
+
         /// <summary>
-        /// Creates nodes for component
+        /// Creates nodes for a component
         /// </summary>
+        /// <param name="component">A component</param>
+        /// <param name="parameters">Parameters of component</param>
         public void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters)
         {
             Identifier[] nodes = new Identifier[component.PinCount];
