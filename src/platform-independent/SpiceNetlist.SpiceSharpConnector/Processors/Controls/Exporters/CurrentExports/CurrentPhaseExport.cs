@@ -1,4 +1,6 @@
-﻿using SpiceSharp;
+﻿using System;
+using SpiceNetlist.SpiceSharpConnector.Exceptions;
+using SpiceSharp;
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
 
@@ -10,25 +12,29 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Current
     public class CurrentPhaseExport : Export
     {
         /// <summary>
-        /// The main node
+        /// Initializes a new instance of the <see cref="CurrentPhaseExport"/> class.
         /// </summary>
-        public Identifier Source { get; }
-
-        protected readonly ComplexPropertyExport ExportImpl;
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="reference">Negative reference node</param>
+        /// <param name="simulation">A simulation</param>
+        /// <param name="source">An identifier</param>
         public CurrentPhaseExport(Simulation simulation, Identifier source)
         {
-            Source = source;
+            Source = source ?? throw new ArgumentNullException(nameof(source));
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
 
+            Source = source;
             ExportImpl = new ComplexPropertyExport(simulation, source, "i");
         }
 
         /// <summary>
-        /// Get the type name
+        /// Gets the main node
+        /// </summary>
+        public Identifier Source { get; }
+
+        /// <summary>
+        /// Gets the type name
         /// </summary>
         public override string TypeName => "degrees";
 
@@ -40,13 +46,26 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Current
         /// <summary>
         /// Gets the quantity unit
         /// </summary>
-        public override string QuantityUnit => "Current (phase)";
+        public override string QuantityUnit => "Current phase (radians)";
 
         /// <summary>
-        /// Extract
+        /// Gets the complex property export
         /// </summary>
+        protected ComplexPropertyExport ExportImpl { get; }
+
+        /// <summary>
+        /// Extracts current phase
+        /// </summary>
+        /// <returns>
+        /// Current phase
+        /// </returns>
         public override double Extract()
         {
+            if (!ExportImpl.IsValid)
+            {
+                throw new GeneralConnectorException($"Current phase export '{Name}' is invalid");
+            }
+
             return ExportImpl.Value.Phase;
         }
     }

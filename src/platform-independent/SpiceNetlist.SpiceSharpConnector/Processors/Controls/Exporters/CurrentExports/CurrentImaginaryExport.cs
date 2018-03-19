@@ -1,52 +1,70 @@
-﻿using SpiceSharp;
+﻿using System;
+using SpiceNetlist.SpiceSharpConnector.Exceptions;
+using SpiceSharp;
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.CurrentExports
 {
     /// <summary>
-    /// Imaginary part of a complex current export.
+    /// Imaginary of a complex current export.
     /// </summary>
     public class CurrentImaginaryExport : Export
     {
         /// <summary>
-        /// The main node
+        /// Initializes a new instance of the <see cref="CurrentImaginaryExport"/> class.
         /// </summary>
-        public Identifier Source { get; }
-
-        private readonly ComplexPropertyExport ExportImpl;
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="node">Positive node</param>
-        /// <param name="reference">Negative reference node</param>
+        /// <param name="simulation">A simulation</param>
+        /// <param name="source">An identifier</param>
         public CurrentImaginaryExport(Simulation simulation, Identifier source)
         {
-            Source = source;
+            Source = source ?? throw new ArgumentNullException(nameof(source));
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
+
             ExportImpl = new ComplexPropertyExport(simulation, source, "i");
         }
 
         /// <summary>
-        /// Get the type name
+        /// Gets the main node
+        /// </summary>
+        public Identifier Source { get; }
+
+        /// <summary>
+        /// Gets the type name
         /// </summary>
         public override string TypeName => "current";
 
         /// <summary>
-        /// Get the name
+        /// Gets the name
         /// </summary>
         public override string Name => "ii(" + Source + ")";
 
         /// <summary>
         /// Gets the quantity unit
         /// </summary>
-        public override string QuantityUnit => "Amps";
+        public override string QuantityUnit => "Current (A)";
 
         /// <summary>
-        /// Extract
+        /// Gets the complex property export
         /// </summary>
+        protected ComplexPropertyExport ExportImpl { get; }
+
+        /// <summary>
+        /// Extracts current imaginary value
+        /// </summary>
+        /// <returns>
+        /// Current imaginary value
+        /// </returns>
         public override double Extract()
         {
+            if (!ExportImpl.IsValid)
+            {
+                throw new GeneralConnectorException($"Current imaginary export '{Name}' is invalid");
+            }
+
             return ExportImpl.Value.Imaginary;
         }
     }

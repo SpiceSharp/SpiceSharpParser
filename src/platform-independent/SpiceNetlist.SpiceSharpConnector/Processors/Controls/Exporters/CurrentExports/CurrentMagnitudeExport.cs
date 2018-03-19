@@ -1,4 +1,6 @@
-﻿using SpiceSharp;
+﻿using System;
+using SpiceNetlist.SpiceSharpConnector.Exceptions;
+using SpiceSharp;
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
 
@@ -10,31 +12,33 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Current
     public class CurrentMagnitudeExport : Export
     {
         /// <summary>
-        /// The main node
+        /// Initializes a new instance of the <see cref="CurrentMagnitudeExport"/> class.
         /// </summary>
-        public Identifier Source { get; }
-
-        protected readonly ComplexPropertyExport ExportImpl;
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="node">Positive node</param>
-        /// <param name="reference">Negative reference node</param>
+        /// <param name="simulation">A simulation</param>
+        /// <param name="source">An identifier</param>
         public CurrentMagnitudeExport(Simulation simulation, Identifier source)
         {
-            Source = source;
+            Source = source ?? throw new ArgumentNullException(nameof(source));
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
 
             ExportImpl = new ComplexPropertyExport(simulation, source, "i");
         }
 
         /// <summary>
-        /// Get the type name
+        /// Gets the main node
+        /// </summary>
+        public Identifier Source { get; }
+
+        /// <summary>
+        /// Gets the type name
         /// </summary>
         public override string TypeName => "current";
 
         /// <summary>
-        /// Get the name
+        /// Gets the name
         /// </summary>
         public override string Name => "im(" + Source + ")";
 
@@ -44,10 +48,23 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Current
         public override string QuantityUnit => "Current (A)";
 
         /// <summary>
-        /// Extract
+        /// Gets the complex property export
         /// </summary>
+        protected ComplexPropertyExport ExportImpl { get; }
+
+        /// <summary>
+        /// Extracts current magnitude
+        /// </summary>
+        /// <returns>
+        /// Current magnitude
+        /// </returns>
         public override double Extract()
         {
+            if (!ExportImpl.IsValid)
+            {
+                throw new GeneralConnectorException($"Current magnitude export '{Name}' is invalid");
+            }
+
             return ExportImpl.Value.Magnitude;
         }
     }

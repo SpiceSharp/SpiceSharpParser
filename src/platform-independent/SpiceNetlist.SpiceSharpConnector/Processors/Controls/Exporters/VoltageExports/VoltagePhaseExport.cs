@@ -52,7 +52,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
         /// <summary>
         /// Gets the quantity unit
         /// </summary>
-        public override string QuantityUnit => "Voltage phase (degrees)";
+        public override string QuantityUnit => "Voltage phase (radians)";
 
         /// <summary>
         /// Gets the complex voltage export that provides voltage phase

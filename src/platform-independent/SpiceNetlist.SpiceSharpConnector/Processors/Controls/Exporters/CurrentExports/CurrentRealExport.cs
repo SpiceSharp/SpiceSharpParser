@@ -1,4 +1,6 @@
-﻿using SpiceSharp;
+﻿using System;
+using SpiceNetlist.SpiceSharpConnector.Exceptions;
+using SpiceSharp;
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
 
@@ -10,29 +12,33 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Current
     public class CurrentRealExport : Export
     {
         /// <summary>
-        /// The main node
+        /// Initializes a new instance of the <see cref="CurrentRealExport"/> class.
         /// </summary>
-        public Identifier Source { get; }
-
-        protected RealPropertyExport ExportImpl { get; }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <param name="simulation">A simulation</param>
+        /// <param name="source">An identifier of source</param>
         public CurrentRealExport(Simulation simulation, Identifier source)
         {
-            Source = source;
+            Source = source ?? throw new ArgumentNullException(nameof(source));
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
 
             ExportImpl = new RealPropertyExport(simulation, source, "i");
         }
 
         /// <summary>
-        /// Get the type name
+        /// Gets the main node
+        /// </summary>
+        public Identifier Source { get; }
+
+        /// <summary>
+        /// Gets the type name
         /// </summary>
         public override string TypeName => "current";
 
         /// <summary>
-        /// Get the name
+        /// Gets the name
         /// </summary>
         public override string Name => "ir(" + Source + ")";
 
@@ -42,10 +48,23 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Current
         public override string QuantityUnit => "Current (A)";
 
         /// <summary>
-        /// Extract
+        /// Gets the real property export
         /// </summary>
+        protected RealPropertyExport ExportImpl { get; }
+
+        /// <summary>
+        /// Extracts the current (real)
+        /// </summary>
+        /// <returns>
+        /// The current value
+        /// </returns>
         public override double Extract()
         {
+            if (!ExportImpl.IsValid)
+            {
+                throw new GeneralConnectorException($"Current real export '{Name}' is invalid");
+            }
+
             return ExportImpl.Value;
         }
     }

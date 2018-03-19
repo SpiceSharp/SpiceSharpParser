@@ -1,4 +1,5 @@
-﻿using SpiceSharp;
+﻿using SpiceNetlist.SpiceSharpConnector.Exceptions;
+using SpiceSharp;
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
 
@@ -10,33 +11,36 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Current
     public class CurrentExport : Export
     {
         /// <summary>
-        /// The main node
+        /// Initializes a new instance of the <see cref="CurrentExport"/> class.
         /// </summary>
-        public Identifier Source { get; }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="node">Node</param>
-        /// <param name="reference">Reference</param>
+        /// <param name="simulation">A simulation</param>
+        /// <param name="source">A identifier</param>
         public CurrentExport(Simulation simulation, Identifier source)
         {
-            Source = source;
-
-            /// TODO: Refactor this!!!!!
-            if (simulation is DC || simulation is OP || simulation is Transient)
+            if (simulation == null)
             {
-                ExportRealImpl = new RealPropertyExport(simulation, source, "i");
+                throw new System.ArgumentNullException(nameof(simulation));
+            }
+
+            Source = source ?? throw new System.NullReferenceException(nameof(source));
+
+            if (simulation is FrequencySimulation)
+            {
+                ExportImpl = new ComplexPropertyExport(simulation, source, "i");
             }
             else
             {
-
-                ExportImpl = new ComplexPropertyExport(simulation, source, "i");
+                ExportRealImpl = new RealPropertyExport(simulation, source, "i");
             }
         }
 
         /// <summary>
-        /// Get the type name
+        /// Gets the main node
+        /// </summary>
+        public Identifier Source { get; }
+
+        /// <summary>
+        /// Gets the type name
         /// </summary>
         public override string TypeName => "current";
 
@@ -46,19 +50,45 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Current
         public override string QuantityUnit => "Current (A)";
 
         /// <summary>
-        /// Get the name based on the properties
+        /// Gets the name based on the properties
         /// </summary>
         public override string Name => "i(" + Source + ")";
 
-        public RealPropertyExport ExportRealImpl { get; }
-        public ComplexPropertyExport ExportImpl { get; }
+        /// <summary>
+        /// Gets the real exporter
+        /// </summary>
+        protected RealPropertyExport ExportRealImpl { get; }
 
         /// <summary>
-        /// Read the voltage and write to the output
+        /// Gets the complex exporter
         /// </summary>
+        protected ComplexPropertyExport ExportImpl { get; }
+
+        /// <summary>
+        /// Extracts the current value
+        /// </summary>
+        /// <returns>
+        /// A current value at the source
+        /// </returns>
         public override double Extract()
         {
-            return ExportRealImpl != null ? ExportRealImpl.Value : ExportImpl.Value.Real;
+            if (ExportRealImpl != null)
+            {
+                if (!ExportRealImpl.IsValid)
+                {
+                    throw new GeneralConnectorException($"Current export {Name} is invalid");
+                }
+
+                return ExportRealImpl.Value;
+            }
+            else
+            {
+                if (!ExportImpl.IsValid)
+                {
+                    throw new GeneralConnectorException($"Current export {Name} is invalid");
+                }
+                return ExportImpl.Value.Real;
+            }
         }
     }
 }
