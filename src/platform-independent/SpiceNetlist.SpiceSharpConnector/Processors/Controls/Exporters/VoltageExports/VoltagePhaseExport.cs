@@ -1,4 +1,5 @@
-﻿using SpiceSharp;
+﻿using SpiceNetlist.SpiceSharpConnector.Exceptions;
+using SpiceSharp;
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
 
@@ -10,52 +11,67 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
     public class VoltagePhaseExport : Export
     {
         /// <summary>
-        /// The main node
+        /// Initializes a new instance of the <see cref="VoltagePhaseExport"/> class.
         /// </summary>
-        public Identifier Node { get; }
-
-        /// <summary>
-        /// The reference node
-        /// </summary>
-        public Identifier Reference { get; }
-
-        private readonly ComplexVoltageExport ExportImpl;
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <param name="simulation">Simulation</param>
         /// <param name="node">Positive node</param>
         /// <param name="reference">Negative reference node</param>
         public VoltagePhaseExport(Simulation simulation, Identifier node, Identifier reference = null)
         {
-            Node = node;
+            if (simulation == null)
+            {
+                throw new System.ArgumentNullException(nameof(simulation));
+            }
+
+            Node = node ?? throw new System.ArgumentNullException(nameof(node));
             Reference = reference;
 
             ExportImpl = new ComplexVoltageExport(simulation, node, reference);
         }
 
         /// <summary>
-        /// Get the type name
+        /// Gets the main node
+        /// </summary>
+        public Identifier Node { get; }
+
+        /// <summary>
+        /// Gets the reference node
+        /// </summary>
+        public Identifier Reference { get; }
+
+        /// <summary>
+        /// Gets the type name
         /// </summary>
         public override string TypeName => "degrees";
 
         /// <summary>
         /// Gets get the name
         /// </summary>
-        public override string Name => "vp(" + Node + (Reference == null ? "" : ", " + Reference) + ")";
+        public override string Name => "vp(" + Node + (Reference == null ? string.Empty : ", " + Reference) + ")";
 
         /// <summary>
         /// Gets the quantity unit
         /// </summary>
-        public override string QuantityUnit => "Voltage (phase)";
+        public override string QuantityUnit => "Voltage phase (degrees)";
 
         /// <summary>
-        /// Extract
+        /// Gets the complex voltage export that provides voltage phase
         /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
+        protected ComplexVoltageExport ExportImpl { get; }
+
+        /// <summary>
+        /// Extracts a voltage phase at main node
+        /// </summary>
+        /// <returns>
+        /// A voltage phase at the main node
+        /// </returns>
         public override double Extract()
         {
+            if (!ExportImpl.IsValid)
+            {
+                throw new GeneralConnectorException($"Voltage phase export {Name} is invalid");
+            }
+
             return ExportImpl.Phase;
         }
     }

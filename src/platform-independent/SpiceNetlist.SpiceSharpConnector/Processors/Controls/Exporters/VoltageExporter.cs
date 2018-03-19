@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
+using SpiceNetlist.SpiceSharpConnector.Context;
+using SpiceNetlist.SpiceSharpConnector.Exceptions;
 using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.VoltageExports;
 using SpiceSharp;
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
-using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
 {
@@ -29,7 +30,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
             {
-                throw new Exception("Voltage exports should have vector or single parameter");
+                throw new WrongParameterException("Voltage exports should have vector or single parameter");
             }
 
             // Get the nodes
@@ -39,7 +40,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
                 switch (vector.Elements.Count)
                 {
                     case 0:
-                        throw new Exception("Node expected");
+                        throw new WrongParametersCountException("No nodes for voltage export. Node expected");
                     case 2:
                         reference = new Identifier(context.NodeNameGenerator.Generate(vector.Elements[1].Image));
                         goto case 1;
@@ -47,7 +48,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
                         node = new Identifier(context.NodeNameGenerator.Generate(vector.Elements[0].Image));
                         break;
                     default:
-                        throw new Exception("Too many nodes specified");
+                        throw new WrongParametersCountException("Too many nodes specified for voltage export");
                 }
             }
             else
@@ -76,7 +77,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
         /// <returns>
         /// A list of supported voltage exports
         /// </returns>
-        public override List<string> GetSupportedTypes()
+        public override ICollection<string> GetSupportedTypes()
         {
             return new List<string>() { "v", "vr", "vi", "vm", "vdb", "vp", "vph" };
         }

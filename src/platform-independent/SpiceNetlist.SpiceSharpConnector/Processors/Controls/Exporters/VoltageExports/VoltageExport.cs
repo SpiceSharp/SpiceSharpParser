@@ -1,4 +1,5 @@
-﻿using SpiceSharp;
+﻿using SpiceNetlist.SpiceSharpConnector.Exceptions;
+using SpiceSharp;
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
 
@@ -10,50 +11,50 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
     public class VoltageExport : Export
     {
         /// <summary>
-        /// The main node
+        /// Initializes a new instance of the <see cref="VoltageExport"/> class.
         /// </summary>
-        public Identifier Node { get; }
-
-        /// <summary>
-        /// The reference node
-        /// </summary>
-        public Identifier Reference { get; }
-
-        private readonly ComplexVoltageExport ExportImpl;
-
-        private readonly RealVoltageExport ExportRealImpl;
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="node">Node</param>
-        /// <param name="reference">Reference</param>
+        /// <param name="simulation">Simulation</param>
+        /// <param name="node">Positive node</param>
+        /// <param name="reference">Negative reference node</param>
         public VoltageExport(Simulation simulation, Identifier node, Identifier reference = null)
         {
-            Node = node;
+            if (simulation == null)
+            {
+                throw new System.ArgumentNullException(nameof(simulation));
+            }
+
+            Node = node ?? throw new System.ArgumentNullException(nameof(node));
             Reference = reference;
 
-            /// TODO: Refactor this!!!!!
-            if (simulation is DC || simulation is OP || simulation is Transient)
+            if (simulation is FrequencySimulation)
             {
-                ExportRealImpl = new RealVoltageExport(simulation, node, reference);
+                ExportImpl = new ComplexVoltageExport(simulation, node, reference);
             }
             else
             {
-
-                ExportImpl = new ComplexVoltageExport(simulation, node, reference);
+                ExportRealImpl = new RealVoltageExport(simulation, node, reference);
             }
         }
 
         /// <summary>
-        /// Get the type name
+        /// Gets the main node
+        /// </summary>
+        public Identifier Node { get; }
+
+        /// <summary>
+        /// Gets the reference node
+        /// </summary>
+        public Identifier Reference { get; }
+
+        /// <summary>
+        /// Gets the type name
         /// </summary>
         public override string TypeName => "voltage";
 
         /// <summary>
-        /// Get the name based on the properties
+        /// Gets the name based on the properties
         /// </summary>
-        public override string Name => "v(" + Node.ToString() + (Reference == null ? "" : ", " + Reference.ToString()) + ")";
+        public override string Name => "v(" + Node.ToString() + (Reference == null ? string.Empty : ", " + Reference.ToString()) + ")";
 
         /// <summary>
         /// Gets the quantity unit
@@ -61,17 +62,40 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
         public override string QuantityUnit => "Voltage (V)";
 
         /// <summary>
-        /// Read the voltage and write to the output
+        /// Gets the comple voltage export
         /// </summary>
+        protected ComplexVoltageExport ExportImpl { get; }
+
+        /// <summary>
+        /// Gets the real voltage export
+        /// </summary>
+        protected RealVoltageExport ExportRealImpl { get; }
+
+        /// <summary>
+        /// Extracts the voltage value
+        /// </summary>
+        /// <returns>
+        /// A voltage value at the main node
+        /// </returns>
         public override double Extract()
         {
-            if (this.ExportImpl != null)
+            if (ExportImpl != null)
             {
-                return this.ExportImpl.Value.Real;
+                if (!ExportImpl.IsValid)
+                {
+                    throw new GeneralConnectorException($"Voltage export {Name} is invalid");
+                }
+
+                return ExportImpl.Value.Real;
             }
             else
             {
-                return this.ExportRealImpl.Value;
+                if (!ExportRealImpl.IsValid)
+                {
+                    throw new GeneralConnectorException($"Voltage export {Name} is invalid");
+                }
+
+                return ExportRealImpl.Value;
             }
         }
     }

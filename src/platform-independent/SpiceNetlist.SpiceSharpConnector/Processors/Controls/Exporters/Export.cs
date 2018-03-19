@@ -1,17 +1,10 @@
-﻿using SpiceSharp.Simulations;
-
-namespace SpiceSharp.Parser.Readers
+﻿namespace SpiceSharp.Parser.Readers
 {
     /// <summary>
     /// Describes a quantity that can be exported using simulated data.
     /// </summary>
     public abstract class Export
     {
-        /// <summary>
-        /// Extract the quantity from simulated data
-        /// </summary>
-        public abstract double Extract();
-
         /// <summary>
         /// Gets the type name
         /// </summary>
@@ -22,7 +15,9 @@ namespace SpiceSharp.Parser.Readers
         /// </summary>
         public abstract string Name { get; }
 
-
+        /// <summary>
+        /// Gets the export unit
+        /// </summary>
         public abstract string QuantityUnit { get; }
 
         /// <summary>
@@ -32,8 +27,19 @@ namespace SpiceSharp.Parser.Readers
         public string SimulationType { get; set; } = null;
 
         /// <summary>
+        /// Extract the quantity from simulated data
+        /// </summary>
+        /// <returns>
+        /// A quantity
+        /// </returns>
+        public abstract double Extract();
+
+        /// <summary>
         /// Override string representation
         /// </summary>
+        /// <returns>
+        /// A string represenation of export
+        /// </returns>
         public override string ToString()
         {
             return Name;

@@ -32,6 +32,6 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
         /// <returns>
         /// A list of supported exports
         /// </returns>
-        public abstract List<string> GetSupportedTypes();
+        public abstract ICollection<string> GetSupportedTypes();
     }
 }

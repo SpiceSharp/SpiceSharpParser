@@ -1,4 +1,5 @@
-﻿using SpiceSharp;
+﻿using SpiceNetlist.SpiceSharpConnector.Exceptions;
+using SpiceSharp;
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
 
@@ -10,37 +11,41 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
     public class VoltageDecibelExport : Export
     {
         /// <summary>
-        /// The main node
+        /// Initializes a new instance of the <see cref="VoltageDecibelExport"/> class.
         /// </summary>
-        public Identifier Node { get; }
-
-        /// <summary>
-        /// The reference node
-        /// </summary>
-        public Identifier Reference { get; }
-
-        private readonly ComplexVoltageExport ExportImpl;
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <param name="simulation">Simulation</param>
         /// <param name="node">Positive node</param>
         /// <param name="reference">Negative reference node</param>
         public VoltageDecibelExport(Simulation simulation, Identifier node, Identifier reference = null)
         {
-            Node = node;
+            if (simulation == null)
+            {
+                throw new System.ArgumentNullException(nameof(simulation));
+            }
+
+            Node = node ?? throw new System.ArgumentNullException(nameof(node));
             Reference = reference;
 
             ExportImpl = new ComplexVoltageExport(simulation, node, reference);
         }
 
         /// <summary>
-        /// Get the type name
+        /// Gets the main node
+        /// </summary>
+        public Identifier Node { get; }
+
+        /// <summary>
+        /// Gets the reference node
+        /// </summary>
+        public Identifier Reference { get; }
+
+        /// <summary>
+        /// Gets the type name
         /// </summary>
         public override string TypeName => "none";
 
         /// <summary>
-        /// Get the name
+        /// Gets the name
         /// </summary>
         public override string Name => "vdb(" + Node + (Reference == null ? "" : ", " + Reference) + ")";
 
@@ -50,12 +55,23 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.Voltage
         public override string QuantityUnit => "Voltage (db V)";
 
         /// <summary>
-        /// Extract
+        /// Gets the complex voltage export that provide voltage decibels
         /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
+        protected ComplexVoltageExport ExportImpl { get; }
+
+        /// <summary>
+        /// Extracts a voltage decibels at the main node
+        /// </summary>
+        /// <returns>
+        /// A voltage decibles at the main node
+        /// </returns>
         public override double Extract()
         {
+            if (!ExportImpl.IsValid)
+            {
+                throw new GeneralConnectorException($"Voltage decibel export '{Name}' is invalid");
+            }
+
             return ExportImpl.Decibels;
         }
     }

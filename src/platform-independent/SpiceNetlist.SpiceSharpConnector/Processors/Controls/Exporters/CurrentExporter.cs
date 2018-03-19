@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
+using SpiceNetlist.SpiceSharpConnector.Context;
 using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters.CurrentExports;
 using SpiceSharp;
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
-using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
 {
@@ -72,7 +72,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
         /// <returns>
         /// A list of supported current exports
         /// </returns>
-        public override List<string> GetSupportedTypes()
+        public override ICollection<string> GetSupportedTypes()
         {
             return new List<string>() { "i", "ir", "ii", "im", "idb", "ip" };
         }
