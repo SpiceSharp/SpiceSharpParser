@@ -3,6 +3,7 @@ using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceNetlist.SpiceSharpConnector.Context;
 using SpiceNetlist.SpiceSharpConnector.Processors;
+using System.Collections.Generic;
 using Xunit;
 
 namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Components
@@ -39,6 +40,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             });
             context.NodeNameGenerator.Returns(new NodeNameGenerator());
             context.ObjectNameGenerator.Returns(new ObjectNameGenerator(string.Empty));
+
+            var childrenContexts = new List<IProcessingContext>();
+            context.Children.Returns(childrenContexts);
+
             var componentProcessor = Substitute.For<IComponentProcessor>();
             var modelProcessor = Substitute.For<IModelProcessor>();
             var controlProcessor = Substitute.For<IControlProcessor>();
@@ -52,6 +57,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             modelProcessor.Received().Process(Arg.Is<Model>(c => c.Name == "m1"), Arg.Any<IProcessingContext>());
             controlProcessor.Received().Process(Arg.Is<Control>(c => c.Name == "param"), Arg.Any<IProcessingContext>());
             controlProcessor.DidNotReceive().Process(Arg.Is<Control>(c => c.Name == "save"), Arg.Any<IProcessingContext>());
+
+            Assert.Single(childrenContexts);
         }
     }
 }

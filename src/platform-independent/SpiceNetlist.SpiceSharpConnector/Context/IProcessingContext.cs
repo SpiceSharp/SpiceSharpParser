@@ -18,9 +18,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         IProcessingContext Parent { get;  }
 
         /// <summary>
+        /// Gets the children of the processing context
+        /// </summary>
+        ICollection<IProcessingContext> Children { get; }
+
+        /// <summary>
         /// Gets the list of available subcircuit for the context
         /// </summary>
-        List<SubCircuit> AvailableSubcircuits { get; }
+        ICollection<SubCircuit> AvailableSubcircuits { get; }
 
         /// <summary>
         /// Gets the evaluator for the context

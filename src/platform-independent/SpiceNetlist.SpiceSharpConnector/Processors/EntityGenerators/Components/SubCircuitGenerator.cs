@@ -53,6 +53,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             CreateSubcircuitComponents(subCircuitDefiniton, subCircuitContext);
             ProcessParamControl(subCircuitDefiniton, subCircuitContext);
 
+            context.Children.Add(subCircuitContext);
+
             // TODO: null is intentional
             return null;
         }
@@ -125,7 +127,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             }
 
             string subCircuitDefinionName = parameters.GetString(parameters.Count - assigmentParametersCount - 1);
-            var result = context.AvailableSubcircuits.Find(pred => pred.Name == subCircuitDefinionName);
+            var result = context.AvailableSubcircuits.ToList().Find(pred => pred.Name == subCircuitDefinionName);
 
             if (result == null)
             {

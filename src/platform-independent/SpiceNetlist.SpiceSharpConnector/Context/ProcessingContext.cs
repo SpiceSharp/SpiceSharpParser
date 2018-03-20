@@ -38,8 +38,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
 
             if (Parent != null)
             {
-                AvailableSubcircuits.AddRange(Parent.AvailableSubcircuits);
+                AvailableSubcircuits = new List<SubCircuit>(Parent.AvailableSubcircuits);
             }
+            else
+            {
+                AvailableSubcircuits = new List<SubCircuit>();
+            }
+
+            Children = new List<IProcessingContext>();
         }
 
         /// <summary>
@@ -55,7 +61,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         /// <summary>
         /// Gets available subcircuits in context
         /// </summary>
-        public List<SubCircuit> AvailableSubcircuits { get; } = new List<SubCircuit>();
+        public ICollection<SubCircuit> AvailableSubcircuits { get; }
 
         /// <summary>
         /// Gets or sets the evaluator
@@ -76,6 +82,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         /// Gets or sets the object name generator
         /// </summary>
         public IObjectNameGenerator ObjectNameGenerator { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the children of the processing context
+        /// </summary>
+        public ICollection<IProcessingContext> Children { get; protected set; }
 
         /// <summary>
         /// Sets voltage initial condition for node
