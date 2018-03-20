@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceSharpConnector.Context;
 using SpiceNetlist.SpiceSharpConnector.Evaluation;
-using SpiceSharp;
+using SpiceNetlist.SpiceSharpConnector.Exceptions;
 using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
@@ -14,6 +13,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
     /// </summary>
     public class DCControl : SimulationControl
     {
+        /// <summary>
+        /// Gets the Spice type
+        /// </summary>
         public override string TypeName => "dc";
 
         /// <summary>
@@ -29,14 +31,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
                 case 0:
                     if (statement.Parameters.Count == 0)
                     {
-                        throw new Exception("Source st.Name expected");
+                        throw new WrongParametersCountException(".dc - Source Name expected");
                     }
 
                     break;
 
-                case 1: throw new Exception("Start value expected");
-                case 2: throw new Exception("Stop value expected");
-                case 3: throw new Exception("Step value expected");
+                case 1: throw new WrongParametersCountException(".dc - Start value expected");
+                case 2: throw new WrongParametersCountException(".dc - Stop value expected");
+                case 3: throw new WrongParametersCountException(".dc - Step value expected");
             }
 
             // Format: .DC SRCNAM VSTART VSTOP VINCR [SRC2 START2 STOP2 INCR2]
@@ -45,16 +47,16 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
             for (int i = 0; i < count; i++)
             {
                 SweepConfiguration sweep = new SweepConfiguration(
-                    statement.Parameters.GetString(4 * i).ToLower(),
-                    context.ParseDouble(statement.Parameters.GetString((4 * i) + 1).ToLower()),
-                    context.ParseDouble(statement.Parameters.GetString((4 * i) + 2).ToLower()),
-                    context.ParseDouble(statement.Parameters.GetString((4 * i) + 3).ToLower()));
+                    statement.Parameters.GetString(4 * i),
+                    context.ParseDouble(statement.Parameters.GetString((4 * i) + 1)),
+                    context.ParseDouble(statement.Parameters.GetString((4 * i) + 2)),
+                    context.ParseDouble(statement.Parameters.GetString((4 * i) + 3)));
 
                 sweeps.Add(sweep);
             }
 
             DC dc = new DC((context.Result.Simulations.Count() + 1) + " - DC", sweeps);
-            dc.OnParameterSearch += (sender, e) => 
+            dc.OnParameterSearch += (sender, e) =>
             {
                 string sweepParameterName = e.Name.Name;
                 if (context.Evaluator.HasParameter(sweepParameterName))
