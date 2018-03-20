@@ -2,11 +2,12 @@
 using System.Linq;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
+using SpiceNetlist.SpiceSharpConnector.Context;
+using SpiceNetlist.SpiceSharpConnector.Exceptions;
 using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Plots;
 using SpiceNetlist.SpiceSharpConnector.Registries;
 using SpiceSharp.Parser.Readers;
 using SpiceSharp.Simulations;
-using SpiceNetlist.SpiceSharpConnector.Context;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
 {
@@ -22,7 +23,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
         /// <param name="registry">The exporter registry</param>
         public PlotControl(IExporterRegistry registry)
         {
-            Registry = registry;
+            Registry = registry ?? throw new System.ArgumentNullException(nameof(registry));
         }
 
         /// <summary>
@@ -36,13 +37,33 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
         protected IExporterRegistry Registry { get; }
 
         /// <summary>
+        /// Gets the supported plot types
+        /// </summary>
+        protected ICollection<string> SupportedPlotTypes { get; } = new List<string>() { "dc", "ac", "tran" };
+
+        /// <summary>
         /// Processes <see cref="Control"/> statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
         public override void Process(Control statement, IProcessingContext context)
         {
+            if (context == null)
+            {
+                throw new System.ArgumentNullException(nameof(context));
+            }
+
+            if (statement == null)
+            {
+                throw new System.ArgumentNullException(nameof(statement));
+            }
+
             string type = statement.Parameters[0].Image.ToLower();
+
+            if (!SupportedPlotTypes.Contains(type))
+            {
+                throw new GeneralConnectorException(".plot supports only dc, ac, tran plots");
+            }
 
             foreach (var simulation in context.Result.Simulations)
             {
@@ -92,7 +113,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                     if (dc.Sweeps.Count > 1)
                     {
                         // TODO: Add support for DC Sweeps > 1
-                        throw new System.Exception("DC Sweeps > 1");
+                        throw new GeneralConnectorException(".plot dc doesn't support sweep count > 1");
                     }
 
                     x = e.SweepValue;
@@ -130,7 +151,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls
                 return Registry.Get(type).CreateExport(type, parameter.Parameters, simulation, context);
             }
 
-            throw new System.Exception("Unsuported save");
+            throw new GeneralConnectorException(".plot - Unsuported export:" + type);
         }
     }
 }

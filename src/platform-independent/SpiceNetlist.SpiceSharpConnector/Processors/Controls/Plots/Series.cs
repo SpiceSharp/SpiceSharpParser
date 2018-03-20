@@ -10,6 +10,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Plots
         /// <summary>
         /// Initializes a new instance of the <see cref="Series"/> class.
         /// </summary>
+        /// <param name="name">Name of the series</param>
         public Series(string name)
         {
             Points = new List<Point>();
@@ -27,12 +28,12 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Plots
         public string Name { get; }
 
         /// <summary>
-        /// Gets the x-unit
+        /// Gets or sets the x-unit
         /// </summary>
         public string XUnit { get; set; }
 
         /// <summary>
-        /// Gets the y-unit
+        /// Gets or sets the y-unit
         /// </summary>
         public string YUnit { get; set; }
     }

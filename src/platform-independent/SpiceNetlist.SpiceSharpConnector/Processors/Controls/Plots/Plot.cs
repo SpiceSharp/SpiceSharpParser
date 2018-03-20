@@ -28,7 +28,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Plots
         /// </summary>
         public List<Series> Series { get; }
 
-
+        /// <summary>
+        /// Exports the plot's series to CSV
+        /// </summary>
+        /// <param name="seriesIndex">An index of series to export</param>
+        /// <returns>
+        /// A string with CSV
+        /// </returns>
         public string ExportToCSV(int seriesIndex = 0)
         {
             StringBuilder builder = new StringBuilder();
