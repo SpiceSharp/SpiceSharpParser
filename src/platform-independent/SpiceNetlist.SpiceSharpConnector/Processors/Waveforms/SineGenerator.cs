@@ -1,6 +1,7 @@
 ﻿using SpiceNetlist.SpiceObjects.Parameters;
-using SpiceSharp.Components;
 using SpiceNetlist.SpiceSharpConnector.Context;
+using SpiceNetlist.SpiceSharpConnector.Exceptions;
+using SpiceSharp.Components;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Waveforms
 {
@@ -23,11 +24,26 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Waveforms
         {
             var sine = new Sine();
 
-            sine.Offset.Value = context.ParseDouble(bracketParameter.Parameters.GetString(0));
-            sine.Amplitude.Value = context.ParseDouble(bracketParameter.Parameters.GetString(1));
-            sine.Frequency.Value = context.ParseDouble(bracketParameter.Parameters.GetString(2));
-            sine.Delay.Value = context.ParseDouble(bracketParameter.Parameters.GetString(3));
-            sine.Theta.Value = context.ParseDouble(bracketParameter.Parameters.GetString(4));
+            if (bracketParameter.Parameters.Count < 3 || bracketParameter.Parameters.Count > 5)
+            {
+                throw new WrongParametersCountException("Wrong parameters count for sine. There must be 3,4 or 5 parameters");
+            }
+            else
+            {
+                sine.Offset.Value = context.ParseDouble(bracketParameter.Parameters.GetString(0));
+                sine.Amplitude.Value = context.ParseDouble(bracketParameter.Parameters.GetString(1));
+                sine.Frequency.Value = context.ParseDouble(bracketParameter.Parameters.GetString(2));
+            }
+
+            if (bracketParameter.Parameters.Count >= 4)
+            {
+                sine.Delay.Value = context.ParseDouble(bracketParameter.Parameters.GetString(3));
+            }
+
+            if (bracketParameter.Parameters.Count == 5)
+            {
+                sine.Theta.Value = context.ParseDouble(bracketParameter.Parameters.GetString(4));
+            }
 
             return sine;
         }
