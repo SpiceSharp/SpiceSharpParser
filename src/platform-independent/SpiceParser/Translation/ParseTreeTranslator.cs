@@ -19,41 +19,41 @@ namespace SpiceParser.Translation
         /// <summary>
         /// The dictionary with tree node values
         /// </summary>
-        private Dictionary<ParseTreeNode, ParseTreeNodeEvaluationValue> treeNodesValues = new Dictionary<ParseTreeNode, ParseTreeNodeEvaluationValue>();
+        private Dictionary<ParseTreeNode, ParseTreeNodeTranslationValue> treeNodesValues = new Dictionary<ParseTreeNode, ParseTreeNodeTranslationValue>();
 
         /// <summary>
         /// The dictionary with non-terminal nodes evaluators
         /// </summary>
-        private Dictionary<string, Func<ParseTreeNodeEvaluationValues, SpiceObject>> translators = new Dictionary<string, Func<ParseTreeNodeEvaluationValues, SpiceObject>>();
+        private Dictionary<string, Func<ParseTreeNodeTranslationValues, SpiceObject>> translators = new Dictionary<string, Func<ParseTreeNodeTranslationValues, SpiceObject>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ParseTreeTranslator"/> class.
         /// </summary>
         public ParseTreeTranslator()
         {
-            translators.Add(SpiceGrammarSymbol.START, (ParseTreeNodeEvaluationValues nt) => CreateNetlist(nt));
-            translators.Add(SpiceGrammarSymbol.STATEMENTS, (ParseTreeNodeEvaluationValues nt) => CreateStatements(nt));
-            translators.Add(SpiceGrammarSymbol.STATEMENT, (ParseTreeNodeEvaluationValues nt) => CreateStatement(nt));
-            translators.Add(SpiceGrammarSymbol.MODEL, (ParseTreeNodeEvaluationValues nt) => CreateModel(nt));
-            translators.Add(SpiceGrammarSymbol.CONTROL, (ParseTreeNodeEvaluationValues nt) => CreateControl(nt));
-            translators.Add(SpiceGrammarSymbol.COMPONENT, (ParseTreeNodeEvaluationValues nt) => CreateComponent(nt));
-            translators.Add(SpiceGrammarSymbol.PARAMETERS, (ParseTreeNodeEvaluationValues nt) => CreateParameters(nt));
-            translators.Add(SpiceGrammarSymbol.PARAMETER, (ParseTreeNodeEvaluationValues nt) => CreateParameter(nt));
-            translators.Add(SpiceGrammarSymbol.VECTOR, (ParseTreeNodeEvaluationValues nt) => CreateVector(nt));
-            translators.Add(SpiceGrammarSymbol.VECTOR_CONTINUE, (ParseTreeNodeEvaluationValues nt) => CreateVectorContinue(nt));
-            translators.Add(SpiceGrammarSymbol.PARAMETER_BRACKET, (ParseTreeNodeEvaluationValues nt) => CreateBracketParameter(nt));
-            translators.Add(SpiceGrammarSymbol.PARAMETER_BRACKET_CONTENT, (ParseTreeNodeEvaluationValues nt) => CreateBracketParameterContent(nt));
-            translators.Add(SpiceGrammarSymbol.PARAMETER_EQUAL, (ParseTreeNodeEvaluationValues nt) => CreateAssigmentParameter(nt));
-            translators.Add(SpiceGrammarSymbol.PARAMETER_EQUAL_SINGLE, (ParseTreeNodeEvaluationValues nt) => CreateAssigmentSimpleParameter(nt));
-            translators.Add(SpiceGrammarSymbol.PARAMETER_EQUAL_SEQUANCE, (ParseTreeNodeEvaluationValues nt) => CreateAssigmentParameters(nt));
-            translators.Add(SpiceGrammarSymbol.PARAMETER_EQUAL_SEQUANCE_CONTINUE, (ParseTreeNodeEvaluationValues nt) => CreateAssigmentParametersContinue(nt));
-            translators.Add(SpiceGrammarSymbol.PARAMETER_SINGLE_SEQUENCE, (ParseTreeNodeEvaluationValues nt) => CreateSingleParameters(nt));
-            translators.Add(SpiceGrammarSymbol.PARAMETER_SINGLE_SEQUENCE_CONTINUE, (ParseTreeNodeEvaluationValues nt) => CreateSingleParametersContinue(nt));
-            translators.Add(SpiceGrammarSymbol.PARAMETER_SINGLE, (ParseTreeNodeEvaluationValues nt) => CreateParameterSingle(nt));
-            translators.Add(SpiceGrammarSymbol.SUBCKT, (ParseTreeNodeEvaluationValues nt) => CreateSubCircuit(nt));
-            translators.Add(SpiceGrammarSymbol.SUBCKT_ENDING, (ParseTreeNodeEvaluationValues nt) => null);
-            translators.Add(SpiceGrammarSymbol.COMMENT_LINE, (ParseTreeNodeEvaluationValues nt) => CreateComment(nt));
-            translators.Add(SpiceGrammarSymbol.NEW_LINE_OR_EOF, (ParseTreeNodeEvaluationValues nt) => null);
+            translators.Add(SpiceGrammarSymbol.START, (ParseTreeNodeTranslationValues nt) => CreateNetlist(nt));
+            translators.Add(SpiceGrammarSymbol.STATEMENTS, (ParseTreeNodeTranslationValues nt) => CreateStatements(nt));
+            translators.Add(SpiceGrammarSymbol.STATEMENT, (ParseTreeNodeTranslationValues nt) => CreateStatement(nt));
+            translators.Add(SpiceGrammarSymbol.MODEL, (ParseTreeNodeTranslationValues nt) => CreateModel(nt));
+            translators.Add(SpiceGrammarSymbol.CONTROL, (ParseTreeNodeTranslationValues nt) => CreateControl(nt));
+            translators.Add(SpiceGrammarSymbol.COMPONENT, (ParseTreeNodeTranslationValues nt) => CreateComponent(nt));
+            translators.Add(SpiceGrammarSymbol.PARAMETERS, (ParseTreeNodeTranslationValues nt) => CreateParameters(nt));
+            translators.Add(SpiceGrammarSymbol.PARAMETER, (ParseTreeNodeTranslationValues nt) => CreateParameter(nt));
+            translators.Add(SpiceGrammarSymbol.VECTOR, (ParseTreeNodeTranslationValues nt) => CreateVector(nt));
+            translators.Add(SpiceGrammarSymbol.VECTOR_CONTINUE, (ParseTreeNodeTranslationValues nt) => CreateVectorContinue(nt));
+            translators.Add(SpiceGrammarSymbol.PARAMETER_BRACKET, (ParseTreeNodeTranslationValues nt) => CreateBracketParameter(nt));
+            translators.Add(SpiceGrammarSymbol.PARAMETER_BRACKET_CONTENT, (ParseTreeNodeTranslationValues nt) => CreateBracketParameterContent(nt));
+            translators.Add(SpiceGrammarSymbol.PARAMETER_EQUAL, (ParseTreeNodeTranslationValues nt) => CreateAssigmentParameter(nt));
+            translators.Add(SpiceGrammarSymbol.PARAMETER_EQUAL_SINGLE, (ParseTreeNodeTranslationValues nt) => CreateAssigmentSimpleParameter(nt));
+            translators.Add(SpiceGrammarSymbol.PARAMETER_EQUAL_SEQUANCE, (ParseTreeNodeTranslationValues nt) => CreateAssigmentParameters(nt));
+            translators.Add(SpiceGrammarSymbol.PARAMETER_EQUAL_SEQUANCE_CONTINUE, (ParseTreeNodeTranslationValues nt) => CreateAssigmentParametersContinue(nt));
+            translators.Add(SpiceGrammarSymbol.PARAMETER_SINGLE_SEQUENCE, (ParseTreeNodeTranslationValues nt) => CreateSingleParameters(nt));
+            translators.Add(SpiceGrammarSymbol.PARAMETER_SINGLE_SEQUENCE_CONTINUE, (ParseTreeNodeTranslationValues nt) => CreateSingleParametersContinue(nt));
+            translators.Add(SpiceGrammarSymbol.PARAMETER_SINGLE, (ParseTreeNodeTranslationValues nt) => CreateParameterSingle(nt));
+            translators.Add(SpiceGrammarSymbol.SUBCKT, (ParseTreeNodeTranslationValues nt) => CreateSubCircuit(nt));
+            translators.Add(SpiceGrammarSymbol.SUBCKT_ENDING, (ParseTreeNodeTranslationValues nt) => null);
+            translators.Add(SpiceGrammarSymbol.COMMENT_LINE, (ParseTreeNodeTranslationValues nt) => CreateComment(nt));
+            translators.Add(SpiceGrammarSymbol.NEW_LINE_OR_EOF, (ParseTreeNodeTranslationValues nt) => null);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace SpiceParser.Translation
             {
                 if (treeNode is ParseTreeNonTerminalNode nt)
                 {
-                    var items = new ParseTreeNodeEvaluationValues();
+                    var items = new ParseTreeNodeTranslationValues();
 
                     foreach (var child in nt.Children)
                     {
@@ -86,7 +86,7 @@ namespace SpiceParser.Translation
                     }
 
                     var treeNodeResult = translators[nt.Name](items);
-                    treeNodesValues[treeNode] = new ParseTreeNonTerminalEvaluationValue
+                    treeNodesValues[treeNode] = new ParseTreeNonTerminalTranslationValue
                     {
                         SpiceObject = treeNodeResult,
                         Node = treeNode
@@ -94,7 +94,7 @@ namespace SpiceParser.Translation
                 }
                 else
                 {
-                    treeNodesValues[treeNode] = new ParseTreeNodeTerminalEvaluationValue()
+                    treeNodesValues[treeNode] = new ParseTreeNodeTerminalTranslationValue()
                     {
                         Node = treeNode,
                         Token = ((ParseTreeTerminalNode)treeNode).Token
@@ -102,7 +102,7 @@ namespace SpiceParser.Translation
                 }
             }
 
-            if (treeNodesValues[root] is ParseTreeNonTerminalEvaluationValue rootNt)
+            if (treeNodesValues[root] is ParseTreeNonTerminalTranslationValue rootNt)
             {
                 return rootNt.SpiceObject;
             }
@@ -119,7 +119,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A new instance of <see cref="Netlist"/>
         /// </returns>
-        private SpiceObject CreateNetlist(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateNetlist(ParseTreeNodeTranslationValues values)
         {
             return new Netlist()
             {
@@ -138,7 +138,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A new instance of <see cref="SingleParameter"/>
         /// </returns>
-        private SpiceObject CreateParameter(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateParameter(ParseTreeNodeTranslationValues values)
         {
             if (values.Count == 1)
             {
@@ -175,9 +175,9 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A new instance of <see cref="SingleParameter"/>
         /// </returns>
-        private SpiceObject CreateParameterSingle(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateParameterSingle(ParseTreeNodeTranslationValues values)
         {
-            if (values[0] is ParseTreeNodeTerminalEvaluationValue t)
+            if (values[0] is ParseTreeNodeTerminalTranslationValue t)
             {
                 var lexemValue = t.Token.Lexem;
                 switch (t.Token.TokenType)
@@ -205,7 +205,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A new instance of <see cref="ParameterCollection"/>
         /// </returns>
-        private SpiceObject CreateParameters(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateParameters(ParseTreeNodeTranslationValues values)
         {
             var parameters = new ParameterCollection();
 
@@ -225,7 +225,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A new instance of <see cref="Component"/>
         /// </returns>
-        private SpiceObject CreateComponent(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateComponent(ParseTreeNodeTranslationValues values)
         {
             if (values.Count != 2 && values.Count != 3)
             {
@@ -246,7 +246,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A new instance of <see cref="Control"/>
         /// </returns>
-        private SpiceObject CreateControl(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateControl(ParseTreeNodeTranslationValues values)
         {
             var control = new Control();
             control.Name = values.GetLexem(1);
@@ -262,7 +262,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A new instance of <see cref="SubCircuit"/>
         /// </returns>
-        private SpiceObject CreateSubCircuit(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateSubCircuit(ParseTreeNodeTranslationValues values)
         {
             if (values.Count < 3)
             {
@@ -322,7 +322,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A new instance of <see cref="CommentLine"/>
         /// </returns>
-        private SpiceObject CreateComment(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateComment(ParseTreeNodeTranslationValues values)
         {
             var comment = new CommentLine();
             comment.Text = values.GetLexem(1);
@@ -337,7 +337,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A instance of <see cref="Statement"/>
         /// </returns>
-        private SpiceObject CreateStatement(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateStatement(ParseTreeNodeTranslationValues values)
         {
             if (values.Count == 1)
             {
@@ -354,7 +354,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A new instance of <see cref="Model"/>
         /// </returns>
-        private SpiceObject CreateModel(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateModel(ParseTreeNodeTranslationValues values)
         {
             var model = new Model();
             model.Name = values.GetLexem(2);
@@ -370,7 +370,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A new instance of <see cref="VectorParameter"/>
         /// </returns>
-        private SpiceObject CreateVector(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateVector(ParseTreeNodeTranslationValues values)
         {
             var vector = new VectorParameter();
 
@@ -391,7 +391,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A new instance of <see cref="VectorParameter"/>
         /// </returns>
-        private SpiceObject CreateVectorContinue(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateVectorContinue(ParseTreeNodeTranslationValues values)
         {
             var vector = new VectorParameter();
 
@@ -411,7 +411,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A new instance of <see cref="BracketParameter"/>
         /// </returns>
-        private SpiceObject CreateBracketParameter(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateBracketParameter(ParseTreeNodeTranslationValues values)
         {
             var parameter = new BracketParameter();
             if (values.Count == 4)
@@ -434,7 +434,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A new instance of <see cref="ParameterCollection"/>
         /// </returns>
-        private SpiceObject CreateBracketParameterContent(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateBracketParameterContent(ParseTreeNodeTranslationValues values)
         {
             var parameters = new ParameterCollection();
 
@@ -462,7 +462,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A new instance of <see cref="ParameterCollection"/>
         /// </returns>
-        private SpiceObject CreateAssigmentParametersContinue(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateAssigmentParametersContinue(ParseTreeNodeTranslationValues values)
         {
             if (values.Count == 2)
             {
@@ -498,7 +498,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A new instance of <see cref="ParameterCollection"/>
         /// </returns>
-        private SpiceObject CreateAssigmentParameters(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateAssigmentParameters(ParseTreeNodeTranslationValues values)
         {
             if (values.Count == 2)
             {
@@ -529,7 +529,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A new instance of <see cref="ParameterCollection"/>
         /// </returns>
-        private SpiceObject CreateSingleParametersContinue(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateSingleParametersContinue(ParseTreeNodeTranslationValues values)
         {
             if (values.Count == 2)
             {
@@ -565,7 +565,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A new instance of <see cref="ParameterCollection"/>
         /// </returns>
-        private SpiceObject CreateSingleParameters(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateSingleParameters(ParseTreeNodeTranslationValues values)
         {
             if (values.Count == 2)
             {
@@ -596,7 +596,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A new instance of <see cref="AssignmentParameter"/>
         /// </returns>
-        private SpiceObject CreateAssigmentSimpleParameter(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateAssigmentSimpleParameter(ParseTreeNodeTranslationValues values)
         {
             if (values.Count == 3)
             {
@@ -619,7 +619,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A instance of <see cref="AssignmentParameter"/>
         /// </returns>
-        private SpiceObject CreateAssigmentParameter(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateAssigmentParameter(ParseTreeNodeTranslationValues values)
         {
             if (values.Count == 1)
             {
@@ -642,7 +642,7 @@ namespace SpiceParser.Translation
                 {
                     // v(2,3) = 4
                     var assigmentParameter = new AssignmentParameter();
-                    assigmentParameter.Name = (values[0] as ParseTreeNodeTerminalEvaluationValue).Token.Lexem;
+                    assigmentParameter.Name = (values[0] as ParseTreeNodeTerminalTranslationValue).Token.Lexem;
                     assigmentParameter.Arguments.Add(values.GetSpiceObject<SingleParameter>(2).Image);
                     assigmentParameter.Arguments.Add(values.GetSpiceObject<SingleParameter>(4).Image);
                     assigmentParameter.Value = values.GetSpiceObject<SingleParameter>(7).Image;
@@ -661,7 +661,7 @@ namespace SpiceParser.Translation
         /// <returns>
         /// A new instance of <see cref="Statements"/>
         /// </returns>
-        private SpiceObject CreateStatements(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateStatements(ParseTreeNodeTranslationValues values)
         {
             var statements = new Statements();
 

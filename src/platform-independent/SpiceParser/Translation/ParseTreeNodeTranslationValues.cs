@@ -6,12 +6,12 @@ using SpiceParser.Exceptions;
 namespace SpiceParser.Translation
 {
     /// <summary>
-    /// A collection of <see cref="ParseTreeNodeEvaluationValue"/> items.
+    /// A collection of <see cref="ParseTreeNodeTranslationValue"/> items.
     /// </summary>
-    public class ParseTreeNodeEvaluationValues : List<ParseTreeNodeEvaluationValue>
+    public class ParseTreeNodeTranslationValues : List<ParseTreeNodeTranslationValue>
     {
         /// <summary>
-        /// Gets lexem from the <see cref="ParseTreeNodeEvaluationValue"/> at the specied index
+        /// Gets lexem from the <see cref="ParseTreeNodeTranslationValue"/> at the specied index
         /// </summary>
         /// <param name="index">An index of the item</param>
         /// <returns>
@@ -19,7 +19,7 @@ namespace SpiceParser.Translation
         /// </returns>
         public string GetLexem(int index)
         {
-            if (this[index] is ParseTreeNodeTerminalEvaluationValue t)
+            if (this[index] is ParseTreeNodeTerminalTranslationValue t)
             {
                 return t.Token.Lexem;
             }
@@ -28,7 +28,7 @@ namespace SpiceParser.Translation
         }
 
         /// <summary>
-        /// Gets line number from the <see cref="ParseTreeNodeEvaluationValue"/> at the specied index
+        /// Gets line number from the <see cref="ParseTreeNodeTranslationValue"/> at the specied index
         /// </summary>
         /// <param name="index">An index of the item</param>
         /// <returns>
@@ -36,7 +36,7 @@ namespace SpiceParser.Translation
         /// </returns>
         public int GetLexemLineNumber(int index)
         {
-            if (this[index] is ParseTreeNodeTerminalEvaluationValue t)
+            if (this[index] is ParseTreeNodeTerminalTranslationValue t)
             {
                 return t.Token.LineNumber;
             }
@@ -45,7 +45,7 @@ namespace SpiceParser.Translation
         }
 
         /// <summary>
-        /// Tries to gets a <see cref="SpiceToken"/> from specific <see cref="ParseTreeNodeEvaluationValue"/> item
+        /// Tries to gets a <see cref="SpiceToken"/> from specific <see cref="ParseTreeNodeTranslationValue"/> item
         /// </summary>
         /// <param name="index">An index of the item</param>
         /// <param name="result">A spice token</param>
@@ -54,7 +54,7 @@ namespace SpiceParser.Translation
         /// </returns>
         public bool TryToGetToken(int index, out SpiceToken result)
         {
-            if (this[index] is ParseTreeNodeTerminalEvaluationValue t)
+            if (this[index] is ParseTreeNodeTerminalTranslationValue t)
             {
                 result = t.Token;
                 return true;
@@ -65,7 +65,7 @@ namespace SpiceParser.Translation
         }
 
         /// <summary>
-        /// Tries to gets a <see cref="SpiceObject"/> from specific <see cref="ParseTreeNodeEvaluationValue"/> item
+        /// Tries to gets a <see cref="SpiceObject"/> from specific <see cref="ParseTreeNodeTranslationValue"/> item
         /// </summary>
         /// <param name="index">An index of the item</param>
         /// <param name="result">A spice token</param>
@@ -75,7 +75,7 @@ namespace SpiceParser.Translation
         public bool TryToGetSpiceObject<T>(int index, out T result)
             where T : SpiceObject
         {
-            if (this[index] is ParseTreeNonTerminalEvaluationValue nt && nt.SpiceObject is T)
+            if (this[index] is ParseTreeNonTerminalTranslationValue nt && nt.SpiceObject is T)
             {
                 result = (T)nt.SpiceObject;
                 return true;
@@ -86,7 +86,7 @@ namespace SpiceParser.Translation
         }
 
         /// <summary>
-        /// Gets a <see cref="SpiceObject"/> from specific <see cref="ParseTreeNodeEvaluationValue"/> item
+        /// Gets a <see cref="SpiceObject"/> from specific <see cref="ParseTreeNodeTranslationValue"/> item
         /// </summary>
         /// <typeparam name="T">Type of <see cref="SpiceObject"/> to look</typeparam>
         /// <param name="index">An index of the item</param>
@@ -96,7 +96,7 @@ namespace SpiceParser.Translation
         public T GetSpiceObject<T>(int index)
             where T : SpiceObject
         {
-            if (this[index] is ParseTreeNonTerminalEvaluationValue nt)
+            if (this[index] is ParseTreeNonTerminalTranslationValue nt)
             {
                 if (nt.SpiceObject is T)
                 {

@@ -5,7 +5,7 @@ namespace SpiceParser.Translation
     /// <summary>
     /// The tree node evaluation value
     /// </summary>
-    public abstract class ParseTreeNodeEvaluationValue
+    public abstract class ParseTreeNodeTranslationValue
     {
         /// <summary>
         /// Gets or sets reference to the parse tree node

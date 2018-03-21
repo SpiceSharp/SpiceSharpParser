@@ -5,7 +5,7 @@ namespace SpiceParser.Translation
     /// <summary>
     /// The terminal parse tree node evaluation value
     /// </summary>
-    public class ParseTreeNodeTerminalEvaluationValue : ParseTreeNodeEvaluationValue
+    public class ParseTreeNodeTerminalTranslationValue : ParseTreeNodeTranslationValue
     {
         /// <summary>
         /// Gets or sets value of terminal node

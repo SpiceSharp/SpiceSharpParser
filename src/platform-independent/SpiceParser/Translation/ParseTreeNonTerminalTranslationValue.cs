@@ -5,7 +5,7 @@ namespace SpiceParser.Translation
     /// <summary>
     /// The non-terminal tree node evaluation value
     /// </summary>
-    public class ParseTreeNonTerminalEvaluationValue : ParseTreeNodeEvaluationValue
+    public class ParseTreeNonTerminalTranslationValue : ParseTreeNodeTranslationValue
     {
         /// <summary>
         /// Gets or sets the value of non-terminal node
