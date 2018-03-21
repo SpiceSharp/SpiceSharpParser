@@ -2,6 +2,7 @@
 using SpiceNetlist.SpiceSharpConnector;
 using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Plots;
 using SpiceParser;
+using SpiceParser.Translation;
 using System;
 using System.Linq;
 
@@ -15,9 +16,9 @@ namespace SpiceNetlist.Runner
             var tokensEnumerable = lexer.GetTokens(text);
             var tokens = tokensEnumerable.ToArray();
 
-            var parseTree = new SpiceParser.SpiceParser().GetParseTree(tokens);
+            var parseTree = new SpiceParser.Parsing.Parser().GetParseTree(tokens);
 
-            var eval = new ParseTreeEvaluator();
+            var eval = new ParseTreeTranslator();
             var netlistObjectModel = eval.Evaluate(parseTree) as SpiceNetlist.Netlist;
 
             var connector = new Connector();

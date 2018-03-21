@@ -1,11 +1,11 @@
 ﻿using SpiceLexer;
 
-namespace SpiceParser.Evaluation
+namespace SpiceParser.Translation
 {
     /// <summary>
     /// The terminal parse tree node evaluation value
     /// </summary>
-    public class TerminalEvaluationValue : EvaluationValue
+    public class ParseTreeNodeTerminalEvaluationValue : ParseTreeNodeEvaluationValue
     {
         /// <summary>
         /// Gets or sets value of terminal node

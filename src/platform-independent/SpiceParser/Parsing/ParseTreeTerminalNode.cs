@@ -1,6 +1,6 @@
 ﻿using SpiceLexer;
 
-namespace SpiceParser
+namespace SpiceParser.Parsing
 {
     /// <summary>
     /// Terminal node in parse tree. It contains a token

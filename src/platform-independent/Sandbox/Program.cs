@@ -8,8 +8,8 @@
     using SpiceLexer;
     using SpiceNetlist.SpiceSharpConnector;
     using SpiceParser;
-    using SpiceSharp.Parser.Readers;
-    using SpiceSharp.Simulations;
+    using SpiceParser.Parsing;
+    using SpiceParser.Translation;
 
     public class Program
     {
@@ -47,12 +47,12 @@ C1 OUT 0 {C*1u}
 
             var s1 = new Stopwatch();
             s1.Start();
-            var parseTree = new SpiceParser().GetParseTree(tokens);
+            var parseTree = new Parser().GetParseTree(tokens);
             Console.WriteLine("Parse tree generated: " + s1.ElapsedMilliseconds + "ms");
 
             var s2 = new Stopwatch();
             s2.Start();
-            var eval = new ParseTreeEvaluator();
+            var eval = new ParseTreeTranslator();
             var netlist = eval.Evaluate(parseTree) as SpiceNetlist.Netlist;
             Console.WriteLine("Translating to Netlist Object Model:" + s2.ElapsedMilliseconds + "ms");
 

@@ -1,5 +1,7 @@
 ﻿using SpiceLexer;
 using SpiceParser;
+using SpiceParser.Parsing;
+using SpiceParser.Translation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,9 +28,9 @@ namespace SpiceNetlist.SpiceSharpConnector.IntegrationTests
             var tokensEnumerable = lexer.GetTokens(text);
             var tokens = tokensEnumerable.ToArray();
 
-            var parseTree = new SpiceParser.SpiceParser().GetParseTree(tokens);
+            var parseTree = new Parser().GetParseTree(tokens);
 
-            var eval = new ParseTreeEvaluator();
+            var eval = new ParseTreeTranslator();
             var netlistObjectModel = eval.Evaluate(parseTree) as SpiceNetlist.Netlist;
 
             var connector = new Connector();

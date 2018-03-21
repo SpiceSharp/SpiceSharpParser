@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SpiceParser
+namespace SpiceParser.Parsing
 {
     /// <summary>
     /// Allows to enumerate parse tree nodes in specific orders

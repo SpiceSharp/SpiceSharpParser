@@ -2,11 +2,13 @@
 using SpiceLexer;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
+using SpiceParser.Parsing;
+using SpiceParser.Translation;
 using Xunit;
 
 namespace SpiceParser.Tests
 {
-    public class ParseTreeEvaluatorTest
+    public class ParseTreeParseTreeEvaluatorTest
     {
         [Fact]
         public void VectorTest()
@@ -21,11 +23,11 @@ namespace SpiceParser.Tests
                 new SpiceToken(SpiceTokenType.VALUE, "3"),
             };
 
-            var parser = new SpiceParser();
+            var parser = new Parser();
             ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.VECTOR);
 
             // Act
-            ParseTreeEvaluator eval = new ParseTreeEvaluator();
+            ParseTreeTranslator eval = new ParseTreeTranslator();
             var spiceObject = eval.Evaluate(tree) as VectorParameter;
 
             Assert.Equal(3, spiceObject.Elements.Count);
@@ -46,11 +48,11 @@ namespace SpiceParser.Tests
                 new SpiceToken(SpiceTokenType.VALUE, "4"),
             };
 
-            var parser = new SpiceParser();
+            var parser = new Parser();
             ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.VECTOR);
 
             // Act
-            ParseTreeEvaluator eval = new ParseTreeEvaluator();
+            ParseTreeTranslator eval = new ParseTreeTranslator();
             var spiceObject = eval.Evaluate(tree) as VectorParameter;
 
             Assert.Equal(4, spiceObject.Elements.Count);
@@ -70,11 +72,11 @@ namespace SpiceParser.Tests
                 new SpiceToken(SpiceTokenType.DELIMITER, ")")
             };
 
-            var parser = new SpiceParser();
+            var parser = new Parser();
             ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
 
             // Act
-            ParseTreeEvaluator eval = new ParseTreeEvaluator();
+            ParseTreeTranslator eval = new ParseTreeTranslator();
             var spiceObject = eval.Evaluate(tree);
 
             // Assert
@@ -99,11 +101,11 @@ namespace SpiceParser.Tests
                 new SpiceToken(SpiceTokenType.DELIMITER, ")")
             };
 
-            var parser = new SpiceParser();
+            var parser = new Parser();
             ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
 
             // Act
-            ParseTreeEvaluator eval = new ParseTreeEvaluator();
+            ParseTreeTranslator eval = new ParseTreeTranslator();
             var spiceObject = eval.Evaluate(tree);
 
             // Assert
@@ -130,11 +132,11 @@ namespace SpiceParser.Tests
                 new SpiceToken(SpiceTokenType.VALUE, "13"),
             };
 
-            var parser = new SpiceParser();
+            var parser = new Parser();
             ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
 
             // Act
-            ParseTreeEvaluator eval = new ParseTreeEvaluator();
+            ParseTreeTranslator eval = new ParseTreeTranslator();
             var spiceObject = eval.Evaluate(tree);
 
             // Assert
@@ -161,11 +163,11 @@ namespace SpiceParser.Tests
                 new SpiceToken(SpiceTokenType.DELIMITER, ")")
             };
 
-            var parser = new SpiceParser();
+            var parser = new Parser();
             ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
 
             // Act
-            ParseTreeEvaluator eval = new ParseTreeEvaluator();
+            ParseTreeTranslator eval = new ParseTreeTranslator();
             var spiceObject = eval.Evaluate(tree);
 
             // Assert
@@ -188,11 +190,11 @@ namespace SpiceParser.Tests
                 new SpiceToken(SpiceTokenType.VALUE, "3MH"),
             };
 
-            var parser = new SpiceParser();
+            var parser = new Parser();
             ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.COMPONENT);
 
             // Act
-            ParseTreeEvaluator eval = new ParseTreeEvaluator();
+            ParseTreeTranslator eval = new ParseTreeTranslator();
             var spiceObject = eval.Evaluate(tree);
 
             // Assert

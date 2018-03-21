@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
 using SpiceGrammar;
 using SpiceLexer;
+using SpiceParser.Exceptions;
+using SpiceParser.Extensions;
 
-namespace SpiceParser
+namespace SpiceParser.Parsing
 {
     /// <summary>
     /// A parser for Spice netlist based on grammar from <see cref="SpiceGrammar"/> library.
     /// It's a manualy written LL(*) parser.
     /// </summary>
-    public class SpiceParser
+    public class Parser
     {
         /// <summary>
         /// Generates a parse tree for SPICE grammar
@@ -122,7 +124,7 @@ namespace SpiceParser
                     }
                     else
                     {
-                        throw new ParseException("Unexpected token: " + tokens[currentTokenIndex].Lexem + ", expected token type: " + tn.Token.SpiceTokenType + " line=" + tokens[currentTokenIndex].LineNumber, tokens[currentTokenIndex].LineNumber);
+                        throw new ParsingException("Unexpected token: " + tokens[currentTokenIndex].Lexem + ", expected token type: " + tn.Token.SpiceTokenType + " line=" + tokens[currentTokenIndex].LineNumber, tokens[currentTokenIndex].LineNumber);
                     }
                 }
             }
@@ -159,7 +161,7 @@ namespace SpiceParser
             }
             else
             {
-                throw new ParseException("Error during parsing subcircuit. Expected .ENDS. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                throw new ParsingException("Error during parsing subcircuit. Expected .ENDS. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
             }
         }
 
@@ -243,7 +245,7 @@ namespace SpiceParser
             }
             else
             {
-                throw new ParseException("Error during parsing statements. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                throw new ParsingException("Error during parsing statements. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
             }
         }
 
@@ -283,7 +285,7 @@ namespace SpiceParser
                 }
                 else
                 {
-                    throw new ParseException("Error during parsing a statement. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                    throw new ParsingException("Error during parsing a statement. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
                 }
             }
             else if (currentToken.Is(SpiceTokenType.ASTERIKS))
@@ -360,7 +362,7 @@ namespace SpiceParser
             }
             else
             {
-                throw new ParseException("Error during parsing a comment. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                throw new ParsingException("Error during parsing a comment. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
             }
         }
 
@@ -391,7 +393,7 @@ namespace SpiceParser
             }
             else
             {
-                throw new ParseException("Error during parsing a subcircuit. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                throw new ParsingException("Error during parsing a subcircuit. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
             }
         }
 
@@ -437,7 +439,7 @@ namespace SpiceParser
             }
             else
             {
-                throw new ParseException("Error during parsing parameters. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                throw new ParsingException("Error during parsing parameters. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
             }
         }
 
@@ -613,7 +615,7 @@ namespace SpiceParser
                 }
                 else
                 {
-                    throw new ParseException("Error during parsing a paremeter. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                    throw new ParsingException("Error during parsing a paremeter. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
                 }
             }
 
@@ -660,7 +662,7 @@ namespace SpiceParser
                     }
                     else
                     {
-                        throw new ParseException("Error during parsing a paremeter. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                        throw new ParsingException("Error during parsing a paremeter. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
                     }
                 }
             }
@@ -705,7 +707,7 @@ namespace SpiceParser
             }
             else
             {
-                throw new ParseException("Error during parsing a paremeter. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                throw new ParsingException("Error during parsing a paremeter. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
             }
         }
 
@@ -736,7 +738,7 @@ namespace SpiceParser
             }
             else
             {
-                throw new ParseException("Error during parsing a model, line=" + currentToken.LineNumber, currentToken.LineNumber);
+                throw new ParsingException("Error during parsing a model, line=" + currentToken.LineNumber, currentToken.LineNumber);
             }
         }
 
@@ -762,7 +764,7 @@ namespace SpiceParser
             }
             else
             {
-                throw new ParseException("Error during parsing a control. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                throw new ParsingException("Error during parsing a control. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
             }
         }
 
@@ -786,7 +788,7 @@ namespace SpiceParser
             }
             else
             {
-                throw new ParseException("Error during parsing a component. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                throw new ParsingException("Error during parsing a component. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
             }
         }
 

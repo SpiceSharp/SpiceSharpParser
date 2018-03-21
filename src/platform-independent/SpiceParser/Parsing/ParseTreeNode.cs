@@ -1,4 +1,4 @@
-﻿namespace SpiceParser
+﻿namespace SpiceParser.Parsing
 {
     /// <summary>
     /// A tree node in parse tree

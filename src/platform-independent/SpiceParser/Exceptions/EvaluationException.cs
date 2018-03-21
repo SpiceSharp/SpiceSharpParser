@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SpiceParser
+namespace SpiceParser.Exceptions
 {
     /// <summary>
     /// Exception during evaluating a parse tree

@@ -2,7 +2,7 @@
 using SpiceGrammar;
 using SpiceLexer;
 
-namespace SpiceParser
+namespace SpiceParser.Extensions
 {
     /// <summary>
     /// Extensions for <see cref="SpiceToken"/> class.

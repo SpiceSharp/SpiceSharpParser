@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SpiceParser
+namespace SpiceParser.Parsing
 {
     /// <summary>
     /// Non terminal node in parse tree
