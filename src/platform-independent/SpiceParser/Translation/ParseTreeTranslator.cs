@@ -31,7 +31,8 @@ namespace SpiceParser.Translation
         /// </summary>
         public ParseTreeTranslator()
         {
-            translators.Add(SpiceGrammarSymbol.START, (ParseTreeNodeTranslationValues nt) => CreateNetlist(nt));
+            translators.Add(SpiceGrammarSymbol.NETLIST, (ParseTreeNodeTranslationValues nt) => CreateNetlist(nt));
+            translators.Add(SpiceGrammarSymbol.NETLIST_ENDING, (ParseTreeNodeTranslationValues nt) => null);
             translators.Add(SpiceGrammarSymbol.STATEMENTS, (ParseTreeNodeTranslationValues nt) => CreateStatements(nt));
             translators.Add(SpiceGrammarSymbol.STATEMENT, (ParseTreeNodeTranslationValues nt) => CreateStatement(nt));
             translators.Add(SpiceGrammarSymbol.MODEL, (ParseTreeNodeTranslationValues nt) => CreateModel(nt));
@@ -45,15 +46,11 @@ namespace SpiceParser.Translation
             translators.Add(SpiceGrammarSymbol.PARAMETER_BRACKET_CONTENT, (ParseTreeNodeTranslationValues nt) => CreateBracketParameterContent(nt));
             translators.Add(SpiceGrammarSymbol.PARAMETER_EQUAL, (ParseTreeNodeTranslationValues nt) => CreateAssigmentParameter(nt));
             translators.Add(SpiceGrammarSymbol.PARAMETER_EQUAL_SINGLE, (ParseTreeNodeTranslationValues nt) => CreateAssigmentSimpleParameter(nt));
-            translators.Add(SpiceGrammarSymbol.PARAMETER_EQUAL_SEQUANCE, (ParseTreeNodeTranslationValues nt) => CreateAssigmentParameters(nt));
-            translators.Add(SpiceGrammarSymbol.PARAMETER_EQUAL_SEQUANCE_CONTINUE, (ParseTreeNodeTranslationValues nt) => CreateAssigmentParametersContinue(nt));
-            translators.Add(SpiceGrammarSymbol.PARAMETER_SINGLE_SEQUENCE, (ParseTreeNodeTranslationValues nt) => CreateSingleParameters(nt));
-            translators.Add(SpiceGrammarSymbol.PARAMETER_SINGLE_SEQUENCE_CONTINUE, (ParseTreeNodeTranslationValues nt) => CreateSingleParametersContinue(nt));
             translators.Add(SpiceGrammarSymbol.PARAMETER_SINGLE, (ParseTreeNodeTranslationValues nt) => CreateParameterSingle(nt));
             translators.Add(SpiceGrammarSymbol.SUBCKT, (ParseTreeNodeTranslationValues nt) => CreateSubCircuit(nt));
             translators.Add(SpiceGrammarSymbol.SUBCKT_ENDING, (ParseTreeNodeTranslationValues nt) => null);
             translators.Add(SpiceGrammarSymbol.COMMENT_LINE, (ParseTreeNodeTranslationValues nt) => CreateComment(nt));
-            translators.Add(SpiceGrammarSymbol.NEW_LINE_OR_EOF, (ParseTreeNodeTranslationValues nt) => null);
+            translators.Add(SpiceGrammarSymbol.NEW_LINE, (ParseTreeNodeTranslationValues nt) => null);
         }
 
         /// <summary>
@@ -114,7 +111,7 @@ namespace SpiceParser.Translation
 
         /// <summary>
         /// Returns new instance of <see cref="Netlist"/>
-        /// from the values of children nodes of <see cref="SpiceGrammarSymbol.START"/> parse tree node
+        /// from the values of children nodes of <see cref="SpiceGrammarSymbol.NETLIST"/> parse tree node
         /// </summary>
         /// <returns>
         /// A new instance of <see cref="Netlist"/>
@@ -124,7 +121,7 @@ namespace SpiceParser.Translation
             return new Netlist()
             {
                 Title = values.GetLexem(0),
-                Statements = values.GetSpiceObject<Statements>(1)
+                Statements = values.GetSpiceObject<Statements>(2)
             };
         }
 
@@ -339,7 +336,7 @@ namespace SpiceParser.Translation
         /// </returns>
         private SpiceObject CreateStatement(ParseTreeNodeTranslationValues values)
         {
-            if (values.Count == 1)
+            if (values.Count == 2 && values[1] is ParseTreeNodeTerminalTranslationValue t && t.Token.Is(SpiceTokenType.NEWLINE))
             {
                 return values.GetSpiceObject<Statement>(0);
             }

@@ -8,7 +8,7 @@ using Xunit;
 
 namespace SpiceParser.Tests
 {
-    public class ParseTreeParseTreeEvaluatorTest
+    public class ParseTreeTranslatorTest
     {
         [Fact]
         public void VectorTest()

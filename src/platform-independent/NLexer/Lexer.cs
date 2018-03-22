@@ -86,7 +86,7 @@ namespace NLexer
             }
 
             // yield EOF token
-            yield return new Token((int)SpecialTokenType.EOF, null);
+            yield return new Token((int)SpecialTokenType.EOF, "EOF");
         }
 
         /// <summary>

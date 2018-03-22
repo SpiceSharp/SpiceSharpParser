@@ -8,6 +8,19 @@ namespace SpiceLexer.Tests
     public class SpiceLexerTest
     {
         [Fact]
+        public void OneLetterTitle()
+        {
+            // lexer can't find matching token for remaining text '}'
+            var tokensStr = "T";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = true });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.Equal(2, tokens.Length);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.TITLE);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
         public void LexerException()
         {
             // lexer can't find matching token for remaining text '}'
@@ -42,6 +55,42 @@ namespace SpiceLexer.Tests
         }
 
         [Fact]
+        public void EndAllCapitalTest()
+        {
+            var tokensStr = ".END";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.Equal(2, tokens.Length);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.END);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
+        public void EndMixedTest()
+        {
+            var tokensStr = ".End";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.Equal(2, tokens.Length);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.END);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
+        public void EndSmallTest()
+        {
+            var tokensStr = ".end";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.Equal(2, tokens.Length);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.END);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
         public void VectorTest()
         {
             var tokensStr = "v(3,0)";
@@ -62,6 +111,22 @@ namespace SpiceLexer.Tests
 
             Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.TITLE);
             Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
+        public void SimplesNetlistTest()
+        {
+            var tokensStr = "a\r\n.end\r\n";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = true });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.Equal(5, tokens.Length);
+
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.TITLE);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.NEWLINE);
+            Assert.True(tokens[2].SpiceTokenType == SpiceTokenType.END);
+            Assert.True(tokens[3].SpiceTokenType == SpiceTokenType.NEWLINE);
+            Assert.True(tokens[4].SpiceTokenType == SpiceTokenType.EOF);
         }
 
         [Fact]

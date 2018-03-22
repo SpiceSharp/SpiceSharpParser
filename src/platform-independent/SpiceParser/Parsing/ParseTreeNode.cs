@@ -18,7 +18,7 @@
         /// <param name="parent">A parent of the tree node</param>
         public ParseTreeNode(ParseTreeNode parent)
         {
-            Parent = parent;
+            Parent = parent ?? throw new System.ArgumentNullException(nameof(parent));
         }
 
         /// <summary>

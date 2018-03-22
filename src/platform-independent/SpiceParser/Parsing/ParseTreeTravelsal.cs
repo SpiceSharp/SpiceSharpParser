@@ -18,6 +18,11 @@ namespace SpiceParser.Parsing
         /// </returns>
         public IEnumerable<ParseTreeNode> GetIterativePostOrder(ParseTreeNode rootNode)
         {
+            if (rootNode == null)
+            {
+                throw new System.ArgumentNullException(nameof(rootNode));
+            }
+
             var visitedNodes = new HashSet<ParseTreeNode>();
             var stack = new Stack<ParseTreeNode>();
             stack.Push(rootNode);

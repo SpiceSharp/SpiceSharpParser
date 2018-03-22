@@ -15,7 +15,11 @@ namespace SpiceParser.Parsing
         public ParseTreeTerminalNode(SpiceToken token, ParseTreeNonTerminalNode parent)
             : base(parent)
         {
-            Token = token;
+            if (parent == null)
+            {
+                throw new System.ArgumentNullException(nameof(parent));
+            }
+            Token = token ?? throw new System.ArgumentNullException(nameof(token));
         }
 
         /// <summary>

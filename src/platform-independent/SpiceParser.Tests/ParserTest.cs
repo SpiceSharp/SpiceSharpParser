@@ -8,6 +8,108 @@ namespace SpiceParser.Tests
     public class ParserTest
     {
         [Fact]
+        public void SimplestNetlistTest()
+        {
+            var tokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.TITLE, "Example of title"),
+                new SpiceToken(SpiceTokenType.NEWLINE, "\n"),
+                new SpiceToken(SpiceTokenType.END, ".end"),
+                new SpiceToken(SpiceTokenType.EOF, null),
+            };
+
+            var parser = new Parser();
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.NETLIST);
+            Assert.NotNull(root);
+        }
+
+        [Fact]
+        public void SimplestNetlistWithNewLineAfterEndTest()
+        {
+            var tokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.TITLE, "Example of title"),
+                new SpiceToken(SpiceTokenType.NEWLINE, "\n"),
+                new SpiceToken(SpiceTokenType.END, ".end"),
+                new SpiceToken(SpiceTokenType.NEWLINE, "\n"),
+                new SpiceToken(SpiceTokenType.EOF, null),
+            };
+
+            var parser = new Parser();
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.NETLIST);
+            Assert.NotNull(root);
+        }
+
+
+        [Fact]
+        public void ComponentStatementTest()
+        {
+            // Arrange
+            var vectorTokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.WORD, "L1"),
+                new SpiceToken(SpiceTokenType.VALUE, "5"),
+                new SpiceToken(SpiceTokenType.VALUE, "3"),
+                new SpiceToken(SpiceTokenType.VALUE, "3MH"),
+                new SpiceToken(SpiceTokenType.NEWLINE, "\n"),
+            };
+
+            var parser = new Parser();
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.STATEMENT);
+        }
+
+        [Fact]
+        public void CommentStatementTest()
+        {
+            // Arrange
+            var vectorTokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.ASTERIKS, "*"),
+                new SpiceToken(SpiceTokenType.COMMENT, "comment"),
+                new SpiceToken(SpiceTokenType.NEWLINE, "\n"),
+            };
+
+            var parser = new Parser();
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.STATEMENT);
+        }
+
+        [Fact]
+        public void SubcktStatementTest()
+        {
+            // Arrange
+            var vectorTokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.DOT, "."),
+                new SpiceToken(SpiceTokenType.WORD, "subckt"),
+                new SpiceToken(SpiceTokenType.WORD, "amp"),
+                new SpiceToken(SpiceTokenType.VALUE, "3"),
+                new SpiceToken(SpiceTokenType.NEWLINE, "\n"),
+                new SpiceToken(SpiceTokenType.ENDS, ".ends"),
+                new SpiceToken(SpiceTokenType.WORD, "amp"),
+                new SpiceToken(SpiceTokenType.NEWLINE, "\n"),
+            };
+
+            var parser = new Parser();
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.STATEMENT);
+        }
+
+        [Fact]
+        public void ModelStatementTest()
+        {
+            // Arrange
+            var vectorTokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.DOT, "."),
+                new SpiceToken(SpiceTokenType.WORD, "model"),
+                new SpiceToken(SpiceTokenType.WORD, "npn"),
+                new SpiceToken(SpiceTokenType.NEWLINE, "\n"),
+            };
+
+            var parser = new Parser();
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.STATEMENT);
+        }
+
+        [Fact]
         public void ParameterEqualWithArgumentTest()
         {
             var tokens = new SpiceToken[]
@@ -30,6 +132,35 @@ namespace SpiceParser.Tests
         }
 
         [Fact]
+        public void NetlistEndingWithoutNewlineTest()
+        {
+            var tokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.END, ".end"),
+                new SpiceToken(SpiceTokenType.EOF, ""),
+            };
+
+            var parser = new Parser();
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.NETLIST_ENDING);
+            Assert.NotNull(root);
+        }
+
+        [Fact]
+        public void NetlistEndingWithNewlineTest()
+        {
+            var tokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.END, ".end"),
+                new SpiceToken(SpiceTokenType.NEWLINE, "\n"),
+                new SpiceToken(SpiceTokenType.EOF, ""),
+            };
+
+            var parser = new Parser();
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.NETLIST_ENDING);
+            Assert.NotNull(root);
+        }
+
+        [Fact]
         public void ParameterEqualWithArgumentsTest()
         {
             var tokens = new SpiceToken[]
@@ -43,7 +174,6 @@ namespace SpiceParser.Tests
                 new SpiceToken(SpiceTokenType.EQUAL, "="),
                 new SpiceToken(SpiceTokenType.WORD, "12")
             };
-
 
             var parser = new Parser();
             ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.PARAMETER);

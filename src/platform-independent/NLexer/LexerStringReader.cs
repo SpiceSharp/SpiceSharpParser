@@ -30,7 +30,7 @@
         {
             var start = currentIndex;
 
-            if (currentIndex >= (strCharacters.Length - 1))
+            if (currentIndex > (strCharacters.Length - 1))
             {
                 return string.Empty;
             }
@@ -42,7 +42,7 @@
                 currentIndex++;
             }
 
-            if (currentIndex < (strCharacters.Length - 2))
+            if (currentIndex < (strCharacters.Length - 1))
             {
                 if (strCharacters[currentIndex] == '\r' && strCharacters[currentIndex + 1] == '\n')
                 {
