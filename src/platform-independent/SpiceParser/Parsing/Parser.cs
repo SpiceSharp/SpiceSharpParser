@@ -139,10 +139,10 @@ namespace SpiceParser.Parsing
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
-        /// <param name="current">A reference to the non-terminal node</param>
+        /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessSubcktEnding(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ProcessSubcktEnding(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
@@ -151,12 +151,16 @@ namespace SpiceParser.Parsing
             {
                 if (nextToken.Is(SpiceTokenType.WORD))
                 {
-                    stack.Push(CreateTerminalNode(SpiceTokenType.WORD, current));
-                    stack.Push(CreateTerminalNode(SpiceTokenType.ENDS, current));
+                    PushProductionExpression(
+                        stack,
+                        CreateTerminalNode(SpiceTokenType.ENDS, currentNode),
+                        CreateTerminalNode(SpiceTokenType.WORD, currentNode));
                 }
                 else
                 {
-                    stack.Push(CreateTerminalNode(SpiceTokenType.ENDS, current));
+                    PushProductionExpression(
+                         stack,
+                         CreateTerminalNode(SpiceTokenType.ENDS, currentNode));
                 }
             }
             else
@@ -170,10 +174,10 @@ namespace SpiceParser.Parsing
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
-        /// <param name="current">A reference to the non-terminal node</param>
+        /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessNewLine(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ProcessNewLine(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
             if (currentTokenIndex > tokens.Length - 1)
             {
@@ -183,7 +187,9 @@ namespace SpiceParser.Parsing
             var currentToken = tokens[currentTokenIndex];
             if (currentToken.Is(SpiceTokenType.NEWLINE))
             {
-                stack.Push(CreateTerminalNode(SpiceTokenType.NEWLINE, current));
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(SpiceTokenType.NEWLINE, currentNode));
             }
             else
             {
@@ -196,15 +202,18 @@ namespace SpiceParser.Parsing
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
-        /// <param name="current">A reference to the non-terminal node</param>
+        /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessNetlist(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ProcessNetlist(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
-            stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.NETLIST_ENDING, current));
-            stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, current));
-            stack.Push(CreateTerminalNode(SpiceTokenType.NEWLINE, current));
-            stack.Push(CreateTerminalNode(SpiceTokenType.TITLE, current));
+            PushProductionExpression(
+                stack,
+                CreateTerminalNode(SpiceTokenType.TITLE, currentNode),
+                CreateTerminalNode(SpiceTokenType.NEWLINE, currentNode),
+                CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, currentNode),
+                CreateNonTerminalNode(SpiceGrammarSymbol.NETLIST_ENDING, currentNode)
+            );
         }
 
         /// <summary>
@@ -225,15 +234,19 @@ namespace SpiceParser.Parsing
                 {
                     if (tokens[currentTokenIndex + 1].Is(SpiceTokenType.EOF))
                     {
-                        stack.Push(CreateTerminalNode(SpiceTokenType.EOF, current));
-                        stack.Push(CreateTerminalNode(SpiceTokenType.END, current));
+                        PushProductionExpression(
+                            stack,
+                            CreateTerminalNode(SpiceTokenType.END, current),
+                            CreateTerminalNode(SpiceTokenType.EOF, current));
                     }
 
                     if (tokens[currentTokenIndex + 1].Is(SpiceTokenType.NEWLINE))
                     {
-                        stack.Push(CreateTerminalNode(SpiceTokenType.EOF, current));
-                        stack.Push(CreateTerminalNode(SpiceTokenType.NEWLINE, current));
-                        stack.Push(CreateTerminalNode(SpiceTokenType.END, current));
+                        PushProductionExpression(
+                            stack,
+                            CreateTerminalNode(SpiceTokenType.END, current),
+                            CreateTerminalNode(SpiceTokenType.NEWLINE, current),
+                            CreateTerminalNode(SpiceTokenType.EOF, current));
                     }
                 }
             }
@@ -259,13 +272,17 @@ namespace SpiceParser.Parsing
                 || currentToken.Is(SpiceTokenType.WORD)
                 || currentToken.Is(SpiceTokenType.ASTERIKS))
             {
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, current));
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENT, current));
+                PushProductionExpression(
+                            stack,
+                            CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENT, current),
+                            CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, current));
             }
             else if (currentToken.Is(SpiceTokenType.NEWLINE))
             {
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, current));
-                stack.Push(CreateTerminalNode(SpiceTokenType.NEWLINE, current));
+                PushProductionExpression(
+                         stack,
+                         CreateTerminalNode(SpiceTokenType.NEWLINE, current),
+                         CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, current));
             }
             else if (currentToken.Is(SpiceTokenType.END))
             {
@@ -296,8 +313,10 @@ namespace SpiceParser.Parsing
 
             if (currentToken.Is(SpiceTokenType.WORD))
             {
-                stack.Push(CreateTerminalNode(SpiceTokenType.NEWLINE, current));
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.COMPONENT, current));
+                PushProductionExpression(
+                    stack,
+                    CreateNonTerminalNode(SpiceGrammarSymbol.COMPONENT, current),
+                    CreateTerminalNode(SpiceTokenType.NEWLINE, current));
             }
             else if (currentToken.Is(SpiceTokenType.DOT))
             {
@@ -305,18 +324,24 @@ namespace SpiceParser.Parsing
                 {
                     if (nextToken.Equal("subckt", true))
                     {
-                        stack.Push(CreateTerminalNode(SpiceTokenType.NEWLINE, current));
-                        stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.SUBCKT, current));
+                        PushProductionExpression(
+                            stack,
+                            CreateNonTerminalNode(SpiceGrammarSymbol.SUBCKT, current),
+                            CreateTerminalNode(SpiceTokenType.NEWLINE, current));
                     }
                     else if (nextToken.Equal("model", true))
                     {
-                        stack.Push(CreateTerminalNode(SpiceTokenType.NEWLINE, current));
-                        stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.MODEL, current));
+                        PushProductionExpression(
+                            stack,
+                            CreateNonTerminalNode(SpiceGrammarSymbol.MODEL, current),
+                            CreateTerminalNode(SpiceTokenType.NEWLINE, current));
                     }
                     else
                     {
-                        stack.Push(CreateTerminalNode(SpiceTokenType.NEWLINE, current));
-                        stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.CONTROL, current));
+                        PushProductionExpression(
+                            stack,
+                            CreateNonTerminalNode(SpiceGrammarSymbol.CONTROL, current),
+                            CreateTerminalNode(SpiceTokenType.NEWLINE, current));
                     }
                 }
                 else
@@ -326,8 +351,10 @@ namespace SpiceParser.Parsing
             }
             else if (currentToken.Is(SpiceTokenType.ASTERIKS))
             {
-                stack.Push(CreateTerminalNode(SpiceTokenType.NEWLINE, current));
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.COMMENT_LINE, current));
+                PushProductionExpression(
+                    stack,
+                    CreateNonTerminalNode(SpiceGrammarSymbol.COMMENT_LINE, current),
+                    CreateTerminalNode(SpiceTokenType.NEWLINE, current));
             }
             else
             {
@@ -345,10 +372,12 @@ namespace SpiceParser.Parsing
         /// <param name="currentTokenIndex">A index of the current token</param>
         private void ProcessVector(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
-            stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.VECTOR_CONTINUE, current));
-            stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, current));
-            stack.Push(CreateTerminalNode(SpiceTokenType.COMMA, current, ","));
-            stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, current));
+            PushProductionExpression(
+                stack,
+                CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, current),
+                CreateTerminalNode(SpiceTokenType.COMMA, current, ","),
+                CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, current),
+                CreateNonTerminalNode(SpiceGrammarSymbol.VECTOR_CONTINUE, current));
         }
 
         /// <summary>
@@ -374,9 +403,11 @@ namespace SpiceParser.Parsing
             }
             else
             {
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.VECTOR_CONTINUE, current));
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, current));
-                stack.Push(CreateTerminalNode(SpiceTokenType.COMMA, current, ","));
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(SpiceTokenType.COMMA, current, ","),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, current),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.VECTOR_CONTINUE, current));
             }
         }
 
@@ -398,8 +429,10 @@ namespace SpiceParser.Parsing
                 || nextToken.Is(SpiceTokenType.NEWLINE)
                 || nextToken.Is(SpiceTokenType.EOF)))
             {
-                stack.Push(CreateTerminalNode(nextToken.SpiceTokenType, current, nextToken.Lexem));
-                stack.Push(CreateTerminalNode(currentToken.SpiceTokenType, current, currentToken.Lexem));
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(currentToken.SpiceTokenType, current, currentToken.Lexem),
+                    CreateTerminalNode(nextToken.SpiceTokenType, current, nextToken.Lexem));
             }
             else
             {
@@ -424,13 +457,15 @@ namespace SpiceParser.Parsing
                 && nextToken.Is(SpiceTokenType.WORD)
                 && nextToken.Equal("subckt", true))
             {
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.SUBCKT_ENDING, current));
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, current));
-                stack.Push(CreateTerminalNode(SpiceTokenType.NEWLINE, current));
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, current));
-                stack.Push(CreateTerminalNode(SpiceTokenType.WORD, current));
-                stack.Push(CreateTerminalNode(nextToken.SpiceTokenType, current, nextToken.Lexem));
-                stack.Push(CreateTerminalNode(currentToken.SpiceTokenType, current, currentToken.Lexem));
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(currentToken.SpiceTokenType, current, currentToken.Lexem),
+                    CreateTerminalNode(nextToken.SpiceTokenType, current, nextToken.Lexem),
+                    CreateTerminalNode(SpiceTokenType.WORD, current),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, current),
+                    CreateTerminalNode(SpiceTokenType.NEWLINE, current),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, current),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.SUBCKT_ENDING, current));
             }
             else
             {
@@ -463,8 +498,10 @@ namespace SpiceParser.Parsing
                 || currentToken.Is(SpiceTokenType.REFERENCE)
                 || currentToken.Is(SpiceTokenType.EXPRESSION))
             {
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, current));
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER, current));
+                PushProductionExpression(
+                    stack,
+                    CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER, current),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, current));
             }
             else if (currentToken.Is(SpiceTokenType.EOF))
             {
@@ -489,10 +526,10 @@ namespace SpiceParser.Parsing
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
-        /// <param name="current">A reference to the non-terminal node</param>
+        /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessParameterEqual(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ProcessParameterEqual(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
@@ -501,30 +538,34 @@ namespace SpiceParser.Parsing
             {
                 if (nextToken.Is(SpiceTokenType.EQUAL))
                 {
-                    stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_EQUAL_SINGLE, current));
+                    stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_EQUAL_SINGLE, currentNode));
                 }
                 else if (nextToken.Is(SpiceTokenType.DELIMITER) && nextToken.Equal("(", true))
                 {
                     if ((tokens.Length > currentTokenIndex + 4) && tokens[currentTokenIndex + 3].Lexem == ")" && tokens[currentTokenIndex + 4].Lexem == "=")
                     {
-                        stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, current));
-                        stack.Push(CreateTerminalNode(SpiceTokenType.EQUAL, current));
-                        stack.Push(CreateTerminalNode(SpiceTokenType.DELIMITER, current, ")"));
-                        stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, current));
-                        stack.Push(CreateTerminalNode(SpiceTokenType.DELIMITER, current, "("));
-                        stack.Push(CreateTerminalNode(SpiceTokenType.WORD, current));
+                        PushProductionExpression(
+                            stack,
+                            CreateTerminalNode(SpiceTokenType.WORD, currentNode),
+                            CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, "("),
+                            CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, currentNode),
+                            CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, ")"),
+                            CreateTerminalNode(SpiceTokenType.EQUAL, currentNode),
+                            CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, currentNode));
                     }
 
                     if ((tokens.Length > currentTokenIndex + 6) && tokens[currentTokenIndex + 5].Lexem == ")" && tokens[currentTokenIndex + 6].Lexem == "=")
                     {
-                        stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, current));
-                        stack.Push(CreateTerminalNode(SpiceTokenType.EQUAL, current));
-                        stack.Push(CreateTerminalNode(SpiceTokenType.DELIMITER, current, ")"));
-                        stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, current));
-                        stack.Push(CreateTerminalNode(SpiceTokenType.COMMA, current, ","));
-                        stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, current));
-                        stack.Push(CreateTerminalNode(SpiceTokenType.DELIMITER, current, "("));
-                        stack.Push(CreateTerminalNode(SpiceTokenType.WORD, current));
+                        PushProductionExpression(
+                            stack,
+                            CreateTerminalNode(SpiceTokenType.WORD, currentNode),
+                            CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, "("),
+                            CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, currentNode),
+                            CreateTerminalNode(SpiceTokenType.COMMA, currentNode, ","),
+                            CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, currentNode),
+                            CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, ")"),
+                            CreateTerminalNode(SpiceTokenType.EQUAL, currentNode),
+                            CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, currentNode));
                     }
                 }
             }
@@ -540,9 +581,11 @@ namespace SpiceParser.Parsing
         /// <param name="currentTokenIndex">A index of the current token</param>
         private void ProcessParameterEqualSingle(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
-            stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, current));
-            stack.Push(CreateTerminalNode(SpiceTokenType.EQUAL, current));
-            stack.Push(CreateTerminalNode(SpiceTokenType.WORD, current));
+            PushProductionExpression(
+                stack,
+                CreateTerminalNode(SpiceTokenType.WORD, current),
+                CreateTerminalNode(SpiceTokenType.EQUAL, current),
+                CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, current));
         }
 
         /// <summary>
@@ -550,12 +593,14 @@ namespace SpiceParser.Parsing
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
-        /// <param name="current">A reference to the non-terminal node</param>
+        /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessParameterBracketContent(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ProcessParameterBracketContent(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
-            stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, current));
+            PushProductionExpression(
+                stack,
+                CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, currentNode));
         }
 
         /// <summary>
@@ -563,10 +608,10 @@ namespace SpiceParser.Parsing
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
-        /// <param name="current">A reference to the non-terminal node</param>
+        /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessParameter(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ProcessParameter(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
             if (currentTokenIndex == tokens.Length - 1)
@@ -577,7 +622,9 @@ namespace SpiceParser.Parsing
                         || currentToken.Is(SpiceTokenType.REFERENCE)
                         || currentToken.Is(SpiceTokenType.EXPRESSION))
                 {
-                    stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, current));
+                    PushProductionExpression(
+                        stack,
+                        CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, currentNode));
                     return;
                 }
                 else
@@ -590,7 +637,9 @@ namespace SpiceParser.Parsing
 
             if (nextToken.Is(SpiceTokenType.COMMA))
             {
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.VECTOR, current));
+                PushProductionExpression(
+                    stack,
+                    CreateNonTerminalNode(SpiceGrammarSymbol.VECTOR, currentNode));
             }
             else
             {
@@ -598,23 +647,29 @@ namespace SpiceParser.Parsing
                 {
                     if (nextToken.Is(SpiceTokenType.EQUAL))
                     {
-                        stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_EQUAL, current));
+                        stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_EQUAL, currentNode));
                     }
                     else if (nextToken.Is(SpiceTokenType.DELIMITER) && nextToken.Equal("(", true))
                     {
                         if (((tokens.Length > currentTokenIndex + 4) && tokens[currentTokenIndex + 3].Lexem == ")" && tokens[currentTokenIndex + 4].Lexem == "=")
                             || ((tokens.Length > currentTokenIndex + 6) && tokens[currentTokenIndex + 5].Lexem == ")" && tokens[currentTokenIndex + 6].Lexem == "="))
                         {
-                            stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_EQUAL, current));
+                            PushProductionExpression(
+                                stack,
+                                CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_EQUAL, currentNode));
                         }
                         else
                         {
-                            stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_BRACKET, current));
+                            PushProductionExpression(
+                                stack,
+                                CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_BRACKET, currentNode));
                         }
                     }
                     else
                     {
-                        stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, current));
+                        PushProductionExpression(
+                            stack,
+                            CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, currentNode));
                     }
                 }
                 else
@@ -625,7 +680,9 @@ namespace SpiceParser.Parsing
                         || currentToken.Is(SpiceTokenType.REFERENCE)
                         || currentToken.Is(SpiceTokenType.EXPRESSION))
                     {
-                        stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, current));
+                        PushProductionExpression(
+                            stack,
+                            CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, currentNode));
                     }
                     else
                     {
@@ -640,15 +697,17 @@ namespace SpiceParser.Parsing
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
-        /// <param name="current">A reference to the non-terminal node</param>
+        /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessParameterBracket(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ProcessParameterBracket(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
-            stack.Push(CreateTerminalNode(SpiceTokenType.DELIMITER, current, ")"));
-            stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_BRACKET_CONTENT, current));
-            stack.Push(CreateTerminalNode(SpiceTokenType.DELIMITER, current, "("));
-            stack.Push(CreateTerminalNode(SpiceTokenType.WORD, current));
+            PushProductionExpression(
+                stack,
+                CreateTerminalNode(SpiceTokenType.WORD, currentNode),
+                CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, "("),
+                CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_BRACKET_CONTENT, currentNode),
+                CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, ")"));
         }
 
         /// <summary>
@@ -670,7 +729,9 @@ namespace SpiceParser.Parsing
                 || currentToken.Is(SpiceTokenType.REFERENCE)
                 || currentToken.Is(SpiceTokenType.EXPRESSION))
             {
-                stack.Push(CreateTerminalNode(currentToken.SpiceTokenType, current));
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(currentToken.SpiceTokenType, current));
             }
             else
             {
@@ -683,10 +744,10 @@ namespace SpiceParser.Parsing
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
-        /// <param name="current">A reference to the non-terminal node</param>
+        /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessModel(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ProcessModel(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
@@ -697,10 +758,12 @@ namespace SpiceParser.Parsing
                 && nextToken.Equal("model", true)
                 && (nextNextToken.Is(SpiceTokenType.WORD) || nextNextToken.Is(SpiceTokenType.IDENTIFIER)))
             {
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, current));
-                stack.Push(CreateTerminalNode(nextNextToken.SpiceTokenType, current));
-                stack.Push(CreateTerminalNode(nextToken.SpiceTokenType, current));
-                stack.Push(CreateTerminalNode(currentToken.SpiceTokenType, current));
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
+                    CreateTerminalNode(nextToken.SpiceTokenType, currentNode),
+                    CreateTerminalNode(nextNextToken.SpiceTokenType, currentNode),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, currentNode));
             }
             else
             {
@@ -713,19 +776,21 @@ namespace SpiceParser.Parsing
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
-        /// <param name="current">A reference to the non-terminal node</param>
+        /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessControl(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ProcessControl(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
 
             if (currentToken.Is(SpiceTokenType.DOT) && nextToken.Is(SpiceTokenType.WORD))
             {
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, current));
-                stack.Push(CreateTerminalNode(nextToken.SpiceTokenType, current));
-                stack.Push(CreateTerminalNode(currentToken.SpiceTokenType, current));
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
+                    CreateTerminalNode(nextToken.SpiceTokenType, currentNode),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, currentNode));
             }
             else
             {
@@ -738,17 +803,19 @@ namespace SpiceParser.Parsing
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
-        /// <param name="current">A reference to the non-terminal node</param>
+        /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessComponent(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ProcessComponent(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
 
             if (currentToken.Is(SpiceTokenType.WORD))
             {
-                stack.Push(CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, current));
-                stack.Push(CreateTerminalNode(currentToken.SpiceTokenType, current));
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, currentNode));
             }
             else
             {
@@ -772,7 +839,7 @@ namespace SpiceParser.Parsing
             }
 
             var node = new ParseTreeNonTerminalNode(parent, symbolName);
-            parent.Children.Insert(0, node);
+            parent.Children.Add(node);
 
             return node;
         }
@@ -789,8 +856,21 @@ namespace SpiceParser.Parsing
         private ParseTreeTerminalNode CreateTerminalNode(SpiceTokenType tokenType, ParseTreeNonTerminalNode parent, string tokenValue = null)
         {
             var node = new ParseTreeTerminalNode(new SpiceToken(tokenType, tokenValue), parent);
-            parent.Children.Insert(0, node);
+            parent.Children.Add(node);
             return node;
+        }
+
+        /// <summary>
+        /// Pushes grammar production expression to stack
+        /// </summary>
+        /// <param name="stack">A stack</param>
+        /// <param name="expression">An expression of production</param>
+        private void PushProductionExpression(Stack<ParseTreeNode> stack, params ParseTreeNode[] expression)
+        {
+            for (var i = expression.Length - 1; i >= 0; i--)
+            {
+                stack.Push(expression[i]);
+            }
         }
     }
 }
