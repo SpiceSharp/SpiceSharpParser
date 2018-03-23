@@ -1,7 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using SpiceNetlist.SpiceObjects;
+using SpiceNetlist.SpiceObjects.Parameters;
 using SpiceNetlist.SpiceSharpConnector.Context;
+using SpiceNetlist.SpiceSharpConnector.Exceptions;
 using SpiceSharp.Simulations;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
@@ -20,49 +21,61 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
         /// <param name="context">A context to modify</param>
         public override void Process(Control statement, IProcessingContext context)
         {
-            Transient tran = null;
-
             switch (statement.Parameters.Count)
             {
-                case 0: throw new Exception("Step expected");
-                case 1: throw new Exception("Maximum time expected");
+                case 0: throw new WrongParametersCountException(".tran control - Step expected");
+                case 1: throw new WrongParametersCountException(".tran control - Maximum time expected");
             }
 
-            switch (statement.Parameters.Count)
+            bool useIc = false;
+            var clonedParameters = statement.Parameters.Clone();
+            var lastParameter = clonedParameters[clonedParameters.Count - 1];
+            if (lastParameter is WordParameter w && w.Image.ToLower() == "uic")
+            {
+                useIc = true;
+                clonedParameters.Remove(clonedParameters.Count - 1);
+            }
+
+            Transient tran = null;
+
+            switch (clonedParameters.Count)
             {
                 case 2:
                     tran = new Transient(
                         (context.Result.Simulations.Count() + 1) + " - Transient",
-                        context.ParseDouble(statement.Parameters[0].Image),
-                        context.ParseDouble(statement.Parameters[1].Image));
+                        context.ParseDouble(clonedParameters[0].Image),
+                        context.ParseDouble(clonedParameters[1].Image));
                     break;
                 case 3:
                     tran = new Transient(
                         (context.Result.Simulations.Count() + 1) + " - Transient",
-                        context.ParseDouble(statement.Parameters[0].Image),
-                        context.ParseDouble(statement.Parameters[1].Image),
-                        context.ParseDouble(statement.Parameters[2].Image));
+                        context.ParseDouble(clonedParameters[0].Image),
+                        context.ParseDouble(clonedParameters[1].Image),
+                        context.ParseDouble(clonedParameters[2].Image));
                     break;
                 case 4:
-                    throw new Exception("Wrong number of parameters for .tran");
+                    throw new WrongParametersCountException(".tran control - Too many parameters for .tran");
             }
 
             SetBaseParameters(tran.ParameterSets.Get<BaseConfiguration>(), context);
-            SetTransientParamters(tran, context);
+            SetTransientParamters(tran, context, useIc);
+
             context.Result.AddSimulation(tran);
         }
 
-        private void SetTransientParamters(Transient tran, IProcessingContext context)
+        private void SetTransientParamters(Transient tran, IProcessingContext context, bool useIc)
         {
             if (context.Result.SimulationConfiguration.Method != null)
             {
-                tran.TimeConfiguration.Method = context.Result.SimulationConfiguration.Method;
+                tran.ParameterSets.Get<TimeConfiguration>().Method = context.Result.SimulationConfiguration.Method;
             }
 
             if (context.Result.SimulationConfiguration.TranMaxIterations.HasValue)
             {
-                tran.TimeConfiguration.TranMaxIterations = context.Result.SimulationConfiguration.TranMaxIterations.Value;
+                tran.ParameterSets.Get<TimeConfiguration>().TranMaxIterations = context.Result.SimulationConfiguration.TranMaxIterations.Value;
             }
+
+            tran.ParameterSets.Get<TimeConfiguration>().UseIc = useIc;
         }
     }
 }
