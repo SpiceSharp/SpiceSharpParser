@@ -11,6 +11,30 @@ namespace SpiceParser.Tests
     public class ParseTreeTranslatorTest
     {
         [Fact]
+        public void EmptyCommentTest()
+        {
+            // Arrange
+            var tokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.TITLE, "Example of title"),
+                new SpiceToken(SpiceTokenType.NEWLINE, "\n"),
+                new SpiceToken(SpiceTokenType.ASTERIKS, "*"),
+                new SpiceToken(SpiceTokenType.NEWLINE, "\n"),
+                new SpiceToken(SpiceTokenType.END, ".end"),
+                new SpiceToken(SpiceTokenType.EOF, null),
+            };
+
+            var parser = new Parser();
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.NETLIST);
+
+            // Act
+            ParseTreeTranslator eval = new ParseTreeTranslator();
+            var spiceObject = eval.Evaluate(root) as SpiceNetlist.Netlist;
+
+            Assert.NotNull(spiceObject);
+        }
+
+        [Fact]
         public void VectorTest()
         {
             // Arrange

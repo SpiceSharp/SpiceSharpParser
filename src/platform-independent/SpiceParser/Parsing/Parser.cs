@@ -424,15 +424,18 @@ namespace SpiceParser.Parsing
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
 
-            if (currentToken.Is(SpiceTokenType.ASTERIKS)
-                && (nextToken.Is(SpiceTokenType.COMMENT)
-                || nextToken.Is(SpiceTokenType.NEWLINE)
-                || nextToken.Is(SpiceTokenType.EOF)))
+            if (currentToken.Is(SpiceTokenType.ASTERIKS) && nextToken.Is(SpiceTokenType.COMMENT))
             {
                 PushProductionExpression(
                     stack,
                     CreateTerminalNode(currentToken.SpiceTokenType, current, currentToken.Lexem),
                     CreateTerminalNode(nextToken.SpiceTokenType, current, nextToken.Lexem));
+            }
+            else if (currentToken.Is(SpiceTokenType.ASTERIKS) && nextToken.Is(SpiceTokenType.NEWLINE))
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(currentToken.SpiceTokenType, current, currentToken.Lexem));
             }
             else
             {

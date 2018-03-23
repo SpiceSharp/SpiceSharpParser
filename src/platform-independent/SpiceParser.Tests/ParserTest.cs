@@ -8,6 +8,24 @@ namespace SpiceParser.Tests
     public class ParserTest
     {
         [Fact]
+        public void NetListWithEmptyCommentTest()
+        {
+            var tokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.TITLE, "Example of title"),
+                new SpiceToken(SpiceTokenType.NEWLINE, "\n"),
+                new SpiceToken(SpiceTokenType.ASTERIKS, "*"),
+                new SpiceToken(SpiceTokenType.NEWLINE, "\n"),
+                new SpiceToken(SpiceTokenType.END, ".end"),
+                new SpiceToken(SpiceTokenType.EOF, null),
+            };
+
+            var parser = new Parser();
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.NETLIST);
+            Assert.NotNull(root);
+        }
+
+        [Fact]
         public void SimplestNetlistTest()
         {
             var tokens = new SpiceToken[]
