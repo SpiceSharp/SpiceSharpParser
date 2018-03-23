@@ -22,11 +22,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors
             // arrange
             var generator = Substitute.For<EntityGenerator>();
             generator.Generate(
-               Arg.Any<Identifier>(),
+               Arg.Any<StringIdentifier>(),
                Arg.Any<string>(),
                Arg.Any<string>(),
                Arg.Any<ParameterCollection>(),
-               Arg.Any<IProcessingContext>()).Returns(x => new Resistor((Identifier)x[0]));
+               Arg.Any<IProcessingContext>()).Returns(x => new Resistor((StringIdentifier)x[0]));
 
             var registry = Substitute.For<IEntityGeneratorRegistry>();
             registry.Supports("r").Returns(true);
@@ -45,8 +45,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors
             processor.Process(component, processingContext);
 
             // assert
-            generator.Received().Generate(new Identifier("Ra1"), "Ra1", "r", Arg.Any<ParameterCollection>(), Arg.Any<IProcessingContext>());
-            resultService.Received().AddEntity(Arg.Is<Entity>((Entity e) => e.Name.Name == "Ra1"));
+            generator.Received().Generate(new StringIdentifier("Ra1"), "Ra1", "r", Arg.Any<ParameterCollection>(), Arg.Any<IProcessingContext>());
+            resultService.Received().AddEntity(Arg.Is<Entity>((Entity e) => e.Name.ToString() == "Ra1"));
         }
     }
 }

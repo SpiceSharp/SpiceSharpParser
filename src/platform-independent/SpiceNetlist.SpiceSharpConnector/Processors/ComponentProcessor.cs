@@ -43,7 +43,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
             var generator = ComponentRegistry.Get(componentType);
 
             Entity entity = generator.Generate(
-                new Identifier(context.ObjectNameGenerator.Generate(componentName)),
+                new StringIdentifier(context.ObjectNameGenerator.Generate(componentName)),
                 componentName,
                 componentType,
                 statement.PinsAndParameters,

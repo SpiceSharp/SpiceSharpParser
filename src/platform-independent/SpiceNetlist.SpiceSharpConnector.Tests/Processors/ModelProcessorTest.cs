@@ -20,11 +20,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors
             // arrange
             var generator = Substitute.For<EntityGenerator>();
             generator.Generate(
-                Arg.Any<Identifier>(),
+                Arg.Any<StringIdentifier>(),
                 Arg.Any<string>(),
                 Arg.Any<string>(),
                 Arg.Any<ParameterCollection>(),
-                Arg.Any<IProcessingContext>()).Returns(x => new BipolarJunctionTransistorModel((Identifier)x[0]));
+                Arg.Any<IProcessingContext>()).Returns(x => new BipolarJunctionTransistorModel((StringIdentifier)x[0]));
 
             var registry = Substitute.For<IEntityGeneratorRegistry>();
             registry.Supports("npn").Returns(true);
@@ -43,8 +43,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors
             processor.Process(model, processingContext);
 
             //assert
-            generator.Received().Generate(new Identifier("2Na2222"), "2Na2222", "npn", Arg.Any<ParameterCollection>(), Arg.Any<IProcessingContext>());
-            resultService.Received().AddEntity(Arg.Is<Entity>((Entity e) => e.Name.Name == "2Na2222"));
+            generator.Received().Generate(new StringIdentifier("2Na2222"), "2Na2222", "npn", Arg.Any<ParameterCollection>(), Arg.Any<IProcessingContext>());
+            resultService.Received().AddEntity(Arg.Is<Entity>((Entity e) => e.Name.ToString() == "2Na2222"));
         }
     }
 }

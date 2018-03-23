@@ -41,9 +41,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
         {
             switch (type)
             {
-                case "i": return GenerateCurrentSource(id.Name, parameters, context);
-                case "g": return GenerateVoltageControlledCurrentSource(id.Name, parameters, context);
-                case "f": return GenerateCurrentControlledCurrentSource(id.Name, parameters, context);
+                case "i": return GenerateCurrentSource(id.ToString(), parameters, context);
+                case "g": return GenerateVoltageControlledCurrentSource(id.ToString(), parameters, context);
+                case "f": return GenerateCurrentControlledCurrentSource(id.ToString(), parameters, context);
             }
 
             return null;
@@ -80,7 +80,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 case 3: throw new Exception("Value expected");
             }
 
-            cccs.ControllingName = new Identifier(parameters.GetString(2));
+            cccs.ControllingName = new StringIdentifier(parameters.GetString(2));
             context.SetParameter(cccs, "gain", parameters.GetString(3));
             return cccs;
         }

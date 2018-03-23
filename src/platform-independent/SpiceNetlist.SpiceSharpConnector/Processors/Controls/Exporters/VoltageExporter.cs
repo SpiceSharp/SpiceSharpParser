@@ -42,10 +42,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
                     case 0:
                         throw new WrongParametersCountException("No nodes for voltage export. Node expected");
                     case 2:
-                        reference = new Identifier(context.NodeNameGenerator.Generate(vector.Elements[1].Image));
+                        reference = new StringIdentifier(context.NodeNameGenerator.Generate(vector.Elements[1].Image));
                         goto case 1;
                     case 1:
-                        node = new Identifier(context.NodeNameGenerator.Generate(vector.Elements[0].Image));
+                        node = new StringIdentifier(context.NodeNameGenerator.Generate(vector.Elements[0].Image));
                         break;
                     default:
                         throw new WrongParametersCountException("Too many nodes specified for voltage export");
@@ -53,7 +53,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Exporters
             }
             else
             {
-                node = new Identifier(context.NodeNameGenerator.Generate(parameters.GetString(0)));
+                node = new StringIdentifier(context.NodeNameGenerator.Generate(parameters.GetString(0)));
             }
 
             Export ve = null;

@@ -30,7 +30,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var generator = new SwitchGenerator();
-            var @switch = generator.Generate(new SpiceSharp.Identifier("s1"), "s1", "s", parameters, context);
+            var @switch = generator.Generate(new SpiceSharp.StringIdentifier("s1"), "s1", "s", parameters, context);
 
             Assert.NotNull(@switch);
             Assert.IsType<VoltageSwitch>(@switch);
@@ -55,7 +55,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var generator = new SwitchGenerator();
-            var @switch = generator.Generate(new SpiceSharp.Identifier("s1"), "s1", "s", parameters, context);
+            var @switch = generator.Generate(new SpiceSharp.StringIdentifier("s1"), "s1", "s", parameters, context);
 
             Assert.NotNull(@switch);
             Assert.IsType<VoltageSwitch>(@switch);
@@ -79,7 +79,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var generator = new SwitchGenerator();
-            var @switch = generator.Generate(new SpiceSharp.Identifier("w1"), "w1", "w", parameters, context);
+            var @switch = generator.Generate(new SpiceSharp.StringIdentifier("w1"), "w1", "w", parameters, context);
 
             Assert.NotNull(@switch);
             Assert.IsType<CurrentSwitch>(@switch);
@@ -103,7 +103,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var generator = new SwitchGenerator();
-            var @switch = generator.Generate(new SpiceSharp.Identifier("w1"), "w1", "w", parameters, context);
+            var @switch = generator.Generate(new SpiceSharp.StringIdentifier("w1"), "w1", "w", parameters, context);
 
             Assert.NotNull(@switch);
             Assert.IsType<CurrentSwitch>(@switch);

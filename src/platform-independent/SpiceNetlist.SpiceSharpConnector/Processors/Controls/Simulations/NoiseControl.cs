@@ -67,15 +67,15 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
                         case 1:
                             if (bracket.Parameters[0] is VectorParameter v && v.Elements.Count == 2)
                             {
-                                var output = new Identifier(v.Elements[0].Image);
-                                var reference = new Identifier(v.Elements[1].Image);
-                                var input = new Identifier(statement.Parameters[2].Image);
+                                var output = new StringIdentifier(v.Elements[0].Image);
+                                var reference = new StringIdentifier(v.Elements[1].Image);
+                                var input = new StringIdentifier(statement.Parameters[2].Image);
                                 noise = new Noise("Noise " + (context.Result.Simulations.Count() + 1), output, reference, input, sweep);
                             }
                             else if (bracket.Parameters[0] is SingleParameter s)
                             {
-                                var output = new Identifier(s.Image);
-                                var input = new Identifier(statement.Parameters[1].Image);
+                                var output = new StringIdentifier(s.Image);
+                                var input = new StringIdentifier(statement.Parameters[1].Image);
                                 noise = new Noise("Noise " + (context.Result.Simulations.Count() + 1), output, input, sweep);
                             }
 

@@ -48,7 +48,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                     var generator = Registry.Get(type);
 
                     Entity spiceSharpModel = generator.Generate(
-                        new SpiceSharp.Identifier(context.ObjectNameGenerator.Generate(name)),
+                        new SpiceSharp.StringIdentifier(context.ObjectNameGenerator.Generate(name)),
                         name,
                         type,
                         b.Parameters,
@@ -70,7 +70,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
                     }
 
                     var generator = Registry.Get(type);
-                    Entity spiceSharpModel = generator.Generate(new SpiceSharp.Identifier(context.ObjectNameGenerator.Generate(name)), name, type, statement.Parameters.Skip(1), context);
+                    Entity spiceSharpModel = generator.Generate(new SpiceSharp.StringIdentifier(context.ObjectNameGenerator.Generate(name)), name, type, statement.Parameters.Skip(1), context);
 
                     if (spiceSharpModel != null)
                     {

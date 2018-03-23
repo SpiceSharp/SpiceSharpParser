@@ -16,8 +16,8 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
         {
             switch (type)
             {
-                case "s": return GenerateVoltageSwitch(id.Name, parameters, context);
-                case "w": return GenerateCurrentSwitch(id.Name, parameters, context);
+                case "s": return GenerateVoltageSwitch(id.ToString(), parameters, context);
+                case "w": return GenerateCurrentSwitch(id.ToString(), parameters, context);
             }
 
             return null;
@@ -114,7 +114,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             // Get the controlling voltage source
             if (parameters[2] is WordParameter || parameters[2] is IdentifierParameter)
             {
-                csw.ControllingName = new Identifier(parameters.GetString(2));
+                csw.ControllingName = new StringIdentifier(parameters.GetString(2));
             }
             else
             {

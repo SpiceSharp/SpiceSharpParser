@@ -95,7 +95,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         /// <param name="initialVoltage">The initial voltage</param>
         public void SetInitialVoltageCondition(string nodeName, double initialVoltage)
         {
-            Netlist.Circuit.Nodes.InitialConditions[nodeName] = initialVoltage;
+            foreach (var simulation in Simulations)
+            {
+                simulation.Nodes.InitialConditions[nodeName] = initialVoltage;
+            }
         }
 
         /// <summary>
@@ -108,7 +111,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         /// </returns>
         public bool FindObject(string objectName, out Entity entity)
         {
-            return Netlist.Circuit.Objects.TryGetEntity(new Identifier(objectName), out entity);
+            return Netlist.Circuit.Objects.TryGetEntity(objectName, out entity);
         }
     }
 }

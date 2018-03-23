@@ -24,7 +24,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var context = Substitute.For<IProcessingContext>();
-            var entity = generator.Generate(new SpiceSharp.Identifier("x1.i1"), "i1", "i", parameters, context);
+            var entity = generator.Generate(new SpiceSharp.StringIdentifier("x1.i1"), "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
@@ -46,7 +46,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var context = Substitute.For<IProcessingContext>();
-            var entity = generator.Generate(new SpiceSharp.Identifier("x1.i1"), "i1", "i", parameters, context);
+            var entity = generator.Generate(new SpiceSharp.StringIdentifier("x1.i1"), "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
@@ -67,7 +67,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var context = Substitute.For<IProcessingContext>();
-            var entity = generator.Generate(new SpiceSharp.Identifier("x1.i1"), "i1", "i", parameters, context);
+            var entity = generator.Generate(new SpiceSharp.StringIdentifier("x1.i1"), "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
@@ -90,7 +90,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var context = Substitute.For<IProcessingContext>();
-            var entity = generator.Generate(new SpiceSharp.Identifier("x1.i1"), "i1", "i", parameters, context);
+            var entity = generator.Generate(new SpiceSharp.StringIdentifier("x1.i1"), "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
@@ -114,7 +114,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var context = Substitute.For<IProcessingContext>();
-            var entity = generator.Generate(new SpiceSharp.Identifier("x1.i1"), "i1", "i", parameters, context);
+            var entity = generator.Generate(new SpiceSharp.StringIdentifier("x1.i1"), "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
@@ -137,7 +137,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var context = Substitute.For<IProcessingContext>();
-            var entity = generator.Generate(new SpiceSharp.Identifier("x1.i1"), "i1", "i", parameters, context);
+            var entity = generator.Generate(new SpiceSharp.StringIdentifier("x1.i1"), "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
@@ -160,11 +160,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var context = Substitute.For<IProcessingContext>();
-            var entity = generator.Generate(new SpiceSharp.Identifier("x1.f1"), "f1", "f", parameters, context);
+            var entity = generator.Generate(new SpiceSharp.StringIdentifier("x1.f1"), "f1", "f", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentControlledCurrentSource>(entity);
-            Assert.Equal("v1", ((CurrentControlledCurrentSource)entity).ControllingName.Name);
+            Assert.Equal("v1", ((CurrentControlledCurrentSource)entity).ControllingName.ToString());
             context.Received().SetParameter(entity, "gain", "3");
         }
 
@@ -183,7 +183,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var context = Substitute.For<IProcessingContext>();
-            var entity = generator.Generate(new SpiceSharp.Identifier("x1.g1"), "g1", "g", parameters, context);
+            var entity = generator.Generate(new SpiceSharp.StringIdentifier("x1.g1"), "g1", "g", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<VoltageControlledCurrentSource>(entity);

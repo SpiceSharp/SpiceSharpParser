@@ -31,10 +31,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
         {
             switch (type)
             {
-                case "r": return GenerateRes(id.Name, parameters, context);
-                case "l": return GenerateInd(id.Name, parameters, context);
-                case "c": return GenerateCap(id.Name, parameters, context);
-                case "k": return GenerateMut(id.Name, parameters, context);
+                case "r": return GenerateRes(id.ToString(), parameters, context);
+                case "l": return GenerateInd(id.ToString(), parameters, context);
+                case "c": return GenerateCap(id.ToString(), parameters, context);
+                case "k": return GenerateMut(id.ToString(), parameters, context);
             }
 
             return null;

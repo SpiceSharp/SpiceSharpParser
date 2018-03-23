@@ -50,7 +50,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
 
             // act
             var generator = new SubCircuitGenerator(componentProcessor, modelProcessor, controlProcessor);
-            generator.Generate(new SpiceSharp.Identifier("x1"), "x1", "x", parameters, context);
+            generator.Generate(new SpiceSharp.StringIdentifier("x1"), "x1", "x", parameters, context);
 
             // assert
             componentProcessor.Received().Process(Arg.Is<Component>(c => c.Name == "R1"), Arg.Any<IProcessingContext>());

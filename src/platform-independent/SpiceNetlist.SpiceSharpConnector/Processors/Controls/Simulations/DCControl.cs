@@ -58,7 +58,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
             DC dc = new DC((context.Result.Simulations.Count() + 1) + " - DC", sweeps);
             dc.OnParameterSearch += (sender, e) =>
             {
-                string sweepParameterName = e.Name.Name;
+                string sweepParameterName = e.Name.ToString();
                 if (context.Evaluator.HasParameter(sweepParameterName))
                 {
                     e.TemperatureNeeded = true;

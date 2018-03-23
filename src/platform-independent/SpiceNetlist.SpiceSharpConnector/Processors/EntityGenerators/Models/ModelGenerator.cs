@@ -11,7 +11,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators
     {
         public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, IProcessingContext context)
         {
-            var model = GenerateModel(id.Name, type);
+            var model = GenerateModel(id.ToString(), type);
             if (model == null)
             {
                 throw new Exception();

@@ -43,9 +43,9 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
         {
             switch (type)
             {
-                case "v": return GenerateVoltageSource(id.Name, parameters, context);
-                case "h": return GenerateCurrentControlledVoltageSource(id.Name, parameters, context);
-                case "e": return GenerateVoltageControlledVoltageSource(id.Name, parameters, context);
+                case "v": return GenerateVoltageSource(id.ToString(), parameters, context);
+                case "h": return GenerateCurrentControlledVoltageSource(id.ToString(), parameters, context);
+                case "e": return GenerateVoltageControlledVoltageSource(id.ToString(), parameters, context);
             }
 
             return null;
