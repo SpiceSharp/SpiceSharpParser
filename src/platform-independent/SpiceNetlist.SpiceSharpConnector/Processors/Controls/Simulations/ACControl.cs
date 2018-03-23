@@ -30,7 +30,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.Controls.Simulations
 
             AC ac;
 
-            string type = statement.Parameters.GetString(0);
+            string type = statement.Parameters.GetString(0).ToLower();
             var numberSteps = context.ParseDouble(statement.Parameters.GetString(1));
             var start = context.ParseDouble(statement.Parameters.GetString(2));
             var stop = context.ParseDouble(statement.Parameters.GetString(3));
