@@ -1,7 +1,8 @@
 ﻿using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
-using SpiceNetlist.SpiceSharpConnector.Registries;
 using SpiceNetlist.SpiceSharpConnector.Context;
+using SpiceNetlist.SpiceSharpConnector.Exceptions;
+using SpiceNetlist.SpiceSharpConnector.Registries;
 using SpiceSharp.Circuits;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors
@@ -17,7 +18,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
         /// <param name="registry">The registry</param>
         public ModelProcessor(IEntityGeneratorRegistry registry)
         {
-            Registry = registry;
+            Registry = registry ?? throw new System.ArgumentNullException(nameof(registry));
         }
 
         /// <summary>
@@ -42,7 +43,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
                     if (!Registry.Supports(type))
                     {
-                        throw new System.Exception("Unsupported model type");
+                        throw new GeneralConnectorException("Unsupported model type: " + type);
                     }
 
                     var generator = Registry.Get(type);
@@ -66,7 +67,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors
 
                     if (!Registry.Supports(type))
                     {
-                        throw new System.Exception("Unsupported model type");
+                        throw new GeneralConnectorException("Unsupported model type: " + type);
                     }
 
                     var generator = Registry.Get(type);
