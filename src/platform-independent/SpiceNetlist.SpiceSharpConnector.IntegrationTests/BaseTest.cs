@@ -101,6 +101,21 @@ namespace SpiceNetlist.SpiceSharpConnector.IntegrationTests
             }
         }
 
+        protected void Compare(IEnumerable<Tuple<double, double>> exports, IEnumerable<double> references)
+        {
+            using (var exportIt = exports.GetEnumerator())
+            using (var referencesIt = references.GetEnumerator())
+            {
+                while (exportIt.MoveNext() && referencesIt.MoveNext())
+                {
+                    double actual = exportIt.Current.Item2;
+                    double expected = referencesIt.Current;
+                    double tol = Math.Max(Math.Abs(actual), Math.Abs(expected)) * RelTol + AbsTol;
+                    Assert.True(Math.Abs(expected - actual) < tol);
+                }
+            }
+        }
+
         protected void Compare(IEnumerable<double> exports, IEnumerable<double> references)
         {
             using (var exportIt = exports.GetEnumerator())
