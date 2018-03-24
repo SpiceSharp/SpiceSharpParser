@@ -70,6 +70,22 @@ namespace SpiceNetlist.SpiceSharpConnector.IntegrationTests
             return list.ToArray();
         }
 
+        public static Tuple<double, double>[] RunDCSimulation(Netlist netlist, string nameOfExport)
+        {
+            var list = new List<Tuple<double, double>>();
+
+            var export = netlist.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
+            var simulation = netlist.Simulations.Single();
+            simulation.OnExportSimulationData += (sender, e) => {
+
+                list.Add(new Tuple<double, double>(e.SweepValue, export.Extract()));
+            };
+
+            simulation.Run(netlist.Circuit);
+
+            return list.ToArray();
+        }
+
         protected void Compare(IEnumerable<Tuple<double, double>> exports, IEnumerable<Func<double, double>> references)
         {
             using (var exportIt = exports.GetEnumerator())
