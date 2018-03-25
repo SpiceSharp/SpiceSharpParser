@@ -5,6 +5,7 @@ using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceNetlist.SpiceSharpConnector.Context;
+using SpiceNetlist.SpiceSharpConnector.Exceptions;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components
 {
@@ -19,7 +20,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
 
             Diode diode = new Diode(name);
             context.CreateNodes(diode, parameters);
-            diode.SetModel(context.FindModel<DiodeModel>(parameters.GetString(2)));
+
+            var model = context.FindModel<DiodeModel>(parameters.GetString(2));
+            if (model == null)
+            {
+                throw new ModelNotFoundException($"Could not find model {parameters.GetString(2)} for diode {name}");
+            }
+
+            diode.SetModel(model);
 
             // Read the rest of the parameters
             for (int i = 3; i < parameters.Count; i++)

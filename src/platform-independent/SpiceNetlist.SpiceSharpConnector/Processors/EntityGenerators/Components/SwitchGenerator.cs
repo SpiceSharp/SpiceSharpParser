@@ -61,7 +61,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             }
             else
             {
-                throw new GeneralConnectorException("Couln't find model for current switch");
+                throw new ModelNotFoundException($"Could not find model {parameters.GetString(2)} for voltage switch {name}");
             }
 
             // Optional ON or OFF
@@ -129,7 +129,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             }
             else
             {
-                throw new GeneralConnectorException("Couln't find model for current switch");
+                throw new ModelNotFoundException($"Could not find model {parameters.GetString(2)} for current switch {name}");
             }
 
             // Optional on or off

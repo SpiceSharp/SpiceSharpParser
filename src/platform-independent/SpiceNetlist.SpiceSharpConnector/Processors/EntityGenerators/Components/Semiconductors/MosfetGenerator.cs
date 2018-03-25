@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using SpiceNetlist.SpiceSharpConnector.Context;
 using SpiceNetlist.SpiceSharpConnector.Extensions;
+using SpiceNetlist.SpiceSharpConnector.Exceptions;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components.Semiconductors
 {
@@ -54,7 +55,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             Entity model = context.FindModel<Entity>(parameters.GetString(4));
             if (model == null)
             {
-                throw new Exception("Can't find mosfet model");
+                throw new ModelNotFoundException($"Could not find model {parameters.GetString(4)} for mosfet {entityName}");
             }
 
             SpiceSharp.Components.Component mosfet = null;

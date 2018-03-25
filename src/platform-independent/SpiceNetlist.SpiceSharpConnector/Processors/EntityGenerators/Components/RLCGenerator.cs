@@ -139,7 +139,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                     }
                     else
                     {
-                        throw new GeneralConnectorException("Count't find capacitor model for " + name);
+                        throw new ModelNotFoundException($"Could not find model {parameters.GetString(2)} for capacitor {name}");
                     }
                 }
 
@@ -207,7 +207,13 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                     throw new WrongParameterTypeException(name, "Semiconductor resistor requires a valid model name");
                 }
 
-                res.SetModel(context.FindModel<ResistorModel>(parameters.GetString(2)));
+                var model = context.FindModel<ResistorModel>(parameters.GetString(2));
+                if (model == null)
+                {
+                    throw new ModelNotFoundException($"Could not find model {parameters.GetString(4)} for resistor {name}");
+                }
+
+                res.SetModel(model);
 
                 foreach (var equal in parameters.Skip(3))
                 {

@@ -6,6 +6,7 @@ using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceNetlist.SpiceSharpConnector.Context;
 using SpiceSharp.Components.BipolarBehaviors;
+using SpiceNetlist.SpiceSharpConnector.Exceptions;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components
 {
@@ -35,6 +36,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
             }
 
             var model = context.FindModel<BipolarJunctionTransistorModel>(parameters.GetString(4));
+            if (model == null)
+            {
+                throw new ModelNotFoundException($"Could not find model {parameters.GetString(4)} for BJT {name}");
+            }
+
             bjt.SetModel(model);
 
             for (int i = 5; i < parameters.Count; i++)
