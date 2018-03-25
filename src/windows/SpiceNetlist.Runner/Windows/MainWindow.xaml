@@ -14,7 +14,9 @@
             <MenuItem Header="_Run" Click="Run_Click"/>
         </Menu>
         <DockPanel Height="Auto" Name="stackPanel2" Width="Auto" >
-            <TextBox Name="txtEditor" AcceptsReturn="True" />
+            <ScrollViewer>
+                <TextBox Name="txtEditor" AcceptsReturn="True" />
+            </ScrollViewer>
         </DockPanel>
     </DockPanel>
 

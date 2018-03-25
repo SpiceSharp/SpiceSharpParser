@@ -15,7 +15,9 @@
         <TabControl Name="Tabs" DockPanel.Dock="Top">
             <TabItem Header="Netlist">
                 <DockPanel Height="Auto" Name="NetlistPanel" Width="Auto" >
-                    <TextBox Name="txtNetlist" IsEnabled="False" AcceptsReturn="True" />
+                    <ScrollViewer>
+                        <TextBox Name="txtNetlist" IsEnabled="False" AcceptsReturn="True" />
+                    </ScrollViewer>
                 </DockPanel>
             </TabItem>
             <TabItem Name="LogsTab" Header="Logs">
