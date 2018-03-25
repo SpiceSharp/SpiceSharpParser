@@ -23,18 +23,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Extensions
             {
                 if (parameter is AssignmentParameter ap)
                 {
-                    try
+                    if (context.SetParameter(entity, ap.Name, ap.Value) == false)
                     {
-                        context.SetParameter(entity, ap.Name, ap.Value);
-                    }
-                    catch (Exception ex)
-                    {
-                        context.Result.AddWarning(ex.ToString());
+                        context.Result.AddWarning("Couldn't set parameter " + ap.Name);
                     }
                 }
                 else
                 {
-                    context.Result.AddWarning("Unknown parameter: " + parameter.Image);
+                    context.Result.AddWarning("Unsupported parameter: " + parameter.Image);
                 }
             }
         }

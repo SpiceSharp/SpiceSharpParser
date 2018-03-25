@@ -124,19 +124,29 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         /// <param name="entity">An entity of parameter</param>
         /// <param name="parameterName">A parameter name</param>
         /// <param name="expression">An expression</param>
-        public void SetParameter(Entity entity, string parameterName, string expression)
+        /// <returns>
+        /// True if the parameter has been set
+        /// </returns>
+        public bool SetParameter(Entity entity, string parameterName, string expression)
         {
             var value = Evaluator.EvaluateDouble(expression);
-            entity.SetParameter(parameterName.ToLower(), value);
+            var set = entity.SetParameter(parameterName.ToLower(), value);
 
-            var variables = Evaluator.GetVariables(expression);
-            var setter = entity.ParameterSets.GetSetter(parameterName.ToLower());
-
-            // re-evaluation makes sense only if there is a setter
-            if (setter != null)
+            if (set)
             {
-                Evaluator.AddDynamicExpression(new DoubleExpression(expression, setter), variables);
+                var variables = Evaluator.GetVariables(expression);
+                var setter = entity.ParameterSets.GetSetter(parameterName.ToLower());
+
+                // re-evaluation makes sense only if there is a setter
+                if (setter != null)
+                {
+                    Evaluator.AddDynamicExpression(new DoubleExpression(expression, setter), variables);
+                }
+
+                return true;
             }
+
+            return false;
         }
 
         /// <summary>

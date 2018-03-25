@@ -4,6 +4,7 @@ using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceNetlist.SpiceSharpConnector.Context;
 using SpiceNetlist.SpiceSharpConnector.Extensions;
+using SpiceNetlist.SpiceSharpConnector.Exceptions;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators
 {
@@ -14,7 +15,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators
             var model = GenerateModel(id.ToString(), type);
             if (model == null)
             {
-                throw new Exception();
+                throw new GeneralConnectorException("Couldn't generate model");
             }
 
             context.SetParameters(model, parameters);

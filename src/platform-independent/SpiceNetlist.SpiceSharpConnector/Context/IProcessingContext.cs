@@ -69,7 +69,10 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         /// <param name="entity">An entity of parameter</param>
         /// <param name="parameterName">A parameter name</param>
         /// <param name="expression">An expression</param>
-        void SetParameter(Entity entity, string parameterName, string expression);
+        /// <returns>
+        /// True if parameter has been set
+        /// </returns>
+        bool SetParameter(Entity entity, string parameterName, string expression);
 
         /// <summary>
         /// Finds model in the context and in parent contexts
