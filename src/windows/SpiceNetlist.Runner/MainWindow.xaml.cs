@@ -39,6 +39,15 @@ namespace SpiceNetlist.Runner
             try
             {
                 var netlist = SpiceHelper.GetNetList(this.txtEditor.Text);
+
+
+
+                if (netlist.Warnings.Count > 0)
+                {
+                    MessageBox.Show("There are " + netlist.Warnings.Count + " warnings: " +
+                        "\n" + string.Join(",", netlist.Warnings));
+                }
+
                 SpiceHelper.RunAllSimulations(netlist);
 
                 if (netlist.Plots.Count > 0)
