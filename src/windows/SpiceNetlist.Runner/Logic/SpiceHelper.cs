@@ -2,40 +2,41 @@
 using SpiceNetlist.SpiceSharpConnector;
 using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Plots;
 using SpiceParser;
+using SpiceParser.Parsing;
 using SpiceParser.Translation;
 using System;
 using System.Linq;
 
 namespace SpiceNetlist.Runner
 {
-    class SpiceHelper
+    public class SpiceHelper
     {
-        public static SpiceSharpConnector.Netlist GetNetList(string text)
+        public static SpiceToken[] GetTokens(string text)
         {
             var lexer = new SpiceLexer.SpiceLexer(new SpiceLexerOptions { HasTitle = true });
             var tokensEnumerable = lexer.GetTokens(text);
-            var tokens = tokensEnumerable.ToArray();
-
-            var parseTree = new SpiceParser.Parsing.Parser().GetParseTree(tokens);
-
-            var eval = new ParseTreeTranslator();
-            var netlistObjectModel = eval.Evaluate(parseTree) as SpiceNetlist.Netlist;
-
-            var connector = new Connector();
-            var netlist = connector.Translate(netlistObjectModel);
-
-            return netlist;
+            return tokensEnumerable.ToArray();
         }
 
-        public static void RunAllSimulations(SpiceSharpConnector.Netlist netlist)
+        public static ParseTreeNonTerminalNode GetParseTree(SpiceToken[] tokens)
         {
-            foreach (var simulation in netlist.Simulations)
-            {
-                simulation.Run(netlist.Circuit);
-            }
+            return new SpiceParser.Parsing.Parser().GetParseTree(tokens); 
         }
 
-        internal static bool IsPlotPositive(Plot plot)
+        public static SpiceNetlist.Netlist GetNetlist(ParseTreeNonTerminalNode root)
+        {
+            var translator = new ParseTreeTranslator();
+            return translator.Evaluate(root) as SpiceNetlist.Netlist;
+        }
+
+        public static SpiceSharpConnector.Netlist GetSpiceSharpNetlist(SpiceNetlist.Netlist netlist)
+        {
+            var connector = new Connector();
+            return connector.Translate(netlist);
+        }
+        
+
+        public static bool IsPlotPositive(Plot plot)
         {
             for (var i = 0; i < plot.Series.Count; i++)
             {

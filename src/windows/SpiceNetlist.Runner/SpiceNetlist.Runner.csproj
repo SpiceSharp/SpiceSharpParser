@@ -67,8 +67,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="SpiceRunner.cs" />
-    <Page Include="MainWindow.xaml">
+    <Compile Include="Controls\PlotControl.xaml.cs">
+      <DependentUpon>PlotControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\SpiceHelper.cs" />
+    <Compile Include="Windows\SpiceNetlistResult.xaml.cs">
+      <DependentUpon>SpiceNetlistResult.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Controls\PlotControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -76,20 +86,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="PlotWindow.xaml">
+    <Page Include="Windows\SpiceNetlistResult.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PlotViewModel.cs" />
-    <Compile Include="PlotWindow.xaml.cs">
-      <DependentUpon>PlotWindow.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Logic\PlotViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

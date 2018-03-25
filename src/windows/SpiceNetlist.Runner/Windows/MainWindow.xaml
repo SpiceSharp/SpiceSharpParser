@@ -14,11 +14,6 @@
             <MenuItem Header="_Run" Click="Run_Click"/>
         </Menu>
         <DockPanel Height="Auto" Name="stackPanel2" Width="Auto" >
-            <StatusBar DockPanel.Dock="Bottom" Height="23">
-                <StatusBarItem>
-                    <TextBlock Name="txtStatus" Width="53" />
-                </StatusBarItem>
-            </StatusBar>
             <TextBox Name="txtEditor" AcceptsReturn="True" />
         </DockPanel>
     </DockPanel>

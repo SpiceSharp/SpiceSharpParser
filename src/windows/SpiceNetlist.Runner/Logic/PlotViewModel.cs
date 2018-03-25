@@ -2,16 +2,25 @@
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using SpiceNetlist.SpiceSharpConnector.Processors.Controls.Plots;
-using System;
 
 namespace SpiceNetlist.Runner
 {
-    class PlotViewModel
+    public class PlotViewModel
     {
         public PlotViewModel(Plot plot, bool xLog= false, bool yLog = false)
         {
+            Model = CreateOxyPlotModel(plot, xLog, yLog);
+        }
+
+        /// <summary>
+        /// Gets the plot model.
+        /// </summary>
+        public PlotModel Model { get; private set; }
+
+        private static PlotModel CreateOxyPlotModel(Plot plot, bool xLog, bool yLog)
+        {
             var tmp = new PlotModel { Title = plot.Name };
-          
+
             for (var i = 0; i < plot.Series.Count; i++)
             {
                 if (plot.Series[i].Points.Count > 1)
@@ -49,7 +58,6 @@ namespace SpiceNetlist.Runner
                 }
             }
 
-
             if (xLog)
             {
                 tmp.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom, Unit = xUnit });
@@ -68,12 +76,7 @@ namespace SpiceNetlist.Runner
                 tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Unit = yUnit });
             }
 
-            Model = tmp;
+            return tmp;
         }
-
-        /// <summary>
-        /// Gets the plot model.
-        /// </summary>
-        public PlotModel Model { get; private set; }
     }
 }

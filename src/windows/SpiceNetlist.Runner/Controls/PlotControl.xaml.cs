@@ -12,24 +12,29 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SpiceNetlist.Runner
+namespace SpiceNetlist.Runner.Controls
 {
     /// <summary>
-    /// Interaction logic for PlotWindow.xaml
+    /// Interaction logic for PlotControl.xaml
     /// </summary>
-    public partial class PlotWindow : Window
+    public partial class PlotControl : UserControl
     {
-        public Plot Plot { get; }
+        public PlotControl()
+        {
+            InitializeComponent();
+        }
 
-        public PlotWindow(Plot plot, bool enableYLogAxis)
+        public PlotControl(Plot plot, bool enableYLogAxis) : this()
         {
             Plot = plot;
-            InitializeComponent();
             DataContext = new PlotViewModel(plot, false, false);
             this.y.IsEnabled = enableYLogAxis;
         }
+
+        public Plot Plot { get; }
 
         private void CheckBox_Click(object sender, RoutedEventArgs e)
         {
