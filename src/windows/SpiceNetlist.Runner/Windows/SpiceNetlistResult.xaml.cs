@@ -35,7 +35,7 @@ namespace SpiceNetlist.Runner.Windows
             this.lblStatus.Text = "Status: Running ...";
             this.txtNetlist.Text = netlist;
             PlotsTab.IsEnabled = false;
-
+            LogsTab.IsEnabled = false;
             Task.Run(() => Init());
         }
 
@@ -125,10 +125,19 @@ namespace SpiceNetlist.Runner.Windows
                     }
                 }
 
+                foreach (var warning in sNetlist.Warnings)
+                {
+                    this.LogsTab.Dispatcher.Invoke(() =>
+                    {
+                        txtLogs.Text += ("Warning: " + warning + "\n");
+                    });
+                }
+
                 mainWatch.Stop();
 
                 this.txtStats.Dispatcher.Invoke(() =>
                 {
+                    this.LogsTab.IsEnabled = true;
                     this.lblStatus.Text = "Status: Finished";
                     this.txtStats.Text += $"---\nFinished executing netlist in {mainWatch.ElapsedMilliseconds} ms\n";
                 });
@@ -138,7 +147,8 @@ namespace SpiceNetlist.Runner.Windows
             {
                 this.txtLogs.Dispatcher.Invoke(() =>
                 {
-                    txtLogs.Text = "Exception occurred: " + ex.ToString();
+                    txtLogs.Text += "Exception occurred: " + ex.ToString();
+
                 });
 
                 this.txtStats.Dispatcher.Invoke(() =>
