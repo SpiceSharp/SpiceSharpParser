@@ -210,7 +210,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                 var model = context.FindModel<ResistorModel>(parameters.GetString(2));
                 if (model == null)
                 {
-                    throw new ModelNotFoundException($"Could not find model {parameters.GetString(4)} for resistor {name}");
+                    throw new ModelNotFoundException($"Could not find model {parameters.GetString(2)} for resistor {name}");
                 }
 
                 res.SetModel(model);
