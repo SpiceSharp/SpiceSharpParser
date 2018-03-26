@@ -129,7 +129,17 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         /// </returns>
         public bool SetParameter(Entity entity, string parameterName, string expression)
         {
-            var value = Evaluator.EvaluateDouble(expression);
+            double value;
+            try
+            {
+                value = Evaluator.EvaluateDouble(expression);
+            }
+            catch (Exception ex)
+            {
+                Result.AddWarning("Exception during parsing expression '" + expression + "': " + ex);
+                return false;
+            }
+
             var set = entity.SetParameter(parameterName.ToLower(), value);
 
             if (set)
