@@ -15,18 +15,18 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
     public class VoltageSourceGenerator : EntityGenerator
     {
         /// <summary>
-        /// Waveform processor
-        /// </summary>
-        private readonly IWaveformProcessor waveFormGenerator;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="VoltageSourceGenerator"/> class.
         /// </summary>
         /// <param name="waveFormGenerator">Waveform processor</param>
         public VoltageSourceGenerator(IWaveformProcessor waveFormGenerator)
         {
-            this.waveFormGenerator = waveFormGenerator ?? throw new System.ArgumentNullException(nameof(waveFormGenerator));
+            WaveFormGenerator = waveFormGenerator ?? throw new System.ArgumentNullException(nameof(waveFormGenerator));
         }
+
+        /// <summary>
+        /// Gets the waveform generator
+        /// </summary>
+        public IWaveformProcessor WaveFormGenerator { get; }
 
         /// <summary>
         /// Generates new voltage source
@@ -168,14 +168,17 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                             }
                             else
                             {
-                                throw new WrongParameterTypeException(name, "Voltage source AC phase has wrong type of parameter: " + parameters[i].GetType());
+                                if (!(parameters[i + 1] is BracketParameter))
+                                {
+                                    throw new WrongParameterTypeException(name, "Voltage source AC phase has wrong type of parameter: " + parameters[i].GetType());
+                                }
                             }
                         }
                     }
                 }
                 else if (parameters[i] is BracketParameter cp)
                 {
-                    vsrc.SetParameter("waveform", waveFormGenerator.Generate(cp, context));
+                    context.SetParameter(vsrc, "waveform", WaveFormGenerator.Generate(cp, context));
                 }
                 else
                 {

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using SpiceNetlist.SpiceObjects;
 using SpiceNetlist.SpiceObjects.Parameters;
+using SpiceNetlist.SpiceSharpConnector.Context;
+using SpiceNetlist.SpiceSharpConnector.Exceptions;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
-using SpiceNetlist.SpiceSharpConnector.Context;
-using SpiceNetlist.SpiceSharpConnector.Exceptions;
 
 namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Components
 {
@@ -15,16 +15,19 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
     /// </summary>
     public class CurrentSourceGenerator : EntityGenerator
     {
-        private readonly IWaveformProcessor waveFormGenerator;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CurrentSourceGenerator"/> class.
         /// </summary>
         /// <param name="waveFormGenerator">Waveform processor</param>
         public CurrentSourceGenerator(IWaveformProcessor waveFormGenerator)
         {
-            this.waveFormGenerator = waveFormGenerator;
+            WaveFormGenerator = waveFormGenerator ?? throw new ArgumentNullException(nameof(waveFormGenerator));
         }
+
+        /// <summary>
+        /// Gets the waveform generator
+        /// </summary>
+        public IWaveformProcessor WaveFormGenerator { get; }
 
         /// <summary>
         /// Generates a new current source
@@ -158,14 +161,17 @@ namespace SpiceNetlist.SpiceSharpConnector.Processors.EntityGenerators.Component
                             }
                             else
                             {
-                                throw new WrongParameterTypeException(name, "Current source AC phase has wrong type of parameter: " + parameters[i].GetType());
+                                if (!(parameters[i + 1] is BracketParameter))
+                                {
+                                    throw new WrongParameterTypeException(name, "Current source AC phase has wrong type of parameter: " + parameters[i].GetType());
+                                }
                             }
                         }
                     }
                 }
                 else if (parameters[i] is BracketParameter cp)
                 {
-                    isrc.SetParameter("waveform", waveFormGenerator.Generate(cp, context));
+                    context.SetParameter(isrc, "waveform", WaveFormGenerator.Generate(cp, context));
                 }
                 else
                 {

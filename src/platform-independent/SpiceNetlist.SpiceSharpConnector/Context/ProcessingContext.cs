@@ -150,6 +150,20 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         }
 
         /// <summary>
+        /// Sets the parameter of entity
+        /// </summary>
+        /// <param name="entity">An entity of parameter</param>
+        /// <param name="parameterName">A parameter name</param>
+        /// <param name="object">An parameter value</param>
+        /// <returns>
+        /// True if the parameter has been set
+        /// </returns>
+        public bool SetParameter(Entity entity, string parameterName, object @object)
+        {
+            return entity.SetParameter(parameterName.ToLower(), @object);
+        }
+
+        /// <summary>
         /// Finds model in the context and in parent contexts
         /// </summary>
         /// <param name="modelName">Name of model to find</param>

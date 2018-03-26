@@ -25,7 +25,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var generator = new RLCGenerator();
-            var resistor = generator.Generate(new SpiceSharp.StringIdentifier("x1.r1"), "R1", "r", parameters, context);
+            var resistor = generator.Generate(new SpiceSharp.StringIdentifier("r1"), "R1", "r", parameters, context);
 
             Assert.NotNull(resistor);
             context.Received().SetParameter(resistor, "resistance", "1.2");
@@ -36,7 +36,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
         {
             var context = Substitute.For<IProcessingContext>();
             context.When(a => a.SetParameter(Arg.Any<Entity>(), "L", "12")).Do(x => ((Entity)x[0]).SetParameter("l", 12));
-
+            context.FindModel<ResistorModel>(Arg.Any<string>()).Returns(new ResistorModel("test"));
             var parameters = new ParameterCollection
             {
                 new ValueParameter("1"),
@@ -46,7 +46,7 @@ namespace SpiceNetlist.SpiceSharpConnector.Tests.Processors.EntityGenerators.Com
             };
 
             var generator = new RLCGenerator();
-            var resistor = generator.Generate(new SpiceSharp.StringIdentifier("x1.r1"), "R1", "r", parameters, context);
+            var resistor = generator.Generate(new SpiceSharp.StringIdentifier("r1"), "R1", "r", parameters, context);
 
             Assert.NotNull(resistor);
             context.Received().SetParameter(resistor, "L", "12");
