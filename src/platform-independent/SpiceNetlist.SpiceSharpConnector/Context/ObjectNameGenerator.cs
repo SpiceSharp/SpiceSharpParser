@@ -27,7 +27,11 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         /// </returns>
         public IObjectNameGenerator CreateChildGenerator(string name)
         {
-            return new ObjectNameGenerator(string.Format("{0}.{1}", Prefix, name));
+            if (!string.IsNullOrEmpty(Prefix))
+            {
+                return new ObjectNameGenerator(string.Format("{0}.{1}", Prefix, name));
+            }
+            return new ObjectNameGenerator(name);
         }
 
         /// <summary>
@@ -39,7 +43,14 @@ namespace SpiceNetlist.SpiceSharpConnector.Context
         /// </returns>
         public string Generate(string entityName)
         {
-            return Prefix + entityName;
+            if (!string.IsNullOrEmpty(Prefix))
+            {
+                return string.Format("{0}.{1}", Prefix, entityName);
+            }
+            else
+            {
+                return entityName;
+            }
         }
     }
 }
