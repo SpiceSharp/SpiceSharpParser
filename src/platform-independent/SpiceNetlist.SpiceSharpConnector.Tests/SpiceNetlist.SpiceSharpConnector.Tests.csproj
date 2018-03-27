@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
     <PackageReference Include="NSubstitute" Version="3.1.0" />
+    <PackageReference Include="SpiceSharp" Version="2.0.1" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
@@ -16,12 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SpiceNetlist.SpiceSharpConnector\SpiceNetlist.SpiceSharpConnector.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="SpiceSharp">
-      <HintPath>..\..\..\libs\SpiceSharp.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
