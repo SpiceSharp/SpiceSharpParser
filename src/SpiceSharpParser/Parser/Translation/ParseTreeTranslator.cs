@@ -607,7 +607,18 @@ namespace SpiceSharpParser.Parser.Translation
             {
                 var assigmentParameter = new AssignmentParameter();
                 assigmentParameter.Name = values.GetLexem(0);
-                assigmentParameter.Value = values.GetSpiceObject<SingleParameter>(2).Image;
+
+                var singleParameter = values.GetSpiceObject<SingleParameter>(2);
+
+                //TODO: Refactor this....
+                if (singleParameter is ExpressionParameter exp)
+                {
+                    assigmentParameter.Value = exp.Image.Substring(1, exp.Image.Length - 2);
+                }
+                else
+                {
+                    assigmentParameter.Value = singleParameter.Image;
+                }
 
                 return assigmentParameter;
             }

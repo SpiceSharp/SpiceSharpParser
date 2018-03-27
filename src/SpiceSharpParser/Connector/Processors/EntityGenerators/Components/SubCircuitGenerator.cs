@@ -21,6 +21,7 @@ namespace SpiceSharpParser.Connector.Processors.EntityGenerators.Components
         private IComponentProcessor componentProcessor;
         private IModelProcessor modelProcessor;
         private IControlProcessor controlProcessor;
+        private ISubcircuitDefinitionProcessor subcircuitDefinitionProcessor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SubCircuitGenerator"/> class.
@@ -28,8 +29,9 @@ namespace SpiceSharpParser.Connector.Processors.EntityGenerators.Components
         /// <param name="componentProcessor">A component processor</param>
         /// <param name="modelProcessor">A model processor</param>
         /// <param name="controlProcessor">A control processor</param>
-        public SubCircuitGenerator(IComponentProcessor componentProcessor, IModelProcessor modelProcessor, IControlProcessor controlProcessor)
+        public SubCircuitGenerator(IComponentProcessor componentProcessor, IModelProcessor modelProcessor, IControlProcessor controlProcessor, ISubcircuitDefinitionProcessor subcircuitDefinitionProcessor)
         {
+            this.subcircuitDefinitionProcessor = subcircuitDefinitionProcessor;
             this.controlProcessor = controlProcessor;
             this.componentProcessor = componentProcessor;
             this.modelProcessor = modelProcessor;
@@ -51,9 +53,10 @@ namespace SpiceSharpParser.Connector.Processors.EntityGenerators.Components
             SubCircuit subCircuitDefiniton = FindSubcircuitDefinion(parameters, context);
             ProcessingContext subCircuitContext = CreateSubcircuitContext(originalName, subCircuitDefiniton, parameters, context);
 
+            ProcessParamControl(subCircuitDefiniton, subCircuitContext);
+            ProcessSubcircuits(subCircuitDefiniton, subCircuitContext);
             CreateSubcircuitModels(subCircuitDefiniton, subCircuitContext); // TODO: Share models someday between instances of subcircuits
             CreateSubcircuitComponents(subCircuitDefiniton, subCircuitContext);
-            ProcessParamControl(subCircuitDefiniton, subCircuitContext);
 
             context.Children.Add(subCircuitContext);
 
@@ -82,6 +85,19 @@ namespace SpiceSharpParser.Connector.Processors.EntityGenerators.Components
             foreach (Statement statement in subCircuitDefiniton.Statements.Where(s => s is Control && ((Control)s).Name.ToLower() == "param"))
             {
                 controlProcessor.Process((Control)statement, subCircuitContext);
+            }
+        }
+
+        /// <summary>
+        /// Process .subckt
+        /// </summary>
+        /// <param name="subCircuitDefiniton">A subcircuit definion</param>
+        /// <param name="subCircuitContext">A subcircuit processing context</param>
+        private void ProcessSubcircuits(SubCircuit subCircuitDefiniton, ProcessingContext subCircuitContext)
+        {
+            foreach (Statement statement in subCircuitDefiniton.Statements.Where(s => s is SubCircuit))
+            {
+                subcircuitDefinitionProcessor.Process((SubCircuit)statement, subCircuitContext);
             }
         }
 
@@ -163,7 +179,7 @@ namespace SpiceSharpParser.Connector.Processors.EntityGenerators.Components
             var pinInstanceNames = new List<string>();
             for (var i = 0; i < parameters.Count - assigmentParametersCount - 1; i++)
             {
-                pinInstanceNames.Add(parameters.GetString(i));
+                pinInstanceNames.Add(context.NodeNameGenerator.Generate(parameters.GetString(i)));
             }
 
             var newEvaluator = new Evaluator(context.Evaluator);

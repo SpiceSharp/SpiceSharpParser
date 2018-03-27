@@ -61,7 +61,10 @@ namespace SpiceSharpParser.Connector
                 components.Add(new BipolarJunctionTransistorGenerator());
                 components.Add(new DiodeGenerator());
                 components.Add(new MosfetGenerator());
-                components.Add(new SubCircuitGenerator(statementsProcessor.ComponentProcessor, statementsProcessor.ModelProcessor, statementsProcessor.ControlProcessor));
+                components.Add(new SubCircuitGenerator(statementsProcessor.ComponentProcessor, 
+                    statementsProcessor.ModelProcessor, 
+                    statementsProcessor.ControlProcessor,
+                    statementsProcessor.SubcircuitDefinitionProcessor));
 
                 return statementsProcessor;
             }

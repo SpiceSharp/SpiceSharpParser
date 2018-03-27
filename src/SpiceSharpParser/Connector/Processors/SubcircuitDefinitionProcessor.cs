@@ -6,7 +6,7 @@ namespace SpiceSharpParser.Connector.Processors
     /// <summary>
     /// Processes all <see cref="SubCircuit"/> from spice netlist object model.
     /// </summary>
-    public class SubcircuitDefinitionProcessor : StatementProcessor<SubCircuit>
+    public class SubcircuitDefinitionProcessor : StatementProcessor<SubCircuit>, ISubcircuitDefinitionProcessor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SubcircuitDefinitionProcessor"/> class.

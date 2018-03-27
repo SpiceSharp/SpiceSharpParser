@@ -48,9 +48,10 @@ namespace SpiceSharpParser.Tests.Connector.Processors.EntityGenerators.Component
             var componentProcessor = Substitute.For<IComponentProcessor>();
             var modelProcessor = Substitute.For<IModelProcessor>();
             var controlProcessor = Substitute.For<IControlProcessor>();
+            var subcircuitDefinitionProcessor = Substitute.For<ISubcircuitDefinitionProcessor>();
 
             // act
-            var generator = new SubCircuitGenerator(componentProcessor, modelProcessor, controlProcessor);
+            var generator = new SubCircuitGenerator(componentProcessor, modelProcessor, controlProcessor, subcircuitDefinitionProcessor);
             generator.Generate(new SpiceSharp.StringIdentifier("x1"), "x1", "x", parameters, context);
 
             // assert
