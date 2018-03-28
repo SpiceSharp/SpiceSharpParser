@@ -47,7 +47,7 @@ namespace SpiceSharpParser.Connector
             // Create processing context
             var evaluator = new Evaluator();
             var resultService = new ResultService(result);
-            var nodeNameGenerator = new NodeNameGenerator();
+            var nodeNameGenerator = new NodeNameGenerator(new string[] { "0" });
             var objectNameGenerator = new ObjectNameGenerator(string.Empty);
 
             var processingContext = new ProcessingContext(

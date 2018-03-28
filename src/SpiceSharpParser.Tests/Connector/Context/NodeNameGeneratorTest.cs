@@ -8,7 +8,7 @@ namespace SpiceSharpParser.Tests.Connector.Context
         [Fact]
         public void GenerateNoSubcircuitTest()
         {
-            var generator = new NodeNameGenerator();
+            var generator = new NodeNameGenerator(new string[] { "0" });
 
             // ground nodes
             Assert.Equal("0", generator.Generate("0"));
@@ -31,7 +31,7 @@ namespace SpiceSharpParser.Tests.Connector.Context
                     new Model.SpiceObjects.Parameters.AssignmentParameter() { Name = "L", Value = "100" },
                     new Model.SpiceObjects.Parameters.AssignmentParameter() { Name = "C", Value = "10" } };
 
-            var generator = new NodeNameGenerator("x1", subcircuit, new System.Collections.Generic.List<string>() { "net2", "net3" });
+            var generator = new NodeNameGenerator("x1", subcircuit, new System.Collections.Generic.List<string>() { "net2", "net3" }, new string[] { "0" });
 
             // ground nodes
             Assert.Equal("0", generator.Generate("0"));
@@ -42,6 +42,11 @@ namespace SpiceSharpParser.Tests.Connector.Context
             // ordinary nodes
             Assert.Equal("x1.a", generator.Generate("a"));
             Assert.Equal("x1.Ab", generator.Generate("Ab"));
+
+            generator.SetGlobal("a");
+            Assert.Equal("a", generator.Generate("a"));
+            generator.SetGlobal("Ab");
+            Assert.Equal("Ab", generator.Generate("Ab"));
 
             // subcircuit named nodes
             Assert.Equal("net2", generator.Generate("IN"));

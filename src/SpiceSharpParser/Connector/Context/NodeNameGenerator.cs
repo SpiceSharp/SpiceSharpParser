@@ -7,12 +7,20 @@ namespace SpiceSharpParser.Connector.Context
     public class NodeNameGenerator : INodeNameGenerator
     {
         private Dictionary<string, string> pinMap = new Dictionary<string, string>();
+        private readonly HashSet<string> globalsSet = new HashSet<string>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NodeNameGenerator"/> class.
         /// </summary>
-        public NodeNameGenerator()
+        /// <param name="globals">Global pin names</param>
+        public NodeNameGenerator(IEnumerable<string> globals)
         {
+            if (globals == null)
+            {
+                throw new ArgumentNullException(nameof(globals));
+            }
+
+            InitGlobals(globals);
         }
 
         /// <summary>
@@ -21,8 +29,13 @@ namespace SpiceSharpParser.Connector.Context
         /// <param name="subCircuitName">The name of subcircuit</param>
         /// <param name="currentSubCircuit">The current subcircuit</param>
         /// <param name="pinInstanceNames">The names of pins</param>
-        public NodeNameGenerator(string subCircuitName, SubCircuit currentSubCircuit, List<string> pinInstanceNames)
+        /// <param name="globals">Global pin names</param>
+        public NodeNameGenerator(string subCircuitName, SubCircuit currentSubCircuit, List<string> pinInstanceNames, IEnumerable<string> globals)
         {
+            if (globals == null)
+            {
+                throw new ArgumentNullException(nameof(globals));
+            }
             SubCircuitName = subCircuitName;
             SubCircuit = currentSubCircuit ?? throw new ArgumentNullException(nameof(currentSubCircuit));
             PinInstanceNames = pinInstanceNames ?? throw new ArgumentNullException(nameof(pinInstanceNames));
@@ -31,6 +44,8 @@ namespace SpiceSharpParser.Connector.Context
             {
                 pinMap[SubCircuit.Pins[i]] = PinInstanceNames[i];
             }
+
+            InitGlobals(globals);
         }
 
         /// <summary>
@@ -49,6 +64,11 @@ namespace SpiceSharpParser.Connector.Context
         public List<string> PinInstanceNames { get; }
 
         /// <summary>
+        /// Gets the globals
+        /// </summary>
+        public IEnumerable<string> Globals => this.globalsSet;
+
+        /// <summary>
         /// Generates node name
         /// </summary>
         /// <param name="pinName">Pin name</param>
@@ -62,14 +82,14 @@ namespace SpiceSharpParser.Connector.Context
                 throw new ArgumentNullException(nameof(pinName));
             }
 
-            if (pinName == "0")
-            {
-                return "0";
-            }
-
             if (pinName.ToLower() == "gnd")
             {
                 return pinName.ToUpper();
+            }
+
+            if (globalsSet.Contains(pinName))
+            {
+                return pinName;
             }
 
             if (SubCircuit != null)
@@ -85,6 +105,27 @@ namespace SpiceSharpParser.Connector.Context
             }
 
             return pinName;
+        }
+
+        /// <summary>
+        /// Makes a pin name a global pin name
+        /// </summary>
+        /// <param name="pinName">Pin name</param>
+        public void SetGlobal(string pinName)
+        {
+            // ADD thread-safety
+            if (!globalsSet.Contains(pinName))
+            {
+                globalsSet.Add(pinName);
+            }
+        }
+
+        private void InitGlobals(IEnumerable<string> globals)
+        {
+            foreach (var global in globals)
+            {
+                globalsSet.Add(global);
+            }
         }
     }
 }

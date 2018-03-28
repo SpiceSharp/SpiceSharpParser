@@ -185,7 +185,7 @@ namespace SpiceSharpParser.Connector.Processors.EntityGenerators.Components
             var newEvaluator = new Evaluator(context.Evaluator);
             newEvaluator.SetParameters(CreateSubcircuitParameters(context, subCircuitDefiniton, subCktParameters));
 
-            var subcircuitNodeNameGenerator = new NodeNameGenerator(subcircuitName, subCircuitDefiniton, pinInstanceNames);
+            var subcircuitNodeNameGenerator = new NodeNameGenerator(subcircuitName, subCircuitDefiniton, pinInstanceNames, context.NodeNameGenerator.Globals);
             var subcircuitObjectNameGenerator = context.ObjectNameGenerator.CreateChildGenerator(subcircuitName);
 
             return new ProcessingContext(subcircuitName, newEvaluator, context.Result, subcircuitNodeNameGenerator, subcircuitObjectNameGenerator, context);

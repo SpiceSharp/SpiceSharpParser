@@ -39,7 +39,7 @@ namespace SpiceSharpParser.Tests.Connector.Processors.EntityGenerators.Component
                     }
                 }
             });
-            context.NodeNameGenerator.Returns(new NodeNameGenerator());
+            context.NodeNameGenerator.Returns(new NodeNameGenerator(new string[] { }));
             context.ObjectNameGenerator.Returns(new ObjectNameGenerator(string.Empty));
 
             var childrenContexts = new List<IProcessingContext>();

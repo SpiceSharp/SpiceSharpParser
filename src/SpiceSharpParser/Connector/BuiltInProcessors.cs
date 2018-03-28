@@ -41,8 +41,9 @@ namespace SpiceSharpParser.Connector
                 models.Add(new SwitchModelGenerator());
                 models.Add(new MosfetModelGenerator());
 
-                // Register controls 
+                // Register controls
                 controls.Add(new ParamControl());
+                controls.Add(new GlobalControl());
                 controls.Add(new OptionControl());
                 controls.Add(new TransientControl());
                 controls.Add(new ACControl());
