@@ -137,6 +137,24 @@ namespace SpiceSharpParser.SpiceLexer
                 ignoreCase: options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+             (int)SpiceTokenType.COMMENT_HSPICE,
+             "A comment - HSpice style",
+             "\\$[^\r\n]*",
+             (SpiceLexerState state) =>
+             {
+                 return LexerRuleResult.ReturnToken;
+             }));
+
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+             (int)SpiceTokenType.COMMENT_PSPICE,
+             "A comment - PSpice style",
+             ";[^\r\n]*",
+             (SpiceLexerState state) =>
+             {
+                 return LexerRuleResult.ReturnToken;
+             }));
+
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.COMMENT,
                 "A comment (without asterix)",
                 "[^\r\n]+",

@@ -15,6 +15,7 @@
         public const string MODEL = "MODEL";
         public const string CONTROL = "CONTROL";
         public const string COMMENT_LINE = "COMMENT-LINE";
+        public const string COMMENT_STATEMENT = "COMMENT-STATEMENT";
         public const string PARAMETERS = "PARAMETERS";
         public const string PARAMETER = "PARAMETER";
         public const string PARAMETER_SINGLE = "PARAMETER-SINGLE";

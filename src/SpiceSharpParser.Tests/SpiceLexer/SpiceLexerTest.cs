@@ -235,5 +235,57 @@ namespace SpiceSharpParser.Tests.SpiceLexer
             Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.IDENTIFIER);
             Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
         }
+
+        [Fact]
+        public void CommentPSpiceTest()
+        {
+            var tokensStr = "V12 ; test";
+            SpiceSharpParser.SpiceLexer.SpiceLexer lexer = new SpiceSharpParser.SpiceLexer.SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.True(tokens.Length == 3);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.WORD);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.COMMENT_PSPICE);
+            Assert.True(tokens[2].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
+        public void CommentHSpiceTest()
+        {
+            var tokensStr = "V12 $ test";
+            SpiceSharpParser.SpiceLexer.SpiceLexer lexer = new SpiceSharpParser.SpiceLexer.SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.True(tokens.Length == 3);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.WORD);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.COMMENT_HSPICE);
+            Assert.True(tokens[2].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
+        public void StringWithDollarTest()
+        {
+            var tokensStr = "V12 \"$ test\"";
+            SpiceSharpParser.SpiceLexer.SpiceLexer lexer = new SpiceSharpParser.SpiceLexer.SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.True(tokens.Length == 3);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.WORD);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.STRING);
+            Assert.True(tokens[2].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
+        public void StringWithSemicolonTest()
+        {
+            var tokensStr = "V12 \"; test\"";
+            SpiceSharpParser.SpiceLexer.SpiceLexer lexer = new SpiceSharpParser.SpiceLexer.SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.True(tokens.Length == 3);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.WORD);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.STRING);
+            Assert.True(tokens[2].SpiceTokenType == SpiceTokenType.EOF);
+        }
     }
 }

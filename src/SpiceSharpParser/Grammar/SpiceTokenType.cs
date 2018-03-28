@@ -108,6 +108,16 @@
         /// <summary>
         /// = character
         /// </summary>
-        EQUAL = 20
+        EQUAL = 20,
+
+        /// <summary>
+        /// ; style comment
+        /// </summary>
+        COMMENT_PSPICE = 21,
+
+        /// <summary>
+        /// $ style comment
+        /// </summary>
+        COMMENT_HSPICE = 22
     }
 }

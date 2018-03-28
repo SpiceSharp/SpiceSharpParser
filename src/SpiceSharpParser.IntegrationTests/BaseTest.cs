@@ -38,6 +38,20 @@ namespace SpiceSharpParser.IntegrationTests
             return netlist;
         }
 
+        public static Model.Netlist ParseNetlistToModel(params string[] lines)
+        {
+            var text = string.Join(Environment.NewLine, lines);
+            var lexer = new SpiceLexer.SpiceLexer(new SpiceLexerOptions { HasTitle = true });
+            var tokensEnumerable = lexer.GetTokens(text);
+            var tokens = tokensEnumerable.ToArray();
+
+            var parseTree = new Parser.Parsing.Parser().GetParseTree(tokens);
+
+            var eval = new ParseTreeTranslator();
+            var netlistObjectModel = eval.Evaluate(parseTree) as Model.Netlist;
+            return netlistObjectModel;
+        }
+
         public static double RunOpSimulation(Netlist netlist, string nameOfExport)
         {
             double result = double.NaN;

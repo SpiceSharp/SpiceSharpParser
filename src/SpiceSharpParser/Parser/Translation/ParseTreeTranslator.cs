@@ -50,6 +50,7 @@ namespace SpiceSharpParser.Parser.Translation
             translators.Add(SpiceGrammarSymbol.SUBCKT, (ParseTreeNodeTranslationValues nt) => CreateSubCircuit(nt));
             translators.Add(SpiceGrammarSymbol.SUBCKT_ENDING, (ParseTreeNodeTranslationValues nt) => null);
             translators.Add(SpiceGrammarSymbol.COMMENT_LINE, (ParseTreeNodeTranslationValues nt) => CreateComment(nt));
+            translators.Add(SpiceGrammarSymbol.COMMENT_STATEMENT, (ParseTreeNodeTranslationValues nt) => CreateStatementComment(nt));
             translators.Add(SpiceGrammarSymbol.NEW_LINE, (ParseTreeNodeTranslationValues nt) => null);
         }
 
@@ -314,6 +315,25 @@ namespace SpiceSharpParser.Parser.Translation
 
         /// <summary>
         /// Returns new instance of <see cref="CommentLine"/>
+        /// from the values of children nodes of <see cref="SpiceGrammarSymbol.COMMENT_STATEMENT"/> parse tree node
+        /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="CommentLine"/>
+        /// </returns>
+        private SpiceObject CreateStatementComment(ParseTreeNodeTranslationValues values)
+        {
+            if (values.Count == 1)
+            {
+                var comment = new CommentLine();
+                comment.Text = values.GetLexem(0).Substring(1);
+                return comment;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Returns new instance of <see cref="CommentLine"/>
         /// from the values of children nodes of <see cref="SpiceGrammarSymbol.COMMENT_LINE"/> parse tree node
         /// </summary>
         /// <returns>
@@ -344,12 +364,29 @@ namespace SpiceSharpParser.Parser.Translation
         /// </returns>
         private SpiceObject CreateStatement(ParseTreeNodeTranslationValues values)
         {
-            if (values.Count == 2 && values[1] is ParseTreeNodeTerminalTranslationValue t && t.Token.Is(SpiceTokenType.NEWLINE))
+            if (values.Count != 3 && values.Count != 2)
             {
-                return values.GetSpiceObject<Statement>(0);
+                throw new EvaluationException("Error during translating statement - Wrong elements count for statement");
             }
 
-            throw new EvaluationException("Error during translating parse tree to Spice Object Model");
+            if (!(values[values.Count - 1] is ParseTreeNodeTerminalTranslationValue tv && tv.Token.Is(SpiceTokenType.NEWLINE)))
+            {
+                throw new EvaluationException("Error during translating statement - Statement is not finished by newline");
+            }
+
+            if (values.Count == 3 && values[1] is ParseTreeNonTerminalTranslationValue nv && nv.SpiceObject != null && !(nv.SpiceObject is CommentLine c))
+            {
+                throw new EvaluationException("Error during translating statement - Statement has second element that is not comment");
+            }
+
+            var statement = values.GetSpiceObject<Statement>(0);
+
+            if (values.Count == 3 && values[1] is ParseTreeNonTerminalTranslationValue nv2 && nv2.SpiceObject != null && nv2.SpiceObject is CommentLine c2)
+            {
+                statement.Comment = c2.Text;
+            }
+
+            return statement;
         }
 
         /// <summary>
