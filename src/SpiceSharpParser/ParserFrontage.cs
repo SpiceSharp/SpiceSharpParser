@@ -21,6 +21,9 @@ namespace SpiceSharpParser
         public ParserResult Parse(string netlist, ParserSettings settings)
         {
             var tokens = GetTokens(netlist, settings.HasTitle);
+
+            CheckTokens(settings, tokens);
+
             var parseTreeRoot = GetParseTree(tokens);
             var netlistModel = GetNetlistModel(parseTreeRoot);
             var connectorResult = GetConnectorResult(netlistModel);
@@ -30,6 +33,19 @@ namespace SpiceSharpParser
                 SpiceSharpModel = connectorResult,
                 NetlistModel = netlistModel
             };
+        }
+
+        private static void CheckTokens(ParserSettings settings, SpiceToken[] tokens)
+        {
+            if (settings.IsEndRequired)
+            {
+                if ((tokens.Length >= 2 && tokens[tokens.Length - 2].SpiceTokenType != SpiceTokenType.END
+                    && tokens.Length >= 3 && tokens[tokens.Length - 3].SpiceTokenType != SpiceTokenType.END)
+                    || (tokens.Length == 1 && tokens[0].SpiceTokenType == SpiceTokenType.EOF))
+                {
+                    throw new System.Exception("No .END keyword");
+                }
+            }
         }
 
         /// <summary>

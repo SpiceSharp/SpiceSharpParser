@@ -10,6 +10,8 @@ namespace SpiceSharpParser.IntegrationTests
         public void CommentTest()
         {
             var netlist = ParseNetlistToModel(
+                true,
+                true,
                 "Comment test circuit",
                 "* test1",
                 "R1 OUT 0 10 ; test2",

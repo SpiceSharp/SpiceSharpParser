@@ -253,7 +253,16 @@ namespace SpiceSharpParser.Parser.TreeGeneration
             }
             else
             {
-                throw new ParsingException("Netlist ending - excepted .end keyword", currentToken.LineNumber);
+                if (currentToken.Is(SpiceTokenType.EOF))
+                {
+                    PushProductionExpression(
+                            stack,
+                            CreateTerminalNode(SpiceTokenType.EOF, current));
+                }
+                else
+                {
+                    throw new ParsingException("Netlist ending - wrong ending", currentToken.LineNumber);
+                }
             }
         }
 
@@ -290,6 +299,10 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                 // follow - do nothing
             }
             else if (currentToken.Is(SpiceTokenType.ENDS))
+            {
+                // follow - do nothing
+            }
+            else if (currentToken.Is(SpiceTokenType.EOF))
             {
                 // follow - do nothing
             }
