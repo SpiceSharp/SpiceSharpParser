@@ -686,7 +686,17 @@ namespace SpiceSharpParser.Parser.Translation
                     var assigmentParameter = new AssignmentParameter();
                     assigmentParameter.Name = values.GetLexem(0);
                     assigmentParameter.Arguments.Add(values.GetSpiceObject<SingleParameter>(2).Image);
-                    assigmentParameter.Value = values.GetSpiceObject<SingleParameter>(5).Image;
+
+                    //TODO: refactor
+                    var valueParameter = values.GetSpiceObject<SingleParameter>(5);
+                    if (valueParameter is ExpressionParameter exp)
+                    {
+                        assigmentParameter.Value = exp.Image.Substring(1, exp.Image.Length - 2);
+                    }
+                    else
+                    {
+                        assigmentParameter.Value = valueParameter.Image;
+                    }
 
                     return assigmentParameter;
                 }
@@ -698,7 +708,17 @@ namespace SpiceSharpParser.Parser.Translation
                     assigmentParameter.Name = (values[0] as ParseTreeNodeTerminalTranslationValue).Token.Lexem;
                     assigmentParameter.Arguments.Add(values.GetSpiceObject<SingleParameter>(2).Image);
                     assigmentParameter.Arguments.Add(values.GetSpiceObject<SingleParameter>(4).Image);
-                    assigmentParameter.Value = values.GetSpiceObject<SingleParameter>(7).Image;
+
+                    //TODO: refactor
+                    var valueParameter = values.GetSpiceObject<SingleParameter>(7);
+                    if (valueParameter is ExpressionParameter exp)
+                    {
+                        assigmentParameter.Value = exp.Image.Substring(1, exp.Image.Length - 2);
+                    }
+                    else
+                    {
+                        assigmentParameter.Value = valueParameter.Image;
+                    }
 
                     return assigmentParameter;
                 }

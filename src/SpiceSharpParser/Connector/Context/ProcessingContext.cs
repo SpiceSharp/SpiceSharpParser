@@ -100,6 +100,19 @@ namespace SpiceSharpParser.Connector.Context
         }
 
         /// <summary>
+        /// Sets voltage guess condition for node
+        /// </summary>
+        /// <param name="nodeName">Name of node</param>
+        /// <param name="expression">Expression</param>
+        public void SetNodeSetVoltage(string nodeName, string expression)
+        {
+            foreach (var simulation in Result.Simulations)
+            {
+                simulation.Nodes.NodeSets[nodeName] = Evaluator.EvaluateDouble(expression);
+            }
+        }
+
+        /// <summary>
         /// Parses an expression to double
         /// </summary>
         /// <param name="expression">Expression to parse</param>

@@ -4,6 +4,7 @@ using SpiceSharpParser.Connector.Evaluation;
 using SpiceSharp.Components;
 using System.Collections.Generic;
 using Xunit;
+using SpiceSharp.Simulations;
 
 namespace SpiceSharpParser.Tests.Connector.Context
 {
@@ -70,6 +71,35 @@ namespace SpiceSharpParser.Tests.Connector.Context
             // act
             var resistor = new Resistor("R1");
             Assert.False(context.SetParameter(resistor, "uknown", "1"));
+        }
+
+        [Fact]
+        public void SetNodeSetVoltageTest()
+        {
+            // prepare
+            var evaluator = Substitute.For<IEvaluator>();
+            evaluator.EvaluateDouble("x+1").Returns(3);
+
+            var simulations = new List<Simulation>();
+            var simulation = new DC("DC");
+            simulations.Add(simulation);
+
+            var resultService = Substitute.For<IResultService>();
+            resultService.SimulationConfiguration.Returns(new SimulationConfiguration());
+            resultService.Simulations.Returns(simulations);
+
+            var context = new ProcessingContext(
+                string.Empty,
+                evaluator,
+                resultService,
+                new NodeNameGenerator(new string[] { }),
+                new ObjectNameGenerator(string.Empty));
+
+            // act
+            context.SetNodeSetVoltage("node1", "x+1");
+
+            // assert
+            Assert.Equal(3, simulation.Nodes.NodeSets["node1"]);
         }
     }
 }

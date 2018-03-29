@@ -5,14 +5,14 @@ using SpiceSharpParser.Model.SpiceObjects;
 namespace SpiceSharpParser.Connector.Processors.Controls
 {
     /// <summary>
-    /// Processes .IC <see cref="Control"/> from spice netlist object model.
+    /// Processes .NODESET <see cref="Control"/> from spice netlist object model.
     /// </summary>
-    public class ICControl : BaseControl
+    public class NodeSetControl : BaseControl
     {
         /// <summary>
         /// Gets name of Spice element
         /// </summary>
-        public override string TypeName => "ic";
+        public override string TypeName => "nodeset";
 
         /// <summary>
         /// Processes <see cref="Control"/> statement and modifies the context
@@ -26,15 +26,15 @@ namespace SpiceSharpParser.Connector.Processors.Controls
                 if (param is Model.SpiceObjects.Parameters.AssignmentParameter ap)
                 {
                     string type = ap.Name.ToLower();
-                    string initialValue = ap.Value;
+                    string value = ap.Value;
 
                     if (type == "v" && ap.Arguments.Count == 1)
                     {
-                        context.SetICVoltage(ap.Arguments[0], initialValue);
+                        context.SetNodeSetVoltage(ap.Arguments[0], value);
                     }
                     else
                     {
-                        throw new GeneralConnectorException(".ic supports only V(X)=Y");
+                        throw new GeneralConnectorException(".NODESET supports only V(X)=Y");
                     }
                 }
             }

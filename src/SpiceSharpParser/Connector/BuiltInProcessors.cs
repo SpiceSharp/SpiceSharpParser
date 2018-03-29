@@ -53,6 +53,7 @@ namespace SpiceSharpParser.Connector
                 controls.Add(new SaveControl(exporters));
                 controls.Add(new PlotControl(exporters));
                 controls.Add(new ICControl());
+                controls.Add(new NodeSetControl());
 
                 // Register component generators
                 components.Add(new RLCGenerator());

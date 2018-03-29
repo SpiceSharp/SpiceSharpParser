@@ -64,6 +64,13 @@ namespace SpiceSharpParser.Connector.Context
         void SetICVoltage(string nodeName, string expression);
 
         /// <summary>
+        /// Sets voltage guess condition for node
+        /// </summary>
+        /// <param name="nodeName">Name of node</param>
+        /// <param name="expression">Expression</param>
+        void SetNodeSetVoltage(string nodeName, string expression);
+
+        /// <summary>
         /// Sets the parameter of entity and enables updates
         /// </summary>
         /// <param name="entity">An entity of parameter</param>
