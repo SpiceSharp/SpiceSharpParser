@@ -1,6 +1,6 @@
 ﻿using SpiceSharpParser.Lexer;
 
-namespace SpiceSharpParser.SpiceLexer
+namespace SpiceSharpParser.Lexer.Spice3f5
 {
     /// <summary>
     /// <see cref="SpiceLexer"/> state

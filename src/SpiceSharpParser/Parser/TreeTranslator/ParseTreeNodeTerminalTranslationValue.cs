@@ -1,6 +1,6 @@
-﻿using SpiceSharpParser.SpiceLexer;
+﻿using SpiceSharpParser.Lexer.Spice3f5;
 
-namespace SpiceSharpParser.Parser.Translation
+namespace SpiceSharpParser.Parser.TreeTranslator
 {
     /// <summary>
     /// The terminal parse tree node evaluation value

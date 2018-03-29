@@ -1,6 +1,4 @@
 ﻿using SpiceSharpParser.Connector;
-using SpiceSharpParser.Parser.Translation;
-using SpiceSharpParser.SpiceLexer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,81 +18,67 @@ namespace SpiceSharpParser.IntegrationTests
         /// </summary>
         public double RelTol = 1e-3;
 
-        public static Netlist ParseNetlist(params string[] lines)
+        public static ConnectorResult ParseNetlist(params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
-            var lexer = new SpiceLexer.SpiceLexer(new SpiceLexerOptions { HasTitle = true });
-            var tokensEnumerable = lexer.GetTokens(text);
-            var tokens = tokensEnumerable.ToArray();
 
-            var parseTree = new Parser.Parsing.Parser().GetParseTree(tokens);
+            var parserFront = new ParserFrontage();
 
-            var eval = new ParseTreeTranslator();
-            var netlistObjectModel = eval.Evaluate(parseTree) as Model.Netlist;
-
-            var connector = new Connector.Connector();
-            var netlist = connector.Translate(netlistObjectModel);
-
-            return netlist;
+            return parserFront.Parse(text, new ParserSettings() { HasTitle = true, IsEndRequired = true }).SpiceSharpModel;
         }
 
         public static Model.Netlist ParseNetlistToModel(params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
-            var lexer = new SpiceLexer.SpiceLexer(new SpiceLexerOptions { HasTitle = true });
-            var tokensEnumerable = lexer.GetTokens(text);
-            var tokens = tokensEnumerable.ToArray();
 
-            var parseTree = new Parser.Parsing.Parser().GetParseTree(tokens);
+            var parserFront = new ParserFrontage();
 
-            var eval = new ParseTreeTranslator();
-            var netlistObjectModel = eval.Evaluate(parseTree) as Model.Netlist;
-            return netlistObjectModel;
+            return parserFront.Parse(text, new ParserSettings() { HasTitle = true, IsEndRequired = true }).NetlistModel;
         }
 
-        public static double RunOpSimulation(Netlist netlist, string nameOfExport)
+        public static double RunOpSimulation(ConnectorResult connectorResult, string nameOfExport)
         {
             double result = double.NaN;
-            var export = netlist.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
-            var simulation = netlist.Simulations.Single();
+            var export = connectorResult.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
+            var simulation = connectorResult.Simulations.Single();
             simulation.OnExportSimulationData += (sender, e) => {
 
                 result = export.Extract();
             };
 
-            simulation.Run(netlist.Circuit);
+            simulation.Run(connectorResult.Circuit);
 
             return result;
         }
 
-        public static Tuple<double, double>[] RunTransientSimulation(Netlist netlist, string nameOfExport)
+        public static Tuple<double, double>[] RunTransientSimulation(ConnectorResult connectorResult, string nameOfExport)
         {
             var list = new List<Tuple<double,double>>();
 
-            var export = netlist.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
-            var simulation = netlist.Simulations.Single();
+            var export = connectorResult.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
+            var simulation = connectorResult.Simulations.Single();
             simulation.OnExportSimulationData += (sender, e) => {
 
                 list.Add(new Tuple<double, double>(e.Time, export.Extract()));
             };
 
-            simulation.Run(netlist.Circuit);
+            simulation.Run(connectorResult.Circuit);
 
             return list.ToArray();
         }
 
-        public static Tuple<double, double>[] RunDCSimulation(Netlist netlist, string nameOfExport)
+        public static Tuple<double, double>[] RunDCSimulation(ConnectorResult connectorResult, string nameOfExport)
         {
             var list = new List<Tuple<double, double>>();
 
-            var export = netlist.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
-            var simulation = netlist.Simulations.Single();
+            var export = connectorResult.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
+            var simulation = connectorResult.Simulations.Single();
             simulation.OnExportSimulationData += (sender, e) => {
 
                 list.Add(new Tuple<double, double>(e.SweepValue, export.Extract()));
             };
 
-            simulation.Run(netlist.Circuit);
+            simulation.Run(connectorResult.Circuit);
 
             return list.ToArray();
         }

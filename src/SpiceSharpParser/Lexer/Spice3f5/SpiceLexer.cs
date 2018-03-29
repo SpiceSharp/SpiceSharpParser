@@ -2,7 +2,7 @@
 using SpiceSharpParser.Lexer;
 using System.Collections.Generic;
 
-namespace SpiceSharpParser.SpiceLexer
+namespace SpiceSharpParser.Lexer.Spice3f5
 {
     /// <summary>
     /// A lexer for Spice netlists

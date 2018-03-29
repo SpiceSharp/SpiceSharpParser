@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using SpiceSharpParser.Parser.TreeGeneration;
+using System.Collections.Generic;
 
-namespace SpiceSharpParser.Parser.Parsing
+namespace SpiceSharpParser.Parser.TreeTranslator
 {
     /// <summary>
     /// Allows to enumerate parse tree nodes in specific orders

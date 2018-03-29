@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using SpiceSharp.Circuits;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.Connector.Processors.Controls.Exporters;
 using SpiceSharpParser.Connector.Processors.Controls.Plots;
 using SpiceSharpParser.Model.SpiceObjects;
-using SpiceSharp.Circuits;
-using SpiceSharp.Simulations;
 
 namespace SpiceSharpParser.Connector.Context
 {
@@ -13,9 +13,9 @@ namespace SpiceSharpParser.Connector.Context
         /// Initializes a new instance of the <see cref="ResultService"/> class.
         /// </summary>
         /// <param name="netlist">A netlist</param>
-        public ResultService(Netlist netlist)
+        public ResultService(ConnectorResult netlist)
         {
-            Netlist = netlist;
+            Result = netlist;
         }
 
         /// <summary>
@@ -26,12 +26,12 @@ namespace SpiceSharpParser.Connector.Context
         /// <summary>
         /// Gets all simulations
         /// </summary>
-        public IEnumerable<Simulation> Simulations => Netlist.Simulations;
+        public IEnumerable<Simulation> Simulations => Result.Simulations;
 
         /// <summary>
-        /// Gets th netlist where things are added
+        /// Gets the result where things are added
         /// </summary>
-        private Netlist Netlist { get; }
+        private ConnectorResult Result { get; }
 
         /// <summary>
         /// Adds warning
@@ -39,7 +39,7 @@ namespace SpiceSharpParser.Connector.Context
         /// <param name="warning">Warning to add</param>
         public void AddWarning(string warning)
         {
-            Netlist.Warnings.Add(warning);
+            Result.Warnings.Add(warning);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace SpiceSharpParser.Connector.Context
         /// <param name="statement">Comment to add</param>
         public void AddComment(CommentLine statement)
         {
-            Netlist.Comments.Add(statement.Text);
+            Result.Comments.Add(statement.Text);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace SpiceSharpParser.Connector.Context
         /// <param name="export">Export to add</param>
         public void AddExport(Export export)
         {
-            Netlist.Exports.Add(export);
+            Result.Exports.Add(export);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace SpiceSharpParser.Connector.Context
         /// <param name="plot">Plot to add</param>
         public void AddPlot(Plot plot)
         {
-            Netlist.Plots.Add(plot);
+            Result.Plots.Add(plot);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace SpiceSharpParser.Connector.Context
         /// <param name="entity">Entity to add</param>
         public void AddEntity(Entity entity)
         {
-            Netlist.Circuit.Objects.Add(entity);
+            Result.Circuit.Objects.Add(entity);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace SpiceSharpParser.Connector.Context
         /// <param name="simulation">Simulation to add</param>
         public void AddSimulation(BaseSimulation simulation)
         {
-            Netlist.Simulations.Add(simulation);
+            Result.Simulations.Add(simulation);
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace SpiceSharpParser.Connector.Context
         /// </returns>
         public bool FindObject(string objectName, out Entity entity)
         {
-            return Netlist.Circuit.Objects.TryGetEntity(objectName, out entity);
+            return Result.Circuit.Objects.TryGetEntity(objectName, out entity);
         }
     }
 }

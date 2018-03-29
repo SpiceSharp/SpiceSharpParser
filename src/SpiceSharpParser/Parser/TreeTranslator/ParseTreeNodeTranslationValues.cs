@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using SpiceSharpParser.Lexer.Spice3f5;
 using SpiceSharpParser.Model;
 using SpiceSharpParser.Parser.Exceptions;
-using SpiceSharpParser.SpiceLexer;
 
-namespace SpiceSharpParser.Parser.Translation
+namespace SpiceSharpParser.Parser.TreeTranslator
 {
     /// <summary>
     /// A collection of <see cref="ParseTreeNodeTranslationValue"/> items.
@@ -24,7 +24,7 @@ namespace SpiceSharpParser.Parser.Translation
                 return t.Token.Lexem;
             }
 
-            throw new EvaluationException("Wrong evaluation type");
+            throw new TranslationException("Wrong evaluation type");
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace SpiceSharpParser.Parser.Translation
                 return t.Token.LineNumber;
             }
 
-            throw new EvaluationException("Wrong evaluation type");
+            throw new TranslationException("Wrong evaluation type");
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace SpiceSharpParser.Parser.Translation
                 }
             }
 
-            throw new EvaluationException("Wrong evaluation type");
+            throw new TranslationException("Wrong evaluation type");
         }
     }
 }

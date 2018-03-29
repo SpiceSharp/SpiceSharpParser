@@ -1,17 +1,15 @@
-﻿using SpiceSharpParser.Grammar;
+﻿using System.Collections.Generic;
+using SpiceSharpParser.Grammar;
+using SpiceSharpParser.Lexer.Spice3f5;
 using SpiceSharpParser.Parser.Exceptions;
-using SpiceSharpParser.Parser.Extensions;
-using SpiceSharpParser.SpiceLexer;
-using System.Collections.Generic;
-using System.Diagnostics;
 
-namespace SpiceSharpParser.Parser.Parsing
+namespace SpiceSharpParser.Parser.TreeGeneration
 {
     /// <summary>
-    /// A parser for Spice netlist based on grammar from <see cref="SpiceGrammar"/> library.
+    /// A parser tree generator for Spice netlist based on grammar from SpiceGrammar.txt.
     /// It's a manualy written LL(*) parser.
     /// </summary>
-    public class Parser
+    public class ParserTreeGenerator
     {
         /// <summary>
         /// Generates a parse tree for SPICE grammar

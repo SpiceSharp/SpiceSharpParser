@@ -1,22 +1,22 @@
 ﻿using System.Collections.Generic;
-using SpiceSharpParser.Connector.Processors.Controls.Exporters;
-using SpiceSharpParser.Connector.Processors.Controls.Plots;
 using SpiceSharp;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Connector.Processors.Controls.Exporters;
+using SpiceSharpParser.Connector.Processors.Controls.Plots;
 
 namespace SpiceSharpParser.Connector
 {
     /// <summary>
-    /// A SpiceSharp netlist
+    /// A connector result
     /// </summary>
-    public class Netlist
+    public class ConnectorResult
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Netlist"/> class.
+        /// Initializes a new instance of the <see cref="ConnectorResult"/> class.
         /// </summary>
         /// <param name="circuit">The SpiceSharp circuit for the netlist</param>
         /// <param name="title">The title of the netlist</param>
-        public Netlist(Circuit circuit, string title)
+        public ConnectorResult(Circuit circuit, string title)
         {
             Circuit = circuit;
             Title = title;

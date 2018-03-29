@@ -1,12 +1,12 @@
 ﻿using SpiceSharpParser.Grammar;
-using SpiceSharpParser.SpiceLexer;
+using SpiceSharpParser.Lexer.Spice3f5;
 
-namespace SpiceSharpParser.Parser.Extensions
+namespace SpiceSharpParser.Lexer.Spice3f5
 {
     /// <summary>
     /// Extensions for <see cref="SpiceToken"/> class.
     /// </summary>
-    public static class TokenExtensions
+    public static class SpiceTokenExtensions
     {
         /// <summary>
         /// Checks whether the spice token is given type

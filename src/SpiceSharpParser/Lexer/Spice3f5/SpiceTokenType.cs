@@ -1,4 +1,4 @@
-﻿namespace SpiceSharpParser.Grammar
+﻿namespace SpiceSharpParser.Lexer.Spice3f5
 {
     /// <summary>
     /// Types of terminals in spice grammar

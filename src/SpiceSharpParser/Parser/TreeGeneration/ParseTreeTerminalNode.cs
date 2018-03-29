@@ -1,6 +1,6 @@
-﻿using SpiceSharpParser.SpiceLexer;
+﻿using SpiceSharpParser.Lexer.Spice3f5;
 
-namespace SpiceSharpParser.Parser.Parsing
+namespace SpiceSharpParser.Parser.TreeGeneration
 {
     /// <summary>
     /// Terminal node in parse tree. It contains a token
@@ -19,6 +19,7 @@ namespace SpiceSharpParser.Parser.Parsing
             {
                 throw new System.ArgumentNullException(nameof(parent));
             }
+
             Token = token ?? throw new System.ArgumentNullException(nameof(token));
         }
 

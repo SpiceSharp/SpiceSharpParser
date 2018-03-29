@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using SpiceSharpParser.Grammar;
+using SpiceSharpParser.Lexer.Spice3f5;
 using SpiceSharpParser.Model;
 using SpiceSharpParser.Model.SpiceObjects;
 using SpiceSharpParser.Model.SpiceObjects.Parameters;
 using SpiceSharpParser.Parser.Exceptions;
-using SpiceSharpParser.Parser.Extensions;
-using SpiceSharpParser.Parser.Parsing;
-using SpiceSharpParser.SpiceLexer;
+using SpiceSharpParser.Parser.TreeGeneration;
 
-namespace SpiceSharpParser.Parser.Translation
+namespace SpiceSharpParser.Parser.TreeTranslator
 {
     /// <summary>
     /// Translates a parse tree (<see cref="ParseTreeNode"/> to Spice Object Model - SpiceNetlist library
@@ -80,7 +79,7 @@ namespace SpiceSharpParser.Parser.Translation
 
                     if (!translators.ContainsKey(nt.Name))
                     {
-                        throw new EvaluationException("Unsupported evaluation of parse tree node");
+                        throw new TranslationException("Unsupported evaluation of parse tree node");
                     }
 
                     var treeNodeResult = translators[nt.Name](items);
@@ -161,7 +160,7 @@ namespace SpiceSharpParser.Parser.Translation
                 }
             }
 
-            throw new EvaluationException("Error during translating parse tree to Spice Object Model");
+            throw new TranslationException("Error during translating parse tree to Spice Object Model");
         }
 
         /// <summary>
@@ -193,7 +192,7 @@ namespace SpiceSharpParser.Parser.Translation
                 }
             }
 
-            throw new EvaluationException("Error during translating parse tree to Spice Object Model");
+            throw new TranslationException("Error during translating parse tree to Spice Object Model");
         }
 
         /// <summary>
@@ -227,7 +226,7 @@ namespace SpiceSharpParser.Parser.Translation
         {
             if (values.Count != 2 && values.Count != 3)
             {
-                throw new EvaluationException("Error during translating parse tree to Spice Object Model");
+                throw new TranslationException("Error during translating parse tree to Spice Object Model");
             }
 
             var component = new Component();
@@ -264,7 +263,7 @@ namespace SpiceSharpParser.Parser.Translation
         {
             if (values.Count < 3)
             {
-                throw new EvaluationException("Error during translating parse tree to Spice Object Model");
+                throw new TranslationException("Error during translating parse tree to Spice Object Model");
             }
 
             var subCkt = new SubCircuit();
@@ -366,17 +365,17 @@ namespace SpiceSharpParser.Parser.Translation
         {
             if (values.Count != 3 && values.Count != 2)
             {
-                throw new EvaluationException("Error during translating statement - Wrong elements count for statement");
+                throw new TranslationException("Error during translating statement - Wrong elements count for statement");
             }
 
             if (!(values[values.Count - 1] is ParseTreeNodeTerminalTranslationValue tv && tv.Token.Is(SpiceTokenType.NEWLINE)))
             {
-                throw new EvaluationException("Error during translating statement - Statement is not finished by newline");
+                throw new TranslationException("Error during translating statement - Statement is not finished by newline");
             }
 
             if (values.Count == 3 && values[1] is ParseTreeNonTerminalTranslationValue nv && nv.SpiceObject != null && !(nv.SpiceObject is CommentLine c))
             {
-                throw new EvaluationException("Error during translating statement - Statement has second element that is not comment");
+                throw new TranslationException("Error during translating statement - Statement has second element that is not comment");
             }
 
             var statement = values.GetSpiceObject<Statement>(0);
@@ -463,7 +462,7 @@ namespace SpiceSharpParser.Parser.Translation
             }
             else
             {
-                throw new EvaluationException("Error during translating parse tree to Spice Object Model");
+                throw new TranslationException("Error during translating parse tree to Spice Object Model");
             }
 
             return parameter;
@@ -491,7 +490,7 @@ namespace SpiceSharpParser.Parser.Translation
             }
             else
             {
-                throw new EvaluationException("Error during translating parse tree to Spice Object Model");
+                throw new TranslationException("Error during translating parse tree to Spice Object Model");
             }
 
             return parameters;
@@ -526,7 +525,7 @@ namespace SpiceSharpParser.Parser.Translation
             {
                 if (values.Count != 0)
                 {
-                    throw new EvaluationException("Error during translating parse tree to Spice Object Model");
+                    throw new TranslationException("Error during translating parse tree to Spice Object Model");
                 }
 
                 return new ParameterCollection();
@@ -560,7 +559,7 @@ namespace SpiceSharpParser.Parser.Translation
             }
             else
             {
-                throw new EvaluationException("Error during translating parse tree to Spice Object Model");
+                throw new TranslationException("Error during translating parse tree to Spice Object Model");
             }
         }
 
@@ -593,7 +592,7 @@ namespace SpiceSharpParser.Parser.Translation
             {
                 if (values.Count != 0)
                 {
-                    throw new EvaluationException("Error during translating parse tree to Spice Object Model");
+                    throw new TranslationException("Error during translating parse tree to Spice Object Model");
                 }
 
                 return new ParameterCollection();
@@ -627,7 +626,7 @@ namespace SpiceSharpParser.Parser.Translation
             }
             else
             {
-                throw new EvaluationException("Error during translating parse tree to Spice Object Model");
+                throw new TranslationException("Error during translating parse tree to Spice Object Model");
             }
         }
 
@@ -661,7 +660,7 @@ namespace SpiceSharpParser.Parser.Translation
             }
             else
             {
-                throw new EvaluationException("Error during translating parse tree to Spice Object Model");
+                throw new TranslationException("Error during translating parse tree to Spice Object Model");
             }
         }
 
@@ -723,7 +722,7 @@ namespace SpiceSharpParser.Parser.Translation
                     return assigmentParameter;
                 }
 
-                throw new EvaluationException("Error during translating parse tree to Spice Object Model");
+                throw new TranslationException("Error during translating parse tree to Spice Object Model");
             }
         }
 
@@ -763,7 +762,7 @@ namespace SpiceSharpParser.Parser.Translation
                         }
                         else
                         {
-                            throw new EvaluationException("Error during translating parse tree to Spice Object Model");
+                            throw new TranslationException("Error during translating parse tree to Spice Object Model");
                         }
                     }
                 }

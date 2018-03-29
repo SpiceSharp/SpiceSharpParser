@@ -1,6 +1,6 @@
-﻿using SpiceSharpParser.Parser.Parsing;
+﻿using SpiceSharpParser.Parser.TreeGeneration;
 
-namespace SpiceSharpParser.Parser.Translation
+namespace SpiceSharpParser.Parser.TreeTranslator
 {
     /// <summary>
     /// The tree node evaluation value

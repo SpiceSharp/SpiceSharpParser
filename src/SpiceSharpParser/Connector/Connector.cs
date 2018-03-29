@@ -1,7 +1,7 @@
-﻿using SpiceSharpParser.Connector.Context;
+﻿using SpiceSharp;
+using SpiceSharpParser.Connector.Context;
 using SpiceSharpParser.Connector.Evaluation;
 using SpiceSharpParser.Connector.Processors;
-using SpiceSharp;
 
 namespace SpiceSharpParser.Connector
 {
@@ -39,10 +39,10 @@ namespace SpiceSharpParser.Connector
         /// <returns>
         /// A new SpiceSharp netlist
         /// </returns>
-        public Netlist Translate(Model.Netlist netlist)
+        public ConnectorResult Translate(Model.Netlist netlist)
         {
             // Create result netlist
-            var result = new Netlist(new Circuit(), netlist.Title);
+            var result = new ConnectorResult(new Circuit(), netlist.Title);
 
             // Create processing context
             var evaluator = new Evaluator();

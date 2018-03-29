@@ -1,6 +1,6 @@
 ﻿using SpiceSharpParser.Model;
 
-namespace SpiceSharpParser.Parser.Translation
+namespace SpiceSharpParser.Parser.TreeTranslator
 {
     /// <summary>
     /// The non-terminal tree node evaluation value
