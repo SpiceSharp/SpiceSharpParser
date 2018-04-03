@@ -6,6 +6,7 @@
     public class SpiceGrammarSymbol
     {
         public const string NETLIST = "NETLIST";
+        public const string NETLIST_WITHOUT_TITLE = "NETLIST_WITHOUT_TITLE";
         public const string NETLIST_ENDING = "NETLIST_ENDING";
         public const string STATEMENTS = "STATEMENTS";
         public const string STATEMENT = "STATEMENT";

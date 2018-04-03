@@ -31,6 +31,7 @@ namespace SpiceSharpParser.Parser.TreeTranslator
         public ParseTreeTranslator()
         {
             translators.Add(SpiceGrammarSymbol.NETLIST, (ParseTreeNodeTranslationValues nt) => CreateNetlist(nt));
+            translators.Add(SpiceGrammarSymbol.NETLIST_WITHOUT_TITLE, (ParseTreeNodeTranslationValues nt) => CreateNetlistWithoutTitle(nt));
             translators.Add(SpiceGrammarSymbol.NETLIST_ENDING, (ParseTreeNodeTranslationValues nt) => null);
             translators.Add(SpiceGrammarSymbol.STATEMENTS, (ParseTreeNodeTranslationValues nt) => CreateStatements(nt));
             translators.Add(SpiceGrammarSymbol.STATEMENT, (ParseTreeNodeTranslationValues nt) => CreateStatement(nt));
@@ -122,6 +123,22 @@ namespace SpiceSharpParser.Parser.TreeTranslator
             {
                 Title = values.GetLexem(0),
                 Statements = values.GetSpiceObject<Statements>(2)
+            };
+        }
+
+        /// <summary>
+        /// Returns new instance of <see cref="Netlist"/>
+        /// from the values of children nodes of <see cref="SpiceGrammarSymbol.NETLIST"/> parse tree node
+        /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="Netlist"/>
+        /// </returns>
+        private SpiceObject CreateNetlistWithoutTitle(ParseTreeNodeTranslationValues values)
+        {
+            return new Netlist()
+            {
+                Title = null,
+                Statements = values.GetSpiceObject<Statements>(0)
             };
         }
 

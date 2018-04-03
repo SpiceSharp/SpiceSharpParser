@@ -7,7 +7,7 @@ namespace SpiceSharpParser.Connector.Processors
     /// <summary>
     /// Processes all <see cref="Statement"/> from spice netlist object model.
     /// </summary>
-    public class StatementsProcessor : StatementProcessor<Statements>, IStatementsProcessor
+    public class StatementsProcessor : IStatementsProcessor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StatementsProcessor"/> class.
@@ -66,7 +66,7 @@ namespace SpiceSharpParser.Connector.Processors
         /// </summary>
         /// <param name="statements">The statements to process</param>
         /// <param name="context">The context to modify</param>
-        public override void Process(Statements statements, IProcessingContext context)
+        public void Process(Statements statements, IProcessingContext context)
         {
             foreach (Statement statement in statements.OrderBy(StatementOrder))
             {

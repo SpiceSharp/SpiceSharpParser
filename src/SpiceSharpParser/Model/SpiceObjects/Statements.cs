@@ -8,7 +8,7 @@ namespace SpiceSharpParser.Model.SpiceObjects
     /// <summary>
     /// Ordered collection of statements
     /// </summary>
-    public class Statements : Statement, IEnumerable<Statement>
+    public class Statements : SpiceObject, IEnumerable<Statement>
     {
         private List<Statement> list = null;
 
@@ -18,6 +18,17 @@ namespace SpiceSharpParser.Model.SpiceObjects
         public Statements()
         {
             list = new List<Statement>();
+        }
+
+        /// <summary>
+        /// Gets the statements count
+        /// </summary>
+        public int Count
+        {
+            get
+            {
+                return this.list.Count;
+            }
         }
 
         /// <summary>

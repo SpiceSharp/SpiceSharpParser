@@ -22,14 +22,14 @@ namespace SpiceSharpParser.IntegrationTests
         {
             var text = string.Join(Environment.NewLine, lines);
             var parserFront = new ParserFrontage();
-            return parserFront.Parse(text, new ParserSettings() { HasTitle = true, IsEndRequired = true }).SpiceSharpModel;
+            return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = true, IsEndRequired = true }).SpiceSharpModel;
         }
 
         public static Model.Netlist ParseNetlistToModel(bool isEndRequired, bool hasTitle, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parserFront = new ParserFrontage();
-            return parserFront.Parse(text, new ParserSettings() { HasTitle = hasTitle, IsEndRequired = isEndRequired }).NetlistModel;
+            return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = hasTitle, IsEndRequired = isEndRequired }).NetlistModel;
         }
 
         public static double RunOpSimulation(ConnectorResult connectorResult, string nameOfExport)

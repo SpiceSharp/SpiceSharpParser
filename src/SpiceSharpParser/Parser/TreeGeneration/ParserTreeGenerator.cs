@@ -43,6 +43,9 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                         case SpiceGrammarSymbol.NETLIST:
                             ProcessNetlist(stack, ntn, tokens, currentTokenIndex);
                             break;
+                        case SpiceGrammarSymbol.NETLIST_WITHOUT_TITLE:
+                            ProcessNetlistWithoutTitle(stack, ntn, tokens, currentTokenIndex);
+                            break;
                         case SpiceGrammarSymbol.NETLIST_ENDING:
                             ProcessNetlistEnding(stack, ntn, tokens, currentTokenIndex);
                             break;
@@ -212,6 +215,23 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                 stack,
                 CreateTerminalNode(SpiceTokenType.TITLE, currentNode),
                 CreateTerminalNode(SpiceTokenType.NEWLINE, currentNode),
+                CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, currentNode),
+                CreateNonTerminalNode(SpiceGrammarSymbol.NETLIST_ENDING, currentNode)
+            );
+        }
+
+        /// <summary>
+        /// Processes <see cref="SpiceGrammarSymbol.NETLIST_WITHOUT_TITLE"/> non-terminal node
+        /// Pushes tree nodes to the stack based on the grammar.
+        /// </summary>
+        /// <param name="stack">A stack where the production is pushed</param>
+        /// <param name="currentNode">A reference to the current node</param>
+        /// <param name="tokens">A reference to the array of tokens</param>
+        /// <param name="currentTokenIndex">A index of the current token</param>
+        private void ProcessNetlistWithoutTitle(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
+        {
+            PushProductionExpression(
+                stack,
                 CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, currentNode),
                 CreateNonTerminalNode(SpiceGrammarSymbol.NETLIST_ENDING, currentNode)
             );
