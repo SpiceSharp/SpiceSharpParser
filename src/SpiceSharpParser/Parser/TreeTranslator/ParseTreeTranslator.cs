@@ -198,6 +198,8 @@ namespace SpiceSharpParser.Parser.TreeTranslator
                 {
                     case (int)SpiceTokenType.REFERENCE:
                         return new ReferenceParameter(lexemValue);
+                    case (int)SpiceTokenType.STRING:
+                        return new StringParameter(lexemValue);
                     case (int)SpiceTokenType.VALUE:
                         return new ValueParameter(lexemValue);
                     case (int)SpiceTokenType.WORD:

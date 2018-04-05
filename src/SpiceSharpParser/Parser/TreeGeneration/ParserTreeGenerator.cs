@@ -473,6 +473,11 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                     return;
                 }
 
+                if (currentToken.Is(SpiceTokenType.EOF)) // follow character
+                {
+                    return;
+                }
+
                 throw new ParsingException("Error during parsing a statement comment. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
             }
         }

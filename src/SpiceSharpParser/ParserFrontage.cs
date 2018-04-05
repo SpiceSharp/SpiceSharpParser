@@ -1,4 +1,10 @@
-﻿namespace SpiceSharpParser
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using SpiceSharpParser.Model;
+using SpiceSharpParser.Model.SpiceObjects;
+
+namespace SpiceSharpParser
 {
     /// <summary>
     /// SpiceSharpParser front
@@ -9,8 +15,10 @@
         /// Initializes a new instance of the <see cref="ParserFrontage"/> class.
         /// </summary>
         /// <param name="netlistModelReader">Netlist model reader</param>
-        public ParserFrontage(INetlistModelReader netlistModelReader)
+        /// <param name="fileProvider">File provider</param>
+        public ParserFrontage(INetlistModelReader netlistModelReader, IFileReader fileProvider)
         {
+            FileReader = fileProvider;
             NetlistModelReader = netlistModelReader ?? throw new System.ArgumentNullException(nameof(netlistModelReader));
         }
 
@@ -20,12 +28,18 @@
         public ParserFrontage()
         {
             NetlistModelReader = new NetlistModelReader();
+            FileReader = new FileReader();
         }
 
         /// <summary>
         /// Gets the netlist model reader
         /// </summary>
         public INetlistModelReader NetlistModelReader { get; }
+
+        /// <summary>
+        /// Gets the file provider
+        /// </summary>
+        public IFileReader FileReader { get; }
 
         /// <summary>
         /// Parses the netlist
@@ -49,13 +63,46 @@
 
             Model.Netlist netlistModel = NetlistModelReader.GetNetlistModel(netlist, settings);
 
-            Connector.ConnectorResult connectorResult = GetConnectorResult(netlistModel);
+            ProcessIncludes(netlistModel, new List<string>());
 
+            Connector.ConnectorResult connectorResult = GetConnectorResult(netlistModel);
             return new ParserResult()
             {
                 SpiceSharpModel = connectorResult,
                 NetlistModel = netlistModel
             };
+        }
+
+        /// <summary>
+        /// Process includes
+        /// </summary>
+        private void ProcessIncludes(Netlist netlistModel, List<string> loadedPaths, string netlistPath = null)
+        {
+            var includes = netlistModel.Statements.Where(statement => statement is Control c && c.Name.ToLower() == "include");
+
+            if (includes.Any())
+            {
+                foreach (Control include in includes.ToArray())
+                {
+                    string includePath = include.Parameters[0].Image.Trim('"');
+
+                    if (!loadedPaths.Contains(includePath))
+                    {
+                        string includeContent = FileReader.GetFileContent(includePath);
+
+                        if (includeContent != null)
+                        {
+                            Netlist includeModel = NetlistModelReader.GetNetlistModel(includeContent, 
+                                new ParserSettings() { HasTitle = false, IsEndRequired = false });
+
+                            ProcessIncludes(includeModel, loadedPaths, includePath);
+
+                            netlistModel.Statements.Merge(includeModel.Statements);
+                            loadedPaths.Add(includePath);
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
