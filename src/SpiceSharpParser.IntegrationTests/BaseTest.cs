@@ -18,6 +18,13 @@ namespace SpiceSharpParser.IntegrationTests
         /// </summary>
         public double RelTol = 1e-3;
 
+        public static ConnectorResult ParseNetlistInWorkingDirectory(string workingDirectory, params string[] lines)
+        {
+            var text = string.Join(Environment.NewLine, lines);
+            var parserFront = new ParserFrontage();
+            return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = true, IsEndRequired = true }, workingDirectory).SpiceSharpModel;
+        }
+
         public static ConnectorResult ParseNetlist(params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
