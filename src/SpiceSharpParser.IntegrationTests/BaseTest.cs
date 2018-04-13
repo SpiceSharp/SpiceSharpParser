@@ -21,21 +21,21 @@ namespace SpiceSharpParser.IntegrationTests
         public static ConnectorResult ParseNetlistInWorkingDirectory(string workingDirectory, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
-            var parserFront = new ParserFrontage();
+            var parserFront = new ParserFacade();
             return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = true, IsEndRequired = true }, workingDirectory).SpiceSharpModel;
         }
 
         public static ConnectorResult ParseNetlist(params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
-            var parserFront = new ParserFrontage();
+            var parserFront = new ParserFacade();
             return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = true, IsEndRequired = true }).SpiceSharpModel;
         }
 
         public static Model.Netlist ParseNetlistToModel(bool isEndRequired, bool hasTitle, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
-            var parserFront = new ParserFrontage();
+            var parserFront = new ParserFacade();
             return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = hasTitle, IsEndRequired = isEndRequired }).NetlistModel;
         }
 

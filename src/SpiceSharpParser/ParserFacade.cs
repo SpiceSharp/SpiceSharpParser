@@ -10,23 +10,23 @@ namespace SpiceSharpParser
     /// <summary>
     /// SpiceSharpParser front
     /// </summary>
-    public class ParserFrontage
+    public class ParserFacade
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParserFrontage"/> class.
+        /// Initializes a new instance of the <see cref="ParserFacade"/> class.
         /// </summary>
         /// <param name="netlistModelReader">Netlist model reader</param>
         /// <param name="fileProvider">File provider</param>
-        public ParserFrontage(INetlistModelReader netlistModelReader, IFileReader fileProvider)
+        public ParserFacade(INetlistModelReader netlistModelReader, IFileReader fileProvider)
         {
             FileReader = fileProvider;
             NetlistModelReader = netlistModelReader ?? throw new System.ArgumentNullException(nameof(netlistModelReader));
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParserFrontage"/> class.
+        /// Initializes a new instance of the <see cref="ParserFacade"/> class.
         /// </summary>
-        public ParserFrontage()
+        public ParserFacade()
         {
             NetlistModelReader = new NetlistModelReader();
             FileReader = new FileReader();
@@ -83,7 +83,7 @@ namespace SpiceSharpParser
         /// <param name="currentDirectoryPath">Current working directory path</param>
         private void ProcessIncludes(Netlist netlistModel, List<string> loadedFullPaths, string currentDirectoryPath = null)
         {
-            var includes = netlistModel.Statements.Where(statement => statement is Control c && c.Name.ToLower() == "include");
+            var includes = netlistModel.Statements.Where(statement => statement is Control c && (c.Name.ToLower() == "include" || c.Name.ToLower() == "inc"));
 
             if (includes.Any())
             {
