@@ -6,7 +6,8 @@ using System.Text;
 namespace SpiceSharpParser.Connector.Evaluation
 {
     /// <summary>
-    /// @author: Sven Boulanger
+    /// @author: Sven Boulanger 
+    /// @author: Marcin Gołębiowski (user functions)
     /// A very light-weight and fast expression parser made for parsing Spice expressions
     /// It is based on Dijkstra's Shunting Yard algorithm. It is very fast for parsing expressions only once.
     /// The parser is also not very expressive for errors, so only use it for relatively simple expressions.
@@ -71,6 +72,7 @@ namespace SpiceSharpParser.Connector.Evaluation
         private const byte IdGreaterOrEqual = 17;
         private const byte IdLeftBracket = 18;
         private const byte IdFunction = 19;
+        private const byte IdUserFunction = 20;
 
         /// <summary>
         /// Operators
@@ -99,6 +101,7 @@ namespace SpiceSharpParser.Connector.Evaluation
         /// Private variables
         /// </summary>
         private readonly Stack<double> outputStack = new Stack<double>();
+        private readonly Stack<string> expressionStack = new Stack<string>();
         private readonly Stack<Operator> operatorStack = new Stack<Operator>();
         private readonly StringBuilder sb = new StringBuilder();
         private int index;
@@ -112,42 +115,46 @@ namespace SpiceSharpParser.Connector.Evaluation
         public Dictionary<string, double> Parameters { get; set; }
 
         /// <summary>
-        /// Gets the variables used in last parsed expression
+        /// Gets or sets the variables used in last parsed expression
         /// </summary>
         public Collection<string> Variables { get; protected set; }
 
+        /// <summary>
+        /// Gets or sets user functions
+        /// </summary>
+        public Dictionary<string, Func<string[], double>> UserFunctions { get; set; }
 
         /// <summary>
         /// Gets all supported functions
         /// </summary>
-        private Dictionary<string, FunctionOperator> Functions { get; } = new Dictionary<string, FunctionOperator>
+        private Dictionary<string, BuildinFunctionOperator> BuildinFunctions { get; } = new Dictionary<string, BuildinFunctionOperator>
         {
-            { "min", new FunctionOperator(stack => Math.Min(stack.Pop(), stack.Pop())) },
-            { "max", new FunctionOperator(stack => Math.Max(stack.Pop(), stack.Pop())) },
-            { "abs", new FunctionOperator(stack => Math.Abs(stack.Pop())) },
-            { "sqrt", new FunctionOperator(stack => Math.Sqrt(stack.Pop())) },
-            { "exp", new FunctionOperator(stack => Math.Exp(stack.Pop())) },
-            { "log", new FunctionOperator(stack => Math.Log(stack.Pop())) },
-            { "log10", new FunctionOperator(stack => Math.Log10(stack.Pop())) },
+            { "min", new BuildinFunctionOperator(stack => Math.Min(stack.Pop(), stack.Pop())) },
+            { "max", new BuildinFunctionOperator(stack => Math.Max(stack.Pop(), stack.Pop())) },
+            { "abs", new BuildinFunctionOperator(stack => Math.Abs(stack.Pop())) },
+            { "sqrt", new BuildinFunctionOperator(stack => Math.Sqrt(stack.Pop())) },
+            { "exp", new BuildinFunctionOperator(stack => Math.Exp(stack.Pop())) },
+            { "log", new BuildinFunctionOperator(stack => Math.Log(stack.Pop())) },
+            { "log10", new BuildinFunctionOperator(stack => Math.Log10(stack.Pop())) },
             {
-                "pow", new FunctionOperator(stack =>
+                "pow", new BuildinFunctionOperator(stack =>
                 {
                     var b = stack.Pop();
                     var a = stack.Pop();
                     return Math.Pow(a, b);
                 })
             },
-            { "cos", new FunctionOperator(stack => Math.Cos(stack.Pop())) },
-            { "sin", new FunctionOperator(stack => Math.Sin(stack.Pop())) },
-            { "tan", new FunctionOperator(stack => Math.Tan(stack.Pop())) },
-            { "cosh", new FunctionOperator(stack => Math.Cosh(stack.Pop())) },
-            { "sinh", new FunctionOperator(stack => Math.Sinh(stack.Pop())) },
-            { "tanh", new FunctionOperator(stack => Math.Tanh(stack.Pop())) },
-            { "acos", new FunctionOperator(stack => Math.Acos(stack.Pop())) },
-            { "asin", new FunctionOperator(stack => Math.Asin(stack.Pop())) },
-            { "atan", new FunctionOperator(stack => Math.Atan(stack.Pop())) },
+            { "cos", new BuildinFunctionOperator(stack => Math.Cos(stack.Pop())) },
+            { "sin", new BuildinFunctionOperator(stack => Math.Sin(stack.Pop())) },
+            { "tan", new BuildinFunctionOperator(stack => Math.Tan(stack.Pop())) },
+            { "cosh", new BuildinFunctionOperator(stack => Math.Cosh(stack.Pop())) },
+            { "sinh", new BuildinFunctionOperator(stack => Math.Sinh(stack.Pop())) },
+            { "tanh", new BuildinFunctionOperator(stack => Math.Tanh(stack.Pop())) },
+            { "acos", new BuildinFunctionOperator(stack => Math.Acos(stack.Pop())) },
+            { "asin", new BuildinFunctionOperator(stack => Math.Asin(stack.Pop())) },
+            { "atan", new BuildinFunctionOperator(stack => Math.Atan(stack.Pop())) },
             {
-                "atan2", new FunctionOperator(stack =>
+                "atan2", new BuildinFunctionOperator(stack =>
                 {
                     var b = stack.Pop();
                     var a = stack.Pop();
@@ -155,6 +162,7 @@ namespace SpiceSharpParser.Connector.Evaluation
                 })
             }
         };
+
 
         /// <summary>
         /// Parse an expression
@@ -298,8 +306,15 @@ namespace SpiceSharpParser.Connector.Evaluation
 
                                 if (operatorStack.Peek().Id == IdFunction)
                                 {
-                                    FunctionOperator op = (FunctionOperator)operatorStack.Pop();
+                                    BuildinFunctionOperator op = (BuildinFunctionOperator)operatorStack.Pop();
                                     outputStack.Push(op.Function(outputStack));
+                                    break;
+                                }
+
+                                if (operatorStack.Peek().Id == IdUserFunction)
+                                {
+                                    UserFunctionOperator op = (UserFunctionOperator)operatorStack.Pop();
+                                    outputStack.Push(op.Function(expressionStack));
                                     break;
                                 }
 
@@ -314,6 +329,11 @@ namespace SpiceSharpParser.Connector.Evaluation
                             while (operatorStack.Count > 0)
                             {
                                 if (operatorStack.Peek().Id == IdFunction)
+                                {
+                                    break;
+                                }
+
+                                if (operatorStack.Peek().Id == IdUserFunction)
                                 {
                                     break;
                                 }
@@ -359,7 +379,6 @@ namespace SpiceSharpParser.Connector.Evaluation
                                 break;
                             }
                         }
-
                         if (index < count && input[index] == '(')
                         {
                             index++;
@@ -368,13 +387,53 @@ namespace SpiceSharpParser.Connector.Evaluation
                             // Benchmark switch statements on function name: 1,000,000 -> 2400ms
                             // Benchmark switch on first character + if/else function name: 1,000,000 -> 2200ms
                             // Benchmark using Dictionary<>: 1,000,000 -> 2200ms -- I chose this option
-                            operatorStack.Push(Functions[sb.ToString()]);
+
+                            if (BuildinFunctions.ContainsKey(sb.ToString()))
+                            {
+                                operatorStack.Push(BuildinFunctions[sb.ToString()]);
+                            }
+                            else
+                            {
+                                if (UserFunctions.ContainsKey(sb.ToString()))
+                                {
+                                    var userFunc = UserFunctions[sb.ToString()];
+
+                                    var ufo = new UserFunctionOperator();
+                                    ufo.Function = (expressionStack) => {
+                                        var result = userFunc(expressionStack.ToArray());
+                                        expressionStack.Clear();
+                                        return result;
+                                    };
+
+                                    operatorStack.Push(ufo);
+                                }
+                                else
+                                {
+                                    throw new Exception("Unknown function: " + sb.ToString());
+                                }
+                            }
                         }
                         else if (Parameters != null)
                         {
                             string id = sb.ToString();
-                            Variables.Add(id);
-                            outputStack.Push(Parameters[id]);
+
+                            if (Parameters.ContainsKey(id))
+                            {
+                                Variables.Add(id);
+                                outputStack.Push(Parameters[id]);
+                            }
+                            else
+                            {
+                                if (operatorStack.Count > 0 && operatorStack.Peek().Id == IdUserFunction)
+                                {
+                                    expressionStack.Push(id);
+                                }
+                                else
+                                {
+                                    throw new Exception("Unkown variable: " + id);
+                                }
+                            }
+
                             infixPostfix = true;
                         }
                         else
@@ -382,7 +441,36 @@ namespace SpiceSharpParser.Connector.Evaluation
                             throw new Exception("No parameters");
                         }
                     }
+                    else if (input[index] == ')' && index >= 1 && input[index - 1] == '(')
+                    {
+                        while (operatorStack.Count > 0)
+                        {
+                            if (operatorStack.Peek().Id == IdLeftBracket)
+                            {
+                                operatorStack.Pop();
+                                break;
+                            }
 
+                            if (operatorStack.Peek().Id == IdFunction)
+                            {
+                                BuildinFunctionOperator op = (BuildinFunctionOperator)operatorStack.Pop();
+                                outputStack.Push(op.Function(outputStack));
+                                break;
+                            }
+
+                            if (operatorStack.Peek().Id == IdUserFunction)
+                            {
+                                UserFunctionOperator op = (UserFunctionOperator)operatorStack.Pop();
+                                outputStack.Push(op.Function(expressionStack));
+                                break;
+                            }
+
+                            Evaluate(operatorStack.Pop());
+                        }
+
+                        infixPostfix = true;
+                        index++;
+                    }
                     // Prefix operators
                     else
                     {
@@ -677,13 +765,13 @@ namespace SpiceSharpParser.Connector.Evaluation
         /// <summary>
         /// Function description
         /// </summary>
-        private class FunctionOperator : Operator
+        private class BuildinFunctionOperator : Operator
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="FunctionOperator"/> class.
+            /// Initializes a new instance of the <see cref="BuildinFunctionOperator"/> class.
             /// </summary>
             /// <param name="func">The function</param>
-            public FunctionOperator(Func<Stack<double>, double> func)
+            public BuildinFunctionOperator(Func<Stack<double>, double> func)
                 : base(IdFunction, byte.MaxValue, false)
             {
                 Function = func ?? throw new ArgumentNullException(nameof(func));
@@ -693,6 +781,25 @@ namespace SpiceSharpParser.Connector.Evaluation
             /// Gets the function evaluation
             /// </summary>
             public Func<Stack<double>, double> Function { get; }
+        }
+
+        /// <summary>
+        /// Function description
+        /// </summary>
+        private class UserFunctionOperator : Operator
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="UserFunctionOperator"/> class.
+            /// </summary>
+            public UserFunctionOperator()
+                : base(IdUserFunction, byte.MaxValue, false)
+            {
+            }
+
+            /// <summary>
+            /// Gets the function evaluation
+            /// </summary>
+            public Func<Stack<string>, double> Function { get; set; }
         }
     }
 }
