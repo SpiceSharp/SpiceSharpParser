@@ -64,7 +64,7 @@ namespace SpiceSharpParser.Connector
                 nodeNameGenerator,
                 objectNameGenerator);
 
-            SetEvaluator(evaluator, processingContext);
+            AddUserFunctions(evaluator, processingContext);
 
             // Process statements form input netlist using created context
             StatementsProcessor.Process(netlist.Statements, processingContext);
@@ -72,10 +72,28 @@ namespace SpiceSharpParser.Connector
             return result;
         }
 
-        private void SetEvaluator(Evaluator evaluator, IProcessingContext context)
+        /// <summary>
+        /// Adds user functions to evaluator
+        /// </summary>
+        /// <param name="evaluator">Evaluator to set</param>
+        /// <param name="context">Processing context</param>
+        private void AddUserFunctions(Evaluator evaluator, IProcessingContext context)
         {
             var userFunctions = new Dictionary<string, System.Func<string[], double>>();
 
+            // TODO: Future: add more functions to use
+            CreateExportsUserFunctions(context, userFunctions);
+
+            evaluator.ExpressionParser.UserFunctions = userFunctions;
+        }
+
+        /// <summary>
+        /// Creates export user functions
+        /// </summary>
+        /// <param name="context">Processing context</param>
+        /// <param name="userFunctions">Where to add</param>
+        private void CreateExportsUserFunctions(IProcessingContext context, Dictionary<string, System.Func<string[], double>> userFunctions)
+        {
             // create exports user functions for each export
             var exporters = new Dictionary<string, Export>();
 
@@ -83,7 +101,7 @@ namespace SpiceSharpParser.Connector
             {
                 foreach (var exportType in exporter.GetSupportedTypes())
                 {
-                    System.Func<string[],  double> eval = (args) =>
+                    System.Func<string[], double> eval = (args) =>
                     {
                         string exporterKey = exportType + string.Join(",", args);
 
@@ -94,6 +112,7 @@ namespace SpiceSharpParser.Connector
                             {
                                 vectorParameter.Elements.Add(new WordParameter(arg));
                             }
+
                             var parameters = new ParameterCollection();
                             parameters.Add(vectorParameter);
                             var export = exporter.CreateExport(exportType, parameters, context.Result.Simulations.First(), context);
@@ -104,9 +123,9 @@ namespace SpiceSharpParser.Connector
                         {
                             return exporters[exporterKey].Extract();
                         }
-                        catch (GeneralConnectorException ex)
+                        catch (GeneralConnectorException)
                         {
-                            return 0;
+                            return double.NaN;
                         }
                     };
 
@@ -114,8 +133,6 @@ namespace SpiceSharpParser.Connector
                     userFunctions.Add(exportType.ToUpper(), eval);
                 }
             }
-
-            evaluator.ExpressionParser.UserFunctions = userFunctions;
         }
     }
 }
