@@ -16,12 +16,15 @@ namespace SpiceSharpParser.Connector.Processors
         /// <param name="componentRegistry">A component registry</param>
         /// <param name="controlsRegistry">A controls registry</param>
         /// <param name="waveformsRegistry">A waveform registry</param>
+        /// <param name="exporterRegistry">A exporter registry</param>
         public StatementsProcessor(
             IEntityGeneratorRegistry modelRegistry,
             IEntityGeneratorRegistry componentRegistry,
             IControlRegistry controlsRegistry,
-            IWaveformRegistry waveformsRegistry)
+            IWaveformRegistry waveformsRegistry,
+            IExporterRegistry exporterRegistry)
         {
+            ExporterRegistry = exporterRegistry;
             ModelProcessor = new ModelProcessor(modelRegistry);
             WaveformProcessor = new WaveformProcessor(waveformsRegistry);
             ControlProcessor = new ControlProcessor(controlsRegistry);
@@ -30,6 +33,11 @@ namespace SpiceSharpParser.Connector.Processors
             ComponentProcessor = new ComponentProcessor(componentRegistry);
             CommentProcessor = new CommentProcessor();
         }
+
+        /// <summary>
+        /// Gets exporter registry
+        /// </summary>
+        public IExporterRegistry ExporterRegistry { get; }
 
         /// <summary>
         /// Gets the current model processor

@@ -7,6 +7,7 @@ using SpiceSharpParser.Connector.Registries;
 using SpiceSharpParser.Model.SpiceObjects;
 using SpiceSharpParser.Model.SpiceObjects.Parameters;
 using SpiceSharp.Simulations;
+using System.Linq;
 
 namespace SpiceSharpParser.Connector.Processors.Controls
 {
@@ -130,11 +131,21 @@ namespace SpiceSharpParser.Connector.Processors.Controls
         private List<Export> GenerateExports(ParameterCollection parameterCollection, Simulation simulationToPlot, IProcessingContext context)
         {
             List<Export> result = new List<Export>();
-            foreach (var parameter in parameterCollection)
+            foreach (Parameter parameter in parameterCollection)
             {
                 if (parameter is BracketParameter bp)
                 {
                     result.Add(GenerateExport(bp, simulationToPlot, context));
+                }
+                else
+                {
+                    string expressionName = parameter.Image;
+                    var expressionNames = context.Evaluator.GetExpressionNames();
+
+                    if (expressionNames.Contains(expressionName))
+                    {
+                        result.Add(new ExpressionExport(expressionName, context.Evaluator.GetExpression(expressionName), context.Evaluator));
+                    }
                 }
             }
 

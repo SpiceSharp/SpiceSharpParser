@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.Connector.Evaluation
 {
     public class ExpressionRegistry
     {
-        readonly Dictionary<string, List<DoubleExpression>> expressions = new Dictionary<string, List<DoubleExpression>>();
+        private readonly Dictionary<string, List<DoubleExpression>> expressionsByParameterName = new Dictionary<string, List<DoubleExpression>>();
+        private readonly Dictionary<string, DoubleExpression> expressionsByName = new Dictionary<string, DoubleExpression>();
 
         /// <summary>
         /// Gets expressions that depend on given parameter
@@ -15,9 +17,9 @@ namespace SpiceSharpParser.Connector.Evaluation
         /// </returns>
         public IEnumerable<DoubleExpression> GetDependentExpressions(string parameterName)
         {
-            if (expressions.ContainsKey(parameterName))
+            if (expressionsByParameterName.ContainsKey(parameterName))
             {
-                return expressions[parameterName];
+                return expressionsByParameterName[parameterName];
             }
             else
             {
@@ -34,15 +36,50 @@ namespace SpiceSharpParser.Connector.Evaluation
         {
             foreach (var parameter in expressionParameters)
             {
-                if (expressions.ContainsKey(parameter))
+                if (expressionsByParameterName.ContainsKey(parameter))
                 {
-                    expressions[parameter].Add(expression);
+                    expressionsByParameterName[parameter].Add(expression);
                 }
                 else
                 {
-                    expressions[parameter] = new List<DoubleExpression>() { expression };
+                    expressionsByParameterName[parameter] = new List<DoubleExpression>() { expression };
                 }
             }
+        }
+
+        /// <summary>
+        /// Adds named expression to registry
+        /// </summary>
+        /// <param name="expressionName">An expression name to add</param>
+        /// <param name="expression">An expression to add</param>
+        /// <param name="expressionParameters">A list of expression parameters</param>
+        public void Add(string expressionName, DoubleExpression expression, IEnumerable<string> expressionParameters)
+        {
+            expressionsByName[expressionName] = expression;
+            Add(expression, expressionParameters);
+        }
+
+        /// <summary>
+        /// Gets expression names
+        /// </summary>
+        /// <returns>
+        /// Names of expressions
+        /// </returns>
+        public IEnumerable<string> GetExpressionNames()
+        {
+            return expressionsByName.Keys;
+        }
+
+        /// <summary>
+        /// Gets the expression
+        /// </summary>
+        /// <param name="expressionName">Name of expression</param>
+        /// <returns>
+        /// An expression
+        /// </returns>
+        public string GetExpression(string expressionName)
+        {
+            return expressionsByName[expressionName].ValueExpression;
         }
     }
 }

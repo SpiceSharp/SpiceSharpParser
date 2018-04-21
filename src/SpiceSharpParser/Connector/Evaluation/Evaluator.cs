@@ -33,6 +33,8 @@ namespace SpiceSharpParser.Connector.Evaluation
             {
                 Parameters[parameterName] = parentEvaluator.GetParameterValue(parameterName);
             }
+
+            ExpressionParser.UserFunctions = parentEvaluator.ExpressionParser?.UserFunctions;
         }
 
         /// <summary>
@@ -43,7 +45,7 @@ namespace SpiceSharpParser.Connector.Evaluation
         /// <summary>
         /// Gets the expression parser
         /// </summary>
-        protected SpiceExpression ExpressionParser { get; }
+        public SpiceExpression ExpressionParser { get; }
 
         /// <summary>
         /// Gets the evaluator registry
@@ -100,6 +102,28 @@ namespace SpiceSharpParser.Connector.Evaluation
         }
 
         /// <summary>
+        /// Adds double expression to registry that will be updated when value of parameter change
+        /// </summary>
+        /// <param name="expressionName">Name of expression</param>
+        /// <param name="expression">An expression to add</param>
+        /// <param name="parameters">Parameters of expression</param>
+        public void AddNamedDynamicExpression(string expressionName, DoubleExpression expression, IEnumerable<string> parameters)
+        {
+            Registry.Add(expressionName, expression, parameters);
+        }
+
+        /// <summary>
+        /// Returns names of all parameters
+        /// </summary>
+        /// <returns>
+        /// True if there is parameter
+        /// </returns>
+        public IEnumerable<string> GetParameters()
+        {
+            return Parameters.Keys;
+        }
+
+        /// <summary>
         /// Returns a value indicating whether there is a parameter in evaluator with given name
         /// </summary>
         /// <param name="parameterName">A parameter name</param>
@@ -121,6 +145,18 @@ namespace SpiceSharpParser.Connector.Evaluation
         public double GetParameterValue(string parameterName)
         {
             return Parameters[parameterName];
+        }
+
+        /// <summary>
+        /// Gets the expression
+        /// </summary>
+        /// <param name="expressionName">A expression name</param>
+        /// <returns>
+        /// An expression
+        /// </returns>
+        public string GetExpression(string expressionName)
+        {
+            return Registry.GetExpression(expressionName);
         }
 
         /// <summary>
@@ -163,6 +199,17 @@ namespace SpiceSharpParser.Connector.Evaluation
             ExpressionParser.Parse(expression);
 
             return ExpressionParser.Variables;
+        }
+
+        /// <summary>
+        /// Gets the expression names
+        /// </summary>
+        /// <returns>
+        /// Enumerable of strings
+        /// </returns>
+        public IEnumerable<string> GetExpressionNames()
+        {
+            return Registry.GetExpressionNames();
         }
 
         /// <summary>

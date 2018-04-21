@@ -122,7 +122,7 @@ namespace SpiceSharpParser.Connector.Evaluation
         /// <summary>
         /// Gets or sets user functions
         /// </summary>
-        public Dictionary<string, Func<string[], double>> UserFunctions { get; set; }
+        public Dictionary<string, System.Func<string[], double>> UserFunctions { get; set; }
 
         /// <summary>
         /// Gets all supported functions

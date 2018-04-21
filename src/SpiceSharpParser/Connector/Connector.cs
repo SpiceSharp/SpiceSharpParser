@@ -1,7 +1,13 @@
-﻿using SpiceSharp;
+﻿using System.Collections.Generic;
+using System.Linq;
+using SpiceSharp;
 using SpiceSharpParser.Connector.Context;
 using SpiceSharpParser.Connector.Evaluation;
+using SpiceSharpParser.Connector.Exceptions;
 using SpiceSharpParser.Connector.Processors;
+using SpiceSharpParser.Connector.Processors.Controls.Exporters;
+using SpiceSharpParser.Model.SpiceObjects;
+using SpiceSharpParser.Model.SpiceObjects.Parameters;
 
 namespace SpiceSharpParser.Connector
 {
@@ -46,6 +52,7 @@ namespace SpiceSharpParser.Connector
 
             // Create processing context
             var evaluator = new Evaluator();
+
             var resultService = new ResultService(result);
             var nodeNameGenerator = new NodeNameGenerator(new string[] { "0" });
             var objectNameGenerator = new ObjectNameGenerator(string.Empty);
@@ -57,10 +64,58 @@ namespace SpiceSharpParser.Connector
                 nodeNameGenerator,
                 objectNameGenerator);
 
+            SetEvaluator(evaluator, processingContext);
+
             // Process statements form input netlist using created context
             StatementsProcessor.Process(netlist.Statements, processingContext);
 
             return result;
+        }
+
+        private void SetEvaluator(Evaluator evaluator, IProcessingContext context)
+        {
+            var userFunctions = new Dictionary<string, System.Func<string[], double>>();
+
+            // create exports user functions for each export
+            var exporters = new Dictionary<string, Export>();
+
+            foreach (var exporter in StatementsProcessor.ExporterRegistry)
+            {
+                foreach (var exportType in exporter.GetSupportedTypes())
+                {
+                    System.Func<string[],  double> eval = (args) =>
+                    {
+                        string exporterKey = exportType + string.Join(",", args);
+
+                        if (!exporters.ContainsKey(exporterKey))
+                        {
+                            var vectorParameter = new VectorParameter();
+                            foreach (var arg in args)
+                            {
+                                vectorParameter.Elements.Add(new WordParameter(arg));
+                            }
+                            var parameters = new ParameterCollection();
+                            parameters.Add(vectorParameter);
+                            var export = exporter.CreateExport(exportType, parameters, context.Result.Simulations.First(), context);
+                            exporters[exporterKey] = export;
+                        }
+
+                        try
+                        {
+                            return exporters[exporterKey].Extract();
+                        }
+                        catch (GeneralConnectorException ex)
+                        {
+                            return 0;
+                        }
+                    };
+
+                    userFunctions.Add(exportType, eval);
+                    userFunctions.Add(exportType.ToUpper(), eval);
+                }
+            }
+
+            evaluator.ExpressionParser.UserFunctions = userFunctions;
         }
     }
 }

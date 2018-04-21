@@ -1,4 +1,5 @@
 ﻿using SpiceSharpParser.Connector.Processors.Controls.Exporters;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.Connector.Registries
 {
@@ -32,5 +33,7 @@ namespace SpiceSharpParser.Connector.Registries
         /// A reference to exporter
         /// </returns>
         Exporter Get(string type);
+
+        IEnumerator<Exporter> GetEnumerator();
     }
 }

@@ -54,6 +54,24 @@ namespace SpiceSharpParser.IntegrationTests
             return result;
         }
 
+        public static double[] RunOpSimulation(ConnectorResult connectorResult, params string[] nameOfExport)
+        {
+            var simulation = connectorResult.Simulations.Single();
+            double[] result = new double[nameOfExport.Length];
+
+            simulation.OnExportSimulationData += (sender, e) => {
+
+                for (var i = 0; i < nameOfExport.Length; i++) {
+                    var export = connectorResult.Exports.Find(exp => exp.Name.ToLower() == nameOfExport[i].ToLower()); //TODO: Remove ToLower someday
+                    result[i] = export.Extract();
+                }
+            };
+
+            simulation.Run(connectorResult.Circuit);
+
+            return result;
+        }
+
         public static Tuple<double, double>[] RunTransientSimulation(ConnectorResult connectorResult, string nameOfExport)
         {
             var list = new List<Tuple<double,double>>();

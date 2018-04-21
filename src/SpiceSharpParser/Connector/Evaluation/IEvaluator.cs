@@ -8,11 +8,24 @@ namespace SpiceSharpParser.Connector.Evaluation
     public interface IEvaluator
     {
         /// <summary>
+        /// Gets the expression parser
+        /// </summary>
+        SpiceExpression ExpressionParser { get; }
+
+        /// <summary>
         /// Adds double expression to registry that will be updated when value of parameter change
         /// </summary>
         /// <param name="expression">An expression to add</param>
         /// <param name="parameters">Parameters of expression</param>
         void AddDynamicExpression(DoubleExpression expression, IEnumerable<string> parameters);
+
+        /// <summary>
+        /// Adds let expression to registry.
+        /// </summary>
+        /// <param name="expressionName">An expression name</param>
+        /// <param name="expression">An expression value</param>
+        /// <param name="parameters">Parameters of expression</param>
+        void AddNamedDynamicExpression(string expressionName, DoubleExpression expression, IEnumerable<string> parameters);
 
         /// <summary>
         /// Evaluates a specific string to double
@@ -62,12 +75,29 @@ namespace SpiceSharpParser.Connector.Evaluation
         double GetParameterValue(string parameterName);
 
         /// <summary>
+        /// Gets the expression
+        /// </summary>
+        /// <param name="expressionName">A expression name</param>
+        /// <returns>
+        /// An expression
+        /// </returns>
+        string GetExpression(string expressionName);
+
+        /// <summary>
         /// Gets the names of parameters
         /// </summary>
         /// <returns>
         /// The names of paramaters
         /// </returns>
         IEnumerable<string> GetParameterNames();
+
+        /// <summary>
+        /// Gets the names of expressions
+        /// </summary>
+        /// <returns>
+        /// The names of expressions
+        /// </returns>
+        IEnumerable<string> GetExpressionNames();
 
         /// <summary>
         /// Gets the variables in expression
@@ -77,5 +107,13 @@ namespace SpiceSharpParser.Connector.Evaluation
         /// A list of variables from expression
         /// </returns>
         IEnumerable<string> GetVariables(string expression);
+
+        /// <summary>
+        /// Returns names of all parameters
+        /// </summary>
+        /// <returns>
+        /// True if there is parameter
+        /// </returns>
+        IEnumerable<string> GetParameters();
     }
 }

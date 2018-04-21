@@ -42,6 +42,17 @@ namespace SpiceSharpParser.Connector.Processors.Controls
                 {
                     context.Result.AddExport(GenerateExport(bracketParameter, context.Result.Simulations.First(), context));
                 }
+
+                if (parameter is SingleParameter s)
+                {
+                    string expressionName = s.Image;
+                    var expressionNames = context.Evaluator.GetExpressionNames();
+
+                    if (expressionNames.Contains(expressionName))
+                    {
+                        context.Result.AddExport(new ExpressionExport(expressionName, context.Evaluator.GetExpression(expressionName), context.Evaluator));
+                    }
+                }
             }
         }
 

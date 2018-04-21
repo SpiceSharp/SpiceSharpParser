@@ -1,4 +1,5 @@
 ﻿using SpiceSharpParser.Connector.Processors.Common;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace SpiceSharpParser.Connector.Registries
@@ -9,7 +10,7 @@ namespace SpiceSharpParser.Connector.Registries
     /// <typeparam name="TElement">
     /// Type of the registry element
     /// </typeparam>
-    public class BaseRegistry<TElement>
+    public class BaseRegistry<TElement> : IEnumerable<TElement>
         where TElement : IGenerator
     {
         /// <summary>
@@ -100,6 +101,16 @@ namespace SpiceSharpParser.Connector.Registries
         public int IndexOf(string type)
         {
             return ElementsTypes.IndexOf(type);
+        }
+
+        public IEnumerator<TElement> GetEnumerator()
+        {
+            return Elements.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return Elements.GetEnumerator();
         }
     }
 }

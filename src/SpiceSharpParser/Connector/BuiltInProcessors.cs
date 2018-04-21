@@ -24,7 +24,7 @@ namespace SpiceSharpParser.Connector
                 var waveForms = new WaveformRegistry();
                 var exporters = new ExporterRegistry();
 
-                var statementsProcessor = new StatementsProcessor(models, components, controls, waveForms);
+                var statementsProcessor = new StatementsProcessor(models, components, controls, waveForms, exporters);
 
                 // Register waveform generators
                 waveForms.Add(new SineGenerator());
@@ -50,6 +50,7 @@ namespace SpiceSharpParser.Connector
                 controls.Add(new DCControl());
                 controls.Add(new OPControl());
                 controls.Add(new NoiseControl());
+                controls.Add(new LetControl());
                 controls.Add(new SaveControl(exporters));
                 controls.Add(new PlotControl(exporters));
                 controls.Add(new ICControl());
@@ -63,8 +64,9 @@ namespace SpiceSharpParser.Connector
                 components.Add(new BipolarJunctionTransistorGenerator());
                 components.Add(new DiodeGenerator());
                 components.Add(new MosfetGenerator());
-                components.Add(new SubCircuitGenerator(statementsProcessor.ComponentProcessor, 
-                    statementsProcessor.ModelProcessor, 
+                components.Add(new SubCircuitGenerator(
+                    statementsProcessor.ComponentProcessor,
+                    statementsProcessor.ModelProcessor,
                     statementsProcessor.ControlProcessor,
                     statementsProcessor.SubcircuitDefinitionProcessor));
 
