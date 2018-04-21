@@ -104,5 +104,19 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             // act and assert
             Assert.Equal(1, parser.Parse("sin(0) + 1"));
         }
+
+        [Fact]
+        public void ParseWithSpace()
+        {
+            // arrange
+            var parser = new SpiceExpression
+            {
+                Parameters = new Dictionary<string, double>() { },
+                UserFunctions = new Dictionary<string, Func<string[], double>>()
+            };
+
+            // act and assert
+            Assert.Equal(3, parser.Parse(" 2 + 1 "));
+        }
     }
 }

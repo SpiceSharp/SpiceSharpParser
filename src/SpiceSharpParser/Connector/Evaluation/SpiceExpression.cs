@@ -190,6 +190,11 @@ namespace SpiceSharpParser.Connector.Evaluation
                     index++;
                 }
 
+                if (index == count)
+                {
+                    break;
+                }
+
                 // Parse a double
                 char c = input[index];
 
