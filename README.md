@@ -2,7 +2,7 @@
 Documentation on SpiceSharpParser is available at <https://spicesharp.github.io/SpiceSharpParser/index.html>.
 
 ## What is SpiceSharpParser?
-SpiceSharpParser is a .NET Standard library that parses Spice3f5 netlists and creates an object model of netlist for <https://github.com/SpiceSharp/SpiceSharp>
+SpiceSharpParser is a .NET Standard library that parses Spice3f5 netlists and creates an object model of netlist (input data for <https://github.com/SpiceSharp/SpiceSharp>)
 
 It has no external dependency. 
 
