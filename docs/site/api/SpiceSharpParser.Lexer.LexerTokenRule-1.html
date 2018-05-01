@@ -1,0 +1,431 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class LexerTokenRule&lt;TLexerState&gt;
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class LexerTokenRule&lt;TLexerState&gt;
+   ">
+    <meta name="generator" content="docfx 2.35.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="SpiceSharpParser.Lexer.LexerTokenRule`1">
+  
+  
+  <h1 id="SpiceSharpParser_Lexer_LexerTokenRule_1" data-uid="SpiceSharpParser.Lexer.LexerTokenRule`1" class="text-break">Class LexerTokenRule&lt;TLexerState&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>The lexer token rule class. It defines how and when a token will be generated for given regulal expression pattern</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="SpiceSharpParser.Lexer.LexerRule.html">LexerRule</a></div>
+    <div class="level2"><span class="xref">LexerTokenRule&lt;TLexerState&gt;</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Lexer.LexerRule.html#SpiceSharpParser_Lexer_LexerRule_Name">LexerRule.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Lexer.LexerRule.html#SpiceSharpParser_Lexer_LexerRule_IgnoreCase">LexerRule.IgnoreCase</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Lexer.LexerRule.html#SpiceSharpParser_Lexer_LexerRule_RegularExpressionPattern">LexerRule.RegularExpressionPattern</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Lexer.LexerRule.html#SpiceSharpParser_Lexer_LexerRule_RegularExpression">LexerRule.RegularExpression</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="SpiceSharpParser.Lexer.html">SpiceSharpParser.Lexer</a></h6>
+  <h6><strong>Assembly</strong>: SpiceSharpParser.dll</h6>
+  <h5 id="SpiceSharpParser_Lexer_LexerTokenRule_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class LexerTokenRule&lt;TLexerState&gt; : LexerRule where TLexerState : LexerState</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TLexerState</span></td>
+        <td><p>Type of lexer state</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexer_LexerTokenRule_1__ctor_System_Int32_System_String_System_String_System_Func__0_SpiceSharpParser_Lexer_LexerRuleResult__System_Func__0_SpiceSharpParser_Lexer_LexerRuleUseState__System_Boolean_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexer.LexerTokenRule%601.%23ctor(System.Int32%2CSystem.String%2CSystem.String%2CSystem.Func%7B%600%2CSpiceSharpParser.Lexer.LexerRuleResult%7D%2CSystem.Func%7B%600%2CSpiceSharpParser.Lexer.LexerRuleUseState%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexer/LexerTokenRule.cs/#L21">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Lexer_LexerTokenRule_1__ctor_" data-uid="SpiceSharpParser.Lexer.LexerTokenRule`1.#ctor*"></a>
+  <h4 id="SpiceSharpParser_Lexer_LexerTokenRule_1__ctor_System_Int32_System_String_System_String_System_Func__0_SpiceSharpParser_Lexer_LexerRuleResult__System_Func__0_SpiceSharpParser_Lexer_LexerRuleUseState__System_Boolean_" data-uid="SpiceSharpParser.Lexer.LexerTokenRule`1.#ctor(System.Int32,System.String,System.String,System.Func{`0,SpiceSharpParser.Lexer.LexerRuleResult},System.Func{`0,SpiceSharpParser.Lexer.LexerRuleUseState},System.Boolean)">LexerTokenRule(Int32, String, String, Func&lt;TLexerState, LexerRuleResult&gt;, Func&lt;TLexerState, LexerRuleUseState&gt;, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="SpiceSharpParser.Lexer.LexerTokenRule-1.html">LexerTokenRule&lt;TLexerState&gt;</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LexerTokenRule(int tokenType, string ruleName, string regularExpressionPattern, Func&lt;TLexerState, LexerRuleResult&gt; lexerRuleResultAction = null, Func&lt;TLexerState, LexerRuleUseState&gt; isActiveAction = null, bool ignoreCase = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">tokenType</span></td>
+        <td><p>Token type</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">ruleName</span></td>
+        <td><p>Rule name</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">regularExpressionPattern</span></td>
+        <td><p>A token rule pattern</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;TLexerState, <a class="xref" href="SpiceSharpParser.Lexer.LexerRuleResult.html">LexerRuleResult</a>&gt;</td>
+        <td><span class="parametername">lexerRuleResultAction</span></td>
+        <td><p>A token rule token action</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;TLexerState, <a class="xref" href="SpiceSharpParser.Lexer.LexerRuleUseState.html">LexerRuleUseState</a>&gt;</td>
+        <td><span class="parametername">isActiveAction</span></td>
+        <td><p>A token rule active action</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">ignoreCase</span></td>
+        <td><p>Ignore case</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexer_LexerTokenRule_1_IsActiveAction.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexer.LexerTokenRule%601.IsActiveAction%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexer/LexerTokenRule.cs/#L48">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Lexer_LexerTokenRule_1_IsActiveAction_" data-uid="SpiceSharpParser.Lexer.LexerTokenRule`1.IsActiveAction*"></a>
+  <h4 id="SpiceSharpParser_Lexer_LexerTokenRule_1_IsActiveAction" data-uid="SpiceSharpParser.Lexer.LexerTokenRule`1.IsActiveAction">IsActiveAction</h4>
+  <div class="markdown level1 summary"><p>Gets specifies whether the rule should be skipped</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Func&lt;TLexerState, LexerRuleUseState&gt; IsActiveAction { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;TLexerState, <a class="xref" href="SpiceSharpParser.Lexer.LexerRuleUseState.html">LexerRuleUseState</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexer_LexerTokenRule_1_LexerRuleResultAction.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexer.LexerTokenRule%601.LexerRuleResultAction%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexer/LexerTokenRule.cs/#L43">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Lexer_LexerTokenRule_1_LexerRuleResultAction_" data-uid="SpiceSharpParser.Lexer.LexerTokenRule`1.LexerRuleResultAction*"></a>
+  <h4 id="SpiceSharpParser_Lexer_LexerTokenRule_1_LexerRuleResultAction" data-uid="SpiceSharpParser.Lexer.LexerTokenRule`1.LexerRuleResultAction">LexerRuleResultAction</h4>
+  <div class="markdown level1 summary"><p>Gets specifies what to do with a generated token (return or ignore)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Func&lt;TLexerState, LexerRuleResult&gt; LexerRuleResultAction { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;TLexerState, <a class="xref" href="SpiceSharpParser.Lexer.LexerRuleResult.html">LexerRuleResult</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexer_LexerTokenRule_1_TokenType.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexer.LexerTokenRule%601.TokenType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexer/LexerTokenRule.cs/#L38">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Lexer_LexerTokenRule_1_TokenType_" data-uid="SpiceSharpParser.Lexer.LexerTokenRule`1.TokenType*"></a>
+  <h4 id="SpiceSharpParser_Lexer_LexerTokenRule_1_TokenType" data-uid="SpiceSharpParser.Lexer.LexerTokenRule`1.TokenType">TokenType</h4>
+  <div class="markdown level1 summary"><p>Gets the type of a generated token</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int TokenType { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexer_LexerTokenRule_1_Clone.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexer.LexerTokenRule%601.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexer/LexerTokenRule.cs/#L68">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Lexer_LexerTokenRule_1_Clone_" data-uid="SpiceSharpParser.Lexer.LexerTokenRule`1.Clone*"></a>
+  <h4 id="SpiceSharpParser_Lexer_LexerTokenRule_1_Clone" data-uid="SpiceSharpParser.Lexer.LexerTokenRule`1.Clone">Clone()</h4>
+  <div class="markdown level1 summary"><p>Clones the rule</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override LexerRule Clone()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Lexer.LexerRule.html">LexerRule</a></td>
+        <td><p>A new instance of rule</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="SpiceSharpParser.Lexer.LexerRule.html#SpiceSharpParser_Lexer_LexerRule_Clone">LexerRule.Clone()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexer_LexerTokenRule_1_IsActive__0_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexer.LexerTokenRule%601.IsActive(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexer/LexerTokenRule.cs/#L57">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Lexer_LexerTokenRule_1_IsActive_" data-uid="SpiceSharpParser.Lexer.LexerTokenRule`1.IsActive*"></a>
+  <h4 id="SpiceSharpParser_Lexer_LexerTokenRule_1_IsActive__0_" data-uid="SpiceSharpParser.Lexer.LexerTokenRule`1.IsActive(`0)">IsActive(TLexerState)</h4>
+  <div class="markdown level1 summary"><p>Returns true if the rule is active or should be skipped</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsActive(TLexerState lexerState)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TLexerState</span></td>
+        <td><span class="parametername">lexerState</span></td>
+        <td><p>The curent lexer state</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>True if the lexer token rule is active or should be skipped</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexer_LexerTokenRule_1.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexer.LexerTokenRule%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexer/LexerTokenRule.cs/#L9" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
