@@ -4,7 +4,7 @@
       "src": [
         {
           "files": [ "**.csproj" ],
-          "src": "../../src/SpiceSharpParser",          
+          "src": "../SpiceSharpParser",          
 		  "exclude": [
             "**/bin/**",
             "**/obj/**"         
@@ -46,11 +46,11 @@
         ],
         "exclude": [
           "obj/**",
-          "_site/**"
+          "../../docs/**"
         ]
       }
     ],
-    "dest": "../site",
+    "dest": "../../docs",
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": [
