@@ -32,7 +32,7 @@ namespace SpiceSharpParser.Tests.Connector.Processors
             registry.Get("r").Returns(generator);
 
             var processingContext = Substitute.For<IProcessingContext>();
-            processingContext.NodeNameGenerator.Returns(new NodeNameGenerator(new string[] { }));
+            processingContext.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }));
             processingContext.ObjectNameGenerator.Returns(new ObjectNameGenerator(string.Empty));
 
             var resultService = Substitute.For<IResultService>();

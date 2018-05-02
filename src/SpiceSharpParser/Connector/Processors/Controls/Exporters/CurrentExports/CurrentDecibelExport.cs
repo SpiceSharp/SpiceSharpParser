@@ -24,6 +24,8 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters.CurrentExport
             }
 
             ExportImpl = new ComplexPropertyExport(simulation, source, "i");
+
+            Name = "idb(" + Source + ")";
         }
 
         /// <summary>
@@ -35,11 +37,6 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters.CurrentExport
         /// Gets the type name
         /// </summary>
         public override string TypeName => "none";
-
-        /// <summary>
-        /// Gets the name
-        /// </summary>
-        public override string Name => "idb(" + Source + ")";
 
         /// <summary>
         /// Gets the quantity unit

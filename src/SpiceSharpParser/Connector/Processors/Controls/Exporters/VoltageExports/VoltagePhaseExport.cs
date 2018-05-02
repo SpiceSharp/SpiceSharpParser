@@ -15,13 +15,14 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters.VoltageExport
         /// <param name="simulation">Simulation</param>
         /// <param name="node">Positive node</param>
         /// <param name="reference">Negative reference node</param>
-        public VoltagePhaseExport(Simulation simulation, Identifier node, Identifier reference = null)
+        public VoltagePhaseExport(Simulation simulation, Identifier node, Identifier reference = null, string nodePath = null, string referencePath = null)
         {
             if (simulation == null)
             {
                 throw new System.ArgumentNullException(nameof(simulation));
             }
 
+            Name = "vp(" + nodePath.ToString() + (referencePath == null ? string.Empty : ", " + referencePath.ToString()) + ")";
             Node = node ?? throw new System.ArgumentNullException(nameof(node));
             Reference = reference;
 
@@ -42,11 +43,6 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters.VoltageExport
         /// Gets the type name
         /// </summary>
         public override string TypeName => "degrees";
-
-        /// <summary>
-        /// Gets get the name
-        /// </summary>
-        public override string Name => "vp(" + Node + (Reference == null ? string.Empty : ", " + Reference) + ")";
 
         /// <summary>
         /// Gets the quantity unit

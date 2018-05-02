@@ -31,6 +31,8 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters.CurrentExport
             {
                 ExportRealImpl = new RealPropertyExport(simulation, source, "i");
             }
+
+            Name = "i(" + Source + ")";
         }
 
         /// <summary>
@@ -47,11 +49,6 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters.CurrentExport
         /// Gets the quantity unit
         /// </summary>
         public override string QuantityUnit => "Current (A)";
-
-        /// <summary>
-        /// Gets the name based on the properties
-        /// </summary>
-        public override string Name => "i(" + Source + ")";
 
         /// <summary>
         /// Gets the real exporter

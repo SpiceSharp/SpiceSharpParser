@@ -18,6 +18,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters
             ExpressionName = expressionName;
             Evaluator = evaluator;
             Expression = expression;
+            Name = ExpressionName;
         }
 
         /// <summary>
@@ -39,11 +40,6 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters
         /// Gets the type name
         /// </summary>
         public override string TypeName => Expression;
-
-        /// <summary>
-        /// Gets the name based on the properties
-        /// </summary>
-        public override string Name => ExpressionName;
 
         /// <summary>
         /// Gets the export unit

@@ -15,13 +15,14 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters.VoltageExport
         /// <param name="simulation">Simulation</param>
         /// <param name="node">Positive node</param>
         /// <param name="reference">Negative reference node</param>
-        public VoltageImaginaryExport(Simulation simulation, Identifier node, Identifier reference = null)
+        public VoltageImaginaryExport(Simulation simulation, Identifier node, Identifier reference = null, string nodePath = null, string referencePath = null)
         {
             if (simulation == null)
             {
                 throw new System.ArgumentNullException(nameof(simulation));
             }
 
+            Name = "vi(" + nodePath.ToString() + (referencePath == null ? string.Empty : ", " + referencePath.ToString()) + ")";
             Node = node ?? throw new System.ArgumentNullException(nameof(node));
             Reference = reference;
 
@@ -32,11 +33,6 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters.VoltageExport
         /// Gets the type name
         /// </summary>
         public override string TypeName => "voltage";
-
-        /// <summary>
-        /// Gets the name
-        /// </summary>
-        public override string Name => "vi(" + Node + (Reference == null ? "" : ", " + Reference) + ")";
 
         /// <summary>
         /// Gets the quantity unit

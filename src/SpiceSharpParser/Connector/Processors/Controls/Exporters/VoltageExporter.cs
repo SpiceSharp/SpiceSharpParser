@@ -34,6 +34,8 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters
 
             // Get the nodes
             Identifier node, reference = null;
+            string nodePath = null, referencePath = null;
+
             if (parameters[0] is VectorParameter vector)
             {
                 switch (vector.Elements.Count)
@@ -41,10 +43,12 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters
                     case 0:
                         throw new WrongParametersCountException("No nodes for voltage export. Node expected");
                     case 2:
-                        reference = new StringIdentifier(context.NodeNameGenerator.Generate(vector.Elements[1].Image));
+                        referencePath = vector.Elements[1].Image;
+                        reference = new StringIdentifier(context.NodeNameGenerator.Parse(referencePath));
                         goto case 1;
                     case 1:
-                        node = new StringIdentifier(context.NodeNameGenerator.Generate(vector.Elements[0].Image));
+                        nodePath = vector.Elements[0].Image;
+                        node = new StringIdentifier(context.NodeNameGenerator.Parse(nodePath));
                         break;
                     default:
                         throw new WrongParametersCountException("Too many nodes specified for voltage export");
@@ -52,19 +56,20 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters
             }
             else
             {
-                node = new StringIdentifier(context.NodeNameGenerator.Generate(parameters.GetString(0)));
+                nodePath = parameters.GetString(0);
+                node = new StringIdentifier(context.NodeNameGenerator.Parse(nodePath));
             }
 
             Export ve = null;
             switch (type.ToLower())
             {
-                case "v": ve = new VoltageExport(simulation, node, reference); break;
-                case "vr": ve = new VoltageRealExport(simulation, node, reference); break;
-                case "vi": ve = new VoltageImaginaryExport(simulation, node, reference); break;
-                case "vm": ve = new VoltageMagnitudeExport(simulation, node, reference); break;
-                case "vdb": ve = new VoltageDecibelExport(simulation, node, reference); break;
+                case "v": ve = new VoltageExport(simulation, node, reference, nodePath, referencePath); break;
+                case "vr": ve = new VoltageRealExport(simulation, node, reference, nodePath, referencePath); break;
+                case "vi": ve = new VoltageImaginaryExport(simulation, node, reference, nodePath, referencePath); break;
+                case "vm": ve = new VoltageMagnitudeExport(simulation, node, reference, nodePath, referencePath); break;
+                case "vdb": ve = new VoltageDecibelExport(simulation, node, reference, nodePath, referencePath); break;
                 case "vph":
-                case "vp": ve = new VoltagePhaseExport(simulation, node, reference); break;
+                case "vp": ve = new VoltagePhaseExport(simulation, node, reference, nodePath, referencePath); break;
             }
 
             return ve;

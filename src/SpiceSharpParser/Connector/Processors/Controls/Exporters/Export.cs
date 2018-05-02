@@ -11,9 +11,9 @@
         public abstract string TypeName { get; }
 
         /// <summary>
-        /// Gets the name based on the properties
+        /// Gets or sets the name
         /// </summary>
-        public abstract string Name { get; }
+        public string Name { get; protected set; }
 
         /// <summary>
         /// Gets the export unit

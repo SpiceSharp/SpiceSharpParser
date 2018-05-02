@@ -25,6 +25,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters.CurrentExport
 
             Source = source;
             ExportImpl = new ComplexPropertyExport(simulation, source, "i");
+            Name = "ip(" + Source + ")";
         }
 
         /// <summary>
@@ -36,11 +37,6 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters.CurrentExport
         /// Gets the type name
         /// </summary>
         public override string TypeName => "degrees";
-
-        /// <summary>
-        /// Gets get the name
-        /// </summary>
-        public override string Name => "ip(" + Source + ")";
 
         /// <summary>
         /// Gets the quantity unit

@@ -1,4 +1,5 @@
 ﻿using SpiceSharpParser.Connector.Context;
+using SpiceSharpParser.Connector.Processors.Controls;
 using SpiceSharpParser.Connector.Registries;
 using SpiceSharpParser.Model.SpiceObjects;
 
@@ -106,6 +107,12 @@ namespace SpiceSharpParser.Connector.Processors
 
             if (statement is Control c)
             {
+                // hack to allow .plot and .save execute after subcircuits and components
+                if (c.Name.ToLower() == "plot" || c.Name.ToLower() == "save")
+                {
+                    return 400;
+                }
+
                 return 0 + ControlProcessor.GetSubOrder(c);
             }
 

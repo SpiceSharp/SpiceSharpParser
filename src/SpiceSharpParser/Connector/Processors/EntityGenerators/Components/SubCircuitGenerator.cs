@@ -40,7 +40,7 @@ namespace SpiceSharpParser.Connector.Processors.EntityGenerators.Components
         /// <summary>
         /// Generates a new subcircuit
         /// </summary>
-        /// <param name="id">Identifier for subcircuit (ignored)</param>
+        /// <param name="id">Identifier for subcircuit </param> // OMG!!!
         /// <param name="originalName">Name of subcircuit</param>
         /// <param name="type">Type (ignored)</param>
         /// <param name="parameters">Parameters of subcircuit</param>
@@ -51,7 +51,7 @@ namespace SpiceSharpParser.Connector.Processors.EntityGenerators.Components
         public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, IProcessingContext context)
         {
             SubCircuit subCircuitDefiniton = FindSubcircuitDefinion(parameters, context);
-            ProcessingContext subCircuitContext = CreateSubcircuitContext(originalName, subCircuitDefiniton, parameters, context);
+            ProcessingContext subCircuitContext = CreateSubcircuitContext(id.ToString(), originalName, subCircuitDefiniton, parameters, context);
 
             ProcessParamControl(subCircuitDefiniton, subCircuitContext);
             ProcessSubcircuits(subCircuitDefiniton, subCircuitContext);
@@ -158,6 +158,7 @@ namespace SpiceSharpParser.Connector.Processors.EntityGenerators.Components
         /// <summary>
         /// Creates subcircuit context
         /// </summary>
+        /// <param name="subcircuitFullName">Subcircuit full name</param>
         /// <param name="subcircuitName">Subcircuit name</param>
         /// <param name="subCircuitDefiniton">Subcircuit definion</param>
         /// <param name="parameters">Parameters and pins for subcircuit</param>
@@ -165,10 +166,11 @@ namespace SpiceSharpParser.Connector.Processors.EntityGenerators.Components
         /// <returns>
         /// A new instance of processing
         /// </returns>
-        private ProcessingContext CreateSubcircuitContext(string subcircuitName, SubCircuit subCircuitDefiniton, ParameterCollection parameters, IProcessingContext context)
+        private ProcessingContext CreateSubcircuitContext(string subcircuitFullName, string subcircuitName, SubCircuit subCircuitDefiniton, ParameterCollection parameters, IProcessingContext context)
         {
             int assigmentParametersCount = 0;
 
+            // setting evaluator
             var subCktParameters = new List<AssignmentParameter>();
             while (parameters[parameters.Count - assigmentParametersCount - 1] is AssignmentParameter a)
             {
@@ -176,16 +178,19 @@ namespace SpiceSharpParser.Connector.Processors.EntityGenerators.Components
                 assigmentParametersCount++;
             }
 
+            var newEvaluator = new Evaluator(context.Evaluator);
+            newEvaluator.SetParameters(CreateSubcircuitParameters(context, subCircuitDefiniton, subCktParameters));
+
+            // setting node name generator
             var pinInstanceNames = new List<string>();
             for (var i = 0; i < parameters.Count - assigmentParametersCount - 1; i++)
             {
                 pinInstanceNames.Add(context.NodeNameGenerator.Generate(parameters.GetString(i)));
             }
+            var subcircuitNodeNameGenerator = new SubcircuitNodeNameGenerator(subcircuitFullName, subcircuitName, subCircuitDefiniton, pinInstanceNames, context.NodeNameGenerator.Globals);
+            context.NodeNameGenerator.Children.Add(subcircuitNodeNameGenerator);
 
-            var newEvaluator = new Evaluator(context.Evaluator);
-            newEvaluator.SetParameters(CreateSubcircuitParameters(context, subCircuitDefiniton, subCktParameters));
-
-            var subcircuitNodeNameGenerator = new NodeNameGenerator(subcircuitName, subCircuitDefiniton, pinInstanceNames, context.NodeNameGenerator.Globals);
+            // setting object name generator
             var subcircuitObjectNameGenerator = context.ObjectNameGenerator.CreateChildGenerator(subcircuitName);
 
             return new ProcessingContext(subcircuitName, newEvaluator, context.Result, subcircuitNodeNameGenerator, subcircuitObjectNameGenerator, context);

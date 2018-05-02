@@ -22,7 +22,7 @@ namespace SpiceSharpParser.Tests.Connector.Context
                 });
 
             var resultService = Substitute.For<IResultService>();
-            var context = new ProcessingContext(string.Empty, evaluator, resultService, new NodeNameGenerator(new string[] { }), new ObjectNameGenerator(string.Empty));
+            var context = new ProcessingContext(string.Empty, evaluator, resultService, new MainCircuitNodeNameGenerator(new string[] { }), new ObjectNameGenerator(string.Empty));
 
             // act
             var resistor = new Resistor("R1");
@@ -43,7 +43,7 @@ namespace SpiceSharpParser.Tests.Connector.Context
             var context = new ProcessingContext(string.Empty,
                 evaluator,
                 resultService,
-                new NodeNameGenerator(new string[] { }),
+                new MainCircuitNodeNameGenerator(new string[] { }),
                 new ObjectNameGenerator(string.Empty));
 
             // act
@@ -65,7 +65,7 @@ namespace SpiceSharpParser.Tests.Connector.Context
             var context = new ProcessingContext(string.Empty,
                 evaluator,
                 resultService,
-                new NodeNameGenerator(new string[] { }),
+                new MainCircuitNodeNameGenerator(new string[] { }),
                 new ObjectNameGenerator(string.Empty));
 
             // act
@@ -92,7 +92,7 @@ namespace SpiceSharpParser.Tests.Connector.Context
                 string.Empty,
                 evaluator,
                 resultService,
-                new NodeNameGenerator(new string[] { }),
+                new MainCircuitNodeNameGenerator(new string[] { }),
                 new ObjectNameGenerator(string.Empty));
 
             // act
