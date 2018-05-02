@@ -125,36 +125,36 @@ namespace SpiceSharpParser.Connector.Evaluation
         public Dictionary<string, System.Func<string[], double>> UserFunctions { get; set; }
 
         /// <summary>
-        /// Gets all supported functions
+        /// Gets all built-in functions
         /// </summary>
-        private Dictionary<string, BuildinFunctionOperator> BuildinFunctions { get; } = new Dictionary<string, BuildinFunctionOperator>
+        private Dictionary<string, BuiltInFunctionOperator> BuiltInFunctions { get; } = new Dictionary<string, BuiltInFunctionOperator>
         {
-            { "min", new BuildinFunctionOperator(stack => Math.Min(stack.Pop(), stack.Pop())) },
-            { "max", new BuildinFunctionOperator(stack => Math.Max(stack.Pop(), stack.Pop())) },
-            { "abs", new BuildinFunctionOperator(stack => Math.Abs(stack.Pop())) },
-            { "sqrt", new BuildinFunctionOperator(stack => Math.Sqrt(stack.Pop())) },
-            { "exp", new BuildinFunctionOperator(stack => Math.Exp(stack.Pop())) },
-            { "log", new BuildinFunctionOperator(stack => Math.Log(stack.Pop())) },
-            { "log10", new BuildinFunctionOperator(stack => Math.Log10(stack.Pop())) },
+            { "min", new BuiltInFunctionOperator(stack => Math.Min(stack.Pop(), stack.Pop())) },
+            { "max", new BuiltInFunctionOperator(stack => Math.Max(stack.Pop(), stack.Pop())) },
+            { "abs", new BuiltInFunctionOperator(stack => Math.Abs(stack.Pop())) },
+            { "sqrt", new BuiltInFunctionOperator(stack => Math.Sqrt(stack.Pop())) },
+            { "exp", new BuiltInFunctionOperator(stack => Math.Exp(stack.Pop())) },
+            { "log", new BuiltInFunctionOperator(stack => Math.Log(stack.Pop())) },
+            { "log10", new BuiltInFunctionOperator(stack => Math.Log10(stack.Pop())) },
             {
-                "pow", new BuildinFunctionOperator(stack =>
+                "pow", new BuiltInFunctionOperator(stack =>
                 {
                     var b = stack.Pop();
                     var a = stack.Pop();
                     return Math.Pow(a, b);
                 })
             },
-            { "cos", new BuildinFunctionOperator(stack => Math.Cos(stack.Pop())) },
-            { "sin", new BuildinFunctionOperator(stack => Math.Sin(stack.Pop())) },
-            { "tan", new BuildinFunctionOperator(stack => Math.Tan(stack.Pop())) },
-            { "cosh", new BuildinFunctionOperator(stack => Math.Cosh(stack.Pop())) },
-            { "sinh", new BuildinFunctionOperator(stack => Math.Sinh(stack.Pop())) },
-            { "tanh", new BuildinFunctionOperator(stack => Math.Tanh(stack.Pop())) },
-            { "acos", new BuildinFunctionOperator(stack => Math.Acos(stack.Pop())) },
-            { "asin", new BuildinFunctionOperator(stack => Math.Asin(stack.Pop())) },
-            { "atan", new BuildinFunctionOperator(stack => Math.Atan(stack.Pop())) },
+            { "cos", new BuiltInFunctionOperator(stack => Math.Cos(stack.Pop())) },
+            { "sin", new BuiltInFunctionOperator(stack => Math.Sin(stack.Pop())) },
+            { "tan", new BuiltInFunctionOperator(stack => Math.Tan(stack.Pop())) },
+            { "cosh", new BuiltInFunctionOperator(stack => Math.Cosh(stack.Pop())) },
+            { "sinh", new BuiltInFunctionOperator(stack => Math.Sinh(stack.Pop())) },
+            { "tanh", new BuiltInFunctionOperator(stack => Math.Tanh(stack.Pop())) },
+            { "acos", new BuiltInFunctionOperator(stack => Math.Acos(stack.Pop())) },
+            { "asin", new BuiltInFunctionOperator(stack => Math.Asin(stack.Pop())) },
+            { "atan", new BuiltInFunctionOperator(stack => Math.Atan(stack.Pop())) },
             {
-                "atan2", new BuildinFunctionOperator(stack =>
+                "atan2", new BuiltInFunctionOperator(stack =>
                 {
                     var b = stack.Pop();
                     var a = stack.Pop();
@@ -311,7 +311,7 @@ namespace SpiceSharpParser.Connector.Evaluation
 
                                 if (operatorStack.Peek().Id == IdFunction)
                                 {
-                                    BuildinFunctionOperator op = (BuildinFunctionOperator)operatorStack.Pop();
+                                    BuiltInFunctionOperator op = (BuiltInFunctionOperator)operatorStack.Pop();
                                     outputStack.Push(op.Function(outputStack));
                                     break;
                                 }
@@ -392,10 +392,9 @@ namespace SpiceSharpParser.Connector.Evaluation
                             // Benchmark switch statements on function name: 1,000,000 -> 2400ms
                             // Benchmark switch on first character + if/else function name: 1,000,000 -> 2200ms
                             // Benchmark using Dictionary<>: 1,000,000 -> 2200ms -- I chose this option
-
-                            if (BuildinFunctions.ContainsKey(sb.ToString()))
+                            if (BuiltInFunctions.TryGetValue(sb.ToString(), out var function))
                             {
-                                operatorStack.Push(BuildinFunctions[sb.ToString()]);
+                                operatorStack.Push(function);
                             }
                             else
                             {
@@ -422,10 +421,10 @@ namespace SpiceSharpParser.Connector.Evaluation
                         {
                             string id = sb.ToString();
 
-                            if (Parameters.ContainsKey(id))
+                            if (Parameters.TryGetValue(id, out var parameter))
                             {
                                 Variables.Add(id);
-                                outputStack.Push(Parameters[id]);
+                                outputStack.Push(parameter);
                             }
                             else
                             {
@@ -458,7 +457,7 @@ namespace SpiceSharpParser.Connector.Evaluation
 
                             if (operatorStack.Peek().Id == IdFunction)
                             {
-                                BuildinFunctionOperator op = (BuildinFunctionOperator)operatorStack.Pop();
+                                BuiltInFunctionOperator op = (BuiltInFunctionOperator)operatorStack.Pop();
                                 outputStack.Push(op.Function(outputStack));
                                 break;
                             }
@@ -770,13 +769,13 @@ namespace SpiceSharpParser.Connector.Evaluation
         /// <summary>
         /// Function description
         /// </summary>
-        private class BuildinFunctionOperator : Operator
+        private class BuiltInFunctionOperator : Operator
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="BuildinFunctionOperator"/> class.
+            /// Initializes a new instance of the <see cref="BuiltInFunctionOperator"/> class.
             /// </summary>
             /// <param name="func">The function</param>
-            public BuildinFunctionOperator(Func<Stack<double>, double> func)
+            public BuiltInFunctionOperator(Func<Stack<double>, double> func)
                 : base(IdFunction, byte.MaxValue, false)
             {
                 Function = func ?? throw new ArgumentNullException(nameof(func));
