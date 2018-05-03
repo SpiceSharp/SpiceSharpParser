@@ -54,5 +54,33 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.Equal(2, export[1]);
             Assert.Equal(4, export[2]);
         }
+
+        [Fact]
+        public void ReferenceAsArgumentInLetTest()
+        {
+            var netlist = ParseNetlist(
+                "Subcircuit test",
+                "V1 IN 0 4.0",
+                "X1 IN OUT twoResistorsInSeries R1=1 R2=2",
+                "R1 OUT 0 1",
+                "\n",
+                ".SUBCKT resistor input output params: R=1",
+                "R1 input output {R}",
+                ".ENDS resistor",
+                ".SUBCKT twoResistorsInSeries input output params: R1=1 R2=1",
+                "X1 input 1 resistor R={R1}",
+                "X2 1 output resistor R={R2}",
+                ".ENDS twoResistorsInSeries",
+                "\n",
+                ".OP",
+                ".LET log_current {log(@X1.X1.R1[i])}",
+                ".SAVE V(OUT) log_current",
+                ".END");
+
+            double[] export = RunOpSimulation(netlist, "V(OUT)", "log_current");
+
+            Assert.Equal(1, export[0]);
+            Assert.Equal(0, export[1]);
+        }
     }
 }
