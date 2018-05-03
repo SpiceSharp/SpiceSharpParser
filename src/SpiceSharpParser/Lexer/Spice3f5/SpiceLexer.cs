@@ -49,7 +49,7 @@ namespace SpiceSharpParser.Lexer.Spice3f5
             builder.AddRule(new LexerInternalRule("LETTER", "[a-z]", options.IgnoreCase));
             builder.AddRule(new LexerInternalRule("CHARACTER", "[a-z0-9]", options.IgnoreCase));
             builder.AddRule(new LexerInternalRule("DIGIT", "[0-9]", options.IgnoreCase));
-            builder.AddRule(new LexerInternalRule("SPECIAL", "[_\\.\\:\\!%\\#\\-;\\<>\\^]", options.IgnoreCase));
+            builder.AddRule(new LexerInternalRule("SPECIAL", "[\\[\\]_\\.\\:\\!%\\#\\-;\\<>\\^]", options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.WHITESPACE,
@@ -199,7 +199,7 @@ namespace SpiceSharpParser.Lexer.Spice3f5
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.REFERENCE,
                 "A reference",
-                "@<WORD>",
+                "@(<LETTER>(<CHARACTER>|<SPECIAL>)*)",
                 ignoreCase: options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(

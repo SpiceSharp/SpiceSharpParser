@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.Connector.Context;
 using SpiceSharpParser.Connector.Exceptions;
 using SpiceSharpParser.Connector.Processors.Controls.Exporters;
@@ -6,8 +8,6 @@ using SpiceSharpParser.Connector.Processors.Controls.Plots;
 using SpiceSharpParser.Connector.Registries;
 using SpiceSharpParser.Model.SpiceObjects;
 using SpiceSharpParser.Model.SpiceObjects.Parameters;
-using SpiceSharp.Simulations;
-using System.Linq;
 
 namespace SpiceSharpParser.Connector.Processors.Controls
 {
@@ -15,26 +15,21 @@ namespace SpiceSharpParser.Connector.Processors.Controls
     /// Processes .PLOT <see cref="Control"/> from spice netlist object model.
     /// It supports DC, AC, TRAN type of .PLOT
     /// </summary>
-    public class PlotControl : BaseControl
+    public class PlotControl : ExportControl
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotControl"/> class.
         /// </summary>
         /// <param name="registry">The exporter registry</param>
         public PlotControl(IExporterRegistry registry)
+            : base(registry)
         {
-            Registry = registry ?? throw new System.ArgumentNullException(nameof(registry));
         }
 
         /// <summary>
-        /// Gets the type of genera
+        /// Gets the type of genereator
         /// </summary>
         public override string TypeName => "plot";
-
-        /// <summary>
-        /// Gets the registry
-        /// </summary>
-        protected IExporterRegistry Registry { get; }
 
         /// <summary>
         /// Gets the supported plot types
@@ -133,9 +128,9 @@ namespace SpiceSharpParser.Connector.Processors.Controls
             List<Export> result = new List<Export>();
             foreach (Parameter parameter in parameterCollection)
             {
-                if (parameter is BracketParameter bp)
+                if (parameter is BracketParameter || parameter is ReferenceParameter)
                 {
-                    result.Add(GenerateExport(bp, simulationToPlot, context));
+                    result.Add(GenerateExport(parameter, simulationToPlot, context));
                 }
                 else
                 {
@@ -150,18 +145,6 @@ namespace SpiceSharpParser.Connector.Processors.Controls
             }
 
             return result;
-        }
-
-        private Export GenerateExport(BracketParameter parameter, Simulation simulation, IProcessingContext context)
-        {
-            string type = parameter.Name.ToLower();
-
-            if (Registry.Supports(type))
-            {
-                return Registry.Get(type).CreateExport(type, parameter.Parameters, simulation, context);
-            }
-
-            throw new GeneralConnectorException(".plot - Unsuported export:" + type);
         }
     }
 }

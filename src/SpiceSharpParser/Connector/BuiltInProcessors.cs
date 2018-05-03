@@ -33,6 +33,7 @@ namespace SpiceSharpParser.Connector
                 // Register exporters
                 exporters.Add(new VoltageExporter());
                 exporters.Add(new CurrentExporter());
+                exporters.Add(new PropertyExporter());
 
                 // Register model generators
                 models.Add(new RLCModelGenerator());

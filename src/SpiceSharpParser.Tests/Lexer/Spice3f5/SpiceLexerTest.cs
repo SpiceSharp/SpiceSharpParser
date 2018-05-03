@@ -9,6 +9,18 @@ namespace SpiceSharpParser.Tests.Lexer.Spice3f5
     public class SpiceLexerTest
     {
         [Fact]
+        public void Reference()
+        {
+            var tokensStr = "@X1.X1.R1[i]";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.Equal(2, tokens.Length);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.REFERENCE);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
         public void OneLetterTitle()
         {
             // lexer can't find matching token for remaining text '}'

@@ -4,30 +4,26 @@ using SpiceSharpParser.Connector.Processors.Controls.Exporters;
 using SpiceSharpParser.Connector.Registries;
 using SpiceSharpParser.Model.SpiceObjects;
 using SpiceSharpParser.Model.SpiceObjects.Parameters;
-using SpiceSharp.Simulations;
 
 namespace SpiceSharpParser.Connector.Processors.Controls
 {
     /// <summary>
     /// Processes .SAVE <see cref="Control"/> from spice netlist object model.
     /// </summary>
-    public class SaveControl : BaseControl
+    public class SaveControl : ExportControl
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SaveControl"/> class.
         /// </summary>
         /// <param name="registry">The exporter registry</param>
-        public SaveControl(IExporterRegistry registry)
+        public SaveControl(IExporterRegistry registry) : base(registry)
         {
-            Registry = registry;
         }
 
         /// <summary>
-        /// Gets the type of genera
+        /// Gets the type of genereator
         /// </summary>
         public override string TypeName => "save";
-
-        protected IExporterRegistry Registry { get; }
 
         /// <summary>
         /// Processes <see cref="Control"/> statement and modifies the context
@@ -42,8 +38,11 @@ namespace SpiceSharpParser.Connector.Processors.Controls
                 {
                     context.Result.AddExport(GenerateExport(bracketParameter, context.Result.Simulations.First(), context));
                 }
-
-                if (parameter is SingleParameter s)
+                else if (parameter is ReferenceParameter referenceParameter)
+                {
+                    context.Result.AddExport(GenerateExport(referenceParameter, context.Result.Simulations.First(), context));
+                }
+                else if (parameter is SingleParameter s)
                 {
                     string expressionName = s.Image;
                     var expressionNames = context.Evaluator.GetExpressionNames();
@@ -54,18 +53,6 @@ namespace SpiceSharpParser.Connector.Processors.Controls
                     }
                 }
             }
-        }
-
-        private Export GenerateExport(BracketParameter parameter, Simulation simulation, IProcessingContext context)
-        {
-            string type = parameter.Name.ToLower();
-
-            if (Registry.Supports(type))
-            {
-                return Registry.Get(type).CreateExport(type, parameter.Parameters, simulation, context);
-            }
-
-            throw new System.Exception("Unsuported save");
         }
     }
 }

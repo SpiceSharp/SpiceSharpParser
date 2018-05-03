@@ -101,6 +101,8 @@ namespace SpiceSharpParser.Connector
             {
                 foreach (var exportType in exporter.GetSupportedTypes())
                 {
+                    if (exportType == "@") continue; // @ is not yet supported as user function
+
                     System.Func<string[], double> eval = (args) =>
                     {
                         string exporterKey = exportType + string.Join(",", args);
@@ -130,7 +132,10 @@ namespace SpiceSharpParser.Connector
                     };
 
                     userFunctions.Add(exportType, eval);
-                    userFunctions.Add(exportType.ToUpper(), eval);
+                    if (exportType != exportType.ToUpper())
+                    {
+                        userFunctions.Add(exportType.ToUpper(), eval);
+                    }
                 }
             }
         }
