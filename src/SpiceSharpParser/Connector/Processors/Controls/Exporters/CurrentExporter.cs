@@ -40,7 +40,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters
                     case 0:
                         throw new Exception("Node expected");
                     case 1:
-                        node = new StringIdentifier(context.NodeNameGenerator.Generate(vector.Elements[0].Image));
+                        node = new StringIdentifier(vector.Elements[0].Image);
                         break;
                     default:
                         throw new Exception("Too many nodes specified");
@@ -48,7 +48,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters
             }
             else
             {
-                node = new StringIdentifier(context.NodeNameGenerator.Generate(parameters.GetString(0)));
+                node = new StringIdentifier(parameters.GetString(0));
             }
 
             Export ce = null;

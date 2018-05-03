@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests
@@ -26,7 +25,7 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
-        public void InternalNodeInSubcircuitTest()
+        public void VoltageInternalNodeInSubcircuitTest()
         {
             var netlist = ParseNetlist(
                 "Subcircuit test",
@@ -48,7 +47,29 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
-        public void PublicNodeInSubcircuitTest()
+        public void CurrentInSubcircuitTest()
+        {
+            var netlist = ParseNetlist(
+                "Subcircuit test",
+                "V1 IN 0 4.0",
+                "X1 IN OUT twoResistorsInSeries R1=1 R2=2",
+                "RX OUT 0 1",
+                ".SUBCKT twoResistorsInSeries input output params: R1=10 R2=100",
+                "R1 input 1 {R1}",
+                "R2 1 output {R2}",
+                ".ENDS twoResistorsInSeries",
+                ".OP",
+                ".SAVE V(OUT) I(X1.R1)",
+                ".END");
+
+            double[] export = RunOpSimulation(netlist, "V(OUT)", "I(X1.R1)");
+
+            Assert.Equal(1, export[0]);
+            Assert.Equal(1, export[1]);
+        }
+
+        [Fact]
+        public void VoltagePublicNodeInSubcircuitTest()
         {
             var netlist = ParseNetlist(
                 "Subcircuit test",
@@ -70,7 +91,7 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
-        public void PublicNodeInNestedSubcircuitTest()
+        public void VoltagePublicNodeInNestedSubcircuitTest()
         {
             var netlist = ParseNetlist(
                 "Subcircuit test",
@@ -97,7 +118,34 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
-        public void ExtremeNodeInNestedSubcircuitTest()
+        public void CurrentInNestedSubcircuitTest()
+        {
+            var netlist = ParseNetlist(
+                "Subcircuit test",
+                "V1 IN 0 4.0",
+                "X1 IN OUT twoResistorsInSeries R1=1 R2=2",
+                "R1 OUT 0 1",
+                "\n",
+                ".SUBCKT resistor input output params: R=1",
+                "R1 input output {R}",
+                ".ENDS resistor",
+                ".SUBCKT twoResistorsInSeries input output params: R1=1 R2=1",
+                "X1 input 1 resistor R={R1}",
+                "X2 1 output resistor R={R2}",
+                ".ENDS twoResistorsInSeries",
+                "\n",
+                ".OP",
+                ".SAVE V(OUT) I(X1.X1.R1)",
+                ".END");
+
+            double[] export = RunOpSimulation(netlist, "V(OUT)", "I(X1.X1.R1)");
+
+            Assert.Equal(1, export[0]);
+            Assert.Equal(1, export[1]);
+        }
+
+        [Fact]
+        public void VoltageExtremeNodeInNestedSubcircuitTest()
         {
             var netlist = ParseNetlist(
                 "Subcircuit test",
@@ -125,5 +173,36 @@ namespace SpiceSharpParser.IntegrationTests
             // Verify
             this.Compare(exports, new double[] { 4, 4, 0, 2, 4, 2, 3 });
         }
+
+        [Fact]
+        public void CurrentInExtremeNestedSubcircuitTest()
+        {
+            var netlist = ParseNetlist(
+                "Subcircuit test",
+                "V1 IN 0 4.0",
+                "X1 IN 0 fourResistorsInSeries R1=1 R2=1 R3=1 R4=1",
+                "\n",
+                ".SUBCKT resistor input output params: R=1",
+                "R1 input output {R}",
+                ".ENDS resistor",
+                ".SUBCKT twoResistorsInSeries input output params: R1=1 R2=1",
+                "X1 input 1 resistor R={R1}",
+                "X2 1 output resistor R={R2}",
+                ".ENDS twoResistorsInSeries",
+                ".SUBCKT fourResistorsInSeries input output params: R1=1 R2=1 R3=1 R4=1",
+                "X1 input 1 twoResistorsInSeries R1={R1} R2={R2}",
+                "X2 1 output twoResistorsInSeries R1={R3} R2={R4}",
+                ".ENDS fourResistorsInSeries",
+                "\n",
+                ".OP",
+                ".SAVE V(IN) I(X1.X1.X1.R1)",
+                ".END");
+
+            double[] exports = RunOpSimulation(netlist, "V(IN)", "I(X1.X1.X1.R1)");
+
+            // Verify
+            this.Compare(exports, new double[] { 4, 1 });
+        }
+
     }
 }
