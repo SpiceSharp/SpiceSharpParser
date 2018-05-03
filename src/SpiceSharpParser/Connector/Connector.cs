@@ -101,35 +101,65 @@ namespace SpiceSharpParser.Connector
             {
                 foreach (var exportType in exporter.GetSupportedTypes())
                 {
-                    if (exportType == "@") continue; // @ is not yet supported as user function
+                    System.Func<string[], double> eval = null;
 
-                    System.Func<string[], double> eval = (args) =>
+                    // @ is a special function for now (TODO)
+                    if (exportType == "@")
                     {
-                        string exporterKey = exportType + string.Join(",", args);
-
-                        if (!exporters.ContainsKey(exporterKey))
+                        eval = (args) =>
                         {
-                            var vectorParameter = new VectorParameter();
-                            foreach (var arg in args)
+                            string exporterKey = exportType + string.Join(",", args);
+
+                            if (!exporters.ContainsKey(exporterKey))
                             {
-                                vectorParameter.Elements.Add(new WordParameter(arg));
+                                var parameters = new ParameterCollection();
+                                parameters.Add(new WordParameter(args[1]));
+                                parameters.Add(new WordParameter(args[0]));
+
+                                var export = exporter.CreateExport(exportType, parameters, context.Result.Simulations.First(), context);
+                                exporters[exporterKey] = export;
                             }
 
-                            var parameters = new ParameterCollection();
-                            parameters.Add(vectorParameter);
-                            var export = exporter.CreateExport(exportType, parameters, context.Result.Simulations.First(), context);
-                            exporters[exporterKey] = export;
-                        }
+                            try
+                            {
+                                return exporters[exporterKey].Extract();
+                            }
+                            catch (GeneralConnectorException)
+                            {
+                                return double.NaN;
+                            }
+                        };
+                    }
+                    else
+                    {
+                        eval = (args) =>
+                        {
+                            string exporterKey = exportType + string.Join(",", args);
 
-                        try
-                        {
-                            return exporters[exporterKey].Extract();
-                        }
-                        catch (GeneralConnectorException)
-                        {
-                            return double.NaN;
-                        }
-                    };
+                            if (!exporters.ContainsKey(exporterKey))
+                            {
+                                var vectorParameter = new VectorParameter();
+                                foreach (var arg in args)
+                                {
+                                    vectorParameter.Elements.Add(new WordParameter(arg));
+                                }
+
+                                var parameters = new ParameterCollection();
+                                parameters.Add(vectorParameter);
+                                var export = exporter.CreateExport(exportType, parameters, context.Result.Simulations.First(), context);
+                                exporters[exporterKey] = export;
+                            }
+
+                            try
+                            {
+                                return exporters[exporterKey].Extract();
+                            }
+                            catch (GeneralConnectorException)
+                            {
+                                return double.NaN;
+                            }
+                        };
+                    }
 
                     userFunctions.Add(exportType, eval);
                     if (exportType != exportType.ToUpper())

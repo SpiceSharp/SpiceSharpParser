@@ -329,6 +329,17 @@ namespace SpiceSharpParser.Connector.Evaluation
                             infixPostfix = true;
                             break;
 
+                        case '[':
+                                infixPostfix = false;
+                                break;
+                        case ']':
+                            UserFunctionOperator op2 = (UserFunctionOperator)operatorStack.Pop();
+                            outputStack.Push(op2.Function(expressionStack));
+                            expressionStack.Clear();
+
+                            infixPostfix = true;
+                            break;
+
                         case ',':
                             // Function argument
                             while (operatorStack.Count > 0)
@@ -357,12 +368,36 @@ namespace SpiceSharpParser.Connector.Evaluation
                 // Parse a unary operator
                 else
                 {
-                    if (c == '.' || (c >= '0' && c <= '9'))
+                    if (c == '@')
+                    {
+                        index++;
+
+                        int startIndex = index;
+                        int tmpIndex = index;
+                        while (tmpIndex < count && input[tmpIndex] != '[')
+                        {
+                            tmpIndex++;
+                        }
+
+                        if (tmpIndex != count)
+                        {
+                            var userFunc = UserFunctions["@"];
+                            var ufo = new UserFunctionOperator();
+
+                            ufo.Function = (expressionStack) => {
+                                var result = userFunc(expressionStack.ToArray());
+                                expressionStack.Clear();
+                                return result;
+                            };
+                            operatorStack.Push(ufo);
+                            infixPostfix = false;
+                        }
+                    }                   
+                    else if (c == '.' || (c >= '0' && c <= '9'))
                     {
                         outputStack.Push(ParseDouble());
                         infixPostfix = true;
                     }
-
                     // Parse a parameter or a function
                     else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
                     {
@@ -374,7 +409,8 @@ namespace SpiceSharpParser.Connector.Evaluation
                             if ((c >= '0' && c <= '9') ||
                                 (c >= 'a' && c <= 'z') ||
                                 (c >= 'A' && c <= 'Z') ||
-                                c == '_')
+                                c == '_'|| 
+                                c == '.')
                             {
                                 sb.Append(c);
                                 index++;
@@ -383,7 +419,7 @@ namespace SpiceSharpParser.Connector.Evaluation
                             {
                                 break;
                             }
-                        }
+                        }                        
                         if (index < count && input[index] == '(')
                         {
                             index++;

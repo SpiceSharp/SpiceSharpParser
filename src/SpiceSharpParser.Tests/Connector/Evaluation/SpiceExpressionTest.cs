@@ -118,5 +118,38 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             // act and assert
             Assert.Equal(3, parser.Parse(" 2 + 1 "));
         }
+
+
+        [Fact]
+        public void ParseWithReference()
+        {
+            // arrange
+            var parser = new SpiceExpression
+            {
+                Parameters = new Dictionary<string, double>() { },
+                UserFunctions = new Dictionary<string, Func<string[], double>>()
+            };
+
+            parser.UserFunctions.Add("@", (args) => {
+                if (args[1] == "obj1" && args[0] == "param")
+                {
+                    return 1;
+                }
+                if (args[1] == "obj2" && args[0] == "param2")
+                {
+                    return 2;
+                }
+
+                if (args[1] == "obj3.subObj" && args[0] == "param3")
+                {
+                    return 3;
+                }
+
+                return 0;
+            });
+
+            // act and assert
+            Assert.Equal(8, parser.Parse(" 2 + @obj1[param] + @obj2[param2] + @obj3.subObj[param3]"));
+        }
     }
 }
