@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.Connector.Context;
 using SpiceSharpParser.Connector.Processors.Controls.Exporters;
 using SpiceSharpParser.Connector.Registries;
@@ -16,12 +19,13 @@ namespace SpiceSharpParser.Connector.Processors.Controls
         /// Initializes a new instance of the <see cref="SaveControl"/> class.
         /// </summary>
         /// <param name="registry">The exporter registry</param>
-        public SaveControl(IExporterRegistry registry) : base(registry)
+        public SaveControl(IExporterRegistry registry) 
+            : base(registry)
         {
         }
 
         /// <summary>
-        /// Gets the type of genereator
+        /// Gets the type of generator
         /// </summary>
         public override string TypeName => "save";
 
@@ -32,27 +36,70 @@ namespace SpiceSharpParser.Connector.Processors.Controls
         /// <param name="context">A context to modify</param>
         public override void Process(Control statement, IProcessingContext context)
         {
-            foreach (var parameter in statement.Parameters)
+            Type simulationType = null;
+
+            for (var i = 0; i < statement.Parameters.Count; i++)
             {
-                if (parameter is BracketParameter bracketParameter)
+                var parameter = statement.Parameters[i];
+
+                if (i == 0)
                 {
-                    context.Result.AddExport(GenerateExport(bracketParameter, context.Result.Simulations.First(), context));
+                    switch (parameter.Image.ToLower())
+                    {
+                        case "op":
+                            simulationType = typeof(OP);
+                            break;
+                        case "tran":
+                            simulationType = typeof(Transient);
+                            break;
+                        case "ac":
+                            simulationType = typeof(AC);
+                            break;
+                        case "dc":
+                            simulationType = typeof(DC);
+                            break;
+                    }
                 }
-                else if (parameter is ReferenceParameter referenceParameter)
+
+                if (parameter is BracketParameter || parameter is ReferenceParameter)
                 {
-                    context.Result.AddExport(GenerateExport(referenceParameter, context.Result.Simulations.First(), context));
+                    foreach (var simulation in Filter(context.Result.Simulations, simulationType))
+                    {
+                        context.Result.AddExport(GenerateExport(parameter, simulation, context));
+                    }
                 }
-                else if (parameter is SingleParameter s)
+                else if ((i != 0 || (i == 0 && simulationType == null)) && parameter is SingleParameter s)
                 {
                     string expressionName = s.Image;
                     var expressionNames = context.Evaluator.GetExpressionNames();
 
                     if (expressionNames.Contains(expressionName))
                     {
-                        context.Result.AddExport(new ExpressionExport(expressionName, context.Evaluator.GetExpression(expressionName), context.Evaluator));
+                        var simulations = Filter(context.Result.Simulations, simulationType);
+                        foreach (var simulation in simulations)
+                        {
+                            context.Result.AddExport(
+                                new ExpressionExport(
+                                    simulation.Name.ToString(),
+                                    expressionName,
+                                    context.Evaluator.GetExpression(expressionName),
+                                    context.Evaluator,
+                                    simulation
+                            ));
+                        }
                     }
                 }
             }
+        }
+
+        private IEnumerable<Simulation> Filter(IEnumerable<Simulation> simulations, Type simulationType)
+        {
+            if (simulationType == null)
+            {
+                return simulations;
+            }
+
+            return simulations.Where(simulation => simulation.GetType().IsSubclassOf(simulationType) || simulation.GetType() == simulationType);
         }
     }
 }

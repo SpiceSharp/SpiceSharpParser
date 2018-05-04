@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.Connector.Context;
 using SpiceSharpParser.Connector.Evaluation;
 using SpiceSharpParser.Connector.Exceptions;
@@ -79,7 +80,7 @@ namespace SpiceSharpParser.Connector
         /// <param name="context">Processing context</param>
         private void AddUserFunctions(Evaluator evaluator, IProcessingContext context)
         {
-            var userFunctions = new Dictionary<string, System.Func<string[], double>>();
+            var userFunctions = new Dictionary<string, System.Func<string[], object, double>>();
 
             // TODO: Future: add more functions to use
             CreateExportsUserFunctions(context, userFunctions);
@@ -90,9 +91,9 @@ namespace SpiceSharpParser.Connector
         /// <summary>
         /// Creates export user functions
         /// </summary>
-        /// <param name="context">Processing context</param>
+        /// <param name="processingContext">Processing context</param>
         /// <param name="userFunctions">Where to add</param>
-        private void CreateExportsUserFunctions(IProcessingContext context, Dictionary<string, System.Func<string[], double>> userFunctions)
+        private void CreateExportsUserFunctions(IProcessingContext processingContext, Dictionary<string, System.Func<string[], object, double>> userFunctions)
         {
             // create exports user functions for each export
             var exporters = new Dictionary<string, Export>();
@@ -101,12 +102,12 @@ namespace SpiceSharpParser.Connector
             {
                 foreach (var exportType in exporter.GetSupportedTypes())
                 {
-                    System.Func<string[], double> eval = null;
+                    System.Func<string[], object, double> eval = null;
 
                     // @ is a special function for now (TODO)
                     if (exportType == "@")
                     {
-                        eval = (args) =>
+                        eval = (args, simulation) =>
                         {
                             string exporterKey = exportType + string.Join(",", args);
 
@@ -116,7 +117,7 @@ namespace SpiceSharpParser.Connector
                                 parameters.Add(new WordParameter(args[1]));
                                 parameters.Add(new WordParameter(args[0]));
 
-                                var export = exporter.CreateExport(exportType, parameters, context.Result.Simulations.First(), context);
+                                var export = exporter.CreateExport(exportType, parameters, (Simulation)simulation ?? processingContext.Result.Simulations.First(), processingContext);
                                 exporters[exporterKey] = export;
                             }
 
@@ -132,7 +133,7 @@ namespace SpiceSharpParser.Connector
                     }
                     else
                     {
-                        eval = (args) =>
+                        eval = (args, simulation) =>
                         {
                             string exporterKey = exportType + string.Join(",", args);
 
@@ -146,7 +147,7 @@ namespace SpiceSharpParser.Connector
 
                                 var parameters = new ParameterCollection();
                                 parameters.Add(vectorParameter);
-                                var export = exporter.CreateExport(exportType, parameters, context.Result.Simulations.First(), context);
+                                var export = exporter.CreateExport(exportType, parameters, (Simulation)simulation ?? processingContext.Result.Simulations.First(), processingContext);
                                 exporters[exporterKey] = export;
                             }
 

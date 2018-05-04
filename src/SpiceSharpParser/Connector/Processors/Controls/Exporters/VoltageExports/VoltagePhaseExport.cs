@@ -16,6 +16,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters.VoltageExport
         /// <param name="node">Positive node</param>
         /// <param name="reference">Negative reference node</param>
         public VoltagePhaseExport(Simulation simulation, Identifier node, Identifier reference = null, string nodePath = null, string referencePath = null)
+            : base(simulation)
         {
             if (simulation == null)
             {

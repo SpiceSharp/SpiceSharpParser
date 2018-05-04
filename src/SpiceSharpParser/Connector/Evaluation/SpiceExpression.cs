@@ -122,7 +122,7 @@ namespace SpiceSharpParser.Connector.Evaluation
         /// <summary>
         /// Gets or sets user functions
         /// </summary>
-        public Dictionary<string, System.Func<string[], double>> UserFunctions { get; set; }
+        public Dictionary<string, System.Func<string[], object, double>> UserFunctions { get; set; }
 
         /// <summary>
         /// Gets all built-in functions
@@ -169,7 +169,7 @@ namespace SpiceSharpParser.Connector.Evaluation
         /// </summary>
         /// <param name="expression">The expression</param>
         /// <returns>Returns the result of the expression</returns>
-        public double Parse(string expression)
+        public double Parse(string expression, object context = null)
         {
             Variables = new Collection<string>();
 
@@ -319,7 +319,7 @@ namespace SpiceSharpParser.Connector.Evaluation
                                 if (operatorStack.Peek().Id == IdUserFunction)
                                 {
                                     UserFunctionOperator op = (UserFunctionOperator)operatorStack.Pop();
-                                    outputStack.Push(op.Function(expressionStack));
+                                    outputStack.Push(op.Function(expressionStack, context));
                                     break;
                                 }
 
@@ -334,7 +334,7 @@ namespace SpiceSharpParser.Connector.Evaluation
                                 break;
                         case ']':
                             UserFunctionOperator op2 = (UserFunctionOperator)operatorStack.Pop();
-                            outputStack.Push(op2.Function(expressionStack));
+                            outputStack.Push(op2.Function(expressionStack, context));
                             expressionStack.Clear();
 
                             infixPostfix = true;
@@ -384,15 +384,15 @@ namespace SpiceSharpParser.Connector.Evaluation
                             var userFunc = UserFunctions["@"];
                             var ufo = new UserFunctionOperator();
 
-                            ufo.Function = (expressionStack) => {
-                                var result = userFunc(expressionStack.ToArray());
+                            ufo.Function = (expressionStack, contextObj) => {
+                                var result = userFunc(expressionStack.ToArray(), contextObj);
                                 expressionStack.Clear();
                                 return result;
                             };
                             operatorStack.Push(ufo);
                             infixPostfix = false;
                         }
-                    }                   
+                    }
                     else if (c == '.' || (c >= '0' && c <= '9'))
                     {
                         outputStack.Push(ParseDouble());
@@ -439,8 +439,8 @@ namespace SpiceSharpParser.Connector.Evaluation
                                     var userFunc = UserFunctions[sb.ToString()];
 
                                     var ufo = new UserFunctionOperator();
-                                    ufo.Function = (expressionStack) => {
-                                        var result = userFunc(expressionStack.ToArray());
+                                    ufo.Function = (expressionStack, contextObj) => {
+                                        var result = userFunc(expressionStack.ToArray(), contextObj);
                                         expressionStack.Clear();
                                         return result;
                                     };
@@ -501,7 +501,7 @@ namespace SpiceSharpParser.Connector.Evaluation
                             if (operatorStack.Peek().Id == IdUserFunction)
                             {
                                 UserFunctionOperator op = (UserFunctionOperator)operatorStack.Pop();
-                                outputStack.Push(op.Function(expressionStack));
+                                outputStack.Push(op.Function(expressionStack, context));
                                 break;
                             }
 
@@ -803,7 +803,7 @@ namespace SpiceSharpParser.Connector.Evaluation
         }
 
         /// <summary>
-        /// Function description
+        /// Built-in function operator
         /// </summary>
         private class BuiltInFunctionOperator : Operator
         {
@@ -824,7 +824,7 @@ namespace SpiceSharpParser.Connector.Evaluation
         }
 
         /// <summary>
-        /// Function description
+        /// User function operator
         /// </summary>
         private class UserFunctionOperator : Operator
         {
@@ -837,9 +837,9 @@ namespace SpiceSharpParser.Connector.Evaluation
             }
 
             /// <summary>
-            /// Gets the function evaluation
+            /// Gets or sets the function evaluation
             /// </summary>
-            public Func<Stack<string>, double> Function { get; set; }
+            public Func<Stack<string>, object, double> Function { get; set; }
         }
     }
 }

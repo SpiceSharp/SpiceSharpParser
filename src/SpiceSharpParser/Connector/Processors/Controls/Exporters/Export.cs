@@ -1,4 +1,6 @@
-﻿namespace SpiceSharpParser.Connector.Processors.Controls.Exporters
+﻿using SpiceSharp.Simulations;
+
+namespace SpiceSharpParser.Connector.Processors.Controls.Exporters
 {
     /// <summary>
     /// Describes a quantity that can be exported using simulated data.
@@ -6,9 +8,23 @@
     public abstract class Export
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="Export"/> class.
+        /// </summary>
+        /// <param name="simulation">Simulation</param>
+        public Export(Simulation simulation)
+        {
+            Simulation = simulation;
+        }
+
+        /// <summary>
         /// Gets the type name
         /// </summary>
         public abstract string TypeName { get; }
+
+        /// <summary>
+        /// Gets or sets the simulation
+        /// </summary>
+        public Simulation Simulation { get; protected set; }
 
         /// <summary>
         /// Gets or sets the name

@@ -31,10 +31,11 @@ namespace SpiceSharpParser.Connector.Evaluation
         /// Evaluates a specific string to double
         /// </summary>
         /// <param name="expression">An expression to evaluate</param>
+        /// <param name="context">Context of expression</param>
         /// <returns>
         /// A double value
         /// </returns>
-        double EvaluateDouble(string expression);
+        double EvaluateDouble(string expression, object context = null);
 
         /// <summary>
         /// Sets the parameter value and updates the values expressions

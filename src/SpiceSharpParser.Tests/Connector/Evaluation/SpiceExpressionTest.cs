@@ -14,10 +14,10 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             var parser = new SpiceExpression
             {
                 Parameters = new Dictionary<string, double>(),
-                UserFunctions = new Dictionary<string, Func<string[], double>>()
+                UserFunctions = new Dictionary<string, Func<string[], object, double>>()
             };
 
-            parser.UserFunctions.Add("v", (args) => {
+            parser.UserFunctions.Add("v", (args, context) => {
                 if (args.Length == 2)
                 {
                     return 4;
@@ -44,14 +44,14 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             var parser = new SpiceExpression
             {
                 Parameters = new Dictionary<string, double>(),
-                UserFunctions = new Dictionary<string, Func<string[], double>>()
+                UserFunctions = new Dictionary<string, Func<string[], object, double>>()
             };
 
             Random rand = new Random(Environment.TickCount);
 
             double randomVal = 0;
 
-            parser.UserFunctions.Add("random", (args) => {
+            parser.UserFunctions.Add("random", (args, context) => {
                 randomVal = rand.Next() * 1000;
                 return randomVal;
             });
@@ -70,7 +70,7 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             var parser = new SpiceExpression
             {
                 Parameters = new Dictionary<string, double>(),
-                UserFunctions = new Dictionary<string, Func<string[], double>>()
+                UserFunctions = new Dictionary<string, Func<string[], object, double>>()
             };
 
             // act and assert
@@ -84,7 +84,7 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             var parser = new SpiceExpression
             {
                 Parameters = new Dictionary<string, double>() { { "x", 1 } },
-                UserFunctions = new Dictionary<string, Func<string[], double>>()
+                UserFunctions = new Dictionary<string, Func<string[], object, double>>()
             };
 
             // act and assert
@@ -98,7 +98,7 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             var parser = new SpiceExpression
             {
                 Parameters = new Dictionary<string, double>() { { "x", 1 } },
-                UserFunctions = new Dictionary<string, Func<string[], double>>()
+                UserFunctions = new Dictionary<string, Func<string[], object, double>>()
             };
 
             // act and assert
@@ -112,7 +112,7 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             var parser = new SpiceExpression
             {
                 Parameters = new Dictionary<string, double>() { },
-                UserFunctions = new Dictionary<string, Func<string[], double>>()
+                UserFunctions = new Dictionary<string, Func<string[], object, double>>()
             };
 
             // act and assert
@@ -127,10 +127,10 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             var parser = new SpiceExpression
             {
                 Parameters = new Dictionary<string, double>() { },
-                UserFunctions = new Dictionary<string, Func<string[], double>>()
+                UserFunctions = new Dictionary<string, Func<string[], object, double>>()
             };
 
-            parser.UserFunctions.Add("@", (args) => {
+            parser.UserFunctions.Add("@", (args, context) => {
                 if (args[1] == "obj1" && args[0] == "param")
                 {
                     return 1;

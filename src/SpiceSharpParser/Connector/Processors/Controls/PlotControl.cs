@@ -139,7 +139,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls
 
                     if (expressionNames.Contains(expressionName))
                     {
-                        result.Add(new ExpressionExport(expressionName, context.Evaluator.GetExpression(expressionName), context.Evaluator));
+                        result.Add(new ExpressionExport(simulationToPlot.Name.ToString(), expressionName, context.Evaluator.GetExpression(expressionName), context.Evaluator, simulationToPlot));
                     }
                 }
             }

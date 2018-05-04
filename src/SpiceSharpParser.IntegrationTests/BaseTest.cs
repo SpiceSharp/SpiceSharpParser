@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.Connector;
+﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Connector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +51,56 @@ namespace SpiceSharpParser.IntegrationTests
             };
 
             simulation.Run(connectorResult.Circuit);
+
+            return result;
+        }
+
+        public static List<object> Run(ConnectorResult connectorResult)
+        {
+            var result = new List<object>();
+
+            foreach (var export in connectorResult.Exports)
+            {
+                var dcResult = new List<double>();
+                double opResult = double.NaN;
+                var tranResult = new List<Tuple<double, double>>();
+                var simulation = export.Simulation;
+
+                simulation.OnExportSimulationData += (sender, e) =>
+                {
+                    if (simulation is DC)
+                    {
+                        dcResult.Add(export.Extract());
+                    }
+
+                    if (simulation is OP)
+                    {
+                        opResult = export.Extract();
+                    }
+
+                    if (simulation is Transient)
+                    {
+                        tranResult.Add(new Tuple<double, double>(e.Time, export.Extract()));
+                    }
+                };
+
+                simulation.Run(connectorResult.Circuit);
+
+                if (dcResult.Count != 0)
+                {
+                    result.Add(dcResult.ToList());
+                }
+
+                if (!double.IsNaN(opResult))
+                {
+                    result.Add(opResult);
+                }
+
+                if (tranResult.Count != 0)
+                {
+                    result.Add(tranResult.ToList());
+                }
+            }
 
             return result;
         }

@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.Connector.Evaluation;
+﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Connector.Evaluation;
 
 namespace SpiceSharpParser.Connector.Processors.Controls.Exporters
 {
@@ -10,16 +11,26 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpressionExport"/> class.
         /// </summary>
+        /// <param name="exportName">Name of export</param>
         /// <param name="expressionName">Name of expression</param>
         /// <param name="expression">Expression</param>
         /// <param name="evaluator">Evaluator</param>
-        public ExpressionExport(string expressionName, string expression, IEvaluator evaluator)
+        /// <param name="simulation">Simulation</param>
+        public ExpressionExport(string exportName, string expressionName, string expression, IEvaluator evaluator, Simulation simulation)
+            : base(simulation)
         {
+            Name = exportName;
             ExpressionName = expressionName;
             Evaluator = evaluator;
             Expression = expression;
             Name = ExpressionName;
+            Context = simulation;
         }
+
+        /// <summary>
+        /// Getst the context
+        /// </summary>
+        public object Context { get; }
 
         /// <summary>
         /// Gets the expression name
@@ -54,7 +65,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters
         /// </returns>
         public override double Extract()
         {
-            return Evaluator.EvaluateDouble(Expression);
+            return Evaluator.EvaluateDouble(Expression, Context);
         }
     }
 }

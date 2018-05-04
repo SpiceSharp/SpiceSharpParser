@@ -16,6 +16,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters
         /// <param name="source">A identifier of component</param>
         /// <param name="property">Name of property for export</param>
         public PropertyExport(Simulation simulation, Identifier source, string property)
+            : base(simulation)
         {
             if (simulation == null)
             {
@@ -60,6 +61,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters
             {
                 throw new GeneralConnectorException($"Property export {Name} is invalid");
             }
+
             return ExportRealImpl.Value;
         }
     }

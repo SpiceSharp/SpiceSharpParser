@@ -16,6 +16,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters.CurrentExport
         /// <param name="simulation">A simulation</param>
         /// <param name="source">An identifier</param>
         public CurrentDecibelExport(Simulation simulation, Identifier source)
+            : base(simulation)
         {
             Source = source ?? throw new ArgumentNullException(nameof(source));
             if (simulation == null)

@@ -56,17 +56,18 @@ namespace SpiceSharpParser.Connector.Evaluation
         /// Evalues a specific string to double
         /// </summary>
         /// <param name="expression">An expression to evaluate</param>
+        /// <param name="context">Context of expression</param>
         /// <returns>
         /// A double value
         /// </returns>
-        public double EvaluateDouble(string expression)
+        public double EvaluateDouble(string expression, object context = null)
         {
             if (Parameters.ContainsKey(expression))
             {
                 return Parameters[expression];
             }
 
-            return ExpressionParser.Parse(expression);
+            return ExpressionParser.Parse(expression, context);
         }
 
         /// <summary>

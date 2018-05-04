@@ -15,6 +15,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters.CurrentExport
         /// <param name="simulation">A simulation</param>
         /// <param name="source">A identifier</param>
         public CurrentExport(Simulation simulation, Identifier source)
+            : base(simulation)
         {
             if (simulation == null)
             {
