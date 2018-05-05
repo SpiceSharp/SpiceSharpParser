@@ -119,6 +119,19 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             Assert.Equal(3, parser.Parse(" 2 + 1 "));
         }
 
+        [Fact]
+        public void ParseWithConstants()
+        {
+            // arrange
+            var parser = new SpiceExpression
+            {
+                Parameters = new Dictionary<string, double>() { },
+                UserFunctions = new Dictionary<string, Func<string[], object, double>>()
+            };
+
+            // act and assert
+            Assert.Equal((2 * Math.PI) + (2 * Math.E), parser.Parse("PI + e + pi + E"));
+        }
 
         [Fact]
         public void ParseWithReference()

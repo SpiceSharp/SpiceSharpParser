@@ -125,6 +125,17 @@ namespace SpiceSharpParser.Connector.Evaluation
         public Dictionary<string, System.Func<string[], object, double>> UserFunctions { get; set; }
 
         /// <summary>
+        /// Gets all built-in constants
+        /// </summary>
+        private Dictionary<string, double> BuiltInConstants { get; } = new Dictionary<string, double>()
+        {
+            { "PI", Math.PI },
+            { "pi", Math.PI },
+            { "e", Math.E },
+            { "E", Math.E }
+        };
+
+        /// <summary>
         /// Gets all built-in functions
         /// </summary>
         private Dictionary<string, BuiltInFunctionOperator> BuiltInFunctions { get; } = new Dictionary<string, BuiltInFunctionOperator>
@@ -330,8 +341,7 @@ namespace SpiceSharpParser.Connector.Evaluation
                             break;
 
                         case '[':
-                                infixPostfix = false;
-                                break;
+                               break;
                         case ']':
                             UserFunctionOperator op2 = (UserFunctionOperator)operatorStack.Pop();
                             outputStack.Push(op2.Function(expressionStack, context));
@@ -409,7 +419,7 @@ namespace SpiceSharpParser.Connector.Evaluation
                             if ((c >= '0' && c <= '9') ||
                                 (c >= 'a' && c <= 'z') ||
                                 (c >= 'A' && c <= 'Z') ||
-                                c == '_'|| 
+                                c == '_' ||
                                 c == '.')
                             {
                                 sb.Append(c);
@@ -419,7 +429,7 @@ namespace SpiceSharpParser.Connector.Evaluation
                             {
                                 break;
                             }
-                        }                        
+                        }
                         if (index < count && input[index] == '(')
                         {
                             index++;
@@ -457,7 +467,11 @@ namespace SpiceSharpParser.Connector.Evaluation
                         {
                             string id = sb.ToString();
 
-                            if (Parameters.TryGetValue(id, out var parameter))
+                            if (BuiltInConstants.TryGetValue(id, out var @const))
+                            {
+                                outputStack.Push(@const);
+                            }
+                            else if (Parameters.TryGetValue(id, out var parameter))
                             {
                                 Variables.Add(id);
                                 outputStack.Push(parameter);
