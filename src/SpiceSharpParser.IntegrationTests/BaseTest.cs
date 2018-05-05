@@ -40,22 +40,14 @@ namespace SpiceSharpParser.IntegrationTests
             return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = hasTitle, IsEndRequired = isEndRequired }).NetlistModel;
         }
 
-        public static double RunOpSimulation(ConnectorResult connectorResult, string nameOfExport)
-        {
-            double result = double.NaN;
-            var export = connectorResult.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
-            var simulation = connectorResult.Simulations.Single();
-            simulation.OnExportSimulationData += (sender, e) => {
-
-                result = export.Extract();
-            };
-
-            simulation.Run(connectorResult.Circuit);
-
-            return result;
-        }
-
-        public static List<object> Run(ConnectorResult connectorResult)
+        /// <summary>
+        /// Runs simulations from <see cref="ConnectorResult.Simulations"/>
+        /// </summary>
+        /// <param name="connectorResult">A connector result</param>
+        /// <returns>
+        /// A list of exports list
+        /// </returns>
+        public static List<object> RunSimulations(ConnectorResult connectorResult)
         {
             var result = new List<object>();
 
@@ -66,23 +58,26 @@ namespace SpiceSharpParser.IntegrationTests
                 var tranResult = new List<Tuple<double, double>>();
                 var simulation = export.Simulation;
 
-                simulation.OnExportSimulationData += (sender, e) =>
-                {
-                    if (simulation is DC)
+                EventHandler<ExportDataEventArgs> exportHandler =
+                    (sender, e) =>
                     {
-                        dcResult.Add(export.Extract());
-                    }
+                        if (simulation is DC)
+                        {
+                            dcResult.Add(export.Extract());
+                        }
 
-                    if (simulation is OP)
-                    {
-                        opResult = export.Extract();
-                    }
+                        if (simulation is OP)
+                        {
+                            opResult = export.Extract();
+                        }
 
-                    if (simulation is Transient)
-                    {
-                        tranResult.Add(new Tuple<double, double>(e.Time, export.Extract()));
-                    }
-                };
+                        if (simulation is Transient)
+                        {
+                            tranResult.Add(new Tuple<double, double>(e.Time, export.Extract()));
+                        }
+                    };
+
+                simulation.OnExportSimulationData += exportHandler;
 
                 simulation.Run(connectorResult.Circuit);
 
@@ -100,7 +95,24 @@ namespace SpiceSharpParser.IntegrationTests
                 {
                     result.Add(tranResult.ToList());
                 }
+
+                simulation.OnExportSimulationData -= exportHandler;
             }
+
+            return result;
+        }
+
+        public static double RunOpSimulation(ConnectorResult connectorResult, string nameOfExport)
+        {
+            double result = double.NaN;
+            var export = connectorResult.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
+            var simulation = connectorResult.Simulations.Single();
+            simulation.OnExportSimulationData += (sender, e) => {
+
+                result = export.Extract();
+            };
+
+            simulation.Run(connectorResult.Circuit);
 
             return result;
         }

@@ -65,7 +65,7 @@ namespace SpiceSharpParser.IntegrationTests
                //".SAVE i(V1)", // for all simulations
                ".END");
 
-            var exports = Run(netlist);
+            var exports = RunSimulations(netlist);
 
             Assert.Equal(2, exports.Count);
 
@@ -95,7 +95,7 @@ namespace SpiceSharpParser.IntegrationTests
                ".SAVE i(V1)",
                ".END");
 
-            var exports = Run(netlist);
+            var exports = RunSimulations(netlist);
 
             Assert.Equal(2, exports.Count);
 
