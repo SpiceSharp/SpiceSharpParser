@@ -46,6 +46,10 @@ It has no external dependency.
 
 ```
 
+## Build status
+
+AppVeyor CI (Windows): <img src="https://ci.appveyor.com/api/projects/status/d8tpj2hm3hcullmw/branch/master?svg=true"></img>
+
 ## Currently Supported and Tested Platforms
 * Windows
 
