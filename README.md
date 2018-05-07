@@ -21,7 +21,8 @@ It has no external dependency.
 * .OP
 * .NOISE
 * .DC
-* .SUCKT
+* .SUBCKT
+* .INCLUDE
 
 ### Supported Spice3f5 components
 * RLC
