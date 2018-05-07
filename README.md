@@ -48,7 +48,8 @@ It has no external dependency.
 
 ## Build status
 
-AppVeyor CI (Windows): <img src="https://ci.appveyor.com/api/projects/status/d8tpj2hm3hcullmw/branch/master?svg=true"></img>
+AppVeyor CI (Windows): [![Build status](https://ci.appveyor.com/api/projects/status/d8tpj2hm3hcullmw/branch/master?svg=true)](https://ci.appveyor.com/project/marcin-golebiowski/spicesharpparser/branch/master)
+
 
 ## Currently Supported and Tested Platforms
 * Windows
