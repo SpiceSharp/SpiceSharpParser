@@ -62,12 +62,12 @@ namespace SpiceSharpParser.IntegrationTests
                ".OP",
                ".SAVE DC i(V1)",
                ".SAVE OP i(V1)",
-               //".SAVE i(V1)", // for all simulations
+               ".SAVE i(V1)", // for all simulations
                ".END");
 
             var exports = RunSimulations(netlist);
 
-            Assert.Equal(2, exports.Count);
+            Assert.Equal(4, exports.Count);
 
             // Create reference
             double[] dc_references =
@@ -78,8 +78,10 @@ namespace SpiceSharpParser.IntegrationTests
             double op_reference = 9.7121454208628935E-35;
 
             Compare((List<double>)exports[0], dc_references);
-            Assert.Equal((double)exports[1], op_reference);
-            //Compare((List<double>)exports[2], dc_references);
+            Compare((List<double>)exports[1], dc_references);
+
+            Assert.Equal((double)exports[2], op_reference);
+            Assert.Equal((double)exports[3], op_reference);
         }
 
         [Fact]

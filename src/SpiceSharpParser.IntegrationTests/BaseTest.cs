@@ -53,50 +53,45 @@ namespace SpiceSharpParser.IntegrationTests
 
             foreach (var export in connectorResult.Exports)
             {
-                var dcResult = new List<double>();
-                double opResult = double.NaN;
-                var tranResult = new List<Tuple<double, double>>();
                 var simulation = export.Simulation;
-
-                EventHandler<ExportDataEventArgs> exportHandler =
-                    (sender, e) =>
+                if (simulation is DC)
+                {
+                    var dcResult = new List<double>();
+                    result.Add(dcResult);
+                    simulation.OnExportSimulationData += (sender, e) =>
                     {
-                        if (simulation is DC)
-                        {
-                            dcResult.Add(export.Extract());
-                        }
+                        dcResult.Add(export.Extract());
+                    };
+                }
 
-                        if (simulation is OP)
-                        {
-                            opResult = export.Extract();
-                        }
-
-                        if (simulation is Transient)
-                        {
-                            tranResult.Add(new Tuple<double, double>(e.Time, export.Extract()));
-                        }
+                if (simulation is OP)
+                {
+                    double opResult = double.NaN;
+                    simulation.OnExportSimulationData += (sender, e) =>
+                    {
+                        opResult = export.Extract();
                     };
 
-                simulation.OnExportSimulationData += exportHandler;
+                    simulation.FinalizeSimulationExport += (sender, e) =>
+                    {
+                        result.Add(opResult);
+                    };
+                }
 
+                if (simulation is Transient)
+                {
+                    var tranResult = new List<Tuple<double, double>>();
+                    result.Add(tranResult);
+                    simulation.OnExportSimulationData += (sender, e) =>
+                    {
+                        tranResult.Add(new Tuple<double, double>(e.Time, export.Extract()));
+                    };
+                }
+            }
+
+            foreach (var simulation in connectorResult.Simulations)
+            {
                 simulation.Run(connectorResult.Circuit);
-
-                if (dcResult.Count != 0)
-                {
-                    result.Add(dcResult.ToList());
-                }
-
-                if (!double.IsNaN(opResult))
-                {
-                    result.Add(opResult);
-                }
-
-                if (tranResult.Count != 0)
-                {
-                    result.Add(tranResult.ToList());
-                }
-
-                simulation.OnExportSimulationData -= exportHandler;
             }
 
             return result;
