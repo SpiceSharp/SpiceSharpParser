@@ -4,7 +4,14 @@
     <TargetFramework>netstandard1.5</TargetFramework>
     <CodeAnalysisRuleSet>stylecop.ruleset</CodeAnalysisRuleSet>
     <Authors>SpiceSharp</Authors>
-    <IsPackable>false</IsPackable>
+    <PackageLicenseUrl>https://github.com/SpiceSharp/SpiceSharpParser/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/SpiceSharp/SpiceSharpParser</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/SpiceSharp/SpiceSharp/master/api/images/logo_full.svg?sanitize=true</PackageIconUrl>
+    <Copyright>Copyright 2018</Copyright>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/SpiceSharp/SpiceSharpParser</RepositoryUrl>
+    <RepositoryType></RepositoryType>
+    <PackageTags>circuit electronics netlist parser spice</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
