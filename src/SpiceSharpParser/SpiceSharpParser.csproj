@@ -4,6 +4,7 @@
     <TargetFramework>netstandard1.5</TargetFramework>
     <CodeAnalysisRuleSet>stylecop.ruleset</CodeAnalysisRuleSet>
     <Authors>SpiceSharp</Authors>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
