@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
 namespace SpiceSharpParser.Connector.Exceptions
 {
@@ -19,11 +18,6 @@ namespace SpiceSharpParser.Connector.Exceptions
 
         public GeneralConnectorException(string message, Exception innerException)
             : base(message, innerException)
-        {
-        }
-
-        protected GeneralConnectorException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
     }

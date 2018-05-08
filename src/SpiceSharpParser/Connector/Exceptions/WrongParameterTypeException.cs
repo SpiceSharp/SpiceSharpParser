@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
 namespace SpiceSharpParser.Connector.Exceptions
 {
@@ -24,11 +23,6 @@ namespace SpiceSharpParser.Connector.Exceptions
 
         public WrongParameterTypeException(string message, Exception innerException)
             : base(message, innerException)
-        {
-        }
-
-        protected WrongParameterTypeException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
     }

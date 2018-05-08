@@ -50,7 +50,7 @@
         /// <returns>
         /// A clone of parameter
         /// </returns>
-        public override object Clone()
+        public override SpiceSharp.Parameter Clone()
         {
             return new EvaluationParameter(Evaluator, ParameterName);
         }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace SpiceSharpParser.Lexer
 {
@@ -42,7 +43,7 @@ namespace SpiceSharpParser.Lexer
             var tokenRules = new List<LexerTokenRule<TLexerState>>();
 
             foreach (var lexerTokenRule in rules.Where(
-                rule => rule.GetType().IsGenericType
+                rule => rule.GetType().GetTypeInfo().IsGenericType
                 && rule.GetType().GetGenericTypeDefinition() == typeof(LexerTokenRule<>)))
             {
                 var lexerTokenRuleCloned = lexerTokenRule.Clone() as LexerTokenRule<TLexerState>;

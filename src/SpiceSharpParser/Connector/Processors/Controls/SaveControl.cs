@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Connector.Context;
 using SpiceSharpParser.Connector.Processors.Controls.Exporters;
@@ -99,7 +100,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls
                 return simulations;
             }
 
-            return simulations.Where(simulation => simulation.GetType().IsSubclassOf(simulationType) || simulation.GetType() == simulationType);
+            return simulations.Where(simulation => simulation.GetType().GetTypeInfo().IsSubclassOf(simulationType) || simulation.GetType() == simulationType);
         }
     }
 }
