@@ -12,6 +12,9 @@
     <RepositoryUrl>https://github.com/SpiceSharp/SpiceSharpParser</RepositoryUrl>
     <RepositoryType></RepositoryType>
     <PackageTags>circuit electronics netlist parser spice</PackageTags>
+    <PackageId>SpiceSharp-Parser</PackageId>
+    <Product>SpiceSharpParser</Product>
+    <Description>Netlist parser for SpiceSharp</Description>
   </PropertyGroup>
 
   <ItemGroup>
