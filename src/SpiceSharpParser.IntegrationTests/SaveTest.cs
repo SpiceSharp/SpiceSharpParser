@@ -51,6 +51,24 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
+        public void SaveDCFromLetAdvanced() //TODO: Better test names :( 
+        {
+            var netlist = ParseNetlist(
+               "Diode circuit",
+               "D1 OUT 0 1N914",
+               "V1 OUT 0 0",
+               ".model 1N914 D(Is=2.52e-9 Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
+               ".DC V1 -1 1 10e-3",
+               ".LET xxy {log10(i(V1))*2}",
+               ".SAVE DC xxy",
+               ".END");
+
+            var export = RunDCSimulation(netlist, "xxy");
+
+            Assert.Equal(201, export.Length);
+        }
+
+        [Fact]
         public void SaveWithFilterMultipleTest()
         {
             var netlist = ParseNetlist(

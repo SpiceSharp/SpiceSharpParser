@@ -26,9 +26,9 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters
         /// </returns>
         public override Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, IProcessingContext context)
         {
-            if (parameters.Count != 1 || !(parameters[0] is SingleParameter))
+            if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
             {
-                throw new Exception("Current exports should single parameter");
+                throw new Exception("Current exports should have a single parameter or vector parameter");
             }
 
             // Get the nodes
