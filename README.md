@@ -50,6 +50,13 @@ It has no external dependency.
 
 AppVeyor CI (Windows): [![Build status](https://ci.appveyor.com/api/projects/status/d8tpj2hm3hcullmw/branch/master?svg=true)](https://ci.appveyor.com/project/marcin-golebiowski/spicesharpparser/branch/master)
 
+## Downloads
+
+SpiceSharpParser is available as NuGet Package
+
+<https://www.nuget.org/packages/SpiceSharp-Parser>
+
+
 
 ## Currently Supported and Tested Platforms
 * Windows
