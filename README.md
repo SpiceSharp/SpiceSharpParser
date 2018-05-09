@@ -50,6 +50,9 @@ It has no external dependency.
 
 AppVeyor CI (Windows): [![Build status](https://ci.appveyor.com/api/projects/status/d8tpj2hm3hcullmw/branch/master?svg=true)](https://ci.appveyor.com/project/marcin-golebiowski/spicesharpparser/branch/master)
 
+Travis CI (Linux): [![Build status](https://ci.appveyor.com/api/projects/status/d8tpj2hm3hcullmw/branch/master?svg=true)](https://travis-ci.org/SpiceSharp/SpiceSharpParser.svg?branch=master)
+
+
 ## Downloads
 
 SpiceSharpParser is available as NuGet Package
