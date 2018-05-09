@@ -63,6 +63,7 @@ SpiceSharpParser is available as NuGet Package
 
 ## Currently Supported and Tested Platforms
 * Windows
+* Linux
 
 ## License
 SpiceSharpParser is under MIT License
