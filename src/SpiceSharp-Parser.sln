@@ -9,6 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharpParser.Tests", "S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharpParser.IntegrationTests", "SpiceSharpParser.IntegrationTests\SpiceSharpParser.IntegrationTests.csproj", "{57920E91-873B-4E66-B0EC-4CAC45007AA9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeAnalysis", "CodeAnalysis", "{A98DF2D4-CFE4-44F3-AD5C-21D6A0648EFD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CEDE104D-B6B3-433F-A8B3-C06086A4DD4E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharpParser.CodeAnalysis", "SpiceSharpParser.CodeAnalysis\SpiceSharpParser.CodeAnalysis.csproj", "{690C3742-17AD-46F6-A73D-CAE33C780523}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,9 +33,18 @@ Global
 		{57920E91-873B-4E66-B0EC-4CAC45007AA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57920E91-873B-4E66-B0EC-4CAC45007AA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57920E91-873B-4E66-B0EC-4CAC45007AA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{690C3742-17AD-46F6-A73D-CAE33C780523}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{690C3742-17AD-46F6-A73D-CAE33C780523}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{690C3742-17AD-46F6-A73D-CAE33C780523}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{690C3742-17AD-46F6-A73D-CAE33C780523}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{94394567-BC35-43EE-92CB-31AC780305FE} = {CEDE104D-B6B3-433F-A8B3-C06086A4DD4E}
+		{57920E91-873B-4E66-B0EC-4CAC45007AA9} = {CEDE104D-B6B3-433F-A8B3-C06086A4DD4E}
+		{690C3742-17AD-46F6-A73D-CAE33C780523} = {A98DF2D4-CFE4-44F3-AD5C-21D6A0648EFD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F5DF7359-A6BE-4DB6-9200-CEFBAEBAD75E}
