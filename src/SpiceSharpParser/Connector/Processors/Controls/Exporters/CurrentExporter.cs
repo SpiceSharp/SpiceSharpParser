@@ -32,7 +32,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters
             }
 
             // Get the nodes
-            Identifier node, reference = null;
+            Identifier node = null;
             if (parameters[0] is VectorParameter vector)
             {
                 switch (vector.Elements.Count)
