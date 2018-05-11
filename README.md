@@ -46,16 +46,23 @@ SpiceSharpParser is a .NET Standard library that parses Spice3f5 netlists and cr
 
 ## Build status
 
-AppVeyor CI (Windows): [![Build status](https://ci.appveyor.com/api/projects/status/d8tpj2hm3hcullmw/branch/master?svg=true)](https://ci.appveyor.com/project/marcin-golebiowski/spicesharpparser/branch/master)
+|    | Status |
+|:---|----------------:|
+|**Windows**|[![Build status](https://ci.appveyor.com/api/projects/status/d8tpj2hm3hcullmw/branch/master?svg=true)](https://ci.appveyor.com/project/marcin-golebiowski/spicesharpparser/branch/master)|
+|**Linux**|[![Build status](https://travis-ci.org/SpiceSharp/SpiceSharpParser.svg?branch=master)](https://travis-ci.org/SpiceSharp/SpiceSharpParser?branch=master)|
 
-Travis CI (Linux): [![Build status](https://travis-ci.org/SpiceSharp/SpiceSharpParser.svg?branch=master)](https://travis-ci.org/SpiceSharp/SpiceSharpParser.svg?branch=master)
+
+## Installation
+
+SpiceSharpParser is available as NuGet Package 
+[<img src="https://img.shields.io/nuget/vpre/SpiceSharp-Parser.svg">]( https://www.nuget.org/packages/SpiceSharp-Parser)
+
+```
+Install-Package SpiceSharp-Parser -Version 1.0.3-alpha	
+```
 
 
-## Downloads
 
-SpiceSharpParser is available as NuGet Package
-
-<https://www.nuget.org/packages/SpiceSharp-Parser>
 
 
 
