@@ -14,5 +14,19 @@
         /// Gets or sets paramters of the model
         /// </summary>
         public ParameterCollection Parameters { get; set; }
+
+        /// <summary>
+        /// Closes the object.
+        /// </summary>
+        /// <returns>A clone of the object</returns>
+        public override SpiceObject Clone()
+        {
+            return new Model() {
+                Comment = this.Comment,
+                Name = this.Name,
+                LineNumber = this.LineNumber,
+                Parameters = (ParameterCollection)this.Parameters.Clone(),
+            };
+        }
     }
 }

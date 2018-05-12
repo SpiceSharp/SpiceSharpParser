@@ -164,7 +164,7 @@ namespace SpiceSharpParser.Model.SpiceObjects
         /// <returns>
         /// A new collection of parameters
         /// </returns>
-        public ParameterCollection Clone()
+        public override SpiceObject Clone()
         {
             return new ParameterCollection() { Values = new List<Parameter>(this.Values) };
         }

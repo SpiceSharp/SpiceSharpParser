@@ -6,18 +6,18 @@ using System.Runtime.InteropServices;
 using SpiceSharpParser.Model;
 using SpiceSharpParser.Model.SpiceObjects;
 
-namespace SpiceSharpParser
+namespace SpiceSharpParser.Preprocessors
 {
     /// <summary>
     /// Processes .include statements from netlist file
     /// </summary>
-    public class IncludesProcessor : IIncludesProcessor
+    public class IncludesPreProcessor : IIncludesPreProcessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="IncludesProcessor"/> class.
+        /// Initializes a new instance of the <see cref="IncludesPreProcessor"/> class.
         /// </summary>
         /// <param name="fileReader">File reader</param>
-        public IncludesProcessor(IFileReader fileReader, INetlistModelReader netlistModelReader)
+        public IncludesPreProcessor(IFileReader fileReader, INetlistModelReader netlistModelReader)
         {
             NetlistModelReader = netlistModelReader;
             FileReader = fileReader;

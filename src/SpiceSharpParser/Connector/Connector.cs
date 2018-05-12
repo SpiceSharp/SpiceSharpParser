@@ -13,7 +13,7 @@ using SpiceSharpParser.Model.SpiceObjects.Parameters;
 namespace SpiceSharpParser.Connector
 {
     /// <summary>
-    /// Translates a netlist to Spice#
+    /// Translates a netlist to Spice#.
     /// </summary>
     public class Connector
     {
@@ -46,10 +46,10 @@ namespace SpiceSharpParser.Connector
         /// <returns>
         /// A new SpiceSharp netlist
         /// </returns>
-        public ConnectorResult Translate(Model.Netlist netlist)
+        public SpiceSharpModel Translate(Model.Netlist netlist)
         {
             // Create result netlist
-            var result = new ConnectorResult(new Circuit(), netlist.Title);
+            var result = new SpiceSharpModel(new Circuit(), netlist.Title);
 
             // Create processing context
             var evaluator = new Evaluator();

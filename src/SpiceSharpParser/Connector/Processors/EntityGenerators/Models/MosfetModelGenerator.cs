@@ -66,7 +66,7 @@ namespace SpiceSharpParser.Connector.Processors.EntityGenerators.Models
 
         public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, IProcessingContext context)
         {
-            var clonedParameters = parameters.Clone();
+            var clonedParameters = (ParameterCollection)parameters.Clone();
             switch (clonedParameters.Count)
             {
                 case 0: throw new Exception("Model name and type expected");

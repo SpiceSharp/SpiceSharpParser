@@ -1,8 +1,8 @@
 ﻿using SpiceSharpParser.Model;
 
-namespace SpiceSharpParser
+namespace SpiceSharpParser.Preprocessors
 {
-    public interface IIncludesProcessor
+    public interface IIncludesPreProcessor
     {
         /// <summary>
         /// Processes .include statements

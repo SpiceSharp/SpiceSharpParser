@@ -19,14 +19,17 @@ namespace SpiceSharpParser.IntegrationTests
         /// </summary>
         public double RelTol = 1e-3;
 
-        public static ConnectorResult ParseNetlistInWorkingDirectory(string workingDirectory, params string[] lines)
+        public static SpiceSharpModel ParseNetlistInWorkingDirectory(string workingDirectory, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parserFront = new ParserFacade();
-            return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = true, IsEndRequired = true }, workingDirectory).SpiceSharpModel;
+            var parserResult = parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = true, IsEndRequired = true }, workingDirectory);
+
+
+            return parserResult.SpiceSharpModel;
         }
 
-        public static ConnectorResult ParseNetlist(params string[] lines)
+        public static SpiceSharpModel ParseNetlist(params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parserFront = new ParserFacade();
@@ -37,7 +40,7 @@ namespace SpiceSharpParser.IntegrationTests
         {
             var text = string.Join(Environment.NewLine, lines);
             var parserFront = new ParserFacade();
-            return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = hasTitle, IsEndRequired = isEndRequired }).NetlistModel;
+            return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = hasTitle, IsEndRequired = isEndRequired }).PreprocessedNetlistModel;
         }
 
         /// <summary>
@@ -47,7 +50,7 @@ namespace SpiceSharpParser.IntegrationTests
         /// <returns>
         /// A list of exports list
         /// </returns>
-        public static List<object> RunSimulations(ConnectorResult connectorResult)
+        public static List<object> RunSimulations(SpiceSharpModel connectorResult)
         {
             var result = new List<object>();
 
@@ -97,7 +100,7 @@ namespace SpiceSharpParser.IntegrationTests
             return result;
         }
 
-        public static double RunOpSimulation(ConnectorResult connectorResult, string nameOfExport)
+        public static double RunOpSimulation(SpiceSharpModel connectorResult, string nameOfExport)
         {
             double result = double.NaN;
             var export = connectorResult.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
@@ -112,7 +115,7 @@ namespace SpiceSharpParser.IntegrationTests
             return result;
         }
 
-        public static double[] RunOpSimulation(ConnectorResult connectorResult, params string[] nameOfExport)
+        public static double[] RunOpSimulation(SpiceSharpModel connectorResult, params string[] nameOfExport)
         {
             var simulation = connectorResult.Simulations.Single();
             double[] result = new double[nameOfExport.Length];
@@ -130,7 +133,7 @@ namespace SpiceSharpParser.IntegrationTests
             return result;
         }
 
-        public static Tuple<double, double>[] RunTransientSimulation(ConnectorResult connectorResult, string nameOfExport)
+        public static Tuple<double, double>[] RunTransientSimulation(SpiceSharpModel connectorResult, string nameOfExport)
         {
             var list = new List<Tuple<double,double>>();
 
@@ -146,7 +149,7 @@ namespace SpiceSharpParser.IntegrationTests
             return list.ToArray();
         }
 
-        public static Tuple<double, double>[] RunDCSimulation(ConnectorResult connectorResult, string nameOfExport)
+        public static Tuple<double, double>[] RunDCSimulation(SpiceSharpModel connectorResult, string nameOfExport)
         {
             var list = new List<Tuple<double, double>>();
 
