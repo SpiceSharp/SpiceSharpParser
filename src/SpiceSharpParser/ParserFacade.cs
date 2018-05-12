@@ -12,10 +12,16 @@ namespace SpiceSharpParser
         /// Initializes a new instance of the <see cref="ParserFacade"/> class.
         /// </summary>
         /// <param name="netlistModelReader">Netlist model reader.</param>
-        public ParserFacade(INetlistModelReader netlistModelReader, IIncludesPreProcessor includesProcessor)
+        /// <param name="includesProcessor">Includes preprocessor</param>
+        /// <param name="appendModelProcessor">Append model preprocessor</param>
+        public ParserFacade(
+            INetlistModelReader netlistModelReader,
+            IIncludesPreProcessor includesProcessor,
+            IAppendModelPreProcessor appendModelProcessor)
         {
             IncludesProcessor = includesProcessor ?? throw new System.ArgumentNullException(nameof(includesProcessor));
             NetlistModelReader = netlistModelReader ?? throw new System.ArgumentNullException(nameof(netlistModelReader));
+            AppendModelProcessor = appendModelProcessor ?? throw new System.ArgumentNullException(nameof(appendModelProcessor));
         }
 
         /// <summary>
@@ -25,6 +31,7 @@ namespace SpiceSharpParser
         {
             NetlistModelReader = new NetlistModelReader();
             IncludesProcessor = new IncludesPreProcessor(new FileReader(), NetlistModelReader);
+            AppendModelProcessor = new AppendModelPreProcessor();
         }
 
         /// <summary>
@@ -36,6 +43,11 @@ namespace SpiceSharpParser
         /// Gets the includes processor.
         /// </summary>
         public IIncludesPreProcessor IncludesProcessor { get; }
+
+        /// <summary>
+        /// Gets the appendmodel processor.
+        /// </summary>
+        public IAppendModelPreProcessor AppendModelProcessor { get; }
 
         /// <summary>
         /// Parses the netlist.
@@ -63,6 +75,7 @@ namespace SpiceSharpParser
 
             // Preprocessing
             IncludesProcessor.Process(preprocessedNetListModel, workingDirectoryPath);
+            AppendModelProcessor.Process(preprocessedNetListModel);
             // TODO: more preprocessors
 
             Connector.SpiceSharpModel connectorResult = GetConnectorResult(preprocessedNetListModel);

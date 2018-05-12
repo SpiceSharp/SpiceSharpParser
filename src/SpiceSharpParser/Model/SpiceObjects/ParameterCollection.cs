@@ -103,6 +103,50 @@ namespace SpiceSharpParser.Model.SpiceObjects
         }
 
         /// <summary>
+        /// Set paramters from a collection to the current collection
+        /// </summary>
+        /// <param name="collection">A collection to merge</param>
+        public void Set(ParameterCollection collection)
+        {
+            foreach (var value in collection.Values)
+            {
+                if (value is SingleParameter)
+                {
+                    Values.Add(value);
+                }
+
+                if (value is AssignmentParameter a)
+                {
+                    bool found = false;
+                    foreach (var val in Values)
+                    {
+                        if (val is AssignmentParameter a2 && a2.Name == a.Name)
+                        {
+                            a2.Value = a.Value;
+                            found = true;
+                        }
+                    }
+
+                    if (!found)
+                    {
+                        Values.Add(value);
+                    }
+                }
+
+                if (value is BracketParameter bp)
+                {
+                    foreach (var val in Values)
+                    {
+                        if (val is BracketParameter bp2 && bp2.Name == bp.Name)
+                        {
+                            bp2.Parameters.Set(bp.Parameters);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Creates a clone of the current collection without first 'count' elements
         /// </summary>
         /// <param name="count">Number of paramaters to skip</param>
