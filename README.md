@@ -57,9 +57,6 @@ SpiceSharpParser is a .NET Standard library that parses Spice3f5 netlists and cr
 SpiceSharpParser is available as NuGet Package 
 [<img src="https://img.shields.io/nuget/vpre/SpiceSharp-Parser.svg">]( https://www.nuget.org/packages/SpiceSharp-Parser)
 
-```
-Install-Package SpiceSharp-Parser -Version 1.0.3-alpha	
-```
 
 
 
