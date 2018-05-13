@@ -119,11 +119,22 @@ namespace SpiceSharpParser.Parser.TreeTranslator
         /// </returns>
         private SpiceObject CreateNetlist(ParseTreeNodeTranslationValues values)
         {
-            return new Netlist()
+            if (values.Count == 3)
             {
-                Title = values.GetLexem(0),
-                Statements = values.GetSpiceObject<Statements>(2)
-            };
+                return new Netlist()
+                {
+                    Title = string.Empty,
+                    Statements = values.GetSpiceObject<Statements>(1)
+                };
+            }
+            else
+            {
+                return new Netlist()
+                {
+                    Title = values.GetLexem(0),
+                    Statements = values.GetSpiceObject<Statements>(2)
+                };
+            }
         }
 
         /// <summary>

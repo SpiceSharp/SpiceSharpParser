@@ -211,13 +211,26 @@ namespace SpiceSharpParser.Parser.TreeGeneration
         /// <param name="currentTokenIndex">A index of the current token</param>
         private void ProcessNetlist(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
-            PushProductionExpression(
-                stack,
-                CreateTerminalNode(SpiceTokenType.TITLE, currentNode),
-                CreateTerminalNode(SpiceTokenType.NEWLINE, currentNode),
-                CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, currentNode),
-                CreateNonTerminalNode(SpiceGrammarSymbol.NETLIST_ENDING, currentNode)
-            );
+            var currentToken = tokens[currentTokenIndex];
+            if (currentToken.Is(SpiceTokenType.NEWLINE))
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(SpiceTokenType.NEWLINE, currentNode),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, currentNode),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.NETLIST_ENDING, currentNode)
+                );
+            }
+            else
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(SpiceTokenType.TITLE, currentNode),
+                    CreateTerminalNode(SpiceTokenType.NEWLINE, currentNode),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, currentNode),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.NETLIST_ENDING, currentNode)
+                );
+            }
         }
 
         /// <summary>
