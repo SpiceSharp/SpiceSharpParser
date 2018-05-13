@@ -134,6 +134,13 @@ namespace SpiceSharpParser.Lexer.Spice3f5
                 ignoreCase: options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+               (int)SpiceTokenType.ENDL_HSPICE,
+               ".endl keyword",
+               ".endl",
+               ignoreCase: options.IgnoreCase));
+
+
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                (int)SpiceTokenType.VALUE,
                "A value with comma seperator",
                @"([+-]?((<DIGIT>)+(,(<DIGIT>)*)?|\.(<DIGIT>)+)(e(\+|-)?(<DIGIT>)+)?[tgmkunpf]?(<LETTER>)*)",

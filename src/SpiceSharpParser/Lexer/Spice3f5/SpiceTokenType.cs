@@ -118,6 +118,11 @@
         /// <summary>
         /// $ style comment
         /// </summary>
-        COMMENT_HSPICE = 22
+        COMMENT_HSPICE = 22,
+
+        /// <summary>
+        /// .ENDL token
+        /// </summary>
+        ENDL_HSPICE = 23
     }
 }
