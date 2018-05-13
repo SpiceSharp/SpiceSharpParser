@@ -22,7 +22,6 @@
         public override SpiceObject Clone()
         {
             return new Model() {
-                Comment = this.Comment,
                 Name = this.Name,
                 LineNumber = this.LineNumber,
                 Parameters = (ParameterCollection)this.Parameters.Clone(),

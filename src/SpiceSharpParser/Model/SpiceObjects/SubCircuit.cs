@@ -36,7 +36,6 @@ namespace SpiceSharpParser.Model.SpiceObjects
                 Pins = new List<string>(this.Pins.ToArray()),
                 DefaultParameters = new List<AssignmentParameter>(),
                 Statements = (Statements)this.Statements.Clone(),
-                Comment = this.Comment,
                 LineNumber = this.LineNumber
             };
 

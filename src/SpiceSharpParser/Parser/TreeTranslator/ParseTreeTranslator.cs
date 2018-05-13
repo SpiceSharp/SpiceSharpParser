@@ -50,7 +50,6 @@ namespace SpiceSharpParser.Parser.TreeTranslator
             translators.Add(SpiceGrammarSymbol.SUBCKT, (ParseTreeNodeTranslationValues nt) => CreateSubCircuit(nt));
             translators.Add(SpiceGrammarSymbol.SUBCKT_ENDING, (ParseTreeNodeTranslationValues nt) => null);
             translators.Add(SpiceGrammarSymbol.COMMENT_LINE, (ParseTreeNodeTranslationValues nt) => CreateComment(nt));
-            translators.Add(SpiceGrammarSymbol.COMMENT_STATEMENT, (ParseTreeNodeTranslationValues nt) => CreateStatementComment(nt));
             translators.Add(SpiceGrammarSymbol.NEW_LINE, (ParseTreeNodeTranslationValues nt) => null);
         }
 
@@ -409,11 +408,6 @@ namespace SpiceSharpParser.Parser.TreeTranslator
             }
 
             var statement = values.GetSpiceObject<Statement>(0);
-
-            if (values.Count == 3 && values[1] is ParseTreeNonTerminalTranslationValue nv2 && nv2.SpiceObject != null && nv2.SpiceObject is CommentLine c2)
-            {
-                statement.Comment = c2.Text;
-            }
 
             return statement;
         }

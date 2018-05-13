@@ -23,10 +23,7 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.True(netlist.Statements.ToArray()[0] is CommentLine);
 
             Assert.True(netlist.Statements.ToArray()[1] is Component);
-            Assert.Equal(" test2", netlist.Statements.ToArray()[1].Comment);
-
             Assert.True(netlist.Statements.ToArray()[2] is Component);
-            Assert.Equal("  test3 ; test4 $ test5", netlist.Statements.ToArray()[2].Comment);
         }
 
 
@@ -41,8 +38,8 @@ namespace SpiceSharpParser.IntegrationTests
                 ".subckt tddsdsd202 inp inn out vcc vee",
                 "*;",
                 ".MODEL D_b D",
-                "+ RS = 1.0000E-1",
-                "+ CJO = 1.0000E-13",
+                "+ RS = 1.0000E-1 ; comment2",
+                "+ CJO = 1.0000E-13 $ comment1",
                 "+ IS = 100e-15",
                 ".ends",
                 ".end");

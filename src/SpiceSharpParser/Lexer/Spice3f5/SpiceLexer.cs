@@ -142,7 +142,7 @@ namespace SpiceSharpParser.Lexer.Spice3f5
              "\\$[^\r\n]*",
              (SpiceLexerState state) =>
              {
-                 return LexerRuleResult.ReturnToken;
+                 return LexerRuleResult.IgnoreToken;
              }));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
@@ -151,7 +151,7 @@ namespace SpiceSharpParser.Lexer.Spice3f5
              ";[^\r\n]*",
              (SpiceLexerState state) =>
              {
-                 return LexerRuleResult.ReturnToken;
+                 return LexerRuleResult.IgnoreToken;
              }));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(

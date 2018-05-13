@@ -268,10 +268,9 @@ namespace SpiceSharpParser.Tests.Lexer.Spice3f5
             SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
-            Assert.True(tokens.Length == 3);
+            Assert.True(tokens.Length == 2);
             Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.WORD);
-            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.COMMENT_PSPICE);
-            Assert.True(tokens[2].SpiceTokenType == SpiceTokenType.EOF);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
         }
 
         [Fact]
@@ -281,10 +280,9 @@ namespace SpiceSharpParser.Tests.Lexer.Spice3f5
             SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
-            Assert.True(tokens.Length == 3);
+            Assert.True(tokens.Length == 2);
             Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.WORD);
-            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.COMMENT_HSPICE);
-            Assert.True(tokens[2].SpiceTokenType == SpiceTokenType.EOF);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
         }
 
         [Fact]

@@ -24,7 +24,6 @@
             return new Control() {
                 Name = this.Name,
                 Parameters = (ParameterCollection)this.Parameters.Clone(),
-                Comment = this.Comment,
                 LineNumber = this.LineNumber
             };
         }

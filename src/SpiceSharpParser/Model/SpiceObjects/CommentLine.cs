@@ -18,7 +18,6 @@
         {
             return new CommentLine() {
                 Text = this.Text,
-                Comment = this.Comment,
                 LineNumber = this.LineNumber
             };
         }

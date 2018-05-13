@@ -24,7 +24,6 @@
             return new Component() {
                 Name = this.Name,
                 PinsAndParameters = (ParameterCollection)this.PinsAndParameters.Clone(),
-                Comment = this.Comment,
                 LineNumber = this.LineNumber
             };
         }
