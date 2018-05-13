@@ -80,7 +80,7 @@ namespace SpiceSharpParser.Preprocessors
         private void ProcessSingleInclude(Statements statements, List<string> loadedFullPaths, string currentDirectoryPath, Control include)
         {
             // get full path of .include
-            string includePath = include.Parameters[0].Image.Trim('"');
+            string includePath = include.Parameters.GetString(0);
 
             includePath = ConvertPath(includePath);
 

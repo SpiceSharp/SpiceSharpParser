@@ -191,6 +191,11 @@ namespace SpiceSharpParser.Model.SpiceObjects
                 throw new Exception("Parameter [" + parameterIndex + "] is not string parameter");
             }
 
+            if (singleParameter is StringParameter sp)
+            {
+                return sp.Image.Trim('"');
+            }
+
             if (singleParameter is ExpressionParameter ep)
             {
                 // trim '{' and '}' from start and end
