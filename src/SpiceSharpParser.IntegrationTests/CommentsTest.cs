@@ -28,5 +28,24 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.True(netlist.Statements.ToArray()[2] is Component);
             Assert.Equal("  test3 ; test4 $ test5", netlist.Statements.ToArray()[2].Comment);
         }
+
+
+        [Fact]
+        public void StrangeTest()
+        {
+            var netlist = ParseNetlistToModel(
+                true,
+                true,
+                "*",
+                "*$",
+                ".subckt tddsdsd202 inp inn out vcc vee",
+                "*;",
+                ".MODEL D_b D",
+                "+ RS = 1.0000E-1",
+                "+ CJO = 1.0000E-13",
+                "+ IS = 100e-15",
+                ".ends",
+                ".end");
+        }
     }
 }

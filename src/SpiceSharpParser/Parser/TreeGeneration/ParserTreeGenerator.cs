@@ -221,6 +221,16 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                     CreateNonTerminalNode(SpiceGrammarSymbol.NETLIST_ENDING, currentNode)
                 );
             }
+            else if (currentToken.Is(SpiceTokenType.ASTERIKS))
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(SpiceTokenType.ASTERIKS, currentNode),
+                    CreateTerminalNode(SpiceTokenType.NEWLINE, currentNode),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, currentNode),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.NETLIST_ENDING, currentNode)
+                );
+            }
             else
             {
                 PushProductionExpression(
@@ -508,7 +518,9 @@ namespace SpiceSharpParser.Parser.TreeGeneration
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
 
-            if (currentToken.Is(SpiceTokenType.ASTERIKS) && nextToken.Is(SpiceTokenType.COMMENT))
+            if (currentToken.Is(SpiceTokenType.ASTERIKS) && nextToken.Is(SpiceTokenType.COMMENT)
+                || currentToken.Is(SpiceTokenType.ASTERIKS) && nextToken.Is(SpiceTokenType.COMMENT_HSPICE)
+                || currentToken.Is(SpiceTokenType.ASTERIKS) && nextToken.Is(SpiceTokenType.COMMENT_PSPICE))
             {
                 PushProductionExpression(
                     stack,
