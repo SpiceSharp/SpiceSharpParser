@@ -21,6 +21,41 @@ namespace SpiceSharpParser.Tests.Lexer.Spice3f5
         }
 
         [Fact]
+        public void CommaInValue()
+        {
+            var tokensStr = "R_R25 HD2- 0  0.5 TC=0,0";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.Equal(8, tokens.Length);
+            Assert.True(tokens[6].SpiceTokenType == SpiceTokenType.VALUE);
+            Assert.True(tokens[6].Lexem == "0,0");
+            Assert.True(tokens[7].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
+        public void PlusAsName()
+        {
+            var tokensStr = ".SUBCKT noise_macro_0 + -";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.True(tokens[3].SpiceTokenType == SpiceTokenType.IDENTIFIER);
+            Assert.True(tokens[4].SpiceTokenType == SpiceTokenType.IDENTIFIER);
+
+            Assert.Equal(6, tokens.Length);
+        }
+
+        [Fact]
+        public void CommaInModelTest()
+        {
+            var tokensStr = ".model 1N914 D(Is= 2.52e-9 Rs= 0.568 N= 1,752 Cjo = 4e-12 M = 0,4 tt = 20e-9)";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+            Assert.Equal(25, tokens.Length);
+        }
+
+        [Fact]
         public void IdenfierWithPlus()
         {
             var tokensStr = "CMP2_IN+";

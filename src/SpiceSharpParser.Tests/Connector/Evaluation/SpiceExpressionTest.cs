@@ -120,6 +120,20 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
         }
 
         [Fact]
+        public void ParseWithComma()
+        {
+            // arrange
+            var parser = new SpiceExpression
+            {
+                Parameters = new Dictionary<string, double>() { },
+                UserFunctions = new Dictionary<string, Func<string[], object, double>>()
+            };
+
+            // act and assert
+            Assert.Equal(2.1, parser.Parse("2,1"));
+        }
+
+        [Fact]
         public void ParseWithConstants()
         {
             // arrange

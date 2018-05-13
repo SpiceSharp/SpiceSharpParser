@@ -1,4 +1,5 @@
 using SpiceSharpParser.Model.SpiceObjects;
+using SpiceSharpParser.Parser.Exceptions;
 using System.Linq;
 using Xunit;
 
@@ -28,7 +29,7 @@ namespace SpiceSharpParser.IntegrationTests
 
 
         [Fact]
-        public void StrangeTest()
+        public void StrangeNoExceptionTest()
         {
             var netlist = ParseNetlistToModel(
                 true,
@@ -42,6 +43,37 @@ namespace SpiceSharpParser.IntegrationTests
                 "+ CJO = 1.0000E-13 $ comment1",
                 "+ IS = 100e-15",
                 ".ends",
+                ".end");
+        }
+
+        [Fact]
+        public void StrangeNoExceptionTest2()
+        {
+            try
+            {
+                var netlist = ParseNetlistToModel(
+                    false,
+                    true,
+                    "",
+                    "*$");
+            }
+            catch (ParsingException ex)
+            {
+                Assert.True(ex.Message.Contains("NEWLINE"));
+                return;
+            }
+
+            Assert.True(false);
+        }
+
+        [Fact]
+        public void StrangeNoExceptionTest3()
+        {
+            var netlist = ParseNetlistToModel(
+                false,
+                false,
+                "**",
+                "**",
                 ".end");
         }
     }

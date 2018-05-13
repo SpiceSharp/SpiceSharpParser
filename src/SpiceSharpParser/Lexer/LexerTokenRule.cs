@@ -22,13 +22,13 @@ namespace SpiceSharpParser.Lexer
             int tokenType,
             string ruleName,
             string regularExpressionPattern,
-            Func<TLexerState, LexerRuleResult> lexerRuleResultAction = null,
+            Func<TLexerState, string, LexerRuleResult> lexerRuleResultAction = null,
             Func<TLexerState, LexerRuleUseState> isActiveAction = null,
             bool ignoreCase = true)
             : base(ruleName, regularExpressionPattern, ignoreCase)
         {
             TokenType = tokenType;
-            LexerRuleResultAction = lexerRuleResultAction ?? new Func<TLexerState, LexerRuleResult>((state) => LexerRuleResult.ReturnToken);
+            LexerRuleResultAction = lexerRuleResultAction ?? new Func<TLexerState, string, LexerRuleResult>((state, lexem) => LexerRuleResult.ReturnToken);
             IsActiveAction = isActiveAction ?? new Func<TLexerState, LexerRuleUseState>((state) => LexerRuleUseState.Use);
         }
 
@@ -38,12 +38,12 @@ namespace SpiceSharpParser.Lexer
         public int TokenType { get; }
 
         /// <summary>
-        /// Gets specifies what to do with a generated token (return or ignore)
+        /// Gets what to do with a token
         /// </summary>
-        public Func<TLexerState, LexerRuleResult> LexerRuleResultAction { get; }
+        public Func<TLexerState, string, LexerRuleResult> LexerRuleResultAction { get; }
 
         /// <summary>
-        /// Gets specifies whether the rule should be skipped
+        /// Gets whether the rule should be skipped
         /// </summary>
         protected Func<TLexerState, LexerRuleUseState> IsActiveAction { get; }
 
