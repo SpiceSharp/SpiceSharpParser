@@ -561,7 +561,7 @@ namespace SpiceSharpParser.Parser.TreeGeneration
             }
             else
             {
-                throw new ParsingException("Error during parsing parameters. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                throw new ParsingException(string.Format("Error during parsing parameters. Unexpected token: '{0}' of type {1} line={2}", currentToken.Lexem,  currentToken.SpiceTokenType, currentToken.LineNumber), currentToken.LineNumber);
             }
         }
 
