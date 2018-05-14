@@ -53,65 +53,103 @@ namespace SpiceSharpParser.Preprocessors
         /// <param name="appendModels">Append model statements</param>
         private void ProcessAppendModel(Statements statements, Control appendModel, IEnumerable<Statement> appendModels)
         {
-            if (appendModel.Parameters.Count != 4)
+            if (appendModel.Parameters.Count != 4 && appendModel.Parameters.Count != 2)
             {
                 throw new System.Exception("Wrong parameter count for .APPENDMODEL");
             }
 
-            string sourceModel = appendModel.Parameters.GetString(0);
-            string sourceModelType = appendModel.Parameters.GetString(1); // ignored (for now)
-            string destinationModel = appendModel.Parameters.GetString(2);
-            string destinationModelType = appendModel.Parameters.GetString(3);
-
-            var sourceModelObj = (Model.SpiceObjects.Model)statements.FirstOrDefault(s => s is Model.SpiceObjects.Model m && m.Name == sourceModel);
-
-            if (sourceModelObj == null)
+            if (appendModel.Parameters.Count == 4)
             {
-                throw new System.Exception("Could not find source model for .APPENDMODEL");
-            }
+                string sourceModel = appendModel.Parameters.GetString(0);
+                string sourceModelType = appendModel.Parameters.GetString(1); // ignored (for now)
+                string destinationModel = appendModel.Parameters.GetString(2);
+                string destinationModelType = appendModel.Parameters.GetString(3);
 
-            var parametersToSet = sourceModelObj.Parameters;
-            if (parametersToSet[0] is SingleParameter)
-            {
-                parametersToSet = parametersToSet.Skip(1); // skip 1 parameter - type
-            }
+                var sourceModelObj = (Model.SpiceObjects.Model)statements.FirstOrDefault(s => s is Model.SpiceObjects.Model m && m.Name == sourceModel);
 
-            if (destinationModel == "*")
-            {
-                var destinationModelsObj = statements
-                    .Where(s =>
-                    s is Model.SpiceObjects.Model m
-                    && GetTypeOfModel(m).ToLower() == destinationModelType.ToLower()
-                    && m.Name != sourceModel);
-
-                foreach (Model.SpiceObjects.Model model in destinationModelsObj)
+                if (sourceModelObj == null)
                 {
-                    model.Parameters.Set(parametersToSet);
+                    throw new System.Exception("Could not find source model for .APPENDMODEL");
                 }
-            }
-            else if (destinationModel.Contains("*"))
-            {
-                string regularExpression = destinationModel.Replace("*", ".*");
 
-                var destinationModelsObj = statements
-                    .Where(s =>
-                    s is Model.SpiceObjects.Model m
-                    && GetTypeOfModel(m).ToLower() == destinationModelType.ToLower()
-                    && m.Name != sourceModel
-                    && Regex.Match(m.Name, regularExpression).Success);
-
-                foreach (Model.SpiceObjects.Model model in destinationModelsObj)
+                var parametersToSet = sourceModelObj.Parameters;
+                if (parametersToSet[0] is SingleParameter)
                 {
-                    model.Parameters.Set(parametersToSet);
+                    parametersToSet = parametersToSet.Skip(1); // skip 1 parameter - type
+                }
+
+                if (destinationModel == "*")
+                {
+                    var destinationModelsObj = statements
+                        .Where(s =>
+                        s is Model.SpiceObjects.Model m
+                        && GetTypeOfModel(m).ToLower() == destinationModelType.ToLower()
+                        && m.Name != sourceModel);
+
+                    foreach (Model.SpiceObjects.Model model in destinationModelsObj)
+                    {
+                        model.Parameters.Set(parametersToSet);
+                    }
+                }
+                else if (destinationModel.Contains("*"))
+                {
+                    string regularExpression = destinationModel.Replace("*", ".*");
+
+                    var destinationModelsObj = statements
+                        .Where(s =>
+                        s is Model.SpiceObjects.Model m
+                        && GetTypeOfModel(m).ToLower() == destinationModelType.ToLower()
+                        && m.Name != sourceModel
+                        && Regex.Match(m.Name, regularExpression).Success);
+
+                    foreach (Model.SpiceObjects.Model model in destinationModelsObj)
+                    {
+                        model.Parameters.Set(parametersToSet);
+                    }
+                }
+                else
+                {
+                    var destinationModelObj = (Model.SpiceObjects.Model)statements.FirstOrDefault(s => s is Model.SpiceObjects.Model m && m.Name == destinationModel);
+
+                    if (destinationModelObj != null)
+                    {
+                        destinationModelObj.Parameters.Set(parametersToSet);
+                    }
                 }
             }
             else
             {
-                var destinationModelObj = (Model.SpiceObjects.Model)statements.FirstOrDefault(s => s is Model.SpiceObjects.Model m && m.Name == destinationModel);
-
-                if (destinationModelObj != null)
+                string sourceModel = appendModel.Parameters.GetString(0);
+                var sourceModelObj = (Model.SpiceObjects.Model)statements.FirstOrDefault(s => s is Model.SpiceObjects.Model m && m.Name == sourceModel);
+                if (sourceModelObj == null)
                 {
-                    destinationModelObj.Parameters.Set(parametersToSet);
+                    throw new System.Exception("Could not find source model for .APPENDMODEL");
+                }
+
+                string destinationModel = appendModel.Parameters.GetString(1);
+                if (destinationModel == "*")
+                {
+                    var destinationModelsObj = statements
+                       .Where(s =>
+                       s is Model.SpiceObjects.Model m
+                       && m.Name != sourceModel);
+
+                    foreach (Model.SpiceObjects.Model model in destinationModelsObj)
+                    {
+                        model.Parameters.Set(sourceModelObj.Parameters);
+                    }
+                }
+                else
+                {
+                    var destinationModelObj = (Model.SpiceObjects.Model)statements
+                        .FirstOrDefault(s => s is Model.SpiceObjects.Model m && m.Name == destinationModel);
+
+                    if (destinationModelObj == null)
+                    {
+                        throw new System.Exception("Could not find destination model for .APPENDMODEL");
+                    }
+
+                    destinationModelObj.Parameters.Set(sourceModelObj.Parameters);
                 }
             }
         }
