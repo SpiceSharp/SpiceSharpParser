@@ -21,6 +21,7 @@ SpiceSharpParser is a .NET Standard library that parses Spice3f5 netlists and cr
 * .DC
 * .SUBCKT
 * .INCLUDE
+* .APPENDMODEL
 
 ### Supported Spice3f5 components
 * RLC
