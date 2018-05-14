@@ -2,7 +2,7 @@
 Documentation on SpiceSharpParser is available at <https://spicesharp.github.io/SpiceSharpParser/index.html>.
 
 ## What is SpiceSharpParser?
-SpiceSharpParser is a .NET Standard library that parses Spice3f5 netlists and creates an object model of netlist (input data for <https://github.com/SpiceSharp/SpiceSharp>)
+SpiceSharpParser is a .NET library that parses Spice3f5 netlists and creates an object model of netlist (input data for <https://github.com/SpiceSharp/SpiceSharp>)
 
 ## Features
 ### Supported dot statements
@@ -67,6 +67,15 @@ SpiceSharpParser is available as NuGet Package
 ## Currently Supported and Tested Platforms
 * Windows
 * Linux
+
+## Roadmap
+Future features:
+* .LIB
+* .TEMP
+* .PRINT
+* .WIDTH
+* Better .PARAM
+* .IF/.ELSE/.ENDIF
 
 ## License
 SpiceSharpParser is under MIT License
