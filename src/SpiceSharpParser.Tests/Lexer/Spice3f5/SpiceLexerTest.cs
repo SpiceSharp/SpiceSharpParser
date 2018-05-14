@@ -99,8 +99,8 @@ namespace SpiceSharpParser.Tests.Lexer.Spice3f5
 
             Assert.Equal(3, tokens.Length);
 
-            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.STRING);
-            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.STRING);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.DOUBLE_QUOTED_STRING);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.DOUBLE_QUOTED_STRING);
             Assert.True(tokens[2].SpiceTokenType == SpiceTokenType.EOF);
         }
 
@@ -111,7 +111,7 @@ namespace SpiceSharpParser.Tests.Lexer.Spice3f5
             SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
             Assert.Equal(2, tokens.Length);
-            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.STRING);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.DOUBLE_QUOTED_STRING);
             Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
         }
 
@@ -329,7 +329,7 @@ namespace SpiceSharpParser.Tests.Lexer.Spice3f5
 
             Assert.True(tokens.Length == 3);
             Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.WORD);
-            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.STRING);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.DOUBLE_QUOTED_STRING);
             Assert.True(tokens[2].SpiceTokenType == SpiceTokenType.EOF);
         }
 
@@ -342,7 +342,7 @@ namespace SpiceSharpParser.Tests.Lexer.Spice3f5
 
             Assert.True(tokens.Length == 3);
             Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.WORD);
-            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.STRING);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.DOUBLE_QUOTED_STRING);
             Assert.True(tokens[2].SpiceTokenType == SpiceTokenType.EOF);
         }
     }

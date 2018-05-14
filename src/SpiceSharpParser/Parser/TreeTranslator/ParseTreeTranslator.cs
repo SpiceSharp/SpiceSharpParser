@@ -208,8 +208,10 @@ namespace SpiceSharpParser.Parser.TreeTranslator
                 {
                     case (int)SpiceTokenType.REFERENCE:
                         return new ReferenceParameter(lexemValue);
-                    case (int)SpiceTokenType.STRING:
-                        return new StringParameter(lexemValue);
+                    case (int)SpiceTokenType.DOUBLE_QUOTED_STRING:
+                        return new StringParameter(lexemValue.Trim('"'));
+                    case (int)SpiceTokenType.SINGLE_QUOTED_STRING:
+                        return new StringParameter(lexemValue.Trim('\''));
                     case (int)SpiceTokenType.VALUE:
                         return new ValueParameter(lexemValue);
                     case (int)SpiceTokenType.WORD:
@@ -217,7 +219,7 @@ namespace SpiceSharpParser.Parser.TreeTranslator
                     case (int)SpiceTokenType.IDENTIFIER:
                         return new IdentifierParameter(lexemValue);
                     case (int)SpiceTokenType.EXPRESSION:
-                        return new ExpressionParameter(lexemValue);
+                        return new ExpressionParameter(lexemValue.Trim('{', '}'));
                 }
             }
 
@@ -339,25 +341,6 @@ namespace SpiceSharpParser.Parser.TreeTranslator
 
             subCkt.Statements = values.GetSpiceObject<Statements>(5);
             return subCkt;
-        }
-
-        /// <summary>
-        /// Returns new instance of <see cref="CommentLine"/>
-        /// from the values of children nodes of <see cref="SpiceGrammarSymbol.COMMENT_STATEMENT"/> parse tree node
-        /// </summary>
-        /// <returns>
-        /// A new instance of <see cref="CommentLine"/>
-        /// </returns>
-        private SpiceObject CreateStatementComment(ParseTreeNodeTranslationValues values)
-        {
-            if (values.Count == 1)
-            {
-                var comment = new CommentLine();
-                comment.Text = values.GetLexem(0).Substring(1);
-                return comment;
-            }
-
-            return null;
         }
 
         /// <summary>
@@ -667,19 +650,8 @@ namespace SpiceSharpParser.Parser.TreeTranslator
             {
                 var assigmentParameter = new AssignmentParameter();
                 assigmentParameter.Name = values.GetLexem(0);
-
                 var singleParameter = values.GetSpiceObject<SingleParameter>(2);
-
-                //TODO: Refactor this....
-                if (singleParameter is ExpressionParameter exp)
-                {
-                    assigmentParameter.Value = exp.Image.Substring(1, exp.Image.Length - 2);
-                }
-                else
-                {
-                    assigmentParameter.Value = singleParameter.Image;
-                }
-
+                assigmentParameter.Value = singleParameter.Image;
                 return assigmentParameter;
             }
             else
@@ -710,17 +682,8 @@ namespace SpiceSharpParser.Parser.TreeTranslator
                     assigmentParameter.Name = values.GetLexem(0);
                     assigmentParameter.Arguments.Add(values.GetSpiceObject<SingleParameter>(2).Image);
 
-                    //TODO: refactor
                     var valueParameter = values.GetSpiceObject<SingleParameter>(5);
-                    if (valueParameter is ExpressionParameter exp)
-                    {
-                        assigmentParameter.Value = exp.Image.Substring(1, exp.Image.Length - 2);
-                    }
-                    else
-                    {
-                        assigmentParameter.Value = valueParameter.Image;
-                    }
-
+                    assigmentParameter.Value = valueParameter.Image;
                     return assigmentParameter;
                 }
 
@@ -732,16 +695,8 @@ namespace SpiceSharpParser.Parser.TreeTranslator
                     assigmentParameter.Arguments.Add(values.GetSpiceObject<SingleParameter>(2).Image);
                     assigmentParameter.Arguments.Add(values.GetSpiceObject<SingleParameter>(4).Image);
 
-                    //TODO: refactor
                     var valueParameter = values.GetSpiceObject<SingleParameter>(7);
-                    if (valueParameter is ExpressionParameter exp)
-                    {
-                        assigmentParameter.Value = exp.Image.Substring(1, exp.Image.Length - 2);
-                    }
-                    else
-                    {
-                        assigmentParameter.Value = valueParameter.Image;
-                    }
+                    assigmentParameter.Value = valueParameter.Image;
 
                     return assigmentParameter;
                 }

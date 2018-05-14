@@ -204,10 +204,17 @@ namespace SpiceSharpParser.Lexer.Spice3f5
 
             builder.AddRule(
                 new LexerTokenRule<SpiceLexerState>(
-                    (int)SpiceTokenType.STRING,
-                    "A string with quotation marks",
+                    (int)SpiceTokenType.DOUBLE_QUOTED_STRING,
+                    "A string with double quotation marks",
                     "\"(?:[^\"\\\\]|\\\\.)*\"",
                     ignoreCase: options.IgnoreCase));
+
+            builder.AddRule(
+               new LexerTokenRule<SpiceLexerState>(
+                   (int)SpiceTokenType.SINGLE_QUOTED_STRING,
+                   "A string with single quotation marks",
+                   "'[^']*'",
+                   ignoreCase: options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.EXPRESSION,

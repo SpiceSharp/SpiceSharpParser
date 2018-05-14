@@ -533,7 +533,8 @@ namespace SpiceSharpParser.Parser.TreeGeneration
 
             if (currentToken.Is(SpiceTokenType.WORD)
                 || currentToken.Is(SpiceTokenType.VALUE)
-                || currentToken.Is(SpiceTokenType.STRING)
+                || currentToken.Is(SpiceTokenType.DOUBLE_QUOTED_STRING)
+                || currentToken.Is(SpiceTokenType.SINGLE_QUOTED_STRING)
                 || currentToken.Is(SpiceTokenType.IDENTIFIER)
                 || currentToken.Is(SpiceTokenType.REFERENCE)
                 || currentToken.Is(SpiceTokenType.EXPRESSION))
@@ -661,7 +662,8 @@ namespace SpiceSharpParser.Parser.TreeGeneration
             if (currentTokenIndex == tokens.Length - 1)
             {
                 if (currentToken.Is(SpiceTokenType.VALUE)
-                        || currentToken.Is(SpiceTokenType.STRING)
+                        || currentToken.Is(SpiceTokenType.SINGLE_QUOTED_STRING)
+                        || currentToken.Is(SpiceTokenType.DOUBLE_QUOTED_STRING)
                         || currentToken.Is(SpiceTokenType.IDENTIFIER)
                         || currentToken.Is(SpiceTokenType.REFERENCE)
                         || currentToken.Is(SpiceTokenType.EXPRESSION))
@@ -719,7 +721,8 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                 else
                 {
                     if (currentToken.Is(SpiceTokenType.VALUE)
-                        || currentToken.Is(SpiceTokenType.STRING)
+                        || currentToken.Is(SpiceTokenType.SINGLE_QUOTED_STRING)
+                        || currentToken.Is(SpiceTokenType.DOUBLE_QUOTED_STRING)
                         || currentToken.Is(SpiceTokenType.IDENTIFIER)
                         || currentToken.Is(SpiceTokenType.REFERENCE)
                         || currentToken.Is(SpiceTokenType.EXPRESSION))
@@ -768,7 +771,8 @@ namespace SpiceSharpParser.Parser.TreeGeneration
 
             if (currentToken.Is(SpiceTokenType.WORD)
                 || currentToken.Is(SpiceTokenType.VALUE)
-                || currentToken.Is(SpiceTokenType.STRING)
+                || currentToken.Is(SpiceTokenType.SINGLE_QUOTED_STRING)
+                || currentToken.Is(SpiceTokenType.DOUBLE_QUOTED_STRING)
                 || currentToken.Is(SpiceTokenType.IDENTIFIER)
                 || currentToken.Is(SpiceTokenType.REFERENCE)
                 || currentToken.Is(SpiceTokenType.EXPRESSION))
