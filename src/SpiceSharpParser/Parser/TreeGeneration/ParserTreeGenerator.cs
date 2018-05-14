@@ -320,7 +320,7 @@ namespace SpiceSharpParser.Parser.TreeGeneration
 
             if (currentToken.Is(SpiceTokenType.DOT)
                 || currentToken.Is(SpiceTokenType.WORD)
-                || currentToken.Is(SpiceTokenType.ASTERIKS))
+                || currentToken.Is(SpiceTokenType.COMMENT))
             {
                 PushProductionExpression(
                             stack,
@@ -403,7 +403,7 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                     throw new ParsingException("Error during parsing a statement. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
                 }
             }
-            else if (currentToken.Is(SpiceTokenType.ASTERIKS))
+            else if (currentToken.Is(SpiceTokenType.COMMENT))
             {
                 PushProductionExpression(
                     stack,
@@ -412,7 +412,7 @@ namespace SpiceSharpParser.Parser.TreeGeneration
             }
             else
             {
-                throw new ParsingException("Error during parsing a statement. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                throw new ParsingException(string.Format("Error during parsing a statement. Unexpected token: '{0}' of type:{1} line={2}", currentToken.Lexem, currentToken.SpiceTokenType, currentToken.LineNumber), currentToken.LineNumber);
             }
         }
 
@@ -475,26 +475,9 @@ namespace SpiceSharpParser.Parser.TreeGeneration
         /// <param name="currentTokenIndex">A index of the current token</param>
         private void ProcessCommentLine(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
-            var currentToken = tokens[currentTokenIndex];
-            var nextToken = tokens[currentTokenIndex + 1];
-
-            if (currentToken.Is(SpiceTokenType.ASTERIKS) && nextToken.Is(SpiceTokenType.COMMENT))
-            {
-                PushProductionExpression(
-                    stack,
-                    CreateTerminalNode(currentToken.SpiceTokenType, current, currentToken.Lexem),
-                    CreateTerminalNode(nextToken.SpiceTokenType, current, nextToken.Lexem));
-            }
-            else if (currentToken.Is(SpiceTokenType.ASTERIKS) && (nextToken.Is(SpiceTokenType.NEWLINE) || nextToken.Is(SpiceTokenType.EOF)))
-            {
-                PushProductionExpression(
-                    stack,
-                    CreateTerminalNode(currentToken.SpiceTokenType, current, currentToken.Lexem));
-            }
-            else
-            {
-                throw new ParsingException("Error during parsing a comment. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
-            }
+            PushProductionExpression(
+                stack,
+                CreateTerminalNode(SpiceTokenType.COMMENT, current));
         }
 
         /// <summary>

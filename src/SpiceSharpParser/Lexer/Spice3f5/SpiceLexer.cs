@@ -60,20 +60,6 @@ namespace SpiceSharpParser.Lexer.Spice3f5
                     return LexerRuleResult.IgnoreToken;
                 }));
 
-            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
-                (int)SpiceTokenType.ASTERIKS,
-                "An asteriks character",
-                "\\*",
-                null,
-                (SpiceLexerState state) =>
-                {
-                    if (state.PreviousTokenType != (int)(SpiceTokenType.ASTERIKS))
-                    {
-                        return LexerRuleUseState.Use;
-                    }
-                    return LexerRuleUseState.Skip;
-                }));
-
             builder.AddRule(
                 new LexerTokenRule<SpiceLexerState>(
                     (int)SpiceTokenType.DOT,
@@ -188,18 +174,31 @@ namespace SpiceSharpParser.Lexer.Spice3f5
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.COMMENT,
-                "A comment (without asterix)",
-                @"[^\r\n]+",
+                "A full line comment",
+                @"\*[^\r\n]*",
                 null,
-                (SpiceLexerState state) =>
-                {
-                    if (state.PreviousTokenType == (int)SpiceTokenType.ASTERIKS)
-                    {
-                        return LexerRuleUseState.Use;
-                    }
-                    return LexerRuleUseState.Skip;
-                },
-                ignoreCase: options.IgnoreCase));
+                (SpiceLexerState state) => {
+                     if (state.LineNumber == 1 && options.HasTitle)
+                     {
+                         return LexerRuleUseState.Skip;
+                     }
+                     return LexerRuleUseState.Use;
+                 },
+                 ignoreCase: options.IgnoreCase));
+
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+              (int)SpiceTokenType.ASTERIKS,
+              "An asteriks character",
+              "\\*",
+              null,
+              (SpiceLexerState state) =>
+              {
+                  if (state.PreviousTokenType != (int) SpiceTokenType.ASTERIKS)
+                  {
+                      return LexerRuleUseState.Use;
+                  }
+                  return LexerRuleUseState.Skip;
+              }));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.TITLE,
