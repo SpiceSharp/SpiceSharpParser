@@ -94,6 +94,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
                 throw new Exception("Invalid output");
             }
 
+            SetCircuitTemperatures(context, noise);
             context.Result.AddSimulation(noise);
         }
     }

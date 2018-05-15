@@ -21,6 +21,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
         {
             var op = new OP((context.Result.Simulations.Count() + 1).ToString() + " - OP");
 
+            SetCircuitTemperatures(context, op);
             SetBaseParameters(op.BaseConfiguration, context);
             context.Result.AddSimulation(op);
         }

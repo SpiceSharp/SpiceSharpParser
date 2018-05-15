@@ -60,13 +60,13 @@ namespace SpiceSharpParser.Connector.Processors.EntityGenerators.Components.Semi
                     }
                     else
                     {
-                        BaseParameters bp = bjt.ParameterSets[typeof(BaseParameters)] as BaseParameters;
-                        //TODO ?????
+                        //TODO: Fix this please it's broken ...
+                        BaseParameters bp = bjt.ParameterSets.Get<BaseParameters>();
                         if (!bp.Area.Given)
                         {
                             bp.Area.Value = context.ParseDouble(s.Image);
                         }
-                        //TODO ?????
+
                         if (!bp.Temperature.Given)
                         {
                             bp.Area.Value = context.ParseDouble(s.Image);

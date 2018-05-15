@@ -4,20 +4,31 @@ namespace SpiceSharpParser.Connector.Context
 {
     public class SimulationConfiguration
     {
-        public double? AbsoluteTolerance { get; internal set; }
+        public double? AbsoluteTolerance { get; set; }
 
-        public double? RelTolerance { get; internal set; }
+        public double? RelTolerance { get; set; }
 
-        public double? Gmin { get; internal set; }
+        public double? Gmin { get; set; }
 
-        public int? DCMaxIterations { get; internal set; }
+        public int? DCMaxIterations { get; set; }
 
-        public int? SweepMaxIterations { get; internal set; }
+        public int? SweepMaxIterations { get; set; }
 
-        public int? TranMaxIterations { get; internal set; }
+        public int? TranMaxIterations { get; set; }
 
-        public Trapezoidal Method { get; internal set; }
+        public Trapezoidal Method { get; set; }
 
-        public bool? KeepOpInfo { get; internal set; }
+        public bool? KeepOpInfo { get; set; }
+
+        /// <summary>
+        /// Gets or sets the temperature for this circuit.
+        /// </summary>
+        public double? TemperatureInKelvins { get; set; }
+
+        /// <summary>
+        /// Gets or sets the nominal temperature for the circuit
+        /// Used for model parameters as the default.
+        /// </summary>
+        public double? NominalTemperatureInKelvins { get; set; }
     }
 }

@@ -66,6 +66,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
                 }
             };
 
+            SetCircuitTemperatures(context, dc);
             SetBaseParameters(dc.BaseConfiguration, context);
             SetDcParameters(dc.DcConfiguration, context);
 
