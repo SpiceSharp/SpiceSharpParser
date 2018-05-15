@@ -90,5 +90,21 @@ namespace SpiceSharpParser.Model.SpiceObjects
         {
             return list.OrderBy(orderByFunc);
         }
+
+        /// <summary>
+        /// Closes the object.
+        /// </summary>
+        /// <returns>A clone of the object</returns>
+        public override SpiceObject Clone()
+        {
+            var clone = new Statements();
+
+            foreach (Statement statement in this.list)
+            {
+                clone.Add((Statement)statement.Clone());
+            }
+
+            return clone;
+        }
     }
 }

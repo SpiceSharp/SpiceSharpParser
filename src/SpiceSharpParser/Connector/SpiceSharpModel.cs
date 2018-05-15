@@ -7,16 +7,16 @@ using SpiceSharpParser.Connector.Processors.Controls.Plots;
 namespace SpiceSharpParser.Connector
 {
     /// <summary>
-    /// A connector result
+    /// A model for Spice#
     /// </summary>
-    public class ConnectorResult
+    public class SpiceSharpModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConnectorResult"/> class.
+        /// Initializes a new instance of the <see cref="SpiceSharpModel"/> class.
         /// </summary>
         /// <param name="circuit">The SpiceSharp circuit for the netlist</param>
         /// <param name="title">The title of the netlist</param>
-        public ConnectorResult(Circuit circuit, string title)
+        public SpiceSharpModel(Circuit circuit, string title)
         {
             Circuit = circuit;
             Title = title;

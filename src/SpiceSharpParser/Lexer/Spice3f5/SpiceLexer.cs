@@ -47,33 +47,18 @@ namespace SpiceSharpParser.Lexer.Spice3f5
         {
             var builder = new LexerGrammarBuilder<SpiceLexerState>();
             builder.AddRule(new LexerInternalRule("LETTER", "[a-z]", options.IgnoreCase));
-            builder.AddRule(new LexerInternalRule("CHARACTER", "[a-z0-9]", options.IgnoreCase));
+            builder.AddRule(new LexerInternalRule("CHARACTER", "[a-z0-9\\-+]", options.IgnoreCase));
             builder.AddRule(new LexerInternalRule("DIGIT", "[0-9]", options.IgnoreCase));
-            builder.AddRule(new LexerInternalRule("SPECIAL", "[\\[\\]_\\.\\:\\!%\\#\\-;\\<>\\^]", options.IgnoreCase));
+            builder.AddRule(new LexerInternalRule("SPECIAL", "[\\\\\\[\\]_\\.\\:\\!%\\#\\-;\\<>\\^+/\\*]", options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.WHITESPACE,
                 "A whitespace characters that will be ignored",
                 "[ \t]*",
-                (SpiceLexerState state) =>
+                (SpiceLexerState state, string lexem) =>
                 {
                     return LexerRuleResult.IgnoreToken;
                 }));
-
-            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
-                (int)SpiceTokenType.ASTERIKS,
-                "An asteriks character",
-                "\\*"));
-
-            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
-                (int)SpiceTokenType.PLUS,
-                "A plus character",
-                "\\+"));
-
-            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
-                (int)SpiceTokenType.MINUS,
-                "A minus character",
-                "-"));
 
             builder.AddRule(
                 new LexerTokenRule<SpiceLexerState>(
@@ -91,7 +76,11 @@ namespace SpiceSharpParser.Lexer.Spice3f5
                 new LexerTokenRule<SpiceLexerState>(
                     (int)SpiceTokenType.DELIMITER,
                     "A delimeter character",
-                    @"(\(|\)|\|)"));
+                    @"(\(|\)|\|)",
+                    (SpiceLexerState state, string lexem) =>
+                     {
+                         return LexerRuleResult.ReturnToken;
+                     }));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.EQUAL,
@@ -102,7 +91,7 @@ namespace SpiceSharpParser.Lexer.Spice3f5
                 (int)SpiceTokenType.NEWLINE,
                 "A new line characters",
                 @"(\r\n|\n|\r)",
-                (SpiceLexerState state) =>
+                (SpiceLexerState state, string lexem) =>
                 {
                     state.LineNumber++;
                     return LexerRuleResult.ReturnToken;
@@ -112,7 +101,7 @@ namespace SpiceSharpParser.Lexer.Spice3f5
                 (int)SpiceTokenType.CONTINUE,
                 "A continuation token",
                 @"((\r\n\+|\n\+|\r\+))",
-                (SpiceLexerState state) =>
+                (SpiceLexerState state, string lexem) =>
                 {
                     state.LineNumber++;
                     return LexerRuleResult.IgnoreToken;
@@ -131,48 +120,78 @@ namespace SpiceSharpParser.Lexer.Spice3f5
                 ignoreCase: options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+               (int)SpiceTokenType.ENDL_HSPICE,
+               ".endl keyword",
+               ".endl",
+               ignoreCase: options.IgnoreCase));
+
+
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+               (int)SpiceTokenType.VALUE,
+               "A value with comma seperator",
+               @"([+-]?((<DIGIT>)+(,(<DIGIT>)*)?|\.(<DIGIT>)+)(e(\+|-)?(<DIGIT>)+)?[tgmkunpf]?(<LETTER>)*)",
+               null,
+               (SpiceLexerState state) =>
+               {
+                   if (state.PreviousTokenType == (int)SpiceTokenType.EQUAL
+                    || state.PreviousTokenType == (int)SpiceTokenType.VALUE)
+                   {
+                       return LexerRuleUseState.Use;
+                   }
+
+                   return LexerRuleUseState.Skip;
+               },
+               ignoreCase: options.IgnoreCase));
+
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.VALUE,
-                "A value",
+                "A value with dot seperator",
                 @"([+-]?((<DIGIT>)+(\.(<DIGIT>)*)?|\.(<DIGIT>)+)(e(\+|-)?(<DIGIT>)+)?[tgmkunpf]?(<LETTER>)*)",
+                null,
+                (SpiceLexerState state) =>
+                {
+                    return LexerRuleUseState.Use;
+                },
                 ignoreCase: options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
              (int)SpiceTokenType.COMMENT_HSPICE,
              "A comment - HSpice style",
-             "\\$[^\r\n]*",
-             (SpiceLexerState state) =>
+             @"\$[^\r\n]*",
+             (SpiceLexerState state, string lexem) =>
              {
-                 return LexerRuleResult.ReturnToken;
+                 return LexerRuleResult.IgnoreToken;
              }));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
              (int)SpiceTokenType.COMMENT_PSPICE,
              "A comment - PSpice style",
-             ";[^\r\n]*",
-             (SpiceLexerState state) =>
+             @";[^\r\n]*",
+             (SpiceLexerState state, string lexem) =>
              {
-                 return LexerRuleResult.ReturnToken;
+                 return LexerRuleResult.IgnoreToken;
              }));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.COMMENT,
-                "A comment (without asterix)",
-                "[^\r\n]+",
+                "A full line comment",
+                @"\*[^\r\n]*",
                 null,
                 (SpiceLexerState state) =>
                 {
-                    if (state.PreviousTokenType != (int)SpecialTokenType.Unknown && state.PreviousTokenType == (int)SpiceTokenType.ASTERIKS)
+                    if (state.PreviousTokenType == (int)SpiceTokenType.NEWLINE
+                    || (state.LineNumber == 1 && options.HasTitle == false))
                     {
                         return LexerRuleUseState.Use;
                     }
                     return LexerRuleUseState.Skip;
                 },
-                ignoreCase: options.IgnoreCase));
+                 ignoreCase: options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.TITLE,
                 "The title - first line of spice token",
-                "[^\r\n]+",
+                @"[^\r\n]+",
                 null,
                 (SpiceLexerState state) =>
                 {
@@ -185,10 +204,17 @@ namespace SpiceSharpParser.Lexer.Spice3f5
 
             builder.AddRule(
                 new LexerTokenRule<SpiceLexerState>(
-                    (int)SpiceTokenType.STRING,
-                    "A string with quotation marks",
+                    (int)SpiceTokenType.DOUBLE_QUOTED_STRING,
+                    "A string with double quotation marks",
                     "\"(?:[^\"\\\\]|\\\\.)*\"",
                     ignoreCase: options.IgnoreCase));
+
+            builder.AddRule(
+               new LexerTokenRule<SpiceLexerState>(
+                   (int)SpiceTokenType.SINGLE_QUOTED_STRING,
+                   "A string with single quotation marks",
+                   "'[^']*'",
+                   ignoreCase: options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.EXPRESSION,
@@ -212,8 +238,13 @@ namespace SpiceSharpParser.Lexer.Spice3f5
                 new LexerTokenRule<SpiceLexerState>(
                     (int)SpiceTokenType.IDENTIFIER,
                     "An identifier",
-                    "((<CHARACTER>|_)(<CHARACTER>|<SPECIAL>)*)",
+                    "((<CHARACTER>|_|\\*)(<CHARACTER>|<SPECIAL>)*)",
                     ignoreCase: options.IgnoreCase));
+
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+              (int)SpiceTokenType.ASTERIKS,
+              "An asteriks character",
+              "\\*"));
 
             grammar = builder.GetGrammar();
         }

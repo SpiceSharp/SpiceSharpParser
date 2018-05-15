@@ -14,7 +14,7 @@ namespace SpiceSharpParser.Tests.Parser
             {
                 new SpiceToken(SpiceTokenType.TITLE, "Example of title"),
                 new SpiceToken(SpiceTokenType.NEWLINE, "\n"),
-                new SpiceToken(SpiceTokenType.ASTERIKS, "*"),
+                new SpiceToken(SpiceTokenType.COMMENT, "*"),
                 new SpiceToken(SpiceTokenType.NEWLINE, "\n"),
                 new SpiceToken(SpiceTokenType.END, ".end"),
                 new SpiceToken(SpiceTokenType.EOF, null),
@@ -82,8 +82,7 @@ namespace SpiceSharpParser.Tests.Parser
             // Arrange
             var vectorTokens = new SpiceToken[]
             {
-                new SpiceToken(SpiceTokenType.ASTERIKS, "*"),
-                new SpiceToken(SpiceTokenType.COMMENT, "comment"),
+                new SpiceToken(SpiceTokenType.COMMENT, "*comment"),
                 new SpiceToken(SpiceTokenType.NEWLINE, "\n"),
             };
 

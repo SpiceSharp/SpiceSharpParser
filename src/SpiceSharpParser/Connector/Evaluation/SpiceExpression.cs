@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 
 namespace SpiceSharpParser.Connector.Evaluation
@@ -132,7 +133,7 @@ namespace SpiceSharpParser.Connector.Evaluation
             { "PI", Math.PI },
             { "pi", Math.PI },
             { "e", Math.E },
-            { "E", Math.E }
+            { "E", Math.E },
         };
 
         /// <summary>
@@ -173,7 +174,6 @@ namespace SpiceSharpParser.Connector.Evaluation
                 })
             }
         };
-
 
         /// <summary>
         /// Parse an expression
@@ -351,6 +351,7 @@ namespace SpiceSharpParser.Connector.Evaluation
                             break;
 
                         case ',':
+
                             // Function argument
                             while (operatorStack.Count > 0)
                             {
@@ -665,7 +666,7 @@ namespace SpiceSharpParser.Connector.Evaluation
             }
 
             // Read decimal part
-            if (index < count && input[index] == '.')
+            if (index < count && (input[index] == '.' || input[index] == ','))
             {
                 index++;
                 double mult = 1.0;

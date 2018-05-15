@@ -91,33 +91,43 @@
         IDENTIFIER = 16,
 
         /// <summary>
-        /// string token
+        /// double quoted sting token
         /// </summary>
-        STRING = 17,
+        DOUBLE_QUOTED_STRING = 17,
+
+        /// <summary>
+        /// double quoted sting token
+        /// </summary>
+        SINGLE_QUOTED_STRING = 18,
 
         /// <summary>
         /// title token
         /// </summary>
-        TITLE = 18,
+        TITLE = 19,
 
         /// <summary>
         /// continue token
         /// </summary>
-        CONTINUE = 19,
+        CONTINUE = 20,
 
         /// <summary>
         /// = character
         /// </summary>
-        EQUAL = 20,
+        EQUAL = 21,
 
         /// <summary>
         /// ; style comment
         /// </summary>
-        COMMENT_PSPICE = 21,
+        COMMENT_PSPICE = 22,
 
         /// <summary>
         /// $ style comment
         /// </summary>
-        COMMENT_HSPICE = 22
+        COMMENT_HSPICE = 23,
+
+        /// <summary>
+        /// .ENDL token
+        /// </summary>
+        ENDL_HSPICE = 24
     }
 }

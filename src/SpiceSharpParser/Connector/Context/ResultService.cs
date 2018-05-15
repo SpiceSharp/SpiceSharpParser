@@ -12,10 +12,10 @@ namespace SpiceSharpParser.Connector.Context
         /// <summary>
         /// Initializes a new instance of the <see cref="ResultService"/> class.
         /// </summary>
-        /// <param name="netlist">A netlist</param>
-        public ResultService(ConnectorResult netlist)
+        /// <param name="model">A Spice# model</param>
+        public ResultService(SpiceSharpModel model)
         {
-            Result = netlist;
+            Model = model;
         }
 
         /// <summary>
@@ -26,12 +26,12 @@ namespace SpiceSharpParser.Connector.Context
         /// <summary>
         /// Gets all simulations
         /// </summary>
-        public IEnumerable<Simulation> Simulations => Result.Simulations;
+        public IEnumerable<Simulation> Simulations => Model.Simulations;
 
         /// <summary>
         /// Gets the result where things are added
         /// </summary>
-        private ConnectorResult Result { get; }
+        private SpiceSharpModel Model { get; }
 
         /// <summary>
         /// Adds warning
@@ -39,7 +39,7 @@ namespace SpiceSharpParser.Connector.Context
         /// <param name="warning">Warning to add</param>
         public void AddWarning(string warning)
         {
-            Result.Warnings.Add(warning);
+            Model.Warnings.Add(warning);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace SpiceSharpParser.Connector.Context
         /// <param name="statement">Comment to add</param>
         public void AddComment(CommentLine statement)
         {
-            Result.Comments.Add(statement.Text);
+            Model.Comments.Add(statement.Text);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace SpiceSharpParser.Connector.Context
         /// <param name="export">Export to add</param>
         public void AddExport(Export export)
         {
-            Result.Exports.Add(export);
+            Model.Exports.Add(export);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace SpiceSharpParser.Connector.Context
         /// <param name="plot">Plot to add</param>
         public void AddPlot(Plot plot)
         {
-            Result.Plots.Add(plot);
+            Model.Plots.Add(plot);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace SpiceSharpParser.Connector.Context
         /// <param name="entity">Entity to add</param>
         public void AddEntity(Entity entity)
         {
-            Result.Circuit.Objects.Add(entity);
+            Model.Circuit.Objects.Add(entity);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace SpiceSharpParser.Connector.Context
         /// <param name="simulation">Simulation to add</param>
         public void AddSimulation(BaseSimulation simulation)
         {
-            Result.Simulations.Add(simulation);
+            Model.Simulations.Add(simulation);
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace SpiceSharpParser.Connector.Context
         /// </returns>
         public bool FindObject(string objectName, out Entity entity)
         {
-            return Result.Circuit.Objects.TryGetEntity(objectName, out entity);
+            return Model.Circuit.Objects.TryGetEntity(objectName, out entity);
         }
     }
 }

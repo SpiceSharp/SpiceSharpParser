@@ -28,7 +28,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
             }
 
             bool useIc = false;
-            var clonedParameters = statement.Parameters.Clone();
+            var clonedParameters = (ParameterCollection)statement.Parameters.Clone();
             var lastParameter = clonedParameters[clonedParameters.Count - 1];
             if (lastParameter is WordParameter w && w.Image.ToLower() == "uic")
             {

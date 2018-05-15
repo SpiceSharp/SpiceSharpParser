@@ -58,9 +58,6 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                         case SpiceGrammarSymbol.COMMENT_LINE:
                             ProcessCommentLine(stack, ntn, tokens, currentTokenIndex);
                             break;
-                        case SpiceGrammarSymbol.COMMENT_STATEMENT:
-                            ProcessCommentStatement(stack, ntn, tokens, currentTokenIndex);
-                            break;
                         case SpiceGrammarSymbol.SUBCKT:
                             ProcessSubckt(stack, ntn, tokens, currentTokenIndex);
                             break;
@@ -211,13 +208,36 @@ namespace SpiceSharpParser.Parser.TreeGeneration
         /// <param name="currentTokenIndex">A index of the current token</param>
         private void ProcessNetlist(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
-            PushProductionExpression(
-                stack,
-                CreateTerminalNode(SpiceTokenType.TITLE, currentNode),
-                CreateTerminalNode(SpiceTokenType.NEWLINE, currentNode),
-                CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, currentNode),
-                CreateNonTerminalNode(SpiceGrammarSymbol.NETLIST_ENDING, currentNode)
-            );
+            var currentToken = tokens[currentTokenIndex];
+            if (currentToken.Is(SpiceTokenType.NEWLINE))
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(SpiceTokenType.NEWLINE, currentNode),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, currentNode),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.NETLIST_ENDING, currentNode)
+                );
+            }
+            else if (currentToken.Is(SpiceTokenType.ASTERIKS))
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(SpiceTokenType.ASTERIKS, currentNode),
+                    CreateTerminalNode(SpiceTokenType.NEWLINE, currentNode),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, currentNode),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.NETLIST_ENDING, currentNode)
+                );
+            }
+            else
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(SpiceTokenType.TITLE, currentNode),
+                    CreateTerminalNode(SpiceTokenType.NEWLINE, currentNode),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, currentNode),
+                    CreateNonTerminalNode(SpiceGrammarSymbol.NETLIST_ENDING, currentNode)
+                );
+            }
         }
 
         /// <summary>
@@ -300,7 +320,7 @@ namespace SpiceSharpParser.Parser.TreeGeneration
 
             if (currentToken.Is(SpiceTokenType.DOT)
                 || currentToken.Is(SpiceTokenType.WORD)
-                || currentToken.Is(SpiceTokenType.ASTERIKS))
+                || currentToken.Is(SpiceTokenType.COMMENT))
             {
                 PushProductionExpression(
                             stack,
@@ -350,7 +370,6 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                 PushProductionExpression(
                     stack,
                     CreateNonTerminalNode(SpiceGrammarSymbol.COMPONENT, current),
-                    CreateNonTerminalNode(SpiceGrammarSymbol.COMMENT_STATEMENT, current),
                     CreateTerminalNode(SpiceTokenType.NEWLINE, current));
             }
             else if (currentToken.Is(SpiceTokenType.DOT))
@@ -369,7 +388,6 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                         PushProductionExpression(
                             stack,
                             CreateNonTerminalNode(SpiceGrammarSymbol.MODEL, current),
-                            CreateNonTerminalNode(SpiceGrammarSymbol.COMMENT_STATEMENT, current),
                             CreateTerminalNode(SpiceTokenType.NEWLINE, current));
                     }
                     else
@@ -377,7 +395,6 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                         PushProductionExpression(
                             stack,
                             CreateNonTerminalNode(SpiceGrammarSymbol.CONTROL, current),
-                            CreateNonTerminalNode(SpiceGrammarSymbol.COMMENT_STATEMENT, current),
                             CreateTerminalNode(SpiceTokenType.NEWLINE, current));
                     }
                 }
@@ -386,7 +403,7 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                     throw new ParsingException("Error during parsing a statement. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
                 }
             }
-            else if (currentToken.Is(SpiceTokenType.ASTERIKS))
+            else if (currentToken.Is(SpiceTokenType.COMMENT))
             {
                 PushProductionExpression(
                     stack,
@@ -395,7 +412,7 @@ namespace SpiceSharpParser.Parser.TreeGeneration
             }
             else
             {
-                throw new ParsingException("Error during parsing a statement. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                throw new ParsingException(string.Format("Error during parsing a statement. Unexpected token: '{0}' of type:{1} line={2}", currentToken.Lexem, currentToken.SpiceTokenType, currentToken.LineNumber), currentToken.LineNumber);
             }
         }
 
@@ -449,40 +466,6 @@ namespace SpiceSharpParser.Parser.TreeGeneration
         }
 
         /// <summary>
-        /// Processes <see cref="SpiceGrammarSymbol.COMMENT_STATEMENT"/> non-terminal node
-        /// Pushes tree nodes to the stack based on the grammar.
-        /// </summary>
-        /// <param name="stack">A stack where the production is pushed</param>
-        /// <param name="current">A reference to the non-terminal node</param>
-        /// <param name="tokens">A reference to the array of tokens</param>
-        /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessCommentStatement(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
-        {
-            var currentToken = tokens[currentTokenIndex];
-
-            if (currentToken.Is(SpiceTokenType.COMMENT_HSPICE) || currentToken.Is(SpiceTokenType.COMMENT_PSPICE))
-            {
-                PushProductionExpression(
-                    stack,
-                    CreateTerminalNode(currentToken.SpiceTokenType, current, currentToken.Lexem));
-            }
-            else
-            {
-                if (currentToken.Is(SpiceTokenType.NEWLINE)) // follow character
-                {
-                    return;
-                }
-
-                if (currentToken.Is(SpiceTokenType.EOF)) // follow character
-                {
-                    return;
-                }
-
-                throw new ParsingException("Error during parsing a statement comment. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
-            }
-        }
-
-        /// <summary>
         /// Processes <see cref="SpiceGrammarSymbol.COMMENT_LINE"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
@@ -492,26 +475,9 @@ namespace SpiceSharpParser.Parser.TreeGeneration
         /// <param name="currentTokenIndex">A index of the current token</param>
         private void ProcessCommentLine(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
-            var currentToken = tokens[currentTokenIndex];
-            var nextToken = tokens[currentTokenIndex + 1];
-
-            if (currentToken.Is(SpiceTokenType.ASTERIKS) && nextToken.Is(SpiceTokenType.COMMENT))
-            {
-                PushProductionExpression(
-                    stack,
-                    CreateTerminalNode(currentToken.SpiceTokenType, current, currentToken.Lexem),
-                    CreateTerminalNode(nextToken.SpiceTokenType, current, nextToken.Lexem));
-            }
-            else if (currentToken.Is(SpiceTokenType.ASTERIKS) && nextToken.Is(SpiceTokenType.NEWLINE))
-            {
-                PushProductionExpression(
-                    stack,
-                    CreateTerminalNode(currentToken.SpiceTokenType, current, currentToken.Lexem));
-            }
-            else
-            {
-                throw new ParsingException("Error during parsing a comment. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
-            }
+            PushProductionExpression(
+                stack,
+                CreateTerminalNode(SpiceTokenType.COMMENT, current));
         }
 
         /// <summary>
@@ -567,7 +533,8 @@ namespace SpiceSharpParser.Parser.TreeGeneration
 
             if (currentToken.Is(SpiceTokenType.WORD)
                 || currentToken.Is(SpiceTokenType.VALUE)
-                || currentToken.Is(SpiceTokenType.STRING)
+                || currentToken.Is(SpiceTokenType.DOUBLE_QUOTED_STRING)
+                || currentToken.Is(SpiceTokenType.SINGLE_QUOTED_STRING)
                 || currentToken.Is(SpiceTokenType.IDENTIFIER)
                 || currentToken.Is(SpiceTokenType.REFERENCE)
                 || currentToken.Is(SpiceTokenType.EXPRESSION))
@@ -595,7 +562,7 @@ namespace SpiceSharpParser.Parser.TreeGeneration
             }
             else
             {
-                throw new ParsingException("Error during parsing parameters. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                throw new ParsingException(string.Format("Error during parsing parameters. Unexpected token: '{0}' of type {1} line={2}", currentToken.Lexem,  currentToken.SpiceTokenType, currentToken.LineNumber), currentToken.LineNumber);
             }
         }
 
@@ -695,7 +662,8 @@ namespace SpiceSharpParser.Parser.TreeGeneration
             if (currentTokenIndex == tokens.Length - 1)
             {
                 if (currentToken.Is(SpiceTokenType.VALUE)
-                        || currentToken.Is(SpiceTokenType.STRING)
+                        || currentToken.Is(SpiceTokenType.SINGLE_QUOTED_STRING)
+                        || currentToken.Is(SpiceTokenType.DOUBLE_QUOTED_STRING)
                         || currentToken.Is(SpiceTokenType.IDENTIFIER)
                         || currentToken.Is(SpiceTokenType.REFERENCE)
                         || currentToken.Is(SpiceTokenType.EXPRESSION))
@@ -753,7 +721,8 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                 else
                 {
                     if (currentToken.Is(SpiceTokenType.VALUE)
-                        || currentToken.Is(SpiceTokenType.STRING)
+                        || currentToken.Is(SpiceTokenType.SINGLE_QUOTED_STRING)
+                        || currentToken.Is(SpiceTokenType.DOUBLE_QUOTED_STRING)
                         || currentToken.Is(SpiceTokenType.IDENTIFIER)
                         || currentToken.Is(SpiceTokenType.REFERENCE)
                         || currentToken.Is(SpiceTokenType.EXPRESSION))
@@ -802,7 +771,8 @@ namespace SpiceSharpParser.Parser.TreeGeneration
 
             if (currentToken.Is(SpiceTokenType.WORD)
                 || currentToken.Is(SpiceTokenType.VALUE)
-                || currentToken.Is(SpiceTokenType.STRING)
+                || currentToken.Is(SpiceTokenType.SINGLE_QUOTED_STRING)
+                || currentToken.Is(SpiceTokenType.DOUBLE_QUOTED_STRING)
                 || currentToken.Is(SpiceTokenType.IDENTIFIER)
                 || currentToken.Is(SpiceTokenType.REFERENCE)
                 || currentToken.Is(SpiceTokenType.EXPRESSION))

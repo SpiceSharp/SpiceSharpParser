@@ -39,5 +39,15 @@ namespace SpiceSharpParser.Model.SpiceObjects.Parameters
                 }
             }
         }
+
+        public override SpiceObject Clone()
+        {
+            return new AssignmentParameter()
+            {
+                Arguments = new List<string>(this.Arguments.ToArray()),
+                Value = this.Value,
+                Name = this.Name
+            };
+        }
     }
 }

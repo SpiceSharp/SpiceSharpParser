@@ -1,26 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using SpiceSharpParser.Model;
-using SpiceSharpParser.Model.SpiceObjects;
+﻿using SpiceSharpParser.Model;
+using SpiceSharpParser.Preprocessors;
 
 namespace SpiceSharpParser
 {
     /// <summary>
-    /// SpiceSharpParser front
+    /// SpiceSharpParser facade.
     /// </summary>
     public class ParserFacade
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ParserFacade"/> class.
         /// </summary>
-        /// <param name="netlistModelReader">Netlist model reader</param>
-        /// <param name="fileProvider">File provider</param>
-        public ParserFacade(INetlistModelReader netlistModelReader, IFileReader fileProvider)
+        /// <param name="netlistModelReader">Netlist model reader.</param>
+        /// <param name="includesProcessor">Includes preprocessor</param>
+        /// <param name="appendModelProcessor">Append model preprocessor</param>
+        public ParserFacade(
+            INetlistModelReader netlistModelReader,
+            IIncludesPreProcessor includesProcessor,
+            IAppendModelPreProcessor appendModelProcessor)
         {
-            FileReader = fileProvider;
+            IncludesProcessor = includesProcessor ?? throw new System.ArgumentNullException(nameof(includesProcessor));
             NetlistModelReader = netlistModelReader ?? throw new System.ArgumentNullException(nameof(netlistModelReader));
+            AppendModelProcessor = appendModelProcessor ?? throw new System.ArgumentNullException(nameof(appendModelProcessor));
         }
 
         /// <summary>
@@ -29,27 +30,33 @@ namespace SpiceSharpParser
         public ParserFacade()
         {
             NetlistModelReader = new NetlistModelReader();
-            FileReader = new FileReader();
+            IncludesProcessor = new IncludesPreProcessor(new FileReader(), NetlistModelReader);
+            AppendModelProcessor = new AppendModelPreProcessor();
         }
 
         /// <summary>
-        /// Gets the netlist model reader
+        /// Gets the netlist model reader.
         /// </summary>
         public INetlistModelReader NetlistModelReader { get; }
 
         /// <summary>
-        /// Gets the file provider
+        /// Gets the includes processor.
         /// </summary>
-        public IFileReader FileReader { get; }
+        public IIncludesPreProcessor IncludesProcessor { get; }
 
         /// <summary>
-        /// Parses the netlist
+        /// Gets the appendmodel processor.
         /// </summary>
-        /// <param name="netlist">Netlist to parse</param>
-        /// <param name="settings">Setting for parser</param>
-        /// <param name="workingDirectoryPath">A full path to working directory of the netlist</param>
+        public IAppendModelPreProcessor AppendModelProcessor { get; }
+
+        /// <summary>
+        /// Parses the netlist.
+        /// </summary>
+        /// <param name="netlist">Netlist to parse.</param>
+        /// <param name="settings">Setting for parser.</param>
+        /// <param name="workingDirectoryPath">A full path to working directory of the netlist.</param>
         /// <returns>
-        /// A parsing result
+        /// A parsing result.
         /// </returns>
         public ParserResult ParseNetlist(string netlist, ParserSettings settings, string workingDirectoryPath = null)
         {
@@ -63,81 +70,32 @@ namespace SpiceSharpParser
                 throw new System.ArgumentNullException(nameof(netlist));
             }
 
-            Model.Netlist netlistModel = NetlistModelReader.GetNetlistModel(netlist, settings);
+            Netlist originalNetlistModel = NetlistModelReader.GetNetlistModel(netlist, settings);
+            Netlist preprocessedNetListModel = (Netlist)originalNetlistModel.Clone();
 
-            ProcessIncludes(netlistModel, new List<string>(), workingDirectoryPath);
+            // Preprocessing
+            IncludesProcessor.Process(preprocessedNetListModel, workingDirectoryPath);
+            AppendModelProcessor.Process(preprocessedNetListModel);
+            // TODO: more preprocessors
 
-            Connector.ConnectorResult connectorResult = GetConnectorResult(netlistModel);
+            Connector.SpiceSharpModel connectorResult = GetConnectorResult(preprocessedNetListModel);
+
             return new ParserResult()
             {
                 SpiceSharpModel = connectorResult,
-                NetlistModel = netlistModel
+                InitialNetlistModel = originalNetlistModel,
+                PreprocessedNetlistModel = preprocessedNetListModel,
             };
         }
 
         /// <summary>
-        /// Processes .include statements
+        /// Gets the SpiceSharp model for the netlist.
         /// </summary>
-        /// <param name="netlistModel">Netlist model to seach for .include statements</param>
-        /// <param name="loadedFullPaths">List of paths of loaded netlists</param>
-        /// <param name="currentDirectoryPath">Current working directory path</param>
-        private void ProcessIncludes(Netlist netlistModel, List<string> loadedFullPaths, string currentDirectoryPath = null)
-        {
-            var includes = netlistModel.Statements.Where(statement => statement is Control c && (c.Name.ToLower() == "include" || c.Name.ToLower() == "inc"));
-
-            if (includes.Any())
-            {
-                foreach (Control include in includes.ToArray())
-                {
-                    // get full path of .include
-                    string includePath = include.Parameters[0].Image.Trim('"');
-                    bool isAbsolutePath = Path.IsPathRooted(includePath);
-                    string includeFullPath = isAbsolutePath ? includePath : Path.Combine(currentDirectoryPath, includePath);
-
-                    // check if path is not already loaded
-                    if (!loadedFullPaths.Contains(includeFullPath))
-                    {
-                        // check if file exists
-                        if (!File.Exists(includeFullPath))
-                        {
-                            throw new InvalidOperationException($"Netlist include at { includeFullPath}  is not found");
-                        }
-
-                        // mark includeFullPath as loaded (before loading all includes to avoid loops)
-                        loadedFullPaths.Add(includeFullPath);
-
-                        // get include content
-                        string includeContent = FileReader.GetFileContent(includeFullPath);
-                        if (includeContent != null)
-                        {
-                            // get include netlist model
-                            Netlist includeModel = NetlistModelReader.GetNetlistModel(
-                                includeContent,
-                                new ParserSettings() { HasTitle = false, IsEndRequired = false });
-
-                            // process includes of include netlist
-                            ProcessIncludes(includeModel, loadedFullPaths, Path.GetDirectoryName(includeFullPath));
-
-                            // merge include with netlist 
-                            netlistModel.Statements.Merge(includeModel.Statements);
-                        }
-                        else
-                        {
-                            throw new InvalidOperationException($"Netlist include at { includeFullPath} could not be loaded");
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the SpiceSharp model for the netlist
-        /// </summary>
-        /// <param name="netlist">Netlist model</param>
+        /// <param name="netlist">Netlist model.</param>
         /// <returns>
-        /// A new SpiceSharp model for the netlist
+        /// A new SpiceSharp model for the netlist.
         /// </returns>
-        private Connector.ConnectorResult GetConnectorResult(SpiceSharpParser.Model.Netlist netlist)
+        private Connector.SpiceSharpModel GetConnectorResult(Netlist netlist)
         {
             var connector = new Connector.Connector();
             return connector.Translate(netlist);

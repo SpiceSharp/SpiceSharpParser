@@ -2,12 +2,10 @@
 Documentation on SpiceSharpParser is available at <https://spicesharp.github.io/SpiceSharpParser/index.html>.
 
 ## What is SpiceSharpParser?
-SpiceSharpParser is a .NET Standard library that parses Spice3f5 netlists and creates an object model of netlist (input data for <https://github.com/SpiceSharp/SpiceSharp>)
-
-It has no external dependency. 
+SpiceSharpParser is a .NET library that parses Spice netlists and creates an model for SpiceSharp.
 
 ## Features
-### Supported Spice3f5 controls
+### Supported dot statements
 * .GLOBAL
 * .LET
 * .NODESET 
@@ -23,8 +21,9 @@ It has no external dependency.
 * .DC
 * .SUBCKT
 * .INCLUDE
+* .APPENDMODEL
 
-### Supported Spice3f5 components
+### Supported components
 * RLC
 * Switches
 * Voltage and current sources
@@ -32,7 +31,7 @@ It has no external dependency.
 * Diodes
 * Mosfets
 
-### Implemented Spice3f5 grammar
+### Implemented grammar
 <https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Grammar/SpiceBNF.txt>
 
 ## Example
@@ -48,18 +47,35 @@ It has no external dependency.
 
 ## Build status
 
-AppVeyor CI (Windows): [![Build status](https://ci.appveyor.com/api/projects/status/d8tpj2hm3hcullmw/branch/master?svg=true)](https://ci.appveyor.com/project/marcin-golebiowski/spicesharpparser/branch/master)
+|    | Status |
+|:---|----------------:|
+|**Windows**|[![Build status](https://ci.appveyor.com/api/projects/status/d8tpj2hm3hcullmw/branch/master?svg=true)](https://ci.appveyor.com/project/marcin-golebiowski/spicesharpparser/branch/master)|
+|**Linux**|[![Build status](https://travis-ci.org/SpiceSharp/SpiceSharpParser.svg?branch=master)](https://travis-ci.org/SpiceSharp/SpiceSharpParser?branch=master)|
 
-## Downloads
 
-SpiceSharpParser is available as NuGet Package
+## Installation
 
-<https://www.nuget.org/packages/SpiceSharp-Parser>
+SpiceSharpParser is available as NuGet Package 
+[<img src="https://img.shields.io/nuget/vpre/SpiceSharp-Parser.svg">]( https://www.nuget.org/packages/SpiceSharp-Parser)
+
+
+
+
 
 
 
 ## Currently Supported and Tested Platforms
 * Windows
+* Linux
+
+## Roadmap
+Future features:
+* .LIB
+* .TEMP
+* .PRINT
+* .WIDTH
+* Better .PARAM
+* .IF/.ELSE/.ENDIF
 
 ## License
 SpiceSharpParser is under MIT License

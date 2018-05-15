@@ -1,7 +1,7 @@
 ﻿namespace SpiceSharpParser
 {
     /// <summary>
-    /// A parser result
+    /// A parser result.
     /// </summary>
     public class ParserResult
     {
@@ -13,13 +13,18 @@
         }
 
         /// <summary>
-        /// Gets or sets the connector result
+        /// Gets or sets the Spice# model.
         /// </summary>
-        public Connector.ConnectorResult SpiceSharpModel { get; set; }
+        public Connector.SpiceSharpModel SpiceSharpModel { get; set; }
 
         /// <summary>
-        /// Gets or sets the netlist model
+        /// Gets or sets the netlist model before preprocessing.
         /// </summary>
-        public Model.Netlist NetlistModel { get; set; }
+        public Model.Netlist InitialNetlistModel { get; set; }
+
+        /// <summary>
+        /// Gets or sets the netlist model after preprocessing.
+        /// </summary>
+        public Model.Netlist PreprocessedNetlistModel { get; set; }
     }
 }

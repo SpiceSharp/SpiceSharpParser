@@ -36,7 +36,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls
                 throw new WrongParameterTypeException("Second parameter for .let should be an expression");
             }
 
-            string expression = statement.Parameters[1].Image.Trim('{', '}');
+            string expression = statement.Parameters.GetString(1);
             var variables = context.Evaluator.GetVariables(expression);
 
             context.Evaluator.AddNamedDynamicExpression(expressionName, new Evaluation.DoubleExpression(expression, (newVal) => { }), variables);

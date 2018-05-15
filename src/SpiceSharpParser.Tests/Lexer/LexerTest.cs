@@ -34,7 +34,7 @@ namespace SpiceSharpParser.Tests.Lexer
                         2,
                         "NewLine",
                         "\n",
-                        (LexerTestState state) =>
+                        (LexerTestState state, string lexem) =>
                         {
                             state.LineNumber++;
                             return LexerRuleResult.ReturnToken;

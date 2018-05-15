@@ -3,7 +3,12 @@
     /// <summary>
     /// Base class for all spice objects
     /// </summary>
-    public class SpiceObject
+    public abstract class SpiceObject
     {
+        /// <summary>
+        /// Closes the object.
+        /// </summary>
+        /// <returns>A clone of the object</returns>
+        public abstract SpiceObject Clone();
     }
 }

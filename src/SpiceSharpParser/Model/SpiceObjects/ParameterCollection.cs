@@ -103,6 +103,50 @@ namespace SpiceSharpParser.Model.SpiceObjects
         }
 
         /// <summary>
+        /// Set paramters from a collection to the current collection
+        /// </summary>
+        /// <param name="collection">A collection to merge</param>
+        public void Set(ParameterCollection collection)
+        {
+            foreach (var value in collection.Values)
+            {
+                if (value is SingleParameter)
+                {
+                    Values.Add(value);
+                }
+
+                if (value is AssignmentParameter a)
+                {
+                    bool found = false;
+                    foreach (var val in Values)
+                    {
+                        if (val is AssignmentParameter a2 && a2.Name == a.Name)
+                        {
+                            a2.Value = a.Value;
+                            found = true;
+                        }
+                    }
+
+                    if (!found)
+                    {
+                        Values.Add(value);
+                    }
+                }
+
+                if (value is BracketParameter bp)
+                {
+                    foreach (var val in Values)
+                    {
+                        if (val is BracketParameter bp2 && bp2.Name == bp.Name)
+                        {
+                            bp2.Parameters.Set(bp.Parameters);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Creates a clone of the current collection without first 'count' elements
         /// </summary>
         /// <param name="count">Number of paramaters to skip</param>
@@ -147,15 +191,7 @@ namespace SpiceSharpParser.Model.SpiceObjects
                 throw new Exception("Parameter [" + parameterIndex + "] is not string parameter");
             }
 
-            if (singleParameter is ExpressionParameter ep)
-            {
-                // trim '{' and '}' from start and end
-                return ep.Image.Substring(1, ep.Image.Length - 2);
-            }
-            else
-            {
-                return singleParameter.Image;
-            }
+            return singleParameter.Image;
         }
 
         /// <summary>
@@ -164,7 +200,7 @@ namespace SpiceSharpParser.Model.SpiceObjects
         /// <returns>
         /// A new collection of parameters
         /// </returns>
-        public ParameterCollection Clone()
+        public override SpiceObject Clone()
         {
             return new ParameterCollection() { Values = new List<Parameter>(this.Values) };
         }

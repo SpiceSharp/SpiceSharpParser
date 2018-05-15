@@ -6,3 +6,5 @@ script:
   - cd ./src/
   - dotnet restore
   - dotnet build
+  - dotnet test SpiceSharpParser.Tests/SpiceSharpParser.Tests.csproj
+  - dotnet test SpiceSharpParser.IntegrationTests/SpiceSharpParser.IntegrationTests.csproj
