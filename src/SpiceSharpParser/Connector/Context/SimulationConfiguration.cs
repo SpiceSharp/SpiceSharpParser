@@ -1,4 +1,5 @@
-﻿using SpiceSharp.IntegrationMethods;
+﻿using System.Collections.Generic;
+using SpiceSharp.IntegrationMethods;
 
 namespace SpiceSharpParser.Connector.Context
 {
@@ -21,14 +22,19 @@ namespace SpiceSharpParser.Connector.Context
         public bool? KeepOpInfo { get; set; }
 
         /// <summary>
-        /// Gets or sets the temperature for this circuit.
-        /// </summary>
-        public double? TemperatureInKelvins { get; set; }
-
-        /// <summary>
         /// Gets or sets the nominal temperature for the circuit
         /// Used for model parameters as the default.
         /// </summary>
         public double? NominalTemperatureInKelvins { get; set; }
+
+        /// <summary>
+        /// Gets or sets temperatures for this circuit.
+        /// </summary>
+        public List<double> TemperaturesInKelvins { get; set; } = new List<double>();
+
+        /// <summary>
+        /// Gets or sets value of circuit temperature from .OPTIONS
+        /// </summary>
+        public double? TemperaturesInKelvinsFromOptions { get; set; }
     }
 }

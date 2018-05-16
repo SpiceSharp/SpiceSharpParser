@@ -46,6 +46,7 @@ namespace SpiceSharpParser.Connector
                 controls.Add(new ParamControl());
                 controls.Add(new GlobalControl());
                 controls.Add(new OptionControl());
+                controls.Add(new TempControl());
                 controls.Add(new TransientControl());
                 controls.Add(new ACControl());
                 controls.Add(new DCControl());

@@ -44,7 +44,9 @@ namespace SpiceSharpParser.Connector.Processors.Controls
                             // TODO: ????
                             break;
                         case "temp":
-                            context.Result.SimulationConfiguration.TemperatureInKelvins = context.ParseDouble(value) + Circuit.CelsiusKelvin; break;
+                            double temp = context.ParseDouble(value) + Circuit.CelsiusKelvin;
+                            context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions = temp;
+                            context.Result.SimulationConfiguration.TemperaturesInKelvins.Add(temp); break;
                         case "tnom":
                             context.Result.SimulationConfiguration.NominalTemperatureInKelvins = context.ParseDouble(value) + Circuit.CelsiusKelvin; break;
                         case "method":

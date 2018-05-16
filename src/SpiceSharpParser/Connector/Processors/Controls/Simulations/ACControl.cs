@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Linq;
-using SpiceSharpParser.Connector.Context;
-using SpiceSharpParser.Model.SpiceObjects;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Connector.Context;
+using SpiceSharpParser.Connector.Exceptions;
+using SpiceSharpParser.Model.SpiceObjects;
 
 namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
 {
@@ -19,6 +19,21 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
         public override void Process(Control statement, IProcessingContext context)
+        {
+            if (context.Result.SimulationConfiguration.TemperaturesInKelvins.Count > 0)
+            {
+                foreach (double temp in context.Result.SimulationConfiguration.TemperaturesInKelvins)
+                {
+                    CreateACSimulation(statement, context, temp);
+                }
+            }
+            else
+            {
+                CreateACSimulation(statement, context);
+            }
+        }
+
+        private void CreateACSimulation(Control statement, IProcessingContext context, double? operatingTemperatureInKelvins = null)
         {
             switch (statement.Parameters.Count)
             {
@@ -37,16 +52,17 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
 
             switch (type)
             {
-                case "lin": ac = new AC((context.Result.Simulations.Count() + 1) + " - AC", new SpiceSharp.Simulations.LinearSweep(start, stop, (int)numberSteps)); break;
-                case "oct": ac = new AC((context.Result.Simulations.Count() + 1) + " - AC", new SpiceSharp.Simulations.OctaveSweep(start, stop, (int)numberSteps)); break;
-                case "dec": ac = new AC((context.Result.Simulations.Count() + 1) + " - AC", new SpiceSharp.Simulations.DecadeSweep(start, stop, (int)numberSteps)); break;
+                case "lin": ac = new AC(GetSimulationName(context, operatingTemperatureInKelvins), new LinearSweep(start, stop, (int)numberSteps)); break;
+                case "oct": ac = new AC(GetSimulationName(context, operatingTemperatureInKelvins), new OctaveSweep(start, stop, (int)numberSteps)); break;
+                case "dec": ac = new AC(GetSimulationName(context, operatingTemperatureInKelvins), new DecadeSweep(start, stop, (int)numberSteps)); break;
                 default:
-                    throw new Exception("LIN, DEC or OCT expected");
+                    throw new WrongParameterException("LIN, DEC or OCT expected");
             }
 
-            SetCircuitTemperatures(context, ac);
             SetBaseParameters(ac.BaseConfiguration, context);
+            SetTemperatures(ac, operatingTemperatureInKelvins, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
             SetACParameters(ac.FrequencyConfiguration, context);
+
             context.Result.AddSimulation(ac);
         }
 

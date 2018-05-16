@@ -50,7 +50,7 @@ namespace SpiceSharpParser.Tests.Connector.Processors.Controls.Simulations
             optionControl.Process(control, processingContext);
 
             // assert
-            Assert.Equal(12.2 + Circuit.CelsiusKelvin, resultService.SimulationConfiguration.TemperatureInKelvins);
+            Assert.Equal(12.2 + Circuit.CelsiusKelvin, resultService.SimulationConfiguration.TemperaturesInKelvins[0]);
             Assert.Equal(12.3 + Circuit.CelsiusKelvin, resultService.SimulationConfiguration.NominalTemperatureInKelvins);
         }
     }
