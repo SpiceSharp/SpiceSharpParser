@@ -72,7 +72,6 @@ SpiceSharpParser is available as NuGet Package
 ## Roadmap
 Future features:
 * .LIB
-* .TEMP
 * .PRINT
 * .WIDTH
 * Better .PARAM
