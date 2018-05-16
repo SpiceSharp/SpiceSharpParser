@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
-using SpiceSharpParser.Connector.Context;
-using SpiceSharpParser.Model.SpiceObjects;
-using SpiceSharpParser.Model.SpiceObjects.Parameters;
 using SpiceSharp;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Connector.Context;
+using SpiceSharpParser.Connector.Exceptions;
+using SpiceSharpParser.Model.SpiceObjects;
+using SpiceSharpParser.Model.SpiceObjects.Parameters;
 
 namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
 {
@@ -22,21 +23,36 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
         /// <param name="context">A context to modify</param>
         public override void Process(Control statement, IProcessingContext context)
         {
+            if (context.Result.SimulationConfiguration.TemperaturesInKelvins.Count > 0)
+            {
+                foreach (double temp in context.Result.SimulationConfiguration.TemperaturesInKelvins)
+                {
+                    CreateNoiseSimulation(statement, context, temp);
+                }
+            }
+            else
+            {
+                CreateNoiseSimulation(statement, context);
+            }
+        }
+
+        private void CreateNoiseSimulation(Control statement, IProcessingContext context, double? operatingTemperatureInKelvins = null)
+        {
             Noise noise = null;
 
             // Check parameter count
             switch (statement.Parameters.Count)
             {
-                case 0: throw new Exception("Output expected for .NOISE");
-                case 1: throw new Exception("Source expected");
-                case 2: throw new Exception("Step type expected");
-                case 3: throw new Exception("Number of points expected");
-                case 4: throw new Exception("Starting frequency expected");
-                case 5: throw new Exception("Stopping frequency expected");
+                case 0: throw new WrongParametersCountException("Output expected for .NOISE");
+                case 1: throw new WrongParametersCountException("Source expected");
+                case 2: throw new WrongParametersCountException("Step type expected");
+                case 3: throw new WrongParametersCountException("Number of points expected");
+                case 4: throw new WrongParametersCountException("Starting frequency expected");
+                case 5: throw new WrongParametersCountException("Stopping frequency expected");
                 case 6: break;
                 case 7: break;
                 default:
-                    throw new Exception("Too many parameter");
+                    throw new WrongParametersCountException("Too many parameters");
             }
 
             string type = statement.Parameters.GetString(2);
@@ -48,11 +64,11 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
 
             switch (type)
             {
-                case "lin": sweep = new SpiceSharp.Simulations.LinearSweep(start, stop, (int)numberSteps); break;
-                case "oct": sweep = new SpiceSharp.Simulations.OctaveSweep(start, stop, (int)numberSteps); break;
-                case "dec": sweep = new SpiceSharp.Simulations.DecadeSweep(start, stop, (int)numberSteps); break;
+                case "lin": sweep = new LinearSweep(start, stop, (int)numberSteps); break;
+                case "oct": sweep = new OctaveSweep(start, stop, (int)numberSteps); break;
+                case "dec": sweep = new DecadeSweep(start, stop, (int)numberSteps); break;
                 default:
-                    throw new Exception("LIN, DEC or OCT expected");
+                    throw new WrongParameterException("LIN, DEC or OCT expected");
             }
 
             // The first parameters needs to specify the output voltage
@@ -63,37 +79,38 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
                     switch (bracket.Parameters.Count)
                     {
                         // V(A, B) - V(vector)
-                        // V(A) - V(singleParameter
+                        // V(A) - V(singleParameter)
                         case 1:
                             if (bracket.Parameters[0] is VectorParameter v && v.Elements.Count == 2)
                             {
                                 var output = new StringIdentifier(v.Elements[0].Image);
                                 var reference = new StringIdentifier(v.Elements[1].Image);
                                 var input = new StringIdentifier(statement.Parameters[2].Image);
-                                noise = new Noise("Noise " + (context.Result.Simulations.Count() + 1), output, reference, input, sweep);
+                                noise = new Noise(GetSimulationName(context, operatingTemperatureInKelvins), output, reference, input, sweep);
                             }
                             else if (bracket.Parameters[0] is SingleParameter s)
                             {
                                 var output = new StringIdentifier(s.Image);
                                 var input = new StringIdentifier(statement.Parameters[1].Image);
-                                noise = new Noise("Noise " + (context.Result.Simulations.Count() + 1), output, input, sweep);
+                                noise = new Noise(GetSimulationName(context, operatingTemperatureInKelvins), output, input, sweep);
                             }
 
                             break;
                         default:
-                            throw new Exception("1 or 2 nodes expected");
+                            throw new WrongParameterException("1 or 2 nodes expected");
                     }
                 }
                 else
                 {
-                    throw new Exception("Invalid output");
+                    throw new WrongParameterException("Invalid output");
                 }
             }
             else
             {
-                throw new Exception("Invalid output");
+                throw new WrongParameterException("Invalid output");
             }
 
+            SetTemperatures(noise, operatingTemperatureInKelvins, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
             context.Result.AddSimulation(noise);
         }
     }

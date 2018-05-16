@@ -123,6 +123,9 @@ namespace SpiceSharpParser.Preprocessors
 
         private string ConvertPath(string includePath)
         {
+#if NET45
+            return includePath.Replace("/", "\\"); // NET45 can run on Windows
+#else
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return includePath.Replace("/", "\\");
@@ -134,6 +137,7 @@ namespace SpiceSharpParser.Preprocessors
             }
 
             return includePath;
+#endif
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using SpiceSharpParser.Connector.Context;
 using SpiceSharpParser.Model.SpiceObjects;
 using SpiceSharp.IntegrationMethods;
+using SpiceSharp;
 
 namespace SpiceSharpParser.Connector.Processors.Controls
 {
@@ -43,11 +44,11 @@ namespace SpiceSharpParser.Connector.Processors.Controls
                             // TODO: ????
                             break;
                         case "temp":
-                            // TODO: Set current temperature
-                            break;
+                            double temp = context.ParseDouble(value) + Circuit.CelsiusKelvin;
+                            context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions = temp;
+                            context.Result.SimulationConfiguration.TemperaturesInKelvins.Add(temp); break;
                         case "tnom":
-                            // TODO: Set nominal temperature
-                            break;
+                            context.Result.SimulationConfiguration.NominalTemperatureInKelvins = context.ParseDouble(value) + Circuit.CelsiusKelvin; break;
                         case "method":
                             switch (value.ToLower())
                             {

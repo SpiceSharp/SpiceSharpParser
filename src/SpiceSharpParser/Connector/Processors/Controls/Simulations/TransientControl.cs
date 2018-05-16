@@ -21,6 +21,21 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
         /// <param name="context">A context to modify</param>
         public override void Process(Control statement, IProcessingContext context)
         {
+            if (context.Result.SimulationConfiguration.TemperaturesInKelvins.Count > 0)
+            {
+                foreach (double temp in context.Result.SimulationConfiguration.TemperaturesInKelvins)
+                {
+                    CreateTransientSimulation(statement, context, temp);
+                }
+            }
+            else
+            {
+                CreateTransientSimulation(statement, context);
+            }
+        }
+
+        private void CreateTransientSimulation(Control statement, IProcessingContext context, double? operatingTemperatureInKelvins = null)
+        {
             switch (statement.Parameters.Count)
             {
                 case 0: throw new WrongParametersCountException(".tran control - Step expected");
@@ -42,13 +57,13 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
             {
                 case 2:
                     tran = new Transient(
-                        (context.Result.Simulations.Count() + 1) + " - Transient",
+                        GetSimulationName(context, operatingTemperatureInKelvins),
                         context.ParseDouble(clonedParameters[0].Image),
                         context.ParseDouble(clonedParameters[1].Image));
                     break;
                 case 3:
                     tran = new Transient(
-                        (context.Result.Simulations.Count() + 1) + " - Transient",
+                        GetSimulationName(context, operatingTemperatureInKelvins),
                         context.ParseDouble(clonedParameters[0].Image),
                         context.ParseDouble(clonedParameters[1].Image),
                         context.ParseDouble(clonedParameters[2].Image));
@@ -58,6 +73,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
             }
 
             SetBaseParameters(tran.ParameterSets.Get<BaseConfiguration>(), context);
+            SetTemperatures(tran, operatingTemperatureInKelvins, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
             SetTransientParamters(tran, context, useIc);
 
             context.Result.AddSimulation(tran);

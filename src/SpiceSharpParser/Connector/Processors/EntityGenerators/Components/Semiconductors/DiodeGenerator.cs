@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using SpiceSharpParser.Connector.Context;
-using SpiceSharpParser.Connector.Exceptions;
-using SpiceSharpParser.Connector.Processors.EntityGenerators;
-using SpiceSharpParser.Model.SpiceObjects;
-using SpiceSharpParser.Model.SpiceObjects.Parameters;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using SpiceSharpParser.Connector.Context;
+using SpiceSharpParser.Connector.Exceptions;
+using SpiceSharpParser.Model.SpiceObjects;
+using SpiceSharpParser.Model.SpiceObjects.Parameters;
+
 
 namespace SpiceSharpParser.Connector.Processors.EntityGenerators.Components.Semiconductors
 {
@@ -59,7 +59,8 @@ namespace SpiceSharpParser.Connector.Processors.EntityGenerators.Components.Semi
 
                 if (parameters[i] is ValueParameter v1 || parameters[i] is ExpressionParameter v2)
                 {
-                    var bp = diode.ParameterSets[typeof(SpiceSharp.Components.DiodeBehaviors.BaseParameters)] as SpiceSharp.Components.DiodeBehaviors.BaseParameters;
+                    //TODO: Fix this please it's broken ...
+                    var bp = diode.ParameterSets.Get<SpiceSharp.Components.DiodeBehaviors.BaseParameters>();
                     if (!bp.Area.Given)
                     {
                         bp.Area.Value = context.ParseDouble(parameters.GetString(i));
@@ -71,8 +72,6 @@ namespace SpiceSharpParser.Connector.Processors.EntityGenerators.Components.Semi
                             bp.Temperature.Value = context.ParseDouble(parameters.GetString(i));
                         }
                     }
-
-                    throw new System.Exception("Unsupported yet..");
                 }
             }
 

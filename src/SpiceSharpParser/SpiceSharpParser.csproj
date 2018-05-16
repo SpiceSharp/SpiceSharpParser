@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">netstandard1.5;netstandard2.0;net461;net47</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">netstandard1.5;netstandard2.0;net45</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netstandard1.5;netstandard2.0</TargetFrameworks>
     <Authors>SpiceSharp</Authors>
     <PackageLicenseUrl>https://github.com/SpiceSharp/SpiceSharpParser/blob/master/LICENSE</PackageLicenseUrl>
@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SpiceSharp" Version="2.1.0" />
+    <PackageReference Include="SpiceSharp" Version="2.1.2" />
   </ItemGroup>
 
 </Project>

@@ -19,9 +19,9 @@ namespace SpiceSharpParser.Connector.Context
         }
 
         /// <summary>
-        /// Gets simulation configuration
+        /// Gets simulation configuration.
         /// </summary>
-        public SimulationConfiguration SimulationConfiguration => new SimulationConfiguration();
+        public SimulationConfiguration SimulationConfiguration { get; set; } = new SimulationConfiguration();
 
         /// <summary>
         /// Gets all simulations

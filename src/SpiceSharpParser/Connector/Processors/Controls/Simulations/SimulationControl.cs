@@ -1,13 +1,83 @@
-﻿using SpiceSharpParser.Connector.Context;
+﻿using System;
+using System.Linq;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Connector.Context;
 
 namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
 {
     /// <summary>
-    /// Base for all control simulation processors
+    /// Base for all control simulation processors.
     /// </summary>
     public abstract class SimulationControl : BaseControl
     {
+        protected string GetSimulationName(IProcessingContext context, double? temperatureInKelvin = null)
+        {
+            if (temperatureInKelvin.HasValue)
+            {
+                return string.Format("{0} - {1} - at {2} Kelvins ({3} Celsius)", context.Result.Simulations.Count()+1, TypeName, temperatureInKelvin.Value, temperatureInKelvin.Value - SpiceSharp.Circuit.CelsiusKelvin);
+            }
+
+            return string.Format("{0} - {1}", context.Result.Simulations.Count() + 1, TypeName);
+        }
+
+        protected static void SetTemperatures(BaseSimulation simulation, double? operatingTemperatureInKelvins, double? nominalTemperatureInKelvins)
+        {
+            if (operatingTemperatureInKelvins.HasValue)
+            {
+                SetCircuitTemperature(simulation, operatingTemperatureInKelvins.Value);
+            }
+
+            if (nominalTemperatureInKelvins.HasValue)
+            {
+                SetCircuitNominalTemperature(simulation, nominalTemperatureInKelvins.Value);
+            }
+        }
+
+        /// <summary>
+        /// Sets the nominal temperature of the simulation.
+        /// </summary>
+        /// <param name="simulation">The simulation to set.</param>
+        /// <param name="nominalTemperatureInKelvins">Nominal temperature</param>
+        protected static void SetCircuitNominalTemperature(BaseSimulation simulation, double nominalTemperatureInKelvins)
+        {
+            EventHandler<LoadStateEventArgs> setState = (object sender, LoadStateEventArgs e) =>
+            {
+                if (e.State is RealState rs)
+                {
+                    rs.NominalTemperature = nominalTemperatureInKelvins;
+
+                }
+                //TODO: What to do with complex state?
+            };
+
+            simulation.OnBeforeTemperatureCalculations += setState;
+        }
+
+        /// <summary>
+        /// Sets the temperature of the simulation.
+        /// </summary>
+        /// <param name="simulation">The simulation to set.</param>
+        /// <param name="operatingTemperatureInKelvins">Circuit temperature</param>
+        protected static void SetCircuitTemperature(BaseSimulation simulation, double operatingTemperatureInKelvins)
+        {
+            EventHandler<LoadStateEventArgs> setState = (object sender, LoadStateEventArgs e) =>
+            {
+                if (e.State is RealState rs)
+                {
+                    rs.Temperature = operatingTemperatureInKelvins;
+                }
+
+                //TODO: What to do with complex state?
+            };
+
+            simulation.OnBeforeTemperatureCalculations += setState;
+        }
+
+        /// <summary>
+        /// Sets the base parameters.
+        /// </summary>
+        /// <param name="baseConfiguration">The configuration to set.</param>
+        /// <param name="context">The processing context.</param>
         protected void SetBaseParameters(BaseConfiguration baseConfiguration, IProcessingContext context)
         {
             if (context.Result.SimulationConfiguration.Gmin.HasValue)

@@ -25,6 +25,21 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
         /// <param name="context">A context to modify</param>
         public override void Process(Control statement, IProcessingContext context)
         {
+            if (context.Result.SimulationConfiguration.TemperaturesInKelvins.Count > 0)
+            {
+                foreach (double temp in context.Result.SimulationConfiguration.TemperaturesInKelvins)
+                {
+                    CreateDCSimulation(statement, context, temp);
+                }
+            }
+            else
+            {
+                CreateDCSimulation(statement, context);
+            }
+        }
+
+        private void CreateDCSimulation(Control statement, IProcessingContext context, double? operatingTemperatureInKelvins = null)
+        {
             int count = statement.Parameters.Count / 4;
             switch (statement.Parameters.Count - (4 * count))
             {
@@ -55,7 +70,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
                 sweeps.Add(sweep);
             }
 
-            DC dc = new DC((context.Result.Simulations.Count() + 1) + " - DC", sweeps);
+            DC dc = new DC(GetSimulationName(context, operatingTemperatureInKelvins), sweeps);
             dc.OnParameterSearch += (sender, e) =>
             {
                 string sweepParameterName = e.Name.ToString();
@@ -67,6 +82,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
             };
 
             SetBaseParameters(dc.BaseConfiguration, context);
+            SetTemperatures(dc, operatingTemperatureInKelvins, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
             SetDcParameters(dc.DcConfiguration, context);
 
             context.Result.AddSimulation(dc);
