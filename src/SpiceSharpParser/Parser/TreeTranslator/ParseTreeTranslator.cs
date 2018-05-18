@@ -353,16 +353,8 @@ namespace SpiceSharpParser.Parser.TreeTranslator
         private SpiceObject CreateComment(ParseTreeNodeTranslationValues values)
         {
             var comment = new CommentLine();
-            if (values.Count == 2)
-            {
-                comment.Text = values.GetLexem(1);
-                comment.LineNumber = values.GetLexemLineNumber(1);
-            }
-            else
-            {
-                comment.Text = string.Empty;
-                comment.LineNumber = values.GetLexemLineNumber(0);
-            }
+            comment.Text = values.GetLexem(0);
+            comment.LineNumber = values.GetLexemLineNumber(0);
             return comment;
         }
 

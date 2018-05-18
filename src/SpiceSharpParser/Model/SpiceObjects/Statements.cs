@@ -80,6 +80,25 @@ namespace SpiceSharpParser.Model.SpiceObjects
         }
 
         /// <summary>
+        /// Replace the given statement by statements
+        /// </summary>
+        /// <param name="statement">A statement to replace</param>
+        /// <param name="statements">Statements to replace with</param>
+        public void Replace(Statement statement, Statements statements)
+        {
+            if (list.Contains(statement))
+            {
+                var index = list.IndexOf(statement); 
+                list.InsertRange(index, statements);
+                list.Remove(statement);
+            }
+            else
+            {
+                throw new Exception("Unkonwn statement to replace");
+            }
+        }
+
+        /// <summary>
         /// Gets the enumerator of statemets in the given order
         /// </summary>
         /// <param name="orderByFunc">Specifies the order</param>

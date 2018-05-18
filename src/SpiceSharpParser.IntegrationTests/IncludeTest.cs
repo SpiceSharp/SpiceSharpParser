@@ -6,6 +6,29 @@ namespace SpiceSharpParser.IntegrationTests
     public class IncludeTest : BaseTest
     {
         [Fact]
+        public void ContentOfIncludeIsInsertedAtSpecificPosition()
+        {
+            string c1Path = Path.Combine(Directory.GetCurrentDirectory(), "c1");
+            string c2Path = Path.Combine(Directory.GetCurrentDirectory(), "c2");
+
+            File.WriteAllText(c1Path, "*c1\n");
+            File.WriteAllText(c2Path, "*c2\n");
+
+            var netlist = ParseNetlistInWorkingDirectory(
+                Directory.GetCurrentDirectory(),
+                "Comment circuit",
+                ".include c1",
+                "*Comment",
+                ".include c2",
+                ".END");
+
+            Assert.Equal(3, netlist.Comments.Count);
+            Assert.Equal("*c1", netlist.Comments[0]);
+            Assert.Equal("*Comment", netlist.Comments[1]);
+            Assert.Equal("*c2", netlist.Comments[2]);
+        }
+
+        [Fact]
         public void SingleIncludeTest()
         {
             string modelFileContent = ".model 1N914 D(Is=2.52e-9 Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)\n";

@@ -33,7 +33,8 @@ namespace SpiceSharpParser
 
             ParseTreeNonTerminalNode parseTreeRoot = GetParseTree(
                 tokens,
-                settings.HasTitle ? SpiceGrammarSymbol.NETLIST : SpiceGrammarSymbol.NETLIST_WITHOUT_TITLE);
+                settings.HasTitle ? SpiceGrammarSymbol.NETLIST : SpiceGrammarSymbol.NETLIST_WITHOUT_TITLE,
+                settings.IsNewlineRequired);
 
             return GetNetlistModelFromTree(parseTreeRoot);
         }
@@ -77,9 +78,9 @@ namespace SpiceSharpParser
         /// <returns>
         /// A reference to the root of parse tree
         /// </returns>
-        private ParseTreeNonTerminalNode GetParseTree(SpiceToken[] tokens, string rootSymbol)
+        private ParseTreeNonTerminalNode GetParseTree(SpiceToken[] tokens, string rootSymbol, bool isNewlineRequiredAtTheEnd)
         {
-            return new ParserTreeGenerator().GetParseTree(tokens, rootSymbol);
+            return new ParserTreeGenerator(isNewlineRequiredAtTheEnd).GetParseTree(tokens, rootSymbol);
         }
 
         /// <summary>

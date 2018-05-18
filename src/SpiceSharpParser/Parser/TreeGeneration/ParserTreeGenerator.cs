@@ -11,6 +11,17 @@ namespace SpiceSharpParser.Parser.TreeGeneration
     /// </summary>
     public class ParserTreeGenerator
     {
+        private readonly bool isNewLineRequiredAtTheEnd;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ParserTreeGenerator"/> class.
+        /// </summary>
+        /// <param name="isNewLineRequiredAtTheEnd">Is NEWLINE required</param>
+        public ParserTreeGenerator(bool isNewLineRequiredAtTheEnd = false)
+        {
+            this.isNewLineRequiredAtTheEnd = isNewLineRequiredAtTheEnd;
+        }
+
         /// <summary>
         /// Generates a parse tree for SPICE grammar
         /// </summary>
@@ -271,23 +282,46 @@ namespace SpiceSharpParser.Parser.TreeGeneration
 
             if (currentToken.Is(SpiceTokenType.END))
             {
-                if (currentTokenIndex + 1 < tokens.Length)
+                if (isNewLineRequiredAtTheEnd)
                 {
-                    if (tokens[currentTokenIndex + 1].Is(SpiceTokenType.EOF))
+                    PushProductionExpression(
+                                stack,
+                                CreateTerminalNode(SpiceTokenType.END, current),
+                                CreateTerminalNode(SpiceTokenType.NEWLINE, current),
+                                CreateTerminalNode(SpiceTokenType.EOF, current));
+                }
+                else
+                {
+                    if (currentTokenIndex + 1 < tokens.Length)
                     {
-                        PushProductionExpression(
-                            stack,
-                            CreateTerminalNode(SpiceTokenType.END, current),
-                            CreateTerminalNode(SpiceTokenType.EOF, current));
+                        if (tokens[currentTokenIndex + 1].Is(SpiceTokenType.NEWLINE))
+                        {
+                            PushProductionExpression(
+                                stack,
+                                CreateTerminalNode(SpiceTokenType.END, current),
+                                CreateTerminalNode(SpiceTokenType.NEWLINE, current),
+                                CreateTerminalNode(SpiceTokenType.EOF, current));
+                        }
+                        else
+                        {
+                            if (tokens[currentTokenIndex + 1].Is(SpiceTokenType.EOF))
+                            {
+                                PushProductionExpression(
+                                    stack,
+                                    CreateTerminalNode(SpiceTokenType.END, current),
+                                    CreateTerminalNode(SpiceTokenType.EOF, current));
+                            }
+                            else
+                            {
+                                throw new ParsingException("Netlist ending - wrong ending", currentToken.LineNumber);
+                            }
+                        }
                     }
-
-                    if (tokens[currentTokenIndex + 1].Is(SpiceTokenType.NEWLINE))
+                    else
                     {
                         PushProductionExpression(
-                            stack,
-                            CreateTerminalNode(SpiceTokenType.END, current),
-                            CreateTerminalNode(SpiceTokenType.NEWLINE, current),
-                            CreateTerminalNode(SpiceTokenType.EOF, current));
+                           stack,
+                           CreateTerminalNode(SpiceTokenType.END, current));
                     }
                 }
             }

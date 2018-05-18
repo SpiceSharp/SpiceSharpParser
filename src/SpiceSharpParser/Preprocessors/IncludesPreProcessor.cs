@@ -9,7 +9,7 @@ using SpiceSharpParser.Model.SpiceObjects;
 namespace SpiceSharpParser.Preprocessors
 {
     /// <summary>
-    /// Processes .include statements from netlist file
+    /// Processes .include statements from netlist file.
     /// </summary>
     public class IncludesPreProcessor : IIncludesPreProcessor
     {
@@ -24,33 +24,21 @@ namespace SpiceSharpParser.Preprocessors
         }
 
         /// <summary>
-        /// Gets the file reader
+        /// Gets the file reader.
         /// </summary>
         public IFileReader FileReader { get; }
 
         /// <summary>
-        /// Gets the netlist model reader
+        /// Gets the netlist model reader.
         /// </summary>
         public INetlistModelReader NetlistModelReader { get; }
 
         /// <summary>
-        /// Processes .include statements
+        /// Processes .include statements.
         /// </summary>
         /// <param name="netlistModel">Netlist model to seach for .include statements</param>
         /// <param name="currentDirectoryPath">Current working directory path</param>
         public void Process(Netlist netlistModel, string currentDirectoryPath = null)
-        {
-            List<string> loadedFullPaths = new List<string>();
-            Process(netlistModel, loadedFullPaths, currentDirectoryPath ?? Directory.GetCurrentDirectory());
-        }
-
-        /// <summary>
-        /// Processes .include statements
-        /// </summary>
-        /// <param name="netlistModel">Netlist model to seach for .include statements</param>
-        /// <param name="loadedFullPaths">List of paths of loaded netlists</param>
-        /// <param name="currentDirectoryPath">Current working directory path</param>
-        protected void Process(Netlist netlistModel, List<string> loadedFullPaths, string currentDirectoryPath = null)
         {
             var subCircuits = netlistModel.Statements.Where(statement => statement is SubCircuit s);
             if (subCircuits.Any())
@@ -61,7 +49,7 @@ namespace SpiceSharpParser.Preprocessors
 
                     foreach (Control include in subCircuitIncludes.ToArray())
                     {
-                        ProcessSingleInclude(subCircuit.Statements, new List<string>(), currentDirectoryPath, include);
+                        ProcessSingleInclude(subCircuit.Statements, currentDirectoryPath, include);
                     }
                 }
             }
@@ -72,12 +60,12 @@ namespace SpiceSharpParser.Preprocessors
             {
                 foreach (Control include in includes.ToArray())
                 {
-                    ProcessSingleInclude(netlistModel.Statements, loadedFullPaths, currentDirectoryPath, include);
+                    ProcessSingleInclude(netlistModel.Statements, currentDirectoryPath, include);
                 }
             }
         }
 
-        private void ProcessSingleInclude(Statements statements, List<string> loadedFullPaths, string currentDirectoryPath, Control include)
+        private void ProcessSingleInclude(Statements statements, string currentDirectoryPath, Control include)
         {
             // get full path of .include
             string includePath = include.Parameters.GetString(0);
@@ -87,37 +75,30 @@ namespace SpiceSharpParser.Preprocessors
             bool isAbsolutePath = Path.IsPathRooted(includePath);
             string includeFullPath = isAbsolutePath ? includePath : Path.Combine(currentDirectoryPath, includePath);
 
-            // check if path is not already loaded
-            if (!loadedFullPaths.Contains(includeFullPath))
+            // check if file exists
+            if (!File.Exists(includeFullPath))
             {
-                // check if file exists
-                if (!File.Exists(includeFullPath))
-                {
-                    throw new InvalidOperationException($"Netlist include at { includeFullPath}  is not found");
-                }
+                throw new InvalidOperationException($"Netlist include at { includeFullPath}  is not found");
+            }
 
-                // mark includeFullPath as loaded (before loading all includes to avoid loops)
-                loadedFullPaths.Add(includeFullPath);
+            // get include content
+            string includeContent = FileReader.GetFileContent(includeFullPath);
+            if (includeContent != null)
+            {
+                // get include netlist model
+                Netlist includeModel = NetlistModelReader.GetNetlistModel(
+                    includeContent,
+                    new ParserSettings() { HasTitle = false, IsEndRequired = false, IsNewlineRequired = false });
 
-                // get include content
-                string includeContent = FileReader.GetFileContent(includeFullPath);
-                if (includeContent != null)
-                {
-                    // get include netlist model
-                    Netlist includeModel = NetlistModelReader.GetNetlistModel(
-                        includeContent,
-                        new ParserSettings() { HasTitle = false, IsEndRequired = false });
+                // process includes of include netlist
+                Process(includeModel, Path.GetDirectoryName(includeFullPath));
 
-                    // process includes of include netlist
-                    Process(includeModel, loadedFullPaths, Path.GetDirectoryName(includeFullPath));
-
-                    // merge include with netlist 
-                    statements.Merge(includeModel.Statements);
-                }
-                else
-                {
-                    throw new InvalidOperationException($"Netlist include at { includeFullPath} could not be loaded");
-                }
+                // repelace statement by the content of the include
+                statements.Replace(include, includeModel.Statements);
+            }
+            else
+            {
+                throw new InvalidOperationException($"Netlist include at { includeFullPath} could not be loaded");
             }
         }
 
