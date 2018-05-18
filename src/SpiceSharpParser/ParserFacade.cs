@@ -8,6 +8,7 @@ namespace SpiceSharpParser
     /// </summary>
     public class ParserFacade
     {
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ParserFacade"/> class.
         /// </summary>
@@ -17,8 +18,10 @@ namespace SpiceSharpParser
         public ParserFacade(
             INetlistModelReader netlistModelReader,
             IIncludesPreProcessor includesProcessor,
-            IAppendModelPreProcessor appendModelProcessor)
+            IAppendModelPreProcessor appendModelProcessor,
+            ILibPreProcessor libProcessor)
         {
+            LibProcessor = libProcessor;
             IncludesProcessor = includesProcessor ?? throw new System.ArgumentNullException(nameof(includesProcessor));
             NetlistModelReader = netlistModelReader ?? throw new System.ArgumentNullException(nameof(netlistModelReader));
             AppendModelProcessor = appendModelProcessor ?? throw new System.ArgumentNullException(nameof(appendModelProcessor));
@@ -32,7 +35,14 @@ namespace SpiceSharpParser
             NetlistModelReader = new NetlistModelReader();
             IncludesProcessor = new IncludesPreProcessor(new FileReader(), NetlistModelReader);
             AppendModelProcessor = new AppendModelPreProcessor();
+            LibProcessor = new LibPreProcessor(new FileReader(), NetlistModelReader, IncludesProcessor);
         }
+
+        /// <summary>
+        /// Gets the .lib processor
+        /// </summary>
+        public ILibPreProcessor LibProcessor { get; }
+
 
         /// <summary>
         /// Gets the netlist model reader.
@@ -75,6 +85,8 @@ namespace SpiceSharpParser
 
             // Preprocessing
             IncludesProcessor.Process(preprocessedNetListModel, workingDirectoryPath);
+            LibProcessor.Process(preprocessedNetListModel, workingDirectoryPath); 
+
             AppendModelProcessor.Process(preprocessedNetListModel);
             // TODO: more preprocessors
 

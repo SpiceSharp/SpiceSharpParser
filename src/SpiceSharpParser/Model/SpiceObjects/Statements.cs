@@ -84,7 +84,7 @@ namespace SpiceSharpParser.Model.SpiceObjects
         /// </summary>
         /// <param name="statement">A statement to replace</param>
         /// <param name="statements">Statements to replace with</param>
-        public void Replace(Statement statement, Statements statements)
+        public void Replace(Statement statement, IEnumerable<Statement> statements)
         {
             if (list.Contains(statement))
             {

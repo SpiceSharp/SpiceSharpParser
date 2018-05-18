@@ -354,7 +354,8 @@ namespace SpiceSharpParser.Parser.TreeGeneration
 
             if (currentToken.Is(SpiceTokenType.DOT)
                 || currentToken.Is(SpiceTokenType.WORD)
-                || currentToken.Is(SpiceTokenType.COMMENT))
+                || currentToken.Is(SpiceTokenType.COMMENT)
+                || currentToken.Is(SpiceTokenType.ENDL_HSPICE))
             {
                 PushProductionExpression(
                             stack,
@@ -446,7 +447,17 @@ namespace SpiceSharpParser.Parser.TreeGeneration
             }
             else
             {
-                throw new ParsingException(string.Format("Error during parsing a statement. Unexpected token: '{0}' of type:{1} line={2}", currentToken.Lexem, currentToken.SpiceTokenType, currentToken.LineNumber), currentToken.LineNumber);
+                if (currentToken.Is(SpiceTokenType.ENDL_HSPICE))
+                {
+                    PushProductionExpression(
+                           stack,
+                           CreateNonTerminalNode(SpiceGrammarSymbol.CONTROL, current),
+                           CreateTerminalNode(SpiceTokenType.NEWLINE, current));
+                }
+                else
+                {
+                    throw new ParsingException(string.Format("Error during parsing a statement. Unexpected token: '{0}' of type:{1} line={2}", currentToken.Lexem, currentToken.SpiceTokenType, currentToken.LineNumber), currentToken.LineNumber);
+                }
             }
         }
 
@@ -876,7 +887,17 @@ namespace SpiceSharpParser.Parser.TreeGeneration
             }
             else
             {
-                throw new ParsingException("Error during parsing a control. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                if (currentToken.Is(SpiceTokenType.ENDL_HSPICE))
+                {
+                    PushProductionExpression(
+                        stack,
+                        CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
+                        CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, currentNode));
+                }
+                else
+                {
+                    throw new ParsingException("Error during parsing a control. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                }
             }
         }
 

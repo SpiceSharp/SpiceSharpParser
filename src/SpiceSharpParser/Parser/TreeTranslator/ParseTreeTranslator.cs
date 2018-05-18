@@ -277,9 +277,18 @@ namespace SpiceSharpParser.Parser.TreeTranslator
         private SpiceObject CreateControl(ParseTreeNodeTranslationValues values)
         {
             var control = new Control();
-            control.Name = values.GetLexem(1);
-            control.Parameters = values.GetSpiceObject<ParameterCollection>(2);
-            control.LineNumber = values.GetLexemLineNumber(1);
+            if (values.GetLexem(0).ToLower() == ".endl")
+            {
+                control.Name = "endl";
+                control.Parameters = values.GetSpiceObject<ParameterCollection>(1);
+                control.LineNumber = values.GetLexemLineNumber(0);
+            }
+            else
+            {
+                control.Name = values.GetLexem(1);
+                control.Parameters = values.GetSpiceObject<ParameterCollection>(2);
+                control.LineNumber = values.GetLexemLineNumber(1);
+            }
             return control;
         }
 

@@ -40,6 +40,11 @@ namespace SpiceSharpParser.Preprocessors
         /// <param name="currentDirectoryPath">Current working directory path</param>
         public void Process(Netlist netlistModel, string currentDirectoryPath = null)
         {
+            if (currentDirectoryPath == null)
+            {
+                currentDirectoryPath = Directory.GetCurrentDirectory();
+            }
+
             var subCircuits = netlistModel.Statements.Where(statement => statement is SubCircuit s);
             if (subCircuits.Any())
             {
