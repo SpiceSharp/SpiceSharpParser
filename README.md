@@ -71,8 +71,10 @@ Documentation for API on SpiceSharpParser is available at <https://spicesharp.gi
 ## Roadmap
 Future features:
 * .PRINT
+* .PROBE
 * .WIDTH
-* Better .PARAM
+* Enhancing .SAVE
+* Enhancing .PARAM
 * .IF/.ELSE/.ENDIF
 
 ## License
