@@ -1,13 +1,52 @@
-using SpiceSharpParser.Grammar;
 using SpiceSharpParser.Lexer;
-using SpiceSharpParser.Lexer.Spice3f5;
+using SpiceSharpParser.Lexer.Spice;
 using System.Linq;
 using Xunit;
 
-namespace SpiceSharpParser.Tests.Lexer.Spice3f5
+namespace SpiceSharpParser.Tests.Lexer.Spice
 {
     public class SpiceLexerTest
     {
+        [Fact]
+        public void BlockCommentSmartSpiceExtended()
+        {
+            var tokensStr = "*c1\n#com\n k mxanjsh\n .endl\n.options\n.end\n.end\n~~~/._,m\n+&;;d .\\., .\n $ d .,xznxzc jhad 34 a\r////rr/r/r/\n#endcom\n*c2\n";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.Equal(6, tokens.Length);
+        }
+
+        [Fact]
+        public void BlockCommentSmartSpiceBasic()
+        {
+            var tokensStr = "*c1\n#com\n#endcom\n*c2\n";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.Equal(6, tokens.Length);
+        }
+
+        [Fact]
+        public void BlockCommentSmartSpiceFromStart()
+        {
+            var tokensStr = "#com\n#endcom\n*c2\n";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.Equal(4, tokens.Length);
+        }
+
+        [Fact]
+        public void BlockCommentMultipleSmartSpice()
+        {
+            var tokensStr = "#com\ncontent1\n#endcom\n#com\ncontent2\n#endcom\n*c2\n";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.Equal(5, tokens.Length);
+        }
+
         [Fact]
         public void Reference()
         {

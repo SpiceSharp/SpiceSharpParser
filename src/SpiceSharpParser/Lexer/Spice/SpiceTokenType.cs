@@ -1,4 +1,4 @@
-﻿namespace SpiceSharpParser.Lexer.Spice3f5
+﻿namespace SpiceSharpParser.Lexer.Spice
 {
     /// <summary>
     /// Types of terminals in spice grammar
@@ -128,6 +128,21 @@
         /// <summary>
         /// .ENDL token
         /// </summary>
-        ENDL_HSPICE = 24
+        ENDL = 24,
+
+        /// <summary>
+        /// #COM token - start of a block comment in SmartSpice
+        /// </summary>
+        COM_START = 25,
+
+        /// <summary>
+        /// #ENDCOM token - end of a block comment in SmartSpice
+        /// </summary>
+        COM_END = 26,
+
+        /// <summary>
+        /// Content of a block comment in SmartSpice
+        /// </summary>
+        COM_CONTENT = 27
     }
 }

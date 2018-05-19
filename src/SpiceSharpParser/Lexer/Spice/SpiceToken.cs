@@ -1,7 +1,7 @@
 ﻿using SpiceSharpParser.Grammar;
 using SpiceSharpParser.Lexer;
 
-namespace SpiceSharpParser.Lexer.Spice3f5
+namespace SpiceSharpParser.Lexer.Spice
 {
     /// <summary>
     /// A token from spice netlist

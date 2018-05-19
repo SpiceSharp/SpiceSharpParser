@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using SpiceSharpParser.Lexer.Spice3f5;
+using SpiceSharpParser.Lexer.Spice;
 using SpiceSharpParser.Model;
 using SpiceSharpParser.Parser.Exceptions;
 

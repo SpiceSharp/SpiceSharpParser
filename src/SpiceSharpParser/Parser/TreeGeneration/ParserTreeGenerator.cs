@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using SpiceSharpParser.Grammar;
-using SpiceSharpParser.Lexer.Spice3f5;
+using SpiceSharpParser.Lexer.Spice;
 using SpiceSharpParser.Parser.Exceptions;
 
 namespace SpiceSharpParser.Parser.TreeGeneration
@@ -355,7 +355,7 @@ namespace SpiceSharpParser.Parser.TreeGeneration
             if (currentToken.Is(SpiceTokenType.DOT)
                 || currentToken.Is(SpiceTokenType.WORD)
                 || currentToken.Is(SpiceTokenType.COMMENT)
-                || currentToken.Is(SpiceTokenType.ENDL_HSPICE))
+                || currentToken.Is(SpiceTokenType.ENDL))
             {
                 PushProductionExpression(
                             stack,
@@ -447,7 +447,7 @@ namespace SpiceSharpParser.Parser.TreeGeneration
             }
             else
             {
-                if (currentToken.Is(SpiceTokenType.ENDL_HSPICE))
+                if (currentToken.Is(SpiceTokenType.ENDL))
                 {
                     PushProductionExpression(
                            stack,
@@ -887,7 +887,7 @@ namespace SpiceSharpParser.Parser.TreeGeneration
             }
             else
             {
-                if (currentToken.Is(SpiceTokenType.ENDL_HSPICE))
+                if (currentToken.Is(SpiceTokenType.ENDL))
                 {
                     PushProductionExpression(
                         stack,

@@ -1,7 +1,7 @@
 ﻿using SpiceSharpParser.Grammar;
-using SpiceSharpParser.Lexer.Spice3f5;
+using SpiceSharpParser.Lexer.Spice;
 
-namespace SpiceSharpParser.Lexer.Spice3f5
+namespace SpiceSharpParser.Lexer.Spice
 {
     /// <summary>
     /// Extensions for <see cref="SpiceToken"/> class.

@@ -42,7 +42,7 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
-        public void WhenTempIs27EqualsToSpice3f5()
+        public void WhenTempIs27EqualsToSpice()
         {
             var netlist = ParseNetlist(
                 "Diode circuit",
@@ -78,7 +78,7 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
-        public void WhenTNomIs27EqualsToSpice3f5()
+        public void WhenTNomIs27EqualsToSpice()
         {
             var netlist = ParseNetlist(
                 "Diode circuit",
@@ -110,11 +110,11 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             var export = RunOpSimulation(netlist, "i(V1)");
-            Compare(export, 2.75136240873719E-09); // value not from Spice3f5
+            Compare(export, 2.75136240873719E-09); // value not from Spice
         }
 
         [Fact]
-        public void NoOptionsEqualsToSpice3f5()
+        public void NoOptionsEqualsToSpice()
         {
             var netlist = ParseNetlist(
                 "Diode circuit",

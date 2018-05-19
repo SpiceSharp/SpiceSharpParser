@@ -109,11 +109,11 @@ namespace SpiceSharpParser.IntegrationTests
         public void LibWithLib()
         {
             string modelFileContent = ".model 1N914 D(Is=2.52e-9 Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)\n";
-            string modelFilePath = Path.Combine(Directory.GetCurrentDirectory(), "diodes.mod");
+            string modelFilePath = Path.Combine(Directory.GetCurrentDirectory(), "diodes4.mod");
             File.WriteAllText(modelFilePath, modelFileContent);
 
             string basicPath = Path.Combine(Directory.GetCurrentDirectory(), "basic");
-            File.WriteAllText(basicPath, ".lib diodes\n.include diodes.mod\n.endl\n");
+            File.WriteAllText(basicPath, ".lib diodes\n.include diodes4.mod\n.endl\n");
 
             string l1Path = Path.Combine(Directory.GetCurrentDirectory(), "l1");
             File.WriteAllText(l1Path, ".lib a\n.lib basic diodes\n.endl\n");

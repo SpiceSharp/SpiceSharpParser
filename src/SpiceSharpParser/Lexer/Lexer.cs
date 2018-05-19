@@ -68,11 +68,11 @@ namespace SpiceSharpParser.Lexer
 
                 if (FindBestTokenRule(textToLex, state, out bestTokenRule, out bestMatch))
                 {
-                    var tokenActionResult = bestTokenRule.LexerRuleResultAction(state, bestMatch.Value);
+                    var tokenActionResult = bestTokenRule.ReturnAction(state, bestMatch.Value);
                     if (tokenActionResult == LexerRuleResult.ReturnToken)
                     {
                         yield return new Token(bestTokenRule.TokenType, bestMatch.Value);
-                        state.PreviousTokenType = bestTokenRule.TokenType;
+                        state.PreviousReturnedTokenType = bestTokenRule.TokenType;
                     }
 
                     currentTokenIndex += bestMatch.Length;

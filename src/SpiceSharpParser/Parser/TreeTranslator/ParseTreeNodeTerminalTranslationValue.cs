@@ -1,4 +1,4 @@
-﻿using SpiceSharpParser.Lexer.Spice3f5;
+﻿using SpiceSharpParser.Lexer.Spice;
 
 namespace SpiceSharpParser.Parser.TreeTranslator
 {

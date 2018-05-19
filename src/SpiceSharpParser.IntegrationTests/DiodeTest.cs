@@ -5,7 +5,7 @@ namespace SpiceSharpParser.IntegrationTests
     public class DiodeTest : BaseTest
     {
         [Fact]
-        public void EqualsToSpice3f5()
+        public void EqualsToSpice()
         {
             var netlist = ParseNetlist(
                 "Diode circuit",

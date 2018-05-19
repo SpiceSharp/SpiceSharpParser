@@ -1,4 +1,4 @@
-﻿namespace SpiceSharpParser.Lexer.Spice3f5
+﻿namespace SpiceSharpParser.Lexer.Spice
 {
     /// <summary>
     /// Options for <see cref="SpiceLexer"/>

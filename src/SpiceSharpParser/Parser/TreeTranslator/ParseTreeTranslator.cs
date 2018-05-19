@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SpiceSharpParser.Grammar;
-using SpiceSharpParser.Lexer.Spice3f5;
+using SpiceSharpParser.Lexer.Spice;
 using SpiceSharpParser.Model;
 using SpiceSharpParser.Model.SpiceObjects;
 using SpiceSharpParser.Model.SpiceObjects.Parameters;
