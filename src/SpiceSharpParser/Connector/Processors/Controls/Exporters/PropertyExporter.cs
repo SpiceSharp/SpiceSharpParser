@@ -27,7 +27,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Exporters
         {
             if (parameters.Count != 2)
             {
-                throw new WrongParameterException("Voltage exports should have two parameters: name of component and property name");
+                throw new WrongParameterException("Property exports should have two parameters: name of component and property name");
             }
 
             return new PropertyExport(simulation, new StringIdentifier(parameters[0].Image), parameters[1].Image);

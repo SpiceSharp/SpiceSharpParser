@@ -1,4 +1,6 @@
 ﻿using SpiceSharpParser.Connector.Context;
+using SpiceSharpParser.Connector.Evaluation;
+using SpiceSharpParser.Connector.Exceptions;
 using SpiceSharpParser.Model.SpiceObjects;
 
 namespace SpiceSharpParser.Connector.Processors.Controls
@@ -24,7 +26,33 @@ namespace SpiceSharpParser.Connector.Processors.Controls
                     string name = a.Name;
                     string expression = a.Value;
 
-                    context.Evaluator.SetParameter(name, expression);
+                    if (a.Arguments.Count == 0)
+                    {
+                        context.Evaluator.SetParameter(name, expression);
+                    }
+                    else
+                    {
+                        UserFunction userFunction = new UserFunction();
+                        userFunction.Name = name;
+                        userFunction.VirtualParameters = false;
+                        userFunction.Logic = (args, simulation) =>
+                        {
+                            var evaluator = new Evaluator(context.Evaluator);
+
+                            for (var i = 0; i < a.Arguments.Count; i++)
+                            {
+                                evaluator.SetParameter(a.Arguments[i], (double)args[a.Arguments.Count - i - 1]);
+                            }
+
+                            return evaluator.EvaluateDouble(expression);
+                        };
+
+                        context.Evaluator.ExpressionParser.UserFunctions.Add(name, userFunction);
+                    }
+                }
+                else
+                {
+                    throw new WrongParameterTypeException(".PARAM supports only assigments");
                 }
             }
         }

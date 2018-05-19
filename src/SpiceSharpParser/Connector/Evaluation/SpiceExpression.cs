@@ -102,7 +102,7 @@ namespace SpiceSharpParser.Connector.Evaluation
         /// Private variables
         /// </summary>
         private readonly Stack<double> outputStack = new Stack<double>();
-        private readonly Stack<string> expressionStack = new Stack<string>();
+        private readonly Stack<object> virtualParamtersStack = new Stack<object>();
         private readonly Stack<Operator> operatorStack = new Stack<Operator>();
         private readonly StringBuilder sb = new StringBuilder();
         private int index;
@@ -121,9 +121,9 @@ namespace SpiceSharpParser.Connector.Evaluation
         public Collection<string> Variables { get; protected set; }
 
         /// <summary>
-        /// Gets or sets user functions
+        /// Gets or sets user functions.
         /// </summary>
-        public Dictionary<string, System.Func<string[], object, double>> UserFunctions { get; set; }
+        public Dictionary<string, UserFunction> UserFunctions { get; set; }
 
         /// <summary>
         /// Gets all built-in constants
@@ -327,10 +327,20 @@ namespace SpiceSharpParser.Connector.Evaluation
                                     break;
                                 }
 
-                                if (operatorStack.Peek().Id == IdUserFunction)
+                                if (operatorStack.Peek().Id == IdUserFunction) //TODO: refactor this please ...
                                 {
                                     UserFunctionOperator op = (UserFunctionOperator)operatorStack.Pop();
-                                    outputStack.Push(op.Function(expressionStack, context));
+                                    if (op.VirtualParameters)
+                                    {
+                                        outputStack.Push(op.Function(virtualParamtersStack, context));
+                                        virtualParamtersStack.Clear();
+                                    }
+                                    else
+                                    {
+                                        var copyOfStack = Convert(outputStack);
+                                        outputStack.Clear();
+                                        outputStack.Push(op.Function(copyOfStack, context));
+                                    }
                                     break;
                                 }
 
@@ -343,9 +353,20 @@ namespace SpiceSharpParser.Connector.Evaluation
                         case '[':
                                break;
                         case ']':
+
+                            //TODO: Refactor 
                             UserFunctionOperator op2 = (UserFunctionOperator)operatorStack.Pop();
-                            outputStack.Push(op2.Function(expressionStack, context));
-                            expressionStack.Clear();
+                            if (op2.VirtualParameters)
+                            {
+                                outputStack.Push(op2.Function(virtualParamtersStack, context));
+                                virtualParamtersStack.Clear();
+                            }
+                            else
+                            {
+                                var copyOfStack = Convert(outputStack);
+                                outputStack.Clear();
+                                outputStack.Push(op2.Function(copyOfStack, context));
+                            }
 
                             infixPostfix = true;
                             break;
@@ -394,11 +415,11 @@ namespace SpiceSharpParser.Connector.Evaluation
                         {
                             var userFunc = UserFunctions["@"];
                             var ufo = new UserFunctionOperator();
-
-                            ufo.Function = (expressionStack, contextObj) => {
-                                var result = userFunc(expressionStack.ToArray(), contextObj);
-                                expressionStack.Clear();
-                                return result;
+                            ufo.VirtualParameters = userFunc.VirtualParameters;
+                            ufo.Function = (argumentStack, contextObj) => {
+                                var result = userFunc.Logic(argumentStack.ToArray(), contextObj);
+                                argumentStack.Clear();
+                                return double.Parse(result.ToString()); //TODO: spice expression at the moment evalute only to double ...
                             };
                             operatorStack.Push(ufo);
                             infixPostfix = false;
@@ -449,11 +470,13 @@ namespace SpiceSharpParser.Connector.Evaluation
                                 {
                                     var userFunc = UserFunctions[sb.ToString()];
 
-                                    var ufo = new UserFunctionOperator();
-                                    ufo.Function = (expressionStack, contextObj) => {
-                                        var result = userFunc(expressionStack.ToArray(), contextObj);
-                                        expressionStack.Clear();
-                                        return result;
+                                    var ufo = new UserFunctionOperator(); //TODO: clean up, refactor
+                                    ufo.VirtualParameters = userFunc.VirtualParameters;
+
+                                    ufo.Function = (argumentStack, contextObj) => {
+                                        var result = userFunc.Logic(argumentStack.ToArray(), contextObj);
+                                        argumentStack.Clear();
+                                        return double.Parse(result.ToString());
                                     };
 
                                     operatorStack.Push(ufo);
@@ -481,7 +504,7 @@ namespace SpiceSharpParser.Connector.Evaluation
                             {
                                 if (operatorStack.Count > 0 && operatorStack.Peek().Id == IdUserFunction)
                                 {
-                                    expressionStack.Push(id);
+                                    virtualParamtersStack.Push(id);
                                 }
                                 else
                                 {
@@ -515,8 +538,18 @@ namespace SpiceSharpParser.Connector.Evaluation
 
                             if (operatorStack.Peek().Id == IdUserFunction)
                             {
-                                UserFunctionOperator op = (UserFunctionOperator)operatorStack.Pop();
-                                outputStack.Push(op.Function(expressionStack, context));
+                                UserFunctionOperator op2 = (UserFunctionOperator)operatorStack.Pop();
+                                if (op2.VirtualParameters)
+                                {
+                                    outputStack.Push(op2.Function(virtualParamtersStack, context));
+                                    virtualParamtersStack.Clear();
+                                }
+                                else
+                                {
+                                    var copyOfStack = Convert(outputStack);
+                                    outputStack.Clear();
+                                    outputStack.Push(op2.Function(copyOfStack, context));
+                                }
                                 break;
                             }
 
@@ -783,6 +816,19 @@ namespace SpiceSharpParser.Connector.Evaluation
             return value;
         }
 
+        private Stack<object> Convert(Stack<double> stack)
+        {
+            var result = new Stack<object>();
+            var stackArray = stack.ToArray();
+
+            for (var i = stackArray.Length - 1; i >= 0; i--)
+            {
+                result.Push(stackArray[i]);
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Operator description
         /// </summary>
@@ -838,6 +884,7 @@ namespace SpiceSharpParser.Connector.Evaluation
             public Func<Stack<double>, double> Function { get; }
         }
 
+
         /// <summary>
         /// User function operator
         /// </summary>
@@ -854,7 +901,9 @@ namespace SpiceSharpParser.Connector.Evaluation
             /// <summary>
             /// Gets or sets the function evaluation
             /// </summary>
-            public Func<Stack<string>, object, double> Function { get; set; }
+            public Func<Stack<object>, object, double> Function { get; set; }
+
+            public bool VirtualParameters { get; set; }
         }
     }
 }

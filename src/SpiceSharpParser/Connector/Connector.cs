@@ -7,6 +7,7 @@ using SpiceSharpParser.Connector.Evaluation;
 using SpiceSharpParser.Connector.Exceptions;
 using SpiceSharpParser.Connector.Processors;
 using SpiceSharpParser.Connector.Processors.Controls.Exporters;
+using SpiceSharpParser.Connector.UserFunctions;
 using SpiceSharpParser.Model.SpiceObjects;
 using SpiceSharpParser.Model.SpiceObjects.Parameters;
 
@@ -80,95 +81,11 @@ namespace SpiceSharpParser.Connector
         /// <param name="context">Processing context</param>
         private void AddUserFunctions(Evaluator evaluator, IProcessingContext context)
         {
-            var userFunctions = new Dictionary<string, System.Func<string[], object, double>>();
+            var userFunctions = new Dictionary<string, UserFunction>();
 
-            // TODO: Future: add more functions to use
-            CreateExportsUserFunctions(context, userFunctions);
+            ExportUserFunctions.Create(context, userFunctions, this.StatementsProcessor);
 
             evaluator.ExpressionParser.UserFunctions = userFunctions;
-        }
-
-        /// <summary>
-        /// Creates export user functions
-        /// </summary>
-        /// <param name="processingContext">Processing context</param>
-        /// <param name="userFunctions">Where to add</param>
-        private void CreateExportsUserFunctions(IProcessingContext processingContext, Dictionary<string, System.Func<string[], object, double>> userFunctions)
-        {
-            // create exports user functions for each export
-            var exporters = new Dictionary<string, Export>();
-
-            foreach (var exporter in StatementsProcessor.ExporterRegistry)
-            {
-                foreach (var exportType in exporter.GetSupportedTypes())
-                {
-                    System.Func<string[], object, double> eval = null;
-
-                    // @ is a special function for now (TODO)
-                    if (exportType == "@")
-                    {
-                        eval = (args, simulation) =>
-                        {
-                            string exporterKey = exportType + string.Join(",", args);
-
-                            if (!exporters.ContainsKey(exporterKey))
-                            {
-                                var parameters = new ParameterCollection();
-                                parameters.Add(new WordParameter(args[1]));
-                                parameters.Add(new WordParameter(args[0]));
-
-                                var export = exporter.CreateExport(exportType, parameters, (Simulation)simulation ?? processingContext.Result.Simulations.First(), processingContext);
-                                exporters[exporterKey] = export;
-                            }
-
-                            try
-                            {
-                                return exporters[exporterKey].Extract();
-                            }
-                            catch (GeneralConnectorException)
-                            {
-                                return double.NaN;
-                            }
-                        };
-                    }
-                    else
-                    {
-                        eval = (args, simulation) =>
-                        {
-                            string exporterKey = exportType + string.Join(",", args);
-
-                            if (!exporters.ContainsKey(exporterKey))
-                            {
-                                var vectorParameter = new VectorParameter();
-                                foreach (var arg in args)
-                                {
-                                    vectorParameter.Elements.Add(new WordParameter(arg));
-                                }
-
-                                var parameters = new ParameterCollection();
-                                parameters.Add(vectorParameter);
-                                var export = exporter.CreateExport(exportType, parameters, (Simulation)simulation ?? processingContext.Result.Simulations.First(), processingContext);
-                                exporters[exporterKey] = export;
-                            }
-
-                            try
-                            {
-                                return exporters[exporterKey].Extract();
-                            }
-                            catch (GeneralConnectorException)
-                            {
-                                return double.NaN;
-                            }
-                        };
-                    }
-
-                    userFunctions.Add(exportType, eval);
-                    if (exportType != exportType.ToUpper())
-                    {
-                        userFunctions.Add(exportType.ToUpper(), eval);
-                    }
-                }
-            }
         }
     }
 }
