@@ -52,16 +52,16 @@ namespace SpiceSharpParser.Preprocessors
                 currentDirectoryPath = Directory.GetCurrentDirectory();
             }
 
-            bool libFound = ProcessLib(netlistModel, currentDirectoryPath);
+            bool libFound = ProcessLibs(netlistModel, currentDirectoryPath);
 
             while (libFound)
             {
                 IncludesPreProcessor.Process(netlistModel, currentDirectoryPath);
-                libFound = ProcessLib(netlistModel, currentDirectoryPath);
+                libFound = ProcessLibs(netlistModel, currentDirectoryPath);
             }
         }
 
-        private bool ProcessLib(Netlist netlistModel, string currentDirectoryPath)
+        private bool ProcessLibs(Netlist netlistModel, string currentDirectoryPath)
         {
             bool result = false;
             var subCircuits = netlistModel.Statements.Where(statement => statement is SubCircuit s);
@@ -117,32 +117,50 @@ namespace SpiceSharpParser.Preprocessors
 
                 var allStatements = includeModel.Statements.ToList();
 
-                //2. Find lib by entry
-                var libEntry = allStatements.SingleOrDefault(s => s is Control c && c.Name == "lib" && c.Parameters.GetString(0) == lib.Parameters.GetString(1));
-                if (libEntry != null)
+                if (lib.Parameters.Count == 2)
                 {
-                    // look for .endl
-                    int position = allStatements.IndexOf(libEntry);
-                    int libPosition = position;
-
-                    for (; !(allStatements[position] is Control c && c.Name.ToLower() == "endl") && position < allStatements.Count; position++)
-                    {
-                    }
-
-                    if (position == allStatements.Count)
-                    {
-                        throw new Exception("No .endl found");
-                    }
-                    else
-                    {
-                        var libStatements = allStatements.Skip(libPosition + 1).Take(position - libPosition);
-                        statements.Replace(lib, libStatements);
-                    }
+                    ProcessSingleLibWithTwoArguments(statements, lib, allStatements);
+                }
+                else if (lib.Parameters.Count == 1)
+                {
+                    ProcessSingleLibWithOneArgument(statements, lib, allStatements);
                 }
             }
             else
             {
                 throw new InvalidOperationException($"Netlist include at { libFullPath} could not be loaded");
+            }
+        }
+
+        private static void ProcessSingleLibWithOneArgument(Statements statements, Control lib, List<Statement> allStatements)
+        {
+            var libStatements = allStatements;
+            statements.Replace(lib, libStatements);
+        }
+
+        private static void ProcessSingleLibWithTwoArguments(Statements statements, Control lib, List<Statement> allStatements)
+        {
+            // Find lib by entry
+            var libEntry = allStatements.SingleOrDefault(s => s is Control c && c.Name == "lib" && c.Parameters.GetString(0) == lib.Parameters.GetString(1));
+            if (libEntry != null)
+            {
+                // look for .endl
+                int position = allStatements.IndexOf(libEntry);
+                int libPosition = position;
+
+                for (; !(allStatements[position] is Control c && c.Name.ToLower() == "endl") && position < allStatements.Count; position++)
+                {
+                }
+
+                if (position == allStatements.Count)
+                {
+                    throw new Exception("No .endl found");
+                }
+                else
+                {
+                    var libStatements = allStatements.Skip(libPosition + 1).Take(position - libPosition);
+                    statements.Replace(lib, libStatements);
+                }
             }
         }
 

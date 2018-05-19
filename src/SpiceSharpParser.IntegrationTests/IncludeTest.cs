@@ -107,7 +107,7 @@ namespace SpiceSharpParser.IntegrationTests
         public void SingleIncludeIncTest()
         {
             string modelFileContent = ".model 1N914 D(Is=2.52e-9 Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)\n";
-            string modelFilePath = Path.Combine(Directory.GetCurrentDirectory(), "diodes.mod");
+            string modelFilePath = Path.Combine(Directory.GetCurrentDirectory(), "diodes2.mod");
             File.WriteAllText(modelFilePath, modelFileContent);
 
             var netlist = ParseNetlist(
@@ -129,7 +129,7 @@ namespace SpiceSharpParser.IntegrationTests
         public void SingleIncludeWorkingDirectoryFileTest()
         {
             string modelFileContent = ".model 1N914 D(Is=2.52e-9 Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)\n";
-            string modelFilePath = Path.Combine(Directory.GetCurrentDirectory(), "diodes.mod");
+            string modelFilePath = Path.Combine(Directory.GetCurrentDirectory(), "diodes3.mod");
             File.WriteAllText(modelFilePath, modelFileContent);
 
             var netlist = ParseNetlistInWorkingDirectory(
@@ -141,7 +141,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".SAVE V(OUT)",
                 ".NODESET V(OUT)={x+1}",
                 ".param x = 13",
-                ".include \"diodes.mod\"",
+                ".include \"diodes3.mod\"",
                 ".END");
 
             RunDCSimulation(netlist, "V(OUT)");
@@ -152,7 +152,7 @@ namespace SpiceSharpParser.IntegrationTests
         public void WithoutQuotesTest()
         {
             string modelFileContent = ".model 1N914 D(Is=2.52e-9 Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)\n";
-            string modelFilePath = Path.Combine(Directory.GetCurrentDirectory(), "diodes.mod");
+            string modelFilePath = Path.Combine(Directory.GetCurrentDirectory(), "diodes4.mod");
             File.WriteAllText(modelFilePath, modelFileContent);
 
             var netlist = ParseNetlistInWorkingDirectory(
@@ -164,7 +164,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".SAVE V(OUT)",
                 ".NODESET V(OUT)={x+1}",
                 ".param x = 13",
-                ".include diodes.mod",
+                ".include diodes4.mod",
                 ".END");
 
             RunDCSimulation(netlist, "V(OUT)");
