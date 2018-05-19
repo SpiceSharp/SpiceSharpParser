@@ -1,5 +1,4 @@
 # SpiceSharpParser
-Documentation on SpiceSharpParser is available at <https://spicesharp.github.io/SpiceSharpParser/index.html>.
 
 ## What is SpiceSharpParser?
 SpiceSharpParser is a .NET library that parses Spice netlists and creates a model for SpiceSharp.
@@ -23,6 +22,7 @@ SpiceSharpParser is a .NET library that parses Spice netlists and creates a mode
 * .INCLUDE
 * .APPENDMODEL
 * .TEMP
+* .LIB
 
 ### Supported components
 * RLC
@@ -60,9 +60,8 @@ SpiceSharpParser is available as NuGet Package
 [<img src="https://img.shields.io/nuget/vpre/SpiceSharp-Parser.svg">]( https://www.nuget.org/packages/SpiceSharp-Parser)
 
 
-
-
-
+## Documentation
+Documentation for API on SpiceSharpParser is available at <https://spicesharp.github.io/SpiceSharpParser/api/index.html>.
 
 
 ## Currently Supported and Tested Platforms
@@ -71,7 +70,6 @@ SpiceSharpParser is available as NuGet Package
 
 ## Roadmap
 Future features:
-* .LIB
 * .PRINT
 * .WIDTH
 * Better .PARAM
