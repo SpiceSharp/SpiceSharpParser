@@ -22,7 +22,7 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             var result = parser.Parse("10 * random()");
 
             // assert
-            Assert.Equal(5, result);
+            Assert.True(result >= 0 && result <= 10);
         }
     }
 }
