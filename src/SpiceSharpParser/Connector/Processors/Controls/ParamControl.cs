@@ -21,33 +21,18 @@ namespace SpiceSharpParser.Connector.Processors.Controls
         {
             foreach (var param in statement.Parameters)
             {
-                if (param is Model.SpiceObjects.Parameters.AssignmentParameter a)
+                if (param is Model.SpiceObjects.Parameters.AssignmentParameter assigmentParameter)
                 {
-                    string name = a.Name;
-                    string expression = a.Value;
+                    string name = assigmentParameter.Name;
+                    string expression = assigmentParameter.Value;
 
-                    if (a.Arguments.Count == 0)
+                    if (assigmentParameter.Arguments.Count == 0)
                     {
                         context.Evaluator.SetParameter(name, expression);
                     }
                     else
                     {
-                        UserFunction userFunction = new UserFunction();
-                        userFunction.Name = name;
-                        userFunction.VirtualParameters = false;
-                        userFunction.Logic = (args, simulation) =>
-                        {
-                            var evaluator = new Evaluator(context.Evaluator);
-
-                            for (var i = 0; i < a.Arguments.Count; i++)
-                            {
-                                evaluator.SetParameter(a.Arguments[i], (double)args[a.Arguments.Count - i - 1]);
-                            }
-
-                            return evaluator.EvaluateDouble(expression);
-                        };
-
-                        context.Evaluator.ExpressionParser.UserFunctions.Add(name, userFunction);
+                        DefineUserFunction(context, assigmentParameter, name, expression);
                     }
                 }
                 else
@@ -55,6 +40,28 @@ namespace SpiceSharpParser.Connector.Processors.Controls
                     throw new WrongParameterTypeException(".PARAM supports only assigments");
                 }
             }
+        }
+
+        private static void DefineUserFunction(IProcessingContext context, Model.SpiceObjects.Parameters.AssignmentParameter a, string name, string expression)
+        {
+            SpiceFunction userFunction = new SpiceFunction();
+            userFunction.Name = name;
+            userFunction.VirtualParameters = false;
+            userFunction.ArgumentsCount = a.Arguments.Count;
+
+            userFunction.Logic = (args, simulation) =>
+            {
+                var evaluator = new Evaluator(context.Evaluator);
+
+                for (var i = 0; i < a.Arguments.Count; i++)
+                {
+                    evaluator.SetParameter(a.Arguments[i], (double)args[a.Arguments.Count - i - 1]);
+                }
+
+                return evaluator.EvaluateDouble(expression);
+            };
+
+            context.Evaluator.ExpressionParser.CustomFunctions.Add(name, userFunction);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace SpiceSharpParser.Connector.Evaluation
 {
     /// <summary>
     /// @author: Sven Boulanger 
-    /// @author: Marcin Gołębiowski (user functions)
+    /// @author: Marcin Gołębiowski (custom functions)
     /// A very light-weight and fast expression parser made for parsing Spice expressions
     /// It is based on Dijkstra's Shunting Yard algorithm. It is very fast for parsing expressions only once.
     /// The parser is also not very expressive for errors, so only use it for relatively simple expressions.
@@ -121,9 +121,9 @@ namespace SpiceSharpParser.Connector.Evaluation
         public Collection<string> Variables { get; protected set; }
 
         /// <summary>
-        /// Gets or sets user functions.
+        /// Gets or sets custom functions.
         /// </summary>
-        public Dictionary<string, UserFunction> UserFunctions { get; set; }
+        public Dictionary<string, SpiceFunction> CustomFunctions { get; set; }
 
         /// <summary>
         /// Gets all built-in constants
@@ -255,7 +255,7 @@ namespace SpiceSharpParser.Connector.Evaluation
                                     break;
                                 }
 
-                                Evaluate(operatorStack.Pop());
+                                EvaluateOperator(operatorStack.Pop());
                             }
 
                             operatorStack.Pop();
@@ -312,6 +312,8 @@ namespace SpiceSharpParser.Connector.Evaluation
 
                         case ')':
                             // Evaluate until the matching opening bracket
+
+                            // TODO: verify logic below
                             while (operatorStack.Count > 0)
                             {
                                 if (operatorStack.Peek().Id == IdLeftBracket)
@@ -327,24 +329,13 @@ namespace SpiceSharpParser.Connector.Evaluation
                                     break;
                                 }
 
-                                if (operatorStack.Peek().Id == IdUserFunction) //TODO: refactor this please ...
+                                if (operatorStack.Peek().Id == IdUserFunction)
                                 {
-                                    UserFunctionOperator op = (UserFunctionOperator)operatorStack.Pop();
-                                    if (op.VirtualParameters)
-                                    {
-                                        outputStack.Push(op.Function(virtualParamtersStack, context));
-                                        virtualParamtersStack.Clear();
-                                    }
-                                    else
-                                    {
-                                        var copyOfStack = Convert(outputStack);
-                                        outputStack.Clear();
-                                        outputStack.Push(op.Function(copyOfStack, context));
-                                    }
+                                    EvaluateUserFunction(context);
                                     break;
                                 }
 
-                                Evaluate(operatorStack.Pop());
+                                EvaluateOperator(operatorStack.Pop());
                             }
 
                             infixPostfix = true;
@@ -353,24 +344,9 @@ namespace SpiceSharpParser.Connector.Evaluation
                         case '[':
                                break;
                         case ']':
-
-                            //TODO: Refactor 
-                            UserFunctionOperator op2 = (UserFunctionOperator)operatorStack.Pop();
-                            if (op2.VirtualParameters)
-                            {
-                                outputStack.Push(op2.Function(virtualParamtersStack, context));
-                                virtualParamtersStack.Clear();
-                            }
-                            else
-                            {
-                                var copyOfStack = Convert(outputStack);
-                                outputStack.Clear();
-                                outputStack.Push(op2.Function(copyOfStack, context));
-                            }
-
+                            EvaluateUserFunction(context);
                             infixPostfix = true;
                             break;
-
                         case ',':
 
                             // Function argument
@@ -386,7 +362,7 @@ namespace SpiceSharpParser.Connector.Evaluation
                                     break;
                                 }
 
-                                Evaluate(operatorStack.Pop());
+                                EvaluateOperator(operatorStack.Pop());
                             }
 
                             break;
@@ -413,15 +389,14 @@ namespace SpiceSharpParser.Connector.Evaluation
 
                         if (tmpIndex != count)
                         {
-                            var userFunc = UserFunctions["@"];
-                            var ufo = new UserFunctionOperator();
-                            ufo.VirtualParameters = userFunc.VirtualParameters;
-                            ufo.Function = (argumentStack, contextObj) => {
-                                var result = userFunc.Logic(argumentStack.ToArray(), contextObj);
-                                argumentStack.Clear();
-                                return double.Parse(result.ToString()); //TODO: spice expression at the moment evalute only to double ...
-                            };
-                            operatorStack.Push(ufo);
+                            if (CustomFunctions.ContainsKey("@"))
+                            {
+                                operatorStack.Push(CreateOperatorUserFunction("@"));
+                            }
+                            else
+                            {
+                                throw new Exception("Unknown function: @");
+                            }
                             infixPostfix = false;
                         }
                     }
@@ -466,20 +441,9 @@ namespace SpiceSharpParser.Connector.Evaluation
                             }
                             else
                             {
-                                if (UserFunctions.ContainsKey(sb.ToString()))
+                                if (CustomFunctions.ContainsKey(sb.ToString()))
                                 {
-                                    var userFunc = UserFunctions[sb.ToString()];
-
-                                    var ufo = new UserFunctionOperator(); //TODO: clean up, refactor
-                                    ufo.VirtualParameters = userFunc.VirtualParameters;
-
-                                    ufo.Function = (argumentStack, contextObj) => {
-                                        var result = userFunc.Logic(argumentStack.ToArray(), contextObj);
-                                        argumentStack.Clear();
-                                        return double.Parse(result.ToString());
-                                    };
-
-                                    operatorStack.Push(ufo);
+                                    operatorStack.Push(CreateOperatorUserFunction(sb.ToString()));
                                 }
                                 else
                                 {
@@ -538,22 +502,11 @@ namespace SpiceSharpParser.Connector.Evaluation
 
                             if (operatorStack.Peek().Id == IdUserFunction)
                             {
-                                UserFunctionOperator op2 = (UserFunctionOperator)operatorStack.Pop();
-                                if (op2.VirtualParameters)
-                                {
-                                    outputStack.Push(op2.Function(virtualParamtersStack, context));
-                                    virtualParamtersStack.Clear();
-                                }
-                                else
-                                {
-                                    var copyOfStack = Convert(outputStack);
-                                    outputStack.Clear();
-                                    outputStack.Push(op2.Function(copyOfStack, context));
-                                }
+                                EvaluateUserFunction(context);
                                 break;
                             }
 
-                            Evaluate(operatorStack.Pop());
+                            EvaluateOperator(operatorStack.Pop());
                         }
 
                         infixPostfix = true;
@@ -580,7 +533,7 @@ namespace SpiceSharpParser.Connector.Evaluation
             // Evaluate all that is left on the stack
             while (operatorStack.Count > 0)
             {
-                Evaluate(operatorStack.Pop());
+                EvaluateOperator(operatorStack.Pop());
             }
 
             if (outputStack.Count > 1)
@@ -591,8 +544,43 @@ namespace SpiceSharpParser.Connector.Evaluation
             return outputStack.Pop();
         }
 
+        private UserFunctionOperator CreateOperatorUserFunction(string functionName)
+        {
+            if (!CustomFunctions.ContainsKey(functionName))
+            {
+                throw new Exception("Unknown function:" + functionName);
+            }
+
+            var userFunc = CustomFunctions[functionName];
+            var ufo = new UserFunctionOperator();
+            ufo.VirtualParameters = userFunc.VirtualParameters;
+            ufo.ArgumentsCount = userFunc.ArgumentsCount;
+            ufo.Function = (argumentStack, contextObj) =>
+            {
+                var result = userFunc.Logic(argumentStack.ToArray(), contextObj);
+                argumentStack.Clear();
+                return double.Parse(result.ToString()); //TODO: spice expression at the moment evalute only to double ...
+            };
+            return ufo;
+        }
+
+        private void EvaluateUserFunction(object context)
+        {
+            UserFunctionOperator op2 = (UserFunctionOperator)operatorStack.Pop();
+            if (op2.VirtualParameters)
+            {
+                outputStack.Push(op2.Function(virtualParamtersStack, context));
+                virtualParamtersStack.Clear();
+            }
+            else
+            {
+                var args = PopAndReturnElements(outputStack, op2.ArgumentsCount);
+                outputStack.Push(op2.Function(args, context));
+            }
+        }
+
         /// <summary>
-        /// Evaluate operators with precedence
+        /// Evaluate operators with precedence.
         /// </summary>
         /// <param name="op">Operator</param>
         private void PushOperator(Operator op)
@@ -606,7 +594,7 @@ namespace SpiceSharpParser.Connector.Evaluation
                     break;
                 }
 
-                Evaluate(operatorStack.Pop());
+                EvaluateOperator(operatorStack.Pop());
             }
 
             operatorStack.Push(op);
@@ -616,7 +604,7 @@ namespace SpiceSharpParser.Connector.Evaluation
         /// Evaluate an operator
         /// </summary>
         /// <param name="op">Operator</param>
-        private void Evaluate(Operator op)
+        private void EvaluateOperator(Operator op)
         {
             double a, b;
             switch (op.Id)
@@ -816,21 +804,20 @@ namespace SpiceSharpParser.Connector.Evaluation
             return value;
         }
 
-        private Stack<object> Convert(Stack<double> stack)
+        private Stack<object> PopAndReturnElements(Stack<double> stack, int count)
         {
-            var result = new Stack<object>();
-            var stackArray = stack.ToArray();
-
-            for (var i = stackArray.Length - 1; i >= 0; i--)
+            var result = new List<object>();
+            for (var i = 0; i < count; i++)
             {
-                result.Push(stackArray[i]);
+                result.Add(stack.Pop());
             }
 
-            return result;
+            result.Reverse();
+            return new Stack<object>(result);
         }
 
         /// <summary>
-        /// Operator description
+        /// Operator description.
         /// </summary>
         private class Operator
         {
@@ -848,23 +835,23 @@ namespace SpiceSharpParser.Connector.Evaluation
             }
 
             /// <summary>
-            /// Gets operator identifier
+            /// Gets operator identifier.
             /// </summary>
             public byte Id { get; }
 
             /// <summary>
-            /// Gets operator precedence
+            /// Gets operator precedence.
             /// </summary>
             public byte Precedence { get; }
 
             /// <summary>
-            /// Gets a value indicating whether the operator is left-associative or not
+            /// Gets a value indicating whether the operator is left-associative or not.
             /// </summary>
             public bool LeftAssociative { get; }
         }
 
         /// <summary>
-        /// Built-in function operator
+        /// Built-in function operator.
         /// </summary>
         private class BuiltInFunctionOperator : Operator
         {
@@ -879,14 +866,13 @@ namespace SpiceSharpParser.Connector.Evaluation
             }
 
             /// <summary>
-            /// Gets the function evaluation
+            /// Gets the function evaluation.
             /// </summary>
             public Func<Stack<double>, double> Function { get; }
         }
 
-
         /// <summary>
-        /// User function operator
+        /// User function operator.
         /// </summary>
         private class UserFunctionOperator : Operator
         {
@@ -899,11 +885,13 @@ namespace SpiceSharpParser.Connector.Evaluation
             }
 
             /// <summary>
-            /// Gets or sets the function evaluation
+            /// Gets or sets the function evaluation.
             /// </summary>
             public Func<Stack<object>, object, double> Function { get; set; }
 
             public bool VirtualParameters { get; set; }
+
+            public int ArgumentsCount { get; set; }
         }
     }
 }

@@ -34,7 +34,7 @@ namespace SpiceSharpParser.Connector.Evaluation
                 Parameters[parameterName] = parentEvaluator.GetParameterValue(parameterName);
             }
 
-            ExpressionParser.UserFunctions = parentEvaluator.ExpressionParser?.UserFunctions;
+            ExpressionParser.CustomFunctions = parentEvaluator.ExpressionParser?.CustomFunctions;
         }
 
         /// <summary>

@@ -4,10 +4,10 @@ using SpiceSharp;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Connector.Context;
 using SpiceSharpParser.Connector.Evaluation;
+using SpiceSharpParser.Connector.Evaluation.CustomFunctions;
 using SpiceSharpParser.Connector.Exceptions;
 using SpiceSharpParser.Connector.Processors;
 using SpiceSharpParser.Connector.Processors.Controls.Exporters;
-using SpiceSharpParser.Connector.UserFunctions;
 using SpiceSharpParser.Model.SpiceObjects;
 using SpiceSharpParser.Model.SpiceObjects.Parameters;
 
@@ -66,7 +66,7 @@ namespace SpiceSharpParser.Connector
                 nodeNameGenerator,
                 objectNameGenerator);
 
-            AddUserFunctions(evaluator, processingContext);
+            AddSpiceFunctions(evaluator, processingContext);
 
             // Process statements form input netlist using created context
             StatementsProcessor.Process(netlist.Statements, processingContext);
@@ -79,13 +79,13 @@ namespace SpiceSharpParser.Connector
         /// </summary>
         /// <param name="evaluator">Evaluator to set</param>
         /// <param name="context">Processing context</param>
-        private void AddUserFunctions(Evaluator evaluator, IProcessingContext context)
+        private void AddSpiceFunctions(Evaluator evaluator, IProcessingContext context)
         {
-            var userFunctions = new Dictionary<string, UserFunction>();
+            var customFunctions = new List<KeyValuePair<string, SpiceFunction>>();
+            customFunctions.AddRange(ExportFunctions.Create(context, StatementsProcessor));
+            customFunctions.AddRange(RandomFunctions.Create(context, StatementsProcessor));
 
-            ExportUserFunctions.Create(context, userFunctions, this.StatementsProcessor);
-
-            evaluator.ExpressionParser.UserFunctions = userFunctions;
+            evaluator.ExpressionParser.CustomFunctions = customFunctions.ToDictionary(entry => entry.Key, entry => entry.Value);
         }
     }
 }

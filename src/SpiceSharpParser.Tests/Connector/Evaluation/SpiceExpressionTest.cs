@@ -1,4 +1,5 @@
 ﻿using SpiceSharpParser.Connector.Evaluation;
+using SpiceSharpParser.Connector.Evaluation.CustomFunctions;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -14,10 +15,10 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             var parser = new SpiceExpression
             {
                 Parameters = new Dictionary<string, double>(),
-                UserFunctions = new Dictionary<string, UserFunction>()
+                CustomFunctions = new Dictionary<string, SpiceFunction>()
             };
 
-            parser.UserFunctions.Add("v", new UserFunction()
+            parser.CustomFunctions.Add("v", new SpiceFunction()
             {
                 Logic = (args, context) =>
                 {
@@ -48,14 +49,14 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             var parser = new SpiceExpression
             {
                 Parameters = new Dictionary<string, double>(),
-                UserFunctions = new Dictionary<string, UserFunction>()
+                CustomFunctions = new Dictionary<string, SpiceFunction>()
             };
 
             Random rand = new Random(Environment.TickCount);
 
             double randomVal = 0;
 
-            parser.UserFunctions.Add("random", new UserFunction
+            parser.CustomFunctions.Add("random", new SpiceFunction
             {
                 Logic = (args, context) =>
                 {
@@ -78,7 +79,7 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             var parser = new SpiceExpression
             {
                 Parameters = new Dictionary<string, double>(),
-                UserFunctions = new Dictionary<string, UserFunction>()
+                CustomFunctions = new Dictionary<string, SpiceFunction>()
             };
 
             // act and assert
@@ -92,7 +93,7 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             var parser = new SpiceExpression
             {
                 Parameters = new Dictionary<string, double>() { { "x", 1 } },
-                UserFunctions = new Dictionary<string, UserFunction>()
+                CustomFunctions = new Dictionary<string, SpiceFunction>()
             };
 
             // act and assert
@@ -106,7 +107,7 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             var parser = new SpiceExpression
             {
                 Parameters = new Dictionary<string, double>() { { "x", 1 } },
-                UserFunctions = new Dictionary<string, UserFunction>()
+                CustomFunctions = new Dictionary<string, SpiceFunction>()
             };
 
             // act and assert
@@ -120,7 +121,7 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             var parser = new SpiceExpression
             {
                 Parameters = new Dictionary<string, double>() { },
-                UserFunctions = new Dictionary<string, UserFunction>()
+                CustomFunctions = new Dictionary<string, SpiceFunction>()
             };
 
             // act and assert
@@ -134,7 +135,7 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             var parser = new SpiceExpression
             {
                 Parameters = new Dictionary<string, double>() { },
-                UserFunctions = new Dictionary<string, UserFunction>()
+                CustomFunctions = new Dictionary<string, SpiceFunction>()
             };
 
             // act and assert
@@ -148,7 +149,7 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             var parser = new SpiceExpression
             {
                 Parameters = new Dictionary<string, double>() { },
-                UserFunctions = new Dictionary<string, UserFunction>()
+                CustomFunctions = new Dictionary<string, SpiceFunction>()
             };
 
             // act and assert
@@ -162,10 +163,10 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             var parser = new SpiceExpression
             {
                 Parameters = new Dictionary<string, double>() { },
-                UserFunctions = new Dictionary<string, UserFunction>()
+                CustomFunctions = new Dictionary<string, SpiceFunction>()
             };
 
-            parser.UserFunctions.Add("@", new UserFunction()
+            parser.CustomFunctions.Add("@", new SpiceFunction()
             {
                 Logic = (args, context) =>
                 {

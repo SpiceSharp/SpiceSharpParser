@@ -2,10 +2,10 @@
 
 namespace SpiceSharpParser.Connector.Evaluation
 {
-    public class UserFunction
+    public class SpiceFunction
     {
         /// <summary>
-        /// Gets or sets the name of user function
+        /// Gets or sets the name of user function.
         /// </summary>
         public string Name { get; set; }
 
@@ -20,6 +20,11 @@ namespace SpiceSharpParser.Connector.Evaluation
         /// Gets or sets a value indicating whether function has virtual parameters.
         /// </summary>
         public bool VirtualParameters { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets arguments count.
+        /// </summary>
+        public int ArgumentsCount { get; set; }
 
         // TODO: future add validation
 
