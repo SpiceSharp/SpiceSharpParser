@@ -8,7 +8,7 @@ SpiceSharpParser is a .NET library that parses Spice netlists and creates a mode
 * .GLOBAL
 * .LET
 * .NODESET 
-* .PARAM
+* .PARAM (with user functions)
 * .OPTION
 * .SAVE
 * .PLOT
