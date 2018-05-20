@@ -676,29 +676,26 @@ namespace SpiceSharpParser.Parser.TreeTranslator
             }
             else
             {
+                var assigmentParameter = new AssignmentParameter();
+                assigmentParameter.Name = values.GetLexem(0);
+
                 if (values.Count == 6)
                 {
-                    // v(2) = 3
-                    var assigmentParameter = new AssignmentParameter();
-                    assigmentParameter.Name = values.GetLexem(0);
-                    assigmentParameter.Arguments.Add(values.GetSpiceObject<SingleParameter>(2).Image);
+                    var arguments = values.GetSpiceObject<SpiceObject>(2);
+                    if (arguments is VectorParameter vp)
+                    {
+                        foreach (SingleParameter parameter in vp.Elements)
+                        {
+                            assigmentParameter.Arguments.Add(parameter.Image);
+                        }
+                    }
+                    else
+                    {
+                        assigmentParameter.Arguments.Add(values.GetSpiceObject<SingleParameter>(2).Image);
+                    }
 
                     var valueParameter = values.GetSpiceObject<SingleParameter>(5);
                     assigmentParameter.Value = valueParameter.Image;
-                    return assigmentParameter;
-                }
-
-                if (values.Count == 8)
-                {
-                    // v(2,3) = 4
-                    var assigmentParameter = new AssignmentParameter();
-                    assigmentParameter.Name = (values[0] as ParseTreeNodeTerminalTranslationValue).Token.Lexem;
-                    assigmentParameter.Arguments.Add(values.GetSpiceObject<SingleParameter>(2).Image);
-                    assigmentParameter.Arguments.Add(values.GetSpiceObject<SingleParameter>(4).Image);
-
-                    var valueParameter = values.GetSpiceObject<SingleParameter>(7);
-                    assigmentParameter.Value = valueParameter.Image;
-
                     return assigmentParameter;
                 }
 

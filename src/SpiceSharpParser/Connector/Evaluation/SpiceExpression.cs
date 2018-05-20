@@ -699,7 +699,7 @@ namespace SpiceSharpParser.Connector.Evaluation
             }
 
             // Read decimal part
-            if (index < count && (input[index] == '.' || input[index] == ','))
+            if (index < count && (input[index] == '.' || input[index] == ',') && (operatorStack.Count == 0 || operatorStack.Peek().Id != IdUserFunction))
             {
                 index++;
                 double mult = 1.0;

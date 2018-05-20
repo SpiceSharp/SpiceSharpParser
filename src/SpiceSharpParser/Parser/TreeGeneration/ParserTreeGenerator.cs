@@ -643,16 +643,13 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                             CreateTerminalNode(SpiceTokenType.EQUAL, currentNode),
                             CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, currentNode));
                     }
-
-                    if ((tokens.Length > currentTokenIndex + 6) && tokens[currentTokenIndex + 5].Lexem == ")" && tokens[currentTokenIndex + 6].Lexem == "=")
+                    else
                     {
                         PushProductionExpression(
                             stack,
                             CreateTerminalNode(SpiceTokenType.WORD, currentNode),
                             CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, "("),
-                            CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, currentNode),
-                            CreateTerminalNode(SpiceTokenType.COMMA, currentNode, ","),
-                            CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, currentNode),
+                            CreateNonTerminalNode(SpiceGrammarSymbol.VECTOR, currentNode),
                             CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, ")"),
                             CreateTerminalNode(SpiceTokenType.EQUAL, currentNode),
                             CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETER_SINGLE, currentNode));
@@ -742,8 +739,7 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                     }
                     else if (nextToken.Is(SpiceTokenType.DELIMITER) && nextToken.Equal("(", true))
                     {
-                        if (((tokens.Length > currentTokenIndex + 4) && tokens[currentTokenIndex + 3].Lexem == ")" && tokens[currentTokenIndex + 4].Lexem == "=")
-                            || ((tokens.Length > currentTokenIndex + 6) && tokens[currentTokenIndex + 5].Lexem == ")" && tokens[currentTokenIndex + 6].Lexem == "="))
+                        if (IsEqualTokens(tokens, currentTokenIndex))
                         {
                             PushProductionExpression(
                                 stack,
@@ -782,6 +778,20 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                     }
                 }
             }
+        }
+
+        private static bool IsEqualTokens(SpiceToken[] tokens, int currentTokenIndex)
+        {
+            while (tokens.Length > currentTokenIndex && tokens[currentTokenIndex].Lexem != ")")
+            {
+                currentTokenIndex += 1;
+            }
+
+            if (currentTokenIndex + 1 >= tokens.Length - 1)
+            {
+                return false;
+            }
+            return tokens[currentTokenIndex + 1].Lexem == "=";
         }
 
         /// <summary>

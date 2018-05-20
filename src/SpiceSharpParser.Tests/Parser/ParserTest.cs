@@ -149,6 +149,57 @@ namespace SpiceSharpParser.Tests.Parser
         }
 
         [Fact]
+        public void ParameterEqualWithTwoArgumentsTest()
+        {
+            var tokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.WORD, "v"),
+                new SpiceToken(SpiceTokenType.DELIMITER, "("),
+                new SpiceToken(SpiceTokenType.WORD, "out"),
+                new SpiceToken(SpiceTokenType.COMMA, ","),
+                new SpiceToken(SpiceTokenType.WORD, "1"),
+                new SpiceToken(SpiceTokenType.DELIMITER, ")"),
+                new SpiceToken(SpiceTokenType.EQUAL, "="),
+                new SpiceToken(SpiceTokenType.WORD, "12")
+            };
+
+            var parser = new ParserTreeGenerator();
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.PARAMETER);
+            var child = root.Children[0] as ParseTreeNonTerminalNode;
+            Assert.NotNull(child);
+            Assert.Equal(SpiceGrammarSymbol.PARAMETER_EQUAL, child.Name);
+            Assert.Equal(6, child.Children.Count);
+        }
+
+        [Fact]
+        public void ParameterEqualWithFourArgumentsTest()
+        {
+            var tokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.WORD, "fun"),
+                new SpiceToken(SpiceTokenType.DELIMITER, "("),
+                new SpiceToken(SpiceTokenType.WORD, "out"),
+                new SpiceToken(SpiceTokenType.COMMA, ","),
+                new SpiceToken(SpiceTokenType.VALUE, "1"),
+                new SpiceToken(SpiceTokenType.COMMA, ","),
+                new SpiceToken(SpiceTokenType.VALUE, "1"),
+                new SpiceToken(SpiceTokenType.COMMA, ","),
+                new SpiceToken(SpiceTokenType.VALUE, "1"),
+                new SpiceToken(SpiceTokenType.DELIMITER, ")"),
+                new SpiceToken(SpiceTokenType.EQUAL, "="),
+                new SpiceToken(SpiceTokenType.WORD, "12")
+            };
+
+            var parser = new ParserTreeGenerator();
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.PARAMETER);
+            var child = root.Children[0] as ParseTreeNonTerminalNode;
+            Assert.NotNull(child);
+            Assert.Equal(SpiceGrammarSymbol.PARAMETER_EQUAL, child.Name);
+            Assert.Equal(6, child.Children.Count);
+        }
+
+
+        [Fact]
         public void NetlistEndingWithoutNewlineTest()
         {
             var tokens = new SpiceToken[]
@@ -176,30 +227,7 @@ namespace SpiceSharpParser.Tests.Parser
             ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.NETLIST_ENDING);
             Assert.NotNull(root);
         }
-
-        [Fact]
-        public void ParameterEqualWithArgumentsTest()
-        {
-            var tokens = new SpiceToken[]
-            {
-                new SpiceToken(SpiceTokenType.WORD, "v"),
-                new SpiceToken(SpiceTokenType.DELIMITER, "("),
-                new SpiceToken(SpiceTokenType.WORD, "out"),
-                new SpiceToken(SpiceTokenType.COMMA, ","),
-                new SpiceToken(SpiceTokenType.WORD, "1"),
-                new SpiceToken(SpiceTokenType.DELIMITER, ")"),
-                new SpiceToken(SpiceTokenType.EQUAL, "="),
-                new SpiceToken(SpiceTokenType.WORD, "12")
-            };
-
-            var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.PARAMETER);
-            var child = root.Children[0] as ParseTreeNonTerminalNode;
-            Assert.NotNull(child);
-            Assert.Equal(SpiceGrammarSymbol.PARAMETER_EQUAL, child.Name);
-            Assert.Equal(8, child.Children.Count);
-        }
-
+   
         [Fact]
         public void ParameterEqualWithoutArgumentsTest()
         {
@@ -271,7 +299,7 @@ namespace SpiceSharpParser.Tests.Parser
         {
             var vectorTokens = new SpiceToken[]
             {
-                new SpiceToken(SpiceTokenType.WORD, "v"),
+                new SpiceToken(SpiceTokenType.WORD, "npm"),
                 new SpiceToken(SpiceTokenType.DELIMITER, "("),
                 new SpiceToken(SpiceTokenType.WORD, "a"),
                 new SpiceToken(SpiceTokenType.EQUAL, "="),
@@ -293,6 +321,42 @@ namespace SpiceSharpParser.Tests.Parser
         }
 
         [Fact]
+        public void ParameterBracketEqualSeqenceAdvancedTest()
+        {
+            var tokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.WORD, "D"),
+                new SpiceToken(SpiceTokenType.DELIMITER, "("),
+                new SpiceToken(SpiceTokenType.WORD, "Is"),
+                new SpiceToken(SpiceTokenType.EQUAL, "="),
+                new SpiceToken(SpiceTokenType.VALUE, "2.52e-9"),
+                new SpiceToken(SpiceTokenType.WORD, "Rs"),
+                new SpiceToken(SpiceTokenType.EQUAL, "="),
+                new SpiceToken(SpiceTokenType.VALUE, "0.568"),
+                new SpiceToken(SpiceTokenType.WORD, "N"),
+                new SpiceToken(SpiceTokenType.EQUAL, "="),
+                new SpiceToken(SpiceTokenType.VALUE, "1.752"),
+                new SpiceToken(SpiceTokenType.WORD, "Cjo"),
+                new SpiceToken(SpiceTokenType.EQUAL, "="),
+                new SpiceToken(SpiceTokenType.VALUE, "4e-12"),
+                new SpiceToken(SpiceTokenType.WORD, "M"),
+                new SpiceToken(SpiceTokenType.EQUAL, "="),
+                new SpiceToken(SpiceTokenType.VALUE, "0.4"),
+                new SpiceToken(SpiceTokenType.WORD, "tt"),
+                new SpiceToken(SpiceTokenType.EQUAL, "="),
+                new SpiceToken(SpiceTokenType.VALUE, "20e-9"),
+                new SpiceToken(SpiceTokenType.DELIMITER, ")")
+            };
+
+            var parser = new ParserTreeGenerator();
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(tokens, SpiceGrammarSymbol.PARAMETER);
+
+            var child = tree.Children[0] as ParseTreeNonTerminalNode;
+            Assert.NotNull(child);
+            Assert.Equal(SpiceGrammarSymbol.PARAMETER_BRACKET, child.Name);
+        }
+
+        [Fact]
         public void BraketParameterVectorTest()
         {
             var vectorTokens = new SpiceToken[]
@@ -302,6 +366,25 @@ namespace SpiceSharpParser.Tests.Parser
                 new SpiceToken(SpiceTokenType.WORD, "out"),
                 new SpiceToken(SpiceTokenType.COMMA, ","),
                 new SpiceToken(SpiceTokenType.VALUE, "0"),
+                new SpiceToken(SpiceTokenType.DELIMITER, ")")
+            };
+
+            var parser = new ParserTreeGenerator();
+            ParseTreeNonTerminalNode root = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
+        }
+
+        [Fact]
+        public void BraketParameterVectorThreeElementsTest()
+        {
+            var vectorTokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.WORD, "v"),
+                new SpiceToken(SpiceTokenType.DELIMITER, "("),
+                new SpiceToken(SpiceTokenType.WORD, "out"),
+                new SpiceToken(SpiceTokenType.COMMA, ","),
+                new SpiceToken(SpiceTokenType.VALUE, "0"),
+                new SpiceToken(SpiceTokenType.COMMA, ","),
+                new SpiceToken(SpiceTokenType.VALUE, "1"),
                 new SpiceToken(SpiceTokenType.DELIMITER, ")")
             };
 
