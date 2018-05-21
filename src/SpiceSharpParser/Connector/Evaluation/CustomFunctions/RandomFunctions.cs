@@ -19,7 +19,7 @@ namespace SpiceSharpParser.Connector.Evaluation.CustomFunctions
         }
 
         /// <summary>
-        /// Craete random user function.
+        /// Create a random() user function.
         /// </summary>
         /// <returns>
         /// A new instance of random spice function.

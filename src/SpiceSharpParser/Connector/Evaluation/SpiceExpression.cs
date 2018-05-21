@@ -134,6 +134,8 @@ namespace SpiceSharpParser.Connector.Evaluation
             { "pi", Math.PI },
             { "e", Math.E },
             { "E", Math.E },
+            { "false", 0.0 },
+            { "true", 1.0 }
         };
 
         /// <summary>

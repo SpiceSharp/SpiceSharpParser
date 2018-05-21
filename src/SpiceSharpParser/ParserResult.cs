@@ -1,4 +1,6 @@
-﻿namespace SpiceSharpParser
+﻿using SpiceSharpParser.Model;
+
+namespace SpiceSharpParser
 {
     /// <summary>
     /// A parser result.
@@ -26,5 +28,10 @@
         /// Gets or sets the netlist model after preprocessing.
         /// </summary>
         public Model.Netlist PreprocessedNetlistModel { get; set; }
+
+        /// <summary>
+        /// Gets or sets the netlist model after postprocessing.
+        /// </summary>
+        public Model.Netlist PostprocessedNetlistModel { get; set; }
     }
 }

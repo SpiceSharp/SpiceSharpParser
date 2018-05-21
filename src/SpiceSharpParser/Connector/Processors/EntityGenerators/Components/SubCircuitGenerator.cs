@@ -10,6 +10,7 @@ using SpiceSharpParser.Model.SpiceObjects;
 using SpiceSharpParser.Model.SpiceObjects.Parameters;
 using SpiceSharp;
 using SpiceSharp.Circuits;
+using SpiceSharpParser.Postprocessors;
 
 namespace SpiceSharpParser.Connector.Processors.EntityGenerators.Components
 {
@@ -52,6 +53,9 @@ namespace SpiceSharpParser.Connector.Processors.EntityGenerators.Components
         {
             SubCircuit subCircuitDefiniton = FindSubcircuitDefinion(parameters, context);
             ProcessingContext subCircuitContext = CreateSubcircuitContext(id.ToString(), originalName, subCircuitDefiniton, parameters, context);
+
+            var ifPreprocessor = new IfPostProcessor(subCircuitContext.Evaluator);
+            subCircuitDefiniton.Statements = ifPreprocessor.Process(subCircuitDefiniton.Statements);
 
             ProcessParamControl(subCircuitDefiniton, subCircuitContext);
             ProcessSubcircuits(subCircuitDefiniton, subCircuitContext);

@@ -143,6 +143,31 @@
         /// <summary>
         /// Content of a block comment in SmartSpice
         /// </summary>
-        COM_CONTENT = 27
+        COM_CONTENT = 27,
+
+        /// <summary>
+        /// .IF token
+        /// </summary>
+        IF = 28,
+
+        /// <summary>
+        /// .ELSE token
+        /// </summary>
+        ELSE = 29,
+
+        /// <summary>
+        /// .ELSEIF token
+        /// </summary>
+        ELSE_IF = 30,
+
+        /// <summary>
+        /// .ENDIF token
+        /// </summary>
+        ENDIF = 31,
+
+        /// <summary>
+        /// Boolean expression token with delimeters
+        /// </summary>
+        BOOLEAN_EXPRESSION = 32,
     }
 }

@@ -1,4 +1,6 @@
-﻿using SpiceSharpParser.Model;
+﻿using SpiceSharpParser.Connector.Evaluation;
+using SpiceSharpParser.Model;
+using SpiceSharpParser.Postprocessors;
 using SpiceSharpParser.Preprocessors;
 
 namespace SpiceSharpParser
@@ -8,7 +10,6 @@ namespace SpiceSharpParser
     /// </summary>
     public class ParserFacade
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ParserFacade"/> class.
         /// </summary>
@@ -42,7 +43,6 @@ namespace SpiceSharpParser
         /// Gets the .lib processor
         /// </summary>
         public ILibPreProcessor LibProcessor { get; }
-
 
         /// <summary>
         /// Gets the netlist model reader.
@@ -86,17 +86,24 @@ namespace SpiceSharpParser
             // Preprocessing
             IncludesProcessor.Process(preprocessedNetListModel, workingDirectoryPath);
             LibProcessor.Process(preprocessedNetListModel, workingDirectoryPath); 
-
             AppendModelProcessor.Process(preprocessedNetListModel);
             // TODO: more preprocessors
 
-            Connector.SpiceSharpModel connectorResult = GetConnectorResult(preprocessedNetListModel);
+            var connector = new Connector.Connector();
+            Netlist postprocessedNetlistModel = (Netlist)preprocessedNetListModel.Clone();
+
+            // Postprocessing
+            var ifPostProcessor = new IfPostProcessor(new Evaluator());
+            postprocessedNetlistModel.Statements = ifPostProcessor.Process(postprocessedNetlistModel.Statements);
+
+            Connector.SpiceSharpModel connectorResult = connector.Translate(postprocessedNetlistModel);
 
             return new ParserResult()
             {
                 SpiceSharpModel = connectorResult,
                 InitialNetlistModel = originalNetlistModel,
                 PreprocessedNetlistModel = preprocessedNetListModel,
+                PostprocessedNetlistModel = postprocessedNetlistModel,
             };
         }
 
@@ -107,9 +114,8 @@ namespace SpiceSharpParser
         /// <returns>
         /// A new SpiceSharp model for the netlist.
         /// </returns>
-        private Connector.SpiceSharpModel GetConnectorResult(Netlist netlist)
+        private Connector.SpiceSharpModel GetConnectorResult(Connector.Connector connector, Netlist netlist)
         {
-            var connector = new Connector.Connector();
             return connector.Translate(netlist);
         }
     }

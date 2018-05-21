@@ -45,6 +45,8 @@ namespace SpiceSharpParser.Lexer.Spice
         /// </summary>
         private void BuildGrammar()
         {
+            // TODO think through about order of rules ...
+
             var builder = new LexerGrammarBuilder<SpiceLexerState>();
             builder.AddRule(new LexerInternalRule("LETTER", "[a-z]", options.IgnoreCase));
             builder.AddRule(new LexerInternalRule("CHARACTER", "[a-z0-9\\-+]", options.IgnoreCase));
@@ -188,6 +190,47 @@ namespace SpiceSharpParser.Lexer.Spice
                ".endl keyword",
                ".endl",
                ignoreCase: options.IgnoreCase));
+
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+              (int)SpiceTokenType.BOOLEAN_EXPRESSION,
+              "An boolean expression token",
+              @"\(.*\)",
+              null,
+              (SpiceLexerState state) =>
+               {
+                   if (state.PreviousReturnedTokenType == (int)SpiceTokenType.IF
+                   || state.PreviousReturnedTokenType == (int)SpiceTokenType.ELSE_IF)
+                   {
+                       return LexerRuleUseState.Use;
+                   }
+
+                   return LexerRuleUseState.Skip;
+               },
+              ignoreCase: options.IgnoreCase));
+
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+              (int)SpiceTokenType.IF,
+              ".if keyword",
+              ".if",
+              ignoreCase: options.IgnoreCase));
+
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+              (int)SpiceTokenType.ENDIF,
+              ".endif keyword",
+              ".endif",
+              ignoreCase: options.IgnoreCase));
+
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+              (int)SpiceTokenType.ELSE,
+              ".else keyword",
+              ".else",
+              ignoreCase: options.IgnoreCase));
+
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+              (int)SpiceTokenType.ELSE_IF,
+              ".elseif keyword",
+              ".elseif",
+              ignoreCase: options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                (int)SpiceTokenType.VALUE,

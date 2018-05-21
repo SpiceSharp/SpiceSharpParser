@@ -32,11 +32,45 @@ namespace SpiceSharpParser.Model.SpiceObjects
         }
 
         /// <summary>
+        /// Gets an index of statement in statemens.
+        /// </summary>
+        /// <param name="statement">A statement.</param>
+        /// <returns>
+        /// An index of statement.
+        /// </returns>
+        public int IndexOf(Statement statement)
+        {
+            return this.list.IndexOf(statement);
+        }
+
+        /// <summary>
         /// Clears the collection
         /// </summary>
         public void Clear()
         {
             list.Clear();
+        }
+
+        /// <summary>
+        /// Indexer.
+        /// </summary>
+        public Statement this[int index]
+        {
+            get
+            {
+                return this.list[index];
+            }
+
+            set
+            {
+                this.list[index] = value;
+            }
+        }
+
+        public void Replace(int start, int end, IEnumerable<Statement> statements)
+        {
+            list.RemoveRange(start, end - start + 1);
+            list.InsertRange(start, statements);
         }
 
         /// <summary>

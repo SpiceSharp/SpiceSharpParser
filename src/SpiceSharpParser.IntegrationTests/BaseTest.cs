@@ -43,8 +43,15 @@ namespace SpiceSharpParser.IntegrationTests
             return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = hasTitle, IsEndRequired = isEndRequired }).PreprocessedNetlistModel;
         }
 
+        public static Model.Netlist ParseNetlistToPostProcessedModel(bool isEndRequired, bool hasTitle, params string[] lines)
+        {
+            var text = string.Join(Environment.NewLine, lines);
+            var parserFront = new ParserFacade();
+            return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = hasTitle, IsEndRequired = isEndRequired }).PostprocessedNetlistModel;
+        }
+
         /// <summary>
-        /// Runs simulations from <see cref="ConnectorResult.Simulations"/>
+        /// Runs simulations from <see cref="SpiceSharpModel.Simulations"/>
         /// </summary>
         /// <param name="connectorResult">A connector result</param>
         /// <returns>

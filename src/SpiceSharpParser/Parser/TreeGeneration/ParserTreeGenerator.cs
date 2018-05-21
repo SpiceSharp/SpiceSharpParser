@@ -355,7 +355,11 @@ namespace SpiceSharpParser.Parser.TreeGeneration
             if (currentToken.Is(SpiceTokenType.DOT)
                 || currentToken.Is(SpiceTokenType.WORD)
                 || currentToken.Is(SpiceTokenType.COMMENT)
-                || currentToken.Is(SpiceTokenType.ENDL))
+                || currentToken.Is(SpiceTokenType.ENDL)
+                || currentToken.Is(SpiceTokenType.IF)
+                || currentToken.Is(SpiceTokenType.ELSE)
+                || currentToken.Is(SpiceTokenType.ELSE_IF)
+                || currentToken.Is(SpiceTokenType.ENDIF))
             {
                 PushProductionExpression(
                             stack,
@@ -447,7 +451,12 @@ namespace SpiceSharpParser.Parser.TreeGeneration
             }
             else
             {
-                if (currentToken.Is(SpiceTokenType.ENDL))
+                if (currentToken.Is(SpiceTokenType.ENDL) 
+                    || currentToken.Is(SpiceTokenType.IF)
+                    || currentToken.Is(SpiceTokenType.ELSE_IF)
+                    || currentToken.Is(SpiceTokenType.ELSE)
+                    || currentToken.Is(SpiceTokenType.ENDIF))
+
                 {
                     PushProductionExpression(
                            stack,
@@ -903,6 +912,36 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                         stack,
                         CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
                         CreateNonTerminalNode(SpiceGrammarSymbol.PARAMETERS, currentNode));
+                }
+                else if (currentToken.Is(SpiceTokenType.IF))
+                {
+                    PushProductionExpression(
+                        stack,
+                        CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
+                        CreateTerminalNode(SpiceTokenType.BOOLEAN_EXPRESSION, currentNode)
+                    );
+                }
+                else if (currentToken.Is(SpiceTokenType.ELSE_IF))
+                {
+                    PushProductionExpression(
+                        stack,
+                        CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
+                        CreateTerminalNode(SpiceTokenType.BOOLEAN_EXPRESSION, currentNode)
+                    );
+                }
+                else if (currentToken.Is(SpiceTokenType.ELSE))
+                {
+                    PushProductionExpression(
+                        stack,
+                        CreateTerminalNode(currentToken.SpiceTokenType, currentNode)
+                    );
+                }
+                else if (currentToken.Is(SpiceTokenType.ENDIF))
+                {
+                    PushProductionExpression(
+                        stack,
+                        CreateTerminalNode(currentToken.SpiceTokenType, currentNode)
+                    );
                 }
                 else
                 {

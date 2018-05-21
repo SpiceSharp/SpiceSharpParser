@@ -277,18 +277,41 @@ namespace SpiceSharpParser.Parser.TreeTranslator
         private SpiceObject CreateControl(ParseTreeNodeTranslationValues values)
         {
             var control = new Control();
-            if (values.GetLexem(0).ToLower() == ".endl")
+
+            switch (values.GetLexem(0).ToLower())
             {
-                control.Name = "endl";
-                control.Parameters = values.GetSpiceObject<ParameterCollection>(1);
-                control.LineNumber = values.GetLexemLineNumber(0);
+                case ".endl":
+                    control.Name = "endl";
+                    control.Parameters = new ParameterCollection(); //TODO: fix it, endl can have a parameter
+                    control.LineNumber = values.GetLexemLineNumber(0);
+                    break;
+                case ".if":
+                    control.Name = "if";
+                    control.Parameters = new ParameterCollection() { new ExpressionParameter(values.GetLexem(1).Trim('(', ')')) };
+                    control.LineNumber = values.GetLexemLineNumber(0);
+                    break;
+                case ".elseif":
+                    control.Name = "elseif";
+                    control.Parameters = new ParameterCollection() { new ExpressionParameter(values.GetLexem(1).Trim('(', ')')) };
+                    control.LineNumber = values.GetLexemLineNumber(0);
+                    break;
+                case ".else":
+                    control.Name = "else";
+                    control.Parameters = new ParameterCollection();
+                    control.LineNumber = values.GetLexemLineNumber(0);
+                    break;
+                case ".endif":
+                    control.Name = "endif";
+                    control.Parameters = new ParameterCollection();
+                    control.LineNumber = values.GetLexemLineNumber(0);
+                    break;
+                default:
+                    control.Name = values.GetLexem(1);
+                    control.Parameters = values.GetSpiceObject<ParameterCollection>(2);
+                    control.LineNumber = values.GetLexemLineNumber(1);
+                    break;
             }
-            else
-            {
-                control.Name = values.GetLexem(1);
-                control.Parameters = values.GetSpiceObject<ParameterCollection>(2);
-                control.LineNumber = values.GetLexemLineNumber(1);
-            }
+
             return control;
         }
 
