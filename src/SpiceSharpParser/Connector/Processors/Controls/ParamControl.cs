@@ -19,6 +19,11 @@ namespace SpiceSharpParser.Connector.Processors.Controls
         /// <param name="context">A context to modify</param>
         public override void Process(Control statement, IProcessingContext context)
         {
+            if (statement.Parameters == null)
+            {
+                throw new System.ArgumentNullException("paramters are null");
+            }
+
             foreach (var param in statement.Parameters)
             {
                 if (param is Model.SpiceObjects.Parameters.AssignmentParameter assigmentParameter)

@@ -123,7 +123,7 @@ namespace SpiceSharpParser.Connector.Evaluation
         /// <summary>
         /// Gets or sets custom functions.
         /// </summary>
-        public Dictionary<string, SpiceFunction> CustomFunctions { get; set; }
+        public Dictionary<string, SpiceFunction> CustomFunctions { get; set; } = new Dictionary<string, SpiceFunction>();
 
         /// <summary>
         /// Gets all built-in constants

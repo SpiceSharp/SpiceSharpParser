@@ -34,7 +34,7 @@ namespace SpiceSharpParser.Tests.Connector.Processors.EntityGenerators.Component
                     {
                         new Component() { Name = "R1" },
                         new SpiceSharpParser.Model.SpiceObjects.Model() { Name = "m1" },
-                        new Control() { Name = "param" },
+                        new Control() { Name = "param", Parameters = new ParameterCollection() },
                         new Control() { Name = "save" }
                     }
                 }
