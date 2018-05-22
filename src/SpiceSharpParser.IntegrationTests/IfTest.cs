@@ -1,10 +1,34 @@
 ﻿using SpiceSharpParser.Model.SpiceObjects;
+using System;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests
 {
     public class IfTest : BaseTest
     {
+        [Fact]
+        public void MissingEndIf()
+        {
+            try
+            {
+                var netlist = ParseNetlistToPostProcessedModel(
+                    false,
+                    true,
+                   "Missing endif",
+                   ".IF (a == 0)",
+                   "* Comment 1",
+                   ".ELSE",
+                   "* Comment 2",
+                   ".PARAM a = 1",
+                   ".END");
+
+                Assert.False(true);
+            }
+            catch(Exception ex)
+            {
+            }
+        }
+
         [Fact]
         public void IfElseTest()
         {
