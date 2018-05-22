@@ -135,7 +135,13 @@ namespace SpiceSharpParser.Connector.Evaluation
             { "e", Math.E },
             { "E", Math.E },
             { "false", 0.0 },
-            { "true", 1.0 }
+            { "true", 1.0 },
+            { "yes", 1.0 },
+            { "no", 0.0 },
+            { "kelvin", -273.15 },
+            { "echarge", 1.60219e-19 },
+            { "c", 299792500 },
+            { "boltz", 1.38062e-23 },
         };
 
         /// <summary>
