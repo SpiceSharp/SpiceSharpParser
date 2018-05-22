@@ -15,7 +15,7 @@ namespace SpiceSharpParser.Tests.Connector.Evaluation
             p.SetParameter("a", 1);
             p.SetParameter("xyz", 13.0);
 
-            Assert.Equal(2, p.GetParameterNames().Count());
+            Assert.Equal(3, p.GetParameterNames().Count()); // +1 for TEMP parameter
         }
 
         [Fact]
