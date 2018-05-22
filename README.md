@@ -70,12 +70,13 @@ Documentation for API on SpiceSharpParser is available at <https://spicesharp.gi
 
 ## Roadmap
 Future features:
+* .IF/.ELSE/.ENDIF (in development)
+* .STEP
 * .PRINT
 * .PROBE
 * .WIDTH
 * Enhancing .SAVE
 * Enhancing .PARAM
-* .IF/.ELSE/.ENDIF
 
 ## License
 SpiceSharpParser is under MIT License
