@@ -110,6 +110,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
                 throw new WrongParameterException("Invalid output");
             }
 
+            SetTempVariable(context, operatingTemperatureInKelvins, noise);
             SetTemperatures(noise, operatingTemperatureInKelvins, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
             context.Result.AddSimulation(noise);
         }

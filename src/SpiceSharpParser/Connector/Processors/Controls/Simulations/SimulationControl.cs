@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using SpiceSharp;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Connector.Context;
 
@@ -10,6 +11,24 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
     /// </summary>
     public abstract class SimulationControl : BaseControl
     {
+        protected void SetTempVariable(IProcessingContext context, double? operatingTemperatureInKelvins, BaseSimulation sim)
+        {
+            double temp = 0;
+            if (operatingTemperatureInKelvins.HasValue)
+            {
+                temp = operatingTemperatureInKelvins.Value - Circuit.CelsiusKelvin;
+            }
+            else
+            {
+                temp = Circuit.ReferenceTemperature - Circuit.CelsiusKelvin;
+            }
+
+            sim.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs e) =>
+            {
+                context.Evaluator.SetParameter("TEMP", temp);
+            };
+        }
+
         protected string GetSimulationName(IProcessingContext context, double? temperatureInKelvin = null)
         {
             if (temperatureInKelvin.HasValue)
@@ -78,7 +97,7 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
         /// </summary>
         /// <param name="baseConfiguration">The configuration to set.</param>
         /// <param name="context">The processing context.</param>
-        protected void SetBaseParameters(BaseConfiguration baseConfiguration, IProcessingContext context)
+        protected void SetBaseConfiguration(BaseConfiguration baseConfiguration, IProcessingContext context)
         {
             if (context.Result.SimulationConfiguration.Gmin.HasValue)
             {

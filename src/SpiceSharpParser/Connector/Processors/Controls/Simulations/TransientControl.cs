@@ -72,7 +72,8 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
                     throw new WrongParametersCountException(".tran control - Too many parameters for .tran");
             }
 
-            SetBaseParameters(tran.ParameterSets.Get<BaseConfiguration>(), context);
+            SetTempVariable(context, operatingTemperatureInKelvins, tran);
+            SetBaseConfiguration(tran.ParameterSets.Get<BaseConfiguration>(), context);
             SetTemperatures(tran, operatingTemperatureInKelvins, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
             SetTransientParamters(tran, context, useIc);
 

@@ -5,6 +5,26 @@ namespace SpiceSharpParser.IntegrationTests
     public class TempTest : BaseTest
     {
         [Fact]
+        public void TempVariableWorks()
+        {
+            var netlist = ParseNetlist(
+                "Diode circuit",
+                "D1 OUT 0 1N914",
+                "R1 OUT 1 100",
+                "V1 1 0 -1",
+                ".model 1N914 D(Is={TEMP == 26 ? 2.52e-9 : 2.24e-9} N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
+                ".OP",
+                ".SAVE i(V1)",
+                ".TEMP 26 27",
+                ".END");
+
+            var export = RunSimulations(netlist);
+            Assert.Equal(2, export.Count);
+            Compare((double)export[0], 2.30935768424922E-09);
+            Compare((double)export[1], 2.2407198249641E-09);
+        }
+
+        [Fact]
         public void TempStatementMultiplySimulations()
         {
             var netlist = ParseNetlist(

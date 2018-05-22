@@ -59,7 +59,8 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
                     throw new WrongParameterException("LIN, DEC or OCT expected");
             }
 
-            SetBaseParameters(ac.BaseConfiguration, context);
+            SetTempVariable(context, operatingTemperatureInKelvins, ac);
+            SetBaseConfiguration(ac.BaseConfiguration, context);
             SetTemperatures(ac, operatingTemperatureInKelvins, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
             SetACParameters(ac.FrequencyConfiguration, context);
 

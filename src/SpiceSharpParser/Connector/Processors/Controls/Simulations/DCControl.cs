@@ -81,7 +81,8 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
                 }
             };
 
-            SetBaseParameters(dc.BaseConfiguration, context);
+            SetTempVariable(context, operatingTemperatureInKelvins, dc);
+            SetBaseConfiguration(dc.BaseConfiguration, context);
             SetTemperatures(dc, operatingTemperatureInKelvins, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
             SetDcParameters(dc.DcConfiguration, context);
 

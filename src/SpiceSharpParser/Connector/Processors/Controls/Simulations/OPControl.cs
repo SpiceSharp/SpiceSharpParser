@@ -1,4 +1,5 @@
-﻿using SpiceSharp.Simulations;
+﻿using SpiceSharp;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.Connector.Context;
 using SpiceSharpParser.Model.SpiceObjects;
 
@@ -35,7 +36,8 @@ namespace SpiceSharpParser.Connector.Processors.Controls.Simulations
         {
             var op = new OP(GetSimulationName(context, operatingTemperatureInKelvins));
 
-            SetBaseParameters(op.BaseConfiguration, context);
+            SetTempVariable(context, operatingTemperatureInKelvins, op);
+            SetBaseConfiguration(op.BaseConfiguration, context);
             SetTemperatures(op, operatingTemperatureInKelvins, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
 
             context.Result.AddSimulation(op);

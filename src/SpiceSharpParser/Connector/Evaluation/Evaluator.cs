@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SpiceSharp;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.Connector.Evaluation
 {
@@ -12,11 +13,11 @@ namespace SpiceSharpParser.Connector.Evaluation
         /// </summary>
         public Evaluator()
         {
-            Parameters = new Dictionary<string, double>();
+            Parameters = new Dictionary<string, double>() { { "TEMP", Circuit.ReferenceTemperature - Circuit.CelsiusKelvin } };
 
             ExpressionParser = new SpiceExpression
             {
-                Parameters = Parameters
+                Parameters = Parameters,
             };
 
             Registry = new ExpressionRegistry();
