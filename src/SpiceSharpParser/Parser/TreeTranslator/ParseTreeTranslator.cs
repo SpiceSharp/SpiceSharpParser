@@ -218,8 +218,10 @@ namespace SpiceSharpParser.Parser.TreeTranslator
                         return new WordParameter(lexemValue);
                     case (int)SpiceTokenType.IDENTIFIER:
                         return new IdentifierParameter(lexemValue);
-                    case (int)SpiceTokenType.EXPRESSION:
+                    case (int)SpiceTokenType.EXPRESSION_BRACKET:
                         return new ExpressionParameter(lexemValue.Trim('{', '}'));
+                    case (int)SpiceTokenType.EXPRESSION_SINGLE_QUOTES:
+                        return new ExpressionParameter(lexemValue.Trim('\''));
                 }
             }
 

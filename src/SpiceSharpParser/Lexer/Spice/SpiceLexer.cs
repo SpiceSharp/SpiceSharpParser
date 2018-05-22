@@ -317,18 +317,34 @@ namespace SpiceSharpParser.Lexer.Spice
                     "\"(?:[^\"\\\\]|\\\\.)*\"",
                     ignoreCase: options.IgnoreCase));
 
-            builder.AddRule(
-               new LexerTokenRule<SpiceLexerState>(
-                   (int)SpiceTokenType.SINGLE_QUOTED_STRING,
-                   "A string with single quotation marks",
-                   "'[^']*'",
-                   ignoreCase: options.IgnoreCase));
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+             (int)SpiceTokenType.EXPRESSION_SINGLE_QUOTES,
+             "A mathematical expression in single quotes",
+             "'[^']*'",
+             null,
+             (SpiceLexerState state) =>
+             {
+                 if (state.PreviousReturnedTokenType == (int)SpiceTokenType.EQUAL)
+                 {
+                     return LexerRuleUseState.Use;
+                 }
+
+                 return LexerRuleUseState.Skip;
+             },
+             ignoreCase: options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
-                (int)SpiceTokenType.EXPRESSION,
-                "A mathematical expression",
+                (int)SpiceTokenType.EXPRESSION_BRACKET,
+                "A mathematical expression in brackets",
                 "{[^{}]*}",
                 ignoreCase: options.IgnoreCase));
+
+            builder.AddRule(
+              new LexerTokenRule<SpiceLexerState>(
+                  (int)SpiceTokenType.SINGLE_QUOTED_STRING,
+                  "A string with single quotation marks",
+                  "'[^']*'",
+                  ignoreCase: options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.REFERENCE,

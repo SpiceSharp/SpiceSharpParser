@@ -26,12 +26,12 @@ namespace SpiceSharpParser.Connector.Processors.Controls
 
             if (!(statement.Parameters[1] is SingleParameter))
             {
-                throw new WrongParameterTypeException("Frist parameter for .let should be an single");
+                throw new WrongParameterTypeException("First parameter for .let should be an single");
             }
 
             string expressionName = statement.Parameters[0].Image;
 
-            if (!(statement.Parameters[1] is ExpressionParameter))
+            if (!(statement.Parameters[1] is ExpressionParameter) && !(statement.Parameters[1] is StringParameter))
             {
                 throw new WrongParameterTypeException("Second parameter for .let should be an expression");
             }

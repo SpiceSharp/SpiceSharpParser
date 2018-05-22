@@ -5,8 +5,8 @@
     /// </summary>
     public class StringParameter : SingleParameter
     {
-        public StringParameter(string reference)
-            : base(reference)
+        public StringParameter(string rawString)
+            : base(rawString)
         {
         }
 

@@ -591,7 +591,8 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                 || currentToken.Is(SpiceTokenType.SINGLE_QUOTED_STRING)
                 || currentToken.Is(SpiceTokenType.IDENTIFIER)
                 || currentToken.Is(SpiceTokenType.REFERENCE)
-                || currentToken.Is(SpiceTokenType.EXPRESSION))
+                || currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
+                || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES))
             {
                 PushProductionExpression(
                     stack,
@@ -717,7 +718,9 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                         || currentToken.Is(SpiceTokenType.DOUBLE_QUOTED_STRING)
                         || currentToken.Is(SpiceTokenType.IDENTIFIER)
                         || currentToken.Is(SpiceTokenType.REFERENCE)
-                        || currentToken.Is(SpiceTokenType.EXPRESSION))
+                        || currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
+                        || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES))
+
                 {
                     PushProductionExpression(
                         stack,
@@ -775,7 +778,8 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                         || currentToken.Is(SpiceTokenType.DOUBLE_QUOTED_STRING)
                         || currentToken.Is(SpiceTokenType.IDENTIFIER)
                         || currentToken.Is(SpiceTokenType.REFERENCE)
-                        || currentToken.Is(SpiceTokenType.EXPRESSION))
+                        || currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
+                        || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES))
                     {
                         PushProductionExpression(
                             stack,
@@ -839,7 +843,8 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                 || currentToken.Is(SpiceTokenType.DOUBLE_QUOTED_STRING)
                 || currentToken.Is(SpiceTokenType.IDENTIFIER)
                 || currentToken.Is(SpiceTokenType.REFERENCE)
-                || currentToken.Is(SpiceTokenType.EXPRESSION))
+                || currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
+                || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES))
             {
                 PushProductionExpression(
                     stack,

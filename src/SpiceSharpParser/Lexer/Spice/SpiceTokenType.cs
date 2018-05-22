@@ -63,7 +63,7 @@
         /// <summary>
         /// expression token
         /// </summary>
-        EXPRESSION = 11,
+        EXPRESSION_BRACKET = 11,     
 
         /// <summary>
         /// reference token
@@ -169,5 +169,11 @@
         /// Boolean expression token with delimeters
         /// </summary>
         BOOLEAN_EXPRESSION = 32,
+
+        /// <summary>
+        /// expression token
+        /// </summary>
+        EXPRESSION_SINGLE_QUOTES = 33,
+
     }
 }

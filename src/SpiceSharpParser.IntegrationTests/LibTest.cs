@@ -84,11 +84,11 @@ namespace SpiceSharpParser.IntegrationTests
         public void LibOneArgumentWithInclude()
         {
             string modelFileContent = ".model 1N914 D(Is=2.52e-9 Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)\n";
-            string modelFilePath = Path.Combine(Directory.GetCurrentDirectory(), "diodes.mod");
+            string modelFilePath = Path.Combine(Directory.GetCurrentDirectory(), "diodes4.mod");
             File.WriteAllText(modelFilePath, modelFileContent);
 
-            string l1Path = Path.Combine(Directory.GetCurrentDirectory(), "l1");
-            File.WriteAllText(l1Path, ".include diodes.mod\n");
+            string l1Path = Path.Combine(Directory.GetCurrentDirectory(), "l12");
+            File.WriteAllText(l1Path, ".include diodes4.mod\n");
 
             var netlist = ParseNetlist(
                 "Lib - Diode circuit",
@@ -98,7 +98,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".SAVE V(OUT)",
                 ".NODESET V(OUT)={x+1}",
                 ".param x = 13",
-                $".lib l1",
+                $".lib l12",
                 ".END");
 
             RunDCSimulation(netlist, "V(OUT)");
