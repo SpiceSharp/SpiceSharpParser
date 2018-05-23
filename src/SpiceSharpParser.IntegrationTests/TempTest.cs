@@ -18,6 +18,8 @@ namespace SpiceSharpParser.IntegrationTests
                 ".TEMP 26 27",
                 ".END");
 
+            Assert.Equal(2, netlist.Exports.Count);
+
             var export = RunSimulations(netlist);
             Assert.Equal(2, export.Count);
             Compare((double)export[0], 2.30935768424922E-09);
