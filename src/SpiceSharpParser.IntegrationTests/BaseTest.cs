@@ -1,5 +1,6 @@
 ﻿using SpiceSharp.Simulations;
-using SpiceSharpParser.Connector;
+using SpiceSharpParser.Model.Spice;
+using SpiceSharpParser.ModelReader.Spice;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,31 +20,31 @@ namespace SpiceSharpParser.IntegrationTests
         /// </summary>
         public double RelTol = 1e-3;
 
-        public static SpiceSharpModel ParseNetlistInWorkingDirectory(string workingDirectory, params string[] lines)
+        public static SpiceReaderResult ParseNetlistInWorkingDirectory(string workingDirectory, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parserFront = new ParserFacade();
             var parserResult = parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = true, IsEndRequired = true }, workingDirectory);
 
 
-            return parserResult.SpiceSharpModel;
+            return parserResult.ReaderResult;
         }
 
-        public static SpiceSharpModel ParseNetlist(params string[] lines)
+        public static SpiceReaderResult ParseNetlist(params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parserFront = new ParserFacade();
-            return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = true, IsEndRequired = true }).SpiceSharpModel;
+            return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = true, IsEndRequired = true }).ReaderResult;
         }
 
-        public static Model.Netlist ParseNetlistToModel(bool isEndRequired, bool hasTitle, params string[] lines)
+        public static Netlist ParseNetlistToModel(bool isEndRequired, bool hasTitle, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parserFront = new ParserFacade();
             return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = hasTitle, IsEndRequired = isEndRequired }).PreprocessedNetlistModel;
         }
 
-        public static Model.Netlist ParseNetlistToPostProcessedModel(bool isEndRequired, bool hasTitle, params string[] lines)
+        public static Netlist ParseNetlistToPostProcessedModel(bool isEndRequired, bool hasTitle, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parserFront = new ParserFacade();
@@ -51,17 +52,17 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         /// <summary>
-        /// Runs simulations from <see cref="SpiceSharpModel.Simulations"/>
+        /// Runs simulations from <see cref="SpiceReaderResult.Simulations"/>
         /// </summary>
-        /// <param name="connectorResult">A connector result</param>
+        /// <param name="readerResult">A reader result</param>
         /// <returns>
         /// A list of exports list
         /// </returns>
-        public static List<object> RunSimulations(SpiceSharpModel connectorResult)
+        public static List<object> RunSimulations(SpiceReaderResult readerResult)
         {
             var result = new List<object>();
 
-            foreach (var export in connectorResult.Exports)
+            foreach (var export in readerResult.Exports)
             {
                 var simulation = export.Simulation;
                 if (simulation is DC)
@@ -99,75 +100,75 @@ namespace SpiceSharpParser.IntegrationTests
                 }
             }
 
-            foreach (var simulation in connectorResult.Simulations)
+            foreach (var simulation in readerResult.Simulations)
             {
-                simulation.Run(connectorResult.Circuit);
+                simulation.Run(readerResult.Circuit);
             }
 
             return result;
         }
 
-        public static double RunOpSimulation(SpiceSharpModel connectorResult, string nameOfExport)
+        public static double RunOpSimulation(SpiceReaderResult readerResult, string nameOfExport)
         {
             double result = double.NaN;
-            var export = connectorResult.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
-            var simulation = connectorResult.Simulations.Single();
+            var export = readerResult.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
+            var simulation = readerResult.Simulations.Single();
             simulation.OnExportSimulationData += (sender, e) => {
 
                 result = export.Extract();
             };
 
-            simulation.Run(connectorResult.Circuit);
+            simulation.Run(readerResult.Circuit);
 
             return result;
         }
 
-        public static double[] RunOpSimulation(SpiceSharpModel connectorResult, params string[] nameOfExport)
+        public static double[] RunOpSimulation(SpiceReaderResult readerResult, params string[] nameOfExport)
         {
-            var simulation = connectorResult.Simulations.Single();
+            var simulation = readerResult.Simulations.Single();
             double[] result = new double[nameOfExport.Length];
 
             simulation.OnExportSimulationData += (sender, e) => {
 
                 for (var i = 0; i < nameOfExport.Length; i++) {
-                    var export = connectorResult.Exports.Find(exp => exp.Name.ToLower() == nameOfExport[i].ToLower()); //TODO: Remove ToLower someday
+                    var export = readerResult.Exports.Find(exp => exp.Name.ToLower() == nameOfExport[i].ToLower()); //TODO: Remove ToLower someday
                     result[i] = export.Extract();
                 }
             };
 
-            simulation.Run(connectorResult.Circuit);
+            simulation.Run(readerResult.Circuit);
 
             return result;
         }
 
-        public static Tuple<double, double>[] RunTransientSimulation(SpiceSharpModel connectorResult, string nameOfExport)
+        public static Tuple<double, double>[] RunTransientSimulation(SpiceReaderResult readerResult, string nameOfExport)
         {
             var list = new List<Tuple<double,double>>();
 
-            var export = connectorResult.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
-            var simulation = connectorResult.Simulations.Single();
+            var export = readerResult.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
+            var simulation = readerResult.Simulations.Single();
             simulation.OnExportSimulationData += (sender, e) => {
 
                 list.Add(new Tuple<double, double>(e.Time, export.Extract()));
             };
 
-            simulation.Run(connectorResult.Circuit);
+            simulation.Run(readerResult.Circuit);
 
             return list.ToArray();
         }
 
-        public static Tuple<double, double>[] RunDCSimulation(SpiceSharpModel connectorResult, string nameOfExport)
+        public static Tuple<double, double>[] RunDCSimulation(SpiceReaderResult readerResult, string nameOfExport)
         {
             var list = new List<Tuple<double, double>>();
 
-            var export = connectorResult.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
-            var simulation = connectorResult.Simulations.Single();
+            var export = readerResult.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
+            var simulation = readerResult.Simulations.Single();
             simulation.OnExportSimulationData += (sender, e) => {
 
                 list.Add(new Tuple<double, double>(e.SweepValue, export.Extract()));
             };
 
-            simulation.Run(connectorResult.Circuit);
+            simulation.Run(readerResult.Circuit);
 
             return list.ToArray();
         }

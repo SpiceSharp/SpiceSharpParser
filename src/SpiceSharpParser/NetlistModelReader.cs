@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using SpiceSharpParser.Grammar;
 using SpiceSharpParser.Lexer.Spice;
-using SpiceSharpParser.Parser.TreeGeneration;
-using SpiceSharpParser.Parser.TreeTranslator;
+using SpiceSharpParser.Model.Spice;
+using SpiceSharpParser.Parser;
+using SpiceSharpParser.Parser.Spice;
 
 namespace SpiceSharpParser
 {
@@ -16,7 +16,7 @@ namespace SpiceSharpParser
         /// <returns>
         /// A netlist model
         /// </returns>
-        public Model.Netlist GetNetlistModel(string netlist, ParserSettings settings)
+        public Netlist GetNetlistModel(string netlist, ParserSettings settings)
         {
             if (settings == null)
             {
@@ -33,7 +33,7 @@ namespace SpiceSharpParser
 
             ParseTreeNonTerminalNode parseTreeRoot = GetParseTree(
                 tokens,
-                settings.HasTitle ? SpiceGrammarSymbol.NETLIST : SpiceGrammarSymbol.NETLIST_WITHOUT_TITLE,
+                settings.HasTitle ? Symbols.NETLIST : Symbols.NETLIST_WITHOUT_TITLE,
                 settings.IsNewlineRequired);
 
             return GetNetlistModelFromTree(parseTreeRoot);
@@ -90,10 +90,10 @@ namespace SpiceSharpParser
         /// <returns>
         /// A netlist model
         /// </returns>
-        private Model.Netlist GetNetlistModelFromTree(ParseTreeNonTerminalNode root)
+        private Netlist GetNetlistModelFromTree(ParseTreeNonTerminalNode root)
         {
-            var translator = new ParseTreeTranslator();
-            return translator.Evaluate(root) as SpiceSharpParser.Model.Netlist;
+            var translator = new ParseTreeEvaluator();
+            return translator.Evaluate(root) as Netlist;
         }
     }
 }

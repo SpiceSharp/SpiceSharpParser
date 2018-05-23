@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SpiceSharpParser.Grammar;
 using SpiceSharpParser.Lexer;
 
 namespace SpiceSharpParser.Lexer.Spice
@@ -32,7 +31,7 @@ namespace SpiceSharpParser.Lexer.Spice
         public IEnumerable<SpiceToken> GetTokens(string netlistText)
         {
             var state = new SpiceLexerState();
-            var lexer = new Lexer<SpiceLexerState>(grammar, new LexerOptions(true, '+'));
+            var lexer = new GeneralLexer<SpiceLexerState>(grammar, new LexerOptions(true, '+'));
 
             foreach (var token in lexer.GetTokens(netlistText, state))
             {

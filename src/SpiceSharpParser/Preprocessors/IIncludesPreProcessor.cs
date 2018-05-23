@@ -1,4 +1,4 @@
-﻿using SpiceSharpParser.Model;
+﻿using SpiceSharpParser.Model.Spice;
 
 namespace SpiceSharpParser.Preprocessors
 {

@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.Model;
+﻿using SpiceSharpParser.Model.Spice;
+using SpiceSharpParser.ModelReader.Spice;
 
 namespace SpiceSharpParser
 {
@@ -15,23 +16,23 @@ namespace SpiceSharpParser
         }
 
         /// <summary>
-        /// Gets or sets the Spice# model.
+        /// Gets or sets the result of reading PostprocessedNetlistModel model.
         /// </summary>
-        public Connector.SpiceSharpModel SpiceSharpModel { get; set; }
+        public SpiceReaderResult ReaderResult { get; set; }
 
         /// <summary>
         /// Gets or sets the netlist model before preprocessing.
         /// </summary>
-        public Model.Netlist InitialNetlistModel { get; set; }
+        public Netlist InitialNetlistModel { get; set; }
 
         /// <summary>
         /// Gets or sets the netlist model after preprocessing.
         /// </summary>
-        public Model.Netlist PreprocessedNetlistModel { get; set; }
+        public Netlist PreprocessedNetlistModel { get; set; }
 
         /// <summary>
         /// Gets or sets the netlist model after postprocessing.
         /// </summary>
-        public Model.Netlist PostprocessedNetlistModel { get; set; }
+        public Netlist PostprocessedNetlistModel { get; set; }
     }
 }

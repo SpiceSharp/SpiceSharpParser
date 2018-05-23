@@ -1,4 +1,4 @@
-﻿using SpiceSharpParser.Model.SpiceObjects;
+﻿using SpiceSharpParser.Model.Spice.Objects;
 using System;
 using Xunit;
 

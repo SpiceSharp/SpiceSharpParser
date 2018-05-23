@@ -1,6 +1,6 @@
-using SpiceSharpParser.Grammar;
 using SpiceSharpParser.Lexer.Spice;
-using SpiceSharpParser.Parser.TreeGeneration;
+using SpiceSharpParser.Parser;
+using SpiceSharpParser.Parser.Spice;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.Parser
@@ -21,7 +21,7 @@ namespace SpiceSharpParser.Tests.Parser
             };
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.NETLIST);
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, Symbols.NETLIST);
             Assert.NotNull(root);
         }
 
@@ -37,7 +37,7 @@ namespace SpiceSharpParser.Tests.Parser
             };
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.NETLIST);
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, Symbols.NETLIST);
             Assert.NotNull(root);
         }
 
@@ -54,7 +54,7 @@ namespace SpiceSharpParser.Tests.Parser
             };
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.NETLIST);
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, Symbols.NETLIST);
             Assert.NotNull(root);
         }
 
@@ -73,7 +73,7 @@ namespace SpiceSharpParser.Tests.Parser
             };
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.STATEMENT);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.STATEMENT);
         }
 
         [Fact]
@@ -87,7 +87,7 @@ namespace SpiceSharpParser.Tests.Parser
             };
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.STATEMENT);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.STATEMENT);
         }
 
         [Fact]
@@ -107,7 +107,7 @@ namespace SpiceSharpParser.Tests.Parser
             };
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.STATEMENT);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.STATEMENT);
         }
 
         [Fact]
@@ -123,7 +123,7 @@ namespace SpiceSharpParser.Tests.Parser
             };
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.STATEMENT);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.STATEMENT);
         }
 
         [Fact]
@@ -140,11 +140,11 @@ namespace SpiceSharpParser.Tests.Parser
             };
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.PARAMETER);
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, Symbols.PARAMETER);
 
             var child = root.Children[0] as ParseTreeNonTerminalNode;
             Assert.NotNull(child);
-            Assert.Equal(SpiceGrammarSymbol.PARAMETER_EQUAL, child.Name);
+            Assert.Equal(Symbols.PARAMETER_EQUAL, child.Name);
             Assert.Equal(6, child.Children.Count);
         }
 
@@ -164,10 +164,10 @@ namespace SpiceSharpParser.Tests.Parser
             };
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.PARAMETER);
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, Symbols.PARAMETER);
             var child = root.Children[0] as ParseTreeNonTerminalNode;
             Assert.NotNull(child);
-            Assert.Equal(SpiceGrammarSymbol.PARAMETER_EQUAL, child.Name);
+            Assert.Equal(Symbols.PARAMETER_EQUAL, child.Name);
             Assert.Equal(6, child.Children.Count);
         }
 
@@ -191,10 +191,10 @@ namespace SpiceSharpParser.Tests.Parser
             };
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.PARAMETER);
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, Symbols.PARAMETER);
             var child = root.Children[0] as ParseTreeNonTerminalNode;
             Assert.NotNull(child);
-            Assert.Equal(SpiceGrammarSymbol.PARAMETER_EQUAL, child.Name);
+            Assert.Equal(Symbols.PARAMETER_EQUAL, child.Name);
             Assert.Equal(6, child.Children.Count);
         }
 
@@ -209,7 +209,7 @@ namespace SpiceSharpParser.Tests.Parser
             };
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.NETLIST_ENDING);
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, Symbols.NETLIST_ENDING);
             Assert.NotNull(root);
         }
 
@@ -224,7 +224,7 @@ namespace SpiceSharpParser.Tests.Parser
             };
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.NETLIST_ENDING);
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, Symbols.NETLIST_ENDING);
             Assert.NotNull(root);
         }
    
@@ -239,15 +239,15 @@ namespace SpiceSharpParser.Tests.Parser
             };
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, SpiceGrammarSymbol.PARAMETER);
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, Symbols.PARAMETER);
 
             var child = root.Children[0] as ParseTreeNonTerminalNode;
             Assert.NotNull(child);
-            Assert.Equal(SpiceGrammarSymbol.PARAMETER_EQUAL, child.Name);
+            Assert.Equal(Symbols.PARAMETER_EQUAL, child.Name);
             Assert.Single(child.Children);
             var paramater_equal_single = (root.Children[0] as ParseTreeNonTerminalNode).Children[0] as ParseTreeNonTerminalNode;
             Assert.NotNull(paramater_equal_single);
-            Assert.Equal(SpiceGrammarSymbol.PARAMETER_EQUAL_SINGLE, paramater_equal_single.Name);
+            Assert.Equal(Symbols.PARAMETER_EQUAL_SINGLE, paramater_equal_single.Name);
         }
 
 
@@ -268,7 +268,7 @@ namespace SpiceSharpParser.Tests.Parser
             };
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.PARAMETER);
         }
 
         [Fact]
@@ -285,11 +285,11 @@ namespace SpiceSharpParser.Tests.Parser
             };
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.PARAMETER);
 
             var child = tree.Children[0] as ParseTreeNonTerminalNode;
             Assert.NotNull(child);
-            Assert.Equal(SpiceGrammarSymbol.PARAMETER_BRACKET, child.Name);
+            Assert.Equal(Symbols.PARAMETER_BRACKET, child.Name);
             Assert.Equal(4, child.Children.Count);
 
         }
@@ -312,11 +312,11 @@ namespace SpiceSharpParser.Tests.Parser
 
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.PARAMETER);
 
             var child = tree.Children[0] as ParseTreeNonTerminalNode;
             Assert.NotNull(child);
-            Assert.Equal(SpiceGrammarSymbol.PARAMETER_BRACKET, child.Name);
+            Assert.Equal(Symbols.PARAMETER_BRACKET, child.Name);
             Assert.Equal(4, child.Children.Count);
         }
 
@@ -349,11 +349,11 @@ namespace SpiceSharpParser.Tests.Parser
             };
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode tree = parser.GetParseTree(tokens, SpiceGrammarSymbol.PARAMETER);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(tokens, Symbols.PARAMETER);
 
             var child = tree.Children[0] as ParseTreeNonTerminalNode;
             Assert.NotNull(child);
-            Assert.Equal(SpiceGrammarSymbol.PARAMETER_BRACKET, child.Name);
+            Assert.Equal(Symbols.PARAMETER_BRACKET, child.Name);
         }
 
         [Fact]
@@ -370,7 +370,7 @@ namespace SpiceSharpParser.Tests.Parser
             };
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode root = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
+            ParseTreeNonTerminalNode root = parser.GetParseTree(vectorTokens, Symbols.PARAMETER);
         }
 
         [Fact]
@@ -389,7 +389,7 @@ namespace SpiceSharpParser.Tests.Parser
             };
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode root = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
+            ParseTreeNonTerminalNode root = parser.GetParseTree(vectorTokens, Symbols.PARAMETER);
         }
 
         [Fact]
@@ -408,14 +408,14 @@ namespace SpiceSharpParser.Tests.Parser
 
 
             var parser = new ParserTreeGenerator();
-            ParseTreeNonTerminalNode root = parser.GetParseTree(vectorTokens, SpiceGrammarSymbol.PARAMETER);
+            ParseTreeNonTerminalNode root = parser.GetParseTree(vectorTokens, Symbols.PARAMETER);
 
             var child = root.Children[0] as ParseTreeNonTerminalNode;
             Assert.NotNull(child);
-            Assert.Equal(SpiceGrammarSymbol.PARAMETER_BRACKET, child.Name);
+            Assert.Equal(Symbols.PARAMETER_BRACKET, child.Name);
             Assert.Equal(4, child.Children.Count);
             var parameters = (child.Children[2] as ParseTreeNonTerminalNode).Children[0] as ParseTreeNonTerminalNode;
-            Assert.Equal(SpiceGrammarSymbol.PARAMETERS, parameters.Name);
+            Assert.Equal(Symbols.PARAMETERS, parameters.Name);
             Assert.Equal(2, parameters.Children.Count);
         }
     }

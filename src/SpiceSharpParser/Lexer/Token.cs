@@ -1,7 +1,7 @@
 ﻿namespace SpiceSharpParser.Lexer
 {
     /// <summary>
-    /// A token produces by <see cref="Lexer{TLexerState}"/>
+    /// A token produces by <see cref="GeneralLexer{TLexerState}"/>
     /// </summary>
     public class Token
     {

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using SpiceSharpParser.Model;
-using SpiceSharpParser.Model.SpiceObjects;
-using SpiceSharpParser.Model.SpiceObjects.Parameters;
+using SpiceSharpParser.Model.Spice;
+using SpiceSharpParser.Model.Spice.Objects;
+using SpiceSharpParser.Model.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.Preprocessors
 {
@@ -71,7 +71,7 @@ namespace SpiceSharpParser.Preprocessors
         private void ProcessAppendModelWithTwoParameters(Statements statements, Control appendModel)
         {
             string sourceModel = appendModel.Parameters.GetString(0);
-            var sourceModelObj = (Model.SpiceObjects.Model)statements.FirstOrDefault(s => s is Model.SpiceObjects.Model m && m.Name == sourceModel);
+            var sourceModelObj = (Model.Spice.Objects.Model)statements.FirstOrDefault(s => s is Model.Spice.Objects.Model m && m.Name == sourceModel);
             if (sourceModelObj == null)
             {
                 throw new System.Exception("Could not find source model for .APPENDMODEL");
@@ -82,15 +82,15 @@ namespace SpiceSharpParser.Preprocessors
             {
                 var destinationModelsObj = statements
                    .Where(s =>
-                   s is Model.SpiceObjects.Model m
+                   s is Model.Spice.Objects.Model m
                    && m.Name != sourceModel);
 
                 AppendParametersToModel(destinationModelsObj, sourceModelObj.Parameters);
             }
             else
             {
-                var destinationModelObj = (Model.SpiceObjects.Model)statements
-                    .FirstOrDefault(s => s is Model.SpiceObjects.Model m && m.Name == destinationModel);
+                var destinationModelObj = (Model.Spice.Objects.Model)statements
+                    .FirstOrDefault(s => s is Model.Spice.Objects.Model m && m.Name == destinationModel);
 
                 if (destinationModelObj == null)
                 {
@@ -108,7 +108,7 @@ namespace SpiceSharpParser.Preprocessors
             string destinationModel = appendModel.Parameters.GetString(2);
             string destinationModelType = appendModel.Parameters.GetString(3);
 
-            var sourceModelObj = (Model.SpiceObjects.Model)statements.FirstOrDefault(s => s is Model.SpiceObjects.Model m && m.Name == sourceModel);
+            var sourceModelObj = (Model.Spice.Objects.Model)statements.FirstOrDefault(s => s is Model.Spice.Objects.Model m && m.Name == sourceModel);
 
             if (sourceModelObj == null)
             {
@@ -135,7 +135,7 @@ namespace SpiceSharpParser.Preprocessors
             }
             else
             {
-                var destinationModelObj = (Model.SpiceObjects.Model)statements.FirstOrDefault(s => s is Model.SpiceObjects.Model m && m.Name == destinationModel);
+                var destinationModelObj = (Model.Spice.Objects.Model)statements.FirstOrDefault(s => s is Model.Spice.Objects.Model m && m.Name == destinationModel);
 
                 if (destinationModelObj != null)
                 {
@@ -151,7 +151,7 @@ namespace SpiceSharpParser.Preprocessors
         {
             return statements
                 .Where(s =>
-                s is Model.SpiceObjects.Model m
+                s is Model.Spice.Objects.Model m
                 && GetTypeOfModel(m).ToLower() == destinationModelType.ToLower()
                 && m.Name != sourceModelName
                 && Regex.Match(m.Name, regularExpression).Success);
@@ -170,7 +170,7 @@ namespace SpiceSharpParser.Preprocessors
         {
             return statements
             .Where(s =>
-                s is Model.SpiceObjects.Model m
+                s is Model.Spice.Objects.Model m
                 && GetTypeOfModel(m).ToLower() == modelType.ToLower()
                 && m.Name != sourceModelName);
         }
@@ -182,7 +182,7 @@ namespace SpiceSharpParser.Preprocessors
         /// <param name="parametersToSet">Parameters to set.</param>
         private void AppendParametersToModel(IEnumerable<Statement> models, ParameterCollection parametersToSet)
         {
-            foreach (Model.SpiceObjects.Model model in models)
+            foreach (Model.Spice.Objects.Model model in models)
             {
                 model.Parameters.Set(parametersToSet);
             }
@@ -195,7 +195,7 @@ namespace SpiceSharpParser.Preprocessors
         /// <returns>
         /// Type of model.
         /// </returns>
-        private string GetTypeOfModel(Model.SpiceObjects.Model model)
+        private string GetTypeOfModel(Model.Spice.Objects.Model model)
         {
             if (model.Parameters[0] is BracketParameter b)
             {

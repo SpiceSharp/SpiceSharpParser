@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Circuits;
-using SpiceSharpParser.Connector.Context;
-using SpiceSharpParser.Connector.Evaluation;
-using SpiceSharpParser.Connector.Processors.Controls;
-using SpiceSharpParser.Model.SpiceObjects;
+using SpiceSharpParser.ModelReader.Spice.Context;
+using SpiceSharpParser.ModelReader.Spice.Evaluation;
+using SpiceSharpParser.ModelReader.Spice.Processors.Controls;
+using SpiceSharpParser.Model.Spice.Objects;
 
 namespace SpiceSharpParser.Postprocessors
 {
@@ -96,7 +96,7 @@ namespace SpiceSharpParser.Postprocessors
         private IEnumerable<Statement> ComputeIfResult(Statements result, int ifIndex, int endIfIndex)
         {
             var ifControl = result[ifIndex] as Control;
-            var ifCondition = ifControl.Parameters[0] as Model.SpiceObjects.Parameters.ExpressionParameter;
+            var ifCondition = ifControl.Parameters[0] as Model.Spice.Objects.Parameters.ExpressionParameter;
 
             Control elseControl = null;
             Control elseIfControl = null;

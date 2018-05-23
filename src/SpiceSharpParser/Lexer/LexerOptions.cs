@@ -1,7 +1,7 @@
 ﻿namespace SpiceSharpParser.Lexer
 {
     /// <summary>
-    /// Options for <see cref="Lexer{TLexerState}"/>
+    /// Options for <see cref="GeneralLexer{TLexerState}"/>
     /// </summary>
     public class LexerOptions
     {

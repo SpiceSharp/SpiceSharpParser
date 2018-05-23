@@ -1,5 +1,5 @@
-using SpiceSharpParser.Model.SpiceObjects;
-using SpiceSharpParser.Parser.Exceptions;
+using SpiceSharpParser.Model.Spice.Objects;
+using SpiceSharpParser.Parser;
 using System.Linq;
 using Xunit;
 
@@ -57,7 +57,7 @@ namespace SpiceSharpParser.IntegrationTests
                     "",
                     "*$");
             }
-            catch (ParsingException ex)
+            catch (ParseException ex)
             {
                 Assert.True(ex.Message.Contains("NEWLINE"));
                 return;

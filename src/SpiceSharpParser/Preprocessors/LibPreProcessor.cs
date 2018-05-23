@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using SpiceSharpParser.Model;
-using SpiceSharpParser.Model.SpiceObjects;
+using SpiceSharpParser.Model.Spice;
+using SpiceSharpParser.Model.Spice.Objects;
 
 namespace SpiceSharpParser.Preprocessors
 {
@@ -13,7 +13,6 @@ namespace SpiceSharpParser.Preprocessors
     /// </summary>
     public class LibPreProcessor : ILibPreProcessor
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LibPreProcessor"/> class.
         /// </summary>

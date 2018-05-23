@@ -1,5 +1,4 @@
-﻿using SpiceSharpParser.Grammar;
-using SpiceSharpParser.Lexer;
+﻿using SpiceSharpParser.Lexer;
 
 namespace SpiceSharpParser.Lexer.Spice
 {

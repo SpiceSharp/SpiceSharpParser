@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using SpiceSharpParser.Model;
-using SpiceSharpParser.Model.SpiceObjects;
+using SpiceSharpParser.Model.Spice;
+using SpiceSharpParser.Model.Spice.Objects;
 
 namespace SpiceSharpParser.Preprocessors
 {

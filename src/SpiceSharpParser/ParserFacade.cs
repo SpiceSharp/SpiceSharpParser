@@ -1,7 +1,8 @@
-﻿using SpiceSharpParser.Connector.Evaluation;
-using SpiceSharpParser.Model;
+﻿using SpiceSharpParser.ModelReader.Spice.Evaluation;
+using SpiceSharpParser.Model.Spice;
 using SpiceSharpParser.Postprocessors;
 using SpiceSharpParser.Preprocessors;
+using SpiceSharpParser.ModelReader.Spice;
 
 namespace SpiceSharpParser
 {
@@ -89,18 +90,18 @@ namespace SpiceSharpParser
             AppendModelProcessor.Process(preprocessedNetListModel);
             // TODO: more preprocessors
 
-            var connector = new Connector.Connector();
+            var reader = new SpiceReader();
             Netlist postprocessedNetlistModel = (Netlist)preprocessedNetListModel.Clone();
 
             // Postprocessing
             var ifPostProcessor = new IfPostProcessor(new Evaluator());
             postprocessedNetlistModel.Statements = ifPostProcessor.Process(postprocessedNetlistModel.Statements);
 
-            Connector.SpiceSharpModel connectorResult = connector.Translate(postprocessedNetlistModel);
+            SpiceReaderResult readerResult = reader.Read(postprocessedNetlistModel);
 
             return new ParserResult()
             {
-                SpiceSharpModel = connectorResult,
+                ReaderResult = readerResult,
                 InitialNetlistModel = originalNetlistModel,
                 PreprocessedNetlistModel = preprocessedNetListModel,
                 PostprocessedNetlistModel = postprocessedNetlistModel,
@@ -114,9 +115,9 @@ namespace SpiceSharpParser
         /// <returns>
         /// A new SpiceSharp model for the netlist.
         /// </returns>
-        private Connector.SpiceSharpModel GetConnectorResult(Connector.Connector connector, Netlist netlist)
+        private SpiceReaderResult GetResult(SpiceReader reader, Netlist netlist)
         {
-            return connector.Translate(netlist);
+            return reader.Read(netlist);
         }
     }
 }
