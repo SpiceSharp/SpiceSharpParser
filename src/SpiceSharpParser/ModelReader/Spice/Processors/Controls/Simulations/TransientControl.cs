@@ -1,9 +1,8 @@
-﻿using System.Linq;
-using SpiceSharpParser.ModelReader.Spice.Context;
-using SpiceSharpParser.ModelReader.Spice.Exceptions;
+﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.Model.Spice.Objects;
 using SpiceSharpParser.Model.Spice.Objects.Parameters;
-using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReader.Spice.Context;
+using SpiceSharpParser.ModelReader.Spice.Exceptions;
 
 namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
 {
@@ -21,20 +20,10 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
         /// <param name="context">A context to modify</param>
         public override void Process(Control statement, IProcessingContext context)
         {
-            if (context.Result.SimulationConfiguration.TemperaturesInKelvins.Count > 0)
-            {
-                foreach (double temp in context.Result.SimulationConfiguration.TemperaturesInKelvins)
-                {
-                    CreateTransientSimulation(statement, context, temp);
-                }
-            }
-            else
-            {
-                CreateTransientSimulation(statement, context);
-            }
+            CreateSimulations(statement, context, CreateTransientSimulation);
         }
 
-        private void CreateTransientSimulation(Control statement, IProcessingContext context, double? operatingTemperatureInKelvins = null)
+        private Transient CreateTransientSimulation(Control statement, IProcessingContext context, double? operatingTemperatureInKelvins = null)
         {
             switch (statement.Parameters.Count)
             {
@@ -73,11 +62,13 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
             }
 
             SetTempVariable(context, operatingTemperatureInKelvins, tran);
-            SetBaseConfiguration(tran.ParameterSets.Get<BaseConfiguration>(), context);
+            SetBaseConfiguration(tran.BaseConfiguration, context);
             SetTemperatures(tran, operatingTemperatureInKelvins, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
             SetTransientParamters(tran, context, useIc);
 
             context.Result.AddSimulation(tran);
+
+            return tran;
         }
 
         private void SetTransientParamters(Transient tran, IProcessingContext context, bool useIc)

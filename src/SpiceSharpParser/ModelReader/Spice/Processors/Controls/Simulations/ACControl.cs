@@ -1,8 +1,8 @@
 ﻿using System;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Model.Spice.Objects;
 using SpiceSharpParser.ModelReader.Spice.Context;
 using SpiceSharpParser.ModelReader.Spice.Exceptions;
-using SpiceSharpParser.Model.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
 {
@@ -20,20 +20,10 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
         /// <param name="context">A context to modify</param>
         public override void Process(Control statement, IProcessingContext context)
         {
-            if (context.Result.SimulationConfiguration.TemperaturesInKelvins.Count > 0)
-            {
-                foreach (double temp in context.Result.SimulationConfiguration.TemperaturesInKelvins)
-                {
-                    CreateACSimulation(statement, context, temp);
-                }
-            }
-            else
-            {
-                CreateACSimulation(statement, context);
-            }
+            CreateSimulations(statement, context, CreateACSimulation);
         }
 
-        private void CreateACSimulation(Control statement, IProcessingContext context, double? operatingTemperatureInKelvins = null)
+        private AC CreateACSimulation(Control statement, IProcessingContext context, double? operatingTemperatureInKelvins = null)
         {
             switch (statement.Parameters.Count)
             {
@@ -65,6 +55,8 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
             SetACParameters(ac.FrequencyConfiguration, context);
 
             context.Result.AddSimulation(ac);
+
+            return ac;
         }
 
         private void SetACParameters(FrequencyConfiguration frequencyConfiguration, IProcessingContext context)

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.Model.Spice.Objects;
 using SpiceSharpParser.ModelReader.Spice.Context;
 using SpiceSharpParser.ModelReader.Spice.Evaluation;
 using SpiceSharpParser.ModelReader.Spice.Exceptions;
-using SpiceSharpParser.Model.Spice.Objects;
-using SpiceSharp.Simulations;
 
 namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
 {
@@ -25,20 +24,10 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
         /// <param name="context">A context to modify</param>
         public override void Process(Control statement, IProcessingContext context)
         {
-            if (context.Result.SimulationConfiguration.TemperaturesInKelvins.Count > 0)
-            {
-                foreach (double temp in context.Result.SimulationConfiguration.TemperaturesInKelvins)
-                {
-                    CreateDCSimulation(statement, context, temp);
-                }
-            }
-            else
-            {
-                CreateDCSimulation(statement, context);
-            }
+            CreateSimulations(statement, context, CreateDCSimulation);
         }
 
-        private void CreateDCSimulation(Control statement, IProcessingContext context, double? operatingTemperatureInKelvins = null)
+        private DC CreateDCSimulation(Control statement, IProcessingContext context, double? operatingTemperatureInKelvins = null)
         {
             int count = statement.Parameters.Count / 4;
             switch (statement.Parameters.Count - (4 * count))
@@ -87,6 +76,8 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
             SetDcParameters(dc.DcConfiguration, context);
 
             context.Result.AddSimulation(dc);
+
+            return dc;
         }
 
         private void SetDcParameters(DcConfiguration dCConfiguration, IProcessingContext context)

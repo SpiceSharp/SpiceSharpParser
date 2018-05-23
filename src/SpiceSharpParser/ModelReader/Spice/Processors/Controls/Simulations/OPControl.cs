@@ -1,7 +1,6 @@
-﻿using SpiceSharp;
-using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReader.Spice.Context;
+﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.Model.Spice.Objects;
+using SpiceSharpParser.ModelReader.Spice.Context;
 
 namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
 {
@@ -19,20 +18,10 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
         /// <param name="context">A context to modify</param>
         public override void Process(Control statement, IProcessingContext context)
         {
-            if (context.Result.SimulationConfiguration.TemperaturesInKelvins.Count > 0)
-            {
-                foreach (double temp in context.Result.SimulationConfiguration.TemperaturesInKelvins)
-                {
-                    CreateOperatingPointSimulation(context, temp);
-                }
-            }
-            else
-            {
-                CreateOperatingPointSimulation(context);
-            }
+            CreateSimulations(statement, context, CreateOperatingPointSimulation);
         }
 
-        private void CreateOperatingPointSimulation(IProcessingContext context, double? operatingTemperatureInKelvins = null)
+        private OP CreateOperatingPointSimulation(Control statement, IProcessingContext context, double? operatingTemperatureInKelvins = null)
         {
             var op = new OP(GetSimulationName(context, operatingTemperatureInKelvins));
 
@@ -41,6 +30,8 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
             SetTemperatures(op, operatingTemperatureInKelvins, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
 
             context.Result.AddSimulation(op);
+
+            return op;
         }
     }
 }

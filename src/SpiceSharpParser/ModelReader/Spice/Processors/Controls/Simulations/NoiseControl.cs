@@ -1,11 +1,9 @@
-﻿using System;
-using System.Linq;
-using SpiceSharp;
+﻿using SpiceSharp;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReader.Spice.Context;
-using SpiceSharpParser.ModelReader.Spice.Exceptions;
 using SpiceSharpParser.Model.Spice.Objects;
 using SpiceSharpParser.Model.Spice.Objects.Parameters;
+using SpiceSharpParser.ModelReader.Spice.Context;
+using SpiceSharpParser.ModelReader.Spice.Exceptions;
 
 namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
 {
@@ -23,20 +21,10 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
         /// <param name="context">A context to modify</param>
         public override void Process(Control statement, IProcessingContext context)
         {
-            if (context.Result.SimulationConfiguration.TemperaturesInKelvins.Count > 0)
-            {
-                foreach (double temp in context.Result.SimulationConfiguration.TemperaturesInKelvins)
-                {
-                    CreateNoiseSimulation(statement, context, temp);
-                }
-            }
-            else
-            {
-                CreateNoiseSimulation(statement, context);
-            }
+            CreateSimulations(statement, context, CreateNoiseSimulation);
         }
 
-        private void CreateNoiseSimulation(Control statement, IProcessingContext context, double? operatingTemperatureInKelvins = null)
+        private Noise CreateNoiseSimulation(Control statement, IProcessingContext context, double? operatingTemperatureInKelvins = null)
         {
             Noise noise = null;
 
@@ -113,6 +101,8 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
             SetTempVariable(context, operatingTemperatureInKelvins, noise);
             SetTemperatures(noise, operatingTemperatureInKelvins, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
             context.Result.AddSimulation(noise);
+
+            return noise;
         }
     }
 }

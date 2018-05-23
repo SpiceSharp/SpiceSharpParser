@@ -2,6 +2,7 @@
 using System.Linq;
 using SpiceSharp;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Model.Spice.Objects;
 using SpiceSharpParser.ModelReader.Spice.Context;
 
 namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
@@ -11,6 +12,21 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
     /// </summary>
     public abstract class SimulationControl : BaseControl
     {
+        protected void CreateSimulations(Control statement, IProcessingContext context, Func<Control, IProcessingContext, double?, BaseSimulation> createSimulation)
+        {
+            if (context.Result.SimulationConfiguration.TemperaturesInKelvins.Count > 0)
+            {
+                foreach (double temp in context.Result.SimulationConfiguration.TemperaturesInKelvins)
+                {
+                    createSimulation(statement, context, temp);
+                }
+            }
+            else
+            {
+                createSimulation(statement, context, null);
+            }
+        }
+
         protected void SetTempVariable(IProcessingContext context, double? operatingTemperatureInKelvins, BaseSimulation sim)
         {
             double temp = 0;
