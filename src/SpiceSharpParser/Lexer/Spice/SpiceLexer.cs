@@ -295,6 +295,12 @@ namespace SpiceSharpParser.Lexer.Spice
                 },
                 ignoreCase: options.IgnoreCase));
 
+
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+              (int)SpiceTokenType.ASTERIKS,
+              "An asteriks character",
+              "\\*"));
+
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.TITLE,
                 "The title - first line of spice token",
@@ -364,11 +370,6 @@ namespace SpiceSharpParser.Lexer.Spice
                     "An identifier",
                     "((<CHARACTER>|_|\\*)(<CHARACTER>|<SPECIAL>)*)",
                     ignoreCase: options.IgnoreCase));
-
-            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
-              (int)SpiceTokenType.ASTERIKS,
-              "An asteriks character",
-              "\\*"));
 
             grammar = builder.GetGrammar();
         }

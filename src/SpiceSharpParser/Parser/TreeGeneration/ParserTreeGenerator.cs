@@ -229,16 +229,6 @@ namespace SpiceSharpParser.Parser.TreeGeneration
                     CreateNonTerminalNode(SpiceGrammarSymbol.NETLIST_ENDING, currentNode)
                 );
             }
-            else if (currentToken.Is(SpiceTokenType.ASTERIKS))
-            {
-                PushProductionExpression(
-                    stack,
-                    CreateTerminalNode(SpiceTokenType.ASTERIKS, currentNode),
-                    CreateTerminalNode(SpiceTokenType.NEWLINE, currentNode),
-                    CreateNonTerminalNode(SpiceGrammarSymbol.STATEMENTS, currentNode),
-                    CreateNonTerminalNode(SpiceGrammarSymbol.NETLIST_ENDING, currentNode)
-                );
-            }
             else
             {
                 PushProductionExpression(
