@@ -384,5 +384,14 @@ namespace SpiceSharpParser.Tests.Lexer.Spice
             Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.DOUBLE_QUOTED_STRING);
             Assert.True(tokens[2].SpiceTokenType == SpiceTokenType.EOF);
         }
+
+        [Fact]
+        public void BracketParameterTest()
+        {
+            var tokensStr = "1N914(N)";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+            Assert.Equal(5, tokens.Length);
+        }
     }
 }

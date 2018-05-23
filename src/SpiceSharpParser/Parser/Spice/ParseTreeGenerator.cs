@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SpiceSharpParser.Lexer.Spice;
 
 namespace SpiceSharpParser.Parser.Spice
@@ -605,7 +606,8 @@ namespace SpiceSharpParser.Parser.Spice
             }
             else
             {
-                throw new ParseException(string.Format("Error during parsing parameters. Unexpected token: '{0}' of type {1} line={2}", currentToken.Lexem,  currentToken.SpiceTokenType, currentToken.LineNumber), currentToken.LineNumber);
+                throw new ParseException(
+                    string.Format("Error during parsing parameters. Unexpected token: '{0}' of type {1} line={2}", currentToken.Lexem,  currentToken.SpiceTokenType, currentToken.LineNumber), currentToken.LineNumber);
             }
         }
 
@@ -622,7 +624,8 @@ namespace SpiceSharpParser.Parser.Spice
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
 
-            if (currentToken.Is(SpiceTokenType.WORD))
+            if (currentToken.Is(SpiceTokenType.WORD)
+                || currentToken.Is(SpiceTokenType.IDENTIFIER))
             {
                 if (nextToken.Is(SpiceTokenType.EQUAL))
                 {
@@ -634,7 +637,7 @@ namespace SpiceSharpParser.Parser.Spice
                     {
                         PushProductionExpression(
                             stack,
-                            CreateTerminalNode(SpiceTokenType.WORD, currentNode),
+                            CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
                             CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, "("),
                             CreateNonTerminalNode(Symbols.PARAMETER_SINGLE, currentNode),
                             CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, ")"),
@@ -645,7 +648,7 @@ namespace SpiceSharpParser.Parser.Spice
                     {
                         PushProductionExpression(
                             stack,
-                            CreateTerminalNode(SpiceTokenType.WORD, currentNode),
+                            CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
                             CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, "("),
                             CreateNonTerminalNode(Symbols.VECTOR, currentNode),
                             CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, ")"),
@@ -731,7 +734,7 @@ namespace SpiceSharpParser.Parser.Spice
             }
             else
             {
-                if (currentToken.Is(SpiceTokenType.WORD))
+                if (currentToken.Is(SpiceTokenType.WORD) || currentToken.Is(SpiceTokenType.IDENTIFIER))
                 {
                     if (nextToken.Is(SpiceTokenType.EQUAL))
                     {
@@ -805,12 +808,21 @@ namespace SpiceSharpParser.Parser.Spice
         /// <param name="currentTokenIndex">A index of the current token</param>
         private void ProcessParameterBracket(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
-            PushProductionExpression(
-                stack,
-                CreateTerminalNode(SpiceTokenType.WORD, currentNode),
-                CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, "("),
-                CreateNonTerminalNode(Symbols.PARAMETER_BRACKET_CONTENT, currentNode),
-                CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, ")"));
+            var currentToken = tokens[currentTokenIndex];
+
+            if (currentToken.Is(SpiceTokenType.WORD) || currentToken.Is(SpiceTokenType.IDENTIFIER))
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
+                    CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, "("),
+                    CreateNonTerminalNode(Symbols.PARAMETER_BRACKET_CONTENT, currentNode),
+                    CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, ")"));
+            }
+            else
+            {
+                throw new ParseException("Error during parsing a bracket parameter. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+            }
         }
 
         /// <summary>

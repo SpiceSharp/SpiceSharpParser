@@ -250,25 +250,24 @@ namespace SpiceSharpParser.Tests.Parser
             Assert.Equal(Symbols.PARAMETER_EQUAL_SINGLE, paramater_equal_single.Name);
         }
 
-
         [Fact]
-        public void ParameterBracketSingleParametersTest()
+        public void ParameterBracketBasicTest()
         {
-            // pulse(4 0 1ns 1ns 1ns 20ns 40ns)
             var vectorTokens = new SpiceToken[]
             {
-                new SpiceToken(SpiceTokenType.WORD, "pulse"),
+                new SpiceToken(SpiceTokenType.WORD, "D1"),
                 new SpiceToken(SpiceTokenType.DELIMITER, "("),
-                new SpiceToken(SpiceTokenType.VALUE, "4"),
-                new SpiceToken(SpiceTokenType.VALUE, "0"),
-                new SpiceToken(SpiceTokenType.VALUE, "1ns"),
-                new SpiceToken(SpiceTokenType.VALUE, "20ns"),
-                new SpiceToken(SpiceTokenType.VALUE, "40ns"),
+                new SpiceToken(SpiceTokenType.WORD, "BF"),
                 new SpiceToken(SpiceTokenType.DELIMITER, ")")
             };
 
             var parser = new ParserTreeGenerator();
             ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.PARAMETER);
+
+            var child = tree.Children[0] as ParseTreeNonTerminalNode;
+            Assert.NotNull(child);
+            Assert.Equal(Symbols.PARAMETER_BRACKET, child.Name);
+            Assert.Equal(4, child.Children.Count);
         }
 
         [Fact]

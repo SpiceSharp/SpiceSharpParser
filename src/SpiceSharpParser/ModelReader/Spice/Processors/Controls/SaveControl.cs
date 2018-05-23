@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Model.Spice.Objects;
+using SpiceSharpParser.Model.Spice.Objects.Parameters;
 using SpiceSharpParser.ModelReader.Spice.Context;
 using SpiceSharpParser.ModelReader.Spice.Processors.Controls.Exporters;
 using SpiceSharpParser.ModelReader.Spice.Registries;
-using SpiceSharpParser.Model.Spice.Objects;
-using SpiceSharpParser.Model.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls
 {
