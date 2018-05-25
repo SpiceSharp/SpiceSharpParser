@@ -230,13 +230,24 @@ namespace SpiceSharpParser.Parser.Spice
             }
             else
             {
-                PushProductionExpression(
-                    stack,
-                    CreateTerminalNode(SpiceTokenType.TITLE, currentNode),
-                    CreateTerminalNode(SpiceTokenType.NEWLINE, currentNode),
-                    CreateNonTerminalNode(Symbols.STATEMENTS, currentNode),
-                    CreateNonTerminalNode(Symbols.NETLIST_ENDING, currentNode)
-                );
+                if (tokens[currentTokenIndex + 1].Is(SpiceTokenType.EOF) && !isNewLineRequiredAtTheEnd)
+                {
+                    PushProductionExpression(
+                     stack,
+                     CreateTerminalNode(SpiceTokenType.TITLE, currentNode),
+                     CreateNonTerminalNode(Symbols.NETLIST_ENDING, currentNode)
+                 );
+                }
+                else
+                {
+                    PushProductionExpression(
+                        stack,
+                        CreateTerminalNode(SpiceTokenType.TITLE, currentNode),
+                        CreateTerminalNode(SpiceTokenType.NEWLINE, currentNode),
+                        CreateNonTerminalNode(Symbols.STATEMENTS, currentNode),
+                        CreateNonTerminalNode(Symbols.NETLIST_ENDING, currentNode)
+                    );
+                }
             }
         }
 

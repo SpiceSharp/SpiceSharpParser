@@ -128,7 +128,7 @@ namespace SpiceSharpParser.Parser.Spice
                 return new Netlist()
                 {
                     Title = values.GetLexem(0),
-                    Statements = values.GetSpiceObject<Statements>(2)
+                    Statements = values.Count >= 3 ? values.GetSpiceObject<Statements>(2): new Statements()
                 };
             }
         }

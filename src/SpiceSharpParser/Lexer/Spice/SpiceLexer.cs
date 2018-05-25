@@ -61,6 +61,21 @@ namespace SpiceSharpParser.Lexer.Spice
                     return LexerRuleResult.IgnoreToken;
                 }));
 
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+                (int)SpiceTokenType.TITLE,
+                "The title - first line of spice token",
+                @"[^\r\n]+",
+                null,
+                (SpiceLexerState state) =>
+                {
+                    if (state.LineNumber == 1 && options.HasTitle)
+                    {
+                        return LexerRuleUseState.Use;
+                    }
+
+                    return LexerRuleUseState.Skip;
+                }));
+
             builder.AddRule(
                 new LexerTokenRule<SpiceLexerState>(
                     (int)SpiceTokenType.DOT,
@@ -293,21 +308,7 @@ namespace SpiceSharpParser.Lexer.Spice
                     return LexerRuleUseState.Skip;
                 },
                 ignoreCase: options.IgnoreCase));
-
-            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
-                (int)SpiceTokenType.TITLE,
-                "The title - first line of spice token",
-                @"[^\r\n]+",
-                null,
-                (SpiceLexerState state) =>
-                {
-                    if (state.LineNumber == 1 && options.HasTitle)
-                    {
-                        return LexerRuleUseState.Use;
-                    }
-
-                    return LexerRuleUseState.Skip;
-                }));
+            
 
             builder.AddRule(
                 new LexerTokenRule<SpiceLexerState>(
