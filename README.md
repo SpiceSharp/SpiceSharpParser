@@ -23,6 +23,8 @@ SpiceSharpParser is a .NET library that parses Spice netlists and creates a mode
 * .APPENDMODEL
 * .TEMP
 * .LIB
+* .IF/.ELSE/.ENDIF (in next release)
+* .ST (in next release)
 
 ### Supported components
 * RLC
@@ -59,8 +61,6 @@ Documentation for API on SpiceSharpParser is available at <https://spicesharp.gi
 
 ## Roadmap
 Future features:
-* .IF/.ELSE/.ENDIF (in development)
-* .STEP
 * .PRINT
 * .PROBE
 * .WIDTH
