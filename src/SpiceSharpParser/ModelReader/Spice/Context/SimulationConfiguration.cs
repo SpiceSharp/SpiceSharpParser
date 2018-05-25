@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.IntegrationMethods;
+using SpiceSharp.Simulations;
 
 namespace SpiceSharpParser.ModelReader.Spice.Context
 {
@@ -33,8 +34,13 @@ namespace SpiceSharpParser.ModelReader.Spice.Context
         public List<double> TemperaturesInKelvins { get; set; } = new List<double>();
 
         /// <summary>
-        /// Gets or sets value of circuit temperature from .OPTIONS
+        /// Gets or sets value of circuit temperature from .OPTIONS.
         /// </summary>
         public double? TemperaturesInKelvinsFromOptions { get; set; }
+
+        /// <summary>
+        /// Gets the parameter sweeps.
+        /// </summary>
+        public List<ParameterSweep> ParameterSweeps { get; } = new List<ParameterSweep>();
     }
 }

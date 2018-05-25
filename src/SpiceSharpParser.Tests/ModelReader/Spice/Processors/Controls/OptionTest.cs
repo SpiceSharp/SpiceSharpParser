@@ -38,7 +38,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Processors.Controls.Simulatio
             evaluator.EvaluateDouble("12.2").Returns(12.2);
             evaluator.EvaluateDouble("12.3").Returns(12.3);
 
-            var resultService = new ResultService(new SpiceSharpParser.ModelReader.Spice.SpiceReaderResult(new SpiceSharp.Circuit(), "title"));
+            var resultService = new ResultService(new SpiceSharpParser.ModelReader.Spice.SpiceModelReaderResult(new SpiceSharp.Circuit(), "title"));
             var processingContext = new ProcessingContext(
                 string.Empty,
                 evaluator,

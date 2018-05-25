@@ -23,7 +23,7 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
             CreateSimulations(statement, context, CreateACSimulation);
         }
 
-        private AC CreateACSimulation(Control statement, IProcessingContext context, double? operatingTemperatureInKelvins = null)
+        private AC CreateACSimulation(string name, Control statement, IProcessingContext context)
         {
             switch (statement.Parameters.Count)
             {
@@ -42,18 +42,15 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
 
             switch (type)
             {
-                case "lin": ac = new AC(GetSimulationName(context, operatingTemperatureInKelvins), new LinearSweep(start, stop, (int)numberSteps)); break;
-                case "oct": ac = new AC(GetSimulationName(context, operatingTemperatureInKelvins), new OctaveSweep(start, stop, (int)numberSteps)); break;
-                case "dec": ac = new AC(GetSimulationName(context, operatingTemperatureInKelvins), new DecadeSweep(start, stop, (int)numberSteps)); break;
+                case "lin": ac = new AC(name, new LinearSweep(start, stop, (int)numberSteps)); break;
+                case "oct": ac = new AC(name, new OctaveSweep(start, stop, (int)numberSteps)); break;
+                case "dec": ac = new AC(name, new DecadeSweep(start, stop, (int)numberSteps)); break;
                 default:
                     throw new WrongParameterException("LIN, DEC or OCT expected");
             }
 
-            SetTempVariable(context, operatingTemperatureInKelvins, ac);
             SetBaseConfiguration(ac.BaseConfiguration, context);
-            SetTemperatures(ac, operatingTemperatureInKelvins, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
             SetACParameters(ac.FrequencyConfiguration, context);
-
             context.Result.AddSimulation(ac);
 
             return ac;

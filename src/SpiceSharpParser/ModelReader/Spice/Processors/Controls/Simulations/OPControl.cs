@@ -21,14 +21,10 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
             CreateSimulations(statement, context, CreateOperatingPointSimulation);
         }
 
-        private OP CreateOperatingPointSimulation(Control statement, IProcessingContext context, double? operatingTemperatureInKelvins = null)
+        private OP CreateOperatingPointSimulation(string name, Control statement, IProcessingContext context)
         {
-            var op = new OP(GetSimulationName(context, operatingTemperatureInKelvins));
-
-            SetTempVariable(context, operatingTemperatureInKelvins, op);
+            var op = new OP(name);
             SetBaseConfiguration(op.BaseConfiguration, context);
-            SetTemperatures(op, operatingTemperatureInKelvins, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
-
             context.Result.AddSimulation(op);
 
             return op;

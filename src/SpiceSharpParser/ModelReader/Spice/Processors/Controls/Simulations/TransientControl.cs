@@ -23,7 +23,7 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
             CreateSimulations(statement, context, CreateTransientSimulation);
         }
 
-        private Transient CreateTransientSimulation(Control statement, IProcessingContext context, double? operatingTemperatureInKelvins = null)
+        private Transient CreateTransientSimulation(string name, Control statement, IProcessingContext context)
         {
             switch (statement.Parameters.Count)
             {
@@ -46,13 +46,13 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
             {
                 case 2:
                     tran = new Transient(
-                        GetSimulationName(context, operatingTemperatureInKelvins),
+                        name,
                         context.ParseDouble(clonedParameters[0].Image),
                         context.ParseDouble(clonedParameters[1].Image));
                     break;
                 case 3:
                     tran = new Transient(
-                        GetSimulationName(context, operatingTemperatureInKelvins),
+                        name,
                         context.ParseDouble(clonedParameters[0].Image),
                         context.ParseDouble(clonedParameters[1].Image),
                         context.ParseDouble(clonedParameters[2].Image));
@@ -61,9 +61,7 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
                     throw new WrongParametersCountException(".tran control - Too many parameters for .tran");
             }
 
-            SetTempVariable(context, operatingTemperatureInKelvins, tran);
             SetBaseConfiguration(tran.BaseConfiguration, context);
-            SetTemperatures(tran, operatingTemperatureInKelvins, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
             SetTransientParamters(tran, context, useIc);
 
             context.Result.AddSimulation(tran);

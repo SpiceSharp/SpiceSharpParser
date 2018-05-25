@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp;
+using SpiceSharp.Circuits;
+using SpiceSharp.Components;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Model.Spice.Objects;
+using SpiceSharpParser.Model.Spice.Objects.Parameters;
 using SpiceSharpParser.ModelReader.Spice.Context;
 
 namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
@@ -10,21 +15,178 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
     /// <summary>
     /// Base for all control simulation processors.
     /// </summary>
+    /// TODO: Add comments please ...
     public abstract class SimulationControl : BaseControl
     {
-        protected void CreateSimulations(Control statement, IProcessingContext context, Func<Control, IProcessingContext, double?, BaseSimulation> createSimulation)
+        protected void CreateSimulations(Control statement, IProcessingContext context, Func<string, Control, IProcessingContext, BaseSimulation> createSimulation)
         {
+            if (context.Result.SimulationConfiguration.ParameterSweeps.Count == 0)
+            {
+                CreateSimulationsForAllTemperatures(statement, context, createSimulation);
+            }
+            else
+            {
+                CreateSimulationsForAllParameterSweepsAndTemperatures(statement, context, createSimulation);
+            }
+        }
+
+        private void CreateSimulationsForAllParameterSweepsAndTemperatures(Control statement, IProcessingContext context, Func<string, Control, IProcessingContext, BaseSimulation> createSimulation)
+        {
+            List<List<double>> sweeps = new List<List<double>>();
+            int productCount = 1;
+
+            for (var i = 0; i < context.Result.SimulationConfiguration.ParameterSweeps.Count; i++)
+            {
+                var sweepValues = context.Result.SimulationConfiguration.ParameterSweeps[i].Sweep.Points.ToList();
+                sweeps.Add(sweepValues);
+                productCount *= sweepValues.Count;
+            }
+
+            int[] system = sweeps.Select(s => s.Count()).ToArray();
+
+            for (var i = 0; i < productCount; i++)
+            {
+                int[] indexes = Numbers.GetSystemNumber(i, system);
+
+                Func<string, Control, IProcessingContext, BaseSimulation> modifiedCreateSimulation =
+                    (name, control, modifiedContext) =>
+                    {
+                        List<KeyValuePair<Model.Spice.Objects.Parameter, double>> parameterValues = GetSweepParameterValues(context, sweeps, system, indexes);
+                        string suffix = GetSimulationNameSuffix(parameterValues);
+
+                        var simulation = createSimulation(name + " (" + suffix + ")", control, modifiedContext);
+                        SetSimulation(context, parameterValues, simulation);
+
+                        return simulation;
+                    };
+
+                CreateSimulationsForAllTemperatures(
+                    statement,
+                    context,
+                    modifiedCreateSimulation);
+            }
+        }
+
+        private void SetSimulation(IProcessingContext context, List<KeyValuePair<Model.Spice.Objects.Parameter, double>> parameterValues, BaseSimulation simulation)
+        {
+            simulation.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs e) =>
+            {
+                foreach (var paramToSet in parameterValues)
+                {
+                    if (paramToSet.Key is WordParameter || paramToSet.Key is IdentifierParameter)
+                    {
+                        if (context.Result.FindObject(paramToSet.Key.Image, out Entity @object))
+                        {
+                            SetIndependentSource(paramToSet, @object);
+                        }
+                        else
+                        {
+                            UpdateSimulationParameter(context, paramToSet);
+                        }
+                    }
+
+                    if (paramToSet.Key is BracketParameter bp)
+                    {
+                        UpdateModelParameter(context, paramToSet, bp);
+                    }
+                }
+            };
+        }
+
+        private static void UpdateModelParameter(IProcessingContext context, KeyValuePair<Model.Spice.Objects.Parameter, double> paramToSet, BracketParameter bp)
+        {
+            string modelName = bp.Name;
+            string paramName = bp.Parameters[0].Image;
+            if (context.Result.FindObject(modelName, out Entity @model))
+            {
+                bool wasSet = context.SetParameter(model, paramName, paramToSet.Value.ToString());
+            }
+        }
+
+        private void UpdateSimulationParameter(IProcessingContext context, KeyValuePair<Model.Spice.Objects.Parameter, double> paramToSet)
+        {
+            if (context.Evaluator.GetParameterNames().Contains(paramToSet.Key.Image))
+            {
+                context.Evaluator.SetParameter(paramToSet.Key.Image, paramToSet.Value);
+            }
+            else
+            {
+                throw new Exception("Unknown parameter");
+            }
+        }
+
+        private void SetIndependentSource(KeyValuePair<Model.Spice.Objects.Parameter, double> paramToSet, Entity @object)
+        {
+            if (@object is VoltageSource vs)
+            {
+                vs.SetParameter("dc", paramToSet.Value); //TODO add ac magnitude
+            }
+
+            if (@object is CurrentSource cs)
+            {
+                cs.SetParameter("dc", paramToSet.Value); //TODO add ac magnitude
+            }
+        }
+
+        private string GetSimulationNameSuffix(List<KeyValuePair<Model.Spice.Objects.Parameter, double>> parameterValues)
+        {
+            string result = string.Empty;
+
+            for (var i = 0; i < parameterValues.Count; i++)
+            {
+                result += parameterValues[i].Key.Image + "=" + parameterValues[i].Value;
+
+                if (i != parameterValues.Count - 1)
+                {
+                    result += ", ";
+                }
+            }
+
+            return result;
+        }
+
+        private List<KeyValuePair<Model.Spice.Objects.Parameter, double>> GetSweepParameterValues(IProcessingContext context, List<List<double>> sweeps, int[] system, int[] indexes)
+        {
+            List<KeyValuePair<Model.Spice.Objects.Parameter, double>> parameterValues = new List<KeyValuePair<Model.Spice.Objects.Parameter, double>>();
+
+            for (var j = 0; j < system.Length; j++)
+            {
+                Model.Spice.Objects.Parameter parameter = context.Result.SimulationConfiguration.ParameterSweeps[j].Parameter;
+
+                double parameterValue = sweeps[j][indexes[j]];
+                parameterValues.Add(new KeyValuePair<Model.Spice.Objects.Parameter, double>(parameter, parameterValue));
+
+            }
+
+            return parameterValues;
+        }
+
+        protected IEnumerable<BaseSimulation> CreateSimulationsForAllTemperatures(Control statement, IProcessingContext context, Func<string, Control, IProcessingContext, BaseSimulation> createSimulation)
+        {
+            var result = new List<BaseSimulation>();
+
             if (context.Result.SimulationConfiguration.TemperaturesInKelvins.Count > 0)
             {
                 foreach (double temp in context.Result.SimulationConfiguration.TemperaturesInKelvins)
                 {
-                    createSimulation(statement, context, temp);
+                    var simulation = createSimulation(GetSimulationName(context, temp), statement, context);
+
+                    SetTempVariable(context, temp, simulation);
+                    SetSimulationTemperatures(simulation, temp, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
+
+                    result.Add(simulation);
                 }
             }
             else
             {
-                createSimulation(statement, context, null);
+                var simulation = createSimulation(GetSimulationName(context, null), statement, context);
+
+                SetTempVariable(context, null, simulation);
+                SetSimulationTemperatures(simulation, null, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
+                result.Add(simulation);
             }
+
+            return result;
         }
 
         protected void SetTempVariable(IProcessingContext context, double? operatingTemperatureInKelvins, BaseSimulation sim)
@@ -55,7 +217,7 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
             return string.Format("{0} - {1}", context.Result.Simulations.Count() + 1, TypeName);
         }
 
-        protected static void SetTemperatures(BaseSimulation simulation, double? operatingTemperatureInKelvins, double? nominalTemperatureInKelvins)
+        protected static void SetSimulationTemperatures(BaseSimulation simulation, double? operatingTemperatureInKelvins, double? nominalTemperatureInKelvins)
         {
             if (operatingTemperatureInKelvins.HasValue)
             {

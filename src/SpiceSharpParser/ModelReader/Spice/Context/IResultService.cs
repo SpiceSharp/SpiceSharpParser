@@ -27,6 +27,6 @@ namespace SpiceSharpParser.ModelReader.Spice.Context
 
         void SetInitialVoltageCondition(string nodeName, double initialVoltage);
 
-        bool FindObject(string modelNameToSearch, out Entity model);
+        bool FindObject(string objectName, out Entity @object);
     }
 }

@@ -16,9 +16,9 @@ namespace SpiceSharpParser
         }
 
         /// <summary>
-        /// Gets or sets the result of reading PostprocessedNetlistModel model.
+        /// Gets or sets the result of reading <see cref="PostprocessedNetlistModel"/> model.
         /// </summary>
-        public SpiceReaderResult ReaderResult { get; set; }
+        public SpiceModelReaderResult ReaderResult { get; set; }
 
         /// <summary>
         /// Gets or sets the netlist model before preprocessing.

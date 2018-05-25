@@ -17,7 +17,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice
             var processor = Substitute.For<IStatementsProcessor>();
             processor.Process(Arg.Any<Statements>(), Arg.Any<IProcessingContext>());
 
-            var reader = new SpiceReader(processor);
+            var reader = new SpiceModelReader(processor);
             var netlist = new Netlist();
 
             // act

@@ -47,6 +47,7 @@ namespace SpiceSharpParser.ModelReader.Spice
                 controls.Add(new GlobalControl());
                 controls.Add(new OptionControl());
                 controls.Add(new TempControl());
+                controls.Add(new StControl());
                 controls.Add(new TransientControl());
                 controls.Add(new ACControl());
                 controls.Add(new DCControl());

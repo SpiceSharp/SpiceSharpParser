@@ -1,7 +1,7 @@
 ﻿namespace SpiceSharpParser.Model.Spice.Objects.Parameters
 {
     /// <summary>
-    /// A parameter that has a single string value
+    /// A parameter that has a single string value.
     /// </summary>
     public abstract class SingleParameter : Parameter
     {
@@ -13,7 +13,7 @@
         }
 
         /// <summary>
-        /// Gets the string represenation of the parameter
+        /// Gets the string represenation of the parameter.
         /// </summary>
         public override string Image => this.rawString;
     }

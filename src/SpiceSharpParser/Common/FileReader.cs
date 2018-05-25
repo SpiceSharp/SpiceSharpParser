@@ -1,6 +1,8 @@
-﻿namespace SpiceSharpParser
+﻿using System.IO;
+
+namespace SpiceSharpParser.Common
 {
-    public interface IFileReader
+    public class FileReader : IFileReader
     {
         /// <summary>
         /// Gets the content of the file located at the specified path
@@ -9,6 +11,9 @@
         /// <returns>
         /// The content of the file
         /// </returns>
-        string GetFileContent(string path);
+        public string GetFileContent(string path)
+        {
+            return File.ReadAllText(path);
+        }
     }
 }

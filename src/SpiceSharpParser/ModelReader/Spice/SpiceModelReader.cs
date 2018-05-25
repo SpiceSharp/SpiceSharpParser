@@ -1,56 +1,52 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp;
-using SpiceSharp.Simulations;
+using SpiceSharpParser.Model.Spice;
 using SpiceSharpParser.ModelReader.Spice.Context;
 using SpiceSharpParser.ModelReader.Spice.Evaluation;
 using SpiceSharpParser.ModelReader.Spice.Evaluation.CustomFunctions;
-using SpiceSharpParser.ModelReader.Spice.Exceptions;
 using SpiceSharpParser.ModelReader.Spice.Processors;
-using SpiceSharpParser.Model.Spice;
-using SpiceSharpParser.Model.Spice.Objects;
-using SpiceSharpParser.Model.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReader.Spice
 {
     /// <summary>
-    /// Translates a netlist to Spice#.
+    /// Translates a spice model to Spice#.
     /// </summary>
-    public class SpiceReader
+    public class SpiceModelReader
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpiceReader"/> class.
+        /// Initializes a new instance of the <see cref="SpiceModelReader"/> class.
         /// </summary>
-        public SpiceReader()
+        public SpiceModelReader()
         {
             StatementsProcessor = BuiltInProcessors.Default;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpiceReader"/> class.
+        /// Initializes a new instance of the <see cref="SpiceModelReader"/> class.
         /// </summary>
-        /// <param name="statementsProcessor">Statements processor</param>
-        public SpiceReader(IStatementsProcessor statementsProcessor)
+        /// <param name="statementsProcessor">Statements processor.</param>
+        public SpiceModelReader(IStatementsProcessor statementsProcessor)
         {
             StatementsProcessor = statementsProcessor ?? throw new System.ArgumentNullException(nameof(statementsProcessor));
         }
 
         /// <summary>
-        /// Gets the statements processor
+        /// Gets the statements processor.
         /// </summary>
         public IStatementsProcessor StatementsProcessor { get; private set; }
 
         /// <summary>
-        /// Translates Netlist object mode to SpiceSharp netlist
+        /// Translates Netlist object mode to SpiceSharp netlist.
         /// </summary>
-        /// <param name="netlist">A object model of the netlist</param>
+        /// <param name="netlist">A object model of the netlist.</param>
         /// <returns>
-        /// A new SpiceSharp netlist
+        /// A new SpiceSharp netlist.
         /// </returns>
-        public SpiceReaderResult Read(Netlist netlist)
+        public SpiceModelReaderResult Read(Netlist netlist)
         {
             // Create result netlist
-            var result = new SpiceReaderResult(new Circuit(), netlist.Title);
+            var result = new SpiceModelReaderResult(new Circuit(), netlist.Title);
 
             // Create processing context
             var evaluator = new Evaluator();
@@ -75,10 +71,10 @@ namespace SpiceSharpParser.ModelReader.Spice
         }
 
         /// <summary>
-        /// Adds user functions to evaluator
+        /// Adds user functions to evaluator.
         /// </summary>
-        /// <param name="evaluator">Evaluator to set</param>
-        /// <param name="context">Processing context</param>
+        /// <param name="evaluator">Evaluator to set.</param>
+        /// <param name="context">Processing context.</param>
         private void AddSpiceFunctions(Evaluator evaluator, IProcessingContext context)
         {
             var customFunctions = new List<KeyValuePair<string, SpiceFunction>>();

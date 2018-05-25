@@ -24,7 +24,7 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
             CreateSimulations(statement, context, CreateNoiseSimulation);
         }
 
-        private Noise CreateNoiseSimulation(Control statement, IProcessingContext context, double? operatingTemperatureInKelvins = null)
+        private Noise CreateNoiseSimulation(string name, Control statement, IProcessingContext context)
         {
             Noise noise = null;
 
@@ -74,13 +74,13 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
                                 var output = new StringIdentifier(v.Elements[0].Image);
                                 var reference = new StringIdentifier(v.Elements[1].Image);
                                 var input = new StringIdentifier(statement.Parameters[2].Image);
-                                noise = new Noise(GetSimulationName(context, operatingTemperatureInKelvins), output, reference, input, sweep);
+                                noise = new Noise(name, output, reference, input, sweep);
                             }
                             else if (bracket.Parameters[0] is SingleParameter s)
                             {
                                 var output = new StringIdentifier(s.Image);
                                 var input = new StringIdentifier(statement.Parameters[1].Image);
-                                noise = new Noise(GetSimulationName(context, operatingTemperatureInKelvins), output, input, sweep);
+                                noise = new Noise(name, output, input, sweep);
                             }
 
                             break;
@@ -98,8 +98,6 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
                 throw new WrongParameterException("Invalid output");
             }
 
-            SetTempVariable(context, operatingTemperatureInKelvins, noise);
-            SetTemperatures(noise, operatingTemperatureInKelvins, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
             context.Result.AddSimulation(noise);
 
             return noise;

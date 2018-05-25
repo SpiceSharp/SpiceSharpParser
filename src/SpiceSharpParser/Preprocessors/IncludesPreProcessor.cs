@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Model.Spice;
 using SpiceSharpParser.Model.Spice.Objects;
 

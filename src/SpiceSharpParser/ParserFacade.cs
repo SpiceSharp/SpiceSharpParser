@@ -1,8 +1,9 @@
-﻿using SpiceSharpParser.ModelReader.Spice.Evaluation;
-using SpiceSharpParser.Model.Spice;
-using SpiceSharpParser.Postprocessors;
-using SpiceSharpParser.Preprocessors;
+﻿using SpiceSharpParser.Model.Spice;
 using SpiceSharpParser.ModelReader.Spice;
+using SpiceSharpParser.ModelReader.Spice.Evaluation;
+using SpiceSharpParser.Preprocessors;
+using SpiceSharpParser.Postprocessors;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser
 {
@@ -90,14 +91,15 @@ namespace SpiceSharpParser
             AppendModelProcessor.Process(preprocessedNetListModel);
             // TODO: more preprocessors
 
-            var reader = new SpiceReader();
             Netlist postprocessedNetlistModel = (Netlist)preprocessedNetListModel.Clone();
 
             // Postprocessing
             var ifPostProcessor = new IfPostProcessor(new Evaluator());
             postprocessedNetlistModel.Statements = ifPostProcessor.Process(postprocessedNetlistModel.Statements);
 
-            SpiceReaderResult readerResult = reader.Read(postprocessedNetlistModel);
+            // Reading model
+            var reader = new SpiceModelReader();
+            SpiceModelReaderResult readerResult = reader.Read(postprocessedNetlistModel);
 
             return new ParserResult()
             {
@@ -106,18 +108,6 @@ namespace SpiceSharpParser
                 PreprocessedNetlistModel = preprocessedNetListModel,
                 PostprocessedNetlistModel = postprocessedNetlistModel,
             };
-        }
-
-        /// <summary>
-        /// Gets the SpiceSharp model for the netlist.
-        /// </summary>
-        /// <param name="netlist">Netlist model.</param>
-        /// <returns>
-        /// A new SpiceSharp model for the netlist.
-        /// </returns>
-        private SpiceReaderResult GetResult(SpiceReader reader, Netlist netlist)
-        {
-            return reader.Read(netlist);
         }
     }
 }

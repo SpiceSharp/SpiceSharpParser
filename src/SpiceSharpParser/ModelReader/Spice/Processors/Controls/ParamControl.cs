@@ -21,7 +21,7 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls
         {
             if (statement.Parameters == null)
             {
-                throw new System.ArgumentNullException("paramters are null");
+                throw new System.ArgumentNullException(nameof(statement.Parameters));
             }
 
             foreach (var param in statement.Parameters)

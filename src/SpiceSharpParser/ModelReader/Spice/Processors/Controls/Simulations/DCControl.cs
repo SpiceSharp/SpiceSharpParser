@@ -27,7 +27,7 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
             CreateSimulations(statement, context, CreateDCSimulation);
         }
 
-        private DC CreateDCSimulation(Control statement, IProcessingContext context, double? operatingTemperatureInKelvins = null)
+        private DC CreateDCSimulation(string name, Control statement, IProcessingContext context)
         {
             int count = statement.Parameters.Count / 4;
             switch (statement.Parameters.Count - (4 * count))
@@ -59,7 +59,7 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
                 sweeps.Add(sweep);
             }
 
-            DC dc = new DC(GetSimulationName(context, operatingTemperatureInKelvins), sweeps);
+            DC dc = new DC(name, sweeps);
             dc.OnParameterSearch += (sender, e) =>
             {
                 string sweepParameterName = e.Name.ToString();
@@ -70,9 +70,7 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
                 }
             };
 
-            SetTempVariable(context, operatingTemperatureInKelvins, dc);
             SetBaseConfiguration(dc.BaseConfiguration, context);
-            SetTemperatures(dc, operatingTemperatureInKelvins, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
             SetDcParameters(dc.DcConfiguration, context);
 
             context.Result.AddSimulation(dc);
