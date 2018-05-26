@@ -495,7 +495,7 @@ namespace SpiceSharpParser.Parser.Expressions
                             }
                             else
                             {
-                                throw new Exception("Unknown variable");
+                                throw new Exception("Unknown parameter");
                             }
 
                             infixPostfix = true;
@@ -711,7 +711,9 @@ namespace SpiceSharpParser.Parser.Expressions
             }
 
             // Read decimal part
-            if (index < count && (input[index] == '.' || input[index] == ',') && (operatorStack.Count == 0 || operatorStack.Peek().Id != IdUserFunction))
+            if (index < count
+                && (input[index] == '.' 
+                || input[index] == ',' && (operatorStack.Count == 0 || (operatorStack.Peek().Id == IdNegative || operatorStack.Peek().Id == IdPositive))))
             {
                 index++;
                 double mult = 1.0;

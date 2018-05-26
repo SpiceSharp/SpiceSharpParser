@@ -218,6 +218,31 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
+        public void LinParamWithAdvancedTableTest()
+        {
+            var result = ParseNetlist(
+                "Test circuit",
+                "V1 0 1 100",
+                "R1 1 0 {R}",
+                ".OP",
+                ".SAVE i(R1)",
+                ".PARAM N=0",
+                ".PARAM R={table(N, 1, pow(10, 1), 2*0+2-0, 20 + 0, 3, 30)}",
+                ".ST N 1 4 1",
+                ".END");
+
+            Assert.Equal(3, result.Exports.Count);
+            Assert.Equal(3, result.Simulations.Count);
+
+            var exports = RunSimulations(result);
+
+            for (var i = 0; i < exports.Count; i++)
+            {
+                Assert.Equal(-100 / (10.00 * (i + 1)), exports[i]);
+            }
+        }
+
+        [Fact]
         public void LinParamWithDependedTableTest()
         {
             var result = ParseNetlist(

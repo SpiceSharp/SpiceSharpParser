@@ -6,7 +6,7 @@ using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
 {
-    public class EvaluatorTest
+    public class SpiceEvaluatorTest
     {
         [Fact]
         public void GetParameterNames()
@@ -91,6 +91,21 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         {
             Evaluator v = new SpiceEvaluator();
             Assert.Equal(2, v.EvaluateDouble("1V + 1"));
+        }
+
+        [Fact]
+        public void EvaluateTableTest()
+        {
+            Evaluator v = new SpiceEvaluator();
+            v.SetParameter("N", 1.0);
+            Assert.Equal(10, v.EvaluateDouble("table(N, 1, pow(10, 1), 2 + 0, 20, 3, 30)"));
+        }
+
+        [Fact]
+        public void EvaluateWithComaTest()
+        {
+            Evaluator v = new SpiceEvaluator();
+            Assert.Equal(-1.99666833293656, v.EvaluateDouble("-1,99666833293656"));
         }
     }
 }

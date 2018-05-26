@@ -14,7 +14,8 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
         {
             CustomFunction function = new CustomFunction();
             function.Name = "table";
-            function.VirtualParameters = true;
+            function.VirtualParameters = false;
+            function.ArgumentsCount = -1;
 
             function.Logic = (args, simulation) =>
             {
