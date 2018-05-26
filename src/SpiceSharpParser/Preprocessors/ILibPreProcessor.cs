@@ -1,9 +1,9 @@
-﻿using SpiceSharpParser.Model.Spice;
+﻿using SpiceSharpParser.Model.Netlist.Spice;
 
 namespace SpiceSharpParser.Preprocessors
 {
     public interface ILibPreProcessor
     {
-        void Process(Netlist netlistModel, string currentDirectoryPath = null);
+        void Process(SpiceNetlist netlistModel, string currentDirectoryPath = null);
     }
 }

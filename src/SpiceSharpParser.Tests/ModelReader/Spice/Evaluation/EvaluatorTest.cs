@@ -1,4 +1,5 @@
-using SpiceSharpParser.ModelReader.Spice.Evaluation;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation;
 using System;
 using System.Linq;
 using Xunit;
@@ -11,7 +12,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         public void GetParameterNames()
         {
             // arrange
-            var p = new Evaluator();
+            var p = new SpiceEvaluator();
             p.SetParameter("a", 1);
             p.SetParameter("xyz", 13.0);
 
@@ -22,11 +23,11 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         public void ParentEvalautor()
         {
             // arrange
-            var p = new Evaluator();
+            var p = new SpiceEvaluator();
             p.SetParameter("a", 1);
 
             // act and assert
-            var v = new Evaluator(p);
+            var v = p.CreateChildEvaluator();
 
             v.SetParameter("xyz", 13.0);
             Assert.Equal(1, v.GetParameterValue("a"));
@@ -40,7 +41,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         public void AddDynamicExpressionTest()
         {
             // arrange
-            var v = new Evaluator();
+            var v = new SpiceEvaluator();
             v.SetParameter("xyz", 13.0);
 
             double expressionValue = 0;
@@ -56,14 +57,14 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         [Fact]
         public void EvaluateFailsWhenThereCurrlyBraces()
         {
-            Evaluator v = new Evaluator();
+            Evaluator v = new SpiceEvaluator();
             Assert.Throws<Exception>(() => v.EvaluateDouble("{1}"));
         }
 
         [Fact]
         public void EvaluateParameterTest()
         {
-            Evaluator v = new Evaluator();
+            Evaluator v = new SpiceEvaluator();
             v.SetParameter("xyz", 13.0);
 
             Assert.Equal(14, v.EvaluateDouble("xyz + 1"));
@@ -73,7 +74,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         public void GetVariablesTest()
         {
             // prepare
-            Evaluator v = new Evaluator();
+            Evaluator v = new SpiceEvaluator();
             v.SetParameter("xyz", 13.0);
             v.SetParameter("a", 1.0);
 
@@ -88,7 +89,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         [Fact]
         public void EvaluateSuffixTest()
         {
-            Evaluator v = new Evaluator();
+            Evaluator v = new SpiceEvaluator();
             Assert.Equal(2, v.EvaluateDouble("1V + 1"));
         }
     }

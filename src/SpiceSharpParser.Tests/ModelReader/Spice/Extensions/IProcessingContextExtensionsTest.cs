@@ -5,10 +5,10 @@ using System.Text;
 using Xunit;
 using SpiceSharp.Components;
 using SpiceSharp.Circuits;
-using SpiceSharpParser.Model.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelReader.Spice.Context;
-using SpiceSharpParser.Model.Spice.Objects;
-using SpiceSharpParser.ModelReader.Spice.Extensions;
+using SpiceSharpParser.Model.Netlist.Spice.Objects.Parameters;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
+using SpiceSharpParser.Model.Netlist.Spice.Objects;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Extensions;
 
 namespace SpiceSharpParser.Tests.ModelReader.Spice.Extensions
 {

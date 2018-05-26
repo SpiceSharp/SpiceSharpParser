@@ -1,9 +1,9 @@
 ﻿using NSubstitute;
-using SpiceSharpParser.ModelReader.Spice.Context;
-using SpiceSharpParser.ModelReader.Spice.Processors;
-using SpiceSharpParser.ModelReader.Spice.Processors.EntityGenerators.Components;
-using SpiceSharpParser.Model.Spice.Objects;
-using SpiceSharpParser.Model.Spice.Objects.Parameters;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Processors;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.EntityGenerators.Components;
+using SpiceSharpParser.Model.Netlist.Spice.Objects;
+using SpiceSharpParser.Model.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
 using Xunit;
 
@@ -33,7 +33,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Processors.EntityGenerators.C
                     Statements = new Statements()
                     {
                         new Component() { Name = "R1" },
-                        new SpiceSharpParser.Model.Spice.Objects.Model() { Name = "m1" },
+                        new SpiceSharpParser.Model.Netlist.Spice.Objects.Model() { Name = "m1" },
                         new Control() { Name = "param", Parameters = new ParameterCollection() },
                         new Control() { Name = "save" }
                     }
@@ -56,7 +56,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Processors.EntityGenerators.C
 
             // assert
             componentProcessor.Received().Process(Arg.Is<Component>(c => c.Name == "R1"), Arg.Any<IProcessingContext>());
-            modelProcessor.Received().Process(Arg.Is<SpiceSharpParser.Model.Spice.Objects.Model>(c => c.Name == "m1"), Arg.Any<IProcessingContext>());
+            modelProcessor.Received().Process(Arg.Is<SpiceSharpParser.Model.Netlist.Spice.Objects.Model>(c => c.Name == "m1"), Arg.Any<IProcessingContext>());
             controlProcessor.Received().Process(Arg.Is<Control>(c => c.Name == "param"), Arg.Any<IProcessingContext>());
             controlProcessor.DidNotReceive().Process(Arg.Is<Control>(c => c.Name == "save"), Arg.Any<IProcessingContext>());
 

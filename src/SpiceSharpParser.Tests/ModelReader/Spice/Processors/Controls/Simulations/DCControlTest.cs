@@ -1,8 +1,8 @@
 ﻿using NSubstitute;
-using SpiceSharpParser.ModelReader.Spice.Context;
-using SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations;
-using SpiceSharpParser.Model.Spice.Objects;
-using SpiceSharpParser.Model.Spice.Objects.Parameters;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Controls.Simulations;
+using SpiceSharpParser.Model.Netlist.Spice.Objects;
+using SpiceSharpParser.Model.Netlist.Spice.Objects.Parameters;
 using SpiceSharp.Simulations;
 using System.Collections.Generic;
 using System.Linq;

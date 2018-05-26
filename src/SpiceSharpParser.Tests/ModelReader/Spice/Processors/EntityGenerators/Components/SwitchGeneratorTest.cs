@@ -1,9 +1,9 @@
 ﻿using NSubstitute;
-using SpiceSharpParser.ModelReader.Spice.Context;
-using SpiceSharpParser.ModelReader.Spice.Evaluation;
-using SpiceSharpParser.ModelReader.Spice.Processors.EntityGenerators.Components;
-using SpiceSharpParser.Model.Spice.Objects;
-using SpiceSharpParser.Model.Spice.Objects.Parameters;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.EntityGenerators.Components;
+using SpiceSharpParser.Model.Netlist.Spice.Objects;
+using SpiceSharpParser.Model.Netlist.Spice.Objects.Parameters;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using Xunit;
@@ -15,7 +15,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Processors.EntityGenerators.C
         [Fact]
         public void GenerateVoltageSwitch()
         {
-            var evaluator = new Evaluator();
+            var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IProcessingContext>();
             context.FindModel<VoltageSwitchModel>(Arg.Any<string>()).Returns(new VoltageSwitchModel("SModel"));
 
@@ -40,7 +40,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Processors.EntityGenerators.C
         [Fact]
         public void GenerateVoltageSwitchOff()
         {
-            var evaluator = new Evaluator();
+            var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IProcessingContext>();
             context.FindModel<VoltageSwitchModel>(Arg.Any<string>()).Returns(new VoltageSwitchModel("SModel"));
 
@@ -65,7 +65,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Processors.EntityGenerators.C
         [Fact]
         public void GenerateCurrentSwitch()
         {
-            var evaluator = new Evaluator();
+            var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IProcessingContext>();
             context.FindModel<CurrentSwitchModel>(Arg.Any<string>()).Returns(new CurrentSwitchModel("WModel"));
 
@@ -89,7 +89,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Processors.EntityGenerators.C
         [Fact]
         public void GenerateCurrentSwitchOff()
         {
-            var evaluator = new Evaluator();
+            var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IProcessingContext>();
             context.FindModel<CurrentSwitchModel>(Arg.Any<string>()).Returns(new CurrentSwitchModel("WModel"));
 

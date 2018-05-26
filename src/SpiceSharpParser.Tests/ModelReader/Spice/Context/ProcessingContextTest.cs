@@ -1,10 +1,11 @@
 ﻿using NSubstitute;
-using SpiceSharpParser.ModelReader.Spice.Context;
-using SpiceSharpParser.ModelReader.Spice.Evaluation;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation;
 using SpiceSharp.Components;
 using System.Collections.Generic;
 using Xunit;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.Tests.ModelReader.Spice.Context
 {
@@ -14,7 +15,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Context
         public void SetParameterWithExpressionTest()
         {
             // prepare
-            var evaluator = Substitute.For<IEvaluator>();
+            var evaluator = Substitute.For<ISpiceEvaluator>();
             evaluator.EvaluateDouble("a+1").Returns(
                 x =>
                 {
@@ -36,7 +37,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Context
         public void SetParameterCaseTest()
         {
             // prepare
-            var evaluator = Substitute.For<IEvaluator>();
+            var evaluator = Substitute.For<ISpiceEvaluator>();
             evaluator.EvaluateDouble("1").Returns(1);
 
             var resultService = Substitute.For<IResultService>();
@@ -58,7 +59,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Context
         public void SetUnkownParameterTest()
         {
             // prepare
-            var evaluator = Substitute.For<IEvaluator>();
+            var evaluator = Substitute.For<ISpiceEvaluator>();
             evaluator.EvaluateDouble("1").Returns(1);
 
             var resultService = Substitute.For<IResultService>();
@@ -77,7 +78,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Context
         public void SetNodeSetVoltageTest()
         {
             // prepare
-            var evaluator = Substitute.For<IEvaluator>();
+            var evaluator = Substitute.For<ISpiceEvaluator>();
             evaluator.EvaluateDouble("x+1").Returns(3);
 
             var simulations = new List<Simulation>();

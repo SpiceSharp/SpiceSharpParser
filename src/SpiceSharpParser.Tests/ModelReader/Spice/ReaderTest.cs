@@ -1,10 +1,10 @@
 using NSubstitute;
-using SpiceSharpParser.ModelReader.Spice.Context;
-using SpiceSharpParser.ModelReader.Spice.Processors;
-using SpiceSharpParser.Model.Spice;
-using SpiceSharpParser.Model.Spice.Objects;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Processors;
+using SpiceSharpParser.Model.Netlist.Spice;
+using SpiceSharpParser.Model.Netlist.Spice.Objects;
 using Xunit;
-using SpiceSharpParser.ModelReader.Spice;
+using SpiceSharpParser.ModelReader.Netlist.Spice;
 
 namespace SpiceSharpParser.Tests.ModelReader.Spice
 {
@@ -18,7 +18,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice
             processor.Process(Arg.Any<Statements>(), Arg.Any<IProcessingContext>());
 
             var reader = new SpiceModelReader(processor);
-            var netlist = new Netlist();
+            var netlist = new SpiceNetlist();
 
             // act
             var result = reader.Read(netlist);

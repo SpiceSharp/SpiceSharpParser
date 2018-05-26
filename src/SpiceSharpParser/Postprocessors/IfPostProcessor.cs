@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Circuits;
-using SpiceSharpParser.ModelReader.Spice.Context;
-using SpiceSharpParser.ModelReader.Spice.Evaluation;
-using SpiceSharpParser.ModelReader.Spice.Processors.Controls;
-using SpiceSharpParser.Model.Spice.Objects;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Controls;
+using SpiceSharpParser.Model.Netlist.Spice.Objects;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.Postprocessors
 {
@@ -14,12 +15,12 @@ namespace SpiceSharpParser.Postprocessors
     /// </summary>
     public class IfPostProcessor
     {
-        public IfPostProcessor(IEvaluator evaluator)
+        public IfPostProcessor(ISpiceEvaluator evaluator)
         {
             Evaluator = evaluator;
         }
 
-        protected IEvaluator Evaluator { get; }
+        protected ISpiceEvaluator Evaluator { get; }
 
         //TODO: please do something about .ToLower() in so many places ....
         public Statements Process(Statements statements)
@@ -96,7 +97,7 @@ namespace SpiceSharpParser.Postprocessors
         private IEnumerable<Statement> ComputeIfResult(Statements result, int ifIndex, int endIfIndex)
         {
             var ifControl = result[ifIndex] as Control;
-            var ifCondition = ifControl.Parameters[0] as Model.Spice.Objects.Parameters.ExpressionParameter;
+            var ifCondition = ifControl.Parameters[0] as Model.Netlist.Spice.Objects.Parameters.ExpressionParameter;
 
             Control elseControl = null;
             Control elseIfControl = null;
@@ -154,9 +155,9 @@ namespace SpiceSharpParser.Postprocessors
 
     internal class IfPostProcessorProcessingContext : IProcessingContext
     {
-        public IEvaluator Evaluator { get; set; }
+        public ISpiceEvaluator Evaluator { get; set; }
 
-        public IfPostProcessorProcessingContext(IEvaluator evaluator)
+        public IfPostProcessorProcessingContext(ISpiceEvaluator evaluator)
         {
             Evaluator = evaluator;
         }

@@ -1,9 +1,9 @@
-﻿using SpiceSharpParser.Model.Spice;
+﻿using SpiceSharpParser.Model.Netlist.Spice;
 
 namespace SpiceSharpParser.Preprocessors
 {
     public interface IAppendModelPreProcessor
     {
-        void Process(Netlist netlistModel);
+        void Process(SpiceNetlist netlistModel);
     }
 }

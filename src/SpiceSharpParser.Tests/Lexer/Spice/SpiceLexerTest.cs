@@ -1,5 +1,5 @@
 using SpiceSharpParser.Lexer;
-using SpiceSharpParser.Lexer.Spice;
+using SpiceSharpParser.Lexer.Netlist.Spice;
 using System.Linq;
 using Xunit;
 

@@ -1,6 +1,5 @@
-﻿using SpiceSharpParser.ModelReader.Spice.Evaluation;
-using SpiceSharpParser.ModelReader.Spice.Evaluation.CustomFunctions;
-using System.Collections.Generic;
+﻿using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions;
+using SpiceSharpParser.Parser.Expressions;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
@@ -11,12 +10,9 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         public void RadomTest()
         {
             // arrange
-            var parser = new SpiceExpression
-            {
-                Parameters = new Dictionary<string, double>(),
-                CustomFunctions = new Dictionary<string, SpiceFunction>()
-            };
-            parser.CustomFunctions.Add("random", RandomFunctions.CreateRandom());
+            var parser = new SpiceExpressionParser();
+
+            parser.CustomFunctions.Add("random", RandomFunction.Create());
 
             // act
             var result = parser.Parse("10 * random()");

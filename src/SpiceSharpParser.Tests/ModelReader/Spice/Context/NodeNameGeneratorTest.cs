@@ -1,4 +1,4 @@
-﻿using SpiceSharpParser.ModelReader.Spice.Context;
+﻿using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReader.Spice.Context
@@ -24,12 +24,12 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Context
         [Fact]
         public void GenerateWithSubcircuitTest()
         {
-            var subcircuit = new Model.Spice.Objects.SubCircuit();
+            var subcircuit = new Model.Netlist.Spice.Objects.SubCircuit();
             subcircuit.Pins = new System.Collections.Generic.List<string>() { "IN", "OUT" };
             subcircuit.DefaultParameters =
-                new System.Collections.Generic.List<Model.Spice.Objects.Parameters.AssignmentParameter>() {
-                    new Model.Spice.Objects.Parameters.AssignmentParameter() { Name = "L", Value = "100" },
-                    new Model.Spice.Objects.Parameters.AssignmentParameter() { Name = "C", Value = "10" } };
+                new System.Collections.Generic.List<Model.Netlist.Spice.Objects.Parameters.AssignmentParameter>() {
+                    new Model.Netlist.Spice.Objects.Parameters.AssignmentParameter() { Name = "L", Value = "100" },
+                    new Model.Netlist.Spice.Objects.Parameters.AssignmentParameter() { Name = "C", Value = "10" } };
 
             var generator = new SubcircuitNodeNameGenerator("x1", "x1", subcircuit, new System.Collections.Generic.List<string>() { "net2", "net3" }, new string[] { "0" });
 

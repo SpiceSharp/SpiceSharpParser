@@ -1,10 +1,9 @@
-﻿using SpiceSharpParser.Model.Spice;
-using SpiceSharpParser.ModelReader.Spice;
-using SpiceSharpParser.ModelReader.Spice.Evaluation;
+﻿using SpiceSharpParser.Model.Netlist.Spice;
+using SpiceSharpParser.ModelReader.Netlist.Spice;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Preprocessors;
 using SpiceSharpParser.Postprocessors;
-using SpiceSharpParser.Common;
-using SpiceSharpParser.ModelReader.Spice.Evaluation.CustomFunctions;
 
 namespace SpiceSharpParser
 {
@@ -43,7 +42,7 @@ namespace SpiceSharpParser
         }
 
         /// <summary>
-        /// Gets the .lib processor
+        /// Gets the .lib processor.
         /// </summary>
         public ILibPreProcessor LibProcessor { get; }
 
@@ -83,8 +82,8 @@ namespace SpiceSharpParser
                 throw new System.ArgumentNullException(nameof(netlist));
             }
 
-            Netlist originalNetlistModel = NetlistModelReader.GetNetlistModel(netlist, settings);
-            Netlist preprocessedNetListModel = (Netlist)originalNetlistModel.Clone();
+            SpiceNetlist originalNetlistModel = NetlistModelReader.GetNetlistModel(netlist, settings);
+            SpiceNetlist preprocessedNetListModel = (SpiceNetlist)originalNetlistModel.Clone();
 
             // Preprocessing
             IncludesProcessor.Process(preprocessedNetListModel, workingDirectoryPath);
@@ -92,11 +91,10 @@ namespace SpiceSharpParser
             AppendModelProcessor.Process(preprocessedNetListModel);
             // TODO: more preprocessors
 
-            Netlist postprocessedNetlistModel = (Netlist)preprocessedNetListModel.Clone();
+            SpiceNetlist postprocessedNetlistModel = (SpiceNetlist)preprocessedNetListModel.Clone();
 
             // Postprocessing
-            var postProcessingEvaluator = new Evaluator();
-            postProcessingEvaluator.ExpressionParser.CustomFunctions["table"] = TableFunction.Create(postProcessingEvaluator);
+            var postProcessingEvaluator = new SpiceEvaluator(); // TODO ExportFunctions are not required at this point
 
             var ifPostProcessor = new IfPostProcessor(postProcessingEvaluator);
             postprocessedNetlistModel.Statements = ifPostProcessor.Process(postprocessedNetlistModel.Statements);

@@ -1,4 +1,4 @@
-﻿using SpiceSharpParser.Model.Spice;
+﻿using SpiceSharpParser.Model.Netlist.Spice;
 
 namespace SpiceSharpParser
 {
@@ -15,6 +15,6 @@ namespace SpiceSharpParser
         /// <returns>
         /// A netlist model
         /// </returns>
-        Netlist GetNetlistModel(string netlist, ParserSettings settings);
+        SpiceNetlist GetNetlistModel(string netlist, ParserSettings settings);
     }
 }

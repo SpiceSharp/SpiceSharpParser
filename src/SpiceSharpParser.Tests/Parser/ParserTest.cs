@@ -1,6 +1,6 @@
-using SpiceSharpParser.Lexer.Spice;
-using SpiceSharpParser.Parser;
-using SpiceSharpParser.Parser.Spice;
+using SpiceSharpParser.Lexer.Netlist.Spice;
+using SpiceSharpParser.Parser.Netlist;
+using SpiceSharpParser.Parser.Netlist.Spice;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.Parser

@@ -1,10 +1,10 @@
 using NSubstitute;
-using SpiceSharpParser.ModelReader.Spice.Context;
-using SpiceSharpParser.ModelReader.Spice.Processors;
-using SpiceSharpParser.ModelReader.Spice.Processors.EntityGenerators;
-using SpiceSharpParser.ModelReader.Spice.Registries;
-using SpiceSharpParser.Model.Spice.Objects;
-using SpiceSharpParser.Model.Spice.Objects.Parameters;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Processors;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.EntityGenerators;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Registries;
+using SpiceSharpParser.Model.Netlist.Spice.Objects;
+using SpiceSharpParser.Model.Netlist.Spice.Objects.Parameters;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
@@ -40,7 +40,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Processors
 
             // act
             ComponentProcessor processor = new ComponentProcessor(registry);
-            var component = new Model.Spice.Objects.Component() { Name = "Ra1", PinsAndParameters = new ParameterCollection() { new ValueParameter("0"), new ValueParameter("1"), new ValueParameter("12.3") } };
+            var component = new Model.Netlist.Spice.Objects.Component() { Name = "Ra1", PinsAndParameters = new ParameterCollection() { new ValueParameter("0"), new ValueParameter("1"), new ValueParameter("12.3") } };
             processor.Process(component, processingContext);
 
             // assert

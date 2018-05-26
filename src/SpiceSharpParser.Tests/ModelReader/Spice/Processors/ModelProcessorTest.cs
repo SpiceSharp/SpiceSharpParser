@@ -1,10 +1,10 @@
 using NSubstitute;
-using SpiceSharpParser.ModelReader.Spice.Context;
-using SpiceSharpParser.ModelReader.Spice.Processors;
-using SpiceSharpParser.ModelReader.Spice.Processors.EntityGenerators;
-using SpiceSharpParser.ModelReader.Spice.Registries;
-using SpiceSharpParser.Model.Spice.Objects;
-using SpiceSharpParser.Model.Spice.Objects.Parameters;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Processors;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.EntityGenerators;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Registries;
+using SpiceSharpParser.Model.Netlist.Spice.Objects;
+using SpiceSharpParser.Model.Netlist.Spice.Objects.Parameters;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
@@ -40,7 +40,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Processors
 
             // act
             ModelProcessor processor = new ModelProcessor(registry);
-            var model = new Model.Spice.Objects.Model() { Name = "2Na2222", Parameters = new ParameterCollection() { new BracketParameter() { Name = "NPN" } } };
+            var model = new Model.Netlist.Spice.Objects.Model() { Name = "2Na2222", Parameters = new ParameterCollection() { new BracketParameter() { Name = "NPN" } } };
             processor.Process(model, processingContext);
 
             //assert

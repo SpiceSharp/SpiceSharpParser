@@ -1,9 +1,9 @@
-﻿using SpiceSharpParser.Lexer.Spice;
-using SpiceSharpParser.Model.Spice;
-using SpiceSharpParser.Model.Spice.Objects;
-using SpiceSharpParser.Model.Spice.Objects.Parameters;
-using SpiceSharpParser.Parser;
-using SpiceSharpParser.Parser.Spice;
+﻿using SpiceSharpParser.Lexer.Netlist.Spice;
+using SpiceSharpParser.Model.Netlist.Spice;
+using SpiceSharpParser.Model.Netlist.Spice.Objects;
+using SpiceSharpParser.Model.Netlist.Spice.Objects.Parameters;
+using SpiceSharpParser.Parser.Netlist;
+using SpiceSharpParser.Parser.Netlist.Spice;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.Parser
@@ -29,7 +29,7 @@ namespace SpiceSharpParser.Tests.Parser
 
             // Act
             ParseTreeEvaluator eval = new ParseTreeEvaluator();
-            var spiceObject = eval.Evaluate(root) as Netlist;
+            var spiceObject = eval.Evaluate(root) as SpiceNetlist;
 
             Assert.NotNull(spiceObject);
         }

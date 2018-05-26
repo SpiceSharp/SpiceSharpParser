@@ -1,6 +1,6 @@
 ﻿using SpiceSharp.Simulations;
-using SpiceSharpParser.Model.Spice;
-using SpiceSharpParser.ModelReader.Spice;
+using SpiceSharpParser.Model.Netlist.Spice;
+using SpiceSharpParser.ModelReader.Netlist.Spice;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,14 +37,14 @@ namespace SpiceSharpParser.IntegrationTests
             return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = true, IsEndRequired = true }).ReaderResult;
         }
 
-        public static Netlist ParseNetlistToModel(bool isEndRequired, bool hasTitle, params string[] lines)
+        public static SpiceNetlist ParseNetlistToModel(bool isEndRequired, bool hasTitle, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parserFront = new ParserFacade();
             return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = hasTitle, IsEndRequired = isEndRequired }).PreprocessedNetlistModel;
         }
 
-        public static Netlist ParseNetlistToPostProcessedModel(bool isEndRequired, bool hasTitle, params string[] lines)
+        public static SpiceNetlist ParseNetlistToPostProcessedModel(bool isEndRequired, bool hasTitle, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parserFront = new ParserFacade();

@@ -1,9 +1,9 @@
 ﻿using NSubstitute;
-using SpiceSharpParser.ModelReader.Spice.Context;
-using SpiceSharpParser.ModelReader.Spice.Exceptions;
-using SpiceSharpParser.ModelReader.Spice.Processors.Waveforms;
-using SpiceSharpParser.Model.Spice.Objects;
-using SpiceSharpParser.Model.Spice.Objects.Parameters;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Exceptions;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Waveforms;
+using SpiceSharpParser.Model.Netlist.Spice.Objects;
+using SpiceSharpParser.Model.Netlist.Spice.Objects.Parameters;
 using SpiceSharp.Components;
 using Xunit;
 

@@ -1,5 +1,7 @@
-﻿using SpiceSharpParser.ModelReader.Spice.Evaluation;
-using SpiceSharpParser.ModelReader.Spice.Evaluation.CustomFunctions;
+﻿using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions;
+using SpiceSharpParser.Parser.Expressions;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -12,13 +14,9 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         public void ParseWithUserFunction()
         {
             // arrange
-            var parser = new SpiceExpression
-            {
-                Parameters = new Dictionary<string, double>(),
-                CustomFunctions = new Dictionary<string, SpiceFunction>()
-            };
+            var parser = new SpiceExpressionParser();
 
-            parser.CustomFunctions.Add("v", new SpiceFunction()
+            parser.CustomFunctions.Add("v", new CustomFunction()
             {
                 Logic = (args, context) =>
                 {
@@ -46,17 +44,13 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         public void ParseWithUserFunctionNoArgument()
         {
             // arrange
-            var parser = new SpiceExpression
-            {
-                Parameters = new Dictionary<string, double>(),
-                CustomFunctions = new Dictionary<string, SpiceFunction>()
-            };
+            var parser = new SpiceExpressionParser();
 
             Random rand = new Random(Environment.TickCount);
 
             double randomVal = 0;
 
-            parser.CustomFunctions.Add("random", new SpiceFunction
+            parser.CustomFunctions.Add("random", new CustomFunction
             {
                 Logic = (args, context) =>
                 {
@@ -76,11 +70,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         public void ParseWithUnknownParameter()
         {
             // arrange
-            var parser = new SpiceExpression
-            {
-                Parameters = new Dictionary<string, double>(),
-                CustomFunctions = new Dictionary<string, SpiceFunction>()
-            };
+            var parser = new SpiceExpressionParser();
 
             // act and assert
             Assert.Throws<Exception>(() => parser.Parse("x + 1"));
@@ -90,11 +80,8 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         public void ParseWitKnownParameter()
         {
             // arrange
-            var parser = new SpiceExpression
-            {
-                Parameters = new Dictionary<string, double>() { { "x", 1 } },
-                CustomFunctions = new Dictionary<string, SpiceFunction>()
-            };
+            var parser = new SpiceExpressionParser();
+            parser.Parameters["x"] = 1;
 
             // act and assert
             Assert.Equal(2, parser.Parse("x + 1"));
@@ -104,11 +91,8 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         public void ParseWithBuildinFunction()
         {
             // arrange
-            var parser = new SpiceExpression
-            {
-                Parameters = new Dictionary<string, double>() { { "x", 1 } },
-                CustomFunctions = new Dictionary<string, SpiceFunction>()
-            };
+            var parser = new SpiceExpressionParser();
+            parser.Parameters["x"] = 1;
 
             // act and assert
             Assert.Equal(1, parser.Parse("sin(0) + 1"));
@@ -118,11 +102,8 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         public void ParseWithSpace()
         {
             // arrange
-            var parser = new SpiceExpression
-            {
-                Parameters = new Dictionary<string, double>() { },
-                CustomFunctions = new Dictionary<string, SpiceFunction>()
-            };
+            var parser = new SpiceExpressionParser();
+            
 
             // act and assert
             Assert.Equal(3, parser.Parse(" 2 + 1 "));
@@ -132,11 +113,8 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         public void ParseWithComma()
         {
             // arrange
-            var parser = new SpiceExpression
-            {
-                Parameters = new Dictionary<string, double>() { },
-                CustomFunctions = new Dictionary<string, SpiceFunction>()
-            };
+            var parser = new SpiceExpressionParser();
+            
 
             // act and assert
             Assert.Equal(2.1, parser.Parse("2,1"));
@@ -146,11 +124,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         public void ParseWithConstants()
         {
             // arrange
-            var parser = new SpiceExpression
-            {
-                Parameters = new Dictionary<string, double>() { },
-                CustomFunctions = new Dictionary<string, SpiceFunction>()
-            };
+            var parser = new SpiceExpressionParser();
 
             // act and assert
             Assert.Equal((2 * Math.PI) + (2 * Math.E), parser.Parse("PI + e + pi + E"));
@@ -160,13 +134,9 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         public void ParseWithReference()
         {
             // arrange
-            var parser = new SpiceExpression
-            {
-                Parameters = new Dictionary<string, double>() { },
-                CustomFunctions = new Dictionary<string, SpiceFunction>()
-            };
+            var parser = new SpiceExpressionParser();
 
-            parser.CustomFunctions.Add("@", new SpiceFunction()
+            parser.CustomFunctions.Add("@", new CustomFunction()
             {
                 Logic = (args, context) =>
                 {

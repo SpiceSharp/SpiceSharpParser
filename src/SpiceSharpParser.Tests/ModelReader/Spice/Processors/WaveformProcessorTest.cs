@@ -1,9 +1,9 @@
 using NSubstitute;
-using SpiceSharpParser.ModelReader.Spice.Context;
-using SpiceSharpParser.ModelReader.Spice.Processors;
-using SpiceSharpParser.ModelReader.Spice.Processors.Waveforms;
-using SpiceSharpParser.ModelReader.Spice.Registries;
-using SpiceSharpParser.Model.Spice.Objects.Parameters;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Processors;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Waveforms;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Registries;
+using SpiceSharpParser.Model.Netlist.Spice.Objects.Parameters;
 using SpiceSharp.Components;
 using System;
 using Xunit;
@@ -23,7 +23,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Processors
             waveFormRegistry.Supports("func").Returns(true);
             waveFormRegistry.Get(Arg.Any<string>()).Returns(waveFormGenerator);
 
-            var bracketParameter = new Model.Spice.Objects.Parameters.BracketParameter();
+            var bracketParameter = new Model.Netlist.Spice.Objects.Parameters.BracketParameter();
             bracketParameter.Name = "FUNc";
             var processingContext = Substitute.For<IProcessingContext>();
 
@@ -46,7 +46,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Processors
             waveFormRegistry.Supports("func").Returns(true);
             waveFormRegistry.Get(Arg.Any<string>()).Returns(waveFormGenerator);
 
-            var bracketParameter = new Model.Spice.Objects.Parameters.BracketParameter();
+            var bracketParameter = new Model.Netlist.Spice.Objects.Parameters.BracketParameter();
             bracketParameter.Name = "func2";
             var processingContext = Substitute.For<IProcessingContext>();
 

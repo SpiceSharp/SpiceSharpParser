@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using SpiceSharpParser.Lexer.Spice;
-using SpiceSharpParser.Model.Spice;
-using SpiceSharpParser.Parser;
-using SpiceSharpParser.Parser.Spice;
+using SpiceSharpParser.Lexer.Netlist.Spice;
+using SpiceSharpParser.Model.Netlist.Spice;
+using SpiceSharpParser.Parser.Netlist;
+using SpiceSharpParser.Parser.Netlist.Spice;
 
 namespace SpiceSharpParser
 {
@@ -16,7 +16,7 @@ namespace SpiceSharpParser
         /// <returns>
         /// A netlist model
         /// </returns>
-        public Netlist GetNetlistModel(string netlist, ParserSettings settings)
+        public SpiceNetlist GetNetlistModel(string netlist, ParserSettings settings)
         {
             if (settings == null)
             {
@@ -90,10 +90,10 @@ namespace SpiceSharpParser
         /// <returns>
         /// A netlist model
         /// </returns>
-        private Netlist GetNetlistModelFromTree(ParseTreeNonTerminalNode root)
+        private SpiceNetlist GetNetlistModelFromTree(ParseTreeNonTerminalNode root)
         {
             var translator = new ParseTreeEvaluator();
-            return translator.Evaluate(root) as Netlist;
+            return translator.Evaluate(root) as SpiceNetlist;
         }
     }
 }

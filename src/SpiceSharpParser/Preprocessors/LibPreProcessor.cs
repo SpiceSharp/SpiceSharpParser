@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using SpiceSharpParser.Common;
-using SpiceSharpParser.Model.Spice;
-using SpiceSharpParser.Model.Spice.Objects;
+using SpiceSharpParser.Model.Netlist.Spice;
+using SpiceSharpParser.Model.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.Preprocessors
 {
@@ -45,7 +45,7 @@ namespace SpiceSharpParser.Preprocessors
         /// </summary>
         /// <param name="netlistModel">Netlist model to seach for .include statements</param>
         /// <param name="currentDirectoryPath">Current working directory path</param>
-        public void Process(Netlist netlistModel, string currentDirectoryPath = null)
+        public void Process(SpiceNetlist netlistModel, string currentDirectoryPath = null)
         {
             if (currentDirectoryPath == null)
             {
@@ -61,7 +61,7 @@ namespace SpiceSharpParser.Preprocessors
             }
         }
 
-        private bool ProcessLibs(Netlist netlistModel, string currentDirectoryPath)
+        private bool ProcessLibs(SpiceNetlist netlistModel, string currentDirectoryPath)
         {
             bool result = false;
             var subCircuits = netlistModel.Statements.Where(statement => statement is SubCircuit s);
@@ -111,7 +111,7 @@ namespace SpiceSharpParser.Preprocessors
             if (libContent != null)
             {
                 //1. get lib netlist model
-                Netlist includeModel = NetlistModelReader.GetNetlistModel(
+                SpiceNetlist includeModel = NetlistModelReader.GetNetlistModel(
                     libContent,
                     new ParserSettings() { HasTitle = false, IsEndRequired = false, IsNewlineRequired = false });
 
