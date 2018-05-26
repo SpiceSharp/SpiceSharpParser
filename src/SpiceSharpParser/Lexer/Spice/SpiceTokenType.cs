@@ -63,7 +63,7 @@
         /// <summary>
         /// expression token
         /// </summary>
-        EXPRESSION_BRACKET = 11,     
+        EXPRESSION_BRACKET = 11,
 
         /// <summary>
         /// reference token

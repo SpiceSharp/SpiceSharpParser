@@ -44,13 +44,9 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls
 
                 if (Registry.Supports(type))
                 {
-                    var componentName = rp.Image.Substring(1, rp.Image.IndexOf('[') - 1);
-                    var propertyName = rp.Image.Substring(rp.Image.IndexOf('[') + 1);
-                    propertyName = propertyName.Substring(0, propertyName.Length - 1);
-
                     var parameters = new ParameterCollection();
-                    parameters.Add(new WordParameter(componentName));
-                    parameters.Add(new WordParameter(propertyName));
+                    parameters.Add(new WordParameter(rp.Name));
+                    parameters.Add(new WordParameter(rp.Argument));
 
                     return Registry.Get(type).CreateExport(type, parameters, simulation, context);
                 }

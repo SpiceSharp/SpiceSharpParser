@@ -169,5 +169,27 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.Equal(-0.09210442734453031, exports[1]);
             Assert.Equal(-0.09209994538622851, exports[2]);
         }
+
+        [Fact]
+        public void ListDeviceParameterTest()
+        {
+            var result = ParseNetlist(
+                "Test circuit",
+                "V1 0 1 1",
+                "R1 1 0 100",
+                ".OP",
+                ".SAVE i(R1)",
+                ".ST LIST @R1[resistance] 100 200 400",
+                ".END");
+
+            Assert.Equal(3, result.Exports.Count);
+            Assert.Equal(3, result.Simulations.Count);
+
+            var exports = RunSimulations(result);
+
+            Assert.Equal(-0.01, exports[0]);
+            Assert.Equal(-0.005, exports[1]);
+            Assert.Equal(-0.0025, exports[2]);
+        }
     }
 }

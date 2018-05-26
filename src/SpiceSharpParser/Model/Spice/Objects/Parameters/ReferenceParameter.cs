@@ -8,7 +8,19 @@
         public ReferenceParameter(string reference)
             : base(reference)
         {
+            Name = reference.Substring(1, reference.IndexOf('[') - 1);
+            Argument = reference.Substring(reference.IndexOf('[') + 1).TrimEnd(']');
         }
+
+        /// <summary>
+        /// Gets the name of reference parameter.
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
+        /// Gets the argument of reference parameter.
+        /// </summary>
+        public string Argument { get; }
 
         /// <summary>
         /// Closes the object.

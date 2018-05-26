@@ -85,6 +85,11 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
                         }
                     }
 
+                    if (paramToSet.Key is ReferenceParameter rp)
+                    {
+                        UpdateDeviceParameter(context, paramToSet, rp);
+                    }
+
                     if (paramToSet.Key is BracketParameter bp)
                     {
                         UpdateModelParameter(context, paramToSet, bp);
@@ -93,13 +98,23 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls.Simulations
             };
         }
 
+        private void UpdateDeviceParameter(IProcessingContext context, KeyValuePair<Model.Spice.Objects.Parameter, double> paramToSet, ReferenceParameter rp)
+        {
+            string objectName = rp.Name;
+            string paramName = rp.Argument;
+            if (context.Result.FindObject(objectName, out Entity @object))
+            {
+                context.SetParameter(@object, paramName, paramToSet.Value.ToString());
+            }
+        }
+
         private static void UpdateModelParameter(IProcessingContext context, KeyValuePair<Model.Spice.Objects.Parameter, double> paramToSet, BracketParameter bp)
         {
             string modelName = bp.Name;
             string paramName = bp.Parameters[0].Image;
             if (context.Result.FindObject(modelName, out Entity @model))
             {
-                bool wasSet = context.SetParameter(model, paramName, paramToSet.Value.ToString());
+                context.SetParameter(model, paramName, paramToSet.Value.ToString());
             }
         }
 
