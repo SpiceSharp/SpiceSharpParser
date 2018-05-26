@@ -9,9 +9,9 @@ namespace SpiceSharpParser.ModelReader.Spice.Evaluation.CustomFunctions
     public class RandomFunctions
     {
         /// <summary>
-        /// Creates random user functions.
+        /// Creates random custom functions.
         /// </summary>
-        public static IEnumerable<KeyValuePair<string, SpiceFunction>> Create(IProcessingContext processingContext, IStatementsProcessor statementsProcessor)
+        public static IEnumerable<KeyValuePair<string, SpiceFunction>> Create()
         {
             var result = new List<KeyValuePair<string, SpiceFunction>>();
             result.Add(new KeyValuePair<string, SpiceFunction>("random", CreateRandom()));

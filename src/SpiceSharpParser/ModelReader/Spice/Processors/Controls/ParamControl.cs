@@ -34,6 +34,12 @@ namespace SpiceSharpParser.ModelReader.Spice.Processors.Controls
                     if (assigmentParameter.Arguments.Count == 0)
                     {
                         context.Evaluator.SetParameter(name, expression);
+                        var dependedVariables = context.Evaluator.GetVariables(expression);
+                        context.Evaluator.AddDynamicExpression(
+                            new DoubleExpression(
+                                expression,
+                                (val) => context.Evaluator.SetParameter(name, expression)),
+                            dependedVariables);
                     }
                     else
                     {

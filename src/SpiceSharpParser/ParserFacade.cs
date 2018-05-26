@@ -4,6 +4,7 @@ using SpiceSharpParser.ModelReader.Spice.Evaluation;
 using SpiceSharpParser.Preprocessors;
 using SpiceSharpParser.Postprocessors;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReader.Spice.Evaluation.CustomFunctions;
 
 namespace SpiceSharpParser
 {
@@ -94,7 +95,10 @@ namespace SpiceSharpParser
             Netlist postprocessedNetlistModel = (Netlist)preprocessedNetListModel.Clone();
 
             // Postprocessing
-            var ifPostProcessor = new IfPostProcessor(new Evaluator());
+            var postProcessingEvaluator = new Evaluator();
+            postProcessingEvaluator.ExpressionParser.CustomFunctions["table"] = TableFunction.Create(postProcessingEvaluator);
+
+            var ifPostProcessor = new IfPostProcessor(postProcessingEvaluator);
             postprocessedNetlistModel.Statements = ifPostProcessor.Process(postprocessedNetlistModel.Statements);
 
             // Reading model

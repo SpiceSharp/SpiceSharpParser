@@ -12,7 +12,7 @@ namespace SpiceSharpParser.ModelReader.Spice.Evaluation.CustomFunctions
     public class ExportFunctions
     {
         /// <summary>
-        /// Creates export user functions.
+        /// Creates export custom functions.
         /// </summary>
         public static IEnumerable<KeyValuePair<string, SpiceFunction>> Create(IProcessingContext processingContext, IStatementsProcessor statementsProcessor)
         {

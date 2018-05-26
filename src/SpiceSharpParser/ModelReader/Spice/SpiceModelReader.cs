@@ -79,7 +79,8 @@ namespace SpiceSharpParser.ModelReader.Spice
         {
             var customFunctions = new List<KeyValuePair<string, SpiceFunction>>();
             customFunctions.AddRange(ExportFunctions.Create(context, StatementsProcessor));
-            customFunctions.AddRange(RandomFunctions.Create(context, StatementsProcessor));
+            customFunctions.AddRange(RandomFunctions.Create());
+            customFunctions.Add(new KeyValuePair<string, SpiceFunction>("table", TableFunction.Create(evaluator)));
 
             evaluator.ExpressionParser.CustomFunctions = customFunctions.ToDictionary(entry => entry.Key, entry => entry.Value);
         }

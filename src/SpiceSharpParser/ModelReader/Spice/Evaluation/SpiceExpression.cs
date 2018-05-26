@@ -410,7 +410,16 @@ namespace SpiceSharpParser.ModelReader.Spice.Evaluation
                     }
                     else if (c == '.' || (c >= '0' && c <= '9'))
                     {
-                        outputStack.Push(ParseDouble());
+                        if (operatorStack.Count > 0
+                            && operatorStack.Peek().Id == IdUserFunction
+                            && ((UserFunctionOperator)operatorStack.Peek()).PureVirtualFunction)
+                        {
+                            virtualParamtersStack.Push(ParseDouble().ToString());
+                        }
+                        else
+                        {
+                            outputStack.Push(ParseDouble());
+                        }
                         infixPostfix = true;
                     }
                     // Parse a parameter or a function
@@ -463,7 +472,18 @@ namespace SpiceSharpParser.ModelReader.Spice.Evaluation
                         {
                             string id = sb.ToString();
 
-                            if (BuiltInConstants.TryGetValue(id, out var @const))
+                            if (operatorStack.Count > 0
+                                && operatorStack.Peek().Id == IdUserFunction
+                                && ((UserFunctionOperator)operatorStack.Peek()).PureVirtualFunction)
+                            {
+                                if (Parameters.TryGetValue(id, out var parameter))
+                                {
+                                    Variables.Add(id);
+                                }
+
+                                virtualParamtersStack.Push(id);
+                            }
+                            else if (BuiltInConstants.TryGetValue(id, out var @const))
                             {
                                 outputStack.Push(@const);
                             }
@@ -474,14 +494,7 @@ namespace SpiceSharpParser.ModelReader.Spice.Evaluation
                             }
                             else
                             {
-                                if (operatorStack.Count > 0 && operatorStack.Peek().Id == IdUserFunction)
-                                {
-                                    virtualParamtersStack.Push(id);
-                                }
-                                else
-                                {
-                                    throw new Exception("Unkown variable: " + id);
-                                }
+                                throw new Exception("Unknown variable");
                             }
 
                             infixPostfix = true;
@@ -561,8 +574,9 @@ namespace SpiceSharpParser.ModelReader.Spice.Evaluation
 
             var userFunc = CustomFunctions[functionName];
             var ufo = new UserFunctionOperator();
-            ufo.VirtualParameters = userFunc.VirtualParameters;
+            ufo.PureVirtualFunction = userFunc.VirtualParameters;
             ufo.ArgumentsCount = userFunc.ArgumentsCount;
+            ufo.ArgumentsStackCount = outputStack.Count;
             ufo.Function = (argumentStack, contextObj) =>
             {
                 var result = userFunc.Logic(argumentStack.ToArray(), contextObj);
@@ -575,14 +589,15 @@ namespace SpiceSharpParser.ModelReader.Spice.Evaluation
         private void EvaluateUserFunction(object context)
         {
             UserFunctionOperator op2 = (UserFunctionOperator)operatorStack.Pop();
-            if (op2.VirtualParameters)
+            if (op2.PureVirtualFunction)
             {
                 outputStack.Push(op2.Function(virtualParamtersStack, context));
                 virtualParamtersStack.Clear();
             }
             else
             {
-                var args = PopAndReturnElements(outputStack, op2.ArgumentsCount);
+                var argCount = op2.ArgumentsCount != -1 ? op2.ArgumentsCount:outputStack.Count - op2.ArgumentsStackCount;
+                var args = PopAndReturnElements(outputStack, argCount);
                 outputStack.Push(op2.Function(args, context));
             }
         }
@@ -897,9 +912,11 @@ namespace SpiceSharpParser.ModelReader.Spice.Evaluation
             /// </summary>
             public Func<Stack<object>, object, double> Function { get; set; }
 
-            public bool VirtualParameters { get; set; }
+            public bool PureVirtualFunction { get; set; }
 
             public int ArgumentsCount { get; set; }
+
+            public int ArgumentsStackCount { get; set; }
         }
     }
 }
