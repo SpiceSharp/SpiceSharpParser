@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests
@@ -265,6 +267,35 @@ namespace SpiceSharpParser.IntegrationTests
             for (var i = 0; i < exports.Count; i++)
             {
                 Assert.Equal(-100 / (10.00 * (i + 1)), exports[i]);
+            }
+        }
+
+        [Fact]
+        public void ListIcParameterTest()
+        {
+            double dcVoltage = 10;
+            double resistorResistance = 10e3; // 10000;
+            double capacitance = 1e-6; // 0.000001;
+            double tau = resistorResistance * capacitance;
+
+            var result = ParseNetlist(
+                "The initial voltage on capacitor is {X} V. The result should be an exponential converging to dcVoltage.",
+                "C1 OUT 0 1e-6",
+                "R1 IN OUT 10e3",
+                "V1 IN 0 10",
+                ".IC V(OUT)={X}",
+                ".TRAN 1e-8 10e-6",
+                ".SAVE V(OUT)",
+                ".PARAM X = 0",
+                ".ST LIST X 0.0 1.0 2.0",
+                ".END");
+
+            var exports = RunSimulations(result);
+
+            for (var i = 0; i < exports.Count; i++)
+            {
+                Func<double, double>[] references = { t => i + dcVoltage * (1.0 - Math.Exp(-t / tau)) };
+                Compare((IEnumerable<Tuple<double, double>>)exports[i], references);
             }
         }
     }

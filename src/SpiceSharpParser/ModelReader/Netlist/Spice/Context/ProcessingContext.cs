@@ -96,8 +96,16 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Context
         /// <param name="expression">Expression</param>
         public void SetICVoltage(string nodeName, string expression)
         {
-            //TODO: Add dynamic 
-            Result.SetInitialVoltageCondition(NodeNameGenerator.Generate(nodeName), Evaluator.EvaluateDouble(expression));
+            var fullNodeName = NodeNameGenerator.Generate(nodeName);
+            var initialValue = Evaluator.EvaluateDouble(expression);
+
+            Result.SetInitialVoltageCondition(fullNodeName, initialValue);
+
+            Evaluator.AddDynamicExpression(
+                new DoubleExpression(
+                    expression,
+                    value => Result.SetInitialVoltageCondition(nodeName, value)),
+                Evaluator.GetVariables(expression));
         }
 
         /// <summary>
