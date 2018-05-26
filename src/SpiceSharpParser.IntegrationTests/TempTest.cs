@@ -27,6 +27,27 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
+        public void TempVariableParamWorks()
+        {
+            var netlist = ParseNetlist(
+                "Diode circuit",
+                "R1 1 0 {X}",
+                "V1 1 0 10",
+                ".OP",
+                ".PARAM X=\"TEMP/2\"",
+                ".SAVE i(V1)",
+                ".TEMP 26 27",
+                ".END");
+
+            Assert.Equal(2, netlist.Exports.Count);
+
+            var export = RunSimulations(netlist);
+            Assert.Equal(2, export.Count);
+            Compare((double)export[0], -0.769230769230769);
+            Compare((double)export[1], -0.740740740740741);
+        }
+
+        [Fact]
         public void TempStatementMultiplySimulations()
         {
             var netlist = ParseNetlist(
