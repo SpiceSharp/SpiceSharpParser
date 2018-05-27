@@ -69,7 +69,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Processors.EntityGenerators
 
                         if (!bp.Temperature.Given)
                         {
-                            bp.Area.Value = context.ParseDouble(s.Image);
+                            bp.Temperature.Value = context.ParseDouble(s.Image);
                         }
                     }
                 }
