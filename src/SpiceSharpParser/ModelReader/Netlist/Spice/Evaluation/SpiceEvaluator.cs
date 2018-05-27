@@ -20,7 +20,9 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
             Parameters.Add("TEMP", Circuit.ReferenceTemperature - Circuit.CelsiusKelvin);
 
             CustomFunctions.Add("table", TableFunction.Create(this));
-            CustomFunctions.Add("random", RandomFunction.Create());
+            CustomFunctions.Add("random", RandomFunctions.CreateRandom());
+            CustomFunctions.Add("min", MathFunctions.CreateMin());
+            CustomFunctions.Add("max", MathFunctions.CreateMax());
         }
 
         public ISpiceEvaluator CreateChildEvaluator()

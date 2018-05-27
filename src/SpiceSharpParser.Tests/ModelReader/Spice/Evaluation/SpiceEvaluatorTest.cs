@@ -105,7 +105,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         public void EvaluateWithComaTest()
         {
             Evaluator v = new SpiceEvaluator();
-            Assert.Equal(-1.99666833293656, v.EvaluateDouble("-1,99666833293656"));
+            Assert.Equal(1.99666833293656, v.EvaluateDouble("1,99666833293656"));
         }
     }
 }

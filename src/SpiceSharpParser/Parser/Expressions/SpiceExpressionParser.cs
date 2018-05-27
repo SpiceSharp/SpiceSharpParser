@@ -150,8 +150,6 @@ namespace SpiceSharpParser.Parser.Expressions
         /// </summary>
         private Dictionary<string, BuiltInFunctionOperator> BuiltInFunctions { get; } = new Dictionary<string, BuiltInFunctionOperator>
         {
-            { "min", new BuiltInFunctionOperator(stack => Math.Min(stack.Pop(), stack.Pop())) },
-            { "max", new BuiltInFunctionOperator(stack => Math.Max(stack.Pop(), stack.Pop())) },
             { "abs", new BuiltInFunctionOperator(stack => Math.Abs(stack.Pop())) },
             { "sqrt", new BuiltInFunctionOperator(stack => Math.Sqrt(stack.Pop())) },
             { "exp", new BuiltInFunctionOperator(stack => Math.Exp(stack.Pop())) },
@@ -351,13 +349,12 @@ namespace SpiceSharpParser.Parser.Expressions
                             break;
 
                         case '[':
-                               break;
+                            break;
                         case ']':
                             EvaluateUserFunction(context);
                             infixPostfix = true;
                             break;
                         case ',':
-
                             // Function argument
                             while (operatorStack.Count > 0)
                             {
@@ -712,8 +709,7 @@ namespace SpiceSharpParser.Parser.Expressions
 
             // Read decimal part
             if (index < count
-                && (input[index] == '.' 
-                || input[index] == ',' && (operatorStack.Count == 0 || (operatorStack.Peek().Id == IdNegative || operatorStack.Peek().Id == IdPositive))))
+                && (input[index] == '.'  || input[index] == ',' && operatorStack.Count == 0))
             {
                 index++;
                 double mult = 1.0;
