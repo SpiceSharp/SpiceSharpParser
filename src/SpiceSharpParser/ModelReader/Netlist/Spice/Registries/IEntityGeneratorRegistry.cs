@@ -5,7 +5,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Registries
     /// <summary>
     /// Interface for all entity generator registries
     /// </summary>
-    public interface IEntityGeneratorRegistry
+    public interface IEntityGeneratorRegistry : IRegistry
     {
         EntityGenerator Get(string type);
 

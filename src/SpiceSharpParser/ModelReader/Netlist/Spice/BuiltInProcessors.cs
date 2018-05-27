@@ -24,7 +24,34 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice
                 var waveForms = new WaveformRegistry();
                 var exporters = new ExporterRegistry();
 
-                var statementsProcessor = new StatementsProcessor(models, components, controls, waveForms, exporters);
+                // Create processors
+                var componentProcessor = new ComponentProcessor(components);
+                var modelProcessor = new ModelProcessor(models);
+                var waveFormProcessor = new WaveformProcessor(waveForms);
+                var subcircuitProcessor = new SubcircuitDefinitionProcessor();
+                var controlProcessor = new ControlProcessor(controls);
+                var commentProcessor = new CommentProcessor();
+
+                // Create main processor
+                var statementsProcessor = new StatementsProcessor(
+                        new IStatementProcessor[]
+                        {
+                            controlProcessor,
+                            componentProcessor,
+                            modelProcessor,
+                            subcircuitProcessor,
+                            commentProcessor
+                        },
+                        new IRegistry[]
+                        {
+                            controls,
+                            components,
+                            models,
+                            waveForms,
+                            exporters
+                        }
+                        ,
+                        new StatementsOrderer(controls));
 
                 // Register waveform generators
                 waveForms.Add(new SineGenerator());
@@ -61,17 +88,17 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice
 
                 // Register component generators
                 components.Add(new RLCGenerator());
-                components.Add(new VoltageSourceGenerator(statementsProcessor.WaveformProcessor));
-                components.Add(new CurrentSourceGenerator(statementsProcessor.WaveformProcessor));
+                components.Add(new VoltageSourceGenerator(waveFormProcessor));
+                components.Add(new CurrentSourceGenerator(waveFormProcessor));
                 components.Add(new SwitchGenerator());
                 components.Add(new BipolarJunctionTransistorGenerator());
                 components.Add(new DiodeGenerator());
                 components.Add(new MosfetGenerator());
                 components.Add(new SubCircuitGenerator(
-                    statementsProcessor.ComponentProcessor,
-                    statementsProcessor.ModelProcessor,
-                    statementsProcessor.ControlProcessor,
-                    statementsProcessor.SubcircuitDefinitionProcessor));
+                    componentProcessor,
+                    modelProcessor,
+                    controlProcessor,
+                    subcircuitProcessor));
 
                 return statementsProcessor;
             }

@@ -16,5 +16,10 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Controls
         {
             get;
         }
+
+        public override bool CanProcess(Statement statement)
+        {
+            return statement is Control;
+        }
     }
 }

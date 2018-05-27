@@ -1,5 +1,5 @@
-﻿using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
-using SpiceSharpParser.Model.Netlist.Spice.Objects;
+﻿using SpiceSharpParser.Model.Netlist.Spice.Objects;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.ModelReader.Netlist.Spice.Processors
 {
@@ -10,6 +10,15 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Processors
     public abstract class StatementProcessor<TStatement> : IStatementProcessor
         where TStatement : Statement
     {
+        /// <summary>
+        /// Returns whether processor can process specific statement.
+        /// </summary>
+        /// <param name="statement">A statement to process.</param>
+        /// <returns>
+        /// True if the processor can process given statement.
+        /// </returns>
+        public abstract bool CanProcess(Statement statement);
+
         /// <summary>
         /// Processes a statement (typed) and modifies the context
         /// </summary>
@@ -34,5 +43,14 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Processors
     public interface IStatementProcessor
     {
         void Process(Statement statement, IProcessingContext context);
+
+        /// <summary>
+        /// Returns whether processor can process specific statement.
+        /// </summary>
+        /// <param name="statement">A statement to process.</param>
+        /// <returns>
+        /// True if the processor can process given statement.
+        /// </returns>
+        bool CanProcess(Statement statement);
     }
 }

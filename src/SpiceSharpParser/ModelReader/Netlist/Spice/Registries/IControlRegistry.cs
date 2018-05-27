@@ -5,7 +5,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Registries
     /// <summary>
     /// Interface for all control registries
     /// </summary>
-    public interface IControlRegistry
+    public interface IControlRegistry : IRegistry
     {
         /// <summary>
         /// Gets a value indicating whether a specified control is in registry

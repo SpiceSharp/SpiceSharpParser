@@ -6,7 +6,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Registries
     /// <summary>
     /// Interface for all exporter registries
     /// </summary>
-    public interface IExporterRegistry
+    public interface IExporterRegistry : IRegistry
     {
         /// <summary>
         /// Adds an exporter to registy

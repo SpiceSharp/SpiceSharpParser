@@ -13,6 +13,18 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Processors
         }
 
         /// <summary>
+        /// Returns whether processor can process specific statement.
+        /// </summary>
+        /// <param name="statement">A statement to process.</param>
+        /// <returns>
+        /// True if the processor can process given statement.
+        /// </returns>
+        public override bool CanProcess(Statement statement)
+        {
+            return statement is CommentLine;
+        }
+
+        /// <summary>
         /// Processes a comment statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>

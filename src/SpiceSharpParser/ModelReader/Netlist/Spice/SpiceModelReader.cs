@@ -6,6 +6,7 @@ using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Processors;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Registries;
 
 namespace SpiceSharpParser.ModelReader.Netlist.Spice
 {
@@ -62,7 +63,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice
                 nodeNameGenerator,
                 objectNameGenerator);
 
-            ExportFunctions.Add(mainEvaluator.CustomFunctions, processingContext, StatementsProcessor);
+            ExportFunctions.Add(mainEvaluator.CustomFunctions, processingContext, StatementsProcessor.GetRegistry<IExporterRegistry>());
 
             // Process statements form input netlist using created context
             StatementsProcessor.Process(netlist.Statements, processingContext);

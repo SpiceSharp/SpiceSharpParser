@@ -1,4 +1,5 @@
 ﻿using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Common;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 

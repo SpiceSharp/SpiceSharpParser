@@ -5,7 +5,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Registries
     /// <summary>
     /// Interface for all waveform registries
     /// </summary>
-    public interface IWaveformRegistry
+    public interface IWaveformRegistry : IRegistry
     {
         /// <summary>
         /// Gets a value indicating whether a specified waveform generator is in registry

@@ -5,6 +5,7 @@ using SpiceSharpParser.Model.Netlist.Spice;
 using SpiceSharpParser.Model.Netlist.Spice.Objects;
 using Xunit;
 using SpiceSharpParser.ModelReader.Netlist.Spice;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Registries;
 
 namespace SpiceSharpParser.Tests.ModelReader.Spice
 {
@@ -15,7 +16,9 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice
         {
             // arrange
             var processor = Substitute.For<IStatementsProcessor>();
+
             processor.Process(Arg.Any<Statements>(), Arg.Any<IProcessingContext>());
+            processor.GetRegistry<IExporterRegistry>().Returns(new ExporterRegistry());
 
             var reader = new SpiceModelReader(processor);
             var netlist = new SpiceNetlist();

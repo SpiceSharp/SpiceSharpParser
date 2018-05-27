@@ -1,6 +1,6 @@
-﻿using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
+﻿using SpiceSharpParser.Model.Netlist.Spice.Objects;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Registries;
-using SpiceSharpParser.Model.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReader.Netlist.Spice.Processors
 {
@@ -24,6 +24,18 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Processors
         public IControlRegistry Registry { get; }
 
         /// <summary>
+        /// Returns whether processor can process specific statement.
+        /// </summary>
+        /// <param name="statement">A statement to process.</param>
+        /// <returns>
+        /// True if the processor can process given statement.
+        /// </returns>
+        public override bool CanProcess(Statement statement)
+        {
+            return statement is Control;
+        }
+
+        /// <summary>
         /// Processes a control statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>
@@ -40,12 +52,6 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Processors
             {
                 Registry.Get(type).Process(statement, context);
             }
-        }
-
-        internal int GetSubOrder(Control statement)
-        {
-            string type = statement.Name.ToLower();
-            return Registry.IndexOf(type);
         }
     }
 }

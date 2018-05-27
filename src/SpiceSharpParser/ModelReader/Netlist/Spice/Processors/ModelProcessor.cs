@@ -3,6 +3,7 @@ using SpiceSharpParser.ModelReader.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Registries;
 using SpiceSharpParser.Model.Netlist.Spice.Objects.Parameters;
 using SpiceSharp.Circuits;
+using SpiceSharpParser.Model.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReader.Netlist.Spice.Processors
 {
@@ -24,6 +25,18 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Processors
         /// Gets the registry
         /// </summary>
         public IEntityGeneratorRegistry Registry { get; }
+
+        /// <summary>
+        /// Returns whether processor can process specific statement.
+        /// </summary>
+        /// <param name="statement">A statement to process.</param>
+        /// <returns>
+        /// True if the processor can process given statement.
+        /// </returns>
+        public override bool CanProcess(Statement statement)
+        {
+            return statement is SpiceSharpParser.Model.Netlist.Spice.Objects.Model;
+        }
 
         /// <summary>
         /// Processes a model statement and modifies the context

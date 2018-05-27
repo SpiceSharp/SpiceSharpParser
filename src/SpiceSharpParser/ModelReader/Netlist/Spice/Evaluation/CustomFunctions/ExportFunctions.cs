@@ -7,7 +7,7 @@ using SpiceSharpParser.Model.Netlist.Spice.Objects;
 using SpiceSharpParser.Model.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Exceptions;
-using SpiceSharpParser.ModelReader.Netlist.Spice.Processors;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Registries;
 
 namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
 {
@@ -16,12 +16,17 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
         /// <summary>
         /// Creates export custom functions.
         /// </summary>
-        public static IEnumerable<KeyValuePair<string, CustomFunction>> Create(IProcessingContext processingContext, IStatementsProcessor statementsProcessor)
+        public static IEnumerable<KeyValuePair<string, CustomFunction>> Create(IProcessingContext processingContext, IExporterRegistry exporterRegistry)
         {
+            if (exporterRegistry == null)
+            {
+                throw new ArgumentNullException(nameof(exporterRegistry));
+            }
+
             var result = new List<KeyValuePair<string, CustomFunction>>();
             var exporters = new Dictionary<string, Processors.Controls.Exporters.Export>();
 
-            foreach (var exporter in statementsProcessor.ExporterRegistry)
+            foreach (var exporter in exporterRegistry)
             {
                 foreach (var exportType in exporter.GetSupportedTypes())
                 {
@@ -85,9 +90,9 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             return function;
         }
 
-        public static void Add(Dictionary<string, CustomFunction> customFunctions, IProcessingContext processingContext, IStatementsProcessor processor)
+        public static void Add(Dictionary<string, CustomFunction> customFunctions, IProcessingContext processingContext, IExporterRegistry exporterRegistry)
         {
-            foreach (var func in Create(processingContext, processor))
+            foreach (var func in Create(processingContext, exporterRegistry))
             {
                 customFunctions[func.Key] = func.Value;
             }

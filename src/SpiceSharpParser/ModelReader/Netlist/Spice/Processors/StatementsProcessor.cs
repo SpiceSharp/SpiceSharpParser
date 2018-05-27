@@ -1,83 +1,70 @@
-﻿using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Controls;
+﻿using SpiceSharpParser.Model.Netlist.Spice.Objects;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Registries;
-using SpiceSharpParser.Model.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReader.Netlist.Spice.Processors
 {
     /// <summary>
-    /// Processes all <see cref="Statement"/> from spice netlist object model.
+    /// Processes <see cref="Statement"/>s from spice netlist object model.
     /// </summary>
     public class StatementsProcessor : IStatementsProcessor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StatementsProcessor"/> class.
         /// </summary>
-        /// <param name="modelRegistry">A model registry</param>
-        /// <param name="componentRegistry">A component registry</param>
-        /// <param name="controlsRegistry">A controls registry</param>
-        /// <param name="waveformsRegistry">A waveform registry</param>
-        /// <param name="exporterRegistry">A exporter registry</param>
         public StatementsProcessor(
-            IEntityGeneratorRegistry modelRegistry,
-            IEntityGeneratorRegistry componentRegistry,
-            IControlRegistry controlsRegistry,
-            IWaveformRegistry waveformsRegistry,
-            IExporterRegistry exporterRegistry)
+            IStatementProcessor[] processors,
+            IRegistry[] registries,
+            IStatementsOrderer orderer)
         {
-            ExporterRegistry = exporterRegistry;
-            ModelProcessor = new ModelProcessor(modelRegistry);
-            WaveformProcessor = new WaveformProcessor(waveformsRegistry);
-            ControlProcessor = new ControlProcessor(controlsRegistry);
-
-            SubcircuitDefinitionProcessor = new SubcircuitDefinitionProcessor();
-            ComponentProcessor = new ComponentProcessor(componentRegistry);
-            CommentProcessor = new CommentProcessor();
+            Registries = registries;
+            Processors = processors;
+            Orderer = orderer;
         }
 
         /// <summary>
-        /// Gets exporter registry
+        /// Gets the orderer
         /// </summary>
-        public IExporterRegistry ExporterRegistry { get; }
+        protected IStatementsOrderer Orderer { get; }
 
         /// <summary>
-        /// Gets the current model processor
+        /// Gets the processors
         /// </summary>
-        public ModelProcessor ModelProcessor { get; }
+        protected IStatementProcessor[] Processors { get; }
 
         /// <summary>
-        /// Gets the current waveform processor
+        /// Gets the registries
         /// </summary>
-        public WaveformProcessor WaveformProcessor { get; }
+        protected IRegistry[] Registries { get; }
 
         /// <summary>
-        /// Gets the current component processor
+        /// Gets the registry of given type
         /// </summary>
-        public ComponentProcessor ComponentProcessor { get; }
+        /// <typeparam name="T">Type of registry</typeparam>
+        /// <returns>
+        /// A registry
+        /// </returns>
+        public T GetRegistry<T>()
+        {
+            for (var i = 0; i < Registries.Length; i++)
+            {
+                if (Registries[i] is T)
+                {
+                    return (T)Registries[i];
+                }
+            }
+
+            return default(T);
+        }
 
         /// <summary>
-        /// Gets the current subcircuit processor
+        /// Processes statemets and modifes the context.
         /// </summary>
-        public SubcircuitDefinitionProcessor SubcircuitDefinitionProcessor { get; }
-
-        /// <summary>
-        /// Gets the current control processor
-        /// </summary>
-        public ControlProcessor ControlProcessor { get; }
-
-        /// <summary>
-        /// Gets the current comment processor
-        /// </summary>
-        public CommentProcessor CommentProcessor { get; }
-
-        /// <summary>
-        /// Processes statemets and modifes the context
-        /// </summary>
-        /// <param name="statements">The statements to process</param>
-        /// <param name="context">The context to modify</param>
+        /// <param name="statements">The statements to process.</param>
+        /// <param name="context">The context to modify.</param>
         public void Process(Statements statements, IProcessingContext context)
         {
-            foreach (Statement statement in statements.OrderBy(StatementOrder))
+            foreach (Statement statement in Orderer.Order(statements))
             {
                 var processor = GetProcessor(statement);
                 if (processor != null)
@@ -87,72 +74,17 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Processors
             }
         }
 
-        //TODO: refactor this
-        private int StatementOrder(Statement statement)
-        {
-            if (statement is SpiceSharpParser.Model.Netlist.Spice.Objects.Model)
-            {
-                return 200;
-            }
-
-            if (statement is Component)
-            {
-                return 300;
-            }
-
-            if (statement is SubCircuit)
-            {
-                return 100;
-            }
-
-            if (statement is Control c)
-            {
-                // hack to allow .plot and .save execute after subcircuits and components
-                if (c.Name.ToLower() == "plot" || c.Name.ToLower() == "save")
-                {
-                    return 400;
-                }
-
-                return 0 + ControlProcessor.GetSubOrder(c);
-            }
-
-            if (statement is CommentLine)
-            {
-                return 0;
-            }
-
-            return -1;
-        }
-
-        // TODO: Refactor this
         private IStatementProcessor GetProcessor(Statement statement)
         {
-            if (statement is SpiceSharpParser.Model.Netlist.Spice.Objects.Model)
+            for (var i = 0; i < Processors.Length; i++)
             {
-                return ModelProcessor;
+                if (Processors[i].CanProcess(statement))
+                {
+                    return Processors[i];
+                }
             }
 
-            if (statement is Component)
-            {
-                return ComponentProcessor;
-            }
-
-            if (statement is SubCircuit)
-            {
-                return SubcircuitDefinitionProcessor;
-            }
-
-            if (statement is Control)
-            {
-                return ControlProcessor;
-            }
-
-            if (statement is CommentLine)
-            {
-                return CommentProcessor;
-            }
-
-            throw new System.Exception("Unsupported statement");
+            return null;
         }
     }
 }
