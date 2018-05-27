@@ -62,10 +62,7 @@ Documentation for API on SpiceSharpParser is available at <https://spicesharp.gi
 ## Roadmap
 Future features:
 * .PRINT
-* .PROBE
-* .WIDTH
-* Enhancing .SAVE
-* Enhancing .PARAM
+* saving output to files
 
 ## License
 SpiceSharpParser is under MIT License
