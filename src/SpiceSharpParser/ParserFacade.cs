@@ -24,7 +24,7 @@ namespace SpiceSharpParser
             IAppendModelPreProcessor appendModelProcessor,
             ILibPreProcessor libProcessor)
         {
-            LibProcessor = libProcessor;
+            LibProcessor = libProcessor ?? throw new System.ArgumentNullException(nameof(libProcessor));
             IncludesProcessor = includesProcessor ?? throw new System.ArgumentNullException(nameof(includesProcessor));
             NetlistModelReader = netlistModelReader ?? throw new System.ArgumentNullException(nameof(netlistModelReader));
             AppendModelProcessor = appendModelProcessor ?? throw new System.ArgumentNullException(nameof(appendModelProcessor));

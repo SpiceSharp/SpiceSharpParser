@@ -24,7 +24,7 @@ namespace SpiceSharpParser.Tests.Parser
                 new SpiceToken(SpiceTokenType.EOF, null),
             };
 
-            var parser = new ParserTreeGenerator();
+            var parser = new ParseTreeGenerator();
             ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, Symbols.NETLIST);
 
             // Act
@@ -47,7 +47,7 @@ namespace SpiceSharpParser.Tests.Parser
                 new SpiceToken(SpiceTokenType.VALUE, "3"),
             };
 
-            var parser = new ParserTreeGenerator();
+            var parser = new ParseTreeGenerator();
             ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.VECTOR);
 
             // Act
@@ -72,7 +72,7 @@ namespace SpiceSharpParser.Tests.Parser
                 new SpiceToken(SpiceTokenType.VALUE, "4"),
             };
 
-            var parser = new ParserTreeGenerator();
+            var parser = new ParseTreeGenerator();
             ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.VECTOR);
 
             // Act
@@ -96,7 +96,7 @@ namespace SpiceSharpParser.Tests.Parser
                 new SpiceToken(SpiceTokenType.DELIMITER, ")")
             };
 
-            var parser = new ParserTreeGenerator();
+            var parser = new ParseTreeGenerator();
             ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.PARAMETER);
 
             // Act
@@ -125,7 +125,7 @@ namespace SpiceSharpParser.Tests.Parser
                 new SpiceToken(SpiceTokenType.DELIMITER, ")")
             };
 
-            var parser = new ParserTreeGenerator();
+            var parser = new ParseTreeGenerator();
             ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.PARAMETER);
 
             // Act
@@ -156,7 +156,7 @@ namespace SpiceSharpParser.Tests.Parser
                 new SpiceToken(SpiceTokenType.VALUE, "13"),
             };
 
-            var parser = new ParserTreeGenerator();
+            var parser = new ParseTreeGenerator();
             ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.PARAMETER);
 
             // Act
@@ -187,7 +187,7 @@ namespace SpiceSharpParser.Tests.Parser
                 new SpiceToken(SpiceTokenType.DELIMITER, ")")
             };
 
-            var parser = new ParserTreeGenerator();
+            var parser = new ParseTreeGenerator();
             ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.PARAMETER);
 
             // Act
@@ -214,7 +214,7 @@ namespace SpiceSharpParser.Tests.Parser
                 new SpiceToken(SpiceTokenType.VALUE, "3MH"),
             };
 
-            var parser = new ParserTreeGenerator();
+            var parser = new ParseTreeGenerator();
             ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.COMPONENT);
 
             // Act

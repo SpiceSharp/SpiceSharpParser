@@ -80,7 +80,7 @@ namespace SpiceSharpParser
         /// </returns>
         private ParseTreeNonTerminalNode GetParseTree(SpiceToken[] tokens, string rootSymbol, bool isNewlineRequiredAtTheEnd)
         {
-            return new ParserTreeGenerator(isNewlineRequiredAtTheEnd).GetParseTree(tokens, rootSymbol);
+            return new ParseTreeGenerator(isNewlineRequiredAtTheEnd).GetParseTree(tokens, rootSymbol);
         }
 
         /// <summary>

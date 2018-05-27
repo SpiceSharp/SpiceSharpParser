@@ -8,7 +8,7 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
     /// A parser tree generator for Spice netlist based on grammar from SpiceGrammar.txt.
     /// It's a manualy written LL(*) parser.
     /// </summary>
-    public class ParserTreeGenerator
+    public class ParseTreeGenerator
     {
         private readonly bool isNewLineRequiredAtTheEnd;
 
@@ -16,7 +16,7 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         /// Initializes a new instance of the <see cref="ParserTreeGenerator"/> class.
         /// </summary>
         /// <param name="isNewLineRequiredAtTheEnd">Is NEWLINE required</param>
-        public ParserTreeGenerator(bool isNewLineRequiredAtTheEnd = false)
+        public ParseTreeGenerator(bool isNewLineRequiredAtTheEnd = false)
         {
             this.isNewLineRequiredAtTheEnd = isNewLineRequiredAtTheEnd;
         }
