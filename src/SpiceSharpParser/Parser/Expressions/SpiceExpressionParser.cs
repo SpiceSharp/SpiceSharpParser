@@ -225,7 +225,15 @@ namespace SpiceSharpParser.Parser.Expressions
                     {
                         case '+': PushOperator(OperatorAdd); break;
                         case '-': PushOperator(OperatorSubtract); break;
-                        case '*': PushOperator(OperatorMultiply); break;
+                        case '*':
+                            if ((index + 1 < count) && input[index + 1] == '*')
+                            {
+                                index++;
+                                PushOperator(BuiltInFunctions["pow"]);
+                                break;
+                            }
+                            PushOperator(OperatorMultiply);
+                            break;
                         case '/': PushOperator(OperatorDivide); break;
                         case '%': PushOperator(OperatorModulo); break;
                         case '=':
@@ -688,9 +696,13 @@ namespace SpiceSharpParser.Parser.Expressions
                     a = outputStack.Pop();
                     outputStack.Push(a > 0.0 ? b : c);
                     break;
-                case IdOpenConditional: throw new Exception("Unmatched conditional");
+                case IdOpenConditional:
+                    throw new Exception("Unmatched conditional");
+                case IdFunction:
+                    outputStack.Push(((BuiltInFunctionOperator)op).Function(outputStack));
+                    break;
                 default:
-                   throw new Exception("Unrecognized operator");
+                    throw new Exception("Unrecognized operator");
             }
         }
 
