@@ -644,7 +644,17 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
                 }
                 else if (nextToken.Is(SpiceTokenType.DELIMITER) && nextToken.Equal("(", true))
                 {
-                    if ((tokens.Length > currentTokenIndex + 4) && tokens[currentTokenIndex + 3].Lexem == ")" && tokens[currentTokenIndex + 4].Lexem == "=")
+                    if ((tokens.Length > currentTokenIndex + 3) && tokens[currentTokenIndex + 2].Lexem == ")" && tokens[currentTokenIndex + 3].Lexem == "=")
+                    {
+                        PushProductionExpression(
+                            stack,
+                            CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
+                            CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, "("),
+                            CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, ")"),
+                            CreateTerminalNode(SpiceTokenType.EQUAL, currentNode),
+                            CreateNonTerminalNode(Symbols.PARAMETER_SINGLE, currentNode));
+                    }
+                    else if ((tokens.Length > currentTokenIndex + 4) && tokens[currentTokenIndex + 3].Lexem == ")" && tokens[currentTokenIndex + 4].Lexem == "=")
                     {
                         PushProductionExpression(
                             stack,

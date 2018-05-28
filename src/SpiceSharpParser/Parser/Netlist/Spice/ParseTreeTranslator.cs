@@ -710,18 +710,28 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
                         {
                             assigmentParameter.Arguments.Add(parameter.Image);
                         }
+
+                        assigmentParameter.HasFunctionSyntax = true;
                     }
                     else
                     {
                         assigmentParameter.Arguments.Add(values.GetSpiceObject<SingleParameter>(2).Image);
+                        assigmentParameter.HasFunctionSyntax = true;
                     }
 
                     var valueParameter = values.GetSpiceObject<SingleParameter>(5);
                     assigmentParameter.Value = valueParameter.Image;
                     return assigmentParameter;
                 }
+                else if (values.Count == 5)
+                {
+                    assigmentParameter.HasFunctionSyntax = true;
+                    var valueParameter = values.GetSpiceObject<SingleParameter>(4);
+                    assigmentParameter.Value = valueParameter.Image;
+                    return assigmentParameter;
+                }
 
-                throw new ParseTreeEvaluationException("Error during translating parse tree to Spice Object Model");
+                throw new ParseTreeEvaluationException("Error during translating assigment parameter to Spice Object Model");
             }
         }
 

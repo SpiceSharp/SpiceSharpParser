@@ -6,7 +6,7 @@ namespace SpiceSharpParser.IntegrationTests
     public class ParamTest : BaseTest
     {
         [Fact]
-        public void ParamAdvancedTest()
+        public void ParamCustomFunctionAdvancedTest()
         {
             var netlist = ParseNetlist(
                 "PARAM user function test",
@@ -26,7 +26,7 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
-        public void ParamManyArgumentsTest()
+        public void ParamCustomFunctionManyArgumentsTest()
         {
             var netlist = ParseNetlist(
                 "PARAM user function test",
@@ -42,6 +42,24 @@ namespace SpiceSharpParser.IntegrationTests
             double[] export = RunOpSimulation(netlist, new string[] { "some_output_vector" });
 
             Assert.Equal(13 * (13+1)/2, export[0]);
+        }
+
+        [Fact]
+        public void ParamWithoutArgumentsTest()
+        {
+            var netlist = ParseNetlist(
+                "PARAM user function test",
+                "V1 OUT 0 10.0",
+                "R1 OUT 0 {somefunction()}",
+                ".OP",
+                ".SAVE V(OUT) @R1[i]",
+                ".PARAM somefunction() = {17}",
+                ".END");
+
+            double[] export = RunOpSimulation(netlist, new string[] { "V(OUT)", "@R1[i]" });
+
+            Assert.Equal(10.0, export[0]);
+            Assert.Equal(10.0 / 17.0, export[1]);
         }
     }
 }
