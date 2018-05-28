@@ -156,7 +156,6 @@ namespace SpiceSharpParser.Parser.Expressions
         private Dictionary<string, BuiltInFunctionOperator> BuiltInFunctions { get; } = new Dictionary<string, BuiltInFunctionOperator>
         {
             { "abs", new BuiltInFunctionOperator(stack => Math.Abs(stack.Pop())) },
-            { "sqrt", new BuiltInFunctionOperator(stack => Math.Sqrt(stack.Pop())) },
             { "exp", new BuiltInFunctionOperator(stack => Math.Exp(stack.Pop())) },
             { "log", new BuiltInFunctionOperator(stack => Math.Log(stack.Pop())) },
             { "log10", new BuiltInFunctionOperator(stack => Math.Log10(stack.Pop())) },

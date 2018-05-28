@@ -7,7 +7,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
     public class MathFunctions
     {
         /// <summary>
-        /// Create a pow() user function.
+        /// Create a pow() custom function.
         /// </summary>
         /// <param name="mode">Evaluator mode.</param>
         /// <returns>
@@ -57,7 +57,63 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
         }
 
         /// <summary>
-        /// Create a ** user function.
+        /// Create a sqrt custom function.
+        /// </summary>
+        /// <param name="mode">Evaluator mode.</param>
+        /// <returns>
+        /// A new instance of pow spice function.
+        /// </returns>
+        public static CustomFunction CreateSqrt(SpiceEvaluatorMode mode)
+        {
+            Random randomGenerator = new Random(Environment.TickCount);
+
+            CustomFunction function = new CustomFunction();
+            function.Name = "sqrt";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 1;
+
+            function.Logic = (args, simulation) =>
+            {
+                double x = (double)args[0];
+
+                switch (mode)
+                {
+                    case SpiceEvaluatorMode.LtSpice:
+                        if (x < 0)
+                        {
+                            var realResult = Complex.Pow(new Complex(x, 0), new Complex(0.5, 0)).Real;
+
+                            // TODO: remove a hack below, write a good implementation of Complex numbers for C# ...
+                            if (Math.Abs(realResult) < 1e-15)
+                            {
+                                return 0;
+                            }
+                        }
+                        return Math.Sqrt(x);
+
+                    case SpiceEvaluatorMode.SmartSpice:
+                        return Math.Sqrt(Math.Abs(x));
+
+                    case SpiceEvaluatorMode.HSpice:
+                        if (x < 0)
+                        {
+                            return -Math.Sqrt(Math.Abs(x));
+                        }
+                        else
+                        {
+                            return Math.Sqrt(x);
+                        }
+
+                    default:
+                        return Math.Sqrt(x);
+                }
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a ** custom function.
         /// </summary>
         /// <param name="mode">Evaluator mode.</param>
         /// <returns>

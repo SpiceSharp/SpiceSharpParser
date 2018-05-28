@@ -188,5 +188,45 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
             // act and assert
             Assert.Equal(Math.Pow(-2, (int)1.5), parser.EvaluateDouble("pow(-2,1.5)"));
         }
+
+        [Fact]
+        public void SqrtTest()
+        {
+            // arrange
+            var parser = new SpiceEvaluator();
+
+            // act and assert
+            Assert.Equal(2, parser.EvaluateDouble("sqrt(4)"));
+        }
+
+        [Fact]
+        public void SqrtMinusHSpiceTest()
+        {
+            // arrange
+            var parser = new SpiceEvaluator(SpiceEvaluatorMode.HSpice);
+
+            // act and assert
+            Assert.Equal(-2, parser.EvaluateDouble("sqrt(-4)"));
+        }
+
+        [Fact]
+        public void SqrtMinusSmartSpiceTest()
+        {
+            // arrange
+            var parser = new SpiceEvaluator(SpiceEvaluatorMode.SmartSpice);
+
+            // act and assert
+            Assert.Equal(2, parser.EvaluateDouble("sqrt(-4)"));
+        }
+
+        [Fact]
+        public void SqrtMinusLtSpiceTest()
+        {
+            // arrange
+            var parser = new SpiceEvaluator(SpiceEvaluatorMode.LtSpice);
+
+            // act and assert
+            Assert.Equal(0, parser.EvaluateDouble("sqrt(-4)"));
+        }
     }
 }

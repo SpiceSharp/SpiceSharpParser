@@ -25,6 +25,8 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
             CustomFunctions.Add("max", MathFunctions.CreateMax());
             CustomFunctions.Add("pow", MathFunctions.CreatePow(mode));
             CustomFunctions.Add("**", MathFunctions.CreatePowInfix(mode));
+            CustomFunctions.Add("sqrt", MathFunctions.CreateSqrt(mode));
+
         }
 
         /// <summary>
