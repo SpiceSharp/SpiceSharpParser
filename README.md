@@ -60,8 +60,9 @@ Documentation for API on SpiceSharpParser is available at <https://spicesharp.gi
 * Linux
 
 ## Roadmap
-Future features:
-* .MEASURE
+* Fixing bugs and making the library more stable
+* .STEP (from LtSpice)
+* .MEASURE (from commercial spice simulators)
 * .PRINT
 * saving output to files
 
