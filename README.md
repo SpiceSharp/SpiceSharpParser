@@ -34,7 +34,7 @@ SpiceSharpParser is a .NET library that parses Spice netlists and creates a mode
 * Diodes
 * Mosfets
 
-### Implemented grammar
+### Supported Spice grammar
 <https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Parser/Netlist/Spice/SpiceGrammarBNF.txt>
 
 ## Build status
@@ -60,8 +60,9 @@ Documentation for API on SpiceSharpParser is available at <https://spicesharp.gi
 * Linux
 
 ## Roadmap
-Future features:
-* .MEASURE
+* Fixing bugs and making the library more stable
+* .STEP (from LtSpice)
+* .MEASURE (from commercial spice simulators)
 * .PRINT
 * saving output to files
 
