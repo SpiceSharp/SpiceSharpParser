@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
+namespace SpiceSharpParser.Tests.Parser
 {
     public class SpiceExpressionTest
     {
@@ -137,6 +137,16 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
 
             // act and assert
             Assert.Equal(8, parser.Parse( "2**3"));
+        }
+
+        [Fact]
+        public void UnicodeU()
+        {
+            // arrange
+            var parser = new SpiceExpressionParser();
+
+            // act and assert
+            Assert.Equal(12.3 * 1e-6, parser.Parse("12.3μ"));
         }
 
         [Fact]

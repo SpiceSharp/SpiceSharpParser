@@ -795,6 +795,7 @@ namespace SpiceSharpParser.Parser.Expressions
                         case 'k':
                         case 'K': value *= 1.0e3; index++; break;
                         case 'u':
+                        case 'μ':
                         case 'U': value /= 1.0e6; index++; break;
                         case 'n':
                         case 'N': value /= 1.0e9; index++; break;
