@@ -1,5 +1,6 @@
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions;
 using System;
 using System.Linq;
 using Xunit;
@@ -106,6 +107,86 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         {
             Evaluator v = new SpiceEvaluator();
             Assert.Equal(1.99666833293656, v.EvaluateDouble("1,99666833293656"));
+        }
+
+        [Fact]
+        public void PowerInfixTest()
+        {
+            // arrange
+            var parser = new SpiceEvaluator();
+
+            // act and assert
+            Assert.Equal(8, parser.EvaluateDouble("2**3"));
+        }
+
+        [Fact]
+        public void PowerInfixPrecedenceTest()
+        {
+            // arrange
+            var parser = new SpiceEvaluator();
+
+            // act and assert
+            Assert.Equal(7, parser.EvaluateDouble("2**3-1"));
+        }
+
+        [Fact]
+        public void PowerInfixSecondPrecedenceTest()
+        {
+            // arrange
+            var parser = new SpiceEvaluator();
+
+            // act and assert
+            Assert.Equal(8, parser.EvaluateDouble("1+2**3-1"));
+        }
+
+        [Fact]
+        public void PowerInfixThirdPrecedenceTest()
+        {
+            // arrange
+            var parser = new SpiceEvaluator();
+
+            // act and assert
+            Assert.Equal(17, parser.EvaluateDouble("1+2**3*2"));
+        }
+
+        [Fact]
+        public void MinusPowerLtSpice()
+        {
+            // arrange
+            var parser = new SpiceEvaluator(SpiceEvaluatorMode.LtSpice);
+
+            // act and assert
+            Assert.Equal(0, parser.EvaluateDouble("pow(-2,1.5)"));
+        }
+
+        [Fact]
+        public void MinusPowerInfixLtSpice()
+        {
+            // arrange
+            var parser = new SpiceEvaluator(SpiceEvaluatorMode.LtSpice);
+
+            // act and assert
+            Assert.Equal(0, parser.EvaluateDouble("-2**1.5"));
+        }
+
+        [Fact]
+        public void MinusPowerSmartSpice()
+        {
+            // arrange
+            var parser = new SpiceEvaluator(SpiceEvaluatorMode.SmartSpice);
+
+            // act and assert
+            Assert.Equal(Math.Pow(2, (int)1.5), parser.EvaluateDouble("pow(-2,1.5)"));
+        }
+
+        [Fact]
+        public void MinusPowerHSpice()
+        {
+            // arrange
+            var parser = new SpiceEvaluator(SpiceEvaluatorMode.HSpice);
+
+            // act and assert
+            Assert.Equal(Math.Pow(-2, (int)1.5), parser.EvaluateDouble("pow(-2,1.5)"));
         }
     }
 }

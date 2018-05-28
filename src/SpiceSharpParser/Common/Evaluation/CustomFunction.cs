@@ -32,5 +32,10 @@ namespace SpiceSharpParser.Common
         /// Gets or sets the return type of user function .
         /// </summary>
         public Type ReturnType { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether function is infix
+        /// </summary>
+        public bool Infix { get; set; }
     }
 }

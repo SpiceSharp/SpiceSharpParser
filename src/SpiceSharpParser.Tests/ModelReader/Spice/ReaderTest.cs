@@ -20,7 +20,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice
             processor.Process(Arg.Any<Statements>(), Arg.Any<IProcessingContext>());
             processor.GetRegistry<IExporterRegistry>().Returns(new ExporterRegistry());
 
-            var reader = new SpiceModelReader(processor);
+            var reader = new SpiceModelReader(new SpiceModelReaderSettings(), processor);
             var netlist = new SpiceNetlist();
 
             // act

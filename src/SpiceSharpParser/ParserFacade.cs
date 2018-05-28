@@ -100,7 +100,7 @@ namespace SpiceSharpParser
             postprocessedNetlistModel.Statements = ifPostProcessor.Process(postprocessedNetlistModel.Statements);
 
             // Reading model
-            var reader = new SpiceModelReader();
+            var reader = new SpiceModelReader(settings.SpiceModelReaderSettings);
             SpiceModelReaderResult readerResult = reader.Read(postprocessedNetlistModel);
 
             return new ParserResult()

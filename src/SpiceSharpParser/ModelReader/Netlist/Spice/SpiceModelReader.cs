@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using SpiceSharp;
+﻿using SpiceSharp;
 using SpiceSharpParser.Model.Netlist.Spice;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation;
@@ -18,8 +16,9 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceModelReader"/> class.
         /// </summary>
-        public SpiceModelReader()
+        public SpiceModelReader(SpiceModelReaderSettings settings)
         {
+            Settings = settings ?? throw new System.ArgumentNullException(nameof(settings));
             StatementsProcessor = BuiltInProcessors.Default;
         }
 
@@ -27,10 +26,16 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice
         /// Initializes a new instance of the <see cref="SpiceModelReader"/> class.
         /// </summary>
         /// <param name="statementsProcessor">Statements processor.</param>
-        public SpiceModelReader(IStatementsProcessor statementsProcessor)
+        public SpiceModelReader(SpiceModelReaderSettings settings, IStatementsProcessor statementsProcessor)
         {
+            Settings = settings ?? throw new System.ArgumentNullException(nameof(settings));
             StatementsProcessor = statementsProcessor ?? throw new System.ArgumentNullException(nameof(statementsProcessor));
         }
+
+        /// <summary>
+        /// Gets the settings of the reader.
+        /// </summary>
+        public SpiceModelReaderSettings Settings { get; }
 
         /// <summary>
         /// Gets the statements processor.
@@ -50,7 +55,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice
             var result = new SpiceModelReaderResult(new Circuit(), netlist.Title);
 
             // Create processing context
-            var mainEvaluator = new SpiceEvaluator();
+            var mainEvaluator = new SpiceEvaluator(Settings.EvaluatorMode);
 
             var resultService = new ResultService(result);
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(new string[] { "0" });

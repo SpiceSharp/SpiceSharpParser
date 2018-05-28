@@ -129,16 +129,7 @@ namespace SpiceSharpParser.Tests.Parser
             Assert.Equal((2 * Math.PI) + (2 * Math.E), parser.Parse("PI + e + pi + E"));
         }
 
-        [Fact]
-        public void Power()
-        {
-            // arrange
-            var parser = new SpiceExpressionParser();
-
-            // act and assert
-            Assert.Equal(8, parser.Parse( "2**3"));
-        }
-
+       
         [Fact]
         public void UnicodeU()
         {
