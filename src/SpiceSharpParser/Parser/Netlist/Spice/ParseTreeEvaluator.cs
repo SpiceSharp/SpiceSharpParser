@@ -125,6 +125,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
             }
             else
             {
+                if (values.Count == 1)
+                {
+                    return new SpiceNetlist()
+                    {
+                        Title = null,
+                        Statements = new Statements()
+                    };
+                }
                 return new SpiceNetlist()
                 {
                     Title = values.GetLexem(0),

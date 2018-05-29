@@ -219,6 +219,16 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         private void ProcessNetlist(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
+
+            if (currentToken.Is(SpiceTokenType.EOF))
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateNonTerminalNode(Symbols.NETLIST_ENDING, currentNode)
+                );
+                return;
+            }
+
             if (currentToken.Is(SpiceTokenType.NEWLINE))
             {
                 PushProductionExpression(

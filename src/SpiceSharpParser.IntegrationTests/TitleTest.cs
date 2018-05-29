@@ -76,6 +76,17 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
+        public void EmptyWithTitle()
+        {
+            var netlist = ParseNetlistToModel(
+                false,
+                true,
+                "");
+
+            Assert.Null(netlist.Title);
+        }
+
+        [Fact]
         public void OnlyTitleWithoutNewline()
         {
             var netlist = ParseNetlistToModel(
