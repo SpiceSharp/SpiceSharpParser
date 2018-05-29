@@ -19,14 +19,37 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
             Mode = mode;
             Parameters.Add("TEMP", Circuit.ReferenceTemperature - Circuit.CelsiusKelvin);
 
-            CustomFunctions.Add("table", TableFunction.Create(this));
-            CustomFunctions.Add("random", RandomFunctions.CreateRandom());
-            CustomFunctions.Add("min", MathFunctions.CreateMin());
-            CustomFunctions.Add("max", MathFunctions.CreateMax());
-            CustomFunctions.Add("pow", MathFunctions.CreatePow(mode));
             CustomFunctions.Add("**", MathFunctions.CreatePowInfix(mode));
+            CustomFunctions.Add("abs", MathFunctions.CreateAbs());
+            CustomFunctions.Add("buf", MathFunctions.CreateBuf());
+            CustomFunctions.Add("cbrt", MathFunctions.CreateCbrt());
+            CustomFunctions.Add("ceil", MathFunctions.CreateCeil());
+            CustomFunctions.Add("db", MathFunctions.CreateDb(mode));
+            CustomFunctions.Add("def", ControlFunctions.CreateDef(this));
+            CustomFunctions.Add("exp", MathFunctions.CreateExp());
+            CustomFunctions.Add("fabs", MathFunctions.CreateAbs());
+            CustomFunctions.Add("flat", RandomFunctions.CreateFlat());
+            CustomFunctions.Add("floor", MathFunctions.CreateFloor());
+            CustomFunctions.Add("hypot", MathFunctions.CreateHypot());
+            CustomFunctions.Add("if", MathFunctions.CreateIf());
+            CustomFunctions.Add("int", MathFunctions.CreateInt());
+            CustomFunctions.Add("inv", MathFunctions.CreateInv());
+            CustomFunctions.Add("ln", MathFunctions.CreateLn());
+            CustomFunctions.Add("log", MathFunctions.CreateLog(mode));
+            CustomFunctions.Add("log10", MathFunctions.CreateLog10(mode));
+            CustomFunctions.Add("max", MathFunctions.CreateMax());
+            CustomFunctions.Add("min", MathFunctions.CreateMin());
+            CustomFunctions.Add("nint", MathFunctions.CreateRound());
+            CustomFunctions.Add("pow", MathFunctions.CreatePow(mode));
+            CustomFunctions.Add("pwr", MathFunctions.CreatePwr(mode));
+            CustomFunctions.Add("pwrs", MathFunctions.CreatePwrs());
+            CustomFunctions.Add("random", RandomFunctions.CreateRandom());
+            CustomFunctions.Add("round", MathFunctions.CreateRound());
             CustomFunctions.Add("sqrt", MathFunctions.CreateSqrt(mode));
-
+            CustomFunctions.Add("sgn", MathFunctions.CreateSgn());
+            CustomFunctions.Add("table", TableFunction.Create(this));
+            CustomFunctions.Add("u", MathFunctions.CreateU());
+            CustomFunctions.Add("uramp", MathFunctions.CreateURamp());
         }
 
         /// <summary>

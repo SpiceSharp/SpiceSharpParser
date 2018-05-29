@@ -11,7 +11,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
         /// </summary>
         /// <param name="mode">Evaluator mode.</param>
         /// <returns>
-        /// A new instance of pow spice function.
+        /// A new instance of pow custom function.
         /// </returns>
         public static CustomFunction CreatePow(SpiceEvaluatorMode mode)
         {
@@ -57,11 +57,75 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
         }
 
         /// <summary>
+        /// Create a pwr() custom function.
+        /// </summary>
+        /// <param name="mode">Evaluator mode.</param>
+        /// <returns>
+        /// A new instance of pwr custom function.
+        /// </returns>
+        public static CustomFunction CreatePwr(SpiceEvaluatorMode mode)
+        {
+            Random randomGenerator = new Random(Environment.TickCount);
+
+            CustomFunction function = new CustomFunction();
+            function.Name = "pwr";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 2;
+
+            function.Logic = (args, simulation) =>
+            {
+                double x = (double)args[1];
+                double y = (double)args[0];
+
+                switch (mode)
+                {
+                    case SpiceEvaluatorMode.LtSpice:
+                        return Math.Pow(Math.Abs(x), y);
+
+                    case SpiceEvaluatorMode.HSpice:
+                    case SpiceEvaluatorMode.SmartSpice:
+                        return Math.Sign(x) * Math.Pow(Math.Abs(x), y);
+
+                    default:
+                        return Math.Pow(x, y); //TODO: define logic for default
+                }
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a pwrs() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of pwrs custom function.
+        /// </returns>
+        public static CustomFunction CreatePwrs()
+        {
+            Random randomGenerator = new Random(Environment.TickCount);
+
+            CustomFunction function = new CustomFunction();
+            function.Name = "pwrs";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 2;
+
+            function.Logic = (args, simulation) =>
+            {
+                double x = (double)args[1];
+                double y = (double)args[0];
+
+                return Math.Sign(x) * Math.Pow(Math.Abs(x), y);
+            };
+
+            return function;
+        }
+
+        /// <summary>
         /// Create a sqrt custom function.
         /// </summary>
         /// <param name="mode">Evaluator mode.</param>
         /// <returns>
-        /// A new instance of pow spice function.
+        /// A new instance of pow custom function.
         /// </returns>
         public static CustomFunction CreateSqrt(SpiceEvaluatorMode mode)
         {
@@ -117,7 +181,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
         /// </summary>
         /// <param name="mode">Evaluator mode.</param>
         /// <returns>
-        /// A new instance of ** spice function.
+        /// A new instance of ** custom function.
         /// </returns>
         public static CustomFunction CreatePowInfix(SpiceEvaluatorMode mode)
         {
@@ -179,7 +243,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
         /// Create a min() custom function.
         /// </summary>
         /// <returns>
-        /// A new instance of min spice function.
+        /// A new instance of min custom function.
         /// </returns>
         public static CustomFunction CreateMin()
         {
@@ -216,7 +280,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
         /// Create a max() custom function.
         /// </summary>
         /// <returns>
-        /// A new instance of min spice function.
+        /// A new instance of min custom function.
         /// </returns>
         public static CustomFunction CreateMax()
         {
@@ -244,6 +308,543 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
                 }
 
                 return max;
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a ln() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of ln custom function.
+        /// </returns>
+        public static CustomFunction CreateLn()
+        {
+            CustomFunction function = new CustomFunction();
+            function.Name = "ln";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 1;
+            function.ReturnType = typeof(double);
+
+            function.Logic = (args, simulation) =>
+            {
+                if (args.Length != 1)
+                {
+                    throw new ArgumentException("ln() function expects one argument");
+                }
+
+                double x = (double)args[0];
+                return Math.Log(x);
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a log() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of log custom function.
+        /// </returns>
+        public static CustomFunction CreateLog(SpiceEvaluatorMode mode)
+        {
+            CustomFunction function = new CustomFunction();
+            function.Name = "log";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 1;
+            function.ReturnType = typeof(double);
+
+            function.Logic = (args, simulation) =>
+            {
+                if (args.Length != 1)
+                {
+                    throw new ArgumentException("log() function expects one argument");
+                }
+
+                double x = (double)args[0];
+
+                if (mode == SpiceEvaluatorMode.HSpice)
+                {
+                    return Math.Sign(x) * Math.Log(Math.Abs(x));
+                }
+
+                return Math.Log(x);
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a log10() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of log10 custom function.
+        /// </returns>
+        public static CustomFunction CreateLog10(SpiceEvaluatorMode mode)
+        {
+            CustomFunction function = new CustomFunction();
+            function.Name = "log10";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 1;
+            function.ReturnType = typeof(double);
+
+            function.Logic = (args, simulation) =>
+            {
+                if (args.Length != 1)
+                {
+                    throw new ArgumentException("log10() function expects one argument");
+                }
+
+                double x = (double)args[0];
+
+                if (mode == SpiceEvaluatorMode.HSpice)
+                {
+                    return Math.Sign(x) * Math.Log10(Math.Abs(x));
+                }
+
+                return Math.Log10(x);
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a cbrt() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of cbrt custom function.
+        /// </returns>
+        public static CustomFunction CreateCbrt()
+        {
+            CustomFunction function = new CustomFunction();
+            function.Name = "cbrt";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 1;
+            function.ReturnType = typeof(double);
+
+            function.Logic = (args, simulation) =>
+            {
+                if (args.Length != 1)
+                {
+                    throw new ArgumentException("cbrt() function expects one argument");
+                }
+
+                double x = (double)args[0];
+
+                return Math.Pow(x, 1.0 / 3.0);
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a buf() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of buf custom function.
+        /// </returns>
+        public static CustomFunction CreateBuf()
+        {
+            CustomFunction function = new CustomFunction();
+            function.Name = "buf";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 1;
+            function.ReturnType = typeof(double);
+
+            function.Logic = (args, simulation) =>
+            {
+                if (args.Length != 1)
+                {
+                    throw new ArgumentException("cbrt() function expects one argument");
+                }
+
+                double x = (double)args[0];
+
+                return x > 0.5 ? 1 : 0;
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a ceil() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of ceil custom function.
+        /// </returns>
+        public static CustomFunction CreateCeil()
+        {
+            CustomFunction function = new CustomFunction();
+            function.Name = "ceil";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 1;
+            function.ReturnType = typeof(double);
+
+            function.Logic = (args, simulation) =>
+            {
+                if (args.Length != 1)
+                {
+                    throw new ArgumentException("ceil() function expects one argument");
+                }
+
+                double x = (double)args[0];
+                return Math.Ceiling(x);
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a abs() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of abs custom function.
+        /// </returns>
+        public static CustomFunction CreateAbs()
+        {
+            CustomFunction function = new CustomFunction();
+            function.Name = "abs";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 1;
+            function.ReturnType = typeof(double);
+
+            function.Logic = (args, simulation) =>
+            {
+                if (args.Length != 1)
+                {
+                    throw new ArgumentException("abs() function expects one argument");
+                }
+
+                double x = (double)args[0];
+                return Math.Abs(x);
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a floor() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of floor custom function.
+        /// </returns>
+        public static CustomFunction CreateFloor()
+        {
+            CustomFunction function = new CustomFunction();
+            function.Name = "floor";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 1;
+            function.ReturnType = typeof(double);
+
+            function.Logic = (args, simulation) =>
+            {
+                if (args.Length != 1)
+                {
+                    throw new ArgumentException("floor() function expects one argument");
+                }
+
+                double x = (double)args[0];
+                return Math.Floor(x);
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a if() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of if custom function.
+        /// </returns>
+        public static CustomFunction CreateIf()
+        {
+            CustomFunction function = new CustomFunction();
+            function.Name = "if";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 3;
+            function.ReturnType = typeof(double);
+
+            function.Logic = (args, simulation) =>
+            {
+                if (args.Length != 3)
+                {
+                    throw new ArgumentException("if() function expects three arguments");
+                }
+
+                double x = (double)args[2];
+                double y = (double)args[1];
+                double z = (double)args[0];
+
+                if (x > 0.5)
+                {
+                    return y;
+                }
+                else
+                {
+                    return z;
+                }
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a hypot() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of hypot custom function.
+        /// </returns>
+        public static CustomFunction CreateHypot()
+        {
+            CustomFunction function = new CustomFunction();
+            function.Name = "hypot";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 2;
+            function.ReturnType = typeof(double);
+
+            function.Logic = (args, simulation) =>
+            {
+                if (args.Length != 2)
+                {
+                    throw new ArgumentException("hypot() function expects three arguments");
+                }
+
+                double x = (double)args[1];
+                double y = (double)args[0];
+
+                return Math.Sqrt((x * x) + (y * y));
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a int() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of int custom function.
+        /// </returns>
+        public static CustomFunction CreateInt()
+        {
+            CustomFunction function = new CustomFunction();
+            function.Name = "int";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 1;
+            function.ReturnType = typeof(double);
+
+            function.Logic = (args, simulation) =>
+            {
+                if (args.Length != 1)
+                {
+                    throw new ArgumentException("int() function expects one argument");
+                }
+
+                double x = (double)args[0];
+                return (int)x;
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a inv() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of int custom function.
+        /// </returns>
+        public static CustomFunction CreateInv()
+        {
+            CustomFunction function = new CustomFunction();
+            function.Name = "inv";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 1;
+            function.ReturnType = typeof(double);
+
+            function.Logic = (args, simulation) =>
+            {
+                if (args.Length != 1)
+                {
+                    throw new ArgumentException("inv() function expects one argument");
+                }
+
+                double x = (double)args[0];
+
+                return x > 0.5 ? 0 : 1;
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a exp() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of exp custom function.
+        /// </returns>
+        public static CustomFunction CreateExp()
+        {
+            CustomFunction function = new CustomFunction();
+            function.Name = "exp";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 1;
+            function.ReturnType = typeof(double);
+
+            function.Logic = (args, simulation) =>
+            {
+                if (args.Length != 1)
+                {
+                    throw new ArgumentException("exp() function expects one argument");
+                }
+
+                double x = (double)args[0];
+                return Math.Exp(x);
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a db() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of db custom function.
+        /// </returns>
+        public static CustomFunction CreateDb(SpiceEvaluatorMode mode)
+        {
+            CustomFunction function = new CustomFunction();
+            function.Name = "db";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 1;
+            function.ReturnType = typeof(double);
+
+            function.Logic = (args, simulation) =>
+            {
+                if (args.Length != 1)
+                {
+                    throw new ArgumentException("db() function expects one argument");
+                }
+
+                double x = (double)args[0];
+
+                if (mode == SpiceEvaluatorMode.SmartSpice)
+                {
+                    return 20.0 * Math.Log10(Math.Abs(x));
+                }
+
+                return Math.Sign(x) * 20.0 * Math.Log10(Math.Abs(x));
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a round() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of round custom function.
+        /// </returns>
+        public static CustomFunction CreateRound()
+        {
+            CustomFunction function = new CustomFunction();
+            function.Name = "round";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 1;
+            function.ReturnType = typeof(double);
+
+            function.Logic = (args, simulation) =>
+            {
+                if (args.Length != 1)
+                {
+                    throw new ArgumentException("round() function expects one argument");
+                }
+
+                double x = (double)args[0];
+                return Math.Round(x);
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a u() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of u custom function.
+        /// </returns>
+        public static CustomFunction CreateU()
+        {
+            CustomFunction function = new CustomFunction();
+            function.Name = "u";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 1;
+            function.ReturnType = typeof(double);
+
+            function.Logic = (args, simulation) =>
+            {
+                if (args.Length != 1)
+                {
+                    throw new ArgumentException("u() function expects one argument");
+                }
+
+                double x = (double)args[0];
+                return x > 0 ? 1 : 0;
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a uramp() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of uramp custom function.
+        /// </returns>
+        public static CustomFunction CreateURamp()
+        {
+            CustomFunction function = new CustomFunction();
+            function.Name = "uramp";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 1;
+            function.ReturnType = typeof(double);
+
+            function.Logic = (args, simulation) =>
+            {
+                if (args.Length != 1)
+                {
+                    throw new ArgumentException("uramp() function expects one argument");
+                }
+
+                double x = (double)args[0];
+                return x > 0 ? x : 0;
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a sgn() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of sgn custom function.
+        /// </returns>
+        public static CustomFunction CreateSgn()
+        {
+            CustomFunction function = new CustomFunction();
+            function.Name = "sgn";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 1;
+            function.ReturnType = typeof(double);
+
+            function.Logic = (args, simulation) =>
+            {
+                if (args.Length != 1)
+                {
+                    throw new ArgumentException("sgn() function expects one argument");
+                }
+
+                double x = (double)args[0];
+                return Math.Sign(x);
             };
 
             return function;

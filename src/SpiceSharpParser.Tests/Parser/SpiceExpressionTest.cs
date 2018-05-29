@@ -1,9 +1,6 @@
 ﻿using SpiceSharpParser.Common;
-using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation;
-using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions;
 using SpiceSharpParser.Parser.Expressions;
 using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.Parser
@@ -103,7 +100,6 @@ namespace SpiceSharpParser.Tests.Parser
         {
             // arrange
             var parser = new SpiceExpressionParser();
-            
 
             // act and assert
             Assert.Equal(3, parser.Parse(" 2 + 1 "));
@@ -129,7 +125,6 @@ namespace SpiceSharpParser.Tests.Parser
             Assert.Equal((2 * Math.PI) + (2 * Math.E), parser.Parse("PI + e + pi + E"));
         }
 
-       
         [Fact]
         public void UnicodeU()
         {

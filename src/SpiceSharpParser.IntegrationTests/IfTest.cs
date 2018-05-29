@@ -1,11 +1,63 @@
 ﻿using SpiceSharpParser.Model.Netlist.Spice.Objects;
 using System;
+using System.IO;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests
 {
     public class IfTest : BaseTest
     {
+        [Fact]
+        public void IfWithDef()
+        {
+            string incContent = ".param x1=1\n";
+            string incFilePath = Path.Combine(Directory.GetCurrentDirectory(), "params.inc");
+            File.WriteAllText(incFilePath, incContent);
+
+            var netlist = ParseNetlistToPostProcessedModel(
+                false,
+                true,
+                "Simplest netlist with if and def",
+                ".include params.inc",
+                ".IF (def(x1))",
+                "* Comment 1",
+                ".ELSE",
+                "* Comment 2",
+                ".ENDIF",
+                ".END");
+
+            Assert.Equal(2, netlist.Statements.Count);
+            Assert.True(netlist.Statements[0] is Control);
+            Assert.True(netlist.Statements[1] is CommentLine);
+            Assert.Equal("* Comment 1", ((CommentLine)netlist.Statements[1]).Text);
+        }
+
+        [Fact]
+        public void IfWithDefIncludeAtBottom() //TODO: Decide whether this is supported or not
+        {
+            string incContent = ".param x1=1\n";
+            string incFilePath = Path.Combine(Directory.GetCurrentDirectory(), "params.inc");
+            File.WriteAllText(incFilePath, incContent);
+
+            var netlist = ParseNetlistToPostProcessedModel(
+                false,
+                true,
+                "Simplest netlist with if and def - include at the bottom",
+                ".IF (def(x1))",
+                "* Comment 1",
+                ".ELSE",
+                "* Comment 2",
+                ".ENDIF",
+                ".include params.inc",
+                ".END");
+
+            Assert.Equal(2, netlist.Statements.Count);
+            Assert.True(netlist.Statements[0] is CommentLine);
+            Assert.True(netlist.Statements[1] is Control);
+            Assert.Equal("* Comment 1", ((CommentLine)netlist.Statements[0]).Text);
+        }
+
+
         [Fact]
         public void MissingEndIf()
         {

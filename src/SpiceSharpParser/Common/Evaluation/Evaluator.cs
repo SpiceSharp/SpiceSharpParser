@@ -23,22 +23,22 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
         }
 
         /// <summary>
-        /// Gets the dictionary of parameters values
+        /// Gets the dictionary of parameters values.
         /// </summary>
         public Dictionary<string, double> Parameters { get; }
 
         /// <summary>
-        /// Gets the custom functions
+        /// Gets the custom functions.
         /// </summary>
         public Dictionary<string, CustomFunction> CustomFunctions => ExpressionParser.CustomFunctions;
 
         /// <summary>
         /// Gets the expression parser.
         /// </summary>
-        public IExpressionParser ExpressionParser { get; private set; }
+        protected IExpressionParser ExpressionParser { get; private set; }
 
         /// <summary>
-        /// Gets the evaluator registry
+        /// Gets the expression registry.
         /// </summary>
         public ExpressionRegistry Registry { get; }
 
@@ -61,10 +61,10 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
         }
 
         /// <summary>
-        /// Sets the parameter value and updates the values expressions
+        /// Sets the parameter value and updates the values expressions.
         /// </summary>
-        /// <param name="parameterName">A name of parameter</param>
-        /// <param name="value">A value of parameter</param>
+        /// <param name="parameterName">A name of parameter.</param>
+        /// <param name="value">A value of parameter.</param>
         public void SetParameter(string parameterName, double value)
         {
             Parameters[parameterName] = value;
@@ -72,10 +72,10 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
         }
 
         /// <summary>
-        /// Sets the parameter value to the value of expression and updates the values expressions
+        /// Sets the parameter value to the value of expression and updates the values expressions.
         /// </summary>
-        /// <param name="parameterName">A name of parameter</param>
-        /// <param name="expression">A value of parameter</param>
+        /// <param name="parameterName">A name of parameter.</param>
+        /// <param name="expression">A value of parameter.</param>
         public void SetParameter(string parameterName, string expression)
         {
             Parameters[parameterName] = EvaluateDouble(expression);
@@ -83,31 +83,31 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
         }
 
         /// <summary>
-        /// Adds double expression to registry that will be updated when value of parameter change
+        /// Adds double expression to registry that will be updated when value of parameter change.
         /// </summary>
-        /// <param name="expression">An expression to add</param>
-        /// <param name="parameters">Parameters of expression</param>
+        /// <param name="expression">An expression to add.</param>
+        /// <param name="parameters">Parameters of expression.</param>
         public void AddDynamicExpression(DoubleExpression expression, IEnumerable<string> parameters)
         {
             Registry.Add(expression, parameters);
         }
 
         /// <summary>
-        /// Adds double expression to registry that will be updated when value of parameter change
+        /// Adds double expression to registry that will be updated when value of parameter change.
         /// </summary>
-        /// <param name="expressionName">Name of expression</param>
-        /// <param name="expression">An expression to add</param>
-        /// <param name="parameters">Parameters of expression</param>
+        /// <param name="expressionName">Name of expression.</param>
+        /// <param name="expression">An expression to add.</param>
+        /// <param name="parameters">Parameters of expression.</param>
         public void AddNamedDynamicExpression(string expressionName, DoubleExpression expression, IEnumerable<string> parameters)
         {
             Registry.Add(expressionName, expression, parameters);
         }
 
         /// <summary>
-        /// Returns names of all parameters
+        /// Returns names of all parameters.
         /// </summary>
         /// <returns>
-        /// True if there is parameter
+        /// True if there is parameter.
         /// </returns>
         public IEnumerable<string> GetParameters()
         {
@@ -139,11 +139,11 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
         }
 
         /// <summary>
-        /// Gets the expression
+        /// Gets the expression.
         /// </summary>
         /// <param name="expressionName">A expression name</param>
         /// <returns>
-        /// An expression
+        /// An expression.
         /// </returns>
         public string GetExpression(string expressionName)
         {
@@ -151,10 +151,10 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
         }
 
         /// <summary>
-        /// Gets the names of parameters
+        /// Gets the names of parameters.
         /// </summary>
         /// <returns>
-        /// The names of paramaters
+        /// The names of paramaters.
         /// </returns>
         public IEnumerable<string> GetParameterNames()
         {
@@ -162,9 +162,9 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
         }
 
         /// <summary>
-        /// Sets the parameters values and updates the values expressions
+        /// Sets the parameters values and updates the values expressions.
         /// </summary>
-        /// <param name="parameters">A dictionary of parameter values</param>
+        /// <param name="parameters">A dictionary of parameter values.</param>
         public void SetParameters(Dictionary<string, double> parameters)
         {
             foreach (var parameter in parameters)
@@ -179,11 +179,11 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
         }
 
         /// <summary>
-        /// Gets the variables in expression
+        /// Gets the variables in expression.
         /// </summary>
-        /// <param name="expression">The expression to check</param>
+        /// <param name="expression">The expression to check.</param>
         /// <returns>
-        /// A list of variables from expression
+        /// A list of variables from expression.
         /// </returns>
         public IEnumerable<string> GetVariables(string expression)
         {
@@ -193,10 +193,10 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
         }
 
         /// <summary>
-        /// Gets the expression names
+        /// Gets the expression names.
         /// </summary>
         /// <returns>
-        /// Enumerable of strings
+        /// Enumerable of strings.
         /// </returns>
         public IEnumerable<string> GetExpressionNames()
         {
@@ -204,9 +204,9 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
         }
 
         /// <summary>
-        /// Refreshes expressions in evaluator that contains given parameter
+        /// Refreshes expressions in evaluator that contains given parameter.
         /// </summary>
-        /// <param name="parameterName">A parameter name</param>
+        /// <param name="parameterName">A parameter name.</param>
         private void Refresh(string parameterName)
         {
             foreach (DoubleExpression definion in Registry.GetDependentExpressions(parameterName))

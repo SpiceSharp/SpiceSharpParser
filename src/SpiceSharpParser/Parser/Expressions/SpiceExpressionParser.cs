@@ -1,9 +1,8 @@
-﻿using SpiceSharpParser.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Text;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.Parser.Expressions
 {
@@ -151,14 +150,10 @@ namespace SpiceSharpParser.Parser.Expressions
         };
 
         /// <summary>
-        /// Gets all built-in functions.
+        /// Gets all built-in functions (only trigonometric functions)
         /// </summary>
         private Dictionary<string, BuiltInFunctionOperator> BuiltInFunctions { get; } = new Dictionary<string, BuiltInFunctionOperator>
         {
-            { "abs", new BuiltInFunctionOperator(stack => Math.Abs(stack.Pop())) },
-            { "exp", new BuiltInFunctionOperator(stack => Math.Exp(stack.Pop())) },
-            { "log", new BuiltInFunctionOperator(stack => Math.Log(stack.Pop())) },
-            { "log10", new BuiltInFunctionOperator(stack => Math.Log10(stack.Pop())) },
             { "cos", new BuiltInFunctionOperator(stack => Math.Cos(stack.Pop())) },
             { "sin", new BuiltInFunctionOperator(stack => Math.Sin(stack.Pop())) },
             { "tan", new BuiltInFunctionOperator(stack => Math.Tan(stack.Pop())) },
@@ -168,7 +163,14 @@ namespace SpiceSharpParser.Parser.Expressions
             { "acos", new BuiltInFunctionOperator(stack => Math.Acos(stack.Pop())) },
             { "asin", new BuiltInFunctionOperator(stack => Math.Asin(stack.Pop())) },
             { "atan", new BuiltInFunctionOperator(stack => Math.Atan(stack.Pop())) },
-            { "atan2", new BuiltInFunctionOperator(stack => { var b = stack.Pop(); var a = stack.Pop(); return Math.Atan2(a, b);}) }
+            { "atan2",
+                new BuiltInFunctionOperator(
+                    stack => {
+                        var b = stack.Pop();
+                        var a = stack.Pop();
+                        return Math.Atan2(a, b);
+                    })
+            }
         };
 
         /// <summary>
