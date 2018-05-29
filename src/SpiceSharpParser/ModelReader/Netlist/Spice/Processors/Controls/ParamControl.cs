@@ -44,7 +44,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Controls
                     }
                     else
                     {
-                        DefineUserFunction(context, assigmentParameter);
+                        DefineUserFunction(context, assigmentParameter.Name, assigmentParameter.Arguments, assigmentParameter.Value);
                     }
                 }
                 else

@@ -1,4 +1,4 @@
-﻿using SpiceSharpParser.Common;
+﻿using System.Linq;
 using SpiceSharpParser.Model.Netlist.Spice.Objects;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Exceptions;
@@ -24,16 +24,35 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Controls
                 throw new System.ArgumentNullException(nameof(statement.Parameters));
             }
 
-            foreach (var param in statement.Parameters)
+            for (var i = 0; i < statement.Parameters.Count; i++)
             {
+                var param = statement.Parameters[i];
+
                 if (param is Model.Netlist.Spice.Objects.Parameters.AssignmentParameter assigmentParameter)
                 {
-                    DefineUserFunction(context, assigmentParameter);
+                    if (!assigmentParameter.HasFunctionSyntax)
+                    {
+                        throw new System.Exception("User function needs to be a function");
+                    }
+
+                    DefineUserFunction(context, assigmentParameter.Name, assigmentParameter.Arguments, assigmentParameter.Value);
                     break;
                 }
                 else
                 {
-                    throw new WrongParameterTypeException(".FUNC supports only single assigment");
+                    if (param is Model.Netlist.Spice.Objects.Parameters.BracketParameter bracketParameter)
+                    {
+                        DefineUserFunction(
+                            context,
+                            bracketParameter.Name,
+                            bracketParameter.Parameters.ToList().Select(p => p.Image).ToList(), // TODO: improve it please
+                            statement.Parameters[i + 1].Image);
+                        break;
+                    }
+                    else
+                    {
+                        throw new WrongParameterTypeException("Unsupported syntax for .FUNC");
+                    }
                 }
             }
         }
