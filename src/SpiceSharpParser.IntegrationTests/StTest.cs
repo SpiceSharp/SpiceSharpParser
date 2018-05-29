@@ -271,6 +271,35 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
+        public void DCParameterSweepWithStTest()
+        {
+            var result = ParseNetlist(
+                "Sweeping parameters",
+                "V1 in gnd 11",
+                "R1 in out {a}",
+                "R2 out gnd {R}",
+                ".param R = 0",
+                ".param a = 0",
+                ".DC a 1 2 0.5",
+                ".st LIST R 10 100",
+                ".SAVE v(out)",
+                ".END");
+
+            var exports = RunSimulations(result);
+
+            var r10 = ((List<Double>)exports[0]);
+            Compare(10.0 / (10.0 + 1) * 11, r10[0]);
+            Compare(10.0 / (10.0 + 1.5) * 11, r10[1]);
+            Compare(10.0 / (10.0 + 2) * 11, r10[2]);
+
+            var r100 = ((List<Double>)exports[1]);
+            Compare(100.0 / (100.0 + 1) * 11, r100[0]);
+            Compare(100.0 / (100.0 + 1.5) * 11, r100[1]);
+            Compare(100.0 / (100.0 + 2) * 11, r100[2]);
+        }
+    
+
+        [Fact]
         public void ListIcParameterTest()
         {
             double dcVoltage = 10;
