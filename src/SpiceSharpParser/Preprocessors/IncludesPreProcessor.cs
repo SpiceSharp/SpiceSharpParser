@@ -17,9 +17,9 @@ namespace SpiceSharpParser.Preprocessors
         /// Initializes a new instance of the <see cref="IncludesPreProcessor"/> class.
         /// </summary>
         /// <param name="fileReader">File reader</param>
-        public IncludesPreProcessor(IFileReader fileReader, INetlistModelReader netlistModelReader)
+        public IncludesPreProcessor(IFileReader fileReader, ISpiceNetlistParser spiceNetlistParser)
         {
-            NetlistModelReader = netlistModelReader;
+            SpiceNetlistParser = spiceNetlistParser;
             FileReader = fileReader;
         }
 
@@ -29,9 +29,9 @@ namespace SpiceSharpParser.Preprocessors
         public IFileReader FileReader { get; }
 
         /// <summary>
-        /// Gets the netlist model reader.
+        /// Gets the spice netlist parser.
         /// </summary>
-        public INetlistModelReader NetlistModelReader { get; }
+        public ISpiceNetlistParser SpiceNetlistParser { get; }
 
         /// <summary>
         /// Processes .include statements.
@@ -90,10 +90,10 @@ namespace SpiceSharpParser.Preprocessors
             string includeContent = FileReader.GetFileContent(includeFullPath);
             if (includeContent != null)
             {
-                // get include netlist model
-                SpiceNetlist includeModel = NetlistModelReader.GetNetlistModel(
+                // parse include 
+                SpiceNetlist includeModel = SpiceNetlistParser.Parse(
                     includeContent,
-                    new ParserSettings() { HasTitle = false, IsEndRequired = false, IsNewlineRequired = false });
+                    new SpiceNetlistParserSettings() { HasTitle = false, IsEndRequired = false, IsNewlineRequired = false });
 
                 // process includes of include netlist
                 Process(includeModel, Path.GetDirectoryName(includeFullPath));
@@ -103,7 +103,7 @@ namespace SpiceSharpParser.Preprocessors
             }
             else
             {
-                throw new InvalidOperationException($"Netlist include at { includeFullPath} could not be loaded");
+                throw new InvalidOperationException($"Netlist include at {includeFullPath} could not be loaded");
             }
         }
 

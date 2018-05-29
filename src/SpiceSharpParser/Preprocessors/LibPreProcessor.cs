@@ -10,7 +10,7 @@ using SpiceSharpParser.Model.Netlist.Spice.Objects;
 namespace SpiceSharpParser.Preprocessors
 {
     /// <summary>
-    /// Processes .lib statements with 2 parameters  from netlist file.
+    /// Processes .lib statements with 2 parameters from netlist file.
     /// </summary>
     public class LibPreProcessor : ILibPreProcessor
     {
@@ -18,10 +18,10 @@ namespace SpiceSharpParser.Preprocessors
         /// Initializes a new instance of the <see cref="LibPreProcessor"/> class.
         /// </summary>
         /// <param name="fileReader">File reader</param>
-        public LibPreProcessor(IFileReader fileReader, INetlistModelReader netlistModelReader, IIncludesPreProcessor includesPreProcessor)
+        public LibPreProcessor(IFileReader fileReader, ISpiceNetlistParser spiceNetlistParser, IIncludesPreProcessor includesPreProcessor)
         {
             IncludesPreProcessor = includesPreProcessor;
-            NetlistModelReader = netlistModelReader;
+            SpiceNetlistParser = spiceNetlistParser;
             FileReader = fileReader;
         }
 
@@ -31,9 +31,9 @@ namespace SpiceSharpParser.Preprocessors
         public IFileReader FileReader { get; }
 
         /// <summary>
-        /// Gets the netlist model reader.
+        /// Gets the spice netlist parser.
         /// </summary>
-        public INetlistModelReader NetlistModelReader { get; }
+        public ISpiceNetlistParser SpiceNetlistParser { get; }
 
         /// <summary>
         /// Getst the inclue preprocessor.
@@ -111,9 +111,9 @@ namespace SpiceSharpParser.Preprocessors
             if (libContent != null)
             {
                 //1. get lib netlist model
-                SpiceNetlist includeModel = NetlistModelReader.GetNetlistModel(
+                SpiceNetlist includeModel = SpiceNetlistParser.Parse(
                     libContent,
-                    new ParserSettings() { HasTitle = false, IsEndRequired = false, IsNewlineRequired = false });
+                    new SpiceNetlistParserSettings() { HasTitle = false, IsEndRequired = false, IsNewlineRequired = false });
 
                 var allStatements = includeModel.Statements.ToList();
 

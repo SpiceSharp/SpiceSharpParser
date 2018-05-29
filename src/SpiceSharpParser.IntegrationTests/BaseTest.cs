@@ -24,7 +24,11 @@ namespace SpiceSharpParser.IntegrationTests
         {
             var text = string.Join(Environment.NewLine, lines);
             var parserFront = new ParserFacade();
-            var parserResult = parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = true, IsEndRequired = true }, workingDirectory);
+            var settings = new ParserSettings();
+            settings.SpiceNetlistParserSettings.HasTitle = true;
+            settings.SpiceNetlistParserSettings.IsEndRequired = true;
+
+            var parserResult = parserFront.ParseNetlist(text, settings, workingDirectory);
 
 
             return parserResult.ReaderResult;
@@ -34,25 +38,34 @@ namespace SpiceSharpParser.IntegrationTests
         {
             var text = string.Join(Environment.NewLine, lines);
             var parserFront = new ParserFacade();
-            return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = true, IsEndRequired = true }).ReaderResult;
+            var settings = new ParserSettings();
+            settings.SpiceNetlistParserSettings.HasTitle = true;
+            settings.SpiceNetlistParserSettings.IsEndRequired = true;
+            return parserFront.ParseNetlist(text, settings).ReaderResult;
         }
 
         public static SpiceNetlist ParseNetlistToModel(bool isEndRequired, bool hasTitle, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parserFront = new ParserFacade();
-            return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = hasTitle, IsEndRequired = isEndRequired }).PreprocessedNetlistModel;
+            var settings = new ParserSettings();
+            settings.SpiceNetlistParserSettings.HasTitle = hasTitle;
+            settings.SpiceNetlistParserSettings.IsEndRequired = isEndRequired;
+            return parserFront.ParseNetlist(text, settings).PreprocessedNetlistModel;
         }
 
         public static SpiceNetlist ParseNetlistToPostProcessedModel(bool isEndRequired, bool hasTitle, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parserFront = new ParserFacade();
-            return parserFront.ParseNetlist(text, new ParserSettings() { HasTitle = hasTitle, IsEndRequired = isEndRequired }).PostprocessedNetlistModel;
+            var settings = new ParserSettings();
+            settings.SpiceNetlistParserSettings.HasTitle = hasTitle;
+            settings.SpiceNetlistParserSettings.IsEndRequired = isEndRequired;
+            return parserFront.ParseNetlist(text, settings).PostprocessedNetlistModel;
         }
 
         /// <summary>
-        /// Runs simulations from <see cref="SpiceReaderResult.Simulations"/>
+        /// Runs simulations from <see cref="SpiceModelReaderResult.Simulations"/> collection.
         /// </summary>
         /// <param name="readerResult">A reader result</param>
         /// <returns>

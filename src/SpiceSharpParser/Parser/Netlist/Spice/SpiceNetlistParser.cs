@@ -6,29 +6,29 @@ using SpiceSharpParser.Parser.Netlist.Spice;
 
 namespace SpiceSharpParser
 {
-    public class NetlistModelReader : INetlistModelReader
+    public class SpiceNetlistParser : ISpiceNetlistParser
     {
         /// <summary>
-        /// Gets the netlist model
+        /// Parses a spice netlist and returns a spice model.
         /// </summary>
-        /// <param name="netlist">Netlist to parse</param>
-        /// <param name="settings">Setting for parser</param>
+        /// <param name="spiceNetlist">Spice netlist to parse.</param>
+        /// <param name="settings">Setting for parser.</param>
         /// <returns>
-        /// A netlist model
+        /// A spice netlist model.
         /// </returns>
-        public SpiceNetlist GetNetlistModel(string netlist, ParserSettings settings)
+        public SpiceNetlist Parse(string spiceNetlist, SpiceNetlistParserSettings settings)
         {
             if (settings == null)
             {
                 throw new System.ArgumentNullException(nameof(settings));
             }
 
-            if (netlist == null)
+            if (spiceNetlist == null)
             {
-                throw new System.ArgumentNullException(nameof(netlist));
+                throw new System.ArgumentNullException(nameof(spiceNetlist));
             }
 
-            var tokens = GetTokens(netlist, settings.HasTitle);
+            var tokens = GetTokens(spiceNetlist, settings.HasTitle);
             CheckTokens(settings, tokens);
 
             ParseTreeNonTerminalNode parseTreeRoot = GetParseTree(
@@ -40,9 +40,9 @@ namespace SpiceSharpParser
         }
 
         /// <summary>
-        /// Verifies that tokens are ok
+        /// Verifies that tokens are ok.
         /// </summary>
-        private static void CheckTokens(ParserSettings settings, SpiceToken[] tokens)
+        private static void CheckTokens(SpiceNetlistParserSettings settings, SpiceToken[] tokens)
         {
             if (settings.IsEndRequired)
             {
@@ -56,12 +56,12 @@ namespace SpiceSharpParser
         }
 
         /// <summary>
-        /// Gets the tokens
+        /// Gets the tokens.
         /// </summary>
-        /// <param name="netlist">Netlist to tokenize</param>
-        /// <param name="hasTitle">Has a title</param>
+        /// <param name="netlist">Netlist to tokenize.</param>
+        /// <param name="hasTitle">Has a title.</param>
         /// <returns>
-        /// Array of tokens
+        /// Array of tokens.
         /// </returns>
         private SpiceToken[] GetTokens(string netlist, bool hasTitle)
         {
@@ -71,12 +71,12 @@ namespace SpiceSharpParser
         }
 
         /// <summary>
-        /// Gets the parse tree
+        /// Gets the parse tree.
         /// </summary>
-        /// <param name="tokens">Array of tokens </param>
-        /// <param name="rootSymbol">Root symbol</param>
+        /// <param name="tokens">Array of tokens.</param>
+        /// <param name="rootSymbol">Root symbol.</param>
         /// <returns>
-        /// A reference to the root of parse tree
+        /// A reference to the root of parse tree.
         /// </returns>
         private ParseTreeNonTerminalNode GetParseTree(SpiceToken[] tokens, string rootSymbol, bool isNewlineRequiredAtTheEnd)
         {
@@ -84,11 +84,11 @@ namespace SpiceSharpParser
         }
 
         /// <summary>
-        /// Gets the netlist model
+        /// Gets the netlist model.
         /// </summary>
-        /// <param name="root">A parse tree root</param>
+        /// <param name="root">A parse tree root.</param>
         /// <returns>
-        /// A netlist model
+        /// A netlist model.
         /// </returns>
         private SpiceNetlist GetNetlistModelFromTree(ParseTreeNonTerminalNode root)
         {
