@@ -2,8 +2,8 @@
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Model.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Controls.Exporters;
-using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Controls.Plots;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls.Plots;
 
 namespace SpiceSharpParser.ModelReader.Netlist.Spice.Context
 {
@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Context
         /// Initializes a new instance of the <see cref="ResultService"/> class.
         /// </summary>
         /// <param name="result">A spice model reader result.</param>
-        public ResultService(SpiceModelReaderResult result)
+        public ResultService(SpiceNetlistReaderResult result)
         {
             Result = result ?? throw new System.ArgumentNullException(nameof(result));
         }
@@ -31,7 +31,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Context
         /// <summary>
         /// Gets the result where things are added.
         /// </summary>
-        private SpiceModelReaderResult Result { get; }
+        private SpiceNetlistReaderResult Result { get; }
 
         /// <summary>
         /// Adds warning.

@@ -7,6 +7,11 @@ namespace SpiceSharpParser.Model.Netlist.Spice
     /// </summary>
     public class SpiceNetlist : SpiceObject
     {
+        public SpiceNetlist()
+        {
+            Statements = new Statements();
+        }
+
         /// <summary>
         /// Gets or sets title of the netlist.
         /// </summary>

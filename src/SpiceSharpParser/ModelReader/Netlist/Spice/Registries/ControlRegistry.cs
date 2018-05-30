@@ -1,5 +1,5 @@
 ﻿using System;
-using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Controls;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls;
 
 namespace SpiceSharpParser.ModelReader.Netlist.Spice.Registries
 {

@@ -16,7 +16,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
         /// <summary>
         /// Creates export custom functions.
         /// </summary>
-        public static IEnumerable<KeyValuePair<string, CustomFunction>> Create(IProcessingContext processingContext, IExporterRegistry exporterRegistry)
+        public static IEnumerable<KeyValuePair<string, CustomFunction>> Create(IReadingContext readingContext, IExporterRegistry exporterRegistry)
         {
             if (exporterRegistry == null)
             {
@@ -24,7 +24,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             }
 
             var result = new List<KeyValuePair<string, CustomFunction>>();
-            var exporters = new Dictionary<string, Processors.Controls.Exporters.Export>();
+            var exporters = new Dictionary<string, Readers.Controls.Exporters.Export>();
 
             foreach (var exporter in exporterRegistry)
             {
@@ -34,11 +34,11 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
 
                     if (exportType == "@")
                     {
-                        spiceFunction = CreateAtExport(processingContext, exporters, exporter, exportType);
+                        spiceFunction = CreateAtExport(readingContext, exporters, exporter, exportType);
                     }
                     else
                     {
-                        spiceFunction = CreateOrdinaryExport(processingContext, exporters, exporter, exportType);
+                        spiceFunction = CreateOrdinaryExport(readingContext, exporters, exporter, exportType);
                     }
 
                     result.Add(new KeyValuePair<string, CustomFunction>(exportType, spiceFunction));
@@ -52,7 +52,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             return result;
         }
 
-        public static CustomFunction CreateOrdinaryExport(IProcessingContext processingContext, Dictionary<string, Processors.Controls.Exporters.Export> exporters, Processors.Controls.Exporters.Exporter exporter, string exportType)
+        public static CustomFunction CreateOrdinaryExport(IReadingContext readingContext, Dictionary<string, Readers.Controls.Exporters.Export> exporters, Readers.Controls.Exporters.Exporter exporter, string exportType)
         {
             CustomFunction function = new CustomFunction();
             function.VirtualParameters = true;
@@ -73,7 +73,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
 
                     var parameters = new ParameterCollection();
                     parameters.Add(vectorParameter);
-                    var export = exporter.CreateExport(exportType, parameters, (Simulation)simulation ?? processingContext.Result.Simulations.First(), processingContext);
+                    var export = exporter.CreateExport(exportType, parameters, (Simulation)simulation ?? readingContext.Result.Simulations.First(), readingContext);
                     exporters[exporterKey] = export;
                 }
 
@@ -90,15 +90,15 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             return function;
         }
 
-        public static void Add(Dictionary<string, CustomFunction> customFunctions, IProcessingContext processingContext, IExporterRegistry exporterRegistry)
+        public static void Add(Dictionary<string, CustomFunction> customFunctions, IReadingContext readingContext, IExporterRegistry exporterRegistry)
         {
-            foreach (var func in Create(processingContext, exporterRegistry))
+            foreach (var func in Create(readingContext, exporterRegistry))
             {
                 customFunctions[func.Key] = func.Value;
             }
         }
 
-        public static CustomFunction CreateAtExport(IProcessingContext processingContext, Dictionary<string, Processors.Controls.Exporters.Export> exporters, Processors.Controls.Exporters.Exporter exporter, string exportType)
+        public static CustomFunction CreateAtExport(IReadingContext readingContext, Dictionary<string, Readers.Controls.Exporters.Export> exporters, Readers.Controls.Exporters.Exporter exporter, string exportType)
         {
             CustomFunction function = new CustomFunction();
             function.VirtualParameters = true;
@@ -115,7 +115,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
                     parameters.Add(new WordParameter(args[1].ToString()));
                     parameters.Add(new WordParameter(args[0].ToString()));
 
-                    var export = exporter.CreateExport(exportType, parameters, (Simulation)simulation ?? processingContext.Result.Simulations.First(), processingContext);
+                    var export = exporter.CreateExport(exportType, parameters, (Simulation)simulation ?? readingContext.Result.Simulations.First(), readingContext);
                     exporters[exporterKey] = export;
                 }
 

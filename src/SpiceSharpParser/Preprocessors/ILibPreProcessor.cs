@@ -2,8 +2,8 @@
 
 namespace SpiceSharpParser.Preprocessors
 {
-    public interface ILibPreProcessor
+    public interface ILibPreprocessor
     {
-        void Process(SpiceNetlist netlistModel, string currentDirectoryPath = null);
+        void Preprocess(SpiceNetlist netlistModel, string currentDirectoryPath = null);
     }
 }

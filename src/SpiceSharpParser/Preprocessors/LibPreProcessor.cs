@@ -10,17 +10,17 @@ using SpiceSharpParser.Model.Netlist.Spice.Objects;
 namespace SpiceSharpParser.Preprocessors
 {
     /// <summary>
-    /// Processes .lib statements with 2 parameters from netlist file.
+    /// Preprocess .lib statements with 2 parameters from netlist file.
     /// </summary>
-    public class LibPreProcessor : ILibPreProcessor
+    public class LibPreprocessor : ILibPreprocessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LibPreProcessor"/> class.
+        /// Initializes a new instance of the <see cref="LibPreprocessor"/> class.
         /// </summary>
         /// <param name="fileReader">File reader</param>
-        public LibPreProcessor(IFileReader fileReader, ISpiceNetlistParser spiceNetlistParser, IIncludesPreProcessor includesPreProcessor)
+        public LibPreprocessor(IFileReader fileReader, ISpiceNetlistParser spiceNetlistParser, IIncludesPreprocessor includesPreReader)
         {
-            IncludesPreProcessor = includesPreProcessor;
+            IncludesPreprocessor = includesPreReader;
             SpiceNetlistParser = spiceNetlistParser;
             FileReader = fileReader;
         }
@@ -38,30 +38,30 @@ namespace SpiceSharpParser.Preprocessors
         /// <summary>
         /// Getst the inclue preprocessor.
         /// </summary>
-        public IIncludesPreProcessor IncludesPreProcessor { get; }
+        public IIncludesPreprocessor IncludesPreprocessor { get; }
 
         /// <summary>
-        /// Processes .include statements.
+        /// Reades .include statements.
         /// </summary>
         /// <param name="netlistModel">Netlist model to seach for .include statements</param>
         /// <param name="currentDirectoryPath">Current working directory path</param>
-        public void Process(SpiceNetlist netlistModel, string currentDirectoryPath = null)
+        public void Preprocess(SpiceNetlist netlistModel, string currentDirectoryPath = null)
         {
             if (currentDirectoryPath == null)
             {
                 currentDirectoryPath = Directory.GetCurrentDirectory();
             }
 
-            bool libFound = ProcessLibs(netlistModel, currentDirectoryPath);
+            bool libFound = ReadLibs(netlistModel, currentDirectoryPath);
 
             while (libFound)
             {
-                IncludesPreProcessor.Process(netlistModel, currentDirectoryPath);
-                libFound = ProcessLibs(netlistModel, currentDirectoryPath);
+                IncludesPreprocessor.Preprocess(netlistModel, currentDirectoryPath);
+                libFound = ReadLibs(netlistModel, currentDirectoryPath);
             }
         }
 
-        private bool ProcessLibs(SpiceNetlist netlistModel, string currentDirectoryPath)
+        private bool ReadLibs(SpiceNetlist netlistModel, string currentDirectoryPath)
         {
             bool result = false;
             var subCircuits = netlistModel.Statements.Where(statement => statement is SubCircuit s);
@@ -74,7 +74,7 @@ namespace SpiceSharpParser.Preprocessors
                     foreach (Control include in subCircuitLibs.ToArray())
                     {
                         result = true;
-                        ProcessSingleLib(subCircuit.Statements, currentDirectoryPath, include);
+                        ReadSingleLib(subCircuit.Statements, currentDirectoryPath, include);
                     }
                 }
             }
@@ -86,14 +86,14 @@ namespace SpiceSharpParser.Preprocessors
                 result = true;
                 foreach (Control include in libs.ToArray())
                 {
-                    ProcessSingleLib(netlistModel.Statements, currentDirectoryPath, include);
+                    ReadSingleLib(netlistModel.Statements, currentDirectoryPath, include);
                 }
             }
 
             return result;
         }
 
-        private void ProcessSingleLib(Statements statements, string currentDirectoryPath, Control lib)
+        private void ReadSingleLib(Statements statements, string currentDirectoryPath, Control lib)
         {
             // get full path of .lib
             string libPath = ConvertPath(lib.Parameters.GetString(0));
@@ -119,11 +119,11 @@ namespace SpiceSharpParser.Preprocessors
 
                 if (lib.Parameters.Count == 2)
                 {
-                    ProcessSingleLibWithTwoArguments(statements, lib, allStatements);
+                    ReadSingleLibWithTwoArguments(statements, lib, allStatements);
                 }
                 else if (lib.Parameters.Count == 1)
                 {
-                    ProcessSingleLibWithOneArgument(statements, lib, allStatements);
+                    ReadSingleLibWithOneArgument(statements, lib, allStatements);
                 }
             }
             else
@@ -132,13 +132,13 @@ namespace SpiceSharpParser.Preprocessors
             }
         }
 
-        private static void ProcessSingleLibWithOneArgument(Statements statements, Control lib, List<Statement> allStatements)
+        private static void ReadSingleLibWithOneArgument(Statements statements, Control lib, List<Statement> allStatements)
         {
             var libStatements = allStatements;
             statements.Replace(lib, libStatements);
         }
 
-        private static void ProcessSingleLibWithTwoArguments(Statements statements, Control lib, List<Statement> allStatements)
+        private static void ReadSingleLibWithTwoArguments(Statements statements, Control lib, List<Statement> allStatements)
         {
             // Find lib by entry
             var libEntry = allStatements.SingleOrDefault(s => s is Control c && c.Name == "lib" && c.Parameters.GetString(0) == lib.Parameters.GetString(1));

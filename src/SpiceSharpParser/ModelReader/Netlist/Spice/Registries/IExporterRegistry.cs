@@ -1,4 +1,4 @@
-﻿using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Controls.Exporters;
+﻿using SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls.Exporters;
 using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReader.Netlist.Spice.Registries

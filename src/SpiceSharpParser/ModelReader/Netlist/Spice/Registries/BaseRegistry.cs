@@ -1,18 +1,17 @@
-﻿using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Common;
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Common;
 
 namespace SpiceSharpParser.ModelReader.Netlist.Spice.Registries
 {
     /// <summary>
-    /// Registry with base functionalities
+    /// Registry with base functionalities.
     /// </summary>
     /// <typeparam name="TElement">
-    /// Type of the registry element
+    /// Type of the registry element.
     /// </typeparam>
     public class BaseRegistry<TElement> : IEnumerable<TElement>
-        where TElement : IGenerator
+        where TElement : ISpiceObjectReader
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseRegistry{TElement}"/> class.
@@ -22,7 +21,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Registries
         }
 
         /// <summary>
-        /// Gets the count of elements in registry
+        /// Gets the count of elements in registry.
         /// </summary>
         public int Count
         {
@@ -33,37 +32,37 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Registries
         }
 
         /// <summary>
-        /// Gets the elements of the registry
+        /// Gets the elements of the registry.
         /// </summary>
         protected List<TElement> Elements { get; } = new List<TElement>();
 
         /// <summary>
-        /// Gets the types of elements in the registry
+        /// Gets the types of elements in the registry.
         /// </summary>
         protected List<string> ElementsTypes { get; } = new List<string>();
 
         /// <summary>
-        /// Gets the mapping type to element
+        /// Gets the mapping type to element.
         /// </summary>
         protected Dictionary<string, TElement> ElementsByType { get; } = new Dictionary<string, TElement>();
 
         /// <summary>
-        /// Adds the element to the registry
+        /// Adds the element to the registry.
         /// </summary>
         /// <param name="element">Element to add</param>
         public virtual void Add(TElement element)
         {
-            if (ElementsByType.ContainsKey(element.TypeName))
+            if (ElementsByType.ContainsKey(element.SpiceName))
             {
-                var currentElement = ElementsByType[element.TypeName];
+                var currentElement = ElementsByType[element.SpiceName];
                 var index = Elements.IndexOf(currentElement);
                 Elements.RemoveAt(index);
                 ElementsTypes.RemoveAt(index);
             }
 
             Elements.Add(element);
-            ElementsTypes.Add(element.TypeName);
-            ElementsByType[element.TypeName] = element;
+            ElementsTypes.Add(element.SpiceName);
+            ElementsByType[element.SpiceName] = element;
         }
 
         /// <summary>

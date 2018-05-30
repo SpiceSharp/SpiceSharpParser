@@ -9,7 +9,7 @@ using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.Tests.ModelReader.Spice.Context
 {
-    public class ProcessingContextTest
+    public class ReadingContextTest
     {
         [Fact]
         public void SetParameterWithExpressionTest()
@@ -23,7 +23,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Context
                 });
 
             var resultService = Substitute.For<IResultService>();
-            var context = new ProcessingContext(string.Empty, evaluator, resultService, new MainCircuitNodeNameGenerator(new string[] { }), new ObjectNameGenerator(string.Empty));
+            var context = new ReadingContext(string.Empty, evaluator, resultService, new MainCircuitNodeNameGenerator(new string[] { }), new ObjectNameGenerator(string.Empty));
 
             // act
             var resistor = new Resistor("R1");
@@ -41,7 +41,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Context
             evaluator.EvaluateDouble("1").Returns(1);
 
             var resultService = Substitute.For<IResultService>();
-            var context = new ProcessingContext(string.Empty,
+            var context = new ReadingContext(string.Empty,
                 evaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
@@ -63,7 +63,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Context
             evaluator.EvaluateDouble("1").Returns(1);
 
             var resultService = Substitute.For<IResultService>();
-            var context = new ProcessingContext(string.Empty,
+            var context = new ReadingContext(string.Empty,
                 evaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
@@ -89,7 +89,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Context
             resultService.SimulationConfiguration.Returns(new SimulationConfiguration());
             resultService.Simulations.Returns(simulations);
 
-            var context = new ProcessingContext(
+            var context = new ReadingContext(
                 string.Empty,
                 evaluator,
                 resultService,

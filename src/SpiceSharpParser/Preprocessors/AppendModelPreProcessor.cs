@@ -7,13 +7,13 @@ using SpiceSharpParser.Model.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.Preprocessors
 {
-    public class AppendModelPreProcessor : IAppendModelPreProcessor
+    public class AppendModelPreprocessor : IAppendModelPreprocessor
     {
         /// <summary>
-        /// Processes .appendmodel statements
+        /// Preprocess .appendmodel statements.
         /// </summary>
         /// <param name="netlistModel">Netlist model to seach for .appendmodel statements</param>
-        public void Process(SpiceNetlist netlistModel)
+        public void Preprocess(SpiceNetlist netlistModel)
         {
             // 1. Iterate over all subcircuits
             var subCircuits = netlistModel.Statements.Where(statement => statement is SubCircuit s);
@@ -26,8 +26,8 @@ namespace SpiceSharpParser.Preprocessors
 
                     foreach (Control appendModel in subCircuitAppendModels)
                     {
-                        // 3. Process APPENDMODEL
-                        ProcessAppendModel(subCircuit.Statements, appendModel, subCircuitAppendModels);
+                        // 3. Read APPENDMODEL
+                        ReadAppendModel(subCircuit.Statements, appendModel, subCircuitAppendModels);
                     }
                 }
             }
@@ -39,19 +39,19 @@ namespace SpiceSharpParser.Preprocessors
             {
                 foreach (Control appendModel in appendModels)
                 {
-                    // 5. Process APPENDMODEL
-                    ProcessAppendModel(netlistModel.Statements, appendModel, appendModels);
+                    // 5. Read APPENDMODEL
+                    ReadAppendModel(netlistModel.Statements, appendModel, appendModels);
                 }
             }
         }
 
         /// <summary>
-        /// Processes APPENDMODEL statement
+        /// Reades APPENDMODEL statement
         /// </summary>
         /// <param name="statements">Statements to process</param>
         /// <param name="appendModel">Append model statement</param>
         /// <param name="appendModels">Append model statements</param>
-        private void ProcessAppendModel(Statements statements, Control appendModel, IEnumerable<Statement> appendModels)
+        private void ReadAppendModel(Statements statements, Control appendModel, IEnumerable<Statement> appendModels)
         {
             if (appendModel.Parameters.Count != 4 && appendModel.Parameters.Count != 2)
             {
@@ -60,15 +60,15 @@ namespace SpiceSharpParser.Preprocessors
 
             if (appendModel.Parameters.Count == 4)
             {
-                ProcessAppendModelWithFourParameters(statements, appendModel);
+                ReadAppendModelWithFourParameters(statements, appendModel);
             }
             else
             {
-                ProcessAppendModelWithTwoParameters(statements, appendModel);
+                ReadAppendModelWithTwoParameters(statements, appendModel);
             }
         }
 
-        private void ProcessAppendModelWithTwoParameters(Statements statements, Control appendModel)
+        private void ReadAppendModelWithTwoParameters(Statements statements, Control appendModel)
         {
             string sourceModel = appendModel.Parameters.GetString(0);
             var sourceModelObj = (Model.Netlist.Spice.Objects.Model)statements.FirstOrDefault(s => s is Model.Netlist.Spice.Objects.Model m && m.Name == sourceModel);
@@ -101,7 +101,7 @@ namespace SpiceSharpParser.Preprocessors
             }
         }
 
-        private void ProcessAppendModelWithFourParameters(Statements statements, Control appendModel)
+        private void ReadAppendModelWithFourParameters(Statements statements, Control appendModel)
         {
             string sourceModel = appendModel.Parameters.GetString(0);
             string sourceModelType = appendModel.Parameters.GetString(1); // ignored (for now)

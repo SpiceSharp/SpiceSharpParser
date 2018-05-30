@@ -1,5 +1,5 @@
 ﻿using NSubstitute;
-using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Common;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Common;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Registries;
 using Xunit;
 
@@ -11,16 +11,16 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Registries
         public void AddSameTypeCountTest()
         {
             // arrange
-            var baseRegistry = new BaseRegistry<IGenerator>();
+            var baseRegistry = new BaseRegistry<ISpiceObjectReader>();
 
-            var generator = Substitute.For<IGenerator>();
-            generator.TypeName.Returns("test");
-            var generator2 = Substitute.For<IGenerator>();
-            generator2.TypeName.Returns("test");
-            var generator3 = Substitute.For<IGenerator>();
-            generator3.TypeName.Returns("test2");
-            var generator4 = Substitute.For<IGenerator>();
-            generator4.TypeName.Returns("test3");
+            var generator = Substitute.For<ISpiceObjectReader>();
+            generator.SpiceName.Returns("test");
+            var generator2 = Substitute.For<ISpiceObjectReader>();
+            generator2.SpiceName.Returns("test");
+            var generator3 = Substitute.For<ISpiceObjectReader>();
+            generator3.SpiceName.Returns("test2");
+            var generator4 = Substitute.For<ISpiceObjectReader>();
+            generator4.SpiceName.Returns("test3");
 
             // act
             baseRegistry.Add(generator);
@@ -36,9 +36,9 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Registries
         public void SupportsPositiveTest()
         {
             // arrange
-            var baseRegistry = new BaseRegistry<IGenerator>();
-            var generator = Substitute.For<IGenerator>();
-            generator.TypeName.Returns("test");
+            var baseRegistry = new BaseRegistry<ISpiceObjectReader>();
+            var generator = Substitute.For<ISpiceObjectReader>();
+            generator.SpiceName.Returns("test");
 
             // act
             baseRegistry.Add(generator);
@@ -51,9 +51,9 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Registries
         public void SupportsNegativeTest()
         {
             // arrange
-            var baseRegistry = new BaseRegistry<IGenerator>();
-            var generator = Substitute.For<IGenerator>();
-            generator.TypeName.Returns("test1");
+            var baseRegistry = new BaseRegistry<ISpiceObjectReader>();
+            var generator = Substitute.For<ISpiceObjectReader>();
+            generator.SpiceName.Returns("test1");
 
             // act
             baseRegistry.Add(generator);
@@ -66,12 +66,12 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Registries
         public void IndexOfTest()
         {
             // arrange
-            var baseRegistry = new BaseRegistry<IGenerator>();
-            var generator = Substitute.For<IGenerator>();
-            generator.TypeName.Returns("test1");
+            var baseRegistry = new BaseRegistry<ISpiceObjectReader>();
+            var generator = Substitute.For<ISpiceObjectReader>();
+            generator.SpiceName.Returns("test1");
 
-            var generator2 = Substitute.For<IGenerator>();
-            generator2.TypeName.Returns("test2");
+            var generator2 = Substitute.For<ISpiceObjectReader>();
+            generator2.SpiceName.Returns("test2");
 
             // act
             baseRegistry.Add(generator);

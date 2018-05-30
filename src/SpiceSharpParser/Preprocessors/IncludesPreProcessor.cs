@@ -9,15 +9,15 @@ using SpiceSharpParser.Model.Netlist.Spice.Objects;
 namespace SpiceSharpParser.Preprocessors
 {
     /// <summary>
-    /// Processes .include statements from netlist file.
+    /// Preprocess .include statements from netlist file.
     /// </summary>
-    public class IncludesPreProcessor : IIncludesPreProcessor
+    public class IncludesPreprocessor : IIncludesPreprocessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="IncludesPreProcessor"/> class.
+        /// Initializes a new instance of the <see cref="IncludesPreprocessor"/> class.
         /// </summary>
         /// <param name="fileReader">File reader</param>
-        public IncludesPreProcessor(IFileReader fileReader, ISpiceNetlistParser spiceNetlistParser)
+        public IncludesPreprocessor(IFileReader fileReader, ISpiceNetlistParser spiceNetlistParser)
         {
             SpiceNetlistParser = spiceNetlistParser;
             FileReader = fileReader;
@@ -34,11 +34,11 @@ namespace SpiceSharpParser.Preprocessors
         public ISpiceNetlistParser SpiceNetlistParser { get; }
 
         /// <summary>
-        /// Processes .include statements.
+        /// Reades .include statements.
         /// </summary>
         /// <param name="netlistModel">Netlist model to seach for .include statements</param>
         /// <param name="currentDirectoryPath">Current working directory path</param>
-        public void Process(SpiceNetlist netlistModel, string currentDirectoryPath = null)
+        public void Preprocess(SpiceNetlist netlistModel, string currentDirectoryPath = null)
         {
             if (currentDirectoryPath == null)
             {
@@ -54,7 +54,7 @@ namespace SpiceSharpParser.Preprocessors
 
                     foreach (Control include in subCircuitIncludes.ToArray())
                     {
-                        ProcessSingleInclude(subCircuit.Statements, currentDirectoryPath, include);
+                        ReadSingleInclude(subCircuit.Statements, currentDirectoryPath, include);
                     }
                 }
             }
@@ -65,12 +65,12 @@ namespace SpiceSharpParser.Preprocessors
             {
                 foreach (Control include in includes.ToArray())
                 {
-                    ProcessSingleInclude(netlistModel.Statements, currentDirectoryPath, include);
+                    ReadSingleInclude(netlistModel.Statements, currentDirectoryPath, include);
                 }
             }
         }
 
-        private void ProcessSingleInclude(Statements statements, string currentDirectoryPath, Control include)
+        private void ReadSingleInclude(Statements statements, string currentDirectoryPath, Control include)
         {
             // get full path of .include
             string includePath = include.Parameters.GetString(0);
@@ -96,7 +96,7 @@ namespace SpiceSharpParser.Preprocessors
                     new SpiceNetlistParserSettings() { HasTitle = false, IsEndRequired = false, IsNewlineRequired = false });
 
                 // process includes of include netlist
-                Process(includeModel, Path.GetDirectoryName(includeFullPath));
+                Preprocess(includeModel, Path.GetDirectoryName(includeFullPath));
 
                 // repelace statement by the content of the include
                 statements.Replace(include, includeModel.Statements);

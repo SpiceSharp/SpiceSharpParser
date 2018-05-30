@@ -2,20 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Circuits;
+using SpiceSharpParser.Model.Netlist.Spice.Objects;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation;
-using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Controls;
-using SpiceSharpParser.Model.Netlist.Spice.Objects;
-using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls;
 
 namespace SpiceSharpParser.Postprocessors
 {
     /// <summary>
     /// Not smart .if/.endif "parser".
     /// </summary>
-    public class IfPostProcessor
+    public class IfPostprocessor
     {
-        public IfPostProcessor(ISpiceEvaluator evaluator)
+        public IfPostprocessor(ISpiceEvaluator evaluator)
         {
             Evaluator = evaluator;
         }
@@ -23,20 +22,20 @@ namespace SpiceSharpParser.Postprocessors
         protected ISpiceEvaluator Evaluator { get; }
 
         //TODO: please do something about .ToLower() in so many places ....
-        public Statements Process(Statements statements)
+        public Statements PostProcess(Statements statements)
         {
-            var processingContext = new IfPostProcessorProcessingContext(Evaluator);
+            var readingContext = new IfPostReaderReadingContext(Evaluator);
 
             ParamControl paramControl = new ParamControl();
             foreach (Control param in statements.Where(statement => statement is Control c && c.Name.ToLower() == "param"))
             {
-                paramControl.Process(param, processingContext);
+                paramControl.Read(param, readingContext);
             }
 
-            return ProcessIfs(statements);
+            return ReadIfs(statements);
         }
 
-        private Statements ProcessIfs(Statements statements)
+        private Statements ReadIfs(Statements statements)
         {
             //1. Find first .IF
             var firstIf = statements.FirstOrDefault(statement => statement is Control c && c.Name.ToLower() == "if");
@@ -62,7 +61,7 @@ namespace SpiceSharpParser.Postprocessors
             result.Replace(firstIfIndex, matchedEndIfIndex, ifResultStatements);
 
             //5. Do it again.
-            result = ProcessIfs(result);
+            result = ReadIfs(result);
 
             return result;
         }
@@ -153,20 +152,20 @@ namespace SpiceSharpParser.Postprocessors
         }
     }
 
-    internal class IfPostProcessorProcessingContext : IProcessingContext
+    internal class IfPostReaderReadingContext : IReadingContext
     {
         public ISpiceEvaluator Evaluator { get; set; }
 
-        public IfPostProcessorProcessingContext(ISpiceEvaluator evaluator)
+        public IfPostReaderReadingContext(ISpiceEvaluator evaluator)
         {
             Evaluator = evaluator;
         }
 
         public string ContextName => throw new NotImplementedException();
 
-        public IProcessingContext Parent => throw new NotImplementedException();
+        public IReadingContext Parent => throw new NotImplementedException();
 
-        public ICollection<IProcessingContext> Children => throw new NotImplementedException();
+        public ICollection<IReadingContext> Children => throw new NotImplementedException();
 
         public ICollection<SubCircuit> AvailableSubcircuits => throw new NotImplementedException();
 

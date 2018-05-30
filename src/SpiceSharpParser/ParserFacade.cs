@@ -16,18 +16,18 @@ namespace SpiceSharpParser
         /// Initializes a new instance of the <see cref="ParserFacade"/> class.
         /// </summary>
         /// <param name="spiceNetlistParser">Spice netlist parser.</param>
-        /// <param name="includesProcessor">Includes preprocessor.</param>
-        /// <param name="appendModelProcessor">Append model preprocessor.</param>
+        /// <param name="includesPreprocessor">Includes preprocessor.</param>
+        /// <param name="appendModelPreprocessor">Append model preprocessor.</param>
         public ParserFacade(
             ISpiceNetlistParser spiceNetlistParser,
-            IIncludesPreProcessor includesProcessor,
-            IAppendModelPreProcessor appendModelProcessor,
-            ILibPreProcessor libProcessor)
+            IIncludesPreprocessor includesPreprocessor,
+            IAppendModelPreprocessor appendModelPreprocessor,
+            ILibPreprocessor libPreprocessor)
         {
-            LibProcessor = libProcessor ?? throw new System.ArgumentNullException(nameof(libProcessor));
-            IncludesProcessor = includesProcessor ?? throw new System.ArgumentNullException(nameof(includesProcessor));
+            LibPreprocessor = libPreprocessor ?? throw new System.ArgumentNullException(nameof(libPreprocessor));
+            IncludesPreprocessor = includesPreprocessor ?? throw new System.ArgumentNullException(nameof(includesPreprocessor));
             SpiceNetlistParser = spiceNetlistParser ?? throw new System.ArgumentNullException(nameof(spiceNetlistParser));
-            AppendModelProcessor = appendModelProcessor ?? throw new System.ArgumentNullException(nameof(appendModelProcessor));
+            AppendModelPreprocessor = appendModelPreprocessor ?? throw new System.ArgumentNullException(nameof(appendModelPreprocessor));
         }
 
         /// <summary>
@@ -36,15 +36,15 @@ namespace SpiceSharpParser
         public ParserFacade()
         {
             SpiceNetlistParser = new SpiceNetlistParser();
-            IncludesProcessor = new IncludesPreProcessor(new FileReader(), SpiceNetlistParser);
-            AppendModelProcessor = new AppendModelPreProcessor();
-            LibProcessor = new LibPreProcessor(new FileReader(), SpiceNetlistParser, IncludesProcessor);
+            IncludesPreprocessor = new IncludesPreprocessor(new FileReader(), SpiceNetlistParser);
+            AppendModelPreprocessor = new AppendModelPreprocessor();
+            LibPreprocessor = new LibPreprocessor(new FileReader(), SpiceNetlistParser, IncludesPreprocessor);
         }
 
         /// <summary>
-        /// Gets the .lib processor.
+        /// Gets the .lib reader.
         /// </summary>
-        protected ILibPreProcessor LibProcessor { get; }
+        protected ILibPreprocessor LibPreprocessor { get; }
 
         /// <summary>
         /// Gets the spice netlist parser.
@@ -52,14 +52,14 @@ namespace SpiceSharpParser
         protected ISpiceNetlistParser SpiceNetlistParser { get; }
 
         /// <summary>
-        /// Gets the includes processor.
+        /// Gets the includes reader.
         /// </summary>
-        protected IIncludesPreProcessor IncludesProcessor { get; }
+        protected IIncludesPreprocessor IncludesPreprocessor { get; }
 
         /// <summary>
-        /// Gets the appendmodel processor.
+        /// Gets the appendmodel reader.
         /// </summary>
-        protected IAppendModelPreProcessor AppendModelProcessor { get; }
+        protected IAppendModelPreprocessor AppendModelPreprocessor { get; }
 
         /// <summary>
         /// Parses the netlist.
@@ -86,22 +86,23 @@ namespace SpiceSharpParser
             SpiceNetlist preprocessedNetListModel = (SpiceNetlist)originalNetlistModel.Clone();
 
             // Preprocessing
-            IncludesProcessor.Process(preprocessedNetListModel, workingDirectoryPath);
-            LibProcessor.Process(preprocessedNetListModel, workingDirectoryPath);
-            AppendModelProcessor.Process(preprocessedNetListModel);
-            // TODO: more preprocessors
+            IncludesPreprocessor.Preprocess(preprocessedNetListModel, workingDirectoryPath);
+            LibPreprocessor.Preprocess(preprocessedNetListModel, workingDirectoryPath);
+            AppendModelPreprocessor.Preprocess(preprocessedNetListModel);
+            // TODO: more prereaders
 
             SpiceNetlist postprocessedNetlistModel = (SpiceNetlist)preprocessedNetListModel.Clone();
 
             // Postprocessing
-            var postProcessingEvaluator = new SpiceEvaluator(); // TODO ExportFunctions are not required at this point
+            var postReadingEvaluator = new SpiceEvaluator();
+            postReadingEvaluator.Init();
 
-            var ifPostProcessor = new IfPostProcessor(postProcessingEvaluator);
-            postprocessedNetlistModel.Statements = ifPostProcessor.Process(postprocessedNetlistModel.Statements);
+            var ifPostReader = new IfPostprocessor(postReadingEvaluator);
+            postprocessedNetlistModel.Statements = ifPostReader.PostProcess(postprocessedNetlistModel.Statements);
 
             // Reading model
-            var reader = new SpiceModelReader(settings.SpiceModelReaderSettings);
-            SpiceModelReaderResult readerResult = reader.Read(postprocessedNetlistModel);
+            var reader = new SpiceNetlistReader(settings.SpiceNetlistModelReaderSettings);
+            SpiceNetlistReaderResult readerResult = reader.Read(postprocessedNetlistModel);
 
             return new ParserResult()
             {

@@ -1,4 +1,4 @@
-﻿using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.EntityGenerators;
+﻿using SpiceSharpParser.ModelReader.Netlist.Spice.Readers.EntityGenerators;
 using System;
 
 namespace SpiceSharpParser.ModelReader.Netlist.Spice.Registries

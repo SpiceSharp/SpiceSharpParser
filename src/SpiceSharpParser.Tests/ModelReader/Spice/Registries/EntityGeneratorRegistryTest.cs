@@ -1,5 +1,5 @@
 ﻿using NSubstitute;
-using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.EntityGenerators;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Registries;
 using Xunit;
 

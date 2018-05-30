@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using Xunit;
 
-namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
+namespace SpiceSharpevaluator.Tests.ModelReader.Spice.Evaluation
 {
     public class SpiceEvaluatorTest
     {
@@ -14,6 +14,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         {
             // arrange
             var p = new SpiceEvaluator();
+            p.Init();
             p.SetParameter("a", 1);
             p.SetParameter("xyz", 13.0);
 
@@ -97,7 +98,8 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         [Fact]
         public void TableTest()
         {
-            Evaluator v = new SpiceEvaluator();
+            SpiceEvaluator v = new SpiceEvaluator();
+            v.Init();
             v.SetParameter("N", 1.0);
             Assert.Equal(10, v.EvaluateDouble("table(N, 1, pow(10, 1), 2 + 0, 20, 3, 30)"));
         }
@@ -113,285 +115,314 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         public void PowerInfixTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(8, parser.EvaluateDouble("2**3"));
+            Assert.Equal(8, evaluator.EvaluateDouble("2**3"));
         }
 
         [Fact]
         public void PowerInfixPrecedenceTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(7, parser.EvaluateDouble("2**3-1"));
+            Assert.Equal(7, evaluator.EvaluateDouble("2**3-1"));
         }
 
         [Fact]
         public void PowerInfixSecondPrecedenceTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(8, parser.EvaluateDouble("1+2**3-1"));
+            Assert.Equal(8, evaluator.EvaluateDouble("1+2**3-1"));
         }
 
         [Fact]
         public void PowerInfixThirdPrecedenceTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(17, parser.EvaluateDouble("1+2**3*2"));
+            Assert.Equal(17, evaluator.EvaluateDouble("1+2**3*2"));
         }
 
         [Fact]
         public void Round()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(1, parser.EvaluateDouble("round(1.2)"));
-            Assert.Equal(2, parser.EvaluateDouble("round(1.9)"));
+            Assert.Equal(1, evaluator.EvaluateDouble("round(1.2)"));
+            Assert.Equal(2, evaluator.EvaluateDouble("round(1.9)"));
         }
 
         [Fact]
         public void PowMinusLtSpice()
         {
             // arrange
-            var parser = new SpiceEvaluator(SpiceEvaluatorMode.LtSpice);
+            var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.LtSpice);
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(0, parser.EvaluateDouble("pow(-2,1.5)"));
+            Assert.Equal(0, evaluator.EvaluateDouble("pow(-2,1.5)"));
         }
 
         [Fact]
         public void PwrLtSpice()
         {
             // arrange
-            var parser = new SpiceEvaluator(SpiceEvaluatorMode.LtSpice);
+            var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.LtSpice);
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(8, parser.EvaluateDouble("pwr(-2,3)"));
+            Assert.Equal(8, evaluator.EvaluateDouble("pwr(-2,3)"));
         }
 
         [Fact]
         public void PwrHSpice()
         {
             // arrange
-            var parser = new SpiceEvaluator(SpiceEvaluatorMode.HSpice);
+            var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.HSpice);
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(-8, parser.EvaluateDouble("pwr(-2,3)"));
+            Assert.Equal(-8, evaluator.EvaluateDouble("pwr(-2,3)"));
         }
 
         [Fact]
         public void PwrSmartSpice()
         {
             // arrange
-            var parser = new SpiceEvaluator(SpiceEvaluatorMode.SmartSpice);
+            var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.SmartSpice);
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(-8, parser.EvaluateDouble("pwr(-2,3)"));
+            Assert.Equal(-8, evaluator.EvaluateDouble("pwr(-2,3)"));
         }
 
         [Fact]
         public void MinusPowerInfixLtSpice()
         {
             // arrange
-            var parser = new SpiceEvaluator(SpiceEvaluatorMode.LtSpice);
+            var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.LtSpice);
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(0, parser.EvaluateDouble("-2**1.5"));
+            Assert.Equal(0, evaluator.EvaluateDouble("-2**1.5"));
         }
 
         [Fact]
         public void PowMinusSmartSpice()
         {
             // arrange
-            var parser = new SpiceEvaluator(SpiceEvaluatorMode.SmartSpice);
+            var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.SmartSpice);
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(Math.Pow(2, (int)1.5), parser.EvaluateDouble("pow(-2,1.5)"));
+            Assert.Equal(Math.Pow(2, (int)1.5), evaluator.EvaluateDouble("pow(-2,1.5)"));
         }
 
         [Fact]
         public void PowMinusHSpice()
         {
             // arrange
-            var parser = new SpiceEvaluator(SpiceEvaluatorMode.HSpice);
+            var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.HSpice);
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(Math.Pow(-2, (int)1.5), parser.EvaluateDouble("pow(-2,1.5)"));
+            Assert.Equal(Math.Pow(-2, (int)1.5), evaluator.EvaluateDouble("pow(-2,1.5)"));
         }
 
         [Fact]
         public void SgnTest()
         {
             // arrange
-            var parser = new SpiceEvaluator(SpiceEvaluatorMode.HSpice);
+            var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.HSpice);
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(0, parser.EvaluateDouble("sgn(0)"));
-            Assert.Equal(-1, parser.EvaluateDouble("sgn(-1)"));
-            Assert.Equal(1, parser.EvaluateDouble("sgn(0.1)"));
+            Assert.Equal(0, evaluator.EvaluateDouble("sgn(0)"));
+            Assert.Equal(-1, evaluator.EvaluateDouble("sgn(-1)"));
+            Assert.Equal(1, evaluator.EvaluateDouble("sgn(0.1)"));
         }
 
         [Fact]
         public void SqrtTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(2, parser.EvaluateDouble("sqrt(4)"));
+            Assert.Equal(2, evaluator.EvaluateDouble("sqrt(4)"));
         }
 
         [Fact]
         public void SqrtMinusHSpiceTest()
         {
             // arrange
-            var parser = new SpiceEvaluator(SpiceEvaluatorMode.HSpice);
+            var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.HSpice);
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(-2, parser.EvaluateDouble("sqrt(-4)"));
+            Assert.Equal(-2, evaluator.EvaluateDouble("sqrt(-4)"));
         }
 
         [Fact]
         public void SqrtMinusSmartSpiceTest()
         {
             // arrange
-            var parser = new SpiceEvaluator(SpiceEvaluatorMode.SmartSpice);
+            var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.SmartSpice);
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(2, parser.EvaluateDouble("sqrt(-4)"));
+            Assert.Equal(2, evaluator.EvaluateDouble("sqrt(-4)"));
         }
 
         [Fact]
         public void SqrtMinusLtSpiceTest()
         {
             // arrange
-            var parser = new SpiceEvaluator(SpiceEvaluatorMode.LtSpice);
+            var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.LtSpice);
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(0, parser.EvaluateDouble("sqrt(-4)"));
+            Assert.Equal(0, evaluator.EvaluateDouble("sqrt(-4)"));
         }
 
         [Fact]
         public void DefPositiveTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
-            parser.SetParameter("x1", 1);
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
+            evaluator.SetParameter("x1", 1);
+
 
             // act and assert
-            Assert.Equal(1, parser.EvaluateDouble("def(x1)"));
+            Assert.Equal(1, evaluator.EvaluateDouble("def(x1)"));
         }
 
         [Fact]
         public void DefNegativeTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(0, parser.EvaluateDouble("def(x1)"));
+            Assert.Equal(0, evaluator.EvaluateDouble("def(x1)"));
         }
 
         [Fact]
         public void AbsTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(1, parser.EvaluateDouble("abs(-1)"));
+            Assert.Equal(1, evaluator.EvaluateDouble("abs(-1)"));
         }
 
         [Fact]
         public void BufTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(1, parser.EvaluateDouble("buf(0.6)"));
-            Assert.Equal(0, parser.EvaluateDouble("buf(0.3)"));
+            Assert.Equal(1, evaluator.EvaluateDouble("buf(0.6)"));
+            Assert.Equal(0, evaluator.EvaluateDouble("buf(0.3)"));
         }
 
         [Fact]
         public void CbrtTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(2, parser.EvaluateDouble("cbrt(8)"));
+            Assert.Equal(2, evaluator.EvaluateDouble("cbrt(8)"));
         }
 
         [Fact]
         public void CeilTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(3, parser.EvaluateDouble("ceil(2.9)"));
+            Assert.Equal(3, evaluator.EvaluateDouble("ceil(2.9)"));
         }
 
         [Fact]
         public void DbSmartSpiceTest()
         {
             // arrange
-            var parser = new SpiceEvaluator(SpiceEvaluatorMode.SmartSpice);
+            var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.SmartSpice);
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(20, parser.EvaluateDouble("db(-10)"));
+            Assert.Equal(20, evaluator.EvaluateDouble("db(-10)"));
         }
 
         [Fact]
         public void DbTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(-20, parser.EvaluateDouble("db(-10)"));
+            Assert.Equal(-20, evaluator.EvaluateDouble("db(-10)"));
         }
 
         [Fact]
         public void ExpTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(Math.Exp(2), parser.EvaluateDouble("exp(2)"));
+            Assert.Equal(Math.Exp(2), evaluator.EvaluateDouble("exp(2)"));
         }
 
         [Fact]
         public void FabsTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(3, parser.EvaluateDouble("fabs(-3)"));
+            Assert.Equal(3, evaluator.EvaluateDouble("fabs(-3)"));
         }
 
         [Fact]
         public void FlatTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act
-            var res = parser.EvaluateDouble("flat(10)");
+            var res = evaluator.EvaluateDouble("flat(10)");
 
             // assert
             Assert.True(res >= -10 && res <= 10);
@@ -401,135 +432,148 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         public void FloorTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(2, parser.EvaluateDouble("floor(2.3)"));
+            Assert.Equal(2, evaluator.EvaluateDouble("floor(2.3)"));
         }
 
         [Fact]
         public void HypotTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(5, parser.EvaluateDouble("hypot(3,4)"));
+            Assert.Equal(5, evaluator.EvaluateDouble("hypot(3,4)"));
         }
 
         [Fact]
         public void IfTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(3, parser.EvaluateDouble("if(0.5, 2, 3)"));
-            Assert.Equal(2, parser.EvaluateDouble("if(0.6, 2, 3)"));
+            Assert.Equal(3, evaluator.EvaluateDouble("if(0.5, 2, 3)"));
+            Assert.Equal(2, evaluator.EvaluateDouble("if(0.6, 2, 3)"));
         }
 
         [Fact]
         public void IntTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(1, parser.EvaluateDouble("int(1.3)"));
+            Assert.Equal(1, evaluator.EvaluateDouble("int(1.3)"));
         }
 
         [Fact]
         public void InvTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(0, parser.EvaluateDouble("inv(0.51)"));
-            Assert.Equal(1, parser.EvaluateDouble("inv(0.5)"));
+            Assert.Equal(0, evaluator.EvaluateDouble("inv(0.51)"));
+            Assert.Equal(1, evaluator.EvaluateDouble("inv(0.5)"));
         }
 
         [Fact]
         public void LnTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(1, parser.EvaluateDouble("ln(e)"));
+            Assert.Equal(1, evaluator.EvaluateDouble("ln(e)"));
         }
 
         [Fact]
         public void LogTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(1, parser.EvaluateDouble("log(e)"));
+            Assert.Equal(1, evaluator.EvaluateDouble("log(e)"));
         }
 
         [Fact]
         public void Log10Test()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(1, parser.EvaluateDouble("log10(10)"));
+            Assert.Equal(1, evaluator.EvaluateDouble("log10(10)"));
         }
 
         [Fact]
         public void MaxTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(100, parser.EvaluateDouble("max(10, -10, 1, 20, 100, 2)"));
+            Assert.Equal(100, evaluator.EvaluateDouble("max(10, -10, 1, 20, 100, 2)"));
         }
 
         [Fact]
         public void MinTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(-10, parser.EvaluateDouble("min(10, -10, 1, 20, 100, 2)"));
+            Assert.Equal(-10, evaluator.EvaluateDouble("min(10, -10, 1, 20, 100, 2)"));
         }
 
         [Fact]
         public void NintTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(1, parser.EvaluateDouble("nint(1.2)"));
-            Assert.Equal(2, parser.EvaluateDouble("nint(1.9)"));
+            Assert.Equal(1, evaluator.EvaluateDouble("nint(1.2)"));
+            Assert.Equal(2, evaluator.EvaluateDouble("nint(1.9)"));
         }
 
         [Fact]
         public void URampTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(1.2, parser.EvaluateDouble("uramp(1.2)"));
-            Assert.Equal(0, parser.EvaluateDouble("uramp(-0.1)"));
+            Assert.Equal(1.2, evaluator.EvaluateDouble("uramp(1.2)"));
+            Assert.Equal(0, evaluator.EvaluateDouble("uramp(-0.1)"));
         }
 
         [Fact]
         public void UTest()
         {
             // arrange
-            var parser = new SpiceEvaluator();
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
 
             // act and assert
-            Assert.Equal(1, parser.EvaluateDouble("u(1.2)"));
-            Assert.Equal(0, parser.EvaluateDouble("u(-1)"));
+            Assert.Equal(1, evaluator.EvaluateDouble("u(1.2)"));
+            Assert.Equal(0, evaluator.EvaluateDouble("u(-1)"));
         }
     }
 }

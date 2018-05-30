@@ -1,4 +1,4 @@
-﻿using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Waveforms;
+﻿using SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Waveforms;
 
 namespace SpiceSharpParser.ModelReader.Netlist.Spice.Registries
 {

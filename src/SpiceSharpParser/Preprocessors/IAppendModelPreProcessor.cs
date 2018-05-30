@@ -2,8 +2,8 @@
 
 namespace SpiceSharpParser.Preprocessors
 {
-    public interface IAppendModelPreProcessor
+    public interface IAppendModelPreprocessor
     {
-        void Process(SpiceNetlist netlistModel);
+        void Preprocess(SpiceNetlist netlistModel);
     }
 }

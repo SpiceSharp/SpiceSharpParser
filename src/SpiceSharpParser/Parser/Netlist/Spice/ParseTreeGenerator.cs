@@ -51,67 +51,67 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
                     switch (ntn.Name)
                     {
                         case Symbols.NETLIST:
-                            ProcessNetlist(stack, ntn, tokens, currentTokenIndex);
+                            ReadNetlist(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.NETLIST_WITHOUT_TITLE:
-                            ProcessNetlistWithoutTitle(stack, ntn, tokens, currentTokenIndex);
+                            ReadNetlistWithoutTitle(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.NETLIST_ENDING:
-                            ProcessNetlistEnding(stack, ntn, tokens, currentTokenIndex);
+                            ReadNetlistEnding(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.STATEMENTS:
-                            ProcessStatements(stack, ntn, tokens, currentTokenIndex);
+                            ReadStatements(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.STATEMENT:
-                            ProcessStatement(stack, ntn, tokens, currentTokenIndex);
+                            ReadStatement(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.COMMENT_LINE:
-                            ProcessCommentLine(stack, ntn, tokens, currentTokenIndex);
+                            ReadCommentLine(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.SUBCKT:
-                            ProcessSubckt(stack, ntn, tokens, currentTokenIndex);
+                            ReadSubckt(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.SUBCKT_ENDING:
-                            ProcessSubcktEnding(stack, ntn, tokens, currentTokenIndex);
+                            ReadSubcktEnding(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.COMPONENT:
-                            ProcessComponent(stack, ntn, tokens, currentTokenIndex);
+                            ReadComponent(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.CONTROL:
-                            ProcessControl(stack, ntn, tokens, currentTokenIndex);
+                            ReadControl(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.MODEL:
-                            ProcessModel(stack, ntn, tokens, currentTokenIndex);
+                            ReadModel(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.PARAMETERS:
-                            ProcessParameters(stack, ntn, tokens, currentTokenIndex);
+                            ReadParameters(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.PARAMETER:
-                            ProcessParameter(stack, ntn, tokens, currentTokenIndex);
+                            ReadParameter(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.PARAMETER_SINGLE:
-                            ProcessParameterSingle(stack, ntn, tokens, currentTokenIndex);
+                            ReadParameterSingle(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.PARAMETER_BRACKET:
-                            ProcessParameterBracket(stack, ntn, tokens, currentTokenIndex);
+                            ReadParameterBracket(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.PARAMETER_BRACKET_CONTENT:
-                            ProcessParameterBracketContent(stack, ntn, tokens, currentTokenIndex);
+                            ReadParameterBracketContent(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.PARAMETER_EQUAL:
-                            ProcessParameterEqual(stack, ntn, tokens, currentTokenIndex);
+                            ReadParameterEqual(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.PARAMETER_EQUAL_SINGLE:
-                            ProcessParameterEqualSingle(stack, ntn, tokens, currentTokenIndex);
+                            ReadParameterEqualSingle(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.VECTOR:
-                            ProcessVector(stack, ntn, tokens, currentTokenIndex);
+                            ReadVector(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.VECTOR_CONTINUE:
-                            ProcessVectorContinue(stack, ntn, tokens, currentTokenIndex);
+                            ReadVectorContinue(stack, ntn, tokens, currentTokenIndex);
                             break;
                         case Symbols.NEW_LINE:
-                            ProcessNewLine(stack, ntn, tokens, currentTokenIndex);
+                            ReadNewLine(stack, ntn, tokens, currentTokenIndex);
                             break;
                     }
                 }
@@ -146,14 +146,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.SUBCKT_ENDING"/> non-terminal node
+        /// Reades <see cref="Symbols.SUBCKT_ENDING"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessSubcktEnding(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadSubcktEnding(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
@@ -181,14 +181,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.NEW_LINE"/> non-terminal node
+        /// Reades <see cref="Symbols.NEW_LINE"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessNewLine(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadNewLine(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
             if (currentTokenIndex > tokens.Length - 1)
             {
@@ -209,14 +209,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.NETLIST"/> non-terminal node
+        /// Reades <see cref="Symbols.NETLIST"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessNetlist(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadNetlist(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
 
@@ -262,14 +262,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.NETLIST_WITHOUT_TITLE"/> non-terminal node
+        /// Reades <see cref="Symbols.NETLIST_WITHOUT_TITLE"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessNetlistWithoutTitle(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadNetlistWithoutTitle(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
             PushProductionExpression(
                 stack,
@@ -279,14 +279,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.NETLIST_ENDING"/> non-terminal node
+        /// Reades <see cref="Symbols.NETLIST_ENDING"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="current">A reference to the non-terminal node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessNetlistEnding(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadNetlistEnding(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
 
@@ -351,14 +351,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.STATEMENTS"/> non-terminal node
+        /// Reades <see cref="Symbols.STATEMENTS"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="current">A reference to the non-terminal node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessStatements(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadStatements(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
 
@@ -402,14 +402,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.STATEMENT"/> non-terminal node
+        /// Reades <see cref="Symbols.STATEMENT"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="current">A reference to the non-terminal node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessStatement(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadStatement(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
@@ -481,14 +481,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.VECTOR"/> non-terminal node
+        /// Reades <see cref="Symbols.VECTOR"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="current">A reference to the non-terminal node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessVector(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadVector(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
             PushProductionExpression(
                 stack,
@@ -499,14 +499,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.VECTOR_CONTINUE"/> non-terminal node
+        /// Reades <see cref="Symbols.VECTOR_CONTINUE"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="current">A reference to the non-terminal node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessVectorContinue(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadVectorContinue(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
             if (currentTokenIndex > tokens.Length - 1)
             {
@@ -530,14 +530,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.COMMENT_LINE"/> non-terminal node
+        /// Reades <see cref="Symbols.COMMENT_LINE"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="current">A reference to the non-terminal node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessCommentLine(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadCommentLine(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
             PushProductionExpression(
                 stack,
@@ -545,14 +545,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.SUBCKT"/> non-terminal node
+        /// Reades <see cref="Symbols.SUBCKT"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="current">A reference to the non-terminal node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessSubckt(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadSubckt(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
@@ -578,14 +578,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.PARAMETERS"/> non-terminal node
+        /// Reades <see cref="Symbols.PARAMETERS"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="current">A reference to the non-terminal node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessParameters(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadParameters(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
             if (currentTokenIndex > tokens.Length - 1)
             {
@@ -633,14 +633,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.PARAMETER_EQUAL"/> non-terminal node
+        /// Reades <see cref="Symbols.PARAMETER_EQUAL"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessParameterEqual(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadParameterEqual(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
@@ -691,14 +691,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.PARAMETER_EQUAL_SINGLE"/> non-terminal node
+        /// Reades <see cref="Symbols.PARAMETER_EQUAL_SINGLE"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="current">A reference to the non-terminal node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessParameterEqualSingle(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadParameterEqualSingle(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
             PushProductionExpression(
                 stack,
@@ -708,14 +708,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.PARAMETER_BRACKET_CONTENT"/> non-terminal node
+        /// Reades <see cref="Symbols.PARAMETER_BRACKET_CONTENT"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessParameterBracketContent(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadParameterBracketContent(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
             PushProductionExpression(
                 stack,
@@ -723,14 +723,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.PARAMETER"/> non-terminal node
+        /// Reades <see cref="Symbols.PARAMETER"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessParameter(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadParameter(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
             if (currentTokenIndex == tokens.Length - 1)
@@ -830,14 +830,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.PARAMETER_BRACKET"/> non-terminal node
+        /// Reades <see cref="Symbols.PARAMETER_BRACKET"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessParameterBracket(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadParameterBracket(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
 
@@ -857,14 +857,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.PARAMETER_SINGLE"/> non-terminal node
+        /// Reades <see cref="Symbols.PARAMETER_SINGLE"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="current">A reference to the non-terminal node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessParameterSingle(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadParameterSingle(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
 
@@ -888,14 +888,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.MODEL"/> non-terminal node
+        /// Reades <see cref="Symbols.MODEL"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessModel(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadModel(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
@@ -920,14 +920,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.CONTROL"/> non-terminal node
+        /// Reades <see cref="Symbols.CONTROL"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessControl(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadControl(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
@@ -987,14 +987,14 @@ namespace SpiceSharpParser.Parser.Netlist.Spice
         }
 
         /// <summary>
-        /// Processes <see cref="Symbols.COMPONENT"/> non-terminal node
+        /// Reades <see cref="Symbols.COMPONENT"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
         /// <param name="currentNode">A reference to the current node</param>
         /// <param name="tokens">A reference to the array of tokens</param>
         /// <param name="currentTokenIndex">A index of the current token</param>
-        private void ProcessComponent(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadComponent(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
 

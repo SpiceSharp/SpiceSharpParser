@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Controls.Exporters;
-using SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Controls.Plots;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.Model.Netlist.Spice.Objects;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;

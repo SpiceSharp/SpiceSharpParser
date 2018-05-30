@@ -12,17 +12,17 @@ using SpiceSharpParser.ModelReader.Netlist.Spice.Extensions;
 
 namespace SpiceSharpParser.Tests.ModelReader.Spice.Extensions
 {
-    public class IProcessingContextExtensionsTest
+    public class IReadingContextExtensionsTest
     {
         [Fact]
         public void SetParametersNoWarnings()
         {
             // prepare
-            var processingContext = Substitute.For<IProcessingContext>();
-            processingContext.SetParameter(Arg.Any<Entity>(), Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+            var readingContext = Substitute.For<IReadingContext>();
+            readingContext.SetParameter(Arg.Any<Entity>(), Arg.Any<string>(), Arg.Any<string>()).Returns(true);
 
             var resultService = Substitute.For<IResultService>();
-            processingContext.Result.Returns(resultService);
+            readingContext.Result.Returns(resultService);
 
             var parameters = new ParameterCollection
             {
@@ -31,7 +31,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Extensions
             };
 
             // act
-            processingContext.SetParameters(new VoltageSwitchModel("S1"), parameters);
+            readingContext.SetParameters(new VoltageSwitchModel("S1"), parameters);
 
             // assert
             resultService.Received(0).AddWarning(Arg.Any<string>());
@@ -41,11 +41,11 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Extensions
         public void SetParametersWarnings()
         {
             // prepare
-            var processingContext = Substitute.For<IProcessingContext>();
-            processingContext.SetParameter(Arg.Any<Entity>(), Arg.Any<string>(), Arg.Any<string>()).Returns(false);
+            var readingContext = Substitute.For<IReadingContext>();
+            readingContext.SetParameter(Arg.Any<Entity>(), Arg.Any<string>(), Arg.Any<string>()).Returns(false);
 
             var resultService = Substitute.For<IResultService>();
-            processingContext.Result.Returns(resultService);
+            readingContext.Result.Returns(resultService);
 
             var parameters = new ParameterCollection
             {
@@ -54,7 +54,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Extensions
             };
 
             // act
-            processingContext.SetParameters(new VoltageSwitchModel("S1"), parameters);
+            readingContext.SetParameters(new VoltageSwitchModel("S1"), parameters);
 
             // assert
             resultService.Received(2).AddWarning(Arg.Any<string>());
