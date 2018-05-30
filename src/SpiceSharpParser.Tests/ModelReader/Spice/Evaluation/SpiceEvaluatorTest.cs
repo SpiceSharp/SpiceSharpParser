@@ -80,7 +80,7 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
             v.SetParameter("a", 1.0);
 
             // act
-            var parameters = v.GetVariables("xyz + 1 + a");
+            var parameters = v.GetParametersFromExpression("xyz + 1 + a");
 
             // assert
             Assert.Contains("a", parameters);

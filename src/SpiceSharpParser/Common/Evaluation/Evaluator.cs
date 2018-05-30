@@ -23,11 +23,6 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
         }
 
         /// <summary>
-        /// Gets the dictionary of parameters values.
-        /// </summary>
-        public Dictionary<string, double> Parameters { get; }
-
-        /// <summary>
         /// Gets the custom functions.
         /// </summary>
         public Dictionary<string, CustomFunction> CustomFunctions => ExpressionParser.CustomFunctions;
@@ -38,17 +33,22 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
         protected IExpressionParser ExpressionParser { get; private set; }
 
         /// <summary>
-        /// Gets the expression registry.
+        /// Gets the dictionary of parameters values.
         /// </summary>
-        public ExpressionRegistry Registry { get; }
+        protected Dictionary<string, double> Parameters { get; }
 
         /// <summary>
-        /// Evalues a specific string to double
+        /// Gets the expression registry.
         /// </summary>
-        /// <param name="expression">An expression to evaluate</param>
-        /// <param name="context">Context of expression</param>
+        protected ExpressionRegistry Registry { get; }
+
+        /// <summary>
+        /// Evalues a specific string to double.
+        /// </summary>
+        /// <param name="expression">An expression to evaluate.</param>
+        /// <param name="context">Context of expression.</param>
         /// <returns>
-        /// A double value
+        /// A double value.
         /// </returns>
         public double EvaluateDouble(string expression, object context = null)
         {
@@ -115,11 +115,11 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
         }
 
         /// <summary>
-        /// Returns a value indicating whether there is a parameter in evaluator with given name
+        /// Returns a value indicating whether there is a parameter in evaluator with given name.
         /// </summary>
-        /// <param name="parameterName">A parameter name</param>
+        /// <param name="parameterName">A parameter name.</param>
         /// <returns>
-        /// True if there is parameter
+        /// True if there is parameter.
         /// </returns>
         public bool HasParameter(string parameterName)
         {
@@ -127,11 +127,11 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
         }
 
         /// <summary>
-        /// Gets the value of parameter
+        /// Gets the value of parameter.
         /// </summary>
-        /// <param name="parameterName">A parameter name</param>
+        /// <param name="parameterName">A parameter name.</param>
         /// <returns>
-        /// A value of parameter
+        /// A value of parameter.
         /// </returns>
         public double GetParameterValue(string parameterName)
         {
@@ -179,17 +179,17 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
         }
 
         /// <summary>
-        /// Gets the variables in expression.
+        /// Gets the parameters from expression.
         /// </summary>
         /// <param name="expression">The expression to check.</param>
         /// <returns>
-        /// A list of variables from expression.
+        /// Parameters from expression.
         /// </returns>
-        public IEnumerable<string> GetVariables(string expression)
+        public IEnumerable<string> GetParametersFromExpression(string expression)
         {
             ExpressionParser.Parse(expression);
 
-            return ExpressionParser.Variables;
+            return ExpressionParser.ParametersFoundInLastParse; //TODO: it's not thread safe ...
         }
 
         /// <summary>

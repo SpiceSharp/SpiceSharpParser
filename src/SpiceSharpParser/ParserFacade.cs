@@ -16,8 +16,8 @@ namespace SpiceSharpParser
         /// Initializes a new instance of the <see cref="ParserFacade"/> class.
         /// </summary>
         /// <param name="spiceNetlistParser">Spice netlist parser.</param>
-        /// <param name="includesProcessor">Includes preprocessor</param>
-        /// <param name="appendModelProcessor">Append model preprocessor</param>
+        /// <param name="includesProcessor">Includes preprocessor.</param>
+        /// <param name="appendModelProcessor">Append model preprocessor.</param>
         public ParserFacade(
             ISpiceNetlistParser spiceNetlistParser,
             IIncludesPreProcessor includesProcessor,
@@ -44,22 +44,22 @@ namespace SpiceSharpParser
         /// <summary>
         /// Gets the .lib processor.
         /// </summary>
-        public ILibPreProcessor LibProcessor { get; }
+        protected ILibPreProcessor LibProcessor { get; }
 
         /// <summary>
         /// Gets the spice netlist parser.
         /// </summary>
-        public ISpiceNetlistParser SpiceNetlistParser { get; }
+        protected ISpiceNetlistParser SpiceNetlistParser { get; }
 
         /// <summary>
         /// Gets the includes processor.
         /// </summary>
-        public IIncludesPreProcessor IncludesProcessor { get; }
+        protected IIncludesPreProcessor IncludesProcessor { get; }
 
         /// <summary>
         /// Gets the appendmodel processor.
         /// </summary>
-        public IAppendModelPreProcessor AppendModelProcessor { get; }
+        protected IAppendModelPreProcessor AppendModelProcessor { get; }
 
         /// <summary>
         /// Parses the netlist.

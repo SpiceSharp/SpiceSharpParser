@@ -108,7 +108,7 @@ namespace SpiceSharpParser.Common
         /// <returns>
         /// A list of variables from expression.
         /// </returns>
-        IEnumerable<string> GetVariables(string expression);
+        IEnumerable<string> GetParametersFromExpression(string expression);
 
         /// <summary>
         /// Returns names of all parameters.

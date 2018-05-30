@@ -1,7 +1,7 @@
 ﻿namespace SpiceSharpParser.Lexer
 {
     /// <summary>
-    /// Special token types
+    /// Special token types.
     /// </summary>
     public enum SpecialTokenType
     {
@@ -13,6 +13,6 @@
         /// <summary>
         /// Represents unknown token type
         /// </summary>
-        Unknown = 0
+        Unknown = 0,
     }
 }

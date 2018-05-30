@@ -121,9 +121,9 @@ namespace SpiceSharpParser.Parser.Expressions
         public Dictionary<string, double> Parameters { get; protected set; } = new Dictionary<string, double>();
 
         /// <summary>
-        /// Gets or sets the variables used in last parsed expression.
+        /// Gets or sets the parameters used in last parsed expression.
         /// </summary>
-        public Collection<string> Variables { get; protected set; }
+        public Collection<string> ParametersFoundInLastParse { get; protected set; }
 
         /// <summary>
         /// Gets or sets custom functions.
@@ -180,7 +180,7 @@ namespace SpiceSharpParser.Parser.Expressions
         /// <returns>Returns the result of the expression</returns>
         public double Parse(string expression, object context = null)
         {
-            Variables = new Collection<string>();
+            ParametersFoundInLastParse = new Collection<string>();
 
             // Initialize for parsing the expression
             index = 0;
@@ -476,7 +476,7 @@ namespace SpiceSharpParser.Parser.Expressions
                             {
                                 if (Parameters.TryGetValue(id, out var parameter))
                                 {
-                                    Variables.Add(id);
+                                    ParametersFoundInLastParse.Add(id);
                                 }
 
                                 virtualParamtersStack.Push(id);
@@ -487,7 +487,7 @@ namespace SpiceSharpParser.Parser.Expressions
                             }
                             else if (Parameters.TryGetValue(id, out var parameter))
                             {
-                                Variables.Add(id);
+                                ParametersFoundInLastParse.Add(id);
                                 outputStack.Push(parameter);
                             }
                             else

@@ -6,7 +6,7 @@ using System.Linq;
 namespace SpiceSharpParser.Model.Netlist.Spice.Objects
 {
     /// <summary>
-    /// Ordered collection of statements
+    /// Ordered collection of statements.
     /// </summary>
     public class Statements : SpiceObject, IEnumerable<Statement>
     {
@@ -21,7 +21,7 @@ namespace SpiceSharpParser.Model.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Gets the statements count
+        /// Gets the statements count.
         /// </summary>
         public int Count
         {
@@ -29,26 +29,6 @@ namespace SpiceSharpParser.Model.Netlist.Spice.Objects
             {
                 return this.list.Count;
             }
-        }
-
-        /// <summary>
-        /// Gets an index of statement in statemens.
-        /// </summary>
-        /// <param name="statement">A statement.</param>
-        /// <returns>
-        /// An index of statement.
-        /// </returns>
-        public int IndexOf(Statement statement)
-        {
-            return this.list.IndexOf(statement);
-        }
-
-        /// <summary>
-        /// Clears the collection
-        /// </summary>
-        public void Clear()
-        {
-            list.Clear();
         }
 
         /// <summary>
@@ -67,6 +47,26 @@ namespace SpiceSharpParser.Model.Netlist.Spice.Objects
             }
         }
 
+        /// <summary>
+        /// Gets an index of statement in statemens.
+        /// </summary>
+        /// <param name="statement">A statement.</param>
+        /// <returns>
+        /// An index of statement.
+        /// </returns>
+        public int IndexOf(Statement statement)
+        {
+            return this.list.IndexOf(statement);
+        }
+
+        /// <summary>
+        /// Clears the collection.
+        /// </summary>
+        public void Clear()
+        {
+            list.Clear();
+        }
+
         public void Replace(int start, int end, IEnumerable<Statement> statements)
         {
             list.RemoveRange(start, end - start + 1);
@@ -74,19 +74,19 @@ namespace SpiceSharpParser.Model.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Adds a statement to the end of collection
+        /// Adds a statement to the end of collection.
         /// </summary>
-        /// <param name="statement">A statement to add</param>
+        /// <param name="statement">A statement to add.</param>
         public void Add(Statement statement)
         {
             list.Add(statement);
         }
 
         /// <summary>
-        /// Gets the enumerator
+        /// Gets the enumerator.
         /// </summary>
         /// <returns>
-        /// A new enumerator
+        /// A new enumerator.
         /// </returns>
         public IEnumerator<Statement> GetEnumerator()
         {
@@ -94,10 +94,10 @@ namespace SpiceSharpParser.Model.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Gets the enumerator
+        /// Gets the enumerator.
         /// </summary>
         /// <returns>
-        /// A new enumerator
+        /// A new enumerator.
         /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -105,24 +105,24 @@ namespace SpiceSharpParser.Model.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Merges the given statements collection this the current collection
+        /// Merges the given statements collection this the current collection.
         /// </summary>
-        /// <param name="sts">A collection to merge</param>
+        /// <param name="sts">A collection to merge.</param>
         public void Merge(Statements sts)
         {
             list.AddRange(sts.list);
         }
 
         /// <summary>
-        /// Replace the given statement by statements
+        /// Replace the given statement by statements.
         /// </summary>
-        /// <param name="statement">A statement to replace</param>
-        /// <param name="statements">Statements to replace with</param>
+        /// <param name="statement">A statement to replace.</param>
+        /// <param name="statements">Statements to replace with.</param>
         public void Replace(Statement statement, IEnumerable<Statement> statements)
         {
             if (list.Contains(statement))
             {
-                var index = list.IndexOf(statement); 
+                var index = list.IndexOf(statement);
                 list.InsertRange(index, statements);
                 list.Remove(statement);
             }
@@ -133,11 +133,11 @@ namespace SpiceSharpParser.Model.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Gets the enumerator of statemets in the given order
+        /// Gets the enumerator of statemets in the given order.
         /// </summary>
-        /// <param name="orderByFunc">Specifies the order</param>
+        /// <param name="orderByFunc">Specifies the order.</param>
         /// <returns>
-        /// A new enumerator
+        /// A new enumerator.
         /// </returns>
         public IEnumerable<Statement> OrderBy(Func<Statement, int> orderByFunc)
         {

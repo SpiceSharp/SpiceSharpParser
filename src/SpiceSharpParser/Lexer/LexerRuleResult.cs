@@ -1,18 +1,18 @@
 ﻿namespace SpiceSharpParser.Lexer
 {
     /// <summary>
-    /// Enumeration that specifies whether a matched lexer token rule should return or ignore token
+    /// Enumeration that specifies whether a matched lexer token rule should return or ignore token.
     /// </summary>
     public enum LexerRuleResult
     {
         /// <summary>
         /// Specifies that the token is retured if it's a best match
         /// </summary>
-        ReturnToken,
+        ReturnToken = 0,
 
         /// <summary>
         /// Specifies that the token is ignored
         /// </summary>
-        IgnoreToken
+        IgnoreToken = 1,
     }
 }

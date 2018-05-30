@@ -26,7 +26,7 @@ namespace SpiceSharpParser.Common
         /// </summary>
         public int ArgumentsCount { get; set; }
 
-        // TODO: future add validation
+        // TODO: future: add validation
 
         /// <summary>
         /// Gets or sets the return type of user function .
@@ -34,7 +34,7 @@ namespace SpiceSharpParser.Common
         public Type ReturnType { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether function is infix
+        /// Gets or sets a value indicating whether function is infix.
         /// </summary>
         public bool Infix { get; set; }
     }

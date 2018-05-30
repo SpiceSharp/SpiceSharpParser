@@ -21,10 +21,11 @@
         /// <returns>A clone of the object</returns>
         public override SpiceObject Clone()
         {
-            return new Component() {
+            return new Component()
+            {
                 Name = this.Name,
                 PinsAndParameters = (ParameterCollection)this.PinsAndParameters.Clone(),
-                LineNumber = this.LineNumber
+                LineNumber = this.LineNumber,
             };
         }
     }

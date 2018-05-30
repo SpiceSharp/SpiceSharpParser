@@ -1,7 +1,7 @@
 ﻿namespace SpiceSharpParser.Lexer
 {
     /// <summary>
-    /// Enumeration that specifies whether to skip or check/use a lexer token rule
+    /// Enumeration that specifies whether to skip or use a lexer token rule.
     /// </summary>
     public enum LexerRuleUseState
     {
@@ -13,6 +13,6 @@
         /// <summary>
         /// Skip rule
         /// </summary>
-        Skip = 1
+        Skip = 1,
     }
 }

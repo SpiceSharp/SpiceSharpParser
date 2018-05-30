@@ -9,11 +9,11 @@ namespace SpiceSharpParser.Common
         private readonly Dictionary<string, DoubleExpression> expressionsByName = new Dictionary<string, DoubleExpression>();
 
         /// <summary>
-        /// Gets expressions that depend on given parameter
+        /// Gets expressions that depend on given parameter.
         /// </summary>
-        /// <param name="parameterName">A parameter name</param>
+        /// <param name="parameterName">A parameter name.</param>
         /// <returns>
-        /// An enumerable of expressions
+        /// An enumerable of expressions.
         /// </returns>
         public IEnumerable<DoubleExpression> GetDependentExpressions(string parameterName)
         {
@@ -28,10 +28,10 @@ namespace SpiceSharpParser.Common
         }
 
         /// <summary>
-        /// Adds an expression to registry
+        /// Adds an expression to registry.
         /// </summary>
-        /// <param name="expression">An expression to add</param>
-        /// <param name="expressionParameters">A list of expression parameters</param>
+        /// <param name="expression">An expression to add.</param>
+        /// <param name="expressionParameters">A list of expression parameters.</param>
         public void Add(DoubleExpression expression, IEnumerable<string> expressionParameters)
         {
             foreach (var parameter in expressionParameters)
@@ -48,10 +48,10 @@ namespace SpiceSharpParser.Common
         }
 
         /// <summary>
-        /// Adds named expression to registry
+        /// Adds named expression to registry.
         /// </summary>
-        /// <param name="expressionName">An expression name to add</param>
-        /// <param name="expression">An expression to add</param>
+        /// <param name="expressionName">An expression name to add.</param>
+        /// <param name="expression">An expression to add.</param>
         /// <param name="expressionParameters">A list of expression parameters</param>
         public void Add(string expressionName, DoubleExpression expression, IEnumerable<string> expressionParameters)
         {
@@ -60,10 +60,10 @@ namespace SpiceSharpParser.Common
         }
 
         /// <summary>
-        /// Gets expression names
+        /// Gets expression names.
         /// </summary>
         /// <returns>
-        /// Names of expressions
+        /// Names of expressions.
         /// </returns>
         public IEnumerable<string> GetExpressionNames()
         {
@@ -71,11 +71,11 @@ namespace SpiceSharpParser.Common
         }
 
         /// <summary>
-        /// Gets the expression
+        /// Gets the expression with given name.
         /// </summary>
-        /// <param name="expressionName">Name of expression</param>
+        /// <param name="expressionName">Name of expression.</param>
         /// <returns>
-        /// An expression
+        /// An expression with given name.
         /// </returns>
         public string GetExpression(string expressionName)
         {

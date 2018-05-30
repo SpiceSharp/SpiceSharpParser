@@ -3,17 +3,17 @@
 namespace SpiceSharpParser.Model.Netlist.Spice
 {
     /// <summary>
-    /// Spice netlist
+    /// Spice netlist.
     /// </summary>
     public class SpiceNetlist : SpiceObject
     {
         /// <summary>
-        /// Gets or sets title of the netlist
+        /// Gets or sets title of the netlist.
         /// </summary>
         public string Title { get; set; }
 
         /// <summary>
-        /// Gets or sets collection of statements
+        /// Gets or sets collection of statements.
         /// </summary>
         public Statements Statements { get; set; }
 

@@ -38,9 +38,9 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Processors.Controls
             }
 
             string expression = statement.Parameters.GetString(1);
-            var variables = context.Evaluator.GetVariables(expression);
+            var parameters = context.Evaluator.GetParametersFromExpression(expression);
 
-            context.Evaluator.AddNamedDynamicExpression(expressionName, new DoubleExpression(expression, (newVal) => { }), variables);
+            context.Evaluator.AddNamedDynamicExpression(expressionName, new DoubleExpression(expression, (newVal) => { }), parameters);
         }
     }
 }

@@ -7,7 +7,7 @@ using SpiceSharpParser.Model.Netlist.Spice.Objects.Parameters;
 namespace SpiceSharpParser.Model.Netlist.Spice.Objects
 {
     /// <summary>
-    /// A ordered collection of parameters
+    /// A ordered collection of parameters.
     /// </summary>
     public class ParameterCollection : SpiceObject, IEnumerable, IEnumerable<Parameter>
     {
@@ -20,7 +20,7 @@ namespace SpiceSharpParser.Model.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Gets the count of paramters in the collection
+        /// Gets the count of paramters in the collection.
         /// </summary>
         public int Count
         {
@@ -31,21 +31,21 @@ namespace SpiceSharpParser.Model.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Gets or sets the values of paramters
+        /// Gets or sets the values of paramters.
         /// </summary>
         protected List<Parameter> Values { get; set; }
 
         /// <summary>
-        /// Gets the parameter at specified index
+        /// Gets the parameter at specified index.
         /// </summary>
-        /// <param name="index">The index of parameter</param>
+        /// <param name="index">The index of parameter.</param>
         /// <returns>
-        /// A reference to parameter
+        /// A reference to parameter.
         /// </returns>
         public Parameter this[int index] => Values[index];
 
         /// <summary>
-        /// Clears the collction
+        /// Clears the collction.
         /// </summary>
         public void Clear()
         {
@@ -53,19 +53,19 @@ namespace SpiceSharpParser.Model.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Adds parameter to the collction
+        /// Adds parameter to the collction.
         /// </summary>
-        /// <param name="parameter">A parameter to add</param>
+        /// <param name="parameter">A parameter to add.</param>
         public void Add(Parameter parameter)
         {
             Values.Add(parameter);
         }
 
         /// <summary>
-        /// Gets an enumerator of parameters in collection
+        /// Gets an enumerator of parameters in collection.
         /// </summary>
         /// <returns>
-        /// A new enumerator
+        /// A new enumerator.
         /// </returns>
         public IEnumerator GetEnumerator()
         {
@@ -73,10 +73,10 @@ namespace SpiceSharpParser.Model.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Gets typed enumerator of parameters in collection
+        /// Gets typed enumerator of parameters in collection.
         /// </summary>
         /// <returns>
-        /// A new enumerator
+        /// A new enumerator.
         /// </returns>
         IEnumerator<Parameter> IEnumerable<Parameter>.GetEnumerator()
         {
@@ -84,28 +84,28 @@ namespace SpiceSharpParser.Model.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Inserts a parameter at the specifed index in the collection
+        /// Inserts a parameter at the specifed index in the collection.
         /// </summary>
-        /// <param name="index">An index</param>
-        /// <param name="parameter">A parameter to insert</param>
+        /// <param name="index">An index.</param>
+        /// <param name="parameter">A parameter to insert.</param>
         public void Insert(int index, Parameter parameter)
         {
             Values.Insert(index, parameter);
         }
 
         /// <summary>
-        /// Merges a collection to the current collection
+        /// Merges a collection to the current collection.
         /// </summary>
-        /// <param name="collection">A collection to merge</param>
+        /// <param name="collection">A collection to merge.</param>
         public void Merge(ParameterCollection collection)
         {
             Values.AddRange(collection.Values);
         }
 
         /// <summary>
-        /// Set paramters from a collection to the current collection
+        /// Set paramters from a collection to the current collection.
         /// </summary>
-        /// <param name="collection">A collection to merge</param>
+        /// <param name="collection">A collection to merge.</param>
         public void Set(ParameterCollection collection)
         {
             foreach (var value in collection.Values)
@@ -147,11 +147,11 @@ namespace SpiceSharpParser.Model.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Creates a clone of the current collection without first 'count' elements
+        /// Creates a clone of the current collection without first 'count' elements.
         /// </summary>
-        /// <param name="count">Number of paramaters to skip</param>
+        /// <param name="count">Number of paramaters to skip.</param>
         /// <returns>
-        /// A new collection of parameters
+        /// A new collection of parameters.
         /// </returns>
         public ParameterCollection Skip(int count)
         {
@@ -162,11 +162,11 @@ namespace SpiceSharpParser.Model.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Creates a clone of the current collection with first 'count' elements
+        /// Creates a clone of the current collection with first 'count' elements.
         /// </summary>
-        /// <param name="count">Number of paramaters to take</param>
+        /// <param name="count">Number of paramaters to take.</param>
         /// <returns>
-        /// A new collection of parameters
+        /// A new collection of parameters.
         /// </returns>
         public ParameterCollection Take(int count)
         {
@@ -177,11 +177,11 @@ namespace SpiceSharpParser.Model.Netlist.Spice.Objects
 
         /// <summary>
         /// Gets the string from parameter in the collection.
-        /// Throws an exception if parameter is not <see cref="SingleParameter"/>
+        /// Throws an exception if parameter is not <see cref="SingleParameter"/>.
         /// </summary>
-        /// <param name="parameterIndex">An index of parameter</param>
+        /// <param name="parameterIndex">An index of parameter.</param>
         /// <returns>
-        /// A string from parameter
+        /// A string from parameter.
         /// </returns>
         public string GetString(int parameterIndex)
         {
@@ -195,10 +195,10 @@ namespace SpiceSharpParser.Model.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Creats a new clone of the collection
+        /// Creats a new clone of the collection.
         /// </summary>
         /// <returns>
-        /// A new collection of parameters
+        /// A new collection of parameters.
         /// </returns>
         public override SpiceObject Clone()
         {
@@ -206,9 +206,9 @@ namespace SpiceSharpParser.Model.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Removes the parameter at the specified index
+        /// Removes the parameter at the specified index.
         /// </summary>
-        /// <param name="index">An index of parameter to remove</param>
+        /// <param name="index">An index of parameter to remove.</param>
         public void Remove(int index)
         {
             this.Values.RemoveAt(index);

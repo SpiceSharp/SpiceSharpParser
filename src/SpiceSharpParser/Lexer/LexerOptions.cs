@@ -1,7 +1,7 @@
 ﻿namespace SpiceSharpParser.Lexer
 {
     /// <summary>
-    /// Options for <see cref="GeneralLexer{TLexerState}"/>
+    /// Options for <see cref="GeneralLexer{TLexerState}"/>.
     /// </summary>
     public class LexerOptions
     {
@@ -22,15 +22,15 @@
         }
 
         /// <summary>
-        /// Gets a value indicating whether token's lexem can be 'multi-line' or 'single-line'
+        /// Gets a value indicating whether token's lexem can be 'multi-line' or 'single-line'.
         /// </summary>
         public bool MultipleLineTokens { get; } = false;
 
         /// <summary>
-        /// Gets the character that makes next line to be part of current line
+        /// Gets the character that makes next line to be part of current line.
         /// </summary>
         /// <remarks>
-        /// In Spice netlist this is '+' character
+        /// In Spice netlist this is '+' character.
         /// </remarks>
         public char? LineContinuationCharacter { get; }
     }
