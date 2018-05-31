@@ -75,7 +75,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Readers
 
                 if (statement.Parameters[0] is SingleParameter single)
                 {
-                    var type = single.Image;
+                    var type = single.Image.ToLower();
 
                     if (!Registry.Supports(type))
                     {
