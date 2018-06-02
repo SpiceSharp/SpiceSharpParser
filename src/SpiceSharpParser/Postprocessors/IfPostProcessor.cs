@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Circuits;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Model.Netlist.Spice.Objects;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation;
@@ -14,12 +15,12 @@ namespace SpiceSharpParser.Postprocessors
     /// </summary>
     public class IfPostprocessor
     {
-        public IfPostprocessor(ISpiceEvaluator evaluator)
+        public IfPostprocessor(IEvaluator evaluator)
         {
             Evaluator = evaluator;
         }
 
-        protected ISpiceEvaluator Evaluator { get; }
+        protected IEvaluator Evaluator { get; }
 
         //TODO: please do something about .ToLower() in so many places ....
         public Statements PostProcess(Statements statements)
@@ -154,9 +155,9 @@ namespace SpiceSharpParser.Postprocessors
 
     internal class IfPostReaderReadingContext : IReadingContext
     {
-        public ISpiceEvaluator Evaluator { get; set; }
+        public IEvaluator Evaluator { get; set; }
 
-        public IfPostReaderReadingContext(ISpiceEvaluator evaluator)
+        public IfPostReaderReadingContext(IEvaluator evaluator)
         {
             Evaluator = evaluator;
         }

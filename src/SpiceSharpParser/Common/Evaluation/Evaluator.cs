@@ -57,7 +57,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
                 return Parameters[expression];
             }
 
-            return ExpressionParser.Parse(expression, context);
+            return ExpressionParser.Parse(expression, context, this);
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
         /// </returns>
         public IEnumerable<string> GetParametersFromExpression(string expression)
         {
-            ExpressionParser.Parse(expression);
+            ExpressionParser.Parse(expression, null, this);
 
             return ExpressionParser.ParametersFoundInLastParse; //TODO: it's not thread safe ...
         }
@@ -204,6 +204,56 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
         }
 
         /// <summary>
+        /// Creates a child evaluator.
+        /// </summary>
+        /// <returns>
+        /// A new evaluator.
+        /// </returns>
+        public virtual IEvaluator CreateChildEvaluator()
+        {
+            var newEvaluator = new Evaluator(ExpressionParser, Registry);
+
+            foreach (var parameterName in this.GetParameterNames())
+            {
+                newEvaluator.Parameters[parameterName] = this.GetParameterValue(parameterName);
+            }
+
+            foreach (var customFunction in CustomFunctions)
+            {
+                newEvaluator.CustomFunctions[customFunction.Key] = customFunction.Value;
+            }
+
+            return newEvaluator;
+        }
+
+        /// <summary>
+        /// Defines a new custom function.
+        /// </summary>
+        public void DefineCustomFunction(
+            string name,
+            List<string> arguments,
+            string functionBody)
+        {
+            CustomFunction userFunction = new CustomFunction();
+            userFunction.Name = name;
+            userFunction.VirtualParameters = false;
+            userFunction.ArgumentsCount = arguments.Count;
+
+            userFunction.Logic = (args, context, evaluator) =>
+            {
+                var childEvaluator = evaluator.CreateChildEvaluator();
+                for (var i = 0; i < arguments.Count; i++)
+                {
+                    childEvaluator.SetParameter(arguments[i], (double)args[arguments.Count - i - 1]);
+                }
+
+                return childEvaluator.EvaluateDouble(functionBody);
+            };
+
+            this.CustomFunctions.Add(name, userFunction);
+        }
+
+        /// <summary>
         /// Refreshes expressions in evaluator that contains given parameter.
         /// </summary>
         /// <param name="parameterName">A parameter name.</param>
@@ -214,9 +264,10 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
                 var setter = definion.Setter;
                 var expression = definion.ValueExpression;
 
-                var newValue = ExpressionParser.Parse(expression);
+                var newValue = ExpressionParser.Parse(expression, null, this);
                 setter(newValue);
             }
         }
+
     }
 }

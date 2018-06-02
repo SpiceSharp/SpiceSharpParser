@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.Circuits;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Model.Netlist.Spice.Objects;
 using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation;
 
@@ -30,7 +31,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Context
         /// <summary>
         /// Gets the evaluator for the context.
         /// </summary>
-        ISpiceEvaluator Evaluator { get; }
+        IEvaluator Evaluator { get; }
 
         /// <summary>
         /// Gets the result service for the context.

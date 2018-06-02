@@ -13,22 +13,26 @@ namespace SpiceSharpParser.Tests.Parser
             // arrange
             var parser = new SpiceExpressionParser();
 
-            parser.CustomFunctions.Add("v", new CustomFunction()
-            {
-                Logic = (args, context) =>
+            parser.CustomFunctions.Add(
+                "v",
+                new CustomFunction()
                 {
-                    if (args.Length == 2)
+                    ArgumentsCount = -1,
+                    VirtualParameters = true,
+                    Logic = (args, context, evaluator) =>
                     {
-                        return 4;
-                    }
+                        if (args.Length == 2)
+                        {
+                            return 4;
+                        }
 
-                    if (args.Length == 1)
-                    {
-                        return 6;
+                        if (args.Length == 1)
+                        {
+                            return 6;
+                        }
+                        return -1;
                     }
-                    return -1;
-                }
-            });
+                });
 
             // act
             var result = parser.Parse("0.5 * (v(out1, ref) + v(out2))");
@@ -49,7 +53,7 @@ namespace SpiceSharpParser.Tests.Parser
 
             parser.CustomFunctions.Add("random", new CustomFunction
             {
-                Logic = (args, context) =>
+                Logic = (args, context, evaluator) =>
                 {
                     randomVal = rand.Next() * 1000;
                     return randomVal;
@@ -126,6 +130,30 @@ namespace SpiceSharpParser.Tests.Parser
         }
 
         [Fact]
+        public void ParseMinus()
+        {
+            // arrange
+            var parser = new SpiceExpressionParser();
+
+            // act and assert
+            Assert.Equal(-1, parser.Parse("-1"));
+        }
+
+        [Fact]
+        public void ParseConditional()
+        {
+            // arrange
+            var parser = new SpiceExpressionParser();
+
+            // act and assert
+            parser.Parameters["TEMP"] = 26;
+            Assert.Equal(2.52e-9, parser.Parse("TEMP == 26 ? 2.52e-9 : 2.24e-9"));
+
+            parser.Parameters["TEMP"] = 27;
+            Assert.Equal(2.24e-9, parser.Parse("TEMP == 26 ? 2.52e-9 : 2.24e-9"));
+        }
+
+        [Fact]
         public void UnicodeU()
         {
             // arrange
@@ -143,7 +171,9 @@ namespace SpiceSharpParser.Tests.Parser
 
             parser.CustomFunctions.Add("@", new CustomFunction()
             {
-                Logic = (args, context) =>
+                ArgumentsCount = 2,
+                VirtualParameters = true,
+                Logic = (args, context, evaluator) =>
                 {
                     if (args[1].ToString() == "obj1" && args[0].ToString() == "param")
                     {

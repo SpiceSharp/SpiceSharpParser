@@ -1,5 +1,4 @@
 using SpiceSharpParser.Common;
-using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation;
 using System.Linq;
 using Xunit;
 

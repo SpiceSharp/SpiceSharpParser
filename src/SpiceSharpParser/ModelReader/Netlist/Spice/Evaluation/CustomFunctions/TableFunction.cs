@@ -10,14 +10,14 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
         /// <returns>
         /// A new instance of random spice function.
         /// </returns>
-        public static CustomFunction Create(SpiceEvaluator evaluator)
+        public static CustomFunction Create()
         {
             CustomFunction function = new CustomFunction();
             function.Name = "table";
             function.VirtualParameters = false;
             function.ArgumentsCount = -1;
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 var functionEvaluator = evaluator.CreateChildEvaluator();
                 var parameter = args[args.Length - 1];

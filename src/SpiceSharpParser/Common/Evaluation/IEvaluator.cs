@@ -117,5 +117,21 @@ namespace SpiceSharpParser.Common
         /// True if there is parameter.
         /// </returns>
         IEnumerable<string> GetParameters();
+
+        /// <summary>
+        /// Creates a child evaluator.
+        /// </summary>
+        /// <returns>
+        /// A child evaluator.
+        /// </returns>
+        IEvaluator CreateChildEvaluator();
+
+        /// <summary>
+        /// Defines a custom function.
+        /// </summary>
+        /// <param name="name">Name of custom function</param>
+        /// <param name="arguments">Arguments names of custom function</param>
+        /// <param name="functionBody">Body of custom function</param>
+        void DefineCustomFunction(string name, List<string> arguments, string functionBody);
     }
 }

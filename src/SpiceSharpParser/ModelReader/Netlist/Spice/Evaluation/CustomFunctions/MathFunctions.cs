@@ -22,7 +22,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.VirtualParameters = false;
             function.ArgumentsCount = 2;
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 double x = (double)args[1];
                 double y = (double)args[0];
@@ -72,7 +72,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.VirtualParameters = false;
             function.ArgumentsCount = 2;
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 double x = (double)args[1];
                 double y = (double)args[0];
@@ -109,7 +109,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.VirtualParameters = false;
             function.ArgumentsCount = 2;
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 double x = (double)args[1];
                 double y = (double)args[0];
@@ -136,7 +136,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.VirtualParameters = false;
             function.ArgumentsCount = 1;
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 double x = (double)args[0];
 
@@ -193,7 +193,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.VirtualParameters = false;
             function.ArgumentsCount = 2;
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 double x = (double)args[1];
                 double y = (double)args[0];
@@ -253,7 +253,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = -1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length == 0)
                 {
@@ -290,7 +290,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = -1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length == 0)
                 {
@@ -327,7 +327,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -355,7 +355,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -389,7 +389,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -423,7 +423,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -452,7 +452,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -481,7 +481,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -509,7 +509,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -537,7 +537,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -546,44 +546,6 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
 
                 double x = (double)args[0];
                 return Math.Floor(x);
-            };
-
-            return function;
-        }
-
-        /// <summary>
-        /// Create a if() custom function.
-        /// </summary>
-        /// <returns>
-        /// A new instance of if custom function.
-        /// </returns>
-        public static CustomFunction CreateIf()
-        {
-            CustomFunction function = new CustomFunction();
-            function.Name = "if";
-            function.VirtualParameters = false;
-            function.ArgumentsCount = 3;
-            function.ReturnType = typeof(double);
-
-            function.Logic = (args, simulation) =>
-            {
-                if (args.Length != 3)
-                {
-                    throw new ArgumentException("if() function expects three arguments");
-                }
-
-                double x = (double)args[2];
-                double y = (double)args[1];
-                double z = (double)args[0];
-
-                if (x > 0.5)
-                {
-                    return y;
-                }
-                else
-                {
-                    return z;
-                }
             };
 
             return function;
@@ -603,7 +565,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 2;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length != 2)
                 {
@@ -633,7 +595,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -661,7 +623,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -690,7 +652,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -718,7 +680,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -752,7 +714,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -780,7 +742,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -808,7 +770,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -836,7 +798,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length != 1)
                 {

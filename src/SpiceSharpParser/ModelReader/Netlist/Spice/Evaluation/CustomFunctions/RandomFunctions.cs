@@ -20,7 +20,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.VirtualParameters = false;
             function.ArgumentsCount = 0;
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length != 0)
                 {
@@ -47,7 +47,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.VirtualParameters = false;
             function.ArgumentsCount = 1;
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, context, evaluator) =>
             {
                 if (args.Length != 1)
                 {

@@ -14,7 +14,7 @@ namespace SpiceSharpParser.Common
         /// Function:
         /// args => simulation => result.
         /// </summary>
-        public Func<object[], object, object> Logic { get; set; }
+        public Func<object[], object, IEvaluator, object> Logic { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether function has virtual parameters.

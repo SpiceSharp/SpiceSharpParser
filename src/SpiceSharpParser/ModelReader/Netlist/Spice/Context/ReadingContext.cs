@@ -24,7 +24,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Context
         /// <param name="parent">Parent of th econtext</param>
         public ReadingContext(
             string contextName,
-            ISpiceEvaluator evaluator,
+            IEvaluator evaluator,
             IResultService resultService,
             INodeNameGenerator nodeNameGenerator,
             IObjectNameGenerator objectNameGenerator,
@@ -67,7 +67,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Context
         /// <summary>
         /// Gets or sets the evaluator
         /// </summary>
-        public ISpiceEvaluator Evaluator { get; protected set; }
+        public IEvaluator Evaluator { get; protected set; }
 
         /// <summary>
         /// Gets or sets the result service
@@ -134,7 +134,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Context
             {
                 return Evaluator.EvaluateDouble(expression);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw new Exception("Exception during evaluation of expression: " + expression);
             }

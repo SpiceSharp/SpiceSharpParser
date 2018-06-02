@@ -11,6 +11,6 @@ namespace SpiceSharpParser.Common
 
         Dictionary<string, CustomFunction> CustomFunctions { get; }
 
-        double Parse(string expression, object context = null);
+        double Parse(string expression, object context = null, IEvaluator evaluator = null);
     }
 }

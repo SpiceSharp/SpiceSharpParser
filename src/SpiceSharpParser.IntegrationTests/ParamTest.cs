@@ -9,7 +9,7 @@ namespace SpiceSharpParser.IntegrationTests
         public void ParamCustomFunctionAdvancedTest()
         {
             var netlist = ParseNetlist(
-                "PARAM user function test",
+                "PARAM custom function test",
                 "V1 IN 0 10.0",
                 "R1 IN OUT 10e3",
                 "C1 OUT 0 10e-6",
@@ -29,7 +29,7 @@ namespace SpiceSharpParser.IntegrationTests
         public void ParamCustomFunctionManyArgumentsTest()
         {
             var netlist = ParseNetlist(
-                "PARAM user function test",
+                "PARAM custom function test",
                 "V1 IN 0 10.0",
                 "R1 IN OUT 10e3",
                 "C1 OUT 0 10e-6",
@@ -48,7 +48,7 @@ namespace SpiceSharpParser.IntegrationTests
         public void ParamWithoutArgumentsTest()
         {
             var netlist = ParseNetlist(
-                "PARAM user function test",
+                "PARAM custom function test",
                 "V1 OUT 0 10.0",
                 "R1 OUT 0 {somefunction()}",
                 ".OP",
@@ -60,6 +60,24 @@ namespace SpiceSharpParser.IntegrationTests
 
             Assert.Equal(10.0, export[0]);
             Assert.Equal(10.0 / 17.0, export[1]);
+        }
+
+        [Fact]
+        public void ParamFactRecursiveFunctionTest()
+        {
+            var netlist = ParseNetlist(
+                "PARAM recurisve custom function test",
+                "V1 OUT 0 60.0",
+                "R1 OUT 0 {fact(3)}",
+                ".OP",
+                ".SAVE V(OUT) @R1[i]",
+                ".PARAM fact(x) = {x == 0 ? 1: x * lazy(#fact(x -1)#)}",
+                ".END");
+
+            double[] export = RunOpSimulation(netlist, new string[] { "V(OUT)", "@R1[i]" });
+
+            Assert.Equal(60.0, export[0]);
+            Assert.Equal(60.0 / 6, export[1]);
         }
     }
 }

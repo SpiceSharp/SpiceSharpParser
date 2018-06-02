@@ -5,6 +5,5 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
 {
     public interface ISpiceEvaluator : IEvaluator
     {
-        ISpiceEvaluator CreateChildEvaluator();
     }
 }

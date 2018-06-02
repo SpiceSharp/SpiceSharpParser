@@ -39,13 +39,14 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
             CustomFunctions.Add("cbrt", MathFunctions.CreateCbrt());
             CustomFunctions.Add("ceil", MathFunctions.CreateCeil());
             CustomFunctions.Add("db", MathFunctions.CreateDb(Mode));
-            CustomFunctions.Add("def", ControlFunctions.CreateDef(this));
+            CustomFunctions.Add("def", ControlFunctions.CreateDef());
             CustomFunctions.Add("exp", MathFunctions.CreateExp());
             CustomFunctions.Add("fabs", MathFunctions.CreateAbs());
             CustomFunctions.Add("flat", RandomFunctions.CreateFlat());
             CustomFunctions.Add("floor", MathFunctions.CreateFloor());
             CustomFunctions.Add("hypot", MathFunctions.CreateHypot());
-            CustomFunctions.Add("if", MathFunctions.CreateIf());
+            CustomFunctions.Add("if", ControlFunctions.CreateIf());
+            CustomFunctions.Add("lazy", ControlFunctions.CreateLazy());
             CustomFunctions.Add("int", MathFunctions.CreateInt());
             CustomFunctions.Add("inv", MathFunctions.CreateInv());
             CustomFunctions.Add("ln", MathFunctions.CreateLn());
@@ -61,7 +62,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
             CustomFunctions.Add("round", MathFunctions.CreateRound());
             CustomFunctions.Add("sqrt", MathFunctions.CreateSqrt(Mode));
             CustomFunctions.Add("sgn", MathFunctions.CreateSgn());
-            CustomFunctions.Add("table", TableFunction.Create(this));
+            CustomFunctions.Add("table", TableFunction.Create());
             CustomFunctions.Add("u", MathFunctions.CreateU());
             CustomFunctions.Add("uramp", MathFunctions.CreateURamp());
         }
@@ -78,12 +79,12 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
         }
 
         /// <summary>
-        /// Creates a child evaluator.
+        /// Creates a child evaluator
         /// </summary>
         /// <returns>
-        /// A new evaluator.
+        /// A child evaluator.
         /// </returns>
-        public ISpiceEvaluator CreateChildEvaluator()
+        public override IEvaluator CreateChildEvaluator()
         {
             var newEvaluator = new SpiceEvaluator(Mode);
 

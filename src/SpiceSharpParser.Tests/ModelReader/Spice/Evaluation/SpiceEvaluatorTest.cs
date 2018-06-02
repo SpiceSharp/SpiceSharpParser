@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using Xunit;
 
-namespace SpiceSharpevaluator.Tests.ModelReader.Spice.Evaluation
+namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
 {
     public class SpiceEvaluatorTest
     {
@@ -574,6 +574,175 @@ namespace SpiceSharpevaluator.Tests.ModelReader.Spice.Evaluation
             // act and assert
             Assert.Equal(1, evaluator.EvaluateDouble("u(1.2)"));
             Assert.Equal(0, evaluator.EvaluateDouble("u(-1)"));
+        }
+
+        [Fact]
+        public void UnitInExpressionTest()
+        {
+            // arrange
+            var evaluator = new SpiceEvaluator();
+            evaluator.Init();
+
+            // act and assert
+            Assert.Equal(100 * 1000, evaluator.EvaluateDouble("300kHz/3"));
+        }
+
+        [Fact]
+        public void FibonacciCustomFunction()
+        {
+            // arrange
+            var p = new SpiceEvaluator();
+
+            //TODO: It shouldn't be that messy ...
+            Func<object[], object, IEvaluator, object> fibLogic = null; //TODO: Use smarter methods to define anonymous recursion in C# (there is a nice post on some nice blog on msdn)
+            fibLogic = (object[] args, object context, IEvaluator evaluator) =>
+            {
+                double x = (double)args[0];
+
+                if (x == 0.0)
+                {
+                    return 0.0;
+                }
+
+                if (x == 1.0)
+                {
+                    return 1.0;
+                }
+
+                return (double)fibLogic(new object[1] { (x - 1) }, context, evaluator) + (double)fibLogic(new object[1] { (x - 2) }, context, evaluator);
+            };
+
+            var fib = new CustomFunction()
+            {
+                ArgumentsCount = 1,
+                Logic = fibLogic,
+                VirtualParameters = false,
+            };
+            p.CustomFunctions.Add("fib",  fib);
+
+            Assert.Equal(0, p.EvaluateDouble("fib(0)"));
+            Assert.Equal(1, p.EvaluateDouble("fib(1)"));
+            Assert.Equal(1, p.EvaluateDouble("fib(2)"));
+            Assert.Equal(2, p.EvaluateDouble("fib(3)"));
+            Assert.Equal(3, p.EvaluateDouble("fib(4)"));
+            Assert.Equal(5, p.EvaluateDouble("fib(5)"));
+            Assert.Equal(8, p.EvaluateDouble("fib(6)"));
+        }
+
+        [Fact]
+        public void FibonacciAsParam()
+        {
+            var p = new SpiceEvaluator();
+            p.Init();
+            p.DefineCustomFunction(
+                "fib",
+                new System.Collections.Generic.List<string>() { "x" },
+                "x <= 0 ? 0 : (x == 1 ? 1 : lazy(#fib(x-1) + fib(x-2)#))");
+
+            Assert.Equal(0, p.EvaluateDouble("fib(0)"));
+            Assert.Equal(1, p.EvaluateDouble("fib(1)"));
+            Assert.Equal(1, p.EvaluateDouble("fib(2)"));
+            Assert.Equal(2, p.EvaluateDouble("fib(3)"));
+            Assert.Equal(3, p.EvaluateDouble("fib(4)"));
+            Assert.Equal(5, p.EvaluateDouble("fib(5)"));
+            Assert.Equal(8, p.EvaluateDouble("fib(6)"));
+        }
+
+        [Fact]
+        public void FactAsParam()
+        {
+            var p = new SpiceEvaluator();
+            p.Init();
+            p.DefineCustomFunction(
+                "fact",
+                new System.Collections.Generic.List<string>() { "x" },
+                "x == 0 ? 1 : (x * lazy(#fact(x-1)#))");
+
+            Assert.Equal(1, p.EvaluateDouble("fact(0)"));
+            Assert.Equal(1, p.EvaluateDouble("fact(1)"));
+            Assert.Equal(2, p.EvaluateDouble("fact(2)"));
+            Assert.Equal(6, p.EvaluateDouble("fact(3)"));
+        }
+
+        [Fact]
+        public void LazySimpleTest()
+        {
+            var p = new SpiceEvaluator();
+            p.Init();
+            p.DefineCustomFunction(
+                "test_lazy",
+                new System.Collections.Generic.List<string>() { "x" },
+                "x == 0 ? 1: lazy(#3+2#)");
+
+            Assert.Equal(1, p.EvaluateDouble("test_lazy(0)"));
+            Assert.Equal(5, p.EvaluateDouble("test_lazy(1)"));
+        }
+
+        [Fact]
+        public void LazyErrorTest()
+        {
+            var p = new SpiceEvaluator();
+            p.Init();
+            p.DefineCustomFunction(
+                "test_lazy",
+                new System.Collections.Generic.List<string>() { "x" },
+                "x == 0 ? 1: lazy(#1/#)");
+
+            Assert.Equal(1, p.EvaluateDouble("test_lazy(0)"));
+        }
+
+        [Fact]
+        public void ComplexCondBrokenTest()
+        {
+            var p = new SpiceEvaluator();
+            p.Init();
+            var expr = "x <= 9 ? 3 : (x == 5 ? 1 : lazy(#2/-#))";
+
+            p.SetParameter("x", 9);
+            Assert.Equal(3, p.EvaluateDouble(expr));
+        }
+
+        [Fact]
+        public void SimpleCondTest()
+        {
+            var p = new SpiceEvaluator();
+            p.Init();
+            var expr = "x <= 0 ? 0 : lazy(#2#)";
+
+            p.SetParameter("x", 0);
+            Assert.Equal(0, p.EvaluateDouble(expr));
+
+            p.SetParameter("x", 1);
+            Assert.Equal(2, p.EvaluateDouble(expr));
+        }
+
+        [Fact]
+        public void LazyTest()
+        {
+            var p = new SpiceEvaluator();
+            p.Init();
+            Assert.Equal(4, p.EvaluateDouble("2 >= 0 ? lazy(#3+1#) : lazy(#4+5#)"));
+            Assert.Equal(8, p.EvaluateDouble("1 <= 0 ? lazy(#1+1#) : lazy(#3+5#)"));
+        }
+
+        [Fact]
+        public void LazyFuncTest()
+        {
+            var p = new SpiceEvaluator();
+            p.Init();
+            p.DefineCustomFunction(
+                "test",
+                new System.Collections.Generic.List<string>(),
+                "5");
+
+            p.DefineCustomFunction(
+                "test2",
+                new System.Collections.Generic.List<string>() { "x" },
+                "x <= 0 ? 0 : (x == 1 ? 1 : lazy(#test()#))");
+
+            Assert.Equal(0, p.EvaluateDouble("test2(0)"));
+            Assert.Equal(1, p.EvaluateDouble("test2(1)"));
+            Assert.Equal(5, p.EvaluateDouble("test2(2)"));
         }
     }
 }

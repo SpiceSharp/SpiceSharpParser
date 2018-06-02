@@ -57,9 +57,9 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             CustomFunction function = new CustomFunction();
             function.VirtualParameters = true;
             function.Name = "Exporter: " + exportType;
-            function.ArgumentsCount = 0;
+            function.ArgumentsCount = -1;
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, simulation, evaluator) =>
             {
                 string exporterKey = exportType + string.Join(",", args);
 
@@ -105,7 +105,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation.CustomFunctions
             function.Name = "Exporter: @";
             function.ArgumentsCount = 2;
 
-            function.Logic = (args, simulation) =>
+            function.Logic = (args, simulation, evaluator) =>
             {
                 string exporterKey = exportType + string.Join(",", args);
 
