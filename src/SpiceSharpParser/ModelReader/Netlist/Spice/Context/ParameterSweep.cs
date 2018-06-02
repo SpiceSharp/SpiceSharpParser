@@ -11,7 +11,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Context
         /// <summary>
         /// Gets or sets the parameter for parameter sweep.
         /// </summary>
-        public SpiceSharpParser.Model.Netlist.Spice.Objects.Parameter Parameter { get; set; }
+        public Model.Netlist.Spice.Objects.Parameter Parameter { get; set; }
 
         /// <summary>
         /// Gets or sets the sweep for parameter sweep.

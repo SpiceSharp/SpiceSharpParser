@@ -30,8 +30,28 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls.Simulation
             }
         }
 
-        private void CreateSimulationsForAllParameterSweepsAndTemperatures(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
+        protected void CreateSimulationsForAllParameterSweepsAndTemperatures(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
         {
+            var tempSweep = context.Result.SimulationConfiguration.ParameterSweeps.SingleOrDefault(sweep => sweep.Parameter.Image == "TEMP");
+
+            if (tempSweep != null)
+            {
+                context.Result.SimulationConfiguration.ParameterSweeps.Remove(tempSweep);
+                var tempValues = tempSweep.Sweep.Points.ToList();
+
+                //TODO: Clean it please
+                if (context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions.HasValue)
+                {
+                    context.Result.SimulationConfiguration.TemperaturesInKelvins.Remove(context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions.Value);
+                }
+                context.Result.SimulationConfiguration.TemperaturesInKelvins.Clear(); //TODO: Add some checks ...
+
+                foreach (var temp in tempValues)
+                {
+                    context.Result.SimulationConfiguration.TemperaturesInKelvins.Add(Circuit.CelsiusKelvin + temp);
+                }
+            }
+
             List<List<double>> sweeps = new List<List<double>>();
             int productCount = 1;
 
@@ -67,7 +87,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls.Simulation
             }
         }
 
-        private void SetSimulation(IReadingContext context, List<KeyValuePair<Model.Netlist.Spice.Objects.Parameter, double>> parameterValues, BaseSimulation simulation)
+        protected void SetSimulation(IReadingContext context, List<KeyValuePair<Model.Netlist.Spice.Objects.Parameter, double>> parameterValues, BaseSimulation simulation)
         {
             simulation.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs e) =>
             {
@@ -98,7 +118,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls.Simulation
             };
         }
 
-        private void UpdateDeviceParameter(IReadingContext context, KeyValuePair<Model.Netlist.Spice.Objects.Parameter, double> paramToSet, ReferenceParameter rp)
+        protected void UpdateDeviceParameter(IReadingContext context, KeyValuePair<Model.Netlist.Spice.Objects.Parameter, double> paramToSet, ReferenceParameter rp)
         {
             string objectName = rp.Name;
             string paramName = rp.Argument;
@@ -108,7 +128,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls.Simulation
             }
         }
 
-        private static void UpdateModelParameter(IReadingContext context, KeyValuePair<Model.Netlist.Spice.Objects.Parameter, double> paramToSet, BracketParameter bp)
+        protected void UpdateModelParameter(IReadingContext context, KeyValuePair<Model.Netlist.Spice.Objects.Parameter, double> paramToSet, BracketParameter bp)
         {
             string modelName = bp.Name;
             string paramName = bp.Parameters[0].Image;
@@ -118,7 +138,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls.Simulation
             }
         }
 
-        private void UpdateSimulationParameter(IReadingContext context, KeyValuePair<Model.Netlist.Spice.Objects.Parameter, double> paramToSet)
+        protected void UpdateSimulationParameter(IReadingContext context, KeyValuePair<Model.Netlist.Spice.Objects.Parameter, double> paramToSet)
         {
             if (context.Evaluator.GetParameterNames().Contains(paramToSet.Key.Image))
             {
@@ -130,7 +150,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls.Simulation
             }
         }
 
-        private void SetIndependentSource(KeyValuePair<Model.Netlist.Spice.Objects.Parameter, double> paramToSet, Entity @object)
+        protected void SetIndependentSource(KeyValuePair<Model.Netlist.Spice.Objects.Parameter, double> paramToSet, Entity @object)
         {
             if (@object is VoltageSource vs)
             {
@@ -143,7 +163,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls.Simulation
             }
         }
 
-        private string GetSimulationNameSuffix(List<KeyValuePair<Model.Netlist.Spice.Objects.Parameter, double>> parameterValues)
+        protected string GetSimulationNameSuffix(List<KeyValuePair<Model.Netlist.Spice.Objects.Parameter, double>> parameterValues)
         {
             string result = string.Empty;
 
@@ -160,7 +180,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls.Simulation
             return result;
         }
 
-        private List<KeyValuePair<Model.Netlist.Spice.Objects.Parameter, double>> GetSweepParameterValues(IReadingContext context, List<List<double>> sweeps, int[] system, int[] indexes)
+        protected List<KeyValuePair<Model.Netlist.Spice.Objects.Parameter, double>> GetSweepParameterValues(IReadingContext context, List<List<double>> sweeps, int[] system, int[] indexes)
         {
             List<KeyValuePair<Model.Netlist.Spice.Objects.Parameter, double>> parameterValues = new List<KeyValuePair<Model.Netlist.Spice.Objects.Parameter, double>>();
 
@@ -232,7 +252,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls.Simulation
             return string.Format("{0} - {1}", context.Result.Simulations.Count() + 1, SpiceName);
         }
 
-        protected static void SetSimulationTemperatures(BaseSimulation simulation, double? operatingTemperatureInKelvins, double? nominalTemperatureInKelvins)
+        protected void SetSimulationTemperatures(BaseSimulation simulation, double? operatingTemperatureInKelvins, double? nominalTemperatureInKelvins)
         {
             if (operatingTemperatureInKelvins.HasValue)
             {

@@ -30,7 +30,7 @@ namespace SpiceSharpParser.IntegrationTests
             // Create references
             double[] references = { 1.0 };
 
-            Compare(new double[] { export }, references);
+            EqualsWithTol(new double[] { export }, references);
         }
 
         [Fact]
@@ -54,7 +54,7 @@ namespace SpiceSharpParser.IntegrationTests
             // Create references
             double[] references = { 1.0 };
 
-            Compare(new double[] { export }, references);
+            EqualsWithTol(new double[] { export }, references);
         }
 
         [Fact]
@@ -78,7 +78,7 @@ namespace SpiceSharpParser.IntegrationTests
             // Create references
             double[] references = { 1.0 };
 
-            Compare(new double[] { export }, references);
+            EqualsWithTol(new double[] { export }, references);
         }
 
         [Fact]
@@ -102,7 +102,7 @@ namespace SpiceSharpParser.IntegrationTests
             // Create references
             double[] references = { (1.0 / ( 10.0 + 20.0 + 1.0)) * 4.0};
 
-            Compare(new double[] { export }, references);
+            EqualsWithTol(new double[] { export }, references);
         }
 
         [Fact]
@@ -129,7 +129,7 @@ namespace SpiceSharpParser.IntegrationTests
             // Create references
             double[] references = { (1.0 / (10.0 + 20.0 + 1.0)) * 4.0 };
 
-            Compare(new double[] { export }, references);
+            EqualsWithTol(new double[] { export }, references);
         }
 
         [Fact]
@@ -156,7 +156,7 @@ namespace SpiceSharpParser.IntegrationTests
             // Create references
             double[] references = { (1.0 / (10.0 + 20.0 + 1.0)) * 4.0 };
 
-            Compare(new double[] { export }, references);
+            EqualsWithTol(new double[] { export }, references);
         }
 
         [Fact]
@@ -184,7 +184,7 @@ namespace SpiceSharpParser.IntegrationTests
             // Create references
             double[] references = { (1.0 / (10.0 + 20.0 + 1.0)) * 4.0 };
 
-            Compare(new double[] { export }, references);
+            EqualsWithTol(new double[] { export }, references);
         }
     }
 }

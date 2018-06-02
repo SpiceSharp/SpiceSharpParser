@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Model.Netlist.Spice.Objects;
 using SpiceSharpParser.Model.Netlist.Spice.Objects.Parameters;
@@ -38,6 +39,18 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls
                 case "param":
                     ReadParam(statement.Parameters.Skip(1), context);
                     break;
+                case "lin":
+                    ReadLin(statement.Parameters.Skip(1), context);
+                    break;
+                case "dec":
+                    ReadDec(statement.Parameters.Skip(1), context);
+                    break;
+                case "oct":
+                    ReadOct(statement.Parameters.Skip(1), context);
+                    break;
+                default:
+                    ReadOtherCases(statement.Parameters, context);
+                    break;
             }
         }
 
@@ -49,7 +62,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls
             switch (type.ToLower())
             {
                 case "dec":
-                    ReadDec(variableParameter, parameters.Skip(2), context);
+                    ReasDec(variableParameter, parameters.Skip(2), context);
                     break;
                 case "oct":
                     ReadOct(variableParameter, parameters.Skip(2), context);
@@ -66,7 +79,81 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void ReadDec(Parameter variableParameter, ParameterCollection parameters, IReadingContext context)
+        private void ReadOtherCases(ParameterCollection parameters, IReadingContext context)
+        {
+            bool list = false;
+            int index = 0;
+            for (var i = 1; i <= 2; i++)
+            {
+                if (parameters[i].Image.ToLower() == "list")
+                {
+                    index = i;
+                    list = true;
+                }
+            }
+
+            if (list)
+            {
+                if (parameters[1] is BracketParameter bp)
+                {
+                    ReadList(bp, parameters.Skip(3), context); // model parameter
+                }
+                else
+                {
+                    ReadList(parameters[0], parameters.Skip(2), context); // source
+                }
+            }
+            else
+            {
+                // lin
+                if (parameters[1] is BracketParameter bp)
+                {
+                    ReadLin(bp, parameters.Skip(2), context); // model parameter
+                }
+                else
+                {
+                    ReadLin(parameters[0], parameters.Skip(1), context); // source
+                }
+            }
+        }
+
+        private void ReadOct(ParameterCollection parameters, IReadingContext context)
+        {
+            if (parameters[1] is BracketParameter bp)
+            {
+                ReadOct(bp, parameters.Skip(2), context); // model parameter
+            }
+            else
+            {
+                ReadOct(parameters[0], parameters.Skip(1), context); // source
+            }
+        }
+
+        private void ReadDec(ParameterCollection parameters, IReadingContext context)
+        {
+            if (parameters[1] is BracketParameter bp)
+            {
+                ReasDec(bp, parameters.Skip(2), context); // model parameter
+            }
+            else
+            {
+                ReasDec(parameters[0], parameters.Skip(1), context); // source
+            }
+        }
+
+        private void ReadLin(ParameterCollection parameters, IReadingContext context)
+        {
+            if (parameters[1] is BracketParameter bp)
+            {
+                ReadLin(bp, parameters.Skip(2), context); // model parameter
+            }
+            else
+            {
+                ReadLin(parameters[0], parameters.Skip(1), context); // source
+            }
+        }
+
+        private void ReasDec(Parameter variableParameter, ParameterCollection parameters, IReadingContext context)
         {
             var pSweep = new ParameterSweep()
             {
@@ -100,7 +187,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls
 
             foreach (Parameter parameter in parameters)
             {
-                if (!(parameter is SingleParameter))
+                if ((parameter is SingleParameter) == false)
                 {
                     throw new WrongParameterTypeException();
                 }

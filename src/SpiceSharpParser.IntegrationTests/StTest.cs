@@ -288,14 +288,14 @@ namespace SpiceSharpParser.IntegrationTests
             var exports = RunSimulations(result);
 
             var r10 = ((List<Double>)exports[0]);
-            Compare(10.0 / (10.0 + 1) * 11, r10[0]);
-            Compare(10.0 / (10.0 + 1.5) * 11, r10[1]);
-            Compare(10.0 / (10.0 + 2) * 11, r10[2]);
+            EqualsWithTol(10.0 / (10.0 + 1) * 11, r10[0]);
+            EqualsWithTol(10.0 / (10.0 + 1.5) * 11, r10[1]);
+            EqualsWithTol(10.0 / (10.0 + 2) * 11, r10[2]);
 
             var r100 = ((List<Double>)exports[1]);
-            Compare(100.0 / (100.0 + 1) * 11, r100[0]);
-            Compare(100.0 / (100.0 + 1.5) * 11, r100[1]);
-            Compare(100.0 / (100.0 + 2) * 11, r100[2]);
+            EqualsWithTol(100.0 / (100.0 + 1) * 11, r100[0]);
+            EqualsWithTol(100.0 / (100.0 + 1.5) * 11, r100[1]);
+            EqualsWithTol(100.0 / (100.0 + 2) * 11, r100[2]);
         }
     
 
@@ -324,8 +324,25 @@ namespace SpiceSharpParser.IntegrationTests
             for (var i = 0; i < exports.Count; i++)
             {
                 Func<double, double>[] references = { t => i + dcVoltage * (1.0 - Math.Exp(-t / tau)) };
-                Compare((IEnumerable<Tuple<double, double>>)exports[i], references);
+                EqualsWithTol((IEnumerable<Tuple<double, double>>)exports[i], references);
             }
+        }
+
+        [Fact]
+        public void StTempCountTest()
+        {
+            var netlist = ParseNetlist(
+                "Diode circuit",
+                "D1 OUT 0 1N914",
+                "R1 OUT 1 100",
+                "V1 1 0 -1",
+                ".model 1N914 D(Is=2.52e-9 Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
+                ".OP",
+                ".SAVE i(V1)",
+                ".ST TEMP 30 100 1",
+                ".END");
+
+            Assert.Equal(70, netlist.Simulations.Count);
         }
     }
 }

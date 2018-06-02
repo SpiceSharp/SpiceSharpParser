@@ -22,8 +22,8 @@ namespace SpiceSharpParser.IntegrationTests
 
             var export = RunSimulations(netlist);
             Assert.Equal(2, export.Count);
-            Compare((double)export[0], 2.30935768424922E-09);
-            Compare((double)export[1], 2.2407198249641E-09);
+            EqualsWithTol((double)export[0], 2.30935768424922E-09);
+            EqualsWithTol((double)export[1], 2.2407198249641E-09);
         }
 
         [Fact]
@@ -43,8 +43,8 @@ namespace SpiceSharpParser.IntegrationTests
 
             var export = RunSimulations(netlist);
             Assert.Equal(2, export.Count);
-            Compare((double)export[0], -0.769230769230769);
-            Compare((double)export[1], -0.740740740740741);
+            EqualsWithTol((double)export[0], -0.769230769230769);
+            EqualsWithTol((double)export[1], -0.740740740740741);
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             var export = RunOpSimulation(netlist, "i(V1)");
-            Compare(export, 2.30935768424922E-09);
+            EqualsWithTol(export, 2.30935768424922E-09);
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             var export = RunOpSimulation(netlist, "i(V1)");
-            Compare(export, 2.5206849402909E-09);
+            EqualsWithTol(export, 2.5206849402909E-09);
         }
 
         [Fact]
@@ -117,7 +117,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             var export = RunOpSimulation(netlist, "i(V1)");
-            Compare(export, 2.30935768424922E-09);
+            EqualsWithTol(export, 2.30935768424922E-09);
         }
 
         [Fact]
@@ -135,7 +135,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             var export = RunOpSimulation(netlist, "i(V1)");
-            Compare(export, 2.5206849402909E-09);
+            EqualsWithTol(export, 2.5206849402909E-09);
         }
 
         [Fact]
@@ -153,7 +153,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             var export = RunOpSimulation(netlist, "i(V1)");
-            Compare(export, 2.75136240873719E-09); // value not from Spice
+            EqualsWithTol(export, 2.75136240873719E-09); // value not from Spice
         }
 
         [Fact]
@@ -170,7 +170,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             var export = RunOpSimulation(netlist, "i(V1)");
-            Compare(export, 2.5206849402909E-09);
+            EqualsWithTol(export, 2.5206849402909E-09);
         }
     }
 }
