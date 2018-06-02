@@ -154,6 +154,32 @@ namespace SpiceSharpParser.IntegrationTests
             return result;
         }
 
+        public static Tuple<string, double>[] RunOpSimulation(SpiceNetlistReaderResult readerResult)
+        {
+            var simulation = readerResult.Simulations.Single();
+            Tuple<string, double>[] result = new Tuple<string, double>[readerResult.Exports.Count];
+
+            simulation.OnExportSimulationData += (sender, e) => {
+
+                for (var i = 0; i < readerResult.Exports.Count; i++)
+                {
+                    var export = readerResult.Exports[i];
+                    try
+                    {
+                        result[i] = new Tuple<string, double>(export.Name, export.Extract());
+                    }
+                    catch
+                    {
+                        result[i] = new Tuple<string, double>(export.Name, double.NaN);
+                    }
+                }
+            };
+
+            simulation.Run(readerResult.Circuit);
+
+            return result;
+        }
+
         public static Tuple<double, double>[] RunTransientSimulation(SpiceNetlistReaderResult readerResult, string nameOfExport)
         {
             var list = new List<Tuple<double,double>>();

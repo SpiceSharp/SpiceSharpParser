@@ -8,6 +8,45 @@ namespace SpiceSharpParser.IntegrationTests
     public class SaveTest : BaseTest
     {
         [Fact]
+        public void SaveWithoutParametersTest()
+        {
+            var netlist = ParseNetlist(
+                "Lowpass RC circuit - The capacitor should act like an open circuit",
+                "V1 IN 0 10.0",
+                "R1 IN OUT 10e3",
+                "C1 OUT 0 10e-6",
+                ".OP",
+                ".SAVE",
+                ".END");
+
+            var exports = RunOpSimulation(netlist);
+            Assert.Equal(6, exports.Length);
+        }
+
+        [Fact]
+        public void SaveWithoutParametersComplexTest()
+        {
+            var netlist = ParseNetlist(
+                "Subcircuit - ComplexSubcircuitWithParams",
+                "V1 IN 0 4.0",
+                "X1 IN OUT twoResistorsInSeries",
+                "RX OUT 0 1",
+                ".SUBCKT resistor input output params: R=1",
+                "R1 input output {R}",
+                ".ENDS resistor",
+                ".SUBCKT twoResistorsInSeries input output params: R1=10 R2=20",
+                "X1 input 1 resistor R=R1",
+                "X2 1 output resistor R=R2",
+                ".ENDS twoResistorsInSeries",
+                ".OP",
+                ".SAVE",
+                ".END");
+            var exports = RunOpSimulation(netlist);
+            Assert.Equal(8, exports.Length);
+        }
+
+
+        [Fact]
         public void SaveWithFilterOPBasicTest()
         {
             var netlist = ParseNetlist(

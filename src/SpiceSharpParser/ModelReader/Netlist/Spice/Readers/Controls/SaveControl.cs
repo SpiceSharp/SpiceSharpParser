@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SpiceSharp;
+using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Model.Netlist.Spice.Objects;
 using SpiceSharpParser.Model.Netlist.Spice.Objects.Parameters;
@@ -26,7 +28,7 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls
         }
 
         /// <summary>
-        /// Gets the type of generator
+        /// Gets the type of generator.
         /// </summary>
         public override string SpiceName => "save";
 
@@ -38,6 +40,47 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls
         public override void Read(Control statement, IReadingContext context)
         {
             Type simulationType = null;
+
+            if (statement.Parameters.Count == 0)
+            {
+                context.Result.Circuit.Objects.BuildOrderedComponentList(); //TODO: Verify with Sven
+
+                // For all simulations add exports for current and voltages
+                foreach (var simulation in context.Result.Simulations)
+                {
+                    var nodes = new List<Identifier>();
+
+                    foreach (Entity entity in context.Result.Circuit.Objects)
+                    {
+                        if (entity is SpiceSharp.Components.Component c)
+                        {
+                            string componentName = c.Name.ToString();
+                            var @params = new ParameterCollection();
+                            @params.Add(new WordParameter(componentName));
+
+                            for (var i = 0; i < c.PinCount; i++)
+                            {
+                                var node = c.GetNode(i);
+                                if (!nodes.Contains(node))
+                                {
+                                    nodes.Add(node);
+                                }
+                            }
+
+                            // Add current export for component
+                            context.Result.AddExport(Registry.Get("i").CreateExport("i", @params, simulation, context));
+                        }
+                    }
+
+                    foreach (var node in nodes)
+                    {
+                        var @params = new ParameterCollection();
+                        @params.Add(new WordParameter(node.ToString()));
+
+                        context.Result.AddExport(Registry.Get("v").CreateExport("v", @params, simulation, context));
+                    }
+                }
+            }
 
             for (var i = 0; i < statement.Parameters.Count; i++)
             {
@@ -64,31 +107,41 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls
 
                 if (parameter is BracketParameter || parameter is ReferenceParameter)
                 {
-                    foreach (var simulation in Filter(context.Result.Simulations, simulationType))
-                    {
-                        context.Result.AddExport(GenerateExport(parameter, simulation, context));
-                    }
+                    AddCommonExport(context, simulationType, parameter);
                 }
                 else if ((i != 0 || (i == 0 && simulationType == null)) && parameter is SingleParameter s)
                 {
-                    string expressionName = s.Image;
-                    var expressionNames = context.Evaluator.GetExpressionNames();
+                    AddLetExport(context, simulationType, s);
+                }
+            }
+        }
 
-                    if (expressionNames.Contains(expressionName))
-                    {
-                        var simulations = Filter(context.Result.Simulations, simulationType);
-                        foreach (var simulation in simulations)
-                        {
-                            context.Result.AddExport(
-                                new ExpressionExport(
-                                    simulation.Name.ToString(),
-                                    expressionName,
-                                    context.Evaluator.GetExpression(expressionName),
-                                    context.Evaluator,
-                                    simulation
-                            ));
-                        }
-                    }
+        private void AddCommonExport(IReadingContext context, Type simulationType, Model.Netlist.Spice.Objects.Parameter parameter)
+        {
+            foreach (var simulation in Filter(context.Result.Simulations, simulationType))
+            {
+                context.Result.AddExport(GenerateExport(parameter, simulation, context));
+            }
+        }
+
+        private void AddLetExport(IReadingContext context, Type simulationType, SingleParameter s)
+        {
+            string expressionName = s.Image;
+            var expressionNames = context.Evaluator.GetExpressionNames();
+
+            if (expressionNames.Contains(expressionName))
+            {
+                var simulations = Filter(context.Result.Simulations, simulationType);
+                foreach (var simulation in simulations)
+                {
+                    context.Result.AddExport(
+                        new ExpressionExport(
+                            simulation.Name.ToString(),
+                            expressionName,
+                            context.Evaluator.GetExpression(expressionName),
+                            context.Evaluator,
+                            simulation
+                    ));
                 }
             }
         }

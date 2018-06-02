@@ -4,6 +4,7 @@ using SpiceSharpParser.ModelReader.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.Model.Netlist.Spice.Objects;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
+using SpiceSharp;
 
 namespace SpiceSharpParser.ModelReader.Netlist.Spice.Context
 {
@@ -12,6 +13,8 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Context
         SimulationConfiguration SimulationConfiguration { get; }
 
         IEnumerable<Simulation> Simulations { get; }
+
+        Circuit Circuit { get; }
 
         void AddWarning(string warning);
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Model.Netlist.Spice.Objects;
@@ -27,6 +28,11 @@ namespace SpiceSharpParser.ModelReader.Netlist.Spice.Context
         /// Gets all simulations.
         /// </summary>
         public IEnumerable<Simulation> Simulations => Result.Simulations;
+
+        /// <summary>
+        /// Gets the circuit.
+        /// </summary>
+        public Circuit Circuit => Result.Circuit;
 
         /// <summary>
         /// Gets the result where things are added.
