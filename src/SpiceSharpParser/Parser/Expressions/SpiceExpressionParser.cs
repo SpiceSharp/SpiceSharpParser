@@ -639,10 +639,9 @@ namespace SpiceSharpParser.Parser.Expressions
             }
             else
             {
-                var argCount = op.ArgumentsCount != -1 ? op.ArgumentsCount:outputStack.Count - op.ArgumentsStackCount;
+                var argCount = op.ArgumentsCount != -1 ? op.ArgumentsCount : outputStack.Count - op.ArgumentsStackCount;
                 var args = PopAndReturnElements(outputStack, argCount);
-                var res = op.Function(args, context);
-                outputStack.Push(() => res);
+                outputStack.Push(() => op.Function(args, context));
             }
         }
 

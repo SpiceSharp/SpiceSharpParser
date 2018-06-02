@@ -649,6 +649,25 @@ namespace SpiceSharpParser.Tests.ModelReader.Spice.Evaluation
         }
 
         [Fact]
+        public void FibonacciAsWithoutLazyParam()
+        {
+            var p = new SpiceEvaluator();
+            p.Init();
+            p.DefineCustomFunction(
+                "fib",
+                new System.Collections.Generic.List<string>() { "x" },
+                "x <= 0 ? 0 : (x == 1 ? 1 : (fib(x-1) + fib(x-2)))");
+
+            Assert.Equal(0, p.EvaluateDouble("fib(0)"));
+            Assert.Equal(1, p.EvaluateDouble("fib(1)"));
+            Assert.Equal(1, p.EvaluateDouble("fib(2)"));
+            Assert.Equal(2, p.EvaluateDouble("fib(3)"));
+            Assert.Equal(3, p.EvaluateDouble("fib(4)"));
+            Assert.Equal(5, p.EvaluateDouble("fib(5)"));
+            Assert.Equal(8, p.EvaluateDouble("fib(6)"));
+        }
+
+        [Fact]
         public void FactAsParam()
         {
             var p = new SpiceEvaluator();
