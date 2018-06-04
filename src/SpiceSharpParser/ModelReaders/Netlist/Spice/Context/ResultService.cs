@@ -5,6 +5,7 @@ using SpiceSharp.Simulations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 {
@@ -73,6 +74,15 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         public void AddPlot(Plot plot)
         {
             Result.Plots.Add(plot);
+        }
+
+        /// <summary>
+        /// Adds print to netlist.
+        /// </summary>
+        /// <param name="print">Print to add.</param>
+        public void AddPrint(Print print)
+        {
+            Result.Prints.Add(print);
         }
 
         /// <summary>

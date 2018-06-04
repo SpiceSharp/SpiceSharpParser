@@ -3,6 +3,7 @@ using SpiceSharp;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
 {
@@ -56,5 +57,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
         /// Gets the list of generated plots.
         /// </summary>
         public List<Plot> Plots { get; } = new List<Plot>();
+
+        /// <summary>
+        /// Gets the list of generated prints.
+        /// </summary>
+        public List<Print> Prints { get; } = new List<Print>();
     }
 }

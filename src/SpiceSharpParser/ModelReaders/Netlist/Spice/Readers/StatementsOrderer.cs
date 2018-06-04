@@ -49,7 +49,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
 
             if (statement is Control c)
             {
-                if (c.Name.ToLower() == "plot" || c.Name.ToLower() == "save")
+                if (c.Name.ToLower() == "plot" || c.Name.ToLower() == "print" || c.Name.ToLower() == "save")
                 {
                     return 400;
                 }

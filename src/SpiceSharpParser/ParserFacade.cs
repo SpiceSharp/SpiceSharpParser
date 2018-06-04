@@ -66,7 +66,6 @@ namespace SpiceSharpParser
         /// </summary>
         /// <param name="spiceNetlist">Netlist to parse.</param>
         /// <param name="settings">Setting for parser.</param>
-        /// <param name="workingDirectoryPath">A full path to working directory of the netlist.</param>
         /// <returns>
         /// A parsing result.
         /// </returns>
@@ -89,7 +88,7 @@ namespace SpiceSharpParser
             IncludesPreprocessor.Preprocess(preprocessedNetListModel, settings.WorkingDirectoryPath);
             LibPreprocessor.Preprocess(preprocessedNetListModel, settings.WorkingDirectoryPath);
             AppendModelPreprocessor.Preprocess(preprocessedNetListModel);
-            // TODO: more prereaders
+            // TODO: more preprocessors
 
             SpiceNetlist postprocessedNetlistModel = (SpiceNetlist)preprocessedNetListModel.Clone();
 

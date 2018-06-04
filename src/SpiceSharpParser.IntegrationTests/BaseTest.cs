@@ -67,7 +67,7 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         /// <summary>
-        /// Runs simulations from <see cref="SpiceModelReaderResult.Simulations"/> collection.
+        /// Runs simulations from <see cref="SpiceNetlistReaderResult.Simulations"/> collection.
         /// </summary>
         /// <param name="readerResult">A reader result</param>
         /// <returns>
@@ -121,6 +121,21 @@ namespace SpiceSharpParser.IntegrationTests
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Runs simulations from <see cref="SpiceNetlistReaderResult.Simulations"/> collection.
+        /// </summary>
+        /// <param name="readerResult">A reader result</param>
+        /// <returns>
+        /// A list of exports list
+        /// </returns>
+        public static void RunSimulationsWithoutExport(SpiceNetlistReaderResult readerResult)
+        {
+            foreach (var simulation in readerResult.Simulations)
+            {
+                simulation.Run(readerResult.Circuit);
+            }
         }
 
         public static double RunOpSimulation(SpiceNetlistReaderResult readerResult, string nameOfExport)

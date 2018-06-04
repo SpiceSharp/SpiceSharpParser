@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 {
@@ -27,12 +27,12 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         }
 
         /// <summary>
-        /// Gets the type of genereator
+        /// Gets the type of genereator.
         /// </summary>
         public override string SpiceName => "plot";
 
         /// <summary>
-        /// Gets the supported plot types
+        /// Gets the supported plot types.
         /// </summary>
         protected ICollection<string> SupportedPlotTypes { get; } = new List<string>() { "dc", "ac", "tran" };
 

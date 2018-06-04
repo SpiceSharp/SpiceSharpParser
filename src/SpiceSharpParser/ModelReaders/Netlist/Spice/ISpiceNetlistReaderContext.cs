@@ -1,6 +1,5 @@
 ﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice

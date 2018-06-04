@@ -82,6 +82,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
             Controls.Add(new LetControl());
             Controls.Add(new SaveControl(Exporters));
             Controls.Add(new PlotControl(Exporters));
+            Controls.Add(new PrintControl(Exporters));
             Controls.Add(new ICControl());
             Controls.Add(new NodeSetControl());
 

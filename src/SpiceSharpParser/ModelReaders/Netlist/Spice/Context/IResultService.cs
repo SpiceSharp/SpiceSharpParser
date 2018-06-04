@@ -5,6 +5,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharp;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 {
@@ -31,5 +32,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         void SetInitialVoltageCondition(string nodeName, double initialVoltage);
 
         bool FindObject(string objectName, out Entity @object);
+        void AddPrint(Print print);
     }
 }
