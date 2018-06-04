@@ -73,7 +73,7 @@ namespace SpiceSharpParser.IntegrationTests
         /// <returns>
         /// A list of exports list
         /// </returns>
-        public static List<object> RunSimulations(SpiceNetlistReaderResult readerResult)
+        public static List<object> RunSimulationsAndReturnExports(SpiceNetlistReaderResult readerResult)
         {
             var result = new List<object>();
 
@@ -130,7 +130,7 @@ namespace SpiceSharpParser.IntegrationTests
         /// <returns>
         /// A list of exports list
         /// </returns>
-        public static void RunSimulationsWithoutExport(SpiceNetlistReaderResult readerResult)
+        public static void RunSimulations(SpiceNetlistReaderResult readerResult)
         {
             foreach (var simulation in readerResult.Simulations)
             {

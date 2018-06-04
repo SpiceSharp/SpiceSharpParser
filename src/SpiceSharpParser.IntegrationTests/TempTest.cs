@@ -20,7 +20,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             Assert.Equal(2, netlist.Exports.Count);
 
-            var export = RunSimulations(netlist);
+            var export = RunSimulationsAndReturnExports(netlist);
             Assert.Equal(2, export.Count);
             EqualsWithTol((double)export[0], 2.30935768424922E-09);
             EqualsWithTol((double)export[1], 2.2407198249641E-09);
@@ -41,7 +41,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             Assert.Equal(2, netlist.Exports.Count);
 
-            var export = RunSimulations(netlist);
+            var export = RunSimulationsAndReturnExports(netlist);
             Assert.Equal(2, export.Count);
             EqualsWithTol((double)export[0], -0.769230769230769);
             EqualsWithTol((double)export[1], -0.740740740740741);

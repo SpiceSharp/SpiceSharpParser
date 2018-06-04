@@ -97,7 +97,7 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.Equal(2, result.Exports.Count);
             Assert.Equal(2, result.Simulations.Count);
 
-            var exports = RunSimulations(result);
+            var exports = RunSimulationsAndReturnExports(result);
 
             Assert.Equal(-0.01, exports[0]);
             Assert.Equal(-0.02, exports[1]);
@@ -119,7 +119,7 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.Equal(99, result.Exports.Count);
             Assert.Equal(99, result.Simulations.Count);
 
-            var exports = RunSimulations(result);
+            var exports = RunSimulationsAndReturnExports(result);
 
             for (var i = 0; i < exports.Count; i++)
             {
@@ -142,7 +142,7 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.Equal(2, result.Exports.Count);
             Assert.Equal(2, result.Simulations.Count);
 
-            var exports = RunSimulations(result);
+            var exports = RunSimulationsAndReturnExports(result);
 
             Assert.Equal(-0.01, exports[0]);
             Assert.Equal(-0.02, exports[1]);
@@ -165,7 +165,7 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.Equal(3, result.Exports.Count);
             Assert.Equal(3, result.Simulations.Count);
 
-            var exports = RunSimulations(result);
+            var exports = RunSimulationsAndReturnExports(result);
 
             Assert.Equal(-0.092108909328949162, exports[0]);
             Assert.Equal(-0.09210442734453031, exports[1]);
@@ -187,7 +187,7 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.Equal(3, result.Exports.Count);
             Assert.Equal(3, result.Simulations.Count);
 
-            var exports = RunSimulations(result);
+            var exports = RunSimulationsAndReturnExports(result);
 
             Assert.Equal(-0.01, exports[0]);
             Assert.Equal(-0.005, exports[1]);
@@ -211,7 +211,7 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.Equal(3, result.Exports.Count);
             Assert.Equal(3, result.Simulations.Count);
 
-            var exports = RunSimulations(result);
+            var exports = RunSimulationsAndReturnExports(result);
 
             for (var i = 0; i < exports.Count; i++)
             {
@@ -236,7 +236,7 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.Equal(3, result.Exports.Count);
             Assert.Equal(3, result.Simulations.Count);
 
-            var exports = RunSimulations(result);
+            var exports = RunSimulationsAndReturnExports(result);
 
             for (var i = 0; i < exports.Count; i++)
             {
@@ -262,7 +262,7 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.Equal(3, result.Exports.Count);
             Assert.Equal(3, result.Simulations.Count);
 
-            var exports = RunSimulations(result);
+            var exports = RunSimulationsAndReturnExports(result);
 
             for (var i = 0; i < exports.Count; i++)
             {
@@ -285,7 +285,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".SAVE v(out)",
                 ".END");
 
-            var exports = RunSimulations(result);
+            var exports = RunSimulationsAndReturnExports(result);
 
             var r10 = ((List<Double>)exports[0]);
             EqualsWithTol(10.0 / (10.0 + 1) * 11, r10[0]);
@@ -319,7 +319,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".ST LIST X 0.0 1.0 2.0",
                 ".END");
 
-            var exports = RunSimulations(result);
+            var exports = RunSimulationsAndReturnExports(result);
 
             for (var i = 0; i < exports.Count; i++)
             {

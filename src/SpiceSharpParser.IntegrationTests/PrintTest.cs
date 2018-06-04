@@ -17,7 +17,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".PRINT TRAN",
                 ".END");
 
-            RunSimulationsWithoutExport(parseResult);
+            RunSimulations(parseResult);
             Assert.Equal(1, parseResult.Prints.Count);
             Assert.Equal("1 - tran", parseResult.Prints[0].Name);
             Assert.Equal(7, parseResult.Prints[0].ColumnNames.Count);
@@ -36,7 +36,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".PRINT OP",
                 ".END");
 
-            RunSimulationsWithoutExport(parseResult);
+            RunSimulations(parseResult);
             Assert.Equal(1, parseResult.Prints.Count);
             Assert.Equal("1 - op", parseResult.Prints[0].Name);
             Assert.Equal(7, parseResult.Prints[0].ColumnNames.Count);
@@ -55,7 +55,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".PRINT",
                 ".END");
 
-            RunSimulationsWithoutExport(parseResult);
+            RunSimulations(parseResult);
             Assert.Equal(1, parseResult.Prints.Count);
             Assert.Equal("1 - op", parseResult.Prints[0].Name);
             Assert.Equal(7, parseResult.Prints[0].ColumnNames.Count);
@@ -73,7 +73,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".OP",
                 ".PRINT V(OUT) I(V1)",
                 ".END");
-            RunSimulationsWithoutExport(parseResult);
+            RunSimulations(parseResult);
 
             Assert.Equal(1, parseResult.Prints.Count);
             Assert.Equal("1 - op", parseResult.Prints[0].Name);
@@ -92,7 +92,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".OP",
                 ".PRINT OP V(OUT) I(V1)",
                 ".END");
-            RunSimulationsWithoutExport(parseResult);
+            RunSimulations(parseResult);
 
             Assert.Equal(1, parseResult.Prints.Count);
             Assert.Equal("1 - op", parseResult.Prints[0].Name);
@@ -110,7 +110,7 @@ namespace SpiceSharpParser.IntegrationTests
               ".DC I1 -10 10 1e-3",
               ".PRINT V(in) I(R1)",
               ".END");
-            RunSimulationsWithoutExport(parseResult);
+            RunSimulations(parseResult);
 
             Assert.Equal(1, parseResult.Prints.Count);
             Assert.Equal("1 - dc", parseResult.Prints[0].Name);
@@ -128,7 +128,7 @@ namespace SpiceSharpParser.IntegrationTests
               ".DC I1 -10 10 1e-3",
               ".PRINT DC V(in) I(R1)",
               ".END");
-            RunSimulationsWithoutExport(parseResult);
+            RunSimulations(parseResult);
 
             Assert.Equal(1, parseResult.Prints.Count);
             Assert.Equal("1 - dc", parseResult.Prints[0].Name);
@@ -147,7 +147,7 @@ namespace SpiceSharpParser.IntegrationTests
               ".PRINT DC V(in) I(R1) V_in_db",
               ".LET V_in_db {log10(V(in))*2}",
               ".END");
-            RunSimulationsWithoutExport(parseResult);
+            RunSimulations(parseResult);
 
             Assert.Equal(1, parseResult.Prints.Count);
             Assert.Equal("1 - dc", parseResult.Prints[0].Name);
