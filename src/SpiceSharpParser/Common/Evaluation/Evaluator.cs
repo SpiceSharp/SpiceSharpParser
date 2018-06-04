@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using SpiceSharp;
 using SpiceSharpParser.Common;
-using SpiceSharpParser.Parser.Expressions;
 
-namespace SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation
+namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
 {
     /// <summary>
     /// Evaluator of expressions.

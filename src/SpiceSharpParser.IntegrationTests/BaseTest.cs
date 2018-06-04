@@ -1,6 +1,6 @@
 ﻿using SpiceSharp.Simulations;
-using SpiceSharpParser.Model.Netlist.Spice;
-using SpiceSharpParser.ModelReader.Netlist.Spice;
+using SpiceSharpParser.Models.Netlist.Spice;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,11 +24,13 @@ namespace SpiceSharpParser.IntegrationTests
         {
             var text = string.Join(Environment.NewLine, lines);
             var parserFront = new ParserFacade();
+
             var settings = new ParserSettings();
             settings.SpiceNetlistParserSettings.HasTitle = true;
             settings.SpiceNetlistParserSettings.IsEndRequired = true;
+            settings.WorkingDirectoryPath = workingDirectory;
 
-            var parserResult = parserFront.ParseNetlist(text, settings, workingDirectory);
+            var parserResult = parserFront.ParseNetlist(text, settings);
 
 
             return parserResult.ReaderResult;

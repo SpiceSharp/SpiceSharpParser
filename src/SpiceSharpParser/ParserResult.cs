@@ -1,5 +1,5 @@
-﻿using SpiceSharpParser.Model.Netlist.Spice;
-using SpiceSharpParser.ModelReader.Netlist.Spice;
+﻿using SpiceSharpParser.Models.Netlist.Spice;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice;
 
 namespace SpiceSharpParser
 {

@@ -1,4 +1,4 @@
-﻿using SpiceSharpParser.ModelReader.Netlist.Spice;
+﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice;
 
 namespace SpiceSharpParser
 {
@@ -7,6 +7,11 @@ namespace SpiceSharpParser
     /// </summary>
     public class ParserSettings
     {
+        /// <summary>
+        /// Gets or sets working directory path.
+        /// </summary>
+        public string WorkingDirectoryPath { get; set; }
+
         /// <summary>
         /// Gets the spice netlist parser settings.
         /// </summary>

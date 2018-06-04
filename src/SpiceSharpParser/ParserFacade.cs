@@ -1,9 +1,9 @@
 ﻿using SpiceSharpParser.Common;
-using SpiceSharpParser.Model.Netlist.Spice;
-using SpiceSharpParser.ModelReader.Netlist.Spice;
-using SpiceSharpParser.ModelReader.Netlist.Spice.Evaluation;
-using SpiceSharpParser.Postprocessors;
-using SpiceSharpParser.Preprocessors;
+using SpiceSharpParser.Models.Netlist.Spice;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors;
+using SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postprocessors;
 
 namespace SpiceSharpParser
 {
@@ -70,7 +70,7 @@ namespace SpiceSharpParser
         /// <returns>
         /// A parsing result.
         /// </returns>
-        public ParserResult ParseNetlist(string spiceNetlist, ParserSettings settings, string workingDirectoryPath = null)
+        public ParserResult ParseNetlist(string spiceNetlist, ParserSettings settings)
         {
             if (settings == null)
             {
@@ -86,8 +86,8 @@ namespace SpiceSharpParser
             SpiceNetlist preprocessedNetListModel = (SpiceNetlist)originalNetlistModel.Clone();
 
             // Preprocessing
-            IncludesPreprocessor.Preprocess(preprocessedNetListModel, workingDirectoryPath);
-            LibPreprocessor.Preprocess(preprocessedNetListModel, workingDirectoryPath);
+            IncludesPreprocessor.Preprocess(preprocessedNetListModel, settings.WorkingDirectoryPath);
+            LibPreprocessor.Preprocess(preprocessedNetListModel, settings.WorkingDirectoryPath);
             AppendModelPreprocessor.Preprocess(preprocessedNetListModel);
             // TODO: more prereaders
 

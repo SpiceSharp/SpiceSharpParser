@@ -1,5 +1,5 @@
-using SpiceSharpParser.Model.Netlist.Spice.Objects;
-using SpiceSharpParser.Parser.Netlist;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Parsers.Netlist;
 using System.Linq;
 using Xunit;
 
