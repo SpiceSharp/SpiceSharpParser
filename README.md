@@ -63,9 +63,8 @@ Documentation for API on SpiceSharpParser is available at <https://spicesharp.gi
 
 ## Roadmap
 * Fixing bugs and making the library more stable
-* .MEASURE (from commercial spice simulators)
 * .PRINT
-* saving output to files
+* saving simulation data to files for Excel, CSV, Matplotlib, D3.js etc.
 
 ## License
 SpiceSharpParser is under MIT License
