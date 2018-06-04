@@ -37,7 +37,7 @@ SpiceSharpParser is a .NET library that parses Spice netlists and creates a mode
 * Mosfets
 
 ### Supported Spice grammar
-<https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Parser/Netlist/Spice/SpiceGrammarBNF.txt>
+<https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Parsers/Netlist/Spice/SpiceGrammarBNF.txt>
 
 ## Build status
 
@@ -56,15 +56,14 @@ SpiceSharpParser is available as NuGet Package
 ## Documentation
 Documentation for API on SpiceSharpParser is available at <https://spicesharp.github.io/SpiceSharpParser/api/index.html>.
 
-
 ## Currently Supported and Tested Platforms
 * Windows
 * Linux
 
 ## Roadmap
-* Fixing bugs and making the library more stable
-* .PRINT
-* saving simulation data to files for Excel, CSV, Matplotlib, D3.js etc.
+* Fixing bugs 
+* Refactoring (code reuse, patterns etc.)
+* Saving simulation data to Excel, CSV, Matplotlib, D3.js etc.
 
 ## License
 SpiceSharpParser is under MIT License
