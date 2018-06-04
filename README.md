@@ -1,7 +1,7 @@
 # SpiceSharpParser
 
 ## What is SpiceSharpParser?
-SpiceSharpParser is a .NET library that parses Spice netlists and creates a model for Spice simulation using SpiceSharp.
+SpiceSharpParser is a .NET library that parses Spice netlists and creates a model of  Spice simulation using SpiceSharp.
 
 ## Features
 ### Supported dot statements
