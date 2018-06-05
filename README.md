@@ -63,8 +63,9 @@ Documentation for API on SpiceSharpParser is available at <https://spicesharp.gi
 
 ## Roadmap
 * Fixing bugs 
-* Refactoring (code reuse, patterns etc.)
+* Refactoring (code reuse, patterns, code cleanup etc.)
 * Saving simulation data to Excel, CSV, Matplotlib, D3.js etc.
+* .MEAS[SURE]
 
 ## License
 SpiceSharpParser is under MIT License
