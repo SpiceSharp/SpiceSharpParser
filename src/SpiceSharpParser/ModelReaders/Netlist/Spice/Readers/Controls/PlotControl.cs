@@ -130,7 +130,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
             {
                 if (parameter is BracketParameter || parameter is ReferenceParameter)
                 {
-                    result.Add(GenerateExport(parameter, simulationToPlot, context));
+                    result.Add(GenerateExport(parameter, simulationToPlot, context.NodeNameGenerator, context.ObjectNameGenerator));
                 }
                 else
                 {

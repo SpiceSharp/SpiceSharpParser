@@ -107,7 +107,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                         }
 
                         // Add current export for component
-                        context.Result.AddExport(Registry.Get("i").CreateExport("i", @params, simulation, context));
+                        context.Result.AddExport(Registry.Get("i").CreateExport("i", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator));
                     }
                 }
 
@@ -116,7 +116,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                     var @params = new ParameterCollection();
                     @params.Add(new WordParameter(node.ToString()));
 
-                    context.Result.AddExport(Registry.Get("v").CreateExport("v", @params, simulation, context));
+                    context.Result.AddExport(Registry.Get("v").CreateExport("v", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator));
                 }
             }
         }
@@ -125,7 +125,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         {
             foreach (var simulation in Filter(context.Result.Simulations, simulationType))
             {
-                context.Result.AddExport(GenerateExport(parameter, simulation, context));
+                context.Result.AddExport(GenerateExport(parameter, simulation, context.NodeNameGenerator, context.ObjectNameGenerator));
             }
         }
 
@@ -139,14 +139,14 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                 var simulations = Filter(context.Result.Simulations, simulationType);
                 foreach (var simulation in simulations)
                 {
-                    context.Result.AddExport(
-                        new ExpressionExport(
+                    var export = new ExpressionExport(
                             simulation.Name.ToString(),
                             expressionName,
                             context.Evaluator.GetExpression(expressionName),
                             context.Evaluator,
                             simulation
-                    ));
+                    );
+                    context.Result.AddExport(export);
                 }
             }
         }

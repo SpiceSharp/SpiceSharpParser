@@ -20,11 +20,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
         /// <param name="type">A type of export</param>
         /// <param name="parameters">A parameters of export</param>
         /// <param name="simulation">A simulation for export</param>
-        /// <param name="context">A context</param>
         /// <returns>
         /// A new export
         /// </returns>
-        public override Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, IReadingContext context)
+        public override Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
             {

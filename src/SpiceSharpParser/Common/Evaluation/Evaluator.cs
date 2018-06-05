@@ -55,7 +55,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
                 return Parameters[expression];
             }
 
-            return ExpressionParser.Parse(expression, context, this);
+            return ExpressionParser.Parse(expression, context, this)();
         }
 
         /// <summary>
@@ -185,8 +185,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// </returns>
         public IEnumerable<string> GetParametersFromExpression(string expression)
         {
-            ExpressionParser.Parse(expression, null, this);
-
+            var result = ExpressionParser.Parse(expression, null, this);
             return ExpressionParser.ParametersFoundInLastParse; //TODO: it's not thread safe ...
         }
 
@@ -242,7 +241,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
                 var childEvaluator = evaluator.CreateChildEvaluator();
                 for (var i = 0; i < arguments.Count; i++)
                 {
-                    childEvaluator.SetParameter(arguments[i], (double)args[arguments.Count - i - 1]);
+                    childEvaluator.SetParameter(arguments[i], (double)args[i]);
                 }
 
                 return childEvaluator.EvaluateDouble(functionBody);
@@ -262,7 +261,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
                 var setter = definion.Setter;
                 var expression = definion.ValueExpression;
 
-                var newValue = ExpressionParser.Parse(expression, null, this);
+                var newValue = ExpressionParser.Parse(expression, null, this)();
                 setter(newValue);
             }
         }

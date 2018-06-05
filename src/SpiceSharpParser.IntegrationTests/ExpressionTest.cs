@@ -23,9 +23,9 @@ namespace SpiceSharpParser.IntegrationTests
 
             double[] export = RunOpSimulation(netlist, new string[] { "VOUT_db", "VOUT_db2", "V(OUT)" });
 
-            Assert.Equal(export[0], 2.5);
-            Assert.Equal(export[1], 2.8);
-            Assert.Equal(export[2], 10);
+            Assert.Equal(2.5, export[0]);
+            Assert.Equal(2.8, export[1]);
+            Assert.Equal(10, export[2]);
         }
     }
 }

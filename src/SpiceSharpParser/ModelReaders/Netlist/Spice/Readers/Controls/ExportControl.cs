@@ -1,9 +1,9 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 {
@@ -26,7 +26,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         /// <summary>
         /// Generates a new export
         /// </summary>
-        protected Export GenerateExport(Parameter parameter, Simulation simulation, IReadingContext context)
+        protected Export GenerateExport(Parameter parameter, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
         {
             if (parameter is BracketParameter bp)
             {
@@ -34,7 +34,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 
                 if (Registry.Supports(type))
                 {
-                    return Registry.Get(type).CreateExport(type, bp.Parameters, simulation, context);
+                    return Registry.Get(type).CreateExport(type, bp.Parameters, simulation, nodeNameGenerator, objectNameGenerator);
                 }
             }
 
@@ -48,7 +48,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                     parameters.Add(new WordParameter(rp.Name));
                     parameters.Add(new WordParameter(rp.Argument));
 
-                    return Registry.Get(type).CreateExport(type, parameters, simulation, context);
+                    return Registry.Get(type).CreateExport(type, parameters, simulation, nodeNameGenerator, objectNameGenerator);
                 }
             }
 

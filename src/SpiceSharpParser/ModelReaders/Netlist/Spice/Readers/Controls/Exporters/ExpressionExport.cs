@@ -26,6 +26,15 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
             Expression = expression;
             Name = ExpressionName;
             Context = simulation;
+
+
+            // Extract the export to register everything.
+            // Do not remove it please.
+            try
+            {
+                Extract();
+            }
+            catch { }
         }
 
         /// <summary>

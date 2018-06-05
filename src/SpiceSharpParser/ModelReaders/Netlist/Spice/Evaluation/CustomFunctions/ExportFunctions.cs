@@ -16,7 +16,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
         /// <summary>
         /// Creates export custom functions.
         /// </summary>
-        public static IEnumerable<KeyValuePair<string, CustomFunction>> Create(IReadingContext readingContext, IExporterRegistry exporterRegistry)
+        public static IEnumerable<KeyValuePair<string, CustomFunction>> Create(IExporterRegistry exporterRegistry, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
         {
             if (exporterRegistry == null)
             {
@@ -34,11 +34,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
 
                     if (exportType == "@")
                     {
-                        spiceFunction = CreateAtExport(readingContext, exporters, exporter, exportType);
+                        spiceFunction = CreateAtExport(exporters, exporter, exportType, nodeNameGenerator, objectNameGenerator);
                     }
                     else
                     {
-                        spiceFunction = CreateOrdinaryExport(readingContext, exporters, exporter, exportType);
+                        spiceFunction = CreateOrdinaryExport(exporters, exporter, exportType, nodeNameGenerator, objectNameGenerator);
                     }
 
                     result.Add(new KeyValuePair<string, CustomFunction>(exportType, spiceFunction));
@@ -52,7 +52,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
             return result;
         }
 
-        public static CustomFunction CreateOrdinaryExport(IReadingContext readingContext, Dictionary<string, Readers.Controls.Exporters.Export> exporters, Readers.Controls.Exporters.Exporter exporter, string exportType)
+        public static CustomFunction CreateOrdinaryExport(Dictionary<string, Readers.Controls.Exporters.Export> exporters, Readers.Controls.Exporters.Exporter exporter, string exportType, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
         {
             CustomFunction function = new CustomFunction();
             function.VirtualParameters = true;
@@ -73,7 +73,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
 
                     var parameters = new ParameterCollection();
                     parameters.Add(vectorParameter);
-                    var export = exporter.CreateExport(exportType, parameters, (Simulation)simulation ?? readingContext.Result.Simulations.First(), readingContext);
+                    var export = exporter.CreateExport(exportType, parameters, (Simulation)simulation, nodeNameGenerator, objectNameGenerator);
                     exporters[exporterKey] = export;
                 }
 
@@ -90,15 +90,15 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
             return function;
         }
 
-        public static void Add(Dictionary<string, CustomFunction> customFunctions, IReadingContext readingContext, IExporterRegistry exporterRegistry)
+        public static void Add(Dictionary<string, CustomFunction> customFunctions, IExporterRegistry exporterRegistry, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
         {
-            foreach (var func in Create(readingContext, exporterRegistry))
+            foreach (var func in Create(exporterRegistry, nodeNameGenerator, objectNameGenerator))
             {
                 customFunctions[func.Key] = func.Value;
             }
         }
 
-        public static CustomFunction CreateAtExport(IReadingContext readingContext, Dictionary<string, Readers.Controls.Exporters.Export> exporters, Readers.Controls.Exporters.Exporter exporter, string exportType)
+        public static CustomFunction CreateAtExport(Dictionary<string, Readers.Controls.Exporters.Export> exporters, Readers.Controls.Exporters.Exporter exporter, string exportType, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
         {
             CustomFunction function = new CustomFunction();
             function.VirtualParameters = true;
@@ -112,10 +112,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
                 if (!exporters.ContainsKey(exporterKey))
                 {
                     var parameters = new ParameterCollection();
-                    parameters.Add(new WordParameter(args[1].ToString()));
                     parameters.Add(new WordParameter(args[0].ToString()));
+                    parameters.Add(new WordParameter(args[1].ToString()));
 
-                    var export = exporter.CreateExport(exportType, parameters, (Simulation)simulation ?? readingContext.Result.Simulations.First(), readingContext);
+                    var export = exporter.CreateExport(exportType, parameters, (Simulation)simulation, nodeNameGenerator, objectNameGenerator);
                     exporters[exporterKey] = export;
                 }
 

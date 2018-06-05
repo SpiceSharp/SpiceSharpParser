@@ -20,13 +20,13 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
             function.Logic = (args, context, evaluator) =>
             {
                 var functionEvaluator = evaluator.CreateChildEvaluator();
-                var parameter = args[args.Length - 1];
+                var parameter = args[0];
                 var parameterValue = functionEvaluator.EvaluateDouble(parameter.ToString());
 
-                for (var i = args.Length - 2; i >= 0; i -= 2)
+                for (var i = 1; i < args.Length - 1; i += 2)
                 {
                     var pointX = functionEvaluator.EvaluateDouble(args[i].ToString());
-                    var pointY = functionEvaluator.EvaluateDouble(args[i - 1].ToString());
+                    var pointY = functionEvaluator.EvaluateDouble(args[i + 1].ToString());
 
                     if (pointX == parameterValue)
                     {

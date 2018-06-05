@@ -35,7 +35,7 @@ namespace SpiceSharpParser.Tests.Parsers
                 });
 
             // act
-            var result = parser.Parse("0.5 * (v(out1, ref) + v(out2))");
+            var result = parser.Parse("0.5 * (v(out1, ref) + v(out2))")();
 
             // assert
             Assert.Equal(5, result);
@@ -61,7 +61,7 @@ namespace SpiceSharpParser.Tests.Parsers
             });
         
             // act
-            var result = parser.Parse("random() + 1");
+            var result = parser.Parse("random() + 1")();
 
             // assert
             Assert.Equal(randomVal + 1, result);
@@ -85,7 +85,7 @@ namespace SpiceSharpParser.Tests.Parsers
             parser.Parameters["x"] = 1;
 
             // act and assert
-            Assert.Equal(2, parser.Parse("x + 1"));
+            Assert.Equal(2, parser.Parse("x + 1")());
         }
 
         [Fact]
@@ -96,7 +96,7 @@ namespace SpiceSharpParser.Tests.Parsers
             parser.Parameters["x"] = 1;
 
             // act and assert
-            Assert.Equal(1, parser.Parse("sin(0) + 1"));
+            Assert.Equal(1, parser.Parse("sin(0) + 1")());
         }
 
         [Fact]
@@ -106,7 +106,7 @@ namespace SpiceSharpParser.Tests.Parsers
             var parser = new SpiceExpressionParser();
 
             // act and assert
-            Assert.Equal(3, parser.Parse(" 2 + 1 "));
+            Assert.Equal(3, parser.Parse(" 2 + 1 ")());
         }
 
         [Fact]
@@ -116,7 +116,7 @@ namespace SpiceSharpParser.Tests.Parsers
             var parser = new SpiceExpressionParser();
 
             // act and assert
-            Assert.Equal(2.1, parser.Parse("2,1"));
+            Assert.Equal(2.1, parser.Parse("2,1")());
         }
 
         [Fact]
@@ -126,7 +126,7 @@ namespace SpiceSharpParser.Tests.Parsers
             var parser = new SpiceExpressionParser();
 
             // act and assert
-            Assert.Equal((2 * Math.PI) + (2 * Math.E), parser.Parse("PI + e + pi + E"));
+            Assert.Equal((2 * Math.PI) + (2 * Math.E), parser.Parse("PI + e + pi + E")());
         }
 
         [Fact]
@@ -136,7 +136,7 @@ namespace SpiceSharpParser.Tests.Parsers
             var parser = new SpiceExpressionParser();
 
             // act and assert
-            Assert.Equal(-1, parser.Parse("-1"));
+            Assert.Equal(-1, parser.Parse("-1")());
         }
 
         [Fact]
@@ -147,10 +147,10 @@ namespace SpiceSharpParser.Tests.Parsers
 
             // act and assert
             parser.Parameters["TEMP"] = 26;
-            Assert.Equal(2.52e-9, parser.Parse("TEMP == 26 ? 2.52e-9 : 2.24e-9"));
+            Assert.Equal(2.52e-9, parser.Parse("TEMP == 26 ? 2.52e-9 : 2.24e-9")());
 
             parser.Parameters["TEMP"] = 27;
-            Assert.Equal(2.24e-9, parser.Parse("TEMP == 26 ? 2.52e-9 : 2.24e-9"));
+            Assert.Equal(2.24e-9, parser.Parse("TEMP == 26 ? 2.52e-9 : 2.24e-9")());
         }
 
         [Fact]
@@ -160,7 +160,7 @@ namespace SpiceSharpParser.Tests.Parsers
             var parser = new SpiceExpressionParser();
 
             // act and assert
-            Assert.Equal(12.3 * 1e-6, parser.Parse("12.3μ"));
+            Assert.Equal(12.3 * 1e-6, parser.Parse("12.3μ")());
         }
 
         [Fact]
@@ -175,16 +175,16 @@ namespace SpiceSharpParser.Tests.Parsers
                 VirtualParameters = true,
                 Logic = (args, context, evaluator) =>
                 {
-                    if (args[1].ToString() == "obj1" && args[0].ToString() == "param")
+                    if (args[0].ToString() == "obj1" && args[1].ToString() == "param")
                     {
                         return 1;
                     }
-                    if (args[1].ToString() == "obj2" && args[0].ToString() == "param2")
+                    if (args[0].ToString() == "obj2" && args[1].ToString() == "param2")
                     {
                         return 2;
                     }
 
-                    if (args[1].ToString() == "obj3.subObj" && args[0].ToString() == "param3")
+                    if (args[0].ToString() == "obj3.subObj" && args[1].ToString() == "param3")
                     {
                         return 3;
                     }
@@ -194,7 +194,7 @@ namespace SpiceSharpParser.Tests.Parsers
             });
 
             // act and assert
-            Assert.Equal(8, parser.Parse(" 2 + @obj1[param] + @obj2[param2] + @obj3.subObj[param3]"));
+            Assert.Equal(8, parser.Parse(" 2 + @obj1[param] + @obj2[param2] + @obj3.subObj[param3]")());
         }
     }
 }

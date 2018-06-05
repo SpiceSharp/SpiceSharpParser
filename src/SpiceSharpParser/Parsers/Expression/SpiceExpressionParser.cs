@@ -7,8 +7,8 @@ using SpiceSharpParser.Common;
 namespace SpiceSharpParser.Parsers.Expression
 {
     /// <summary>
-    /// @author: Sven Boulanger 
-    /// @author: Marcin Gołębiowski (custom functions)
+    /// @author: Sven Boulanger
+    /// @author: Marcin Gołębiowski (custom functions, lazy evaluation)
     /// A very light-weight and fast expression parser made for parsing Spice expressions
     /// It is based on Dijkstra's Shunting Yard algorithm. It is very fast for parsing expressions only once.
     /// The parser is also not very expressive for errors, so only use it for relatively simple expressions.
@@ -174,11 +174,11 @@ namespace SpiceSharpParser.Parsers.Expression
         };
 
         /// <summary>
-        /// Parse an expression
+        /// Parses an expression.
         /// </summary>
         /// <param name="expression">The expression</param>
-        /// <returns>Returns the result of the expression</returns>
-        public double Parse(string expression, object context = null, IEvaluator evaluator = null)
+        /// <returns>Returns the result of parse.</returns>
+        public Func<double> Parse(string expression, object context = null, IEvaluator evaluator = null)
         {
             ParametersFoundInLastParse = new Collection<string>();
 
@@ -595,9 +595,7 @@ namespace SpiceSharpParser.Parsers.Expression
                 throw new Exception("Invalid expression");
             }
 
-            var result = outputStack.Pop()();
-            string ex = expression;
-            return result;
+            return  outputStack.Pop();
         }
 
         private CustomFunctionOperator CreateOperatorForCustomFunction(string functionName, IEvaluator evaluator)
@@ -615,10 +613,15 @@ namespace SpiceSharpParser.Parsers.Expression
             cfo.Precedence = customFunction.Infix ? PrecedenceMultiplicative : cfo.Precedence;
             cfo.LeftAssociative = customFunction.Infix ? true : cfo.LeftAssociative;
 
-            cfo.Function = (argumentStack, contextObj) =>
+            cfo.Function = (arguments, contextObj) =>
             {
-                var result = customFunction.Logic(argumentStack.ToArray(), contextObj, evaluator);
-                argumentStack.Clear();
+                var values = new List<object>();
+                foreach (var arg in arguments)
+                {
+                    values.Add(arg());
+                }
+
+                var result = customFunction.Logic(values.ToArray(), contextObj, evaluator);
                 return double.Parse(result.ToString()); //TODO: spice expression at the moment evalute only to double ...
             };
             return cfo;
@@ -633,8 +636,7 @@ namespace SpiceSharpParser.Parsers.Expression
 
                 outputStack.Push(() =>
                 {
-                    var res = op.Function(args, context);
-                    return res;
+                    return op.Function(args, context);
                 });
             }
             else
@@ -904,28 +906,30 @@ namespace SpiceSharpParser.Parsers.Expression
             return value;
         }
 
-        private Stack<object> PopAndReturnElements(Stack<Func<double>> stack, int count)
+        private Func<object>[] PopAndReturnElements(Stack<Func<double>> stack, int count)
         {
-            var result = new List<object>();
+            var result = new List<Func<object>>();
             for (var i = 0; i < count; i++)
             {
-                result.Add(stack.Pop()());
+                var val = stack.Pop();
+                result.Add(() => (object)val());
             }
 
             result.Reverse();
-            return new Stack<object>(result);
+            return result.ToArray();
         }
 
-        private Stack<object> PopAndReturnElements(Stack<object> stack, int count)
+        private Func<object>[] PopAndReturnElements(Stack<object> stack, int count)
         {
-            var result = new List<object>();
+            var result = new List<Func<object>>();
             for (var i = 0; i < count; i++)
             {
-                result.Add(stack.Pop());
+                var val = stack.Pop();
+                result.Add(() => val);
             }
 
             result.Reverse();
-            return new Stack<object>(result);
+            return result.ToArray();
         }
 
         /// <summary>
@@ -999,7 +1003,7 @@ namespace SpiceSharpParser.Parsers.Expression
             /// <summary>
             /// Gets or sets the function evaluation.
             /// </summary>
-            public Func<Stack<object>, object, double> Function { get; set; }
+            public Func<Func<object>[], object, double> Function { get; set; }
 
             public bool VirtualParameters { get; set; }
 

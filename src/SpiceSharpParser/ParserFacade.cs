@@ -94,7 +94,6 @@ namespace SpiceSharpParser
 
             // Postprocessing
             var postReadingEvaluator = new SpiceEvaluator();
-            postReadingEvaluator.Init();
 
             var ifPostReader = new IfPostprocessor(postReadingEvaluator);
             postprocessedNetlistModel.Statements = ifPostReader.PostProcess(postprocessedNetlistModel.Statements);

@@ -21,11 +21,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
         /// <param name="type">A type of export</param>
         /// <param name="parameters">A parameters of export</param>
         /// <param name="simulation">A simulation for export</param>
-        /// <param name="context">A context</param>
         /// <returns>
         /// A new export
         /// </returns>
-        public override Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, IReadingContext context)
+        public override Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
             {
@@ -44,11 +43,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
                         throw new WrongParametersCountException("No nodes for voltage export. Node expected");
                     case 2:
                         referencePath = vector.Elements[1].Image;
-                        reference = new StringIdentifier(context.NodeNameGenerator.Parse(referencePath));
+                        reference = new StringIdentifier(nodeNameGenerator.Parse(referencePath));
                         goto case 1;
                     case 1:
                         nodePath = vector.Elements[0].Image;
-                        node = new StringIdentifier(context.NodeNameGenerator.Parse(nodePath));
+                        node = new StringIdentifier(nodeNameGenerator.Parse(nodePath));
                         break;
                     default:
                         throw new WrongParametersCountException("Too many nodes specified for voltage export");
@@ -57,7 +56,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
             else
             {
                 nodePath = parameters.GetString(0);
-                node = new StringIdentifier(context.NodeNameGenerator.Parse(nodePath));
+                node = new StringIdentifier(nodeNameGenerator.Parse(nodePath));
             }
 
             Export ve = null;

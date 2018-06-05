@@ -24,8 +24,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
 
             function.Logic = (args, context, evaluator) =>
             {
-                double x = (double)args[1];
-                double y = (double)args[0];
+                double x = (double)args[0];
+                double y = (double)args[1];
 
                 switch (mode)
                 {
@@ -74,8 +74,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
 
             function.Logic = (args, context, evaluator) =>
             {
-                double x = (double)args[1];
-                double y = (double)args[0];
+                double x = (double)args[0];
+                double y = (double)args[1];
 
                 switch (mode)
                 {
@@ -111,8 +111,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
 
             function.Logic = (args, context, evaluator) =>
             {
-                double x = (double)args[1];
-                double y = (double)args[0];
+                double x = (double)args[0];
+                double y = (double)args[1];
 
                 return Math.Sign(x) * Math.Pow(Math.Abs(x), y);
             };
@@ -195,8 +195,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
 
             function.Logic = (args, context, evaluator) =>
             {
-                double x = (double)args[1];
-                double y = (double)args[0];
+                double x = (double)args[0];
+                double y = (double)args[1];
 
                 switch (mode)
                 {
@@ -572,8 +572,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
                     throw new ArgumentException("hypot() function expects three arguments");
                 }
 
-                double x = (double)args[1];
-                double y = (double)args[0];
+                double x = (double)args[0];
+                double y = (double)args[1];
 
                 return Math.Sqrt((x * x) + (y * y));
             };

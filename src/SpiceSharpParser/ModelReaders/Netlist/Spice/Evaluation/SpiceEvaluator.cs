@@ -19,18 +19,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
             : base(new SpiceExpressionParser(mode == SpiceEvaluatorMode.LtSpice), new ExpressionRegistry())
         {
             Mode = mode;
-        }
 
-        /// <summary>
-        /// Gets the mode of evaluator.
-        /// </summary>
-        public SpiceEvaluatorMode Mode { get; }
-
-        /// <summary>
-        /// Inits the spice evaluator.
-        /// </summary>
-        public void Init()
-        {
             Parameters.Add("TEMP", Circuit.ReferenceTemperature - Circuit.CelsiusKelvin);
 
             CustomFunctions.Add("**", MathFunctions.CreatePowInfix(Mode));
@@ -68,18 +57,21 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         }
 
         /// <summary>
-        /// Inits the spice evaluator.
+        /// Initializes a new instance of the <see cref="SpiceEvaluator"/> class.
         /// </summary>
-        /// <param name="context">context</param>
-        /// <param name="exporters">exporters.</param>
-        public void Init(IReadingContext context, IExporterRegistry exporters)
+        public SpiceEvaluator(SpiceEvaluatorMode mode, IExporterRegistry exporters, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
+            : this(mode)
         {
-            Init();
-            ExportFunctions.Add(CustomFunctions, context, exporters);
+            ExportFunctions.Add(CustomFunctions, exporters, nodeNameGenerator, objectNameGenerator);
         }
 
         /// <summary>
-        /// Creates a child evaluator
+        /// Gets the mode of evaluator.
+        /// </summary>
+        public SpiceEvaluatorMode Mode { get; }
+
+        /// <summary>
+        /// Creates a child evaluator.
         /// </summary>
         /// <returns>
         /// A child evaluator.

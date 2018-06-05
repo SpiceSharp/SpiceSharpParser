@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace SpiceSharpParser.Common
@@ -11,6 +12,6 @@ namespace SpiceSharpParser.Common
 
         Dictionary<string, CustomFunction> CustomFunctions { get; }
 
-        double Parse(string expression, object context = null, IEvaluator evaluator = null);
+        Func<double> Parse(string expression, object context = null, IEvaluator evaluator = null);
     }
 }

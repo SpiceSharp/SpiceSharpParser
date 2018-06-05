@@ -106,45 +106,41 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private List<Export> CreateExportsForAllVoltageAndCurrents(IReadingContext context)
+        private List<Export> CreateExportsForAllVoltageAndCurrents(Simulation simulation, IReadingContext context)
         {
             var result = new List<Export>();
             context.Result.Circuit.Objects.BuildOrderedComponentList(); //TODO: Verify with Sven
 
-            // For all simulations add exports for current and voltages
-            foreach (var simulation in context.Result.Simulations)
+            var nodes = new List<Identifier>();
+
+            foreach (Entity entity in context.Result.Circuit.Objects)
             {
-                var nodes = new List<Identifier>();
-
-                foreach (Entity entity in context.Result.Circuit.Objects)
+                if (entity is SpiceSharp.Components.Component c)
                 {
-                    if (entity is SpiceSharp.Components.Component c)
-                    {
-                        string componentName = c.Name.ToString();
-                        var @params = new ParameterCollection();
-                        @params.Add(new WordParameter(componentName));
-
-                        for (var i = 0; i < c.PinCount; i++)
-                        {
-                            var node = c.GetNode(i);
-                            if (!nodes.Contains(node))
-                            {
-                                nodes.Add(node);
-                            }
-                        }
-
-                        // Add current export for component
-                        result.Add(Registry.Get("i").CreateExport("i", @params, simulation, context));
-                    }
-                }
-
-                foreach (var node in nodes)
-                {
+                    string componentName = c.Name.ToString();
                     var @params = new ParameterCollection();
-                    @params.Add(new WordParameter(node.ToString()));
+                    @params.Add(new WordParameter(componentName));
 
-                    result.Add(Registry.Get("v").CreateExport("v", @params, simulation, context));
+                    for (var i = 0; i < c.PinCount; i++)
+                    {
+                        var node = c.GetNode(i);
+                        if (!nodes.Contains(node))
+                        {
+                            nodes.Add(node);
+                        }
+                    }
+
+                    // Add current export for component
+                    result.Add(Registry.Get("i").CreateExport("i", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator));
                 }
+            }
+
+            foreach (var node in nodes)
+            {
+                var @params = new ParameterCollection();
+                @params.Add(new WordParameter(node.ToString()));
+
+                result.Add(Registry.Get("v").CreateExport("v", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator));
             }
 
             return result;
@@ -217,11 +213,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
             context.Result.AddPrint(print);
         }
 
-        private List<Export> GenerateExports(ParameterCollection parameterCollection, Simulation simulationToPlot, IReadingContext context)
+        private List<Export> GenerateExports(ParameterCollection parameterCollection, Simulation simulation, IReadingContext context)
         {
             if (parameterCollection.Count == 0)
             {
-                return CreateExportsForAllVoltageAndCurrents(context);
+                return CreateExportsForAllVoltageAndCurrents(simulation, context);
             }
 
             List<Export> result = new List<Export>();
@@ -229,7 +225,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
             {
                 if (parameter is BracketParameter || parameter is ReferenceParameter)
                 {
-                    result.Add(GenerateExport(parameter, simulationToPlot, context));
+                    result.Add(GenerateExport(parameter, simulation, context.NodeNameGenerator, context.ObjectNameGenerator));
                 }
                 else
                 {
@@ -238,7 +234,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 
                     if (expressionNames.Contains(expressionName))
                     {
-                        result.Add(new ExpressionExport(simulationToPlot.Name.ToString(), expressionName, context.Evaluator.GetExpression(expressionName), context.Evaluator, simulationToPlot));
+                        result.Add(new ExpressionExport(simulation.Name.ToString(), expressionName, context.Evaluator.GetExpression(expressionName), context.Evaluator, simulation));
                     }
                 }
             }

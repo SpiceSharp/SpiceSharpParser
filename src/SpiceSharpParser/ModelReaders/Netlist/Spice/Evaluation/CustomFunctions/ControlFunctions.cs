@@ -80,9 +80,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
                     throw new ArgumentException("if() function expects three arguments");
                 }
 
-                double x = (double)args[2];
+                double x = (double)args[0];
                 double y = (double)args[1];
-                double z = (double)args[0];
+                double z = (double)args[2];
 
                 if (x > 0.5)
                 {
