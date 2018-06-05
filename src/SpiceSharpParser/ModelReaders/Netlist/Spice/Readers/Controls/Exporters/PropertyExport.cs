@@ -59,7 +59,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
         {
             if (!ExportRealImpl.IsValid)
             {
-                throw new GeneralReaderException($"Property export {Name} is invalid");
+                if (ExceptionsEnabled)
+                {
+                    throw new GeneralReaderException($"Property export {Name} is invalid");
+                }
+                return double.NaN;
             }
 
             return ExportRealImpl.Value;

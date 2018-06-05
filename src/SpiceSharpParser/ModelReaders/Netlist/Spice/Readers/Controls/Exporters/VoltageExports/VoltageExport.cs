@@ -1,6 +1,7 @@
 ﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
 using SpiceSharp;
 using SpiceSharp.Simulations;
+using System;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports
 {
@@ -80,7 +81,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
             {
                 if (!ExportImpl.IsValid)
                 {
-                    throw new GeneralReaderException($"Voltage export {Name} is invalid");
+                    if (ExceptionsEnabled)
+                    {
+                        throw new GeneralReaderException($"Voltage export {Name} is invalid");
+                    }
+                    return double.NaN;
                 }
 
                 return ExportImpl.Value.Real;
@@ -89,7 +94,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
             {
                 if (!ExportRealImpl.IsValid)
                 {
-                    throw new GeneralReaderException($"Voltage export {Name} is invalid");
+                    if (ExceptionsEnabled)
+                    {
+                        throw new GeneralReaderException($"Voltage export {Name} is invalid");
+                    }
+                    return double.NaN;
                 }
 
                 return ExportRealImpl.Value;

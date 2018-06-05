@@ -59,7 +59,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
         {
             if (!ExportImpl.IsValid)
             {
-                throw new GeneralReaderException($"Current decibel export '{Name}' is invalid");
+                if (ExceptionsEnabled)
+                {
+                    throw new GeneralReaderException($"Current decibel export '{Name}' is invalid");
+                }
+                return double.NaN;
             }
 
             //TODO: Verify with Sven....

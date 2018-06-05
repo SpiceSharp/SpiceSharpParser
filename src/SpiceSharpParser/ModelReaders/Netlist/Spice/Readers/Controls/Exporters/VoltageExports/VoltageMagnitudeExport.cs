@@ -65,7 +65,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
         {
             if (!ExportImpl.IsValid)
             {
-                throw new GeneralReaderException($"Voltage magnitude export {Name} is invalid");
+                if (ExceptionsEnabled)
+                {
+                    throw new GeneralReaderException($"Voltage magnitude export {Name} is invalid");
+                }
+                return double.NaN;
             }
 
             return ExportImpl.Value.Magnitude;

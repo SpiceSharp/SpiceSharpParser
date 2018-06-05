@@ -73,7 +73,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
             {
                 if (!ExportRealImpl.IsValid)
                 {
-                    throw new GeneralReaderException($"Current export {Name} is invalid");
+                    if (ExceptionsEnabled)
+                    {
+                        throw new GeneralReaderException($"Current export {Name} is invalid");
+                    }
+                    return double.NaN;
                 }
 
                 return ExportRealImpl.Value;
@@ -82,7 +86,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
             {
                 if (!ExportImpl.IsValid)
                 {
-                    throw new GeneralReaderException($"Current export {Name} is invalid");
+                    if (ExceptionsEnabled)
+                    {
+                        throw new GeneralReaderException($"Current export {Name} is invalid");
+                    }
+                    return double.NaN;
                 }
                 return ExportImpl.Value.Real;
             }

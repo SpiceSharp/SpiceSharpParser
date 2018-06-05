@@ -14,6 +14,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
         public Export(Simulation simulation)
         {
             Simulation = simulation;
+
+            simulation.InitializeSimulationExport += (obj, e) =>
+            {
+                ExceptionsEnabled = true; //TODO: Cleanup
+            };
         }
 
         /// <summary>
@@ -41,6 +46,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
         /// eg. "tran", "dc", etc. Default is null (any simulation/optional)
         /// </summary>
         public string SimulationType { get; set; } = null;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether exceptions are enabled.
+        /// </summary>
+        protected bool ExceptionsEnabled { get; set; }
 
         /// <summary>
         /// Extract the quantity from simulated data
