@@ -273,7 +273,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// </summary>
         public void InvalidateParameters()
         {
-            foreach (var parameter in Parameters)
+            foreach (var parameter in new Dictionary<string, LazyExpression>(Parameters))
             {
                 parameter.Value.Invalidate();
                 Refresh(parameter.Key);
