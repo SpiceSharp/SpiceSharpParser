@@ -82,10 +82,10 @@ namespace SpiceSharpParser.Tests.Parsers
         {
             // arrange
             var parser = new SpiceExpressionParser();
-            parser.Parameters["x"] = 1;
+            parser.Parameters["x"] = new Common.Evaluation.LazyExpression((e, c) => 1);
 
             // act and assert
-            Assert.Equal(2, parser.Parse("x + 1")());
+            Assert.Equal(2, parser.Parse("x + 1", null, null)());
         }
 
         [Fact]
@@ -93,7 +93,7 @@ namespace SpiceSharpParser.Tests.Parsers
         {
             // arrange
             var parser = new SpiceExpressionParser();
-            parser.Parameters["x"] = 1;
+            parser.Parameters["x"] = new Common.Evaluation.LazyExpression((e, c) => 1);
 
             // act and assert
             Assert.Equal(1, parser.Parse("sin(0) + 1")());
@@ -146,10 +146,10 @@ namespace SpiceSharpParser.Tests.Parsers
             var parser = new SpiceExpressionParser();
 
             // act and assert
-            parser.Parameters["TEMP"] = 26;
+            parser.Parameters["TEMP"] = new Common.Evaluation.LazyExpression((e, c) => 26);
             Assert.Equal(2.52e-9, parser.Parse("TEMP == 26 ? 2.52e-9 : 2.24e-9")());
 
-            parser.Parameters["TEMP"] = 27;
+            parser.Parameters["TEMP"] = new Common.Evaluation.LazyExpression((e, c) => 27);
             Assert.Equal(2.24e-9, parser.Parse("TEMP == 26 ? 2.52e-9 : 2.24e-9")());
         }
 

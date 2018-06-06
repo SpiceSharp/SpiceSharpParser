@@ -56,7 +56,7 @@ namespace SpiceSharpParser.Common
         /// Sets the parameters values and updates the values expressions.
         /// </summary>
         /// <param name="parameters">A dictionary of parameter values.</param>
-        void SetParameters(Dictionary<string, double> parameters);
+        void SetParameters(Dictionary<string, string> parameters);
 
         /// <summary>
         /// Returns a value indicating whether there is a parameter in evaluator with given name.
@@ -74,7 +74,7 @@ namespace SpiceSharpParser.Common
         /// <returns>
         /// A value of parameter.
         /// </returns>
-        double GetParameterValue(string parameterName);
+        double GetParameterValue(string parameterName, object context);
 
         /// <summary>
         /// Gets the expression.
@@ -109,6 +109,11 @@ namespace SpiceSharpParser.Common
         /// A list of variables from expression.
         /// </returns>
         IEnumerable<string> GetParametersFromExpression(string expression);
+
+        /// <summary>
+        /// Invalidate parameters.
+        /// </summary>
+        void InvalidateParameters();
 
         /// <summary>
         /// Returns names of all parameters.

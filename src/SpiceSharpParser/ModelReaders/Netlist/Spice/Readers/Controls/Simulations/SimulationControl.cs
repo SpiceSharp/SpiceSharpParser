@@ -91,6 +91,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
         {
             simulation.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs e) =>
             {
+                context.Evaluator.InvalidateParameters();
+
                 foreach (var paramToSet in parameterValues)
                 {
                     if (paramToSet.Key is WordParameter || paramToSet.Key is IdentifierParameter)

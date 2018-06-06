@@ -1,9 +1,11 @@
 ﻿using SpiceSharp;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Parsers.Expression;
+using System.Globalization;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
 {
@@ -20,7 +22,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         {
             Mode = mode;
 
-            Parameters.Add("TEMP", Circuit.ReferenceTemperature - Circuit.CelsiusKelvin);
+            Parameters.Add("TEMP", new LazyExpression((e, c) => (Circuit.ReferenceTemperature - Circuit.CelsiusKelvin), "temp"));
 
             CustomFunctions.Add("**", MathFunctions.CreatePowInfix(Mode));
             CustomFunctions.Add("abs", MathFunctions.CreateAbs());
@@ -82,7 +84,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
 
             foreach (var parameterName in this.GetParameterNames())
             {
-                newEvaluator.Parameters[parameterName] = this.GetParameterValue(parameterName);
+                newEvaluator.Parameters[parameterName] = this.ExpressionParser.Parameters[parameterName];
             }
 
             foreach (var customFunction in CustomFunctions)

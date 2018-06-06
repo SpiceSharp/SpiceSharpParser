@@ -23,7 +23,5 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         {
             return statement is Control;
         }
-
-        
     }
 }

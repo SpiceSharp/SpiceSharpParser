@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using SpiceSharp;
 using SpiceSharp.Circuits;
@@ -206,17 +207,17 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
         /// <returns>
         /// A dictionary of parameters
         /// </returns>
-        private Dictionary<string, double> CreateSubcircuitParameters(IReadingContext context, SubCircuit subCiruitDefiniton, List<AssignmentParameter> subcktParameters)
+        private Dictionary<string, string> CreateSubcircuitParameters(IReadingContext context, SubCircuit subCiruitDefiniton, List<AssignmentParameter> subcktParameters)
         {
-            var subcircuitParameters = new Dictionary<string, double>();
+            var subcircuitParameters = new Dictionary<string, string>();
             foreach (var defaultParameter in subCiruitDefiniton.DefaultParameters)
             {
-                subcircuitParameters[defaultParameter.Name] = context.ParseDouble(defaultParameter.Value);
+                subcircuitParameters[defaultParameter.Name] = context.Evaluator.EvaluateDouble(defaultParameter.Value).ToString(CultureInfo.InvariantCulture);
             }
 
             foreach (var instanceParameter in subcktParameters)
             {
-                subcircuitParameters[instanceParameter.Name] = context.ParseDouble(instanceParameter.Value);
+                subcircuitParameters[instanceParameter.Name] = context.Evaluator.EvaluateDouble(instanceParameter.Value).ToString(CultureInfo.InvariantCulture);
             }
 
             return subcircuitParameters;

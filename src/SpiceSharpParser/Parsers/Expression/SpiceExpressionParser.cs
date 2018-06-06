@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.Parsers.Expression
 {
@@ -116,9 +117,9 @@ namespace SpiceSharpParser.Parsers.Expression
         }
 
         /// <summary>
-        /// Gets or sets the parameters used for expressions.
+        /// Gets or sets the parameters.
         /// </summary>
-        public Dictionary<string, double> Parameters { get; protected set; } = new Dictionary<string, double>();
+        public Dictionary<string, LazyExpression> Parameters { get; protected set; } = new Dictionary<string, LazyExpression>();
 
         /// <summary>
         /// Gets or sets the parameters used in last parsed expression.
@@ -147,6 +148,7 @@ namespace SpiceSharpParser.Parsers.Expression
             { "echarge", 1.60219e-19 },
             { "c", 299792500 },
             { "boltz", 1.38062e-23 },
+            { "NaN", double.NaN },
         };
 
         /// <summary>
@@ -502,10 +504,23 @@ namespace SpiceSharpParser.Parsers.Expression
                             {
                                 outputStack.Push(() => @const);
                             }
-                            else if (Parameters.TryGetValue(id, out var parameter))
+                            else if (Parameters.TryGetValue(id, out var lazyParameter))
                             {
                                 ParametersFoundInLastParse.Add(id);
-                                outputStack.Push(() => parameter);
+                                outputStack.Push(() =>
+                                {
+                                    return lazyParameter.GetValue(context);
+                                });
+                                /*
+                                if (evaluator != null && lazyParameter.Expression != expression)
+                                {
+                                   
+                                }
+                                else
+                                {
+                                    var coma = operatorStack.Count == 0;
+                                    outputStack.Push(() => ParseDouble(parameterExpression, coma));
+                                }*/
                             }
                             else
                             {
@@ -900,6 +915,142 @@ namespace SpiceSharpParser.Parsers.Expression
                 while (index < count && ((input[index] >= 'a' && input[index] <= 'z') || (input[index] >= 'A' && input[index] <= 'Z')))
                 {
                     index++;
+                }
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// Parse a double value 
+        /// </summary>
+        /// <returns>Parse result</returns>
+        private double ParseDouble(string expression, bool commaAsDecimalSeparator = false)
+        {
+            // Read integer part
+            double value = 0.0;
+            int expressionIndex = 0;
+            int expressionCount = expression.Length;
+
+            while (expressionIndex < expressionCount && (expression[expressionIndex] >= '0' && expression[expressionIndex] <= '9'))
+            {
+                value = (value * 10.0) + (expression[expressionIndex++] - '0');
+            }
+
+            // Read decimal part
+            if (expressionIndex < expressionCount
+                && (expression[expressionIndex] == '.' || expression[expressionIndex] == ',' && commaAsDecimalSeparator))
+            {
+                expressionIndex++;
+                double mult = 1.0;
+                while (expressionIndex < expressionCount && (expression[expressionIndex] >= '0' && expression[expressionIndex] <= '9'))
+                {
+                    value = (value * 10.0) + (expression[expressionIndex++] - '0');
+                    mult = mult * 10.0;
+                }
+
+                value /= mult;
+            }
+
+            if (expressionIndex < expressionCount)
+            {
+                // Scientific notation
+                if (expression[expressionIndex] == 'e' || expression[expressionIndex] == 'E')
+                {
+                    expressionIndex++;
+                    var exponent = 0;
+                    var neg = false;
+                    if (expressionIndex < expressionCount && (expression[expressionIndex] == '+' || expression[expressionIndex] == '-'))
+                    {
+                        if (expression[expressionIndex] == '-')
+                        {
+                            neg = true;
+                        }
+
+                        expressionIndex++;
+                    }
+
+                    // Get the exponent
+                    while (expressionIndex < expressionCount && (expression[expressionIndex] >= '0' && expression[expressionIndex] <= '9'))
+                    {
+                        exponent = (exponent * 10) + (expression[expressionIndex++] - '0');
+                    }
+
+                    // Integer exponentation
+                    var mult = 1.0;
+                    var b = 10.0;
+                    while (exponent != 0)
+                    {
+                        if ((exponent & 0x01) == 0x01)
+                        {
+                            mult *= b;
+                        }
+
+                        b *= b;
+                        exponent >>= 1;
+                    }
+
+                    if (neg)
+                    {
+                        value /= mult;
+                    }
+                    else
+                    {
+                        value *= mult;
+                    }
+                }
+                else
+                {
+                    // Spice modifiers
+                    switch (expression[expressionIndex])
+                    {
+                        case 't':
+                        case 'T': value *= 1.0e12; expressionIndex++; break;
+                        case 'g':
+                        case 'G': value *= 1.0e9; expressionIndex++; break;
+                        case 'x':
+                        case 'X': value *= 1.0e6; expressionIndex++; break;
+                        case 'k':
+                        case 'K': value *= 1.0e3; expressionIndex++; break;
+                        case 'u':
+                        case 'μ':
+                        case 'U': value /= 1.0e6; expressionIndex++; break;
+                        case 'n':
+                        case 'N': value /= 1.0e9; expressionIndex++; break;
+                        case 'p':
+                        case 'P': value /= 1.0e12; expressionIndex++; break;
+                        case 'f':
+                        case 'F': value /= 1.0e15; expressionIndex++; break;
+                        case 'm':
+                        case 'M':
+                            if (expressionIndex + 2 < expressionCount &&
+                                (expression[expressionIndex + 1] == 'e' || expression[expressionIndex + 1] == 'E') &&
+                                (expression[expressionIndex + 2] == 'g' || expression[expressionIndex + 2] == 'G'))
+                            {
+                                value *= 1.0e6;
+                                expressionIndex += 3;
+                            }
+                            else if (expressionIndex + 2 < expressionCount &&
+                                (expression[expressionIndex + 1] == 'i' || expression[expressionIndex + 1] == 'I') &&
+                                (expression[expressionIndex + 2] == 'l' || expression[expressionIndex + 2] == 'L'))
+                            {
+                                value *= 25.4e-6;
+                                expressionIndex += 3;
+                            }
+                            else
+                            {
+                                value /= 1.0e3;
+                                expressionIndex++;
+                            }
+
+                            break;
+                    }
+                }
+
+                // Any trailing letters are ignored
+                while (expressionIndex < expressionCount && ((expression[expressionIndex] >= 'a' && expression[expressionIndex] <= 'z') || (expression[expressionIndex] >= 'A' && expression[expressionIndex] <= 'Z')))
+                {
+                    expressionIndex++;
                 }
             }
 

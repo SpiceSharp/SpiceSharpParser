@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
 {
@@ -31,9 +33,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         protected IExpressionParser ExpressionParser { get; private set; }
 
         /// <summary>
-        /// Gets the dictionary of parameters values.
+        /// Gets the dictionary of parameters expressions.
         /// </summary>
-        protected Dictionary<string, double> Parameters { get; }
+        protected Dictionary<string, LazyExpression> Parameters { get; }
 
         /// <summary>
         /// Gets the expression registry.
@@ -52,7 +54,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         {
             if (Parameters.ContainsKey(expression))
             {
-                return Parameters[expression];
+                return Parameters[expression].GetValue(context);
             }
 
             return ExpressionParser.Parse(expression, context, this)();
@@ -65,7 +67,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// <param name="value">A value of parameter.</param>
         public void SetParameter(string parameterName, double value)
         {
-            Parameters[parameterName] = value;
+            Parameters[parameterName] = new LazyExpression((e, c) => value, value.ToString(CultureInfo.InvariantCulture));
             Refresh(parameterName);
         }
 
@@ -76,7 +78,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// <param name="expression">A value of parameter.</param>
         public void SetParameter(string parameterName, string expression)
         {
-            Parameters[parameterName] = EvaluateDouble(expression);
+            Parameters[parameterName] = new LazyExpression((e,c) => this.EvaluateDouble(e,c), expression);
             Refresh(parameterName);
         }
 
@@ -131,9 +133,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// <returns>
         /// A value of parameter.
         /// </returns>
-        public double GetParameterValue(string parameterName)
+        public double GetParameterValue(string parameterName, object context)
         {
-            return Parameters[parameterName];
+            return Parameters[parameterName].GetValue(context);
         }
 
         /// <summary>
@@ -163,11 +165,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// Sets the parameters values and updates the values expressions.
         /// </summary>
         /// <param name="parameters">A dictionary of parameter values.</param>
-        public void SetParameters(Dictionary<string, double> parameters)
+        public void SetParameters(Dictionary<string, string> parameters)
         {
             foreach (var parameter in parameters)
             {
-                Parameters[parameter.Key] = parameter.Value;
+                Parameters[parameter.Key] = new LazyExpression((e, c) => this.EvaluateDouble(e, c), parameter.Value);
             }
 
             foreach (var parameter in parameters)
@@ -212,7 +214,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
 
             foreach (var parameterName in this.GetParameterNames())
             {
-                newEvaluator.Parameters[parameterName] = this.GetParameterValue(parameterName);
+                newEvaluator.Parameters[parameterName] = this.ExpressionParser.Parameters[parameterName];
             }
 
             foreach (var customFunction in CustomFunctions)
@@ -244,7 +246,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
                     childEvaluator.SetParameter(arguments[i], (double)args[i]);
                 }
 
-                return childEvaluator.EvaluateDouble(functionBody);
+                return childEvaluator.EvaluateDouble(functionBody, context);
             };
 
             this.CustomFunctions.Add(name, userFunction);
@@ -266,5 +268,16 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
             }
         }
 
+        /// <summary>
+        /// Invalidates paramters.
+        /// </summary>
+        public void InvalidateParameters()
+        {
+            foreach (var parameter in Parameters)
+            {
+                parameter.Value.Invalidate();
+                Refresh(parameter.Key);
+            }
+        }
     }
 }
