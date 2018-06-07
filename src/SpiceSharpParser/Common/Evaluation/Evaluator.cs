@@ -18,12 +18,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
             ExpressionRegistry registry)
         {
             ExpressionParser = expressionParser;
-            Parameters = expressionParser.Parameters;
             Registry = registry;
         }
 
         /// <summary>
-        /// Gets the custom functions.
+        /// Gets the dictionary of custom functions.
         /// </summary>
         public Dictionary<string, CustomFunction> CustomFunctions => ExpressionParser.CustomFunctions;
 
@@ -33,9 +32,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         protected IExpressionParser ExpressionParser { get; private set; }
 
         /// <summary>
-        /// Gets the dictionary of parameters expressions.
+        /// Gets the dictionary of parameters.
         /// </summary>
-        protected Dictionary<string, LazyExpression> Parameters { get; }
+        protected Dictionary<string, LazyExpression> Parameters => ExpressionParser.Parameters;
 
         /// <summary>
         /// Gets the expression registry.
