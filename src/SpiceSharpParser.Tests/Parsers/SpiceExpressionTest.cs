@@ -35,7 +35,7 @@ namespace SpiceSharpParser.Tests.Parsers
                 });
 
             // act
-            var result = parser.Parse("0.5 * (v(out1, ref) + v(out2))")();
+            var result = parser.Parse("0.5 * (v(out1, ref) + v(out2))").Value();
 
             // assert
             Assert.Equal(5, result);
@@ -61,7 +61,7 @@ namespace SpiceSharpParser.Tests.Parsers
             });
         
             // act
-            var result = parser.Parse("random() + 1")();
+            var result = parser.Parse("random() + 1").Value();
 
             // assert
             Assert.Equal(randomVal + 1, result);
@@ -85,7 +85,7 @@ namespace SpiceSharpParser.Tests.Parsers
             parser.Parameters["x"] = new Common.Evaluation.LazyExpression((e, c) => 1);
 
             // act and assert
-            Assert.Equal(2, parser.Parse("x + 1", null, null)());
+            Assert.Equal(2, parser.Parse("x + 1", null, null).Value());
         }
 
         [Fact]
@@ -96,7 +96,7 @@ namespace SpiceSharpParser.Tests.Parsers
             parser.Parameters["x"] = new Common.Evaluation.LazyExpression((e, c) => 1);
 
             // act and assert
-            Assert.Equal(1, parser.Parse("sin(0) + 1")());
+            Assert.Equal(1, parser.Parse("sin(0) + 1").Value());
         }
 
         [Fact]
@@ -106,7 +106,7 @@ namespace SpiceSharpParser.Tests.Parsers
             var parser = new SpiceExpressionParser();
 
             // act and assert
-            Assert.Equal(3, parser.Parse(" 2 + 1 ")());
+            Assert.Equal(3, parser.Parse(" 2 + 1 ").Value());
         }
 
         [Fact]
@@ -116,7 +116,7 @@ namespace SpiceSharpParser.Tests.Parsers
             var parser = new SpiceExpressionParser();
 
             // act and assert
-            Assert.Equal(2.1, parser.Parse("2,1")());
+            Assert.Equal(2.1, parser.Parse("2,1").Value());
         }
 
         [Fact]
@@ -126,7 +126,7 @@ namespace SpiceSharpParser.Tests.Parsers
             var parser = new SpiceExpressionParser();
 
             // act and assert
-            Assert.Equal((2 * Math.PI) + (2 * Math.E), parser.Parse("PI + e + pi + E")());
+            Assert.Equal((2 * Math.PI) + (2 * Math.E), parser.Parse("PI + e + pi + E").Value());
         }
 
         [Fact]
@@ -136,7 +136,7 @@ namespace SpiceSharpParser.Tests.Parsers
             var parser = new SpiceExpressionParser();
 
             // act and assert
-            Assert.Equal(-1, parser.Parse("-1")());
+            Assert.Equal(-1, parser.Parse("-1").Value());
         }
 
         [Fact]
@@ -147,10 +147,10 @@ namespace SpiceSharpParser.Tests.Parsers
 
             // act and assert
             parser.Parameters["TEMP"] = new Common.Evaluation.LazyExpression((e, c) => 26);
-            Assert.Equal(2.52e-9, parser.Parse("TEMP == 26 ? 2.52e-9 : 2.24e-9")());
+            Assert.Equal(2.52e-9, parser.Parse("TEMP == 26 ? 2.52e-9 : 2.24e-9").Value());
 
             parser.Parameters["TEMP"] = new Common.Evaluation.LazyExpression((e, c) => 27);
-            Assert.Equal(2.24e-9, parser.Parse("TEMP == 26 ? 2.52e-9 : 2.24e-9")());
+            Assert.Equal(2.24e-9, parser.Parse("TEMP == 26 ? 2.52e-9 : 2.24e-9").Value());
         }
 
         [Fact]
@@ -160,7 +160,7 @@ namespace SpiceSharpParser.Tests.Parsers
             var parser = new SpiceExpressionParser();
 
             // act and assert
-            Assert.Equal(12.3 * 1e-6, parser.Parse("12.3μ")());
+            Assert.Equal(12.3 * 1e-6, parser.Parse("12.3μ").Value());
         }
 
         [Fact]
@@ -194,7 +194,7 @@ namespace SpiceSharpParser.Tests.Parsers
             });
 
             // act and assert
-            Assert.Equal(8, parser.Parse(" 2 + @obj1[param] + @obj2[param2] + @obj3.subObj[param3]")());
+            Assert.Equal(8, parser.Parse(" 2 + @obj1[param] + @obj2[param2] + @obj3.subObj[param3]").Value());
         }
     }
 }

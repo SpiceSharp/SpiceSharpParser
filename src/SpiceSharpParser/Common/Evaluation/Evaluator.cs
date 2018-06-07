@@ -57,7 +57,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
                 return Parameters[expression].GetValue(context);
             }
 
-            return ExpressionParser.Parse(expression, context, this)();
+            return ExpressionParser.Parse(expression, context, this).Value();
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         public IEnumerable<string> GetParametersFromExpression(string expression)
         {
             var result = ExpressionParser.Parse(expression, null, this);
-            return ExpressionParser.ParametersFoundInLastParse; //TODO: it's not thread safe ...
+            return result.FoundParameters;
         }
 
         /// <summary>
@@ -253,6 +253,23 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         }
 
         /// <summary>
+        /// Invalidates paramters.
+        /// </summary>
+        public void InvalidateParameters()
+        {
+            var clonedParameters = new Dictionary<string, LazyExpression>(Parameters);
+            foreach (var parameter in clonedParameters)
+            {
+                parameter.Value.Invalidate();
+            }
+
+            foreach (var parameter in clonedParameters)
+            {
+                Refresh(parameter.Key);
+            }
+        }
+
+        /// <summary>
         /// Refreshes expressions in evaluator that contains given parameter.
         /// </summary>
         /// <param name="parameterName">A parameter name.</param>
@@ -263,20 +280,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
                 var setter = definion.Setter;
                 var expression = definion.ValueExpression;
 
-                var newValue = ExpressionParser.Parse(expression, null, this)();
+                var newValue = ExpressionParser.Parse(expression, null, this).Value();
                 setter(newValue);
-            }
-        }
-
-        /// <summary>
-        /// Invalidates paramters.
-        /// </summary>
-        public void InvalidateParameters()
-        {
-            foreach (var parameter in new Dictionary<string, LazyExpression>(Parameters))
-            {
-                parameter.Value.Invalidate();
-                Refresh(parameter.Key);
             }
         }
     }

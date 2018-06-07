@@ -122,11 +122,6 @@ namespace SpiceSharpParser.Parsers.Expression
         public Dictionary<string, LazyExpression> Parameters { get; protected set; } = new Dictionary<string, LazyExpression>();
 
         /// <summary>
-        /// Gets or sets the parameters used in last parsed expression.
-        /// </summary>
-        public Collection<string> ParametersFoundInLastParse { get; protected set; }
-
-        /// <summary>
         /// Gets or sets custom functions.
         /// </summary>
         public Dictionary<string, CustomFunction> CustomFunctions { get; protected set; } = new Dictionary<string, CustomFunction>();
@@ -180,9 +175,9 @@ namespace SpiceSharpParser.Parsers.Expression
         /// </summary>
         /// <param name="expression">The expression</param>
         /// <returns>Returns the result of parse.</returns>
-        public Func<double> Parse(string expression, object context = null, IEvaluator evaluator = null)
+        public ExpressionParseResult Parse(string expression, object context = null, IEvaluator evaluator = null)
         {
-            ParametersFoundInLastParse = new Collection<string>();
+            var foundParameters = new Collection<string>();
 
             // Initialize for parsing the expression
             index = 0;
@@ -495,7 +490,7 @@ namespace SpiceSharpParser.Parsers.Expression
                             {
                                 if (Parameters.TryGetValue(id, out var parameter))
                                 {
-                                    ParametersFoundInLastParse.Add(id);
+                                    foundParameters.Add(id);
                                 }
 
                                 virtualParamtersStack.Push(id);
@@ -506,21 +501,11 @@ namespace SpiceSharpParser.Parsers.Expression
                             }
                             else if (Parameters.TryGetValue(id, out var lazyParameter))
                             {
-                                ParametersFoundInLastParse.Add(id);
+                                foundParameters.Add(id);
                                 outputStack.Push(() =>
                                 {
                                     return lazyParameter.GetValue(context);
                                 });
-                                /*
-                                if (evaluator != null && lazyParameter.Expression != expression)
-                                {
-                                   
-                                }
-                                else
-                                {
-                                    var coma = operatorStack.Count == 0;
-                                    outputStack.Push(() => ParseDouble(parameterExpression, coma));
-                                }*/
                             }
                             else
                             {
@@ -610,7 +595,7 @@ namespace SpiceSharpParser.Parsers.Expression
                 throw new Exception("Invalid expression");
             }
 
-            return  outputStack.Pop();
+            return new ExpressionParseResult() { Value = outputStack.Pop(), FoundParameters = foundParameters };
         }
 
         private CustomFunctionOperator CreateOperatorForCustomFunction(string functionName, IEvaluator evaluator)
