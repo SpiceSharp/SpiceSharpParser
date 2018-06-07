@@ -15,7 +15,7 @@ namespace SpiceSharpParser.Common
         public ActionExpression(string expression, Action<double> action)
         {
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
-            action = action ?? throw new ArgumentNullException(nameof(action));
+            Action = action ?? throw new ArgumentNullException(nameof(action));
         }
 
         /// <summary>

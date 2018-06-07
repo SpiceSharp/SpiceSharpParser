@@ -39,7 +39,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         }
 
         [Fact]
-        public void AddDynamicExpressionTest()
+        public void AddActionExpressionTest()
         {
             // arrange
             var v = new SpiceEvaluator();
@@ -48,7 +48,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             double expressionValue = 0;
 
             // act
-            v.AddDynamicExpression(new DoubleExpression("xyz +1", (double newValue) => { expressionValue = newValue; }), new string[] { "xyz" });
+            v.AddActionExpression(new ActionExpression("xyz +1", (double newValue) => { expressionValue = newValue; }), new string[] { "xyz" });
             v.SetParameter("xyz", 14);
 
             // assert
