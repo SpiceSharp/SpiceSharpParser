@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints
 {
@@ -21,7 +23,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints
         /// <summary>
         /// Gets the name of the print.
         /// </summary>
-        public string Name { get;  }
+        public string Name { get; }
 
         /// <summary>
         /// Gets the rows.
@@ -32,5 +34,16 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints
         /// Gets the columns names.
         /// </summary>
         public List<string> ColumnNames { get; }
+
+        /// <summary>
+        /// Convert print data to raw data.
+        /// </summary>
+        public Tuple<string, IEnumerable<string>, IEnumerable<double[]>> ToRaw()
+        {
+            return new Tuple<string, IEnumerable<string>, IEnumerable<double[]>>(
+                Name,
+                ColumnNames,
+                Rows.Select(row => row.Columns.ToArray()));
+        }
     }
 }

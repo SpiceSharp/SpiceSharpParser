@@ -1,9 +1,28 @@
 using Xunit;
+using SpiceSharpParser.Common.Writers;
 
 namespace SpiceSharpParser.IntegrationTests
 {
     public class PrintTest : BaseTest
     {
+        [Fact]
+        public void WriteToCsvTest()
+        {
+            var parseResult = ParseNetlist(
+               "The initial voltage on capacitor is 0V. The result should be an exponential converging to dcVoltage.",
+                "C1 OUT 0 1e-6",
+                "R1 IN OUT 10e3",
+                "V1 IN 0 10",
+                ".IC V(OUT)=0.0",
+                ".TRAN 1e-8 10e-6",
+                ".PRINT TRAN",
+                ".END");
+
+            RunSimulations(parseResult);
+            Assert.Single(parseResult.Prints);
+            parseResult.Prints[0].Write("data.csv");
+        }
+
         [Fact]
         public void TranTest()
         {
