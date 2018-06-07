@@ -35,9 +35,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 
                         //TODO: Please refactor this, there should be a better API for that
                         context.Evaluator.SetParameter(name, expression);
+
                         var depParameters = context.Evaluator.GetParametersFromExpression(expression);
-                        context.Evaluator.AddDynamicExpression(
-                            new DoubleExpression(
+                        context.Evaluator.AddActionExpression(
+                            new ActionExpression(
                                 expression,
                                 (val) => context.Evaluator.SetParameter(name, expression)),
                             depParameters);

@@ -40,7 +40,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
             string expression = statement.Parameters.GetString(1);
             var parameters = context.Evaluator.GetParametersFromExpression(expression);
 
-            context.Evaluator.AddNamedDynamicExpression(expressionName, new DoubleExpression(expression, (newVal) => { }), parameters);
+            context.Evaluator.AddNamedActionExpression(expressionName, new ActionExpression(expression, (newVal) => { }), parameters);
         }
     }
 }

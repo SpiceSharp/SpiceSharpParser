@@ -18,7 +18,7 @@ namespace SpiceSharpParser.Common
         /// </summary>
         /// <param name="expression">An expression to add.</param>
         /// <param name="parameters">Parameters of expression.</param>
-        void AddDynamicExpression(DoubleExpression expression, IEnumerable<string> parameters);
+        void AddActionExpression(ActionExpression expression, IEnumerable<string> parameters);
 
         /// <summary>
         /// Adds let expression to registry.
@@ -26,7 +26,7 @@ namespace SpiceSharpParser.Common
         /// <param name="expressionName">An expression name.</param>
         /// <param name="expression">An expression value.</param>
         /// <param name="parameters">Parameters of expression.</param>
-        void AddNamedDynamicExpression(string expressionName, DoubleExpression expression, IEnumerable<string> parameters);
+        void AddNamedActionExpression(string expressionName, ActionExpression expression, IEnumerable<string> parameters);
 
         /// <summary>
         /// Evaluates a specific string to double.

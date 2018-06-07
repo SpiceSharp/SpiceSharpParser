@@ -101,8 +101,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 
             Result.SetInitialVoltageCondition(fullNodeName, initialValue);
 
-            Evaluator.AddDynamicExpression(
-                new DoubleExpression(
+            Evaluator.AddActionExpression(
+                new ActionExpression(
                     expression,
                     value => Result.SetInitialVoltageCondition(nodeName, value)),
                 Evaluator.GetParametersFromExpression(expression));
@@ -172,7 +172,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
                 // re-evaluation makes sense only if there is a setter
                 if (setter != null)
                 {
-                    Evaluator.AddDynamicExpression(new DoubleExpression(expression, setter), parameters);
+                    Evaluator.AddActionExpression(new ActionExpression(expression, setter), parameters);
                 }
 
                 return true;

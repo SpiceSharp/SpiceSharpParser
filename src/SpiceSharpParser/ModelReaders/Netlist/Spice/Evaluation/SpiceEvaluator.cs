@@ -1,11 +1,11 @@
-﻿using SpiceSharp;
+﻿using System.Globalization;
+using SpiceSharp;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Parsers.Expression;
-using System.Globalization;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
 {

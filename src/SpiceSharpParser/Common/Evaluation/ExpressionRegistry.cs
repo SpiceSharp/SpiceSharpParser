@@ -5,8 +5,8 @@ namespace SpiceSharpParser.Common
 {
     public class ExpressionRegistry
     {
-        private readonly Dictionary<string, List<DoubleExpression>> expressionsByParameterName = new Dictionary<string, List<DoubleExpression>>();
-        private readonly Dictionary<string, DoubleExpression> expressionsByName = new Dictionary<string, DoubleExpression>();
+        private readonly Dictionary<string, List<ActionExpression>> expressionsByParameterName = new Dictionary<string, List<ActionExpression>>();
+        private readonly Dictionary<string, ActionExpression> expressionsByName = new Dictionary<string, ActionExpression>();
 
         /// <summary>
         /// Gets expressions that depend on given parameter.
@@ -15,7 +15,7 @@ namespace SpiceSharpParser.Common
         /// <returns>
         /// An enumerable of expressions.
         /// </returns>
-        public IEnumerable<DoubleExpression> GetDependentExpressions(string parameterName)
+        public IEnumerable<ActionExpression> GetDependentExpressions(string parameterName)
         {
             if (expressionsByParameterName.ContainsKey(parameterName))
             {
@@ -23,7 +23,7 @@ namespace SpiceSharpParser.Common
             }
             else
             {
-                return new List<DoubleExpression>();
+                return new List<ActionExpression>();
             }
         }
 
@@ -32,7 +32,7 @@ namespace SpiceSharpParser.Common
         /// </summary>
         /// <param name="expression">An expression to add.</param>
         /// <param name="expressionParameters">A list of expression parameters.</param>
-        public void Add(DoubleExpression expression, IEnumerable<string> expressionParameters)
+        public void Add(ActionExpression expression, IEnumerable<string> expressionParameters)
         {
             foreach (var parameter in expressionParameters)
             {
@@ -42,7 +42,7 @@ namespace SpiceSharpParser.Common
                 }
                 else
                 {
-                    expressionsByParameterName[parameter] = new List<DoubleExpression>() { expression };
+                    expressionsByParameterName[parameter] = new List<ActionExpression>() { expression };
                 }
             }
         }
@@ -53,7 +53,7 @@ namespace SpiceSharpParser.Common
         /// <param name="expressionName">An expression name to add.</param>
         /// <param name="expression">An expression to add.</param>
         /// <param name="expressionParameters">A list of expression parameters</param>
-        public void Add(string expressionName, DoubleExpression expression, IEnumerable<string> expressionParameters)
+        public void Add(string expressionName, ActionExpression expression, IEnumerable<string> expressionParameters)
         {
             expressionsByName[expressionName] = expression;
             Add(expression, expressionParameters);
@@ -79,7 +79,7 @@ namespace SpiceSharpParser.Common
         /// </returns>
         public string GetExpression(string expressionName)
         {
-            return expressionsByName[expressionName].ValueExpression;
+            return expressionsByName[expressionName].Expression;
         }
     }
 }

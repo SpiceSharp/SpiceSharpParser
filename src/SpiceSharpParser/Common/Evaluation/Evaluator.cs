@@ -87,7 +87,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// </summary>
         /// <param name="expression">An expression to add.</param>
         /// <param name="parameters">Parameters of expression.</param>
-        public void AddDynamicExpression(DoubleExpression expression, IEnumerable<string> parameters)
+        public void AddActionExpression(ActionExpression expression, IEnumerable<string> parameters)
         {
             Registry.Add(expression, parameters);
         }
@@ -98,7 +98,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// <param name="expressionName">Name of expression.</param>
         /// <param name="expression">An expression to add.</param>
         /// <param name="parameters">Parameters of expression.</param>
-        public void AddNamedDynamicExpression(string expressionName, DoubleExpression expression, IEnumerable<string> parameters)
+        public void AddNamedActionExpression(string expressionName, ActionExpression expression, IEnumerable<string> parameters)
         {
             Registry.Add(expressionName, expression, parameters);
         }
@@ -275,13 +275,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// <param name="parameterName">A parameter name.</param>
         private void Refresh(string parameterName)
         {
-            foreach (DoubleExpression definion in Registry.GetDependentExpressions(parameterName))
+            foreach (ActionExpression actionExpression in Registry.GetDependentExpressions(parameterName))
             {
-                var setter = definion.Setter;
-                var expression = definion.ValueExpression;
-
-                var newValue = ExpressionParser.Parse(expression, null, this).Value();
-                setter(newValue);
+                var newValue = ExpressionParser.Parse(actionExpression.Expression, null, this).Value();
+                actionExpression.Action(newValue);
             }
         }
     }
