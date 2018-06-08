@@ -1,4 +1,6 @@
 ﻿using SpiceSharpParser.Common;
+using System;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions
 {
@@ -19,14 +21,15 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
 
             function.Logic = (args, context, evaluator) =>
             {
-                var functionEvaluator = evaluator.CreateChildEvaluator();
-                var parameter = args[0];
-                var parameterValue = functionEvaluator.EvaluateDouble(parameter.ToString());
+                var parameterValue = (double)args[0];
+
+                var points = new List<Tuple<double, double>>();
 
                 for (var i = 1; i < args.Length - 1; i += 2)
                 {
-                    var pointX = functionEvaluator.EvaluateDouble(args[i].ToString());
-                    var pointY = functionEvaluator.EvaluateDouble(args[i + 1].ToString());
+                    var pointX = (double)args[i];
+                    var pointY = (double)args[i + 1];
+                    points.Add(new Tuple<double, double>(pointX, pointY));
 
                     if (pointX == parameterValue)
                     {
@@ -34,10 +37,58 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
                     }
                 }
 
-                return 0;
+                points.Sort((x1, x2) => x1.Item1.CompareTo(x2.Item1));
+                if (points.Count == 1)
+                {
+                    throw new Exception("There is only one point for table interpolation.");
+                }
+
+                // Create point + 1 line parameters for each segment of line
+                LineParameters[] linesParameters = CreateLineParameters(points);
+
+                int index = 0;
+
+                while (index < points.Count && points[index].Item1 < parameterValue)
+                {
+                    index++;
+                }
+
+                return (linesParameters[index].A * parameterValue) + linesParameters[index].B;
             };
 
             return function;
         }
+
+        private static LineParameters[] CreateLineParameters(List<Tuple<double, double>> points)
+        {
+            List<LineParameters> result = new List<LineParameters>();
+
+            for (var i = 0; i < points.Count - 1; i++)
+            {
+                double x1 = points[i].Item1;
+                double x2 = points[i + 1].Item1;
+                double y1 = points[i].Item2;
+                double y2 = points[i + 1].Item2;
+
+                double a = (y2 - y1) / (x2 - x1);
+
+                result.Add(new LineParameters()
+                {
+                    A = a,
+                    B = y1 - a * x1,
+                });
+            }
+
+            result.Insert(0, result[0]);
+            result.Add(result[result.Count - 1]);
+            return result.ToArray();
+        }
+    }
+
+    public class LineParameters
+    {
+        public double A { get; set; }
+
+        public double B { get; set; }
     }
 }

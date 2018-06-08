@@ -103,13 +103,30 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         }
 
         [Fact]
+        public void TableInterpolationTest()
+        {
+            SpiceEvaluator v = new SpiceEvaluator();
+
+            v.SetParameter("N", 1.5);
+            Assert.Equal(-5, v.EvaluateDouble("table(N, 1, 0, 2, -10"));
+
+            v.SetParameter("N", 3);
+            Assert.Equal(-20, v.EvaluateDouble("table(N, 1, 0, 2, -10"));
+
+            v.SetParameter("N", 0);
+            Assert.Equal(10, v.EvaluateDouble("table(N, 1, 0, 2, -10"));
+
+            v.SetParameter("N", -1);
+            Assert.Equal(20, v.EvaluateDouble("table(N, 1, 0, 2, -10"));
+        }
+
+        [Fact]
         public void TableAdvancedTest()
         {
             SpiceEvaluator v = new SpiceEvaluator();
             v.SetParameter("N", 1.0);
             Assert.Equal(10, v.EvaluateDouble("table(N, 1, pow(10, 1), 2 + 0, 20, 3, 30)"));
         }
-
 
         [Fact]
         public void EvaluateWithComaTest()
@@ -123,8 +140,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act and assert
             Assert.Equal(8, evaluator.EvaluateDouble("2**3"));
         }
@@ -134,8 +149,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act and assert
             Assert.Equal(7, evaluator.EvaluateDouble("2**3-1"));
         }
@@ -145,8 +158,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act and assert
             Assert.Equal(8, evaluator.EvaluateDouble("1+2**3-1"));
         }
@@ -156,8 +167,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act and assert
             Assert.Equal(17, evaluator.EvaluateDouble("1+2**3*2"));
         }
@@ -167,8 +176,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act and assert
             Assert.Equal(1, evaluator.EvaluateDouble("round(1.2)"));
             Assert.Equal(2, evaluator.EvaluateDouble("round(1.9)"));
@@ -179,8 +186,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.LtSpice);
-            
-
             // act and assert
             Assert.Equal(0, evaluator.EvaluateDouble("pow(-2,1.5)"));
         }
@@ -190,8 +195,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.LtSpice);
-            
-
             // act and assert
             Assert.Equal(8, evaluator.EvaluateDouble("pwr(-2,3)"));
         }
@@ -201,8 +204,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.HSpice);
-            
-
             // act and assert
             Assert.Equal(-8, evaluator.EvaluateDouble("pwr(-2,3)"));
         }
@@ -212,8 +213,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.SmartSpice);
-            
-
             // act and assert
             Assert.Equal(-8, evaluator.EvaluateDouble("pwr(-2,3)"));
         }
@@ -223,8 +222,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.LtSpice);
-            
-
             // act and assert
             Assert.Equal(0, evaluator.EvaluateDouble("-2**1.5"));
         }
@@ -234,8 +231,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.SmartSpice);
-            
-
             // act and assert
             Assert.Equal(Math.Pow(2, (int)1.5), evaluator.EvaluateDouble("pow(-2,1.5)"));
         }
@@ -245,8 +240,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.HSpice);
-            
-
             // act and assert
             Assert.Equal(Math.Pow(-2, (int)1.5), evaluator.EvaluateDouble("pow(-2,1.5)"));
         }
@@ -256,8 +249,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.HSpice);
-            
-
             // act and assert
             Assert.Equal(0, evaluator.EvaluateDouble("sgn(0)"));
             Assert.Equal(-1, evaluator.EvaluateDouble("sgn(-1)"));
@@ -269,8 +260,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act and assert
             Assert.Equal(2, evaluator.EvaluateDouble("sqrt(4)"));
         }
@@ -280,8 +269,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.HSpice);
-            
-
             // act and assert
             Assert.Equal(-2, evaluator.EvaluateDouble("sqrt(-4)"));
         }
@@ -291,8 +278,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.SmartSpice);
-            
-
             // act and assert
             Assert.Equal(2, evaluator.EvaluateDouble("sqrt(-4)"));
         }
@@ -302,8 +287,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.LtSpice);
-            
-
             // act and assert
             Assert.Equal(0, evaluator.EvaluateDouble("sqrt(-4)"));
         }
@@ -313,10 +296,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
             evaluator.SetParameter("x1", 1);
-
-
             // act and assert
             Assert.Equal(1, evaluator.EvaluateDouble("def(x1)"));
         }
@@ -326,8 +306,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act and assert
             Assert.Equal(0, evaluator.EvaluateDouble("def(x1)"));
         }
@@ -337,8 +315,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act and assert
             Assert.Equal(1, evaluator.EvaluateDouble("abs(-1)"));
         }
@@ -348,8 +324,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act and assert
             Assert.Equal(1, evaluator.EvaluateDouble("buf(0.6)"));
             Assert.Equal(0, evaluator.EvaluateDouble("buf(0.3)"));
@@ -360,8 +334,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act and assert
             Assert.Equal(2, evaluator.EvaluateDouble("cbrt(8)"));
         }
@@ -371,8 +343,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act and assert
             Assert.Equal(3, evaluator.EvaluateDouble("ceil(2.9)"));
         }
@@ -382,8 +352,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator(SpiceEvaluatorMode.SmartSpice);
-            
-
             // act and assert
             Assert.Equal(20, evaluator.EvaluateDouble("db(-10)"));
         }
@@ -393,8 +361,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act and assert
             Assert.Equal(-20, evaluator.EvaluateDouble("db(-10)"));
         }
@@ -404,8 +370,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act and assert
             Assert.Equal(Math.Exp(2), evaluator.EvaluateDouble("exp(2)"));
         }
@@ -415,8 +379,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act and assert
             Assert.Equal(3, evaluator.EvaluateDouble("fabs(-3)"));
         }
@@ -426,8 +388,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act
             var res = evaluator.EvaluateDouble("flat(10)");
 
@@ -440,8 +400,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act and assert
             Assert.Equal(2, evaluator.EvaluateDouble("floor(2.3)"));
         }
@@ -451,8 +409,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act and assert
             Assert.Equal(5, evaluator.EvaluateDouble("hypot(3,4)"));
         }
@@ -462,8 +418,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act and assert
             Assert.Equal(3, evaluator.EvaluateDouble("if(0.5, 2, 3)"));
             Assert.Equal(2, evaluator.EvaluateDouble("if(0.6, 2, 3)"));
@@ -474,7 +428,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
 
             // act and assert
             Assert.Equal(1, evaluator.EvaluateDouble("int(1.3)"));
@@ -485,8 +438,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act and assert
             Assert.Equal(0, evaluator.EvaluateDouble("inv(0.51)"));
             Assert.Equal(1, evaluator.EvaluateDouble("inv(0.5)"));
@@ -497,8 +448,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
-
             // act and assert
             Assert.Equal(1, evaluator.EvaluateDouble("ln(e)"));
         }
@@ -508,7 +457,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
 
             // act and assert
             Assert.Equal(1, evaluator.EvaluateDouble("log(e)"));
@@ -519,7 +467,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
 
             // act and assert
             Assert.Equal(1, evaluator.EvaluateDouble("log10(10)"));
@@ -530,7 +477,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         {
             // arrange
             var evaluator = new SpiceEvaluator();
-            
 
             // act and assert
             Assert.Equal(100, evaluator.EvaluateDouble("max(10, -10, 1, 20, 100, 2)"));
