@@ -1,5 +1,6 @@
 using Xunit;
 using SpiceSharpParser.Common.Writers;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
 
 namespace SpiceSharpParser.IntegrationTests
 {
@@ -20,7 +21,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             RunSimulations(parseResult);
             Assert.Single(parseResult.Prints);
-            parseResult.Prints[0].Write("data.csv");
+            parseResult.Prints[0].ToCsv("data2.csv", ";", addCsvHeader: true);
         }
 
         [Fact]

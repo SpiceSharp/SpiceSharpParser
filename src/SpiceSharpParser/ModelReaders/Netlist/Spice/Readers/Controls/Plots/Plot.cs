@@ -27,24 +27,5 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots
         /// Gets the series in the plot
         /// </summary>
         public List<Series> Series { get; }
-
-        /// <summary>
-        /// Exports the plot's series to CSV
-        /// </summary>
-        /// <param name="seriesIndex">An index of series to export</param>
-        /// <returns>
-        /// A string with CSV
-        /// </returns>
-        public string ExportToCSV(int seriesIndex = 0)
-        {
-            StringBuilder builder = new StringBuilder();
-
-            foreach (var point in Series[seriesIndex].Points)
-            {
-                builder.AppendLine(point.X + ";" + point.Y + ";");
-            }
-
-            return builder.ToString();
-        }
     }
 }
