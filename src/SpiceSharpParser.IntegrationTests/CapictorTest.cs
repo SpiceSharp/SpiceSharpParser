@@ -23,7 +23,7 @@ namespace SpiceSharpParser.IntegrationTests
             // Create references
             double[] references = { 1.0 };
 
-            Compare(new double[] { export }, references);
+            EqualsWithTol(new double[] { export }, references);
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             var exports = RunTransientSimulation(netlist, "V(OUT)");
             Func<double, double>[] references = { t => dcVoltage * (1.0 - Math.Exp(-t / tau)) };
-            Compare(exports, references);
+            EqualsWithTol(exports, references);
         }
     }
 }

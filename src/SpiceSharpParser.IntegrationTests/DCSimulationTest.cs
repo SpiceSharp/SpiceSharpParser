@@ -21,7 +21,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             // Create references
             Func<double, double>[] references = { sweep => sweep * 10.0 };
-            Compare(exports, references);
+            EqualsWithTol(exports, references);
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             // Create references
             Func<double, double>[] references = { sweep => sweep };
-            Compare(exports, references);
+            EqualsWithTol(exports, references);
         }
     }
 }
