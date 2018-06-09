@@ -509,7 +509,7 @@ namespace SpiceSharpParser.Parsers.Expression
                             }
                             else
                             {
-                                throw new Exception("Unknown parameter");
+                                throw new UnknownParameterException() { Name = id };
                             }
 
                             infixPostfix = true;

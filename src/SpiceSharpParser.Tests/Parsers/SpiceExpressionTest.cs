@@ -1,4 +1,5 @@
 ﻿using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Parsers.Expression;
 using System;
 using Xunit;
@@ -74,7 +75,7 @@ namespace SpiceSharpParser.Tests.Parsers
             var parser = new SpiceExpressionParser();
 
             // act and assert
-            Assert.Throws<Exception>(() => parser.Parse("x + 1"));
+            Assert.Throws<UnknownParameterException>(() => parser.Parse("x + 1"));
         }
 
         [Fact]

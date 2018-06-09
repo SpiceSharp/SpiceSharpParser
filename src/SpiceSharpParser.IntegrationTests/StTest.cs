@@ -43,6 +43,24 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
+        public void ListParamWithoutDeclarationCountTest()
+        {
+            var result = ParseNetlist(
+                "Diode circuit",
+                "D1 OUT 0 1N914",
+                "R1 OUT 1 100",
+                "V1 1 0 {X}",
+                ".model 1N914 D(Is=2.52e-9 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
+                ".OP",
+                ".SAVE i(V1)",
+                ".ST LIST X 1 2 3 4 5",
+                ".END");
+
+            Assert.Equal(5, result.Exports.Count);
+            Assert.Equal(5, result.Simulations.Count);
+        }
+
+        [Fact]
         public void ListParamCountTest()
         {
             var result = ParseNetlist(

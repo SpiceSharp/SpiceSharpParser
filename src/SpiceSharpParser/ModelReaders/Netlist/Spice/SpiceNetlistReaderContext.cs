@@ -67,6 +67,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
             Models.Add(new MosfetModelGenerator());
 
             // Register controls
+            Controls.Add(new StRegisterControl());
+            Controls.Add(new StepRegisterControl());
             Controls.Add(new ParamControl());
             Controls.Add(new FuncControl());
             Controls.Add(new GlobalControl());

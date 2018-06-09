@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
@@ -30,7 +31,13 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
             ParamControl paramControl = new ParamControl();
             foreach (Control param in statements.Where(statement => statement is Control c && c.Name.ToLower() == "param"))
             {
-                paramControl.Read(param, readingContext);
+                try
+                {
+                    paramControl.Read(param, readingContext);
+                }
+                catch (UnknownParameterException)
+                {
+                }
             }
 
             return ReadIfs(statements);

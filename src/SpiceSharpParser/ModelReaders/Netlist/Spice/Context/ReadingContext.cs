@@ -136,7 +136,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
             }
             catch (Exception ex)
             {
-                throw new Exception("Exception during evaluation of expression: " + expression);
+                throw new Exception("Exception during evaluation of expression: " + expression, ex);
             }
         }
 
