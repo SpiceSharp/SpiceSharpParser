@@ -101,10 +101,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
                         {
                             SetIndependentSource(paramToSet, @object);
                         }
-                        else
-                        {
-                            UpdateSimulationParameter(context, paramToSet);
-                        }
                     }
 
                     if (paramToSet.Key is ReferenceParameter rp)
@@ -116,6 +112,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
                     {
                         UpdateModelParameter(context, paramToSet, bp);
                     }
+
+                    UpdateSimulationParameter(context, paramToSet);
+
                 }
             };
         }
@@ -142,14 +141,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
 
         protected void UpdateSimulationParameter(IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet)
         {
-            if (context.Evaluator.GetParameterNames().Contains(paramToSet.Key.Image))
-            {
-                context.Evaluator.SetParameter(paramToSet.Key.Image, paramToSet.Value);
-            }
-            else
-            {
-                throw new Exception("Unknown parameter");
-            }
+            context.Evaluator.SetParameter(paramToSet.Key.Image, paramToSet.Value);
         }
 
         protected void SetIndependentSource(KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet, Entity @object)
@@ -248,10 +240,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
         {
             if (temperatureInKelvin.HasValue)
             {
-                return string.Format("{0} - {1} - at {2} Kelvins ({3} Celsius)", context.Result.Simulations.Count()+1, SpiceName, temperatureInKelvin.Value, temperatureInKelvin.Value - SpiceSharp.Circuit.CelsiusKelvin);
+                return string.Format("#{0} {1} - at {2} Kelvins ({3} Celsius)", context.Result.Simulations.Count()+1, SpiceName, temperatureInKelvin.Value, temperatureInKelvin.Value - SpiceSharp.Circuit.CelsiusKelvin);
             }
 
-            return string.Format("{0} - {1}", context.Result.Simulations.Count() + 1, SpiceName);
+            return string.Format("#{0} {1}", context.Result.Simulations.Count() + 1, SpiceName);
         }
 
         protected void SetSimulationTemperatures(BaseSimulation simulation, double? operatingTemperatureInKelvins, double? nominalTemperatureInKelvins)

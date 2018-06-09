@@ -83,7 +83,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         {
             bool list = false;
             int index = 0;
-            for (var i = 1; i <= 2; i++)
+            for (var i = 0; i <= 2; i++)
             {
                 if (parameters[i].Image.ToLower() == "list")
                 {

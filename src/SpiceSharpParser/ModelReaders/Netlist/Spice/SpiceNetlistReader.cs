@@ -50,6 +50,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
 
             // Read statements form input netlist using created context
             Settings.Context.Read(netlist.Statements, readingContext);
+            result.Evaluator = mainEvaluator;
 
             return result;
         }

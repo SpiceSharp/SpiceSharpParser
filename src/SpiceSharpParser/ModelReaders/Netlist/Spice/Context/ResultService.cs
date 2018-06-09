@@ -31,6 +31,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         public IEnumerable<Simulation> Simulations => Result.Simulations;
 
         /// <summary>
+        /// Gets all exports.
+        /// </summary>
+        public IEnumerable<Export> Exports => Result.Exports;
+
+        /// <summary>
         /// Gets the circuit.
         /// </summary>
         public Circuit Circuit => Result.Circuit;

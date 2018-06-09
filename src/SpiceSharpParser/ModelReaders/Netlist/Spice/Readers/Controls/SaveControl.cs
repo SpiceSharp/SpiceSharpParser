@@ -9,6 +9,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
@@ -78,6 +79,62 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                     AddLetExport(context, simulationType, s);
                 }
             }
+
+            CreatePlotsForParameterSweeps(context);
+        }
+
+        private void CreatePlotsForParameterSweeps(IReadingContext context)
+        {
+            if (context.Result.SimulationConfiguration.ParameterSweeps.Count > 0)
+            {
+                // 1. Find first parametr sweep (it will decide about X-axis scale)
+                var firstParameterSweep = context.Result.SimulationConfiguration.ParameterSweeps[0];
+
+                // 2. Find all .OP exports
+                List<Export> opExports = new List<Export>();
+                foreach (var export in context.Result.Exports)
+                {
+                    if (export.Simulation is OP)
+                    {
+                        opExports.Add(export);
+                    }
+                }
+
+                //3. Group them by name (name contains exported variable)
+                var groups = opExports.GroupBy(export => export.Name);
+
+                foreach (var group in groups)
+                {
+                    string variableName = group.Key;
+                    var exports = group.ToList();
+
+                    CreateSweepPlot(firstParameterSweep, variableName, exports, context);
+                }
+            }
+        }
+
+        private void CreateSweepPlot(ParameterSweep firstParameterSweep, string variableName, List<Export> exports, IReadingContext context)
+        {
+            var plot = new Plot("OP - Parameter sweep: " + variableName);
+
+            for (var i = 0; i < exports.Count; i++)
+            {
+                var series = new Series(exports[i].Simulation.Name.ToString()) { XUnit = firstParameterSweep.Parameter.Image, YUnit = exports[i].QuantityUnit };
+                AddPointsToSeries(firstParameterSweep, exports[i], context, series);
+
+                plot.Series.Add(series);
+            }
+
+            context.Result.AddPlot(plot);
+        }
+
+        private static void AddPointsToSeries(ParameterSweep firstParameterSweep, Export export, IReadingContext context, Series series)
+        {
+            export.Simulation.OnExportSimulationData += (object sender, ExportDataEventArgs e) =>
+            {
+                var firstParameterSweepValue = context.Evaluator.GetParameterValue(firstParameterSweep.Parameter.Image, sender);
+                series.Points.Add(new Point() { X = firstParameterSweepValue, Y = export.Extract() });
+            };
         }
 
         private void CreateExportsForAllVoltageAndCurrents(IReadingContext context)

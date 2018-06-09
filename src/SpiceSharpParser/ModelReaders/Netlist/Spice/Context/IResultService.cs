@@ -15,6 +15,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 
         IEnumerable<Simulation> Simulations { get; }
 
+        IEnumerable<Export> Exports { get; }
+
         Circuit Circuit { get; }
 
         void AddWarning(string warning);
@@ -32,6 +34,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         void SetInitialVoltageCondition(string nodeName, double initialVoltage);
 
         bool FindObject(string objectName, out Entity @object);
+
         void AddPrint(Print print);
     }
 }
