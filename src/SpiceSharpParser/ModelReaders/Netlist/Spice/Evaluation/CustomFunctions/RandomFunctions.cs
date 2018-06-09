@@ -1,19 +1,54 @@
 ﻿using System;
+using System.Threading;
 using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions
 {
     public class RandomFunctions
     {
+        private static int tickCount = Environment.TickCount;
+        private static ThreadLocal<Random> threadLocalRandom = new ThreadLocal<Random>(() => new Random(Interlocked.Increment(ref tickCount)));
+
         /// <summary>
-        /// Create a random() user function. It generates number between 0.0 and 1.0 (uniform distribution).
+        /// Create a gaus() custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of random gaus function.
+        /// </returns>
+        public static CustomFunction CreateGaus()
+        {
+            var random = threadLocalRandom.Value;
+
+            CustomFunction function = new CustomFunction();
+            function.Name = "gaus";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 1;
+
+            function.Logic = (args, context, evaluator) =>
+            {
+                if (args.Length != 1)
+                {
+                    throw new Exception("gaus expects one argument");
+                }
+                double p1 = 1 - random.NextDouble();
+                double p2 = 1 - random.NextDouble();
+
+                double std = Math.Sqrt(-2.0 * Math.Log(p1)) * Math.Sin(2.0 * Math.PI * p2);
+                return (double)args[0] * std;
+            };
+
+            return function;
+        }
+
+        /// <summary>
+        /// Create a random() custom function. It generates number between 0.0 and 1.0 (uniform distribution).
         /// </summary>
         /// <returns>
         /// A new instance of random custom function.
         /// </returns>
         public static CustomFunction CreateRandom()
         {
-            Random randomGenerator = new Random(Environment.TickCount);
+            var random = threadLocalRandom.Value;
 
             CustomFunction function = new CustomFunction();
             function.Name = "random";
@@ -26,21 +61,21 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
                 {
                     throw new Exception("random expects no arguments");
                 }
-                return randomGenerator.NextDouble();
+                return random.NextDouble();
             };
 
             return function;
         }
 
         /// <summary>
-        /// Create a flat() user function. It generates number between -x and +x.
+        /// Create a flat() custom function. It generates number between -x and +x.
         /// </summary>
         /// <returns>
         /// A new instance of random custom function.
         /// </returns>
         public static CustomFunction CreateFlat()
         {
-            Random randomGenerator = new Random(Environment.TickCount);
+            var random = threadLocalRandom.Value;
 
             CustomFunction function = new CustomFunction();
             function.Name = "flat";
@@ -56,7 +91,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
 
                 double x = (double)args[0];
 
-                return (randomGenerator.NextDouble() * 2.0 * x) - x;
+                return (random.NextDouble() * 2.0 * x) - x;
             };
 
             return function;
