@@ -80,10 +80,38 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                 }
             }
 
-            CreatePlotsForParameterSweeps(context);
+            CreatePlotsForOpParameterSweeps(context);
+            CreatePlotsForTranParameterSweeps(context);
         }
 
-        private void CreatePlotsForParameterSweeps(IReadingContext context)
+        private void CreatePlotsForTranParameterSweeps(IReadingContext context)
+        {
+            if (context.Result.SimulationConfiguration.ParameterSweeps.Count > 0)
+            {
+                // 2. Find all .TRAN exports
+                List<Export> tranExports = new List<Export>();
+                foreach (var export in context.Result.Exports)
+                {
+                    if (export.Simulation is Transient)
+                    {
+                        tranExports.Add(export);
+                    }
+                }
+
+                //3. Group them by name (name contains exported variable)
+                var groups = tranExports.GroupBy(export => export.Name);
+
+                foreach (var group in groups)
+                {
+                    string variableName = group.Key;
+                    var exports = group.ToList();
+
+                    CreateTranSweepPlot(variableName, exports, context);
+                }
+            }
+        }
+
+        private void CreatePlotsForOpParameterSweeps(IReadingContext context)
         {
             if (context.Result.SimulationConfiguration.ParameterSweeps.Count > 0)
             {
@@ -108,19 +136,19 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                     string variableName = group.Key;
                     var exports = group.ToList();
 
-                    CreateSweepPlot(firstParameterSweep, variableName, exports, context);
+                    CreateOpSweepPlot(firstParameterSweep, variableName, exports, context);
                 }
             }
         }
 
-        private void CreateSweepPlot(ParameterSweep firstParameterSweep, string variableName, List<Export> exports, IReadingContext context)
+        private void CreateOpSweepPlot(ParameterSweep firstParameterSweep, string variableName, List<Export> exports, IReadingContext context)
         {
             var plot = new Plot("OP - Parameter sweep: " + variableName);
 
             for (var i = 0; i < exports.Count; i++)
             {
                 var series = new Series(exports[i].Simulation.Name.ToString()) { XUnit = firstParameterSweep.Parameter.Image, YUnit = exports[i].QuantityUnit };
-                AddPointsToSeries(firstParameterSweep, exports[i], context, series);
+                AddOpPointToSeries(firstParameterSweep, exports[i], context, series);
 
                 plot.Series.Add(series);
             }
@@ -128,12 +156,35 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
             context.Result.AddPlot(plot);
         }
 
-        private static void AddPointsToSeries(ParameterSweep firstParameterSweep, Export export, IReadingContext context, Series series)
+        private void CreateTranSweepPlot(string variableName, List<Export> exports, IReadingContext context)
+        {
+            var plot = new Plot("Tran - Parameter sweep: " + variableName);
+
+            for (var i = 0; i < exports.Count; i++)
+            {
+                var series = new Series(exports[i].Simulation.Name.ToString()) { XUnit = "Time (s)", YUnit = exports[i].QuantityUnit };
+                AddTranPointsToSeries(exports[i], context, series);
+
+                plot.Series.Add(series);
+            }
+
+            context.Result.AddPlot(plot);
+        }
+
+        private void AddOpPointToSeries(ParameterSweep firstParameterSweep, Export export, IReadingContext context, Series series)
         {
             export.Simulation.OnExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
                 var firstParameterSweepValue = context.Evaluator.GetParameterValue(firstParameterSweep.Parameter.Image, sender);
                 series.Points.Add(new Point() { X = firstParameterSweepValue, Y = export.Extract() });
+            };
+        }
+
+        private void AddTranPointsToSeries(Export export, IReadingContext context, Series series)
+        {
+            export.Simulation.OnExportSimulationData += (object sender, ExportDataEventArgs e) =>
+            {
+                series.Points.Add(new Point() { X = e.Time, Y = export.Extract() });
             };
         }
 
