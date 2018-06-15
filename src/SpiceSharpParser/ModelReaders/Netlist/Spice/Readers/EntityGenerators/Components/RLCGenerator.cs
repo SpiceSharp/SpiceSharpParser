@@ -85,7 +85,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             mut.InductorName1 = parameters.GetString(0);
             mut.InductorName2 = parameters.GetString(1);
 
-            context.SetParameter(mut, "k", parameters.GetString(2));
+            context.SetEntityParameter(mut, "k", parameters.GetString(2));
 
             return mut;
         }
@@ -109,7 +109,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                 // CXXXXXXX N1 N2 VALUE
                 if (parameters[2] is ExpressionParameter || parameters[2] is ValueParameter)
                 {
-                    context.SetParameter(capacitor, "capacitance", parameters.GetString(2));
+                    context.SetEntityParameter(capacitor, "capacitance", parameters.GetString(2));
                 }
                 else
                 {
@@ -128,7 +128,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                 bool modelBased = false;
                 if (parameters[2] is ExpressionParameter || parameters[2] is ValueParameter)
                 {
-                    context.SetParameter(capacitor, "capacitance", parameters.GetString(2));
+                    context.SetEntityParameter(capacitor, "capacitance", parameters.GetString(2));
                 }
                 else
                 {
@@ -178,7 +178,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             var inductor = new Inductor(name);
             context.CreateNodes(inductor, parameters);
 
-            context.SetParameter(inductor, "inductance", parameters.GetString(2));
+            context.SetEntityParameter(inductor, "inductance", parameters.GetString(2));
 
             return inductor;
         }
@@ -199,7 +199,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
 
             if (parameters.Count == 3)
             {
-                context.SetParameter(res, "resistance", parameters.GetString(2));
+                context.SetEntityParameter(res, "resistance", parameters.GetString(2));
             }
             else
             {
@@ -220,7 +220,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                 {
                     if (equal is AssignmentParameter ap)
                     {
-                        context.SetParameter(res, ap.Name, ap.Value);
+                        context.SetEntityParameter(res, ap.Name, ap.Value);
                     }
                     else
                     {

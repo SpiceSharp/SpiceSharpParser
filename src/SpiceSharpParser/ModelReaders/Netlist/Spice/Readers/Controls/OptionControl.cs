@@ -1,7 +1,7 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
+﻿using SpiceSharp;
 using SpiceSharp.IntegrationMethods;
-using SpiceSharp;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 {
@@ -10,7 +10,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
     /// </summary>
     public class OptionControl : BaseControl
     {
-        public override string SpiceName => "options";
+        public override string SpiceCommandName => "options";
 
         /// <summary>
         /// Reades <see cref="Control"/> statement and modifies the context

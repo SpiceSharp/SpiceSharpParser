@@ -16,7 +16,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
         /// <summary>
         /// Gets the Spice type
         /// </summary>
-        public override string SpiceName => "dc";
+        public override string SpiceCommandName => "dc";
 
         /// <summary>
         /// Reades <see cref="Control"/> statement and modifies the context

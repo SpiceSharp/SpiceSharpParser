@@ -15,16 +15,16 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         /// <param name="registry">The exporter registry</param>
         public ExportControl(IExporterRegistry registry)
         {
-            Registry = registry;
+            Registry = registry ?? throw new System.ArgumentNullException(nameof(registry));
         }
 
         /// <summary>
-        /// Gets the exporter registry
+        /// Gets the exporter registry.
         /// </summary>
         protected IExporterRegistry Registry { get; }
 
         /// <summary>
-        /// Generates a new export
+        /// Generates a new export.
         /// </summary>
         protected Export GenerateExport(Parameter parameter, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
         {

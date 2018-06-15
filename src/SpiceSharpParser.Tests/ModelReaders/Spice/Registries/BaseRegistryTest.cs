@@ -14,13 +14,13 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Registries
             var baseRegistry = new BaseRegistry<ISpiceObjectReader>();
 
             var generator = Substitute.For<ISpiceObjectReader>();
-            generator.SpiceName.Returns("test");
+            generator.SpiceCommandName.Returns("test");
             var generator2 = Substitute.For<ISpiceObjectReader>();
-            generator2.SpiceName.Returns("test");
+            generator2.SpiceCommandName.Returns("test");
             var generator3 = Substitute.For<ISpiceObjectReader>();
-            generator3.SpiceName.Returns("test2");
+            generator3.SpiceCommandName.Returns("test2");
             var generator4 = Substitute.For<ISpiceObjectReader>();
-            generator4.SpiceName.Returns("test3");
+            generator4.SpiceCommandName.Returns("test3");
 
             // act
             baseRegistry.Add(generator);
@@ -38,7 +38,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Registries
             // arrange
             var baseRegistry = new BaseRegistry<ISpiceObjectReader>();
             var generator = Substitute.For<ISpiceObjectReader>();
-            generator.SpiceName.Returns("test");
+            generator.SpiceCommandName.Returns("test");
 
             // act
             baseRegistry.Add(generator);
@@ -53,7 +53,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Registries
             // arrange
             var baseRegistry = new BaseRegistry<ISpiceObjectReader>();
             var generator = Substitute.For<ISpiceObjectReader>();
-            generator.SpiceName.Returns("test1");
+            generator.SpiceCommandName.Returns("test1");
 
             // act
             baseRegistry.Add(generator);
@@ -68,10 +68,10 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Registries
             // arrange
             var baseRegistry = new BaseRegistry<ISpiceObjectReader>();
             var generator = Substitute.For<ISpiceObjectReader>();
-            generator.SpiceName.Returns("test1");
+            generator.SpiceCommandName.Returns("test1");
 
             var generator2 = Substitute.For<ISpiceObjectReader>();
-            generator2.SpiceName.Returns("test2");
+            generator2.SpiceCommandName.Returns("test2");
 
             // act
             baseRegistry.Add(generator);

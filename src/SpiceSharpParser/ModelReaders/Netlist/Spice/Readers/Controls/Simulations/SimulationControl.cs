@@ -114,7 +114,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
                     }
 
                     UpdateSimulationParameter(context, paramToSet);
-
                 }
             };
         }
@@ -125,7 +124,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             string paramName = rp.Argument;
             if (context.Result.FindObject(objectName, out Entity @object))
             {
-                context.SetParameter(@object, paramName, paramToSet.Value.ToString());
+                context.SetEntityParameter(@object, paramName, paramToSet.Value.ToString());
             }
         }
 
@@ -135,7 +134,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             string paramName = bp.Parameters[0].Image;
             if (context.Result.FindObject(modelName, out Entity @model))
             {
-                context.SetParameter(model, paramName, paramToSet.Value.ToString());
+                context.SetEntityParameter(model, paramName, paramToSet.Value.ToString());
             }
         }
 
@@ -240,10 +239,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
         {
             if (temperatureInKelvin.HasValue)
             {
-                return string.Format("#{0} {1} - at {2} Kelvins ({3} Celsius)", context.Result.Simulations.Count()+1, SpiceName, temperatureInKelvin.Value, temperatureInKelvin.Value - SpiceSharp.Circuit.CelsiusKelvin);
+                return string.Format("#{0} {1} - at {2} Kelvins ({3} Celsius)", context.Result.Simulations.Count()+1, SpiceCommandName, temperatureInKelvin.Value, temperatureInKelvin.Value - SpiceSharp.Circuit.CelsiusKelvin);
             }
 
-            return string.Format("#{0} {1}", context.Result.Simulations.Count() + 1, SpiceName);
+            return string.Format("#{0} {1}", context.Result.Simulations.Count() + 1, SpiceCommandName);
         }
 
         protected void SetSimulationTemperatures(BaseSimulation simulation, double? operatingTemperatureInKelvins, double? nominalTemperatureInKelvins)

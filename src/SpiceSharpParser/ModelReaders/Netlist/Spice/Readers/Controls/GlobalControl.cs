@@ -11,7 +11,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         /// <summary>
         /// Gets name of Spice element
         /// </summary>
-        public override string SpiceName => "global";
+        public override string SpiceCommandName => "global";
 
         /// <summary>
         /// Reades <see cref="Control"/> statement and modifies the context

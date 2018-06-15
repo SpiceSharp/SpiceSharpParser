@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Waveforms
         /// <summary>
         /// Gets the type name of generated waveform
         /// </summary>
-        public abstract string SpiceName { get; }
+        public abstract string SpiceCommandName { get; }
 
         /// <summary>
         /// Generats a new waveform

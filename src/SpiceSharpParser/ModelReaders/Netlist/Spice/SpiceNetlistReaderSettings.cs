@@ -19,5 +19,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
         /// Gets or sets the context for reader.
         /// </summary>
         public ISpiceNetlistReaderContext Context { get; set; }
+
     }
 }

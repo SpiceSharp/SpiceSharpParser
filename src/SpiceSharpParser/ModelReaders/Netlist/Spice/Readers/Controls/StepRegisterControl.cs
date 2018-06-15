@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
     /// </summary>
     public class StepRegisterControl : BaseControl
     {
-        public override string SpiceName => "step_r";
+        public override string SpiceCommandName => "step_r";
 
         /// <summary>
         /// Reades <see cref="Control"/> statement and modifies the context.
@@ -127,7 +127,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                 RegisterParameter(parameters[0], context); // source
             }
         }
-
 
         private void RegisterParameter(Parameter variableParameter, IReadingContext context)
         {

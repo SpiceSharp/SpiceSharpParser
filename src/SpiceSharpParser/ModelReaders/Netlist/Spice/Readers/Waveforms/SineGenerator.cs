@@ -10,7 +10,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Waveforms
     /// </summary>
     public class SineGenerator : WaveformGenerator
     {
-        public override string SpiceName => "sine";
+        public override string SpiceCommandName => "sine";
 
         /// <summary>
         /// Generats a new sinusoidal waveform

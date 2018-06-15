@@ -31,7 +31,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         /// <summary>
         /// Gets the type of generator.
         /// </summary>
-        public override string SpiceName => "save";
+        public override string SpiceCommandName => "save";
 
         /// <summary>
         /// Reades <see cref="Control"/> statement and modifies the context

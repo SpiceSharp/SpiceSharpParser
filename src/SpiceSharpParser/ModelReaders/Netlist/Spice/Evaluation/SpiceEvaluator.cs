@@ -22,7 +22,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         {
             Mode = mode;
 
-            Parameters.Add("TEMP", new LazyExpression((e, c) => (Circuit.ReferenceTemperature - Circuit.CelsiusKelvin), "temp"));
+            Parameters.Add("TEMP", new CachedExpression((e, c, a) => (Circuit.ReferenceTemperature - Circuit.CelsiusKelvin)));
 
             CustomFunctions.Add("**", MathFunctions.CreatePowInfix(Mode));
             CustomFunctions.Add("abs", MathFunctions.CreateAbs());

@@ -10,7 +10,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
     /// </summary>
     public class FuncControl : BaseControl
     {
-        public override string SpiceName => "func";
+        public override string SpiceCommandName => "func";
 
         /// <summary>
         /// Reades <see cref="Control"/> statement and modifies the context
@@ -35,14 +35,14 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                         throw new System.Exception("User function needs to be a function");
                     }
 
-                    context.Evaluator.DefineCustomFunction(assigmentParameter.Name, assigmentParameter.Arguments, assigmentParameter.Value);
+                    context.Evaluator.AddCustomFunction(assigmentParameter.Name, assigmentParameter.Arguments, assigmentParameter.Value);
                     break;
                 }
                 else
                 {
                     if (param is Models.Netlist.Spice.Objects.Parameters.BracketParameter bracketParameter)
                     {
-                        context.Evaluator.DefineCustomFunction(
+                        context.Evaluator.AddCustomFunction(
                             bracketParameter.Name,
                             bracketParameter.Parameters.ToList().Select(p => p.Image).ToList(), // TODO: improve it please
                             statement.Parameters[i + 1].Image);

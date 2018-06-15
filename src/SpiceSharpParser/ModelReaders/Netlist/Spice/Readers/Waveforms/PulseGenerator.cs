@@ -9,7 +9,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Waveforms
     /// </summary>
     public class PulseGenerator : WaveformGenerator
     {
-        public override string SpiceName => "pulse";
+        public override string SpiceCommandName => "pulse";
 
         /// <summary>
         /// Generats a new waveform

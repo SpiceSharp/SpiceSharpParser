@@ -1,8 +1,5 @@
-﻿using SpiceSharpParser.Common;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
+﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Common;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 {
@@ -12,9 +9,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
     public abstract class BaseControl : StatementReader<Control>, ISpiceObjectReader
     {
         /// <summary>
-        /// Gets name of Spice element.
+        /// Gets name of Spice dot command.
         /// </summary>
-        public abstract string SpiceName
+        public abstract string SpiceCommandName
         {
             get;
         }

@@ -52,17 +52,17 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries
         /// <param name="element">Element to add</param>
         public virtual void Add(TElement element)
         {
-            if (ElementsByType.ContainsKey(element.SpiceName))
+            if (ElementsByType.ContainsKey(element.SpiceCommandName))
             {
-                var currentElement = ElementsByType[element.SpiceName];
+                var currentElement = ElementsByType[element.SpiceCommandName];
                 var index = Elements.IndexOf(currentElement);
                 Elements.RemoveAt(index);
                 ElementsTypes.RemoveAt(index);
             }
 
             Elements.Add(element);
-            ElementsTypes.Add(element.SpiceName);
-            ElementsByType[element.SpiceName] = element;
+            ElementsTypes.Add(element.SpiceCommandName);
+            ElementsByType[element.SpiceCommandName] = element;
         }
 
         /// <summary>

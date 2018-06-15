@@ -11,7 +11,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
     /// </summary>
     public class LetControl : BaseControl
     {
-        public override string SpiceName => "let";
+        public override string SpiceCommandName => "let";
 
         /// <summary>
         /// Reades <see cref="Control"/> statement and modifies the context
@@ -38,9 +38,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
             }
 
             string expression = statement.Parameters.GetString(1);
-            var parameters = context.Evaluator.GetParametersFromExpression(expression);
-
-            context.Evaluator.AddNamedActionExpression(expressionName, new ActionExpression(expression, (newVal) => { }), parameters);
+            context.Evaluator.SetNamedExpression(expressionName, expression);
         }
     }
 }

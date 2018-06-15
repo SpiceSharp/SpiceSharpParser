@@ -10,7 +10,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
     /// </summary>
     public class ParamControl : BaseControl
     {
-        public override string SpiceName => "param";
+        public override string SpiceCommandName => "param";
 
         /// <summary>
         /// Reades <see cref="Control"/> statement and modifies the context.
@@ -30,22 +30,14 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                 {
                     if (!assigmentParameter.HasFunctionSyntax)
                     {
-                        string name = assigmentParameter.Name;
-                        string expression = assigmentParameter.Value;
+                        string parameterName = assigmentParameter.Name;
+                        string parameterExpression = assigmentParameter.Value;
 
-                        //TODO: Please refactor this, there should be a better API for that
-                        context.Evaluator.SetParameter(name, expression);
-
-                        var depParameters = context.Evaluator.GetParametersFromExpression(expression);
-                        context.Evaluator.AddActionExpression(
-                            new ActionExpression(
-                                expression,
-                                (val) => context.Evaluator.SetParameter(name, expression)),
-                            depParameters);
+                        context.Evaluator.SetParameter(parameterName, parameterExpression);
                     }
                     else
                     {
-                        context.Evaluator.DefineCustomFunction(assigmentParameter.Name, assigmentParameter.Arguments, assigmentParameter.Value);
+                        context.Evaluator.AddCustomFunction(assigmentParameter.Name, assigmentParameter.Arguments, assigmentParameter.Value);
                     }
                 }
                 else

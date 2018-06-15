@@ -12,7 +12,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
     /// </summary>
     public class StRegisterControl : BaseControl
     {
-        public override string SpiceName => "st_r";
+        public override string SpiceCommandName => "st_r";
 
         /// <summary>
         /// Reades <see cref="Control"/> statement and modifies the context.

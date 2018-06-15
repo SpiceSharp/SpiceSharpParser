@@ -29,7 +29,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         /// <summary>
         /// Gets the type of genereator.
         /// </summary>
-        public override string SpiceName => "plot";
+        public override string SpiceCommandName => "plot";
 
         /// <summary>
         /// Gets the supported plot types.

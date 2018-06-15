@@ -11,7 +11,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
     /// </summary>
     public abstract class Exporter : ISpiceObjectReader
     {
-        public string SpiceName => string.Join(".", GetSupportedTypes());
+        public string SpiceCommandName => string.Join(".", GetSupportedTypes());
 
         /// <summary>
         /// Creates a new export

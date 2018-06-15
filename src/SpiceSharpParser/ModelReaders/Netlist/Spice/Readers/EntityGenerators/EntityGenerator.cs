@@ -15,7 +15,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators
         /// <summary>
         /// Gets the spice name.
         /// </summary>
-        public string SpiceName => string.Join(".", GetGeneratedSpiceTypes());
+        public string SpiceCommandName => string.Join(".", GetGeneratedSpiceTypes());
 
         /// <summary>
         /// Generates entity.

@@ -12,7 +12,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
     /// </summary>
     public class NoiseControl : SimulationControl
     {
-        public override string SpiceName => "noise";
+        public override string SpiceCommandName => "noise";
 
         /// <summary>
         /// Reades <see cref="Control"/> statement and modifies the context

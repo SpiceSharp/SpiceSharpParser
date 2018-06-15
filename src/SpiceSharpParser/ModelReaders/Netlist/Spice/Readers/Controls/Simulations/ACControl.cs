@@ -11,7 +11,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
     /// </summary>
     public class ACControl : SimulationControl
     {
-        public override string SpiceName => "ac";
+        public override string SpiceCommandName => "ac";
 
         /// <summary>
         /// Reades <see cref="Control"/> statement and modifies the context

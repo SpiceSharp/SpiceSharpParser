@@ -101,11 +101,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 
             Result.SetInitialVoltageCondition(fullNodeName, initialValue);
 
-            Evaluator.AddActionExpression(
-                new ActionExpression(
-                    expression,
-                    value => Result.SetInitialVoltageCondition(nodeName, value)),
-                Evaluator.GetParametersFromExpression(expression));
+            Evaluator.AddAction("ICV - " + nodeName, expression, value => Result.SetInitialVoltageCondition(nodeName, value));
         }
 
         /// <summary>
@@ -141,15 +137,15 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         }
 
         /// <summary>
-        /// Sets the parameter of entity and enables updates
+        /// Sets the parameter of entity and enables updates.
         /// </summary>
-        /// <param name="entity">An entity of parameter</param>
-        /// <param name="parameterName">A parameter name</param>
-        /// <param name="expression">An expression</param>
+        /// <param name="entity">An entity of parameter.</param>
+        /// <param name="parameterName">A parameter name.</param>
+        /// <param name="expression">An expression.</param>
         /// <returns>
-        /// True if the parameter has been set
+        /// True if the parameter has been set.
         /// </returns>
-        public bool SetParameter(Entity entity, string parameterName, string expression)
+        public bool SetEntityParameter(Entity entity, string parameterName, string expression)
         {
             double value;
             try
@@ -162,17 +158,16 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
                 return false;
             }
 
-            var set = entity.SetParameter(parameterName.ToLower(), value);
+            var wasSet = entity.SetParameter(parameterName.ToLower(), value);
 
-            if (set)
+            if (wasSet)
             {
-                var parameters = Evaluator.GetParametersFromExpression(expression);
-                var setter = entity.ParameterSets.GetSetter(parameterName.ToLower());
+                var propertySetter = entity.ParameterSets.GetSetter(parameterName.ToLower());
 
                 // re-evaluation makes sense only if there is a setter
-                if (setter != null)
+                if (propertySetter != null)
                 {
-                    Evaluator.AddActionExpression(new ActionExpression(expression, setter), parameters);
+                    Evaluator.AddAction(entity.Name.ToString(), expression, propertySetter);
                 }
 
                 return true;

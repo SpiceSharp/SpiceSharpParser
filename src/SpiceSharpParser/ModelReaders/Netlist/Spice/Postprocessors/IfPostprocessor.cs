@@ -208,7 +208,7 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
             throw new NotImplementedException();
         }
 
-        public bool SetParameter(Entity entity, string parameterName, string expression)
+        public bool SetEntityParameter(Entity entity, string parameterName, string expression)
         {
             throw new NotImplementedException();
         }

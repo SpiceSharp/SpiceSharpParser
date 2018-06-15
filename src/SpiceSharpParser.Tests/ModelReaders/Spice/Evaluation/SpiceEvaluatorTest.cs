@@ -1,4 +1,5 @@
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions;
 using System;
@@ -48,8 +49,10 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             double expressionValue = 0;
 
             // act
-            v.AddActionExpression(new ActionExpression("xyz +1", (double newValue) => { expressionValue = newValue; }), new string[] { "xyz" });
+            v.AddAction("noname", "xyz + 1", (newValue) => { expressionValue = newValue; });
             v.SetParameter("xyz", 14);
+
+            var val = v.GetParameterValue("xyz", null);
 
             // assert
             Assert.Equal(15, expressionValue);
@@ -577,7 +580,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void FibonacciAsParam()
         {
             var p = new SpiceEvaluator();
-            p.DefineCustomFunction(
+            p.AddCustomFunction(
                 "fib",
                 new System.Collections.Generic.List<string>() { "x" },
                 "x <= 0 ? 0 : (x == 1 ? 1 : lazy(#fib(x-1) + fib(x-2)#))");
@@ -595,7 +598,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void FibonacciAsWithoutLazyParam()
         {
             var p = new SpiceEvaluator();
-            p.DefineCustomFunction(
+            p.AddCustomFunction(
                 "fib",
                 new System.Collections.Generic.List<string>() { "x" },
                 "x <= 0 ? 0 : (x == 1 ? 1 : (fib(x-1) + fib(x-2)))");
@@ -613,7 +616,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void FactAsParam()
         {
             var p = new SpiceEvaluator();
-            p.DefineCustomFunction(
+            p.AddCustomFunction(
                 "fact",
                 new System.Collections.Generic.List<string>() { "x" },
                 "x == 0 ? 1 : (x * lazy(#fact(x-1)#))");
@@ -628,7 +631,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void LazySimpleTest()
         {
             var p = new SpiceEvaluator();
-            p.DefineCustomFunction(
+            p.AddCustomFunction(
                 "test_lazy",
                 new System.Collections.Generic.List<string>() { "x" },
                 "x == 0 ? 1: lazy(#3+2#)");
@@ -641,7 +644,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void LazyErrorTest()
         {
             var p = new SpiceEvaluator();
-            p.DefineCustomFunction(
+            p.AddCustomFunction(
                 "test_lazy",
                 new System.Collections.Generic.List<string>() { "x" },
                 "x == 0 ? 1: lazy(#1/#)");
@@ -684,12 +687,12 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void LazyFuncTest()
         {
             var p = new SpiceEvaluator();
-            p.DefineCustomFunction(
+            p.AddCustomFunction(
                 "test",
                 new System.Collections.Generic.List<string>(),
                 "5");
 
-            p.DefineCustomFunction(
+            p.AddCustomFunction(
                 "test2",
                 new System.Collections.Generic.List<string>() { "x" },
                 "x <= 0 ? 0 : (x == 1 ? 1 : lazy(#test()#))");

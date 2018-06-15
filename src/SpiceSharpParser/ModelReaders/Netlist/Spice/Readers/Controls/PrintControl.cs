@@ -31,7 +31,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         /// <summary>
         /// Gets the type of generetor.
         /// </summary>
-        public override string SpiceName => "print";
+        public override string SpiceCommandName => "print";
 
         protected ICollection<string> SupportedPrintTypes { get; } = new List<string>() { "dc", "ac", "tran", "op" };
 

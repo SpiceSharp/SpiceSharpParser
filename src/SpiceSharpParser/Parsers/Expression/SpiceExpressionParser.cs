@@ -119,7 +119,7 @@ namespace SpiceSharpParser.Parsers.Expression
         /// <summary>
         /// Gets or sets the parameters.
         /// </summary>
-        public Dictionary<string, LazyExpression> Parameters { get; protected set; } = new Dictionary<string, LazyExpression>();
+        public Dictionary<string, EvaluatorExpression> Parameters { get; protected set; } = new Dictionary<string, EvaluatorExpression>();
 
         /// <summary>
         /// Gets or sets custom functions.
@@ -499,12 +499,12 @@ namespace SpiceSharpParser.Parsers.Expression
                             {
                                 outputStack.Push(() => @const);
                             }
-                            else if (Parameters.TryGetValue(id, out var lazyParameter))
+                            else if (Parameters.TryGetValue(id, out var parameter))
                             {
                                 foundParameters.Add(id);
                                 outputStack.Push(() =>
                                 {
-                                    return lazyParameter.GetValue(context);
+                                    return parameter.Evaluate(context);
                                 });
                             }
                             else

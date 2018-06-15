@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using SpiceSharpParser.Common.Evaluation;
 
-namespace SpiceSharpParser.Common
+namespace SpiceSharpParser.Common.Evaluation
 {
     public interface IExpressionParser
     {
-        Dictionary<string, LazyExpression> Parameters { get; }
+        Dictionary<string, EvaluatorExpression> Parameters { get; }
 
         Dictionary<string, CustomFunction> CustomFunctions { get; }
 
