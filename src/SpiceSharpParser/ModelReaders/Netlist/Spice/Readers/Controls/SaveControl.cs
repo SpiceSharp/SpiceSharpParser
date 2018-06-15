@@ -82,6 +82,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 
             CreatePlotsForOpParameterSweeps(context);
             CreatePlotsForTranParameterSweeps(context);
+            CreatePlotsForAcParameterSweeps(context);
         }
 
         private void CreatePlotsForTranParameterSweeps(IReadingContext context)
@@ -107,6 +108,33 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                     var exports = group.ToList();
 
                     CreateTranSweepPlot(variableName, exports, context);
+                }
+            }
+        }
+
+        private void CreatePlotsForAcParameterSweeps(IReadingContext context)
+        {
+            if (context.Result.SimulationConfiguration.ParameterSweeps.Count > 0)
+            {
+                // 2. Find all .AC exports
+                List<Export> acExports = new List<Export>();
+                foreach (var export in context.Result.Exports)
+                {
+                    if (export.Simulation is AC)
+                    {
+                        acExports.Add(export);
+                    }
+                }
+
+                //3. Group them by name (name contains exported variable)
+                var groups = acExports.GroupBy(export => export.Name);
+
+                foreach (var group in groups)
+                {
+                    string variableName = group.Key;
+                    var exports = group.ToList();
+
+                    CreateAcSweepPlot(variableName, exports, context);
                 }
             }
         }
@@ -171,6 +199,21 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
             context.Result.AddPlot(plot);
         }
 
+        private void CreateAcSweepPlot(string variableName, List<Export> exports, IReadingContext context)
+        {
+            var plot = new Plot("AC - Parameter sweep: " + variableName);
+
+            for (var i = 0; i < exports.Count; i++)
+            {
+                var series = new Series(exports[i].Simulation.Name.ToString()) { XUnit = "Freq (s)", YUnit = exports[i].QuantityUnit };
+                AddAcPointsToSeries(exports[i], context, series);
+
+                plot.Series.Add(series);
+            }
+
+            context.Result.AddPlot(plot);
+        }
+
         private void AddOpPointToSeries(ParameterSweep firstParameterSweep, Export export, IReadingContext context, Series series)
         {
             export.Simulation.OnExportSimulationData += (object sender, ExportDataEventArgs e) =>
@@ -185,6 +228,14 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
             export.Simulation.OnExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
                 series.Points.Add(new Point() { X = e.Time, Y = export.Extract() });
+            };
+        }
+
+        private void AddAcPointsToSeries(Export export, IReadingContext context, Series series)
+        {
+            export.Simulation.OnExportSimulationData += (object sender, ExportDataEventArgs e) =>
+            {
+                series.Points.Add(new Point() { X = e.Frequency, Y = export.Extract() });
             };
         }
 
