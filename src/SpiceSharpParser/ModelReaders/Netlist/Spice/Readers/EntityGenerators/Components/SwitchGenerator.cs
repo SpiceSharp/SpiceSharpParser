@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp;
@@ -46,14 +45,14 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
         /// </returns>
         protected Entity GenerateVoltageSwitch(string name, ParameterCollection parameters, IReadingContext context)
         {
-            VoltageSwitch vsw = new VoltageSwitch(name);
-            context.CreateNodes(vsw, parameters);
-
             // Read the model
             if (parameters.Count < 5)
             {
-                throw new WrongParametersCountException("Model expected");
+                throw new WrongParametersCountException("Wrong parameter count for voltage switch");
             }
+
+            VoltageSwitch vsw = new VoltageSwitch(name);
+            context.CreateNodes(vsw, parameters);
 
             var model = context.FindModel<VoltageSwitchModel>(parameters.GetString(4));
             if (model != null)

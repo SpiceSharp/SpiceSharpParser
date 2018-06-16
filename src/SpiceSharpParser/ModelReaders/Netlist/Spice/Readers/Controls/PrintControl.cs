@@ -100,7 +100,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 
                     if (simulation is OP)
                     {
-                        CreatePrint(statement.Parameters, context, simulation, "Final result");
+                        CreatePrint(statement.Parameters, context, simulation, null);
                     }
                 }
             }
@@ -149,7 +149,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         private void CreatePrint(ParameterCollection parameters, IReadingContext context, Simulation simulation, string firstColumnName)
         {
             var print = new Print(simulation.Name.ToString());
-            print.ColumnNames.Add(firstColumnName);
+
+            if (firstColumnName != null)
+            {
+                print.ColumnNames.Add(firstColumnName);
+            }
 
             List<Export> exports = GenerateExports(parameters, simulation, context);
             for (var i = 0; i < exports.Count; i++)
@@ -176,11 +180,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                     x = e.Frequency;
                 }
 
-                if (simulation is OP)
-                {
-                    x = 1;
-                }
-
                 if (simulation is DC dc)
                 {
                     if (dc.Sweeps.Count > 1)
@@ -192,7 +191,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                     x = e.SweepValue;
                 }
 
-                row.Columns.Add(x);
+                if (!(simulation is OP))
+                {
+                    row.Columns.Add(x);
+                }
 
                 for (var i = 0; i < exports.Count; i++)
                 {
