@@ -78,7 +78,7 @@ namespace SpiceSharpParser.IntegrationTests
             RunSimulations(parseResult);
             Assert.Equal(1, parseResult.Prints.Count);
             Assert.Equal("#1 op", parseResult.Prints[0].Name);
-            Assert.Equal(7, parseResult.Prints[0].ColumnNames.Count);
+            Assert.Equal(6, parseResult.Prints[0].ColumnNames.Count);
             Assert.Equal(1, parseResult.Prints[0].Rows.Count);
         }
 
@@ -97,7 +97,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             Assert.Equal(1, parseResult.Prints.Count);
             Assert.Equal("#1 op", parseResult.Prints[0].Name);
-            Assert.Equal(3, parseResult.Prints[0].ColumnNames.Count);
+            Assert.Equal(2, parseResult.Prints[0].ColumnNames.Count);
             Assert.Equal(1, parseResult.Prints[0].Rows.Count);
         }
 
