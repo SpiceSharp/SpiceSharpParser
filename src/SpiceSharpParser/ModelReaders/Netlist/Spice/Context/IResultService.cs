@@ -6,6 +6,7 @@ using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharp;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 {
@@ -14,6 +15,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         SimulationConfiguration SimulationConfiguration { get; }
 
         IEnumerable<Simulation> Simulations { get; }
+
+        Dictionary<Simulation, IEvaluator> Evaluators { get; }
 
         IEnumerable<Export> Exports { get; }
 

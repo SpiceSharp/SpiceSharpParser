@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Circuits;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -208,7 +209,7 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
             throw new NotImplementedException();
         }
 
-        public bool SetEntityParameter(Entity entity, string parameterName, string expression)
+        public bool SetEntityParameter(Entity entity, string parameterName, string expression, Simulation simulation)
         {
             throw new NotImplementedException();
         }
@@ -216,6 +217,19 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
         public bool SetParameter(Entity entity, string parameterName, object @object)
         {
             throw new NotImplementedException();
+        }
+
+        public IEvaluator GetSimulationEvaluator(Simulation simulation)
+        {
+            throw new Exception();
+        }
+
+        public IEvaluator ReadingEvaluator
+        {
+            get
+            {
+                return Evaluator;
+            }
         }
     }
 }

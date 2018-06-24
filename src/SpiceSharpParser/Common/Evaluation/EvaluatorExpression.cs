@@ -11,11 +11,17 @@ namespace SpiceSharpParser.Common
         /// Initializes a new instance of the <see cref="EvaluatorExpression"/> class.
         /// </summary>
         /// <param name="expressionString">A value of expression.</param>
-        public EvaluatorExpression(string expressionString, Func<string, object, EvaluatorExpression, double> expressionEvaluator)
+        public EvaluatorExpression(string expressionString, Func<string, object, EvaluatorExpression, IEvaluator, double> expressionEvaluator, IEvaluator evaluator)
         {
+            Evaluator = evaluator;
             ExpressionString = expressionString ?? throw new ArgumentNullException(nameof(expressionString));
             ExpressionEvaluator = expressionEvaluator ?? throw new ArgumentNullException(nameof(expressionEvaluator));
         }
+
+        /// <summary>
+        /// Gets or sets evalautor for expression.
+        /// </summary>
+        public IEvaluator Evaluator { get; set; }
 
         /// <summary>
         /// Gets the expression string.
@@ -25,7 +31,7 @@ namespace SpiceSharpParser.Common
         /// <summary>
         /// Gets the logic that computes the value of expression.
         /// </summary>
-        public Func<string, object, EvaluatorExpression, double> ExpressionEvaluator { get; }
+        public Func<string, object, EvaluatorExpression, IEvaluator, double> ExpressionEvaluator { get; }
 
         /// <summary>
         /// Gets the last evaluation value.
@@ -41,7 +47,7 @@ namespace SpiceSharpParser.Common
         /// </returns>
         public virtual double Evaluate(object context)
         {
-            var val = ExpressionEvaluator(ExpressionString, context, this);
+            var val = ExpressionEvaluator(ExpressionString, context, this, Evaluator);
             LastValue = val;
             return val;
         }
@@ -51,6 +57,14 @@ namespace SpiceSharpParser.Common
         /// </summary>
         public virtual void Invalidate()
         {
+            LastValue = 0;
+        }
+
+        public virtual EvaluatorExpression Clone()
+        {
+            var result = new EvaluatorExpression(ExpressionString, ExpressionEvaluator, Evaluator);
+            result.LastValue = 0;
+            return result;
         }
     }
 }

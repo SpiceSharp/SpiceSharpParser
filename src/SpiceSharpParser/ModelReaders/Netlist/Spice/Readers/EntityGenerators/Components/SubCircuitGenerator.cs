@@ -52,7 +52,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             SubCircuit subCircuitDefiniton = FindSubcircuitDefinion(parameters, context);
             ReadingContext subCircuitContext = CreateSubcircuitContext(id.ToString(), originalName, subCircuitDefiniton, parameters, context);
 
-            var ifPostprocessor = new IfPostprocessor(subCircuitContext.Evaluator);
+            var ifPostprocessor = new IfPostprocessor(subCircuitContext.ReadingEvaluator);
             subCircuitDefiniton.Statements = ifPostprocessor.PostProcess(subCircuitDefiniton.Statements);
 
             ReadParamControl(subCircuitDefiniton, subCircuitContext);
@@ -180,7 +180,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                 assigmentParametersCount++;
             }
 
-            var subcircuitEvaluator = context.Evaluator.CreateChildEvaluator();
+            var subcircuitEvaluator = context.ReadingEvaluator.CreateChildEvaluator();
             subcircuitEvaluator.SetParameters(CreateSubcircuitParameters(context, subCircuitDefiniton, subCktParameters));
 
             // setting node name generator
@@ -212,12 +212,12 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             var subcircuitParameters = new Dictionary<string, string>();
             foreach (var defaultParameter in subCiruitDefiniton.DefaultParameters)
             {
-                subcircuitParameters[defaultParameter.Name] = context.Evaluator.EvaluateDouble(defaultParameter.Value).ToString(CultureInfo.InvariantCulture);
+                subcircuitParameters[defaultParameter.Name] = context.ReadingEvaluator.EvaluateDouble(defaultParameter.Value).ToString(CultureInfo.InvariantCulture);
             }
 
             foreach (var instanceParameter in subcktParameters)
             {
-                subcircuitParameters[instanceParameter.Name] = context.Evaluator.EvaluateDouble(instanceParameter.Value).ToString(CultureInfo.InvariantCulture);
+                subcircuitParameters[instanceParameter.Name] = context.ReadingEvaluator.EvaluateDouble(instanceParameter.Value).ToString(CultureInfo.InvariantCulture);
             }
 
             return subcircuitParameters;

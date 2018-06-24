@@ -33,11 +33,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                         string parameterName = assigmentParameter.Name;
                         string parameterExpression = assigmentParameter.Value;
 
-                        context.Evaluator.SetParameter(parameterName, parameterExpression);
+                        context.ReadingEvaluator.SetParameter(parameterName, parameterExpression);
                     }
                     else
                     {
-                        context.Evaluator.AddCustomFunction(assigmentParameter.Name, assigmentParameter.Arguments, assigmentParameter.Value);
+                        context.ReadingEvaluator.AddCustomFunction(assigmentParameter.Name, assigmentParameter.Arguments, assigmentParameter.Value);
                     }
                 }
                 else

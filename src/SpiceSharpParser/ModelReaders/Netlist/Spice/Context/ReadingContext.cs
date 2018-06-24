@@ -5,6 +5,7 @@ using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
+using SpiceSharp.Simulations;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 {
@@ -17,21 +18,21 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// Initializes a new instance of the <see cref="ReadingContext"/> class.
         /// </summary>
         /// <param name="contextName">Name of the context</param>
-        /// <param name="evaluator">Evaluator for the context</param>
+        /// <param name="readingEvaluator">Evaluator for the context</param>
         /// <param name="resultService">Result service for the context</param>
         /// <param name="nodeNameGenerator">Node name generator for the context</param>
         /// <param name="objectNameGenerator">Object name generator for the context</param>
         /// <param name="parent">Parent of th econtext</param>
         public ReadingContext(
             string contextName,
-            IEvaluator evaluator,
+            IEvaluator readingEvaluator,
             IResultService resultService,
             INodeNameGenerator nodeNameGenerator,
             IObjectNameGenerator objectNameGenerator,
             IReadingContext parent = null)
         {
             ContextName = contextName ?? throw new ArgumentNullException(nameof(contextName));
-            Evaluator = evaluator ?? throw new ArgumentNullException(nameof(evaluator));
+            ReadingEvaluator = readingEvaluator ?? throw new ArgumentNullException(nameof(readingEvaluator));
             Result = resultService ?? throw new ArgumentNullException(nameof(resultService));
             NodeNameGenerator = nodeNameGenerator ?? throw new ArgumentNullException(nameof(nodeNameGenerator));
             ObjectNameGenerator = objectNameGenerator ?? throw new ArgumentNullException(nameof(objectNameGenerator));
@@ -54,6 +55,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// </summary>
         public string ContextName { get; protected set; }
 
+        public IEvaluator ReadingEvaluator { get; private set; }
+
         /// <summary>
         /// Gets or sets the parent of context
         /// </summary>
@@ -63,11 +66,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// Gets available subcircuits in context
         /// </summary>
         public ICollection<SubCircuit> AvailableSubcircuits { get; }
-
-        /// <summary>
-        /// Gets or sets the evaluator
-        /// </summary>
-        public IEvaluator Evaluator { get; protected set; }
 
         /// <summary>
         /// Gets or sets the result service
@@ -97,11 +95,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         public void SetICVoltage(string nodeName, string expression)
         {
             var fullNodeName = NodeNameGenerator.Generate(nodeName);
-            var initialValue = Evaluator.EvaluateDouble(expression);
+            var initialValue = ReadingEvaluator.EvaluateDouble(expression);
 
             Result.SetInitialVoltageCondition(fullNodeName, initialValue);
 
-            Evaluator.AddAction("ICV - " + nodeName, expression, value => Result.SetInitialVoltageCondition(nodeName, value));
+            ReadingEvaluator.AddAction("ICV - " + nodeName, expression, (simulation, value) => Result.SetInitialVoltageCondition(nodeName, value));
         }
 
         /// <summary>
@@ -113,7 +111,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         {
             foreach (var simulation in Result.Simulations)
             {
-                simulation.Nodes.NodeSets[nodeName] = Evaluator.EvaluateDouble(expression);
+                simulation.Nodes.NodeSets[nodeName] = ReadingEvaluator.EvaluateDouble(expression);
             }
         }
 
@@ -128,7 +126,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         {
             try
             {
-                return Evaluator.EvaluateDouble(expression);
+                return ReadingEvaluator.EvaluateDouble(expression);
             }
             catch (Exception ex)
             {
@@ -145,12 +143,12 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <returns>
         /// True if the parameter has been set.
         /// </returns>
-        public bool SetEntityParameter(Entity entity, string parameterName, string expression)
+        public bool SetEntityParameter(Entity entity, string parameterName, string expression, Simulation sim = null)
         {
             double value;
             try
             {
-                value = Evaluator.EvaluateDouble(expression);
+                value = sim != null ? GetSimulationEvaluator(sim).EvaluateDouble(expression) : ReadingEvaluator.EvaluateDouble(expression);
             }
             catch (Exception ex)
             {
@@ -158,16 +156,32 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
                 return false;
             }
 
-            var wasSet = entity.SetParameter(parameterName.ToLower(), value);
+            bool wasSet = false;
+            if (sim != null)
+            {
+                sim.EntityParameters.GetEntityParameters(entity.Name).GetParameter(parameterName.ToLower()).Value = value;
+                wasSet = true;
+            }
+            else
+            {
+                wasSet = entity.SetParameter(parameterName.ToLower(), value);
+            }
 
             if (wasSet)
             {
-                var propertySetter = entity.ParameterSets.GetSetter(parameterName.ToLower());
+                Action<Simulation, double> propertySetter = (Simulation simulation, double newValue) => simulation.EntityParameters.GetEntityParameters(entity.Name).GetParameter(parameterName.ToLower()).Value = newValue;
 
                 // re-evaluation makes sense only if there is a setter
                 if (propertySetter != null)
                 {
-                    Evaluator.AddAction(entity.Name.ToString(), expression, propertySetter);
+                    if (sim != null)
+                    {
+                        GetSimulationEvaluator(sim).AddAction(entity.Name + "-" + parameterName.ToLower(), expression, propertySetter);
+                    }
+                    else
+                    {
+                        ReadingEvaluator.AddAction(entity.Name + "-" + parameterName.ToLower(), expression, propertySetter);
+                    }
                 }
 
                 return true;
@@ -232,6 +246,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
             }
 
             component.Connect(nodes);
+        }
+
+        public IEvaluator GetSimulationEvaluator(Simulation simulation)
+        {
+            return this.Result.Evaluators[simulation];
         }
     }
 }

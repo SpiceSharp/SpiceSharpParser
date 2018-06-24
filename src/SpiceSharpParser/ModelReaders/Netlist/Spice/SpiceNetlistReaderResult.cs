@@ -65,8 +65,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
         public List<Print> Prints { get; } = new List<Print>();
 
         /// <summary>
-        /// Gets or sets used evaluator for simulations.
+        /// Gets evaluators for simulations.
         /// </summary>
-        public IEvaluator Evaluator { get; set; }
+        public Dictionary<Simulation, IEvaluator> Evaluators { get; } = new Dictionary<SpiceSharp.Simulations.Simulation, IEvaluator>();
     }
 }

@@ -45,6 +45,7 @@ namespace SpiceSharpParser
         }
 
         protected ISweepsPreprocessor SweepsPreprocessor { get; }
+
         /// <summary>
         /// Gets the .lib reader.
         /// </summary>
@@ -98,7 +99,7 @@ namespace SpiceSharpParser
             SpiceNetlist postprocessedNetlistModel = (SpiceNetlist)preprocessedNetListModel.Clone();
 
             // Postprocessing
-            var postprocessorEvaluator = new SpiceEvaluator(settings.SpiceNetlistModelReaderSettings.EvaluatorMode);
+            var postprocessorEvaluator = new SpiceEvaluator(settings.SpiceNetlistModelReaderSettings.EvaluatorMode, new Common.Evaluation.ExpressionRegistry(), null);
 
             var ifPostprocessor = new IfPostprocessor(postprocessorEvaluator);
             postprocessedNetlistModel.Statements = ifPostprocessor.PostProcess(postprocessedNetlistModel.Statements);

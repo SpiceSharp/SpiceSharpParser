@@ -1,18 +1,19 @@
 ﻿using System;
+using SpiceSharp.Simulations;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
     public class CachedExpression : EvaluatorExpression
     {
-        private double _value;
+        private double value;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CachedExpression"/> class.
         /// </summary>
         /// <param name="expressionString">Expression string.</param>
         /// <param name="expressionEvaluator">Expression evaluator.</param>
-        public CachedExpression(string expressionString, Func<string, object, EvaluatorExpression, double> expressionEvaluator)
-            : base(expressionString, expressionEvaluator)
+        public CachedExpression(string expressionString, Func<string, object, EvaluatorExpression, IEvaluator, double> expressionEvaluator, IEvaluator evaluator)
+            : base(expressionString, expressionEvaluator, evaluator)
         {
         }
 
@@ -20,8 +21,8 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Initializes a new instance of the <see cref="CachedExpression"/> class.
         /// </summary>
         /// <param name="expressionEvaluator">Expression evaluator.</param>
-        public CachedExpression(Func<string, object, EvaluatorExpression, double> expressionEvaluator)
-            : this (string.Empty, expressionEvaluator)
+        public CachedExpression(Func<string, object, EvaluatorExpression, IEvaluator, double> expressionEvaluator, IEvaluator evaluator)
+            : this (string.Empty, expressionEvaluator, evaluator)
         {
         }
 
@@ -41,15 +42,15 @@ namespace SpiceSharpParser.Common.Evaluation
         {
             if (!IsLoaded)
             {
-                _value = ExpressionEvaluator(ExpressionString, context, this);
+                value = ExpressionEvaluator(ExpressionString, context, this, Evaluator);
                 IsLoaded = true;
             }
 
-            return _value;
+            return value;
         }
 
         /// <summary>
-        /// Invalidate the expression. 
+        /// Invalidate the expression.
         /// </summary>
         public override void Invalidate()
         {

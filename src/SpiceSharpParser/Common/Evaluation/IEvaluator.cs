@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SpiceSharp.Simulations;
 
 namespace SpiceSharpParser.Common
 {
@@ -8,6 +9,8 @@ namespace SpiceSharpParser.Common
     /// </summary>
     public interface IEvaluator
     {
+        Simulation Simulation { get; set; }
+
         /// <summary>
         /// Gets the custom functions.
         /// </summary>
@@ -104,6 +107,14 @@ namespace SpiceSharpParser.Common
         IEvaluator CreateChildEvaluator();
 
         /// <summary>
+        /// Creates a cloned evaluator.
+        /// </summary>
+        /// <returns>
+        /// A cloned evaluator.
+        /// </returns>
+        IEvaluator CreateClonedEvaluator();
+
+        /// <summary>
         /// Invalidate parameters.
         /// </summary>
         void InvalidateParameters();
@@ -143,7 +154,7 @@ namespace SpiceSharpParser.Common
         /// <param name="actionName">Action name</param>
         /// <param name="expression">Expression</param>
         /// <param name="actionWhenExpressionValueIsChanged">Action to run when expression is changed</param>
-        void AddAction(string actionName, string expression, Action<double> actionWhenExpressionValueIsChanged);
+        void AddAction(string actionName, string expression, Action<Simulation, double> actionWhenExpressionValueIsChanged);
 
         /// <summary>
         /// Refreshes all dependent expressions and parameters.

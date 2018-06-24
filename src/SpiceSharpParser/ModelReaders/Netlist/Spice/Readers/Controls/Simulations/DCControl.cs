@@ -64,10 +64,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             dc.OnParameterSearch += (sender, e) =>
             {
                 string sweepParameterName = e.Name.ToString();
-                if (context.Evaluator.HasParameter(sweepParameterName))
+                if (context.GetSimulationEvaluator(dc).HasParameter(sweepParameterName))
                 {
                     e.TemperatureNeeded = true;
-                    e.Result = new EvaluationParameter(context.Evaluator, sweepParameterName);
+                    e.Result = new EvaluationParameter(context.GetSimulationEvaluator(dc), sweepParameterName);
                 }
             };
 

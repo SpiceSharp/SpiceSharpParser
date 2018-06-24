@@ -232,11 +232,12 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                 else
                 {
                     string expressionName = parameter.Image;
-                    var expressionNames = context.Evaluator.GetExpressionNames();
+                    var evaluator = context.ReadingEvaluator;
+                    var expressionNames = evaluator.GetExpressionNames();
 
                     if (expressionNames.Contains(expressionName))
                     {
-                        result.Add(new ExpressionExport(simulation.Name.ToString(), expressionName, context.Evaluator.GetExpression(expressionName), context.Evaluator, simulation));
+                        result.Add(new ExpressionExport(simulation.Name.ToString(), expressionName, evaluator.GetExpression(expressionName), evaluator, simulation));
                     }
                 }
             }

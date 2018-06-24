@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
@@ -139,6 +139,102 @@ namespace SpiceSharpParser.Common.Evaluation
                     expression.Invalidate();
                     expression.Evaluate(context);
                 }
+            }
+        }
+
+        public ExpressionRegistry Clone()
+        {
+            var result = new ExpressionRegistry();
+
+            foreach (var dep in ParametersDependencies)
+            {
+                result.ParametersDependencies[dep.Key] = new List<string>(dep.Value);
+            }
+
+            List<EvaluatorExpression> addedExpresions = new List<EvaluatorExpression>();
+            foreach (var exprDep in ExpressionsDependencies)
+            {
+                foreach (var expr in exprDep.Value)
+                {
+                    if (!result.ExpressionsDependencies.ContainsKey(exprDep.Key))
+                    {
+                        result.ExpressionsDependencies[exprDep.Key] = new List<EvaluatorExpression>();
+                    }
+
+                    var clone = expr.Clone();
+                    result.ExpressionsDependencies[exprDep.Key].Add(clone);
+
+                    if (UnnamedExpressions.Contains(expr))
+                    {
+                        result.UnnamedExpressions.Add(clone);
+                        addedExpresions.Add(expr);
+                    }
+
+                    if (expr is NamedExpression ne)
+                    {
+                        addedExpresions.Add(expr);
+                        result.NamedExpressions[ne.Name] = ne;
+                    }
+                }
+            }
+
+            foreach (var expression in NamedExpressions)
+            {
+                if (!addedExpresions.Contains(expression.Value))
+                {
+                    result.NamedExpressions.Add(expression.Key,  (NamedExpression)expression.Value.Clone());
+                }
+            }
+
+            foreach (var expression in UnnamedExpressions)
+            {
+                if (!addedExpresions.Contains(expression))
+                {
+                    result.UnnamedExpressions.Add(expression.Clone());
+                }
+            }
+
+            return result;
+        }
+
+        internal void UpdateEvaluator(IEvaluator newEvaluator)
+        {
+            foreach (var exprDep in ExpressionsDependencies)
+            {
+                foreach (var expr  in exprDep.Value)
+                {
+                    expr.Evaluator = newEvaluator;
+                }
+            }
+            foreach (var expression in NamedExpressions.Values)
+            {
+                expression.Evaluator = newEvaluator;
+            }
+
+            foreach (var expression in UnnamedExpressions)
+            {
+                expression.Evaluator = newEvaluator;
+            }
+        }
+
+        public void Invalidate()
+        {
+            foreach (var exprDep in ExpressionsDependencies)
+            {
+                foreach (var expr in exprDep.Value)
+                {
+                    expr.Invalidate();
+                }
+            }
+
+            foreach (var expression in NamedExpressions.Values)
+            {
+                expression.Invalidate();
+            }
+
+            foreach (var expression in UnnamedExpressions)
+            {
+                expression.Invalidate();
             }
         }
     }

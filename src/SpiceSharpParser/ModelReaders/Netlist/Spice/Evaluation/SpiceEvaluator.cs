@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using SpiceSharp;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
@@ -14,15 +15,37 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
     /// </summary>
     public class SpiceEvaluator : Evaluator, ISpiceEvaluator
     {
+        public SpiceEvaluator()
+         : this(SpiceEvaluatorMode.Spice3f5, new ExpressionRegistry(), null)
+        {
+
+        }
+
+        public SpiceEvaluator(Simulation simulation)
+            : this(SpiceEvaluatorMode.Spice3f5, new ExpressionRegistry(), simulation)
+        {
+
+        }
+
+        public SpiceEvaluator(SpiceEvaluatorMode mode)
+         : this(mode, new ExpressionRegistry(), null)
+        {
+        }
+
+        public SpiceEvaluator(SpiceEvaluatorMode mode, Simulation simulation) 
+            : this(mode, new ExpressionRegistry(), simulation)
+        { 
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceEvaluator"/> class.
         /// </summary>
-        public SpiceEvaluator(SpiceEvaluatorMode mode = SpiceEvaluatorMode.Spice3f5)
-            : base(new SpiceExpressionParser(mode == SpiceEvaluatorMode.LtSpice), new ExpressionRegistry())
+        public SpiceEvaluator(SpiceEvaluatorMode mode, ExpressionRegistry registry, Simulation simulation)
+            : base(new SpiceExpressionParser(mode == SpiceEvaluatorMode.LtSpice), registry, simulation)
         {
             Mode = mode;
 
-            Parameters.Add("TEMP", new CachedExpression((e, c, a) => (Circuit.ReferenceTemperature - Circuit.CelsiusKelvin)));
+            Parameters.Add("TEMP", new CachedExpression((e, c, a, ev) => (Circuit.ReferenceTemperature - Circuit.CelsiusKelvin), this));
 
             CustomFunctions.Add("**", MathFunctions.CreatePowInfix(Mode));
             CustomFunctions.Add("abs", MathFunctions.CreateAbs());
@@ -62,8 +85,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceEvaluator"/> class.
         /// </summary>
-        public SpiceEvaluator(SpiceEvaluatorMode mode, IExporterRegistry exporters, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
-            : this(mode)
+        public SpiceEvaluator(SpiceEvaluatorMode mode, IExporterRegistry exporters, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator, Simulation simulation)
+            : this(mode, new ExpressionRegistry(), simulation)
         {
             ExportFunctions.Add(CustomFunctions, exporters, nodeNameGenerator, objectNameGenerator);
         }
@@ -81,11 +104,40 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// </returns>
         public override IEvaluator CreateChildEvaluator()
         {
-            var newEvaluator = new SpiceEvaluator(Mode);
+            var newEvaluator = new SpiceEvaluator(Mode, new ExpressionRegistry(), Simulation);
 
             foreach (var parameterName in this.GetParameterNames())
             {
                 newEvaluator.Parameters[parameterName] = this.ExpressionParser.Parameters[parameterName];
+            }
+
+            foreach (var customFunction in CustomFunctions)
+            {
+                newEvaluator.CustomFunctions[customFunction.Key] = customFunction.Value;
+            }
+
+            return newEvaluator;
+        }
+
+        /// <summary>
+        /// Creates a cloned evaluator.
+        /// </summary>
+        /// <returns>
+        /// A cloned evaluator.
+        /// </returns>
+        public override IEvaluator CreateClonedEvaluator()
+        {
+            var registry = Registry.Clone();
+            registry.Invalidate();
+
+            var newEvaluator = new SpiceEvaluator(Mode, registry, Simulation);
+            registry.UpdateEvaluator(newEvaluator);
+
+            foreach (var parameterName in this.GetParameterNames())
+            {
+                newEvaluator.Parameters[parameterName] = this.ExpressionParser.Parameters[parameterName].Clone();
+                newEvaluator.Parameters[parameterName].Evaluator = newEvaluator;
+                newEvaluator.Parameters[parameterName].Invalidate();
             }
 
             foreach (var customFunction in CustomFunctions)

@@ -135,11 +135,17 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                 else
                 {
                     string expressionName = parameter.Image;
-                    var expressionNames = context.Evaluator.GetExpressionNames();
+                    var expressionNames = context.GetSimulationEvaluator(simulationToPlot).GetExpressionNames();
 
                     if (expressionNames.Contains(expressionName))
                     {
-                        result.Add(new ExpressionExport(simulationToPlot.Name.ToString(), expressionName, context.Evaluator.GetExpression(expressionName), context.Evaluator, simulationToPlot));
+                        result.Add(
+                            new ExpressionExport(
+                                simulationToPlot.Name.ToString(),
+                                expressionName,
+                                context.GetSimulationEvaluator(simulationToPlot).GetExpression(expressionName),
+                                 context.GetSimulationEvaluator(simulationToPlot),
+                                simulationToPlot));
                     }
                 }
             }

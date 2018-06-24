@@ -2,6 +2,7 @@
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
@@ -29,6 +30,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// Gets all simulations.
         /// </summary>
         public IEnumerable<Simulation> Simulations => Result.Simulations;
+
+        /// <summary>
+        /// Gets all evaluators.
+        /// </summary>
+        public Dictionary<Simulation, IEvaluator> Evaluators => Result.Evaluators;
 
         /// <summary>
         /// Gets all exports.

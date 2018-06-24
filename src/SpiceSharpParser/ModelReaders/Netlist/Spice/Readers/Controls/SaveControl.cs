@@ -218,7 +218,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         {
             export.Simulation.OnExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
-                var firstParameterSweepValue = context.Evaluator.GetParameterValue(firstParameterSweep.Parameter.Image, sender);
+                var firstParameterSweepValue = context.GetSimulationEvaluator(export.Simulation).GetParameterValue(firstParameterSweep.Parameter.Image, sender);
                 series.Points.Add(new Point() { X = firstParameterSweepValue, Y = export.Extract() });
             };
         }
@@ -291,18 +291,19 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         private void AddLetExport(IReadingContext context, Type simulationType, SingleParameter s)
         {
             string expressionName = s.Image;
-            var expressionNames = context.Evaluator.GetExpressionNames();
+            var expressionNames = context.ReadingEvaluator.GetExpressionNames();
 
             if (expressionNames.Contains(expressionName))
             {
                 var simulations = Filter(context.Result.Simulations, simulationType);
                 foreach (var simulation in simulations)
                 {
+                    var evaluator = context.ReadingEvaluator;
                     var export = new ExpressionExport(
                             simulation.Name.ToString(),
                             expressionName,
-                            context.Evaluator.GetExpression(expressionName),
-                            context.Evaluator,
+                            evaluator.GetExpression(expressionName),
+                            evaluator,
                             simulation
                     );
                     context.Result.AddExport(export);

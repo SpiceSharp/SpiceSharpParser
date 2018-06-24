@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.Circuits;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
@@ -27,11 +28,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// Gets the list of available subcircuit for the context.
         /// </summary>
         ICollection<SubCircuit> AvailableSubcircuits { get; }
-
-        /// <summary>
-        /// Gets the evaluator for the context.
-        /// </summary>
-        IEvaluator Evaluator { get; }
 
         /// <summary>
         /// Gets the result service for the context.
@@ -80,7 +76,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <returns>
         /// True if parameter has been set
         /// </returns>
-        bool SetEntityParameter(Entity entity, string parameterName, string expression);
+        bool SetEntityParameter(Entity entity, string parameterName, string expression, Simulation sim = null);
 
         /// <summary>
         /// Sets the parameter of entity.
@@ -109,5 +105,12 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <param name="component">A component</param>
         /// <param name="parameters">Parameters of component</param>
         void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters);
+
+        /// <summary>
+        /// Gets the evaluator for the simulation.
+        /// </summary>
+        IEvaluator GetSimulationEvaluator(Simulation simulation);
+
+        IEvaluator ReadingEvaluator { get; }
     }
 }

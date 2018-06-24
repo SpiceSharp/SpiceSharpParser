@@ -9,13 +9,14 @@ using SpiceSharpParser.Common;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations
 {
     /// <summary>
     /// Base for all control simulation readers.
     /// </summary>
-    /// TODO: Add comments please ...
+    /// TODO: Add comments please ... and please, please refactor me
     public abstract class SimulationControl : BaseControl
     {
         protected void CreateSimulations(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
@@ -75,7 +76,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
                         string suffix = GetSimulationNameSuffix(parameterValues);
 
                         var simulation = createSimulation(name + " (" + suffix + ")", control, modifiedContext);
-                        SetSimulation(context, parameterValues, simulation);
+                        SetSeepSimulation(context, parameterValues, simulation);
 
                         return simulation;
                     };
@@ -87,11 +88,18 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             }
         }
 
-        protected void SetSimulation(IReadingContext context, List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues, BaseSimulation simulation)
+        protected void SetSeepSimulation(IReadingContext context, List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues, BaseSimulation simulation)
         {
-            simulation.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs e) =>
-            {
-                context.Evaluator.InvalidateParameters();
+            simulation.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs e) => {
+                if (!context.Result.Evaluators.ContainsKey(simulation))
+                {
+                    var evaluator = context.ReadingEvaluator.CreateClonedEvaluator();
+                    evaluator.Simulation = simulation;
+                    lock (context)
+                    {
+                        context.Result.Evaluators[simulation] = evaluator;
+                    }
+                }
 
                 foreach (var paramToSet in parameterValues)
                 {
@@ -99,60 +107,60 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
                     {
                         if (context.Result.FindObject(paramToSet.Key.Image, out Entity @object))
                         {
-                            SetIndependentSource(paramToSet, @object);
+                            SetIndependentSource(simulation, paramToSet, @object);
                         }
                     }
 
                     if (paramToSet.Key is ReferenceParameter rp)
                     {
-                        UpdateDeviceParameter(context, paramToSet, rp);
+                        UpdateDeviceParameter(simulation, context, paramToSet, rp);
                     }
 
                     if (paramToSet.Key is BracketParameter bp)
                     {
-                        UpdateModelParameter(context, paramToSet, bp);
+                        UpdateModelParameter(simulation, context, paramToSet, bp);
                     }
 
-                    UpdateSimulationParameter(context, paramToSet);
+                    UpdateSimulationParameter(simulation, context, paramToSet);
                 }
             };
         }
 
-        protected void UpdateDeviceParameter(IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet, ReferenceParameter rp)
+        protected void UpdateDeviceParameter(Simulation simulation, IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet, ReferenceParameter rp)
         {
             string objectName = rp.Name;
             string paramName = rp.Argument;
             if (context.Result.FindObject(objectName, out Entity @object))
             {
-                context.SetEntityParameter(@object, paramName, paramToSet.Value.ToString());
+                context.SetEntityParameter(@object, paramName, paramToSet.Value.ToString(), simulation);
             }
         }
 
-        protected void UpdateModelParameter(IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet, BracketParameter bp)
+        protected void UpdateModelParameter(Simulation simulation, IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet, BracketParameter bp)
         {
             string modelName = bp.Name;
             string paramName = bp.Parameters[0].Image;
             if (context.Result.FindObject(modelName, out Entity @model))
             {
-                context.SetEntityParameter(model, paramName, paramToSet.Value.ToString());
+                context.SetEntityParameter(model, paramName, paramToSet.Value.ToString(), simulation);
             }
         }
 
-        protected void UpdateSimulationParameter(IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet)
+        protected void UpdateSimulationParameter(Simulation simulation, IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet)
         {
-            context.Evaluator.SetParameter(paramToSet.Key.Image, paramToSet.Value);
+            context.GetSimulationEvaluator(simulation).SetParameter(paramToSet.Key.Image, paramToSet.Value);
         }
 
-        protected void SetIndependentSource(KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet, Entity @object)
+        protected void SetIndependentSource(Simulation simulation, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet, Entity @object)
         {
             if (@object is VoltageSource vs)
             {
-                vs.SetParameter("dc", paramToSet.Value); //TODO add ac magnitude
+                simulation.EntityParameters.GetEntityParameters(@object.Name).SetParameter("dc", paramToSet.Value);
             }
 
             if (@object is CurrentSource cs)
             {
-                cs.SetParameter("dc", paramToSet.Value); //TODO add ac magnitude
+                simulation.EntityParameters.GetEntityParameters(@object.Name).SetParameter("dc", paramToSet.Value);
             }
         }
 
@@ -231,7 +239,18 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
 
             sim.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs e) =>
             {
-                context.Evaluator.SetParameter("TEMP", temp);
+                if (!context.Result.Evaluators.ContainsKey(sim))
+                {
+                    var eval = context.ReadingEvaluator.CreateClonedEvaluator();
+                    eval.Simulation = sim;
+
+                    lock (context)
+                    {
+                        context.Result.Evaluators[sim] = eval;
+                    }
+                }
+                var evaluator = context.GetSimulationEvaluator(sim);
+                evaluator.SetParameter("TEMP", temp);
             };
         }
 
