@@ -10,24 +10,48 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
     /// </summary>
     public class ParseTreeGenerator
     {
-        private readonly bool isNewLineRequiredAtTheEnd;
+        private Dictionary<string, Action<Stack<ParseTreeNode>, ParseTreeNonTerminalNode, SpiceToken[], int>> parsers = new Dictionary<string, Action<Stack<ParseTreeNode>, ParseTreeNonTerminalNode, SpiceToken[], int>>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParserTreeGenerator"/> class.
+        /// Initializes a new instance of the <see cref="ParseTreeGenerator"/> class.
         /// </summary>
-        /// <param name="isNewLineRequiredAtTheEnd">Is NEWLINE required</param>
+        /// <param name="isNewLineRequiredAtTheEnd">Is NEWLINE required at the end?</param>
         public ParseTreeGenerator(bool isNewLineRequiredAtTheEnd = false)
         {
-            this.isNewLineRequiredAtTheEnd = isNewLineRequiredAtTheEnd;
+            IsNewLineRequiredAtTheEnd = isNewLineRequiredAtTheEnd;
+
+            parsers.Add(Symbols.NETLIST, ReadNetlist);
+            parsers.Add(Symbols.NETLIST_WITHOUT_TITLE, ReadNetlistWithoutTitle);
+            parsers.Add(Symbols.NETLIST_ENDING, ReadNetlistEnding);
+            parsers.Add(Symbols.STATEMENTS, ReadStatements);
+            parsers.Add(Symbols.STATEMENT, ReadStatement);
+            parsers.Add(Symbols.COMMENT_LINE, ReadCommentLine);
+            parsers.Add(Symbols.SUBCKT, ReadSubckt);
+            parsers.Add(Symbols.SUBCKT_ENDING, ReadSubcktEnding);
+            parsers.Add(Symbols.COMPONENT, ReadComponent);
+            parsers.Add(Symbols.CONTROL, ReadControl);
+            parsers.Add(Symbols.MODEL, ReadModel);
+            parsers.Add(Symbols.PARAMETERS, ReadParameters);
+            parsers.Add(Symbols.PARAMETER, ReadParameter);
+            parsers.Add(Symbols.PARAMETER_SINGLE, ReadParameterSingle);
+            parsers.Add(Symbols.PARAMETER_BRACKET, ReadParameterBracket);
+            parsers.Add(Symbols.PARAMETER_BRACKET_CONTENT, ReadParameterBracketContent);
+            parsers.Add(Symbols.PARAMETER_EQUAL, ReadParameterEqual);
+            parsers.Add(Symbols.PARAMETER_EQUAL_SINGLE, ReadParameterEqualSingle);
+            parsers.Add(Symbols.VECTOR, ReadVector);
+            parsers.Add(Symbols.VECTOR_CONTINUE, ReadVectorContinue);
+            parsers.Add(Symbols.NEW_LINE, ReadNewLine);
         }
 
+        protected bool IsNewLineRequiredAtTheEnd { get; }
+
         /// <summary>
-        /// Generates a parse tree for SPICE grammar
+        /// Generates a parse tree for SPICE grammar.
         /// </summary>
-        /// <param name="tokens">An array of tokens</param>
-        /// <param name="rootSymbol">A root symbol of parse tree</param>
+        /// <param name="tokens">An array of tokens.</param>
+        /// <param name="rootSymbol">A root symbol of parse tree.</param>
         /// <returns>
-        /// A parse tree
+        /// A parse tree.
         /// </returns>
         public ParseTreeNonTerminalNode GetParseTree(SpiceToken[] tokens, string rootSymbol = Symbols.NETLIST)
         {
@@ -48,71 +72,13 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 var currentNode = stack.Pop();
                 if (currentNode is ParseTreeNonTerminalNode ntn)
                 {
-                    switch (ntn.Name)
+                    if (parsers.ContainsKey(ntn.Name))
                     {
-                        case Symbols.NETLIST:
-                            ReadNetlist(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.NETLIST_WITHOUT_TITLE:
-                            ReadNetlistWithoutTitle(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.NETLIST_ENDING:
-                            ReadNetlistEnding(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.STATEMENTS:
-                            ReadStatements(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.STATEMENT:
-                            ReadStatement(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.COMMENT_LINE:
-                            ReadCommentLine(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.SUBCKT:
-                            ReadSubckt(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.SUBCKT_ENDING:
-                            ReadSubcktEnding(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.COMPONENT:
-                            ReadComponent(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.CONTROL:
-                            ReadControl(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.MODEL:
-                            ReadModel(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.PARAMETERS:
-                            ReadParameters(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.PARAMETER:
-                            ReadParameter(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.PARAMETER_SINGLE:
-                            ReadParameterSingle(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.PARAMETER_BRACKET:
-                            ReadParameterBracket(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.PARAMETER_BRACKET_CONTENT:
-                            ReadParameterBracketContent(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.PARAMETER_EQUAL:
-                            ReadParameterEqual(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.PARAMETER_EQUAL_SINGLE:
-                            ReadParameterEqualSingle(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.VECTOR:
-                            ReadVector(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.VECTOR_CONTINUE:
-                            ReadVectorContinue(stack, ntn, tokens, currentTokenIndex);
-                            break;
-                        case Symbols.NEW_LINE:
-                            ReadNewLine(stack, ntn, tokens, currentTokenIndex);
-                            break;
+                        parsers[ntn.Name](stack, ntn, tokens, currentTokenIndex);
+                    }
+                    else
+                    {
+                        throw new ParseException("Unknown non-terminal found while parsing." + ntn.Name, tokens[currentTokenIndex].LineNumber);
                     }
                 }
 
@@ -240,7 +206,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             }
             else
             {
-                if (tokens[currentTokenIndex + 1].Is(SpiceTokenType.EOF) && !isNewLineRequiredAtTheEnd)
+                if (tokens[currentTokenIndex + 1].Is(SpiceTokenType.EOF) && !IsNewLineRequiredAtTheEnd)
                 {
                     PushProductionExpression(
                      stack,
@@ -292,7 +258,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
             if (currentToken.Is(SpiceTokenType.END))
             {
-                if (isNewLineRequiredAtTheEnd)
+                if (IsNewLineRequiredAtTheEnd)
                 {
                     PushProductionExpression(
                                 stack,

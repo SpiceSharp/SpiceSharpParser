@@ -20,34 +20,34 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// <summary>
         /// The dictionary with non-terminal nodes evaluators
         /// </summary>
-        private Dictionary<string, Func<ParseTreeNodeEvaluationValues, SpiceObject>> translators = new Dictionary<string, Func<ParseTreeNodeEvaluationValues, SpiceObject>>();
+        private Dictionary<string, Func<ParseTreeNodeEvaluationValues, SpiceObject>> evaluators = new Dictionary<string, Func<ParseTreeNodeEvaluationValues, SpiceObject>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ParseTreeEvaluator"/> class.
         /// </summary>
         public ParseTreeEvaluator()
         {
-            translators.Add(Symbols.NETLIST, (ParseTreeNodeEvaluationValues nt) => CreateNetlist(nt));
-            translators.Add(Symbols.NETLIST_WITHOUT_TITLE, (ParseTreeNodeEvaluationValues nt) => CreateNetlistWithoutTitle(nt));
-            translators.Add(Symbols.NETLIST_ENDING, (ParseTreeNodeEvaluationValues nt) => null);
-            translators.Add(Symbols.STATEMENTS, (ParseTreeNodeEvaluationValues nt) => CreateStatements(nt));
-            translators.Add(Symbols.STATEMENT, (ParseTreeNodeEvaluationValues nt) => CreateStatement(nt));
-            translators.Add(Symbols.MODEL, (ParseTreeNodeEvaluationValues nt) => CreateModel(nt));
-            translators.Add(Symbols.CONTROL, (ParseTreeNodeEvaluationValues nt) => CreateControl(nt));
-            translators.Add(Symbols.COMPONENT, (ParseTreeNodeEvaluationValues nt) => CreateComponent(nt));
-            translators.Add(Symbols.PARAMETERS, (ParseTreeNodeEvaluationValues nt) => CreateParameters(nt));
-            translators.Add(Symbols.PARAMETER, (ParseTreeNodeEvaluationValues nt) => CreateParameter(nt));
-            translators.Add(Symbols.VECTOR, (ParseTreeNodeEvaluationValues nt) => CreateVector(nt));
-            translators.Add(Symbols.VECTOR_CONTINUE, (ParseTreeNodeEvaluationValues nt) => CreateVectorContinue(nt));
-            translators.Add(Symbols.PARAMETER_BRACKET, (ParseTreeNodeEvaluationValues nt) => CreateBracketParameter(nt));
-            translators.Add(Symbols.PARAMETER_BRACKET_CONTENT, (ParseTreeNodeEvaluationValues nt) => CreateBracketParameterContent(nt));
-            translators.Add(Symbols.PARAMETER_EQUAL, (ParseTreeNodeEvaluationValues nt) => CreateAssigmentParameter(nt));
-            translators.Add(Symbols.PARAMETER_EQUAL_SINGLE, (ParseTreeNodeEvaluationValues nt) => CreateAssigmentSimpleParameter(nt));
-            translators.Add(Symbols.PARAMETER_SINGLE, (ParseTreeNodeEvaluationValues nt) => CreateParameterSingle(nt));
-            translators.Add(Symbols.SUBCKT, (ParseTreeNodeEvaluationValues nt) => CreateSubCircuit(nt));
-            translators.Add(Symbols.SUBCKT_ENDING, (ParseTreeNodeEvaluationValues nt) => null);
-            translators.Add(Symbols.COMMENT_LINE, (ParseTreeNodeEvaluationValues nt) => CreateComment(nt));
-            translators.Add(Symbols.NEW_LINE, (ParseTreeNodeEvaluationValues nt) => null);
+            evaluators.Add(Symbols.NETLIST, (ParseTreeNodeEvaluationValues nt) => CreateNetlist(nt));
+            evaluators.Add(Symbols.NETLIST_WITHOUT_TITLE, (ParseTreeNodeEvaluationValues nt) => CreateNetlistWithoutTitle(nt));
+            evaluators.Add(Symbols.NETLIST_ENDING, (ParseTreeNodeEvaluationValues nt) => null);
+            evaluators.Add(Symbols.STATEMENTS, (ParseTreeNodeEvaluationValues nt) => CreateStatements(nt));
+            evaluators.Add(Symbols.STATEMENT, (ParseTreeNodeEvaluationValues nt) => CreateStatement(nt));
+            evaluators.Add(Symbols.MODEL, (ParseTreeNodeEvaluationValues nt) => CreateModel(nt));
+            evaluators.Add(Symbols.CONTROL, (ParseTreeNodeEvaluationValues nt) => CreateControl(nt));
+            evaluators.Add(Symbols.COMPONENT, (ParseTreeNodeEvaluationValues nt) => CreateComponent(nt));
+            evaluators.Add(Symbols.PARAMETERS, (ParseTreeNodeEvaluationValues nt) => CreateParameters(nt));
+            evaluators.Add(Symbols.PARAMETER, (ParseTreeNodeEvaluationValues nt) => CreateParameter(nt));
+            evaluators.Add(Symbols.VECTOR, (ParseTreeNodeEvaluationValues nt) => CreateVector(nt));
+            evaluators.Add(Symbols.VECTOR_CONTINUE, (ParseTreeNodeEvaluationValues nt) => CreateVectorContinue(nt));
+            evaluators.Add(Symbols.PARAMETER_BRACKET, (ParseTreeNodeEvaluationValues nt) => CreateBracketParameter(nt));
+            evaluators.Add(Symbols.PARAMETER_BRACKET_CONTENT, (ParseTreeNodeEvaluationValues nt) => CreateBracketParameterContent(nt));
+            evaluators.Add(Symbols.PARAMETER_EQUAL, (ParseTreeNodeEvaluationValues nt) => CreateAssigmentParameter(nt));
+            evaluators.Add(Symbols.PARAMETER_EQUAL_SINGLE, (ParseTreeNodeEvaluationValues nt) => CreateAssigmentSimpleParameter(nt));
+            evaluators.Add(Symbols.PARAMETER_SINGLE, (ParseTreeNodeEvaluationValues nt) => CreateParameterSingle(nt));
+            evaluators.Add(Symbols.SUBCKT, (ParseTreeNodeEvaluationValues nt) => CreateSubCircuit(nt));
+            evaluators.Add(Symbols.SUBCKT_ENDING, (ParseTreeNodeEvaluationValues nt) => null);
+            evaluators.Add(Symbols.COMMENT_LINE, (ParseTreeNodeEvaluationValues nt) => CreateComment(nt));
+            evaluators.Add(Symbols.NEW_LINE, (ParseTreeNodeEvaluationValues nt) => null);
         }
 
         /// <summary>
@@ -74,12 +74,12 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                         items.Add(treeNodesValues[child]);
                     }
 
-                    if (!translators.ContainsKey(nt.Name))
+                    if (!evaluators.ContainsKey(nt.Name))
                     {
                         throw new ParseTreeEvaluationException("Unsupported evaluation of parse tree node");
                     }
 
-                    var treeNodeResult = translators[nt.Name](items);
+                    var treeNodeResult = evaluators[nt.Name](items);
                     treeNodesValues[treeNode] = new ParseTreeNonTerminalEvaluationValue
                     {
                         SpiceObject = treeNodeResult,
