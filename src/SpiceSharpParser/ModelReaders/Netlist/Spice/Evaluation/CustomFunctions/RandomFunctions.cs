@@ -10,17 +10,17 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
         private static ThreadLocal<Random> threadLocalRandom = new ThreadLocal<Random>(() => new Random(Interlocked.Increment(ref tickCount)));
 
         /// <summary>
-        /// Create a gaus() custom function.
+        /// Create a gauss() custom function.
         /// </summary>
         /// <returns>
-        /// A new instance of random gaus function.
+        /// A new instance of random gauss function.
         /// </returns>
-        public static CustomFunction CreateGaus()
+        public static CustomFunction CreateGauss()
         {
             var random = threadLocalRandom.Value;
 
             CustomFunction function = new CustomFunction();
-            function.Name = "gaus";
+            function.Name = "gauss";
             function.VirtualParameters = false;
             function.ArgumentsCount = 1;
 

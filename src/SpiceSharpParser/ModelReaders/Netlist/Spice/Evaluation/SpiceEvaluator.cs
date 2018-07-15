@@ -58,7 +58,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
             CustomFunctions.Add("fabs", MathFunctions.CreateAbs());
             CustomFunctions.Add("flat", RandomFunctions.CreateFlat());
             CustomFunctions.Add("floor", MathFunctions.CreateFloor());
-            CustomFunctions.Add("gauss", RandomFunctions.CreateGaus());
+            CustomFunctions.Add("gauss", RandomFunctions.CreateGauss());
             CustomFunctions.Add("hypot", MathFunctions.CreateHypot());
             CustomFunctions.Add("if", ControlFunctions.CreateIf());
             CustomFunctions.Add("lazy", ControlFunctions.CreateLazy());
