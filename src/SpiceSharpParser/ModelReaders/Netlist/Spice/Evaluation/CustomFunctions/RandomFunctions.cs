@@ -28,7 +28,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
             {
                 if (args.Length != 1)
                 {
-                    throw new Exception("gaus expects one argument");
+                    throw new Exception("gauss() expects one argument");
                 }
                 double p1 = 1 - random.NextDouble();
                 double p2 = 1 - random.NextDouble();
