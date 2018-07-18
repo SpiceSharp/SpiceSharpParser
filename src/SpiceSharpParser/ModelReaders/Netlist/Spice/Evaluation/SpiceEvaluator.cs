@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using SpiceSharp;
+﻿using SpiceSharp;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
@@ -16,32 +15,43 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
     public class SpiceEvaluator : Evaluator, ISpiceEvaluator
     {
         public SpiceEvaluator()
-         : this(SpiceEvaluatorMode.Spice3f5, new ExpressionRegistry(), null)
+        : this(string.Empty, SpiceEvaluatorMode.Spice3f5, new ExpressionRegistry(), null)
         {
 
         }
 
-        public SpiceEvaluator(Simulation simulation)
-            : this(SpiceEvaluatorMode.Spice3f5, new ExpressionRegistry(), simulation)
+        public SpiceEvaluator(string name)
+         : this(name, SpiceEvaluatorMode.Spice3f5, new ExpressionRegistry(), null)
         {
 
+        }
+
+        public SpiceEvaluator(string name, Simulation simulation)
+            : this(name, SpiceEvaluatorMode.Spice3f5, new ExpressionRegistry(), simulation)
+        {
+
+        }
+
+        public SpiceEvaluator(string name, SpiceEvaluatorMode mode)
+         : this(name, mode, new ExpressionRegistry(), null)
+        {
         }
 
         public SpiceEvaluator(SpiceEvaluatorMode mode)
-         : this(mode, new ExpressionRegistry(), null)
+        : this(string.Empty, mode, new ExpressionRegistry(), null)
         {
         }
 
-        public SpiceEvaluator(SpiceEvaluatorMode mode, Simulation simulation) 
-            : this(mode, new ExpressionRegistry(), simulation)
+        public SpiceEvaluator(string name, SpiceEvaluatorMode mode, Simulation simulation) 
+            : this(name, mode, new ExpressionRegistry(), simulation)
         { 
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceEvaluator"/> class.
         /// </summary>
-        public SpiceEvaluator(SpiceEvaluatorMode mode, ExpressionRegistry registry, Simulation simulation)
-            : base(new SpiceExpressionParser(mode == SpiceEvaluatorMode.LtSpice), registry, simulation)
+        public SpiceEvaluator(string name, SpiceEvaluatorMode mode, ExpressionRegistry registry, Simulation simulation)
+            : base(name, new SpiceExpressionParser(mode == SpiceEvaluatorMode.LtSpice), registry, simulation)
         {
             Mode = mode;
 
@@ -85,8 +95,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceEvaluator"/> class.
         /// </summary>
-        public SpiceEvaluator(SpiceEvaluatorMode mode, IExporterRegistry exporters, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator, Simulation simulation)
-            : this(mode, new ExpressionRegistry(), simulation)
+        public SpiceEvaluator(string name, SpiceEvaluatorMode mode, IExporterRegistry exporters, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator, Simulation simulation)
+            : this(name, mode, new ExpressionRegistry(), simulation)
         {
             ExportFunctions.Add(CustomFunctions, exporters, nodeNameGenerator, objectNameGenerator);
         }
@@ -102,9 +112,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// <returns>
         /// A child evaluator.
         /// </returns>
-        public override IEvaluator CreateChildEvaluator()
+        public override IEvaluator CreateChildEvaluator(string name)
         {
-            var newEvaluator = new SpiceEvaluator(Mode, new ExpressionRegistry(), Simulation);
+            var newEvaluator = new SpiceEvaluator(name, Mode, new ExpressionRegistry(), Simulation);
 
             foreach (var parameterName in this.GetParameterNames())
             {
@@ -116,6 +126,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
                 newEvaluator.CustomFunctions[customFunction.Key] = customFunction.Value;
             }
 
+            Children.Add(newEvaluator);
+
             return newEvaluator;
         }
 
@@ -125,12 +137,12 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// <returns>
         /// A cloned evaluator.
         /// </returns>
-        public override IEvaluator CreateClonedEvaluator()
+        public override IEvaluator CreateClonedEvaluator(string name)
         {
             var registry = Registry.Clone();
             registry.Invalidate();
 
-            var newEvaluator = new SpiceEvaluator(Mode, registry, Simulation);
+            var newEvaluator = new SpiceEvaluator(name, Mode, registry, Simulation);
             registry.UpdateEvaluator(newEvaluator);
 
             foreach (var parameterName in this.GetParameterNames())
@@ -143,6 +155,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
             foreach (var customFunction in CustomFunctions)
             {
                 newEvaluator.CustomFunctions[customFunction.Key] = customFunction.Value;
+            }
+
+            foreach (var child in Children)
+            {
+                newEvaluator.Children.Add(child.CreateClonedEvaluator(child.Name));
             }
 
             return newEvaluator;

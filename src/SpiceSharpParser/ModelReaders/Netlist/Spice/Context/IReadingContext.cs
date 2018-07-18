@@ -109,7 +109,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets the evaluator for the simulation.
         /// </summary>
-        IEvaluator GetSimulationEvaluator(Simulation simulation);
+        IEvaluator GetSimulationEvaluator(Simulation simulation, string name = null);
 
         IEvaluator ReadingEvaluator { get; }
     }

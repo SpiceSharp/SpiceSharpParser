@@ -53,7 +53,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
                     throw new ArgumentException("lazy() function expects one argument");
                 }
 
-                return evaluator.CreateChildEvaluator().EvaluateDouble(args[0].ToString(), context);
+                return evaluator.CreateChildEvaluator(evaluator.Name + "_lazy").EvaluateDouble(args[0].ToString(), context);
             };
 
             return function;

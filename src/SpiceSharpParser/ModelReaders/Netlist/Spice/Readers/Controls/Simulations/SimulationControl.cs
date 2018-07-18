@@ -93,7 +93,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             simulation.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs e) => {
                 if (!context.Result.Evaluators.ContainsKey(simulation))
                 {
-                    var evaluator = context.ReadingEvaluator.CreateClonedEvaluator();
+                    var evaluator = context.ReadingEvaluator.CreateClonedEvaluator(context.ReadingEvaluator.Name + "_" + simulation.Name);
                     evaluator.Simulation = simulation;
                     lock (context)
                     {
@@ -148,7 +148,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
 
         protected void UpdateSimulationParameter(Simulation simulation, IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet)
         {
-            context.GetSimulationEvaluator(simulation).SetParameter(paramToSet.Key.Image, paramToSet.Value);
+            context.GetSimulationEvaluator(simulation).SetParameter(paramToSet.Key.Image, paramToSet.Value, simulation);
         }
 
         protected void SetIndependentSource(Simulation simulation, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet, Entity @object)
@@ -225,7 +225,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             return result;
         }
 
-        protected void SetTempVariable(IReadingContext context, double? operatingTemperatureInKelvins, BaseSimulation sim)
+        protected void SetTempVariable(IReadingContext context, double? operatingTemperatureInKelvins, BaseSimulation simulation)
         {
             double temp = 0;
             if (operatingTemperatureInKelvins.HasValue)
@@ -237,20 +237,21 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
                 temp = Circuit.ReferenceTemperature - Circuit.CelsiusKelvin;
             }
 
-            sim.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs e) =>
+            simulation.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs e) =>
             {
-                if (!context.Result.Evaluators.ContainsKey(sim))
+                if (!context.Result.Evaluators.ContainsKey(simulation))
                 {
-                    var eval = context.ReadingEvaluator.CreateClonedEvaluator();
-                    eval.Simulation = sim;
+                    var eval = context.ReadingEvaluator.CreateClonedEvaluator(context.ReadingEvaluator.Name + "_" + simulation.Name);
+                    eval.Simulation = simulation;
 
                     lock (context)
                     {
-                        context.Result.Evaluators[sim] = eval;
+                        context.Result.Evaluators[simulation] = eval;
                     }
                 }
-                var evaluator = context.GetSimulationEvaluator(sim);
-                evaluator.SetParameter("TEMP", temp);
+
+                var evaluator = context.GetSimulationEvaluator(simulation);
+                evaluator.SetParameter("TEMP", temp, simulation);
             };
         }
 

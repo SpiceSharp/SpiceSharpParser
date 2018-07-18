@@ -1,28 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharp;
 using SpiceSharp.Circuits;
-using SpiceSharpParser.Common;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 {
     /// <summary>
-    /// Reading context
+    /// Reading context.
     /// </summary>
     public class ReadingContext : IReadingContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ReadingContext"/> class.
         /// </summary>
-        /// <param name="contextName">Name of the context</param>
-        /// <param name="readingEvaluator">Evaluator for the context</param>
-        /// <param name="resultService">Result service for the context</param>
-        /// <param name="nodeNameGenerator">Node name generator for the context</param>
-        /// <param name="objectNameGenerator">Object name generator for the context</param>
-        /// <param name="parent">Parent of th econtext</param>
+        /// <param name="contextName">Name of the context.</param>
+        /// <param name="readingEvaluator">Evaluator for the context.</param>
+        /// <param name="resultService">Result service for the context.</param>
+        /// <param name="nodeNameGenerator">Node name generator for the context.</param>
+        /// <param name="objectNameGenerator">Object name generator for the context.</param>
+        /// <param name="parent">Parent of th econtext.</param>
         public ReadingContext(
             string contextName,
             IEvaluator readingEvaluator,
@@ -51,47 +50,47 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         }
 
         /// <summary>
-        /// Gets or sets the name of context
+        /// Gets or sets the name of context.
         /// </summary>
         public string ContextName { get; protected set; }
 
         public IEvaluator ReadingEvaluator { get; private set; }
 
         /// <summary>
-        /// Gets or sets the parent of context
+        /// Gets or sets the parent of context.
         /// </summary>
         public IReadingContext Parent { get; protected set; }
 
         /// <summary>
-        /// Gets available subcircuits in context
+        /// Gets available subcircuits in context.
         /// </summary>
         public ICollection<SubCircuit> AvailableSubcircuits { get; }
 
         /// <summary>
-        /// Gets or sets the result service
+        /// Gets or sets the result service.
         /// </summary>
         public IResultService Result { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the node name generator
+        /// Gets or sets the node name generator.
         /// </summary>
         public INodeNameGenerator NodeNameGenerator { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the object name generator
+        /// Gets or sets the object name generator.
         /// </summary>
         public IObjectNameGenerator ObjectNameGenerator { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the children of the processing context
+        /// Gets or sets the children of the processing context.
         /// </summary>
         public ICollection<IReadingContext> Children { get; protected set; }
 
         /// <summary>
-        /// Sets voltage initial condition for node
+        /// Sets voltage initial condition for node.
         /// </summary>
-        /// <param name="nodeName">Name of node</param>
-        /// <param name="expression">Expression</param>
+        /// <param name="nodeName">Name of node.</param>
+        /// <param name="expression">Expression.</param>
         public void SetICVoltage(string nodeName, string expression)
         {
             var fullNodeName = NodeNameGenerator.Generate(nodeName);
@@ -103,10 +102,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         }
 
         /// <summary>
-        /// Sets voltage guess condition for node
+        /// Sets voltage guess condition for node.
         /// </summary>
-        /// <param name="nodeName">Name of node</param>
-        /// <param name="expression">Expression</param>
+        /// <param name="nodeName">Name of node.</param>
+        /// <param name="expression">Expression.</param>
         public void SetNodeSetVoltage(string nodeName, string expression)
         {
             foreach (var simulation in Result.Simulations)
@@ -116,11 +115,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         }
 
         /// <summary>
-        /// Parses an expression to double
+        /// Parses an expression to double.
         /// </summary>
-        /// <param name="expression">Expression to parse</param>
+        /// <param name="expression">Expression to parse.</param>
         /// <returns>
-        /// A value of expression
+        /// A value of expression..
         /// </returns>
         public double ParseDouble(string expression)
         {
@@ -148,7 +147,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
             double value;
             try
             {
-                value = sim != null ? GetSimulationEvaluator(sim).EvaluateDouble(expression) : ReadingEvaluator.EvaluateDouble(expression);
+                value = sim != null ? GetSimulationEvaluator(sim, null).EvaluateDouble(expression) : ReadingEvaluator.EvaluateDouble(expression);
             }
             catch (Exception ex)
             {
@@ -169,14 +168,17 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 
             if (wasSet)
             {
-                Action<Simulation, double> propertySetter = (Simulation simulation, double newValue) => simulation.EntityParameters.GetEntityParameters(entity.Name).GetParameter(parameterName.ToLower()).Value = newValue;
+                Action<Simulation, double> propertySetter = (Simulation simulation, double newValue) =>
+                {
+                    simulation.EntityParameters.GetEntityParameters(entity.Name).GetParameter(parameterName.ToLower()).Value = newValue;
+                };
 
                 // re-evaluation makes sense only if there is a setter
                 if (propertySetter != null)
                 {
                     if (sim != null)
                     {
-                        GetSimulationEvaluator(sim).AddAction(entity.Name + "-" + parameterName.ToLower(), expression, propertySetter);
+                        GetSimulationEvaluator(sim, null).AddAction(entity.Name + "-" + parameterName.ToLower(), expression, propertySetter);
                     }
                     else
                     {
@@ -191,13 +193,13 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         }
 
         /// <summary>
-        /// Sets the parameter of entity
+        /// Sets the parameter of entity.
         /// </summary>
-        /// <param name="entity">An entity of parameter</param>
-        /// <param name="parameterName">A parameter name</param>
-        /// <param name="object">An parameter value</param>
+        /// <param name="entity">An entity of parameter.</param>
+        /// <param name="parameterName">A parameter name.</param>
+        /// <param name="object">An parameter value.</param>
         /// <returns>
-        /// True if the parameter has been set
+        /// True if the parameter has been set.
         /// </returns>
         public bool SetParameter(Entity entity, string parameterName, object @object)
         {
@@ -205,11 +207,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         }
 
         /// <summary>
-        /// Finds model in the context and in parent contexts
+        /// Finds model in the context and in parent contexts.
         /// </summary>
-        /// <param name="modelName">Name of model to find</param>
+        /// <param name="modelName">Name of model to find.</param>
         /// <returns>
-        /// A reference to model
+        /// A reference to model.
         /// </returns>
         public T FindModel<T>(string modelName)
             where T : Entity
@@ -232,10 +234,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         }
 
         /// <summary>
-        /// Creates nodes for a component
+        /// Creates nodes for a component.
         /// </summary>
-        /// <param name="component">A component</param>
-        /// <param name="parameters">Parameters of component</param>
+        /// <param name="component">A component.</param>
+        /// <param name="parameters">Parameters of component.</param>
         public void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters)
         {
             Identifier[] nodes = new Identifier[component.PinCount];
@@ -248,9 +250,18 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
             component.Connect(nodes);
         }
 
-        public IEvaluator GetSimulationEvaluator(Simulation simulation)
+        public IEvaluator GetSimulationEvaluator(Simulation simulation, string name)
         {
-            return this.Result.Evaluators[simulation];
+            var simulationEval = this.Result.Evaluators[simulation];
+
+            if (name == null)
+            {
+                return simulationEval;
+            }
+            else
+            {
+                return simulationEval.Search(name);
+            }
         }
     }
 }

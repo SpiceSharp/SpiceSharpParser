@@ -10,6 +10,13 @@ namespace SpiceSharpParser.Common
     public interface IEvaluator
     {
         Simulation Simulation { get; set; }
+        
+        string Name { get; }
+
+        /// <summary>
+        /// Gets the children evaluators.
+        /// </summary>
+        List<IEvaluator> Children { get; }
 
         /// <summary>
         /// Gets the custom functions.
@@ -83,14 +90,14 @@ namespace SpiceSharpParser.Common
         /// </summary>
         /// <param name="name">Parameter name.</param>
         /// <param name="expressionString">Parameter expression.</param>
-        void SetParameter(string name, string expressionString);
+        void SetParameter(string name, string expressionString, object context = null);
 
         /// <summary>
         /// Sets a parameter.
         /// </summary>
         /// <param name="name">Parameter name.</param>
         /// <param name="value">Parameter expression.</param>
-        void SetParameter(string name, double value);
+        void SetParameter(string name, double value, object context = null);
 
         /// <summary>
         /// Sets parameters.
@@ -104,7 +111,7 @@ namespace SpiceSharpParser.Common
         /// <returns>
         /// A child evaluator.
         /// </returns>
-        IEvaluator CreateChildEvaluator();
+        IEvaluator CreateChildEvaluator(string name);
 
         /// <summary>
         /// Creates a cloned evaluator.
@@ -112,7 +119,7 @@ namespace SpiceSharpParser.Common
         /// <returns>
         /// A cloned evaluator.
         /// </returns>
-        IEvaluator CreateClonedEvaluator();
+        IEvaluator CreateClonedEvaluator(string name);
 
         /// <summary>
         /// Invalidate parameters.
@@ -160,6 +167,10 @@ namespace SpiceSharpParser.Common
         /// Refreshes all dependent expressions and parameters.
         /// </summary>
         /// <param name="parameterName">Paramter</param>
-        void RefreshForParameter(string parameterName);
+        void RefreshForParameter(string parameterName, object context);
+
+
+        void RefreshChildrenForParameter(string parameter, object  context);
+        IEvaluator Search(string name);
     }
 }

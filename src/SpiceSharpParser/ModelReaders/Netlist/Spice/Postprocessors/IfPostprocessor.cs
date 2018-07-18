@@ -224,6 +224,11 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
             throw new Exception();
         }
 
+        public IEvaluator GetSimulationEvaluator(Simulation simulation, string name = null)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEvaluator ReadingEvaluator
         {
             get

@@ -29,7 +29,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             p.SetParameter("a", 1);
 
             // act and assert
-            var v = p.CreateChildEvaluator();
+            var v = p.CreateChildEvaluator("child");
 
             v.SetParameter("xyz", 13.0);
             Assert.Equal(1, v.GetParameterValue("a", null));
