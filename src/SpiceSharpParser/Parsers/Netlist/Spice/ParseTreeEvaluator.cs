@@ -379,6 +379,19 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             }
 
             subCkt.Statements = values.GetSpiceObject<Statements>(5);
+
+            var lastValue = (ParseTreeNonTerminalEvaluationValue)values[values.Count - 1];
+
+            if (lastValue != null && (((ParseTreeNonTerminalNode)lastValue.Node).Children.Count == 2))
+            {
+                var nameAfterEnds = (ParseTreeTerminalNode)((ParseTreeNonTerminalNode)lastValue.Node).Children[1];
+
+                if (nameAfterEnds.Token.Lexem != subCkt.Name)
+                {
+                    throw new ParseException("There is wrong name after .ENDS", nameAfterEnds.Token.LineNumber);
+                }
+            }
+
             return subCkt;
         }
 
