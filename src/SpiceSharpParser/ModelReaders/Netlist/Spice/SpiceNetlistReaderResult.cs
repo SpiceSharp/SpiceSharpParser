@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints;
@@ -63,10 +62,5 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
         /// Gets the list of generated prints.
         /// </summary>
         public List<Print> Prints { get; } = new List<Print>();
-
-        /// <summary>
-        /// Gets evaluators for simulations.
-        /// </summary>
-        public Dictionary<Simulation, IEvaluator> Evaluators { get; } = new Dictionary<SpiceSharp.Simulations.Simulation, IEvaluator>();
     }
 }

@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Extensions;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Extensions;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components
 {

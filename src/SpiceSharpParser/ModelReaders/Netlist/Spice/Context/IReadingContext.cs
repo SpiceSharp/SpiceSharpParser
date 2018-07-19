@@ -3,7 +3,6 @@ using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 {
@@ -43,6 +42,16 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// Gets the object name generator.
         /// </summary>
         IObjectNameGenerator ObjectNameGenerator { get; }
+
+        /// <summary>
+        /// Gets the evaluator for the reading of the model.
+        /// </summary>
+        IEvaluator ReadingEvaluator { get; }
+
+        /// <summary>
+        /// Gets the dictionary of evaluators for simulations.
+        /// </summary>
+        IDictionary<Simulation, IEvaluator> SimulationEvaluators { get; }
 
         /// <summary>
         /// Parses an expression to double.
@@ -107,10 +116,23 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters);
 
         /// <summary>
-        /// Gets the evaluator for the simulation.
+        /// Gets the evaluator for the simulation with given name.
         /// </summary>
-        IEvaluator GetSimulationEvaluator(Simulation simulation, string name = null);
+        /// <param name="simulation">Simulation.</param>
+        IEvaluator GetSimulationEvaluator(Simulation simulation);
 
-        IEvaluator ReadingEvaluator { get; }
+        /// <summary>
+        /// Creates a simulation evaluator.
+        /// </summary>
+        /// <param name="simulation">A simulation.</param>
+        /// <param name="name">A name of evaluator.</param>
+        void CreateSimulationEvaluator(Simulation simulation, string name);
+
+        /// <summary>
+        /// Creates simulation evaluator if it's not created.
+        /// </summary>
+        /// <param name="simulation">A simulation.</param>
+        /// <param name="name">A name of evaluator.</param>
+        void EnsureSimulationEvaluator(Simulation simulation, string name);
     }
 }

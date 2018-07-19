@@ -76,7 +76,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
                         string suffix = GetSimulationNameSuffix(parameterValues);
 
                         var simulation = createSimulation(name + " (" + suffix + ")", control, modifiedContext);
-                        SetSeepSimulation(context, parameterValues, simulation);
+                        SetSweepSimulation(context, parameterValues, simulation);
 
                         return simulation;
                     };
@@ -88,18 +88,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             }
         }
 
-        protected void SetSeepSimulation(IReadingContext context, List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues, BaseSimulation simulation)
+        protected void SetSweepSimulation(IReadingContext context, List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues, BaseSimulation simulation)
         {
             simulation.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs e) => {
-                if (!context.Result.Evaluators.ContainsKey(simulation))
-                {
-                    var evaluator = context.ReadingEvaluator.CreateClonedEvaluator(context.ReadingEvaluator.Name + "_" + simulation.Name);
-                    evaluator.Simulation = simulation;
-                    lock (context)
-                    {
-                        context.Result.Evaluators[simulation] = evaluator;
-                    }
-                }
+
+                context.EnsureSimulationEvaluator(simulation, simulation.Name.ToString());
 
                 foreach (var paramToSet in parameterValues)
                 {
@@ -239,16 +232,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
 
             simulation.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs e) =>
             {
-                if (!context.Result.Evaluators.ContainsKey(simulation))
-                {
-                    var eval = context.ReadingEvaluator.CreateClonedEvaluator(context.ReadingEvaluator.Name + "_" + simulation.Name);
-                    eval.Simulation = simulation;
-
-                    lock (context)
-                    {
-                        context.Result.Evaluators[simulation] = eval;
-                    }
-                }
+                context.EnsureSimulationEvaluator(simulation, simulation.Name.ToString());
 
                 var evaluator = context.GetSimulationEvaluator(simulation);
                 evaluator.SetParameter("TEMP", temp, simulation);

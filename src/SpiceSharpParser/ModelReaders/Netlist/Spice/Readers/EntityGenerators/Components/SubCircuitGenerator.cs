@@ -192,7 +192,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                 context.ReadingEvaluator.AddAction(subcircuitFullName + " - " + parameter + " - sub", expression,
                     (Simulation sim, double val) =>
                     {
-                        context.GetSimulationEvaluator(sim, subcircuitFullName).SetParameter(parameter, val, sim);
+                        var simulationEvaluator = context.GetSimulationEvaluator(sim);
+                        var simulationSubcircuitEvaluator = simulationEvaluator.Search(subcircuitFullName);
+                        simulationSubcircuitEvaluator.SetParameter(parameter, val, sim);
                     });
             }
 

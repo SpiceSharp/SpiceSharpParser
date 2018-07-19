@@ -229,6 +229,16 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
             throw new NotImplementedException();
         }
 
+        public void CreateSimulationEvaluator(Simulation simulation, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EnsureSimulationEvaluator(Simulation simulation, string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEvaluator ReadingEvaluator
         {
             get
@@ -236,5 +246,7 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
                 return Evaluator;
             }
         }
+
+        public IDictionary<Simulation, IEvaluator> SimulationEvaluators => throw new NotImplementedException();
     }
 }

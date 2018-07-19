@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
-using SpiceSharp;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints;
-using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 {
@@ -15,8 +14,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         SimulationConfiguration SimulationConfiguration { get; }
 
         IEnumerable<Simulation> Simulations { get; }
-
-        Dictionary<Simulation, IEvaluator> Evaluators { get; }
 
         IEnumerable<Export> Exports { get; }
 
