@@ -2,23 +2,38 @@
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp;
-using SpiceSharp.Circuits;
-using SpiceSharp.Components;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations
 {
     /// <summary>
     /// Base for all control simulation readers.
     /// </summary>
-    /// TODO: Add comments please ... and please, please refactor me
+    /// TODO: Add comments please ... and please, please refactor me. Please... Please ...
     public abstract class SimulationControl : BaseControl
     {
+        public SimulationControl()
+        {
+            Updater = new ParameterUpdater();
+        }
+
+        public SimulationControl(IParameterUpdater updater)
+        {
+            Updater = updater;
+        }
+
+        /// <summary>
+        /// Gets the parameter updater.
+        /// </summary>
+        protected IParameterUpdater Updater { get; }
+
+        /// <summary>
+        /// Creates simulations.
+        /// </summary>
         protected void CreateSimulations(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
         {
             if (context.Result.SimulationConfiguration.ParameterSweeps.Count == 0)
@@ -33,25 +48,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
 
         protected void CreateSimulationsForAllParameterSweepsAndTemperatures(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
         {
-            var tempSweep = context.Result.SimulationConfiguration.ParameterSweeps.SingleOrDefault(sweep => sweep.Parameter.Image == "TEMP");
-
-            if (tempSweep != null)
-            {
-                context.Result.SimulationConfiguration.ParameterSweeps.Remove(tempSweep);
-                var tempValues = tempSweep.Sweep.Points.ToList();
-
-                //TODO: Clean it please
-                if (context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions.HasValue)
-                {
-                    context.Result.SimulationConfiguration.TemperaturesInKelvins.Remove(context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions.Value);
-                }
-                context.Result.SimulationConfiguration.TemperaturesInKelvins.Clear(); //TODO: Add some checks ...
-
-                foreach (var temp in tempValues)
-                {
-                    context.Result.SimulationConfiguration.TemperaturesInKelvins.Add(Circuit.CelsiusKelvin + temp);
-                }
-            }
+            ProcessTempParameterSweep(context);
 
             List<List<double>> sweeps = new List<List<double>>();
             int productCount = 1;
@@ -88,73 +85,36 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             }
         }
 
+        protected void ProcessTempParameterSweep(IReadingContext context)
+        {
+            var tempSweep = context.Result.SimulationConfiguration.ParameterSweeps.SingleOrDefault(sweep => sweep.Parameter.Image == "TEMP");
+
+            if (tempSweep != null)
+            {
+                context.Result.SimulationConfiguration.ParameterSweeps.Remove(tempSweep);
+                var tempValues = tempSweep.Sweep.Points.ToList();
+
+                if (context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions.HasValue)
+                {
+                    context.Result.SimulationConfiguration.TemperaturesInKelvins.Remove(context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions.Value);
+                }
+
+                context.Result.SimulationConfiguration.TemperaturesInKelvins.Clear();
+
+                foreach (var temp in tempValues)
+                {
+                    context.Result.SimulationConfiguration.TemperaturesInKelvins.Add(Circuit.CelsiusKelvin + temp);
+                }
+            }
+        }
+
         protected void SetSweepSimulation(IReadingContext context, List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues, BaseSimulation simulation)
         {
-            simulation.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs e) => {
-
+            simulation.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs e) =>
+            {
                 context.EnsureSimulationEvaluator(simulation, simulation.Name.ToString());
-
-                foreach (var paramToSet in parameterValues)
-                {
-                    if (paramToSet.Key is WordParameter || paramToSet.Key is IdentifierParameter)
-                    {
-                        if (context.Result.FindObject(paramToSet.Key.Image, out Entity @object))
-                        {
-                            SetIndependentSource(simulation, paramToSet, @object);
-                        }
-                    }
-
-                    if (paramToSet.Key is ReferenceParameter rp)
-                    {
-                        UpdateDeviceParameter(simulation, context, paramToSet, rp);
-                    }
-
-                    if (paramToSet.Key is BracketParameter bp)
-                    {
-                        UpdateModelParameter(simulation, context, paramToSet, bp);
-                    }
-
-                    UpdateSimulationParameter(simulation, context, paramToSet);
-                }
+                Updater.Update(context, parameterValues, simulation);
             };
-        }
-
-        protected void UpdateDeviceParameter(Simulation simulation, IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet, ReferenceParameter rp)
-        {
-            string objectName = rp.Name;
-            string paramName = rp.Argument;
-            if (context.Result.FindObject(objectName, out Entity @object))
-            {
-                context.SetEntityParameter(@object, paramName, paramToSet.Value.ToString(), simulation);
-            }
-        }
-
-        protected void UpdateModelParameter(Simulation simulation, IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet, BracketParameter bp)
-        {
-            string modelName = bp.Name;
-            string paramName = bp.Parameters[0].Image;
-            if (context.Result.FindObject(modelName, out Entity @model))
-            {
-                context.SetEntityParameter(model, paramName, paramToSet.Value.ToString(), simulation);
-            }
-        }
-
-        protected void UpdateSimulationParameter(Simulation simulation, IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet)
-        {
-            context.GetSimulationEvaluator(simulation).SetParameter(paramToSet.Key.Image, paramToSet.Value, simulation);
-        }
-
-        protected void SetIndependentSource(Simulation simulation, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet, Entity @object)
-        {
-            if (@object is VoltageSource vs)
-            {
-                simulation.EntityParameters.GetEntityParameters(@object.Name).SetParameter("dc", paramToSet.Value);
-            }
-
-            if (@object is CurrentSource cs)
-            {
-                simulation.EntityParameters.GetEntityParameters(@object.Name).SetParameter("dc", paramToSet.Value);
-            }
         }
 
         protected string GetSimulationNameSuffix(List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues)
@@ -184,7 +144,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
 
                 double parameterValue = sweeps[j][indexes[j]];
                 parameterValues.Add(new KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>(parameter, parameterValue));
-
             }
 
             return parameterValues;
@@ -198,24 +157,25 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             {
                 foreach (double temp in context.Result.SimulationConfiguration.TemperaturesInKelvins)
                 {
-                    var simulation = createSimulation(GetSimulationName(context, temp), statement, context);
-
-                    SetTempVariable(context, temp, simulation);
-                    SetSimulationTemperatures(simulation, temp, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
-
-                    result.Add(simulation);
+                    CreateSimulationForTemperature(statement, context, createSimulation, result, temp);
                 }
             }
             else
             {
-                var simulation = createSimulation(GetSimulationName(context, null), statement, context);
-
-                SetTempVariable(context, null, simulation);
-                SetSimulationTemperatures(simulation, null, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
-                result.Add(simulation);
+                CreateSimulationForTemperature(statement, context, createSimulation, result, null);
             }
 
             return result;
+        }
+
+        protected void CreateSimulationForTemperature(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation, List<BaseSimulation> result, double? temp)
+        {
+            var simulation = createSimulation(GetSimulationName(context, temp), statement, context);
+
+            SetTempVariable(context, temp, simulation);
+            SetSimulationTemperatures(simulation, temp, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
+
+            result.Add(simulation);
         }
 
         protected void SetTempVariable(IReadingContext context, double? operatingTemperatureInKelvins, BaseSimulation simulation)
@@ -267,15 +227,15 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
         /// </summary>
         /// <param name="simulation">The simulation to set.</param>
         /// <param name="nominalTemperatureInKelvins">Nominal temperature</param>
-        protected static void SetCircuitNominalTemperature(BaseSimulation simulation, double nominalTemperatureInKelvins)
+        protected void SetCircuitNominalTemperature(BaseSimulation simulation, double nominalTemperatureInKelvins)
         {
             EventHandler<LoadStateEventArgs> setState = (object sender, LoadStateEventArgs e) =>
             {
                 if (e.State is RealState rs)
                 {
                     rs.NominalTemperature = nominalTemperatureInKelvins;
-
                 }
+
                 //TODO: What to do with complex state?
             };
 
@@ -287,7 +247,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
         /// </summary>
         /// <param name="simulation">The simulation to set.</param>
         /// <param name="operatingTemperatureInKelvins">Circuit temperature</param>
-        protected static void SetCircuitTemperature(BaseSimulation simulation, double operatingTemperatureInKelvins)
+        protected void SetCircuitTemperature(BaseSimulation simulation, double operatingTemperatureInKelvins)
         {
             EventHandler<LoadStateEventArgs> setState = (object sender, LoadStateEventArgs e) =>
             {
