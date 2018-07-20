@@ -266,7 +266,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
         /// Sets the base parameters.
         /// </summary>
         /// <param name="baseConfiguration">The configuration to set.</param>
-        /// <param name="context">The processing context.</param>
+        /// <param name="context">The reading context.</param>
         protected void SetBaseConfiguration(BaseConfiguration baseConfiguration, IReadingContext context)
         {
             if (context.Result.SimulationConfiguration.Gmin.HasValue)

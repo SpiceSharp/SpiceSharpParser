@@ -94,7 +94,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         public IObjectNameGenerator ObjectNameGenerator { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the children of the processing context.
+        /// Gets or sets the children of the reading context.
         /// </summary>
         public ICollection<IReadingContext> Children { get; protected set; }
 

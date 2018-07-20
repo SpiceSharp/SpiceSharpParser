@@ -9,7 +9,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
         /// Reades a subcircuit statement
         /// </summary>
         /// <param name="statement">A statement to process</param>
-        /// <param name="context">A processing context</param>
+        /// <param name="context">A reading context</param>
         void Read(SubCircuit statement, IReadingContext context);
     }
 }

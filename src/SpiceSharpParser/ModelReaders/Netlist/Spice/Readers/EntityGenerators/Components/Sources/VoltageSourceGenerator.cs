@@ -69,7 +69,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
         /// </summary>
         /// <param name="name">The name of voltage source to generate</param>
         /// <param name="parameters">The paramters for voltage source</param>
-        /// <param name="context">The processing context</param>
+        /// <param name="context">The reading context</param>
         /// <returns>
         /// A new instance of voltage controlled voltage source
         /// </returns>
@@ -92,7 +92,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
         /// </summary>
         /// <param name="name">The name of voltage source to generate</param>
         /// <param name="parameters">The paramters for voltage source</param>
-        /// <param name="context">The processing context</param>
+        /// <param name="context">The reading context</param>
         /// <returns>
         /// A new instance of current controlled voltage source
         /// </returns>
@@ -125,7 +125,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
         /// </summary>
         /// <param name="name">The name of voltage source to generate</param>
         /// <param name="parameters">The paramters for voltage source</param>
-        /// <param name="context">The processing context</param>
+        /// <param name="context">The reading context</param>
         /// <returns>
         /// A new instance of voltage source
         /// </returns>

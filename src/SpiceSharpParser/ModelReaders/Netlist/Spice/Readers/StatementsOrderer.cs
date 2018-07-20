@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
         protected IControlRegistry ControlRegistry { get; }
 
         /// <summary>
-        /// Orders statements for processing.
+        /// Orders statements for reading.
         /// </summary>
         /// <param name="statements">Statement to order.</param>
         /// <returns>

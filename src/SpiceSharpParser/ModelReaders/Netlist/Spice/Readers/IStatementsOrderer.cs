@@ -6,7 +6,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
     public interface IStatementsOrderer
     {
         /// <summary>
-        /// Orders statements for processing.
+        /// Orders statements for reading.
         /// </summary>
         /// <param name="statements">Statement to order.</param>
         /// <returns>

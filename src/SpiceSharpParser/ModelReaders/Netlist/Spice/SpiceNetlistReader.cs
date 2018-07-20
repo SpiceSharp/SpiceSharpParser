@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
             // Create result netlist
             var result = new SpiceNetlistReaderResult(new Circuit(), netlist.Title);
 
-            // Create processing context
+            // Create reading context
             var resultService = new ResultService(result);
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(new string[] { "0" });
             var objectNameGenerator = new ObjectNameGenerator(string.Empty);

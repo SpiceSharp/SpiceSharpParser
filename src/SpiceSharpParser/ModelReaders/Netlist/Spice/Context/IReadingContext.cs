@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         IReadingContext Parent { get;  }
 
         /// <summary>
-        /// Gets the children of the processing context.
+        /// Gets the children of the reading context.
         /// </summary>
         ICollection<IReadingContext> Children { get; }
 

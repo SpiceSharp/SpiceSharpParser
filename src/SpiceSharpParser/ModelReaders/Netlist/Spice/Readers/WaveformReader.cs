@@ -25,7 +25,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
         /// Gemerates wavefrom from bracket parameter.
         /// </summary>
         /// <param name="cp">A bracket parameter.</param>
-        /// <param name="context">A processing context.</param>
+        /// <param name="context">A reading context.</param>
         /// <returns>
         /// An new instance of waveform.
         /// </returns>
