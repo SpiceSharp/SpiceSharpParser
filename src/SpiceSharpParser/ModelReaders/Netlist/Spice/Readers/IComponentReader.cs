@@ -9,7 +9,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
     public interface IComponentReader
     {
         /// <summary>
-        /// Reades a component statement and modifies the context
+        /// Reads a component statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modifify</param>

@@ -34,7 +34,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors
         public ISpiceNetlistParser SpiceNetlistParser { get; }
 
         /// <summary>
-        /// Reades .include statements.
+        /// Reads .include statements.
         /// </summary>
         /// <param name="netlistModel">Netlist model to seach for .include statements</param>
         /// <param name="currentDirectoryPath">Current working directory path</param>

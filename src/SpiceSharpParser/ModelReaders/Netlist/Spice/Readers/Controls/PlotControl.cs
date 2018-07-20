@@ -12,7 +12,7 @@ using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
-    /// Reades .PLOT <see cref="Control"/> from spice netlist object model.
+    /// Reads .PLOT <see cref="Control"/> from spice netlist object model.
     /// It supports DC, AC, TRAN type of .PLOT
     /// </summary>
     public class PlotControl : ExportControl
@@ -37,7 +37,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         protected ICollection<string> SupportedPlotTypes { get; } = new List<string>() { "dc", "ac", "tran" };
 
         /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context
+        /// Reads <see cref="Control"/> statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>

@@ -4,7 +4,7 @@ using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
 {
     /// <summary>
-    /// Reades all <see cref="SubCircuit"/> from spice netlist object model.
+    /// Reads all <see cref="SubCircuit"/> from spice netlist object model.
     /// </summary>
     public class SubcircuitDefinitionReader : StatementReader<SubCircuit>, ISubcircuitDefinitionReader
     {
@@ -28,7 +28,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
         }
 
         /// <summary>
-        /// Reades a subcircuit statement.
+        /// Reads a subcircuit statement.
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A reading context.</param>

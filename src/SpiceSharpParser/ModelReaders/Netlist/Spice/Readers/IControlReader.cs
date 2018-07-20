@@ -9,7 +9,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
     public interface IControlReader
     {
         /// <summary>
-        /// Reades a control statement and modifies the context
+        /// Reads a control statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modifify</param>

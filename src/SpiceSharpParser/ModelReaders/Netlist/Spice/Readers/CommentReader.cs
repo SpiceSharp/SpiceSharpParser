@@ -4,7 +4,7 @@ using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
 {
     /// <summary>
-    /// Reades all <see cref="CommentLine"/> from spice netlist object model.
+    /// Reads all <see cref="CommentLine"/> from spice netlist object model.
     /// </summary>
     public class CommentReader : StatementReader<CommentLine>
     {
@@ -25,7 +25,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
         }
 
         /// <summary>
-        /// Reades a comment statement and modifies the context
+        /// Reads a comment statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modifify</param>

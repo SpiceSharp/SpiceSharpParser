@@ -5,7 +5,7 @@ using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
 {
     /// <summary>
-    /// Reades <see cref="Statement"/>s from spice netlist object model.
+    /// Reads <see cref="Statement"/>s from spice netlist object model.
     /// </summary>
     public class StatementsReader : IStatementsReader
     {
@@ -58,7 +58,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
         }
 
         /// <summary>
-        /// Reades statemets and modifes the context.
+        /// Reads statemets and modifes the context.
         /// </summary>
         /// <param name="statements">The statements to process.</param>
         /// <param name="context">The context to modify.</param>

@@ -5,7 +5,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
-    /// Reades .IC <see cref="Control"/> from spice netlist object model.
+    /// Reads .IC <see cref="Control"/> from spice netlist object model.
     /// </summary>
     public class ICControl : BaseControl
     {
@@ -15,7 +15,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         public override string SpiceCommandName => "ic";
 
         /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context
+        /// Reads <see cref="Control"/> statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>

@@ -112,7 +112,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.SUBCKT_ENDING"/> non-terminal node
+        /// Reads <see cref="Symbols.SUBCKT_ENDING"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -147,7 +147,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.NEW_LINE"/> non-terminal node
+        /// Reads <see cref="Symbols.NEW_LINE"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -175,7 +175,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.NETLIST"/> non-terminal node
+        /// Reads <see cref="Symbols.NETLIST"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -228,7 +228,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.NETLIST_WITHOUT_TITLE"/> non-terminal node
+        /// Reads <see cref="Symbols.NETLIST_WITHOUT_TITLE"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -245,7 +245,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.NETLIST_ENDING"/> non-terminal node
+        /// Reads <see cref="Symbols.NETLIST_ENDING"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -317,7 +317,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.STATEMENTS"/> non-terminal node
+        /// Reads <see cref="Symbols.STATEMENTS"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -368,7 +368,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.STATEMENT"/> non-terminal node
+        /// Reads <see cref="Symbols.STATEMENT"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -447,7 +447,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.VECTOR"/> non-terminal node
+        /// Reads <see cref="Symbols.VECTOR"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -465,7 +465,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.VECTOR_CONTINUE"/> non-terminal node
+        /// Reads <see cref="Symbols.VECTOR_CONTINUE"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -496,7 +496,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.COMMENT_LINE"/> non-terminal node
+        /// Reads <see cref="Symbols.COMMENT_LINE"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -511,7 +511,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.SUBCKT"/> non-terminal node
+        /// Reads <see cref="Symbols.SUBCKT"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -544,7 +544,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.PARAMETERS"/> non-terminal node
+        /// Reads <see cref="Symbols.PARAMETERS"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -599,7 +599,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.PARAMETER_EQUAL"/> non-terminal node
+        /// Reads <see cref="Symbols.PARAMETER_EQUAL"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -657,7 +657,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.PARAMETER_EQUAL_SINGLE"/> non-terminal node
+        /// Reads <see cref="Symbols.PARAMETER_EQUAL_SINGLE"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -674,7 +674,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.PARAMETER_BRACKET_CONTENT"/> non-terminal node
+        /// Reads <see cref="Symbols.PARAMETER_BRACKET_CONTENT"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -689,7 +689,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.PARAMETER"/> non-terminal node
+        /// Reads <see cref="Symbols.PARAMETER"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -796,7 +796,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.PARAMETER_BRACKET"/> non-terminal node
+        /// Reads <see cref="Symbols.PARAMETER_BRACKET"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -823,7 +823,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.PARAMETER_SINGLE"/> non-terminal node
+        /// Reads <see cref="Symbols.PARAMETER_SINGLE"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -854,7 +854,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.MODEL"/> non-terminal node
+        /// Reads <see cref="Symbols.MODEL"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -886,7 +886,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.CONTROL"/> non-terminal node
+        /// Reads <see cref="Symbols.CONTROL"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -953,7 +953,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reades <see cref="Symbols.COMPONENT"/> non-terminal node
+        /// Reads <see cref="Symbols.COMPONENT"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>

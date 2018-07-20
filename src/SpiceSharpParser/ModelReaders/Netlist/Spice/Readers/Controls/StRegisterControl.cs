@@ -8,14 +8,14 @@ using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
-    /// Reades .ST_R <see cref="Control"/> from Spice netlist object model.
+    /// Reads .ST_R <see cref="Control"/> from Spice netlist object model.
     /// </summary>
     public class StRegisterControl : BaseControl
     {
         public override string SpiceCommandName => "st_r";
 
         /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context.
+        /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>

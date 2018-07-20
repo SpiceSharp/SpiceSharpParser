@@ -46,7 +46,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors
         }
 
         /// <summary>
-        /// Reades APPENDMODEL statement
+        /// Reads APPENDMODEL statement
         /// </summary>
         /// <param name="statements">Statements to process</param>
         /// <param name="appendModel">Append model statement</param>

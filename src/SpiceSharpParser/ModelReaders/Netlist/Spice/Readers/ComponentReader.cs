@@ -7,7 +7,7 @@ using SpiceSharp.Circuits;
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
 {
     /// <summary>
-    /// Reades all supported <see cref="Component"/> from spice netlist object model.
+    /// Reads all supported <see cref="Component"/> from spice netlist object model.
     /// </summary>
     public class ComponentReader : StatementReader<Component>, IComponentReader
     {
@@ -38,7 +38,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
         }
 
         /// <summary>
-        /// Reades a component statement and modifies the context
+        /// Reads a component statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modifify</param>

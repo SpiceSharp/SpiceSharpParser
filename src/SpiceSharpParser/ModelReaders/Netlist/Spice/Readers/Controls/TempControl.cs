@@ -6,14 +6,14 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
-    /// Reades .TEMP <see cref="Control"/> from spice netlist object model.
+    /// Reads .TEMP <see cref="Control"/> from spice netlist object model.
     /// </summary>
     public class TempControl : BaseControl
     {
         public override string SpiceCommandName => "temp";
 
         /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context.
+        /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>

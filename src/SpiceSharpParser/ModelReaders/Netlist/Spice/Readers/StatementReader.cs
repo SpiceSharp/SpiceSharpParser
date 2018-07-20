@@ -20,14 +20,14 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
         public abstract bool CanRead(Statement statement);
 
         /// <summary>
-        /// Reades a statement (typed) and modifies the context
+        /// Reads a statement (typed) and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modifify</param>
         public abstract void Read(TStatement statement, IReadingContext context);
 
         /// <summary>
-        /// Reades a statement and modifies the context
+        /// Reads a statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modifify</param>

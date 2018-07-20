@@ -8,14 +8,14 @@ using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations
 {
     /// <summary>
-    /// Reades .NOISE <see cref="Control"/> from spice netlist object model.
+    /// Reads .NOISE <see cref="Control"/> from spice netlist object model.
     /// </summary>
     public class NoiseControl : SimulationControl
     {
         public override string SpiceCommandName => "noise";
 
         /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context
+        /// Reads <see cref="Control"/> statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>

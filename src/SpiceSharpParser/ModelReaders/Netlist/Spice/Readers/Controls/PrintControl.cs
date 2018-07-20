@@ -15,7 +15,7 @@ using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
-    /// Reades .PRINT <see cref="Control"/> from spice netlist object model.
+    /// Reads .PRINT <see cref="Control"/> from spice netlist object model.
     /// </summary>
     public class PrintControl : ExportControl
     {
@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         protected ICollection<string> SupportedPrintTypes { get; } = new List<string>() { "dc", "ac", "tran", "op" };
 
         /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context
+        /// Reads <see cref="Control"/> statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
