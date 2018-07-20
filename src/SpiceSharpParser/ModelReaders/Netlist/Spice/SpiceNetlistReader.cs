@@ -41,11 +41,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(new string[] { "0" });
             var objectNameGenerator = new ObjectNameGenerator(string.Empty);
 
-            var readcingEvaluator = new SpiceEvaluator("Main reading evaluator", Settings.EvaluatorMode, Settings.Context.Exporters, nodeNameGenerator, objectNameGenerator, null);
+            var readingEvaluator = new SpiceEvaluator("Main reading evaluator", Settings.EvaluatorMode, Settings.Context.Exporters, nodeNameGenerator, objectNameGenerator, null);
 
             var readingContext = new ReadingContext(
                 string.Empty,
-                readcingEvaluator,
+                readingEvaluator,
                 resultService,
                 nodeNameGenerator,
                 objectNameGenerator);
