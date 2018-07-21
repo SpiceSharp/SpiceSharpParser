@@ -54,7 +54,13 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
                     return 400;
                 }
 
-                return ControlRegistry.IndexOf(c.Name.ToLower());
+                //TODO: please do something with that.
+                if (c.Name.ToLower() == "param" || c.Name.ToLower() == "func" || c.Name.ToLower() == "step_r" || c.Name.ToLower() == "st_r")
+                {
+                    return ControlRegistry.IndexOf(c.Name.ToLower());
+                }
+
+                return 300 + ControlRegistry.IndexOf(c.Name.ToLower());
             }
 
             if (statement is CommentLine)

@@ -7,6 +7,7 @@ using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
 using System.Linq;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 {
@@ -37,6 +38,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 
             var readingContext = new ReadingContext(
                 string.Empty,
+                Substitute.For<ISimulationContexts>(),
                 evaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
@@ -78,6 +80,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 
             var readingContext = new ReadingContext(
                 string.Empty,
+                Substitute.For<ISimulationContexts>(),
                 evaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
@@ -119,6 +122,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 
             var readingContext = new ReadingContext(
                 string.Empty,
+                Substitute.For<ISimulationContexts>(),
                 evaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
@@ -160,6 +164,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 
             var readingContext = new ReadingContext(
                 string.Empty,
+                Substitute.For<ISimulationContexts>(),
                 evaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
@@ -200,6 +205,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 
             var readingContext = new ReadingContext(
                 string.Empty,
+                Substitute.For<ISimulationContexts>(),
                 evaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),

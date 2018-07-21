@@ -1,7 +1,5 @@
-﻿using SpiceSharp.Simulations;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
@@ -13,28 +11,25 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Initializes a new instance of the <see cref="Evaluator"/> class.
         /// </summary>
-        /// <param name="parser">Expression parser</param>
-        /// <param name="registry">Expression registry</param>
-        public Evaluator(string name, IExpressionParser parser, ExpressionRegistry registry, Simulation simulation)
+        /// <param name="parser">Expression parser.</param>
+        /// <param name="registry">Expression registry.</param>
+        public Evaluator(string name, IExpressionParser parser, ExpressionRegistry registry)
         {
-            Name = name;
-            Simulation = simulation;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             ExpressionParser = parser ?? throw new ArgumentNullException(nameof(parser));
             Registry = registry ?? throw new ArgumentNullException(nameof(registry));
             Children = new List<IEvaluator>();
         }
 
+        /// <summary>
+        /// Gets the name of the evaluator.
+        /// </summary>
         public string Name { get; }
 
         /// <summary>
         /// Gets the children evaluators.
         /// </summary>
         public List<IEvaluator> Children { get; }
-
-        /// <summary>
-        /// Gets or sets the simulation of evaluator.
-        /// </summary>
-        public Simulation Simulation { get; set; }
 
         /// <summary>
         /// Gets the dictionary of custom functions.
@@ -191,7 +186,8 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="expressionString">An expression of parameter.</param>
         public void SetParameter(string parameterName, string expressionString, object context = null)
         {
-            Parameters[parameterName] = new CachedExpression(expressionString, (e, c, a, evaluator) => {
+            Parameters[parameterName] = new CachedExpression(expressionString, (e, c, a, evaluator) =>
+            {
                 return evaluator.EvaluateDouble(e, c);
             }, this);
 
@@ -293,29 +289,6 @@ namespace SpiceSharpParser.Common.Evaluation
         }
 
         /// <summary>
-        /// Adds evaluator action.
-        /// </summary>
-        /// <param name="actionName">Action name</param>
-        /// <param name="expressionString">Expression</param>
-        /// <param name="expressionAction">Expression action</param>
-        public void AddAction(string actionName, string expressionString, Action<Simulation, double> expressionAction)
-        {
-            var namedExpression = new NamedExpression(actionName, expressionString, (expression, context, evaluatorExpression, evaluator) =>
-            {
-                var newValue = evaluator.EvaluateDouble(expression, context);
-                if (newValue != evaluatorExpression.LastValue)
-                {
-                    expressionAction((Simulation)context ?? evaluator.Simulation, newValue);
-                }
-                return newValue;
-            }, this);
-
-            var parameters = GetParametersFromExpression(expressionString);
-
-            Registry.Add(namedExpression, parameters);
-        }
-
-        /// <summary>
         /// Creates a child evaluator.
         /// </summary>
         /// <returns>
@@ -323,7 +296,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public virtual IEvaluator CreateChildEvaluator(string name)
         {
-            var newEvaluator = new Evaluator(name,  ExpressionParser, Registry, Simulation); 
+            var newEvaluator = new Evaluator(name,  ExpressionParser, Registry); 
 
             foreach (var parameterName in this.GetParameterNames())
             {
@@ -338,12 +311,19 @@ namespace SpiceSharpParser.Common.Evaluation
             return newEvaluator;
         }
 
+        /// <summary>
+        /// Clones the evaluator.
+        /// </summary>
+        /// <param name="name">Name of cloned evaluator.</param>
+        /// <returns>
+        /// A reference to a clone evaluator.
+        /// </returns>
         public virtual IEvaluator CreateClonedEvaluator(string name)
         {
             var registry = Registry.Clone();
             registry.Invalidate();
 
-            var newEvaluator = new Evaluator(name, ExpressionParser, registry, Simulation);
+            var newEvaluator = new Evaluator(name, ExpressionParser, registry);
 
             foreach (var parameterName in this.GetParameterNames())
             {
@@ -361,6 +341,7 @@ namespace SpiceSharpParser.Common.Evaluation
             {
                 newEvaluator.Children.Add(child.CreateClonedEvaluator(child.Name));
             }
+
             return newEvaluator;
         }
 
@@ -380,29 +361,23 @@ namespace SpiceSharpParser.Common.Evaluation
             });
         }
 
-        public void RefreshChildrenForParameter(string parameter, object context)
+        /// <summary>
+        /// Finds the child evaluator with given name.
+        /// </summary>
+        /// <param name="evaluatorName">Name of child evaluator to find.</param>
+        /// <returns>
+        /// A reference to evaluator.
+        /// </returns>
+        public IEvaluator FindChildEvaluator(string evaluatorName)
         {
-            Registry.RefreshDependentParameters(parameter, context, parameterToRefresh => {
-                Parameters[parameterToRefresh].Invalidate();
-                Parameters[parameterToRefresh].Evaluate(context);
-            });
-
-            foreach (var child in Children)
-            {
-                child.RefreshChildrenForParameter(parameter, context);
-            }
-        }
-
-        public IEvaluator Search(string name)
-        {
-            if (name == this.Name)
+            if (evaluatorName == this.Name)
             {
                 return this;
             }
 
             foreach (var child in Children)
             {
-                var result = child.Search(name);
+                var result = child.FindChildEvaluator(evaluatorName);
 
                 if (result != null)
                 {
@@ -413,5 +388,28 @@ namespace SpiceSharpParser.Common.Evaluation
             return null;
         }
 
+        /// <summary>
+        /// Adds evaluator action.
+        /// </summary>
+        /// <param name="actionName">Action name.</param>
+        /// <param name="expressionString">Expression.</param>
+        /// <param name="expressionAction">Expression action.</param>
+        public void AddAction(string actionName, string expressionString, Action<double> expressionAction)
+        {
+            var namedExpression = new NamedExpression(actionName, expressionString, (expression, context, evaluatorExpression, evaluator) =>
+            {
+                var newValue = evaluator.EvaluateDouble(expression, context);
+                if (newValue != evaluatorExpression.LastValue)
+                {
+                    expressionAction(newValue);
+                }
+
+                return newValue;
+            }, this);
+
+            var parameters = GetParametersFromExpression(expressionString);
+
+            Registry.Add(namedExpression, parameters);
+        }
     }
 }

@@ -218,7 +218,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         {
             export.Simulation.OnExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
-                var firstParameterSweepValue = context.GetSimulationEvaluator(export.Simulation).GetParameterValue(firstParameterSweep.Parameter.Image, sender);
+                var firstParameterSweepValue = context.SimulationContexts.GetSimulationEvaluator(export.Simulation).GetParameterValue(firstParameterSweep.Parameter.Image, sender);
                 series.Points.Add(new Point() { X = firstParameterSweepValue, Y = export.Extract() });
             };
         }

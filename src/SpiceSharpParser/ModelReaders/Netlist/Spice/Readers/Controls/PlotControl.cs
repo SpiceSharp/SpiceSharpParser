@@ -135,7 +135,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                 else
                 {
                     string expressionName = parameter.Image;
-                    var expressionNames = context.GetSimulationEvaluator(simulationToPlot).GetExpressionNames();
+                    var evaluator = context.SimulationContexts.GetSimulationEvaluator(simulationToPlot);
+                    var expressionNames = evaluator.GetExpressionNames();
 
                     if (expressionNames.Contains(expressionName))
                     {
@@ -143,8 +144,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                             new ExpressionExport(
                                 simulationToPlot.Name.ToString(),
                                 expressionName,
-                                context.GetSimulationEvaluator(simulationToPlot).GetExpression(expressionName),
-                                 context.GetSimulationEvaluator(simulationToPlot),
+                                evaluator.GetExpression(expressionName),
+                                evaluator,
                                 simulationToPlot));
                     }
                 }

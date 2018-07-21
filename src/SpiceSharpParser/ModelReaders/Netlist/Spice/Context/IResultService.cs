@@ -31,8 +31,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 
         void AddSimulation(BaseSimulation simulation);
 
-        void SetInitialVoltageCondition(string nodeName, double initialVoltage);
-
         bool FindObject(string objectName, out Entity @object);
 
         void AddPrint(Print print);

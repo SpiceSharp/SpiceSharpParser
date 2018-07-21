@@ -9,8 +9,9 @@ namespace SpiceSharpParser.Common
     /// </summary>
     public interface IEvaluator
     {
-        Simulation Simulation { get; set; }
-        
+        /// <summary>
+        /// Gets the evaluator name.
+        /// </summary>
         string Name { get; }
 
         /// <summary>
@@ -156,21 +157,26 @@ namespace SpiceSharpParser.Common
         ICollection<string> GetParametersFromExpression(string expression);
 
         /// <summary>
-        /// Sets expression action.
-        /// </summary>
-        /// <param name="actionName">Action name</param>
-        /// <param name="expression">Expression</param>
-        /// <param name="actionWhenExpressionValueIsChanged">Action to run when expression is changed</param>
-        void AddAction(string actionName, string expression, Action<Simulation, double> actionWhenExpressionValueIsChanged);
-
-        /// <summary>
         /// Refreshes all dependent expressions and parameters.
         /// </summary>
         /// <param name="parameterName">Paramter</param>
         void RefreshForParameter(string parameterName, object context);
 
+        /// <summary>
+        /// Finds a child evaluator with given name.
+        /// </summary>
+        /// <param name="name">Name of evaluator to find</param>
+        /// <returns>
+        /// A reference to evaluator.
+        /// </returns>
+        IEvaluator FindChildEvaluator(string name);
 
-        void RefreshChildrenForParameter(string parameter, object  context);
-        IEvaluator Search(string name);
+        /// <summary>
+        /// Adds evaluator action.
+        /// </summary>
+        /// <param name="actionName">Action name.</param>
+        /// <param name="expressionString">Expression.</param>
+        /// <param name="expressionAction">Expression action.</param>
+        void AddAction(string actionName, string expressionString, Action<double> expressionAction);
     }
 }

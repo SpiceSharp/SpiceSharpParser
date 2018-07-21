@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Xunit;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
 {
@@ -23,7 +24,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
                 });
 
             var resultService = Substitute.For<IResultService>();
-            var context = new ReadingContext(string.Empty, evaluator, resultService, new MainCircuitNodeNameGenerator(new string[] { }), new ObjectNameGenerator(string.Empty));
+            var context = new ReadingContext(string.Empty, Substitute.For<ISimulationContexts>(), evaluator, resultService, new MainCircuitNodeNameGenerator(new string[] { }), new ObjectNameGenerator(string.Empty));
 
             // act
             var resistor = new Resistor("R1");
@@ -37,12 +38,13 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
         public void SetParameterCaseTest()
         {
             // prepare
-            var evaluator = Substitute.For<ISpiceEvaluator>();
-            evaluator.EvaluateDouble("1").Returns(1);
+            var readingEvaluator = Substitute.For<ISpiceEvaluator>();
+            readingEvaluator.EvaluateDouble("1").Returns(1);
 
             var resultService = Substitute.For<IResultService>();
             var context = new ReadingContext(string.Empty,
-                evaluator,
+                Substitute.For<ISimulationContexts>(),
+                readingEvaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
                 new ObjectNameGenerator(string.Empty));
@@ -59,12 +61,13 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
         public void SetUnkownParameterTest()
         {
             // prepare
-            var evaluator = Substitute.For<ISpiceEvaluator>();
-            evaluator.EvaluateDouble("1").Returns(1);
+            var readingEvaluator = Substitute.For<ISpiceEvaluator>();
+            readingEvaluator.EvaluateDouble("1").Returns(1);
 
             var resultService = Substitute.For<IResultService>();
             var context = new ReadingContext(string.Empty,
-                evaluator,
+                Substitute.For<ISimulationContexts>(),
+                readingEvaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
                 new ObjectNameGenerator(string.Empty));
@@ -91,6 +94,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
 
             var context = new ReadingContext(
                 string.Empty,
+                Substitute.For<ISimulationContexts>(),
                 evaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),

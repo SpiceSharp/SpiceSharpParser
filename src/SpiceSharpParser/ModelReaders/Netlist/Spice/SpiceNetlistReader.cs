@@ -1,5 +1,6 @@
 ﻿using SpiceSharp;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
@@ -40,11 +41,12 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
             var resultService = new ResultService(result);
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(new string[] { "0" });
             var objectNameGenerator = new ObjectNameGenerator(string.Empty);
-
-            var readingEvaluator = new SpiceEvaluator("Main reading evaluator", Settings.EvaluatorMode, Settings.Context.Exporters, nodeNameGenerator, objectNameGenerator, null);
+            var readingEvaluator = new SpiceEvaluator("Main reading evaluator", Settings.EvaluatorMode, Settings.Context.Exporters, nodeNameGenerator, objectNameGenerator);
+            var simulationContexts = new SimulationContexts(resultService, readingEvaluator);
 
             var readingContext = new ReadingContext(
                 string.Empty,
+                simulationContexts,
                 readingEvaluator,
                 resultService,
                 nodeNameGenerator,
@@ -52,6 +54,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
 
             // Read statements form input netlist using created context
             Settings.Context.Read(netlist.Statements, readingContext);
+
+            // Prepare simulation contexts for each simulation
+            simulationContexts.Prepare();
 
             return result;
         }

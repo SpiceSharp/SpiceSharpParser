@@ -2,6 +2,7 @@
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
@@ -12,6 +13,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// Gets the context name.
         /// </summary>
         string ContextName { get; }
+
+        /// <summary>
+        /// Gets the simulations contexts.
+        /// </summary>
+        ISimulationContexts SimulationContexts { get; }
 
         /// <summary>
         /// Gets the parent of the context.
@@ -49,11 +55,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         IEvaluator ReadingEvaluator { get; }
 
         /// <summary>
-        /// Gets the dictionary of evaluators for simulations.
-        /// </summary>
-        IDictionary<Simulation, IEvaluator> SimulationEvaluators { get; }
-
-        /// <summary>
         /// Parses an expression to double.
         /// </summary>
         /// <param name="expression">Expression to parse</param>
@@ -83,9 +84,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <param name="parameterName">A parameter name</param>
         /// <param name="expression">An expression</param>
         /// <returns>
-        /// True if parameter has been set
+        /// True if parameter has been set.
         /// </returns>
-        bool SetEntityParameter(Entity entity, string parameterName, string expression, Simulation sim = null);
+        bool SetEntityParameter(Entity entity, string parameterName, string expression);
 
         /// <summary>
         /// Sets the parameter of entity.
@@ -114,25 +115,5 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <param name="component">A component</param>
         /// <param name="parameters">Parameters of component</param>
         void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters);
-
-        /// <summary>
-        /// Gets the evaluator for the simulation with given name.
-        /// </summary>
-        /// <param name="simulation">Simulation.</param>
-        IEvaluator GetSimulationEvaluator(Simulation simulation);
-
-        /// <summary>
-        /// Creates a simulation evaluator.
-        /// </summary>
-        /// <param name="simulation">A simulation.</param>
-        /// <param name="name">A name of evaluator.</param>
-        void CreateSimulationEvaluator(Simulation simulation, string name);
-
-        /// <summary>
-        /// Creates simulation evaluator if it's not created.
-        /// </summary>
-        /// <param name="simulation">A simulation.</param>
-        /// <param name="name">A name of evaluator.</param>
-        void EnsureSimulationEvaluator(Simulation simulation, string name);
     }
 }

@@ -49,7 +49,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             double expressionValue = 0;
 
             // act
-            v.AddAction("noname", "xyz + 1", (simulation, newValue) => { expressionValue = newValue; });
+            v.AddAction("noname", "xyz + 1", (newValue) => { expressionValue = newValue; });
             v.SetParameter("xyz", 14);
 
             var val = v.GetParameterValue("xyz", null);

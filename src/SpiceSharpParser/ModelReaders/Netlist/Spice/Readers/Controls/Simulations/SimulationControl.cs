@@ -18,18 +18,18 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
     {
         public SimulationControl()
         {
-            Updater = new ParameterUpdater();
+            ParameterUpdater = new ParameterUpdater();
         }
 
         public SimulationControl(IParameterUpdater updater)
         {
-            Updater = updater;
+            ParameterUpdater = updater;
         }
 
         /// <summary>
         /// Gets the parameter updater.
         /// </summary>
-        protected IParameterUpdater Updater { get; }
+        protected IParameterUpdater ParameterUpdater { get; }
 
         /// <summary>
         /// Creates simulations.
@@ -110,11 +110,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
 
         protected void SetSweepSimulation(IReadingContext context, List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues, BaseSimulation simulation)
         {
-            simulation.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs e) =>
-            {
-                context.EnsureSimulationEvaluator(simulation, simulation.Name.ToString());
-                Updater.Update(context, parameterValues, simulation);
-            };
+            ParameterUpdater.Update(context, parameterValues, simulation);
         }
 
         protected string GetSimulationNameSuffix(List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues)
@@ -192,9 +188,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
 
             simulation.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs e) =>
             {
-                context.EnsureSimulationEvaluator(simulation, simulation.Name.ToString());
-
-                var evaluator = context.GetSimulationEvaluator(simulation);
+                var evaluator = context.SimulationContexts.GetSimulationEvaluator(simulation);
                 evaluator.SetParameter("TEMP", temp, simulation);
             };
         }

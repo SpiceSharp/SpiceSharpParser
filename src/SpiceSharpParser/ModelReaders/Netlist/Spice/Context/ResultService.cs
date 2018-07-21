@@ -109,19 +109,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         }
 
         /// <summary>
-        /// Sets the initial voltage.
-        /// </summary>
-        /// <param name="nodeName">The node name.</param>
-        /// <param name="initialVoltage">The initial voltage.</param>
-        public void SetInitialVoltageCondition(string nodeName, double initialVoltage)
-        {
-            foreach (var simulation in Simulations)
-            {
-                simulation.Nodes.InitialConditions[nodeName] = initialVoltage;
-            }
-        }
-
-        /// <summary>
         /// Finds the object.
         /// </summary>
         /// <param name="objectName">The object name.</param>

@@ -4,6 +4,7 @@ using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
@@ -26,6 +27,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <param name="parent">Parent of th econtext.</param>
         public ReadingContext(
             string contextName,
+            ISimulationContexts simulationContexts,
             IEvaluator readingEvaluator,
             IResultService resultService,
             INodeNameGenerator nodeNameGenerator,
@@ -42,16 +44,17 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
             if (Parent != null)
             {
                 AvailableSubcircuits = new List<SubCircuit>(Parent.AvailableSubcircuits);
-                SimulationEvaluators = new Dictionary<Simulation, IEvaluator>(Parent.SimulationEvaluators);
             }
             else
             {
                 AvailableSubcircuits = new List<SubCircuit>();
-                SimulationEvaluators = new Dictionary<Simulation, IEvaluator>();
             }
 
             Children = new List<IReadingContext>();
+            SimulationContexts = simulationContexts;
         }
+
+        public ISimulationContexts SimulationContexts { get; protected set; }
 
         /// <summary>
         /// Gets or sets the name of context.
@@ -62,11 +65,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// Gets or sets the reading evaluator.
         /// </summary>
         public IEvaluator ReadingEvaluator { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets evaluators.
-        /// </summary>
-        public IDictionary<Simulation, IEvaluator> SimulationEvaluators { get; protected set; }
 
         /// <summary>
         /// Gets or sets the parent of context.
@@ -108,9 +106,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
             var fullNodeName = NodeNameGenerator.Generate(nodeName);
             var initialValue = ReadingEvaluator.EvaluateDouble(expression);
 
-            Result.SetInitialVoltageCondition(fullNodeName, initialValue);
-
-            ReadingEvaluator.AddAction("ICV - " + nodeName, expression, (simulation, value) => Result.SetInitialVoltageCondition(nodeName, value));
+            SimulationContexts.SetICVoltage(nodeName, expression);
         }
 
         /// <summary>
@@ -154,14 +150,12 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <returns>
         /// True if the parameter has been set.
         /// </returns>
-        public bool SetEntityParameter(Entity entity, string parameterName, string expression, Simulation simulation = null)
+        public bool SetEntityParameter(Entity entity, string parameterName, string expression)
         {
-            var evaluator = simulation != null ? GetSimulationEvaluator(simulation) : ReadingEvaluator;
-
             double value;
             try
             {
-                value = evaluator.EvaluateDouble(expression);
+                value = ReadingEvaluator.EvaluateDouble(expression);
             }
             catch (Exception ex)
             {
@@ -169,30 +163,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
                 return false;
             }
 
-            bool wasSet = false;
-            if (simulation != null)
-            {
-                simulation.EntityParameters.GetEntityParameters(entity.Name).GetParameter(parameterName.ToLower()).Value = value;
-                wasSet = true;
-            }
-            else
-            {
-                wasSet = entity.SetParameter(parameterName.ToLower(), value);
-            }
+            bool wasSet = entity.SetParameter(parameterName.ToLower(), value);
 
             if (wasSet)
             {
-                Action<Simulation, double> propertySetter = (Simulation simulationParam, double newValue) =>
-                {
-                    simulationParam.EntityParameters.GetEntityParameters(entity.Name).GetParameter(parameterName.ToLower()).Value = newValue;
-                };
-
-                // re-evaluation makes sense only if there is a setter
-                if (propertySetter != null)
-                {
-                    evaluator.AddAction(entity.Name + "-" + parameterName.ToLower(), expression, propertySetter);
-                }
-
+                SimulationContexts.SetEntityParameter(parameterName.ToLower(), entity, expression);
                 return true;
             }
 
@@ -255,59 +230,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
             }
 
             component.Connect(nodes);
-        }
-
-        /// <summary>
-        /// Gets the simulation evaluator.
-        /// </summary>
-        public IEvaluator GetSimulationEvaluator(Simulation simulation)
-        {
-            IReadingContext context = this;
-            while (context.Parent != null)
-            {
-                context = context.Parent;
-            }
-
-            lock (locker)
-            {
-                if (context.SimulationEvaluators.ContainsKey(simulation))
-                {
-                    return context.SimulationEvaluators[simulation];
-                }
-            }
-            throw new Exception("Missing a simulation evaluator");
-        }
-
-        /// <summary>
-        /// Creates simulation evaluator.
-        /// </summary>
-        public void CreateSimulationEvaluator(Simulation simulation, string name)
-        {
-            lock (locker)
-            {
-                if (SimulationEvaluators.ContainsKey(simulation))
-                {
-                    throw new Exception("There is already a simulation evaluator");
-                }
-
-                SimulationEvaluators[simulation] = ReadingEvaluator.CreateClonedEvaluator(name);
-                SimulationEvaluators[simulation].Simulation = simulation;
-            }
-        }
-
-        /// <summary>
-        /// Ensures that simulation evaluator is created.
-        /// </summary>
-        public void EnsureSimulationEvaluator(Simulation simulation, string name)
-        {
-            lock (locker)
-            {
-                if (SimulationEvaluators.ContainsKey(simulation) == false)
-                {
-                    SimulationEvaluators[simulation] = ReadingEvaluator.CreateClonedEvaluator(name);
-                    SimulationEvaluators[simulation].Simulation = simulation;
-                }
-            }
         }
     }
 }

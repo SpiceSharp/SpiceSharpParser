@@ -5,6 +5,7 @@ using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
@@ -239,6 +240,11 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
             throw new NotImplementedException();
         }
 
+        public bool SetEntityParameter(Entity entity, string parameterName, string expression)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEvaluator ReadingEvaluator
         {
             get
@@ -248,5 +254,7 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
         }
 
         public IDictionary<Simulation, IEvaluator> SimulationEvaluators => throw new NotImplementedException();
+
+        public ISimulationContexts SimulationContexts => throw new NotImplementedException();
     }
 }

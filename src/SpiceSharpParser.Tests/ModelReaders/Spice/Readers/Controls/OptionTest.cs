@@ -7,6 +7,7 @@ using Xunit;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
 using SpiceSharp;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 {
@@ -41,6 +42,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var resultService = new ResultService(new ModelsReaders.Netlist.Spice.SpiceNetlistReaderResult(new Circuit(), "title"));
             var readingContext = new ReadingContext(
                 string.Empty,
+                Substitute.For<ISimulationContexts>(),
                 evaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),

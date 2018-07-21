@@ -185,19 +185,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             var subcircuitEvaluator = context.ReadingEvaluator.CreateChildEvaluator(subcircuitFullName);
             var subcircuitParameters = CreateSubcircuitParameters(context.ReadingEvaluator, subCircuitDefiniton, subCktParameters);
             subcircuitEvaluator.SetParameters(subcircuitParameters);
-
-            foreach (var parameter in subcircuitParameters.Keys)
-            {
-                var expression = subcircuitParameters[parameter]; // {X}
-                context.ReadingEvaluator.AddAction(subcircuitFullName + " - " + parameter + " - sub", expression,
-                    (Simulation sim, double val) =>
-                    {
-                        var simulationEvaluator = context.GetSimulationEvaluator(sim);
-                        var simulationSubcircuitEvaluator = simulationEvaluator.Search(subcircuitFullName);
-                        simulationSubcircuitEvaluator.SetParameter(parameter, val, sim);
-                    });
-            }
-
             // setting node name generator
             var pinInstanceNames = new List<string>();
             for (var i = 0; i < parameters.Count - assigmentParametersCount - 1; i++)
@@ -211,7 +198,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             // setting object name generator
             var subcircuitObjectNameGenerator = context.ObjectNameGenerator.CreateChildGenerator(subcircuitName);
 
-            return new ReadingContext(subcircuitName, subcircuitEvaluator, context.Result, subcircuitNodeNameGenerator, subcircuitObjectNameGenerator, context);
+            return new ReadingContext(subcircuitName, context.SimulationContexts, subcircuitEvaluator, context.Result, subcircuitNodeNameGenerator, subcircuitObjectNameGenerator, context);
         }
 
         /// <summary>
