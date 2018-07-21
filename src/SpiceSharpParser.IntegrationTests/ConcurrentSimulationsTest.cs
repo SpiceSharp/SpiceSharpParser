@@ -24,5 +24,21 @@ namespace SpiceSharpParser.IntegrationTests
 
             Parallel.ForEach<Simulation>(netlist.Simulations, new ParallelOptions() { MaxDegreeOfParallelism = 8 }, simulation => simulation.Run(netlist.Circuit));
         }
+        [Fact]
+        public void OPMonteCarolTest()
+        {
+            var result = ParseNetlist(
+                "Monte Carlo Analysis - OP (power test)",
+                "V1 0 1 100",
+                "R1 1 0 {R}",
+                ".OP",
+                ".PARAM R={random()*1000}",
+                ".LET power {@R1[resistance]}",
+                ".SAVE power",
+                ".MC 1000 OP power MAX",
+                ".END");
+
+            Parallel.ForEach<Simulation>(result.Simulations, new ParallelOptions() { MaxDegreeOfParallelism = 8 }, simulation => simulation.Run(result.Circuit));
+        }
     }
 }

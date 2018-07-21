@@ -23,22 +23,25 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
         /// <param name="result">Result.</param>
         public void Collect(Simulation simulation, double result)
         {
-            if (Min.ContainsKey(simulation))
+            lock (this)
             {
-                Min[simulation] = Math.Min(Min[simulation], result);
-            }
-            else
-            {
-                Min[simulation] = result;
-            }
+                if (Min.ContainsKey(simulation))
+                {
+                    Min[simulation] = Math.Min(Min[simulation], result);
+                }
+                else
+                {
+                    Min[simulation] = result;
+                }
 
-            if (Max.ContainsKey(simulation))
-            {
-                Max[simulation] = Math.Max(Min[simulation], result);
-            }
-            else
-            {
-                Max[simulation] = result;
+                if (Max.ContainsKey(simulation))
+                {
+                    Max[simulation] = Math.Max(Min[simulation], result);
+                }
+                else
+                {
+                    Max[simulation] = result;
+                }
             }
         }
 

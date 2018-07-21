@@ -50,7 +50,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
         /// <summary>
         /// Gets the evalutor
         /// </summary>
-        public IEvaluator Evaluator { get; }
+        public IEvaluator Evaluator { get; set; }
 
         /// <summary>
         /// Gets the expression

@@ -27,5 +27,22 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.Equal(2.8, export[1]);
             Assert.Equal(10, export[2]);
         }
+
+        [Fact]
+        public void RereferenceMixed()
+        {
+            var result = ParseNetlist(
+                "Monte Carlo Analysis - OP (voltage test)",
+                "V1 0 1 100",
+                "R1 1 0 {R}",
+                ".OP",
+                ".PARAM R={random()*1000}",
+                ".LET power {@R1[resistance]*I(R1)}",
+                ".SAVE power",
+                ".MC 1000 OP power MAX",
+                ".END");
+
+            var exports = RunSimulationsAndReturnExports(result);
+        }
     }
 }

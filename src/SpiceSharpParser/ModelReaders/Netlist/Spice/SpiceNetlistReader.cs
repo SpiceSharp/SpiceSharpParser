@@ -4,6 +4,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
 {
@@ -60,6 +61,15 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
 
             //Return evaluators.
             result.Evaluators = simulationContexts.GetSimulationEvaluators();
+
+            // Remove this hack please ....
+            foreach (var export in result.Exports)
+            {
+                if (export is ExpressionExport ee)
+                {
+                    ee.Evaluator = result.Evaluators[export.Simulation];
+                }
+            }
 
             return result;
         }
