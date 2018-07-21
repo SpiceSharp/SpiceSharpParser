@@ -26,6 +26,27 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
+        public void McOpDeviceParameterTest()
+        {
+            var result = ParseNetlist(
+                "Monte Carlo Analysis - OP (power test)",
+                "V1 0 1 100",
+                "R1 1 0 {R}",
+                ".OP",
+                ".PARAM R={random()*1000}",
+                ".LET power {@R1[resistance]*I(R1)}",
+                ".SAVE power",
+                ".MC 1000 OP power MAX",
+                ".END");
+
+            Assert.Equal(1000, result.Simulations.Count);
+            Assert.True(result.MonteCarloResult.Enabled);
+            RunSimulations(result);
+            var mcResult = result.MonteCarloResult;
+            var histPlot = mcResult.GetMaxPlot(10);
+        }
+
+        [Fact]
         public void McTurnOffTest()
         {
             var result = ParseNetlist(

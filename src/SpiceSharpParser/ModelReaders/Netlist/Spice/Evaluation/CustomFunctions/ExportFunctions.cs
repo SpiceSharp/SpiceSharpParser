@@ -107,7 +107,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
 
             function.Logic = (args, simulation, evaluator) =>
             {
-                string exporterKey = exportType + string.Join(",", args);
+                string exporterKey = string.Format("{0}_{1}_{2}", ((Simulation)simulation).Name, exportType, string.Join(",", args));
 
                 if (!exporters.ContainsKey(exporterKey))
                 {

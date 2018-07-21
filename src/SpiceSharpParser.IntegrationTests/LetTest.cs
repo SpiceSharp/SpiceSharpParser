@@ -26,6 +26,23 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
+        public void LetResitanceTest()
+        {
+            var netlist = ParseNetlist(
+                "Simple circuit",
+                "V1 0 1 10.0",
+                "R1 1 0 {R}",
+                ".OP",
+                ".PARAM R = { 1000 }",
+                ".LET something {@R1[resistance]}",
+                ".SAVE something",
+                ".END");
+
+            double export = RunOpSimulation(netlist, "something");
+            Assert.Equal(1000, export);
+        }
+
+        [Fact]
         public void ReferenceInLetTest()
         {
             var netlist = ParseNetlist(

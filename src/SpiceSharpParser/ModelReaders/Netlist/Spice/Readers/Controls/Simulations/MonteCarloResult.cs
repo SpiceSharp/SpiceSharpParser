@@ -60,15 +60,24 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             var min = values.Min();
             var binWidth = (max - min) / bins;
 
+            if (binWidth == 0)
+            {
+                bins = 1;
+            }
+
             var plot = new HistogramPlot(title, VariableName, min, max, binWidth);
 
             foreach (var value in values)
             {
-                var binIndex = (int)Math.Floor((value - min) / binWidth) + 1;
+                int binIndex = 0;
 
                 if (value == max)
                 {
                     binIndex = bins;
+                }
+                else
+                {
+                    binIndex = binWidth != 0 ? (int)Math.Floor((value - min) / binWidth) + 1 : bins;
                 }
 
                 if (plot.Bins.ContainsKey(binIndex))
