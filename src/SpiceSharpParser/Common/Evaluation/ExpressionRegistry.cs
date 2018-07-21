@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
@@ -13,7 +12,7 @@ namespace SpiceSharpParser.Common.Evaluation
         {
             NamedExpressions = new Dictionary<string, NamedExpression>();
             ExpressionsDependencies = new Dictionary<string, List<EvaluatorExpression>>();
-            ParametersDependencies = new Dictionary<string, List<string>>();
+            ParametersDependencies = new Dictionary<string, HashSet<string>>();
             UnnamedExpressions = new List<EvaluatorExpression>();
         }
 
@@ -30,7 +29,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Gets the dictionary of dependent parameters on parameter.
         /// </summary>
-        protected Dictionary<string, List<string>> ParametersDependencies { get; }
+        protected Dictionary<string, HashSet<string>> ParametersDependencies { get; }
 
         /// <summary>
         /// Gets the dictionary of dependent expressions on parameter.
@@ -46,6 +45,11 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public IEnumerable<EvaluatorExpression> GetDependentExpressions(string parameterName)
         {
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
             if (ExpressionsDependencies.ContainsKey(parameterName))
             {
                 return ExpressionsDependencies[parameterName];
@@ -56,23 +60,68 @@ namespace SpiceSharpParser.Common.Evaluation
             }
         }
 
+        /// <summary>
+        /// Gets expression names.
+        /// </summary>
+        /// <returns>
+        /// Enumerable of expressio names.
+        /// </returns>
         public IEnumerable<string> GetExpressionNames()
         {
             return NamedExpressions.Keys;
         }
 
-        public EvaluatorExpression GetExpression(string expressionName)
+        /// <summary>
+        /// Gets the expression with given name.
+        /// </summary>
+        /// <param name="expressionName">Expression name.</param>
+        /// <returns>
+        /// A named expression.
+        /// </returns>
+        public NamedExpression GetExpression(string expressionName)
         {
+            if (expressionName == null)
+            {
+                throw new ArgumentNullException(nameof(expressionName));
+            }
+
             return NamedExpressions[expressionName];
         }
 
+        /// <summary>
+        /// Returns whether expression with given name exits.
+        /// </summary>
+        /// <param name="expressionName">Expression name.</param>
+        /// <returns>
+        /// True if expression exists.
+        /// </returns>
         public bool HasExpression(string expressionName)
         {
+            if (expressionName == null)
+            {
+                throw new ArgumentNullException(nameof(expressionName));
+            }
+
             return NamedExpressions.ContainsKey(expressionName);
         }
 
-        public void Add(EvaluatorExpression evaluatorExpression, ICollection<string> parameters)
+        /// <summary>
+        /// Adds an expression to registry.
+        /// </summary>
+        /// <param name="expression">Expression to add.</param>
+        /// <param name="parameters">Parameters of the expression.</param>
+        public void Add(EvaluatorExpression expression, ICollection<string> parameters)
         {
+            if (parameters == null)
+            {
+                throw new ArgumentNullException(nameof(parameters));
+            }
+
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
             foreach (var parameter in parameters)
             {
                 if (!ExpressionsDependencies.ContainsKey(parameter))
@@ -80,14 +129,29 @@ namespace SpiceSharpParser.Common.Evaluation
                     ExpressionsDependencies[parameter] = new List<EvaluatorExpression>();
                 }
 
-                ExpressionsDependencies[parameter].Add(evaluatorExpression);
+                ExpressionsDependencies[parameter].Add(expression);
             }
 
-            this.UnnamedExpressions.Add(evaluatorExpression);
+            UnnamedExpressions.Add(expression);
         }
 
+        /// <summary>
+        /// Adds named expression to registry.
+        /// </summary>
+        /// <param name="namedExpression">Named expression to add.</param>
+        /// <param name="parameters">Parameters of the expression.</param>
         public void Add(NamedExpression namedExpression, ICollection<string> parameters)
         {
+            if (namedExpression == null)
+            {
+                throw new ArgumentNullException(nameof(namedExpression));
+            }
+
+            if (parameters == null)
+            {
+                throw new ArgumentNullException(nameof(parameters));
+            }
+
             foreach (var parameter in parameters)
             {
                 if (!ExpressionsDependencies.ContainsKey(parameter))
@@ -108,13 +172,28 @@ namespace SpiceSharpParser.Common.Evaluation
             this.NamedExpressions.Add(namedExpression.Name, namedExpression);
         }
 
-        public void UpdateParameterDependencies(string parameterName, ICollection<string> foundParameters)
+        /// <summary>
+        /// Updates parameter dependencies.
+        /// </summary>
+        /// <param name="parameterName">Parameter name.</param>
+        /// <param name="dependentParameters">Dependent paramaters.</param>
+        public void UpdateParameterDependencies(string parameterName, ICollection<string> dependentParameters)
         {
-            foreach (var parameter in foundParameters)
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
+            if (dependentParameters == null)
+            {
+                throw new ArgumentNullException(nameof(dependentParameters));
+            }
+
+            foreach (var parameter in dependentParameters)
             {
                 if (ParametersDependencies.ContainsKey(parameter) == false)
                 {
-                    ParametersDependencies[parameter] = new List<string>();
+                    ParametersDependencies[parameter] = new HashSet<string>();
                 }
 
                 if (ParametersDependencies[parameter].Contains(parameterName) == false)
@@ -124,13 +203,24 @@ namespace SpiceSharpParser.Common.Evaluation
             }
         }
 
+        /// <summary>
+        /// Refreshes the expressions in the registry that depends on the given parameter.
+        /// </summary>
+        /// <param name="parameterName">Parameter name.</param>
+        /// <param name="context">Context.</param>
+        /// <param name="parameterEval">Evaluation function.</param>
         public void RefreshDependentParameters(string parameterName, object context, Action<string> parameterEval)
         {
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
             if (ParametersDependencies.ContainsKey(parameterName))
             {
                 foreach (var parameter in ParametersDependencies[parameterName])
                 {
-                    parameterEval(parameter);
+                    parameterEval?.Invoke(parameter);
                     RefreshDependentParameters(parameter, context, parameterEval);
                 }
             }
@@ -145,13 +235,19 @@ namespace SpiceSharpParser.Common.Evaluation
             }
         }
 
+        /// <summary>
+        /// Clones the registry.
+        /// </summary>
+        /// <returns>
+        /// A clone of registry.
+        /// </returns>
         public ExpressionRegistry Clone()
         {
             var result = new ExpressionRegistry();
 
             foreach (var dep in ParametersDependencies)
             {
-                result.ParametersDependencies[dep.Key] = new List<string>(dep.Value);
+                result.ParametersDependencies[dep.Key] = new HashSet<string>(dep.Value);
             }
 
             List<EvaluatorExpression> addedExpresions = new List<EvaluatorExpression>();
@@ -200,6 +296,10 @@ namespace SpiceSharpParser.Common.Evaluation
             return result;
         }
 
+        /// <summary>
+        /// Updates the evaluator of the registry.
+        /// </summary>
+        /// <param name="newEvaluator">New evaluator for registry.</param>
         public void UpdateEvaluator(IEvaluator newEvaluator)
         {
             foreach (var exprDep in ExpressionsDependencies)
@@ -209,6 +309,7 @@ namespace SpiceSharpParser.Common.Evaluation
                     expr.Evaluator = newEvaluator;
                 }
             }
+
             foreach (var expression in NamedExpressions.Values)
             {
                 expression.Evaluator = newEvaluator;
@@ -220,6 +321,9 @@ namespace SpiceSharpParser.Common.Evaluation
             }
         }
 
+        /// <summary>
+        /// Invalidates the registry.
+        /// </summary>
         public void Invalidate()
         {
             foreach (var exprDep in ExpressionsDependencies)
