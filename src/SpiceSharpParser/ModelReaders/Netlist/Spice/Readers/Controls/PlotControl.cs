@@ -81,7 +81,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 
         private void CreatePlot(Control statement, IReadingContext context, Simulation simulationToPlot, string xUnit)
         {
-            var plot = new Plot(simulationToPlot.Name.ToString());
+            var plot = new XyPlot(simulationToPlot.Name.ToString());
             List<Export> exports = GenerateExports(statement.Parameters.Skip(1), simulationToPlot, context);
 
             for (var i = 0; i < exports.Count; i++)

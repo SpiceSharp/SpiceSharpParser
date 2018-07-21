@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.IntegrationMethods;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 {
@@ -42,5 +43,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// Gets the parameter sweeps.
         /// </summary>
         public List<ParameterSweep> ParameterSweeps { get; } = new List<ParameterSweep>();
+
+        /// <summary>
+        /// Gets the Monte Carlo Analysis configuration.
+        /// </summary>
+        public MonteCarloConfiguration MonteCarloConfiguration { get; } = new MonteCarloConfiguration();
     }
 }

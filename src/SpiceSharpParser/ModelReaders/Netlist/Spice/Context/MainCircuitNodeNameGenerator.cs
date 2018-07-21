@@ -12,7 +12,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <summary>
         /// Initializes a new instance of the <see cref="MainCircuitNodeNameGenerator"/> class.
         /// </summary>
-        /// <param name="globals">Global pin names</param>
+        /// <param name="globals">Global pin names.</param>
         public MainCircuitNodeNameGenerator(IEnumerable<string> globals)
         {
             if (globals == null)
@@ -61,9 +61,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         }
 
         /// <summary>
-        /// Makes a pin name a global pin name
+        /// Makes a pin name a global pin name.
         /// </summary>
-        /// <param name="pinName">Pin name</param>
+        /// <param name="pinName">Pin name.</param>
         public void SetGlobal(string pinName)
         {
             // ADD thread-safety

@@ -171,7 +171,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 
         private void CreateOpSweepPlot(ParameterSweep firstParameterSweep, string variableName, List<Export> exports, IReadingContext context)
         {
-            var plot = new Plot("OP - Parameter sweep: " + variableName);
+            var plot = new XyPlot("OP - Parameter sweep: " + variableName);
 
             for (var i = 0; i < exports.Count; i++)
             {
@@ -186,7 +186,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 
         private void CreateTranSweepPlot(string variableName, List<Export> exports, IReadingContext context)
         {
-            var plot = new Plot("Tran - Parameter sweep: " + variableName);
+            var plot = new XyPlot("Tran - Parameter sweep: " + variableName);
 
             for (var i = 0; i < exports.Count; i++)
             {
@@ -201,7 +201,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 
         private void CreateAcSweepPlot(string variableName, List<Export> exports, IReadingContext context)
         {
-            var plot = new Plot("AC - Parameter sweep: " + variableName);
+            var plot = new XyPlot("AC - Parameter sweep: " + variableName);
 
             for (var i = 0; i < exports.Count; i++)
             {

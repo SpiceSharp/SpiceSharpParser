@@ -6,6 +6,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 {
@@ -46,6 +47,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         private SpiceNetlistReaderResult Result { get; }
 
         /// <summary>
+        /// Gets the Monte Carlo result.
+        /// </summary>
+        public MonteCarloResult MonteCarlo => Result.MonteCarloResult;
+
+        /// <summary>
         /// Adds warning.
         /// </summary>
         /// <param name="warning">Warning to add.</param>
@@ -76,9 +82,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// Adds plot to netlist.
         /// </summary>
         /// <param name="plot">Plot to add.</param>
-        public void AddPlot(Plot plot)
+        public void AddPlot(XyPlot plot)
         {
-            Result.Plots.Add(plot);
+            Result.XyPlots.Add(plot);
         }
 
         /// <summary>

@@ -6,6 +6,7 @@ using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
 {
@@ -56,9 +57,14 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
         public List<Export> Exports { get; } = new List<Export>();
 
         /// <summary>
-        /// Gets the list of generated plots.
+        /// Gets the list of generated X-Y plots.
         /// </summary>
-        public List<Plot> Plots { get; } = new List<Plot>();
+        public List<XyPlot> XyPlots { get; } = new List<XyPlot>();
+
+        /// <summary>
+        /// Gets the Monte Carlo Analysis results.
+        /// </summary>
+        public MonteCarloResult MonteCarloResult { get; } = new MonteCarloResult();
 
         /// <summary>
         /// Gets the list of generated prints.

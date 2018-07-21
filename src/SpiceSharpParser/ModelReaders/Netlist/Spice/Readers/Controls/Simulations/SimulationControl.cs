@@ -44,18 +44,73 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
         /// </summary>
         protected void CreateSimulations(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
         {
-            if (context.Result.SimulationConfiguration.ParameterSweeps.Count == 0)
+            if (context.Result.SimulationConfiguration.MonteCarloConfiguration.Enabled == false
+                || statement.Name.ToLower() != context.Result.SimulationConfiguration.MonteCarloConfiguration.SimulationType.ToLower())
             {
-                CreateSimulationsForAllTemperatures(statement, context, createSimulation);
+                if (context.Result.SimulationConfiguration.ParameterSweeps.Count == 0)
+                {
+                    CreateSimulationsForAllTemperatures(statement, context, createSimulation);
+                }
+                else
+                {
+                    CreateSimulationsForAllParameterSweepsAndTemperatures(statement, context, createSimulation);
+                }
             }
             else
             {
-                CreateSimulationsForAllParameterSweepsAndTemperatures(statement, context, createSimulation);
+                context.Result.MonteCarlo.Enabled = true;
+                context.Result.MonteCarlo.VariableName = context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable;
+
+                if (context.Result.SimulationConfiguration.ParameterSweeps.Count == 0)
+                {
+                    for (var i = 0; i < context.Result.SimulationConfiguration.MonteCarloConfiguration.Runs; i++)
+                    {
+                        var simulations = CreateSimulationsForAllTemperatures(statement, context, createSimulation);
+                        AttachMonteCarloDataGathering(context, simulations);
+                    }
+                }
+                else
+                {
+                    for (var i = 0; i < context.Result.SimulationConfiguration.MonteCarloConfiguration.Runs; i++)
+                    {
+                        var simulations = CreateSimulationsForAllParameterSweepsAndTemperatures(statement, context, createSimulation);
+                        AttachMonteCarloDataGathering(context, simulations);
+                    }
+                }
             }
         }
 
-        protected void CreateSimulationsForAllParameterSweepsAndTemperatures(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
+        protected static void AttachMonteCarloDataGathering(IReadingContext context, IEnumerable<BaseSimulation> simulations)
         {
+            foreach (var simulation in simulations)
+            {
+                AttacheMonteCarloDataGathering(context, simulation);
+            }
+        }
+
+        protected static void AttacheMonteCarloDataGathering(IReadingContext context, BaseSimulation simulation)
+        {
+            Exporters.Export export = null;
+
+            simulation.InitializeSimulationExport += (object sender, EventArgs args) =>
+            {
+                export = context.Result.Exports.SingleOrDefault(e => e.Simulation == simulation && e.Name.ToLower() == context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable.ToLower());
+            };
+
+            simulation.OnExportSimulationData += (object sender, ExportDataEventArgs args) =>
+            {
+                if (export != null)
+                {
+                    var value = export.Extract();
+                    context.Result.MonteCarlo.Collect(simulation, value);
+                }
+            };
+        }
+
+        protected List<BaseSimulation> CreateSimulationsForAllParameterSweepsAndTemperatures(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
+        {
+            var result = new List<BaseSimulation>();
+
             ProcessTempParameterSweep(context);
 
             List<List<double>> sweeps = new List<List<double>>();
@@ -86,11 +141,32 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
                         return simulation;
                     };
 
-                CreateSimulationsForAllTemperatures(
+                result.AddRange(CreateSimulationsForAllTemperatures(
                     statement,
                     context,
-                    modifiedCreateSimulation);
+                    modifiedCreateSimulation));
             }
+
+            return result;
+        }
+
+        protected IEnumerable<BaseSimulation> CreateSimulationsForAllTemperatures(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
+        {
+            var result = new List<BaseSimulation>();
+
+            if (context.Result.SimulationConfiguration.TemperaturesInKelvins.Count > 0)
+            {
+                foreach (double temp in context.Result.SimulationConfiguration.TemperaturesInKelvins)
+                {
+                    CreateSimulationForTemperature(statement, context, createSimulation, result, temp);
+                }
+            }
+            else
+            {
+                CreateSimulationForTemperature(statement, context, createSimulation, result, null);
+            }
+
+            return result;
         }
 
         protected void ProcessTempParameterSweep(IReadingContext context)
@@ -151,25 +227,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             }
 
             return parameterValues;
-        }
-
-        protected IEnumerable<BaseSimulation> CreateSimulationsForAllTemperatures(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
-        {
-            var result = new List<BaseSimulation>();
-
-            if (context.Result.SimulationConfiguration.TemperaturesInKelvins.Count > 0)
-            {
-                foreach (double temp in context.Result.SimulationConfiguration.TemperaturesInKelvins)
-                {
-                    CreateSimulationForTemperature(statement, context, createSimulation, result, temp);
-                }
-            }
-            else
-            {
-                CreateSimulationForTemperature(statement, context, createSimulation, result, null);
-            }
-
-            return result;
         }
 
         protected void CreateSimulationForTemperature(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation, List<BaseSimulation> result, double? temp)

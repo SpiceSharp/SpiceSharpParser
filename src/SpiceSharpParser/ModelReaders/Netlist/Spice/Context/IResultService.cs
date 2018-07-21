@@ -6,12 +6,15 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 {
     public interface IResultService
     {
         SimulationConfiguration SimulationConfiguration { get; }
+
+        MonteCarloResult MonteCarlo { get; }
 
         IEnumerable<Simulation> Simulations { get; }
 
@@ -25,7 +28,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 
         void AddExport(Export export);
 
-        void AddPlot(Plot plot);
+        void AddPlot(XyPlot plot);
 
         void AddEntity(Entity entity);
 
