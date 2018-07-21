@@ -33,6 +33,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         protected bool Prepared { get; set; }
 
+        /// <summary>
+        /// Gets the simulation evaluator.
+        /// </summary>
+        /// <param name="simulation">Simulation</param>
+        /// <returns>
+        /// A reference to simulation evaluator.
+        /// </returns>
         public IEvaluator GetSimulationEvaluator(Simulation simulation)
         {
             if (Contexts.ContainsKey(simulation))
@@ -43,22 +50,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             throw new Exception("Missing context for simulation");
         }
 
-        public void SetICVoltage(string nodeName, string intialVoltageExpression)
-        {
-            Add(() =>
-            {
-                foreach (var simulation in Simulations)
-                {
-                    simulation.Nodes.InitialConditions[nodeName] = GetSimulationEvaluator(simulation).EvaluateDouble(intialVoltageExpression, simulation);
-                }
-            });
-
-            if (Prepared)
-            {
-                Run();
-            }
-        }
-
+        /// <summary>
+        /// Prepares the simulation contexts.
+        /// </summary>
         public void Prepare()
         {
             CreateContexts();
@@ -75,29 +69,50 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        public void Run()
+        /// <summary>
+        /// Sets IC node voltage for every simulation.
+        /// </summary>
+        /// <param name="nodeName">Name of the node</param>
+        /// <param name="intialVoltageExpression">IC voltage expression.</param>
+        public void SetICVoltage(string nodeName, string intialVoltageExpression)
         {
-            lock (this)
+            Add(() =>
             {
-                foreach (var action in PrepareActions.ToArray())
+                foreach (var simulation in Simulations)
                 {
-                    action();
+                    simulation.Nodes.InitialConditions[nodeName] = GetSimulationEvaluator(simulation).EvaluateDouble(intialVoltageExpression, simulation);
                 }
+            });
 
-                PrepareActions.Clear();
+            if (Prepared)
+            {
+                RunPrepareActions();
             }
         }
 
+        /// <summary>
+        /// Sets the parameter for simulation.
+        /// </summary>
+        /// <param name="paramName">Parameter name.</param>
+        /// <param name="value">Value of parameter.</param>
+        /// <param name="simulation">Simulation.</param>
         public void SetParameter(string paramName, double value, BaseSimulation simulation)
         {
             Add(() => { GetSimulationEvaluator(simulation).SetParameter(paramName, value, simulation); });
 
             if (Prepared)
             {
-                Run();
+                RunPrepareActions();
             }
         }
 
+        /// <summary>
+        /// Sets the entity parameter.
+        /// </summary>
+        /// <param name="paramName">Parameter name.</param>
+        /// <param name="object">Entity object.</param>
+        /// <param name="expression">Expression.</param>
+        /// <param name="simulation">Simulation.</param>
         public void SetEntityParameter(string paramName, Entity @object, string expression, BaseSimulation simulation = null)
         {
             Add(() =>
@@ -135,33 +150,36 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             if (Prepared)
             {
-                Run();
+                RunPrepareActions();
             }
         }
 
+        /// <summary>
+        /// Sets the model parameter.
+        /// </summary>
+        /// <param name="paramName">Parameter name.</param>
+        /// <param name="model">Entity object.</param>
+        /// <param name="expression">Expression.</param>
+        /// <param name="simulation">Simulation.</param>
         public void SetModelParameter(string paramName, Entity model, string expression, BaseSimulation simulation)
         {
-            Add(() =>
+            SetEntityParameter(paramName, model, expression, simulation);
+        }
+
+        protected void RunPrepareActions()
+        {
+            lock (this)
             {
-                simulation.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs args) =>
+                foreach (var action in PrepareActions.ToArray())
                 {
-                    var evaluator = GetEvaluator(simulation, model.Name.ToString());
-                    var parameter = simulation.EntityParameters.GetEntityParameters(model.Name).GetParameter(paramName);
-                    parameter.Value = evaluator.EvaluateDouble(expression, simulation);
+                    action();
+                }
 
-                    evaluator.AddAction(model.Name + "-" + paramName, expression, (newValue) => {
-                        parameter.Value = newValue;
-                    });
-                };
-            });
-
-            if (Prepared)
-            {
-                Run();
+                PrepareActions.Clear();
             }
         }
 
-        private IEvaluator GetEvaluator(BaseSimulation simulation, string entityName)
+        protected IEvaluator GetEvaluator(BaseSimulation simulation, string entityName)
         {
             var dotIndex = entityName.LastIndexOf('.');
             var simulationEvaluator = GetSimulationEvaluator(simulation);
@@ -175,7 +193,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return simulationEvaluator.FindChildEvaluator(subcircuitName);
         }
 
-        private void CreateContexts()
+        protected void CreateContexts()
         {
             foreach (var simulation in Simulations)
             {

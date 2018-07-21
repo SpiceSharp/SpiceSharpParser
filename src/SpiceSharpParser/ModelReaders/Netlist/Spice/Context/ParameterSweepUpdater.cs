@@ -8,9 +8,15 @@ using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
-    public class ParameterUpdater : IParameterUpdater
+    public class ParameterSweepUpdater : IParameterSweepUpdater
     {
-        public void Update(IReadingContext context, List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues, BaseSimulation simulation)
+        /// <summary>
+        /// Sets sweep parameters for the simulation.
+        /// </summary>
+        /// <param name="simulation">Simulation to set.</param>
+        /// <param name="context">Reading context.</param>
+        /// <param name="parameterValues">Parameter values.</param>
+        public void Update(BaseSimulation simulation, IReadingContext context, List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues)
         {
             foreach (var paramToSet in parameterValues)
             {

@@ -5,6 +5,7 @@ using SpiceSharp;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 
@@ -16,20 +17,27 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
     /// TODO: Add comments please ... and please, please refactor me. Please... Please ...
     public abstract class SimulationControl : BaseControl
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SimulationControl"/> class.
+        /// </summary>
         public SimulationControl()
         {
-            ParameterUpdater = new ParameterUpdater();
+            ParameterUpdater = new ParameterSweepUpdater();
         }
 
-        public SimulationControl(IParameterUpdater updater)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SimulationControl"/> class.
+        /// </summary>
+        /// <param name="updater">The sweep parameter updater.</param>
+        public SimulationControl(IParameterSweepUpdater updater)
         {
-            ParameterUpdater = updater;
+            ParameterUpdater = updater ?? throw new NullReferenceException(nameof(updater));
         }
 
         /// <summary>
         /// Gets the parameter updater.
         /// </summary>
-        protected IParameterUpdater ParameterUpdater { get; }
+        protected IParameterSweepUpdater ParameterUpdater { get; }
 
         /// <summary>
         /// Creates simulations.
@@ -110,7 +118,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
 
         protected void SetSweepSimulation(IReadingContext context, List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues, BaseSimulation simulation)
         {
-            ParameterUpdater.Update(context, parameterValues, simulation);
+            ParameterUpdater.Update(simulation, context, parameterValues);
         }
 
         protected string GetSimulationNameSuffix(List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues)
@@ -207,53 +215,13 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
         {
             if (operatingTemperatureInKelvins.HasValue)
             {
-                SetCircuitTemperature(simulation, operatingTemperatureInKelvins.Value);
+                CircuitTemperatureSimulationDecorator.Decorate(simulation, operatingTemperatureInKelvins.Value);
             }
 
             if (nominalTemperatureInKelvins.HasValue)
             {
-                SetCircuitNominalTemperature(simulation, nominalTemperatureInKelvins.Value);
+                NominalTemperatureSimulationDecorator.Decorate(simulation, nominalTemperatureInKelvins.Value);
             }
-        }
-
-        /// <summary>
-        /// Sets the nominal temperature of the simulation.
-        /// </summary>
-        /// <param name="simulation">The simulation to set.</param>
-        /// <param name="nominalTemperatureInKelvins">Nominal temperature</param>
-        protected void SetCircuitNominalTemperature(BaseSimulation simulation, double nominalTemperatureInKelvins)
-        {
-            EventHandler<LoadStateEventArgs> setState = (object sender, LoadStateEventArgs e) =>
-            {
-                if (e.State is RealState rs)
-                {
-                    rs.NominalTemperature = nominalTemperatureInKelvins;
-                }
-
-                //TODO: What to do with complex state?
-            };
-
-            simulation.OnBeforeTemperatureCalculations += setState;
-        }
-
-        /// <summary>
-        /// Sets the temperature of the simulation.
-        /// </summary>
-        /// <param name="simulation">The simulation to set.</param>
-        /// <param name="operatingTemperatureInKelvins">Circuit temperature</param>
-        protected void SetCircuitTemperature(BaseSimulation simulation, double operatingTemperatureInKelvins)
-        {
-            EventHandler<LoadStateEventArgs> setState = (object sender, LoadStateEventArgs e) =>
-            {
-                if (e.State is RealState rs)
-                {
-                    rs.Temperature = operatingTemperatureInKelvins;
-                }
-
-                //TODO: What to do with complex state?
-            };
-
-            simulation.OnBeforeTemperatureCalculations += setState;
         }
 
         /// <summary>
