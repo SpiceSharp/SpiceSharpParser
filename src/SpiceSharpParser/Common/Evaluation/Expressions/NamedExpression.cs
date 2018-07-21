@@ -20,6 +20,10 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         public string Name { get; }
 
+        /// <summary>
+        /// Clones the named expression.
+        /// </summary>
+        /// <returns></returns>
         public override EvaluatorExpression Clone()
         {
             var result = new NamedExpression(Name, ExpressionString, ExpressionEvaluator, Evaluator);

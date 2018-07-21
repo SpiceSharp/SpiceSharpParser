@@ -24,26 +24,26 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         }
 
         /// <summary>
-        /// Gets the globals
+        /// Gets the globals.
         /// </summary>
         public IEnumerable<string> Globals => this.globalsSet;
 
         /// <summary>
-        /// Gets or sets the root name
+        /// Gets or sets the root name.
         /// </summary>
         public string RootName { get; set; }
 
         /// <summary>
-        /// Gets or sets the children
+        /// Gets or sets the children.
         /// </summary>
         public List<INodeNameGenerator> Children { get; set; } = new List<INodeNameGenerator>();
 
         /// <summary>
-        /// Generates node name
+        /// Generates node name.
         /// </summary>
-        /// <param name="pinName">Pin name</param>
+        /// <param name="pinName">Pin name.</param>
         /// <returns>
-        /// Node name
+        /// Node name.
         /// </returns>
         public string Generate(string pinName)
         {
@@ -74,11 +74,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         }
 
         /// <summary>
-        /// Parses a path and generate a node name
+        /// Parses a path and generate a node name.
         /// </summary>
-        /// <param name="path">Node path</param>
+        /// <param name="path">Node path.</param>
         /// <returns>
-        /// A node name
+        /// A node name.
         /// </returns>
         public string Parse(string path)
         {

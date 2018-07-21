@@ -4,6 +4,14 @@ namespace SpiceSharpParser.Common
 {
     public class Numbers
     {
+        /// <summary>
+        /// Returns the nunber in given number system.
+        /// </summary>
+        /// <param name="value">Number.</param>
+        /// <param name="system">System.</param>
+        /// <returns>
+        /// Array of number system.
+        /// </returns>
         public static int[] GetSystemNumber(int value, int[] system)
         {
             var result = new int[system.Length];

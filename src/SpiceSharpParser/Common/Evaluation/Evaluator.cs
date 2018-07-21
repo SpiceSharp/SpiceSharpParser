@@ -128,7 +128,6 @@ namespace SpiceSharpParser.Common.Evaluation
             return result.FoundParameters;
         }
 
-
         /// <summary>
         /// Invalidates paramters.
         /// </summary>

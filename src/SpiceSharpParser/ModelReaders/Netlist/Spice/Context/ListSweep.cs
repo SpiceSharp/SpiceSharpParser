@@ -5,7 +5,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 {
     public class ListSweep : Sweep<double>
     {
-        private IEnumerable<double> _points;
+        private readonly IEnumerable<double> _points;
 
         public ListSweep(IEnumerable<double> points)
         {

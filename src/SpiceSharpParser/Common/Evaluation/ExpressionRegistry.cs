@@ -6,6 +6,9 @@ namespace SpiceSharpParser.Common.Evaluation
 {
     public class ExpressionRegistry
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExpressionRegistry"/> class.
+        /// </summary>
         public ExpressionRegistry()
         {
             NamedExpressions = new Dictionary<string, NamedExpression>();
@@ -197,7 +200,7 @@ namespace SpiceSharpParser.Common.Evaluation
             return result;
         }
 
-        internal void UpdateEvaluator(IEvaluator newEvaluator)
+        public void UpdateEvaluator(IEvaluator newEvaluator)
         {
             foreach (var exprDep in ExpressionsDependencies)
             {

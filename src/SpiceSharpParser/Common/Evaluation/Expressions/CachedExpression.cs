@@ -1,11 +1,10 @@
 ﻿using System;
-using SpiceSharp.Simulations;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
     public class CachedExpression : EvaluatorExpression
     {
-        private double value;
+        private double currentValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CachedExpression"/> class.
@@ -22,7 +21,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         /// <param name="expressionEvaluator">Expression evaluator.</param>
         public CachedExpression(Func<string, object, EvaluatorExpression, IEvaluator, double> expressionEvaluator, IEvaluator evaluator)
-            : this (string.Empty, expressionEvaluator, evaluator)
+            : this(string.Empty, expressionEvaluator, evaluator)
         {
         }
 
@@ -42,11 +41,11 @@ namespace SpiceSharpParser.Common.Evaluation
         {
             if (!IsLoaded)
             {
-                value = ExpressionEvaluator(ExpressionString, context, this, Evaluator);
+                currentValue = ExpressionEvaluator(ExpressionString, context, this, Evaluator);
                 IsLoaded = true;
             }
 
-            return value;
+            return currentValue;
         }
 
         /// <summary>

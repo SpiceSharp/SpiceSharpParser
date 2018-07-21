@@ -14,16 +14,16 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         }
 
         /// <summary>
-        /// Gets the prefix for names
+        /// Gets the prefix for names.
         /// </summary>
         protected string Prefix { get; }
 
         /// <summary>
-        /// Creates a new child object name generator
+        /// Creates a new child object name generator.
         /// </summary>
-        /// <param name="name">Name of generator</param>
+        /// <param name="name">Name of generator.</param>
         /// <returns>
-        /// A new object name generator
+        /// A new object name generator.
         /// </returns>
         public IObjectNameGenerator CreateChildGenerator(string name)
         {
@@ -31,15 +31,16 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
             {
                 return new ObjectNameGenerator(string.Format("{0}.{1}", Prefix, name));
             }
+
             return new ObjectNameGenerator(name);
         }
 
         /// <summary>
-        /// Generates entity object name
+        /// Generates entity object name.
         /// </summary>
-        /// <param name="entityName">Name of entity</param>
+        /// <param name="entityName">Name of entity.</param>
         /// <returns>
-        /// A object name for entity
+        /// A object name for entity.
         /// </returns>
         public string Generate(string entityName)
         {
