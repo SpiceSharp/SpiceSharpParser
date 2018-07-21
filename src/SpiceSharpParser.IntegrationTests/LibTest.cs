@@ -62,7 +62,7 @@ namespace SpiceSharpParser.IntegrationTests
             File.WriteAllText(modelFilePath, modelFileContent);
 
             string l1Path = Path.Combine(Directory.GetCurrentDirectory(), "l1");
-            File.WriteAllText(l1Path, ".lib a\n.include diodes.mod\n.endl\n");
+            File.WriteAllText(l1Path, ".lib a\n.include diodeslib.mod\n.endl\n");
 
             var netlist = ParseNetlist(
                 "Lib - Diode circuit",
