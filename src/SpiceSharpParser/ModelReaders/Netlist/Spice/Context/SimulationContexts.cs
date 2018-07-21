@@ -34,6 +34,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         protected bool Prepared { get; set; }
 
         /// <summary>
+        /// Gets the simulation evaluators.
+        /// </summary>
+        public IDictionary<Simulation, IEvaluator> GetSimulationEvaluators()
+        {
+            var result = new Dictionary<Simulation, IEvaluator>();
+
+            foreach (var simulation in Simulations)
+            {
+                result[simulation] = GetSimulationEvaluator(simulation);
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Gets the simulation evaluator.
         /// </summary>
         /// <param name="simulation">Simulation</param>

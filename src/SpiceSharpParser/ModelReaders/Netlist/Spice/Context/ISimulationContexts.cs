@@ -1,4 +1,5 @@
-﻿using SpiceSharp.Circuits;
+﻿using System.Collections.Generic;
+using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 
@@ -6,6 +7,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public interface ISimulationContexts
     {
+        /// <summary>
+        /// Gets the simulation evaluators.
+        /// </summary>
+        IDictionary<Simulation, IEvaluator> GetSimulationEvaluators();
+
+        /// <summary>
+        /// Gets the simulation evaluator.
+        /// </summary>
+        /// <param name="simulation">Simulation</param>
+        /// <returns>
+        /// Simulation evaluator.
+        /// </returns>
         IEvaluator GetSimulationEvaluator(Simulation simulation);
 
         void SetICVoltage(string nodeName, string expression);

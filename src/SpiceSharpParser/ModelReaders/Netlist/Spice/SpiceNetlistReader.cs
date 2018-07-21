@@ -58,6 +58,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
             // Prepare simulation contexts for each simulation
             simulationContexts.Prepare();
 
+            //Return evaluators.
+            result.Evaluators = simulationContexts.GetSimulationEvaluators();
+
             return result;
         }
     }
