@@ -60,6 +60,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             {
                 context.Result.MonteCarlo.Enabled = true;
                 context.Result.MonteCarlo.VariableName = context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable;
+                context.Result.MonteCarlo.Function = context.Result.SimulationConfiguration.MonteCarloConfiguration.Function;
 
                 if (context.Result.SimulationConfiguration.ParameterSweeps.Count == 0)
                 {

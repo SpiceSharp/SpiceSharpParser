@@ -21,8 +21,41 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.Equal(1000, result.Simulations.Count);
             Assert.True(result.MonteCarloResult.Enabled);
             RunSimulations(result);
+
             var mcResult = result.MonteCarloResult;
-            var histPlot = mcResult.GetMaxPlot(10);
+            var histPlot = mcResult.GetPlot(10);
+
+            Assert.Equal(10, histPlot.Bins.Count);
+            Assert.Equal("power", histPlot.XUnit);
+        }
+
+        [Fact]
+        public void McWrongFunctionTest()
+        {
+            var result = ParseNetlist(
+                "Monte Carlo Analysis - OP (power test)",
+                "V1 0 1 100",
+                "R1 1 0 {R}",
+                ".OP",
+                ".PARAM R={random()*1000}",
+                ".LET power {V(1)*I(R1)}",
+                ".SAVE power",
+                ".MC 1000 OP power MAX1",
+                ".END");
+
+            Assert.Equal(1000, result.Simulations.Count);
+            Assert.True(result.MonteCarloResult.Enabled);
+            RunSimulations(result);
+
+            var mcResult = result.MonteCarloResult;
+            try
+            {
+                var histPlot = mcResult.GetPlot(10);
+                Assert.False(true, "There should be an expcetion");
+            }
+            catch
+            {
+            }
         }
 
         [Fact]
@@ -43,7 +76,9 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.True(result.MonteCarloResult.Enabled);
             RunSimulations(result);
             var mcResult = result.MonteCarloResult;
-            var histPlot = mcResult.GetMaxPlot(10);
+            var histPlot = mcResult.GetPlot(10);
+            Assert.Equal(10, histPlot.Bins.Count);
+            Assert.Equal("power", histPlot.XUnit);
         }
 
         [Fact]
@@ -80,7 +115,9 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.True(result.MonteCarloResult.Enabled);
             RunSimulations(result);
             var mcResult = result.MonteCarloResult;
-            var histPlot = mcResult.GetMaxPlot(10);
+            var histPlot = mcResult.GetPlot(10);
+            Assert.Equal(10, histPlot.Bins.Count);
+            Assert.Equal("power", histPlot.XUnit);
         }
 
         [Fact]
@@ -101,7 +138,9 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.True(result.MonteCarloResult.Enabled);
             RunSimulations(result);
             var mcResult = result.MonteCarloResult;
-            var histPlot = mcResult.GetMaxPlot(10);
+            var histPlot = mcResult.GetPlot(10);
+            Assert.Equal(10, histPlot.Bins.Count);
+            Assert.Equal("V(OUT)", histPlot.XUnit);
         }
     }
 }

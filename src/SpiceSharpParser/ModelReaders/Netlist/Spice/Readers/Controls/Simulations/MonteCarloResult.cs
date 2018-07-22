@@ -6,15 +6,35 @@ using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations
 {
+    /// <summary>
+    /// Results of Monte Carlo Analysis.
+    /// </summary>
     public class MonteCarloResult
     {
+        /// <summary>
+        /// Gets or sets a value indicating whether MC analysis was executed.
+        /// </summary>
         public bool Enabled { get; set; }
 
-        public Dictionary<Simulation, double> Max { get; set; } = new Dictionary<Simulation, double>();
+        /// <summary>
+        /// Gets or sets the dictionary of max values.
+        /// </summary>
+        public Dictionary<Simulation, double> Max { get; protected set; } = new Dictionary<Simulation, double>();
 
-        public Dictionary<Simulation, double> Min { get; set; } = new Dictionary<Simulation, double>();
+        /// <summary>
+        /// Gets or sets the dictionary of min values.
+        /// </summary>
+        public Dictionary<Simulation, double> Min { get; protected set; } = new Dictionary<Simulation, double>();
 
+        /// <summary>
+        /// Gets or sets the varable name.
+        /// </summary>
         public string VariableName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the function name.
+        /// </summary>
+        public string Function { get; set; }
 
         /// <summary>
         /// Collects the result and updates <see cref="Max"/>, <see cref="Min"/> dictionaries.
@@ -45,19 +65,53 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             }
         }
 
-        public HistogramPlot GetMaxPlot(int bins)
+        /// <summary>
+        /// Gets the plot from Monte Carlo results.
+        /// </summary>
+        /// <param name="bins">Number of bins</param>
+        /// <returns>
+        /// A plot.
+        /// </returns>
+        public HistogramPlot GetPlot(int bins)
         {
-            var values = Max.Values.ToList();
-            return CreatePlot("Max", bins, values);
+            switch (Function.ToUpper())
+            {
+                case "MAX":
+                    return GetMaxPlot(bins);
+                case "MIN":
+                    return GetMinPlot(bins);
+                case "YMAX":
+                    return GetYMaxPlot(bins);
+            }
+
+            throw new Exception("Unknown Monte Carlo function:" + Function);
         }
 
-        public HistogramPlot GetMinPlot(int bins)
+        protected HistogramPlot GetYMaxPlot(int bins)
         {
-            var values = Max.Values.ToList();
-            return CreatePlot("Min", bins, values);
+            var values = new List<double>();
+
+            foreach (var simulation in Max.Keys)
+            {
+                values.Add(Math.Abs(Max[simulation] - Min[simulation]));
+            }
+
+            return CreatePlot("YMAX - " + VariableName, bins, values);
         }
 
-        private HistogramPlot CreatePlot(string title, int bins, List<double> values)
+        protected HistogramPlot GetMaxPlot(int bins)
+        {
+            var values = Max.Values.ToList();
+            return CreatePlot("MAX - " + VariableName, bins, values);
+        }
+
+        protected HistogramPlot GetMinPlot(int bins)
+        {
+            var values = Max.Values.ToList();
+            return CreatePlot("MIN - " + VariableName, bins, values);
+        }
+
+        protected HistogramPlot CreatePlot(string title, int bins, List<double> values)
         {
             var max = values.Max();
             var min = values.Min();
@@ -69,6 +123,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             }
 
             var plot = new HistogramPlot(title, VariableName, min, max, binWidth);
+
+            for (var i = 1; i <= bins; i++)
+            {
+                plot.Bins[i] = new ModelReaders.Netlist.Spice.Readers.Controls.Plots.Bin();
+            }
 
             foreach (var value in values)
             {
@@ -89,9 +148,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
                 }
                 else
                 {
-                    plot.Bins[binIndex] = new ModelReaders.Netlist.Spice.Readers.Controls.Plots.Bin();
                     plot.Bins[binIndex].Count = 1;
-                    plot.Bins[binIndex].Value = ((binWidth * binIndex) + min);
+                    plot.Bins[binIndex].Value = (binWidth * binIndex) + min;
                 }
             }
 
