@@ -64,6 +64,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
             CustomFunctions.Add("int", MathFunctions.CreateInt());
             CustomFunctions.Add("inv", MathFunctions.CreateInv());
             CustomFunctions.Add("ln", MathFunctions.CreateLn());
+            CustomFunctions.Add("limit", MathFunctions.CreateLimit());
             CustomFunctions.Add("log", MathFunctions.CreateLog(Mode));
             CustomFunctions.Add("log10", MathFunctions.CreateLog10(Mode));
             CustomFunctions.Add("max", MathFunctions.CreateMax());

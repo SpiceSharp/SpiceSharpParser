@@ -456,6 +456,18 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         }
 
         [Fact]
+        public void LimitTest()
+        {
+            // arrange
+            var evaluator = new SpiceEvaluator();
+
+            // act and assert
+            Assert.Equal(8, evaluator.EvaluateDouble("limit(10, 1, 8)"));
+            Assert.Equal(1, evaluator.EvaluateDouble("limit(-1, 1, 8)"));
+            Assert.Equal(4, evaluator.EvaluateDouble("limit(4, 1, 8)"));
+        }
+
+        [Fact]
         public void LogTest()
         {
             // arrange

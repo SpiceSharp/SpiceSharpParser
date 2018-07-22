@@ -314,6 +314,47 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
         }
 
         /// <summary>
+        /// Create a limit(x, xmin, xmax) custom function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of limit custom function.
+        /// </returns>
+        public static CustomFunction CreateLimit()
+        {
+            CustomFunction function = new CustomFunction();
+            function.Name = "limit";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 3;
+            function.ReturnType = typeof(double);
+
+            function.Logic = (args, context, evaluator) =>
+            {
+                if (args.Length != 3)
+                {
+                    throw new ArgumentException("limit() function expects 3 arguments");
+                }
+
+                double x = (double)args[0];
+                double xMin = (double)args[1];
+                double xMax = (double)args[2];
+
+                if (x < xMin)
+                {
+                    return xMin;
+                }
+
+                if (x > xMax)
+                {
+                    return xMax;
+                }
+
+                return x;
+            };
+
+            return function;
+        }
+
+        /// <summary>
         /// Create a ln() custom function.
         /// </summary>
         /// <returns>
