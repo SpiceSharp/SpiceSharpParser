@@ -121,11 +121,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             var max = values.Max();
             var min = values.Min();
             var binWidth = (max - min) / bins;
-            var usedBins = bins;
-
             if (binWidth == 0)
             {
-                usedBins = 1;
+                bins = 1;
             }
 
             var plot = new HistogramPlot(title, VariableName, min, max, binWidth);
@@ -141,11 +139,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
 
                 if (value == max)
                 {
-                    binIndex = usedBins;
+                    binIndex = bins;
                 }
                 else
                 {
-                    binIndex = binWidth != 0 ? (int)Math.Floor((value - min) / binWidth) + 1 : usedBins;
+                    binIndex = binWidth != 0 ? (int)Math.Floor((value - min) / binWidth) + 1 : bins;
                 }
 
                 if (plot.Bins.ContainsKey(binIndex))
