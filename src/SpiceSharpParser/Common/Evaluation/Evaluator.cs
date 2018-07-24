@@ -317,7 +317,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <returns>
         /// A reference to a clone evaluator.
         /// </returns>
-        public virtual IEvaluator CreateClonedEvaluator(string name)
+        public virtual IEvaluator CreateClonedEvaluator(string name, int? randomSeed = null)
         {
             var registry = Registry.Clone();
             registry.Invalidate();

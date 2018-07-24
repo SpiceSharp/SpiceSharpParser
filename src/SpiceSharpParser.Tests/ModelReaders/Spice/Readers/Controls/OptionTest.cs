@@ -56,5 +56,40 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             Assert.Equal(12.2 + Circuit.CelsiusKelvin, resultService.SimulationConfiguration.TemperaturesInKelvins[0]);
             Assert.Equal(12.3 + Circuit.CelsiusKelvin, resultService.SimulationConfiguration.NominalTemperatureInKelvins);
         }
+
+        [Fact]
+        public void SeedTest()
+        {
+            // arrange
+            var control = new Control()
+            {
+                Name = "options",
+                Parameters = new ParameterCollection()
+                {
+                    new AssignmentParameter()
+                    {
+                        Name = "seed",
+                        Value = "1234"
+                    }
+                }
+            };
+
+            var evaluator = Substitute.For<ISpiceEvaluator>();
+            var resultService = new ResultService(new ModelsReaders.Netlist.Spice.SpiceNetlistReaderResult(new Circuit(), "title"));
+            var readingContext = new ReadingContext(
+                string.Empty,
+                Substitute.For<ISimulationContexts>(),
+                evaluator,
+                resultService,
+                new MainCircuitNodeNameGenerator(new string[] { }),
+                new ObjectNameGenerator(string.Empty));
+
+            // act
+            var optionControl = new OptionControl();
+            optionControl.Read(control, readingContext);
+
+            // assert
+            Assert.Equal(1234, resultService.SimulationConfiguration.RandomSeed);
+        }
     }
 }

@@ -14,16 +14,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
     {
         public SimulationContexts(IResultService result, IEvaluator readingEvaluator)
         {
-            ReadingEvaluator = readingEvaluator;
-            Result = result;
-
+            Result = result ?? throw new ArgumentNullException(nameof(result));
+            ReadingEvaluator = readingEvaluator ?? throw new ArgumentNullException(nameof(readingEvaluator));
             Contexts = new Dictionary<Simulation, SimulationContext>();
             PrepareActions = new List<Action>();
         }
 
         protected IEvaluator ReadingEvaluator { get; }
 
-        protected IEnumerable<Simulation> Simulations { get { return Result.Simulations; } }
+        protected IEnumerable<Simulation> Simulations
+        {
+            get
+            {
+                return Result.Simulations;
+            }
+        }
 
         protected IResultService Result { get; }
 
@@ -68,9 +73,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Prepares the simulation contexts.
         /// </summary>
-        public void Prepare()
+        public void Prepare(int? randomSeed)
         {
-            CreateContexts();
+            CreateContexts(randomSeed);
             PrepareActions.ForEach(a => a());
             PrepareActions.Clear();
             Prepared = true;
@@ -208,13 +213,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return simulationEvaluator.FindChildEvaluator(subcircuitName);
         }
 
-        protected void CreateContexts()
+        protected void CreateContexts(int? randomSeed)
         {
             foreach (var simulation in Simulations)
             {
                 Contexts[simulation] = new SimulationContext()
                 {
-                    Evaluator = ReadingEvaluator.CreateClonedEvaluator(simulation.Name.ToString()),
+                    Evaluator = ReadingEvaluator.CreateClonedEvaluator(simulation.Name.ToString(), randomSeed != null ? randomSeed++ : null),
                     Simulation = simulation,
                 };
             }

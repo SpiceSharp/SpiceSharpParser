@@ -121,6 +121,27 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
+        public void McOpGaussSeedTest()
+        {
+            var result = ParseNetlist(
+                "Monte Carlo Analysis - OP (power test)",
+                "V1 0 1 100",
+                "R1 1 0 {R}",
+                ".OP",
+                ".PARAM R={abs(gauss(10))*1000}",
+                ".LET power {V(1)*I(R1)}",
+                ".SAVE power",
+                ".MC 100 OP power MAX SEED = 90",
+                ".END");
+
+            Assert.Equal(100, result.Simulations.Count);
+            Assert.True(result.MonteCarloResult.Enabled);
+            RunSimulations(result);
+            Assert.Equal(90, result.MonteCarloResult.RandomSeed);
+            Assert.Equal(90, result.UsedEvaluatorRandomSeed);
+        }
+
+        [Fact]
         public void McTranTest()
         {
             var result = ParseNetlist(

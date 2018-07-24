@@ -16,6 +16,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
         public SpiceEvaluatorMode EvaluatorMode { get; set; }
 
         /// <summary>
+        /// Gets or sets the evaluator random seed.
+        /// </summary>
+        public int? EvaluatorRandomSeed { get; set; }
+
+        /// <summary>
         /// Gets or sets the context for reader.
         /// </summary>
         public ISpiceNetlistReaderContext Context { get; set; }

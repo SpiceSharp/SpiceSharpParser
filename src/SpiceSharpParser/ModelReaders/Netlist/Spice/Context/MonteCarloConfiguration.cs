@@ -4,7 +4,7 @@
     {
         public bool Enabled { get; set; } = false;
 
-        public int Runs { get; set; } = 0;
+        public int? Runs { get; set; }
 
         public string SimulationType { get; set; }
 
@@ -12,6 +12,8 @@
 
         public string Function { get; set; }
 
-        public int Bins { get; set; } = 100;
+        public int? Bins { get; set; }
+
+        public int? RandomSeed { get; set; }
     }
 }

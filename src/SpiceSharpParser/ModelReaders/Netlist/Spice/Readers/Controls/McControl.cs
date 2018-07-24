@@ -27,6 +27,17 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
             context.Result.SimulationConfiguration.MonteCarloConfiguration.SimulationType = statement.Parameters.GetString(1).ToLower();
             context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable = statement.Parameters[2].Image;
             context.Result.SimulationConfiguration.MonteCarloConfiguration.Function = statement.Parameters.GetString(3);
+
+            if (statement.Parameters.Count > 4 && statement.Parameters[4] is Models.Netlist.Spice.Objects.Parameters.AssignmentParameter a)
+            {
+                if (a.Name.ToLower() == "seed")
+                {
+                    //TODO: refactor it please 
+                    context.Result.SimulationConfiguration.RandomSeed = int.Parse(a.Value);
+                    context.Result.UsedRandomSeed = context.Result.SimulationConfiguration.RandomSeed.Value;
+                    context.Result.SimulationConfiguration.MonteCarloConfiguration.RandomSeed = context.Result.SimulationConfiguration.RandomSeed;
+                }
+            }
         }
     }
 }

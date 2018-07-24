@@ -52,6 +52,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         public MonteCarloResult MonteCarlo => Result.MonteCarloResult;
 
         /// <summary>
+        /// Sets used random seed.
+        /// </summary>
+        public int? UsedRandomSeed { set => Result.UsedEvaluatorRandomSeed = value; }
+
+        /// <summary>
         /// Adds warning.
         /// </summary>
         /// <param name="warning">Warning to add.</param>

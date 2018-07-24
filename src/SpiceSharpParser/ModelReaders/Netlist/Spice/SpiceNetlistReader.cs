@@ -35,6 +35,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
         /// </returns>
         public SpiceNetlistReaderResult Read(SpiceNetlist netlist)
         {
+            if (netlist == null)
+            {
+                throw new System.ArgumentNullException(nameof(netlist));
+            }
+
             // Create result netlist
             var result = new SpiceNetlistReaderResult(new Circuit(), netlist.Title);
 
@@ -42,7 +47,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
             var resultService = new ResultService(result);
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(new string[] { "0" });
             var objectNameGenerator = new ObjectNameGenerator(string.Empty);
-            var readingEvaluator = new SpiceEvaluator("Main reading evaluator", Settings.EvaluatorMode, Settings.Context.Exporters, nodeNameGenerator, objectNameGenerator);
+            var readingEvaluator = new SpiceEvaluator("Main reading evaluator", Settings.EvaluatorMode, Settings.EvaluatorRandomSeed, Settings.Context.Exporters, nodeNameGenerator, objectNameGenerator);
             var simulationContexts = new SimulationContexts(resultService, readingEvaluator);
 
             var readingContext = new ReadingContext(
@@ -57,12 +62,12 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
             Settings.Context.Read(netlist.Statements, readingContext);
 
             // Prepare simulation contexts for each simulation
-            simulationContexts.Prepare();
+            simulationContexts.Prepare(Settings.EvaluatorRandomSeed ?? resultService.SimulationConfiguration.RandomSeed);
 
-            //Return evaluators.
+            // Return evaluators.
             result.Evaluators = simulationContexts.GetSimulationEvaluators();
 
-            // Remove this hack please ....
+            // TODO: Remove this hack please ....
             foreach (var export in result.Exports)
             {
                 if (export is ExpressionExport ee)

@@ -22,6 +22,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 
         Circuit Circuit { get; }
 
+        int? UsedRandomSeed { set; }
+
         void AddWarning(string warning);
 
         void AddComment(CommentLine statement);

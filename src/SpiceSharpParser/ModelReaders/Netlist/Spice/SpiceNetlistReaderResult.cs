@@ -75,5 +75,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
         /// Gets or sets the evaluators for simulation.
         /// </summary>
         public IDictionary<Simulation, IEvaluator> Evaluators { get; set; }
+
+        /// <summary>
+        /// Gets or sets the evaluator used random seed.
+        /// </summary>
+        public int? UsedEvaluatorRandomSeed { get; set; }
     }
 }

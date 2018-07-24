@@ -1,5 +1,4 @@
 ﻿using SpiceSharp;
-using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
@@ -14,79 +13,45 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
     /// </summary>
     public class SpiceEvaluator : Evaluator, ISpiceEvaluator
     {
-        public SpiceEvaluator()
-        : this(string.Empty, SpiceEvaluatorMode.Spice3f5, new ExpressionRegistry())
-        {
-
-        }
-
-        public SpiceEvaluator(string name)
-         : this(name, SpiceEvaluatorMode.Spice3f5, new ExpressionRegistry())
-        {
-
-        }
-
-        public SpiceEvaluator(string name, SpiceEvaluatorMode mode)
-         : this(name, mode, new ExpressionRegistry())
+        public SpiceEvaluator(int? randomSeed = null)
+        : this(string.Empty, SpiceEvaluatorMode.Spice3f5, randomSeed, new ExpressionRegistry())
         {
         }
 
-        public SpiceEvaluator(SpiceEvaluatorMode mode)
-        : this(string.Empty, mode, new ExpressionRegistry())
+        public SpiceEvaluator(string name, int? randomSeed = null)
+         : this(name, SpiceEvaluatorMode.Spice3f5, randomSeed, new ExpressionRegistry())
+        {
+        }
+
+        public SpiceEvaluator(string name, SpiceEvaluatorMode mode, int? randomSeed = null)
+         : this(name, mode, randomSeed, new ExpressionRegistry())
+        {
+        }
+
+        public SpiceEvaluator(SpiceEvaluatorMode mode, int? randomSeed = null)
+        : this(string.Empty, mode, randomSeed, new ExpressionRegistry())
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceEvaluator"/> class.
         /// </summary>
-        public SpiceEvaluator(string name, SpiceEvaluatorMode mode, ExpressionRegistry registry)
+        public SpiceEvaluator(string name, SpiceEvaluatorMode mode, int? randomSeed, ExpressionRegistry registry)
             : base(name, new SpiceExpressionParser(mode == SpiceEvaluatorMode.LtSpice), registry)
         {
             Mode = mode;
+            RandomSeed = randomSeed;
 
             Parameters.Add("TEMP", new CachedExpression((e, c, a, ev) => (Circuit.ReferenceTemperature - Circuit.CelsiusKelvin), this));
 
-            CustomFunctions.Add("**", MathFunctions.CreatePowInfix(Mode));
-            CustomFunctions.Add("abs", MathFunctions.CreateAbs());
-            CustomFunctions.Add("buf", MathFunctions.CreateBuf());
-            CustomFunctions.Add("cbrt", MathFunctions.CreateCbrt());
-            CustomFunctions.Add("ceil", MathFunctions.CreateCeil());
-            CustomFunctions.Add("db", MathFunctions.CreateDb(Mode));
-            CustomFunctions.Add("def", ControlFunctions.CreateDef());
-            CustomFunctions.Add("exp", MathFunctions.CreateExp());
-            CustomFunctions.Add("fabs", MathFunctions.CreateAbs());
-            CustomFunctions.Add("flat", RandomFunctions.CreateFlat());
-            CustomFunctions.Add("floor", MathFunctions.CreateFloor());
-            CustomFunctions.Add("gauss", RandomFunctions.CreateGauss());
-            CustomFunctions.Add("hypot", MathFunctions.CreateHypot());
-            CustomFunctions.Add("if", ControlFunctions.CreateIf());
-            CustomFunctions.Add("lazy", ControlFunctions.CreateLazy());
-            CustomFunctions.Add("int", MathFunctions.CreateInt());
-            CustomFunctions.Add("inv", MathFunctions.CreateInv());
-            CustomFunctions.Add("ln", MathFunctions.CreateLn());
-            CustomFunctions.Add("limit", MathFunctions.CreateLimit());
-            CustomFunctions.Add("log", MathFunctions.CreateLog(Mode));
-            CustomFunctions.Add("log10", MathFunctions.CreateLog10(Mode));
-            CustomFunctions.Add("max", MathFunctions.CreateMax());
-            CustomFunctions.Add("min", MathFunctions.CreateMin());
-            CustomFunctions.Add("nint", MathFunctions.CreateRound());
-            CustomFunctions.Add("pow", MathFunctions.CreatePow(Mode));
-            CustomFunctions.Add("pwr", MathFunctions.CreatePwr(Mode));
-            CustomFunctions.Add("pwrs", MathFunctions.CreatePwrs());
-            CustomFunctions.Add("random", RandomFunctions.CreateRandom());
-            CustomFunctions.Add("round", MathFunctions.CreateRound());
-            CustomFunctions.Add("sqrt", MathFunctions.CreateSqrt(Mode));
-            CustomFunctions.Add("sgn", MathFunctions.CreateSgn());
-            CustomFunctions.Add("table", TableFunction.Create());
-            CustomFunctions.Add("u", MathFunctions.CreateU());
-            CustomFunctions.Add("uramp", MathFunctions.CreateURamp());
+            CreateCustomFunctions(this, randomSeed);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceEvaluator"/> class.
         /// </summary>
-        public SpiceEvaluator(string name, SpiceEvaluatorMode mode, IExporterRegistry exporters, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
-            : this(name, mode, new ExpressionRegistry())
+        public SpiceEvaluator(string name, SpiceEvaluatorMode mode, int? randomSeed, IExporterRegistry exporters, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
+            : this(name, mode, randomSeed, new ExpressionRegistry())
         {
             ExportFunctions.Add(CustomFunctions, exporters, nodeNameGenerator, objectNameGenerator);
         }
@@ -97,6 +62,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         public SpiceEvaluatorMode Mode { get; }
 
         /// <summary>
+        /// Gets the random seed.
+        /// </summary>
+        public int? RandomSeed { get; }
+
+        /// <summary>
         /// Creates a child evaluator.
         /// </summary>
         /// <returns>
@@ -104,7 +74,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// </returns>
         public override IEvaluator CreateChildEvaluator(string name)
         {
-            var newEvaluator = new SpiceEvaluator(name, Mode, new ExpressionRegistry());
+            var newEvaluator = new SpiceEvaluator(name, Mode, RandomSeed, new ExpressionRegistry());
 
             foreach (var parameterName in this.GetParameterNames())
             {
@@ -127,12 +97,12 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// <returns>
         /// A cloned evaluator.
         /// </returns>
-        public override IEvaluator CreateClonedEvaluator(string name)
+        public override IEvaluator CreateClonedEvaluator(string name, int? randomSeed = null)
         {
             var registry = Registry.Clone();
             registry.Invalidate();
 
-            var newEvaluator = new SpiceEvaluator(name, Mode, registry);
+            var newEvaluator = new SpiceEvaluator(name, Mode, randomSeed ?? RandomSeed, registry);
             registry.UpdateEvaluator(newEvaluator);
 
             foreach (var parameterName in this.GetParameterNames())
@@ -144,15 +114,57 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
 
             foreach (var customFunction in CustomFunctions)
             {
-                newEvaluator.CustomFunctions[customFunction.Key] = customFunction.Value;
+                if (!newEvaluator.CustomFunctions.ContainsKey(customFunction.Key))
+                {
+                    newEvaluator.CustomFunctions[customFunction.Key] = customFunction.Value;
+                }
             }
 
             foreach (var child in Children)
             {
-                newEvaluator.Children.Add(child.CreateClonedEvaluator(child.Name));
+                newEvaluator.Children.Add(child.CreateClonedEvaluator(child.Name, randomSeed ?? RandomSeed));
             }
 
             return newEvaluator;
+        }
+
+        private void CreateCustomFunctions(SpiceEvaluator evaluator, int? randomSeed)
+        {
+            evaluator.CustomFunctions.Clear();
+            evaluator.CustomFunctions.Add("**", MathFunctions.CreatePowInfix(Mode));
+            evaluator.CustomFunctions.Add("abs", MathFunctions.CreateAbs());
+            evaluator.CustomFunctions.Add("buf", MathFunctions.CreateBuf());
+            evaluator.CustomFunctions.Add("cbrt", MathFunctions.CreateCbrt());
+            evaluator.CustomFunctions.Add("ceil", MathFunctions.CreateCeil());
+            evaluator.CustomFunctions.Add("db", MathFunctions.CreateDb(Mode));
+            evaluator.CustomFunctions.Add("def", ControlFunctions.CreateDef());
+            evaluator.CustomFunctions.Add("exp", MathFunctions.CreateExp());
+            evaluator.CustomFunctions.Add("fabs", MathFunctions.CreateAbs());
+            evaluator.CustomFunctions.Add("flat", RandomFunctions.CreateFlat(randomSeed));
+            evaluator.CustomFunctions.Add("floor", MathFunctions.CreateFloor());
+            evaluator.CustomFunctions.Add("gauss", RandomFunctions.CreateGauss(randomSeed));
+            evaluator.CustomFunctions.Add("hypot", MathFunctions.CreateHypot());
+            evaluator.CustomFunctions.Add("if", ControlFunctions.CreateIf());
+            evaluator.CustomFunctions.Add("lazy", ControlFunctions.CreateLazy());
+            evaluator.CustomFunctions.Add("int", MathFunctions.CreateInt());
+            evaluator.CustomFunctions.Add("inv", MathFunctions.CreateInv());
+            evaluator.CustomFunctions.Add("ln", MathFunctions.CreateLn());
+            evaluator.CustomFunctions.Add("limit", MathFunctions.CreateLimit());
+            evaluator.CustomFunctions.Add("log", MathFunctions.CreateLog(Mode));
+            evaluator.CustomFunctions.Add("log10", MathFunctions.CreateLog10(Mode));
+            evaluator.CustomFunctions.Add("max", MathFunctions.CreateMax());
+            evaluator.CustomFunctions.Add("min", MathFunctions.CreateMin());
+            evaluator.CustomFunctions.Add("nint", MathFunctions.CreateRound());
+            evaluator.CustomFunctions.Add("pow", MathFunctions.CreatePow(Mode));
+            evaluator.CustomFunctions.Add("pwr", MathFunctions.CreatePwr(Mode));
+            evaluator.CustomFunctions.Add("pwrs", MathFunctions.CreatePwrs());
+            evaluator.CustomFunctions.Add("random", RandomFunctions.CreateRandom(randomSeed));
+            evaluator.CustomFunctions.Add("round", MathFunctions.CreateRound());
+            evaluator.CustomFunctions.Add("sqrt", MathFunctions.CreateSqrt(Mode));
+            evaluator.CustomFunctions.Add("sgn", MathFunctions.CreateSgn());
+            evaluator.CustomFunctions.Add("table", TableFunction.Create());
+            evaluator.CustomFunctions.Add("u", MathFunctions.CreateU());
+            evaluator.CustomFunctions.Add("uramp", MathFunctions.CreateURamp());
         }
     }
 }

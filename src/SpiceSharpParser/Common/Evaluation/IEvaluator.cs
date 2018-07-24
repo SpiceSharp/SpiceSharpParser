@@ -120,7 +120,7 @@ namespace SpiceSharpParser.Common
         /// <returns>
         /// A cloned evaluator.
         /// </returns>
-        IEvaluator CreateClonedEvaluator(string name);
+        IEvaluator CreateClonedEvaluator(string name, int? randomSeed = null);
 
         /// <summary>
         /// Invalidate parameters.

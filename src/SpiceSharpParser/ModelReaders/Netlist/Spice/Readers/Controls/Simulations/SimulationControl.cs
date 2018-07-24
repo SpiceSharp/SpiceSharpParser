@@ -59,6 +59,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             else
             {
                 context.Result.MonteCarlo.Enabled = true;
+                context.Result.MonteCarlo.RandomSeed = context.Result.SimulationConfiguration.RandomSeed;
                 context.Result.MonteCarlo.VariableName = context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable;
                 context.Result.MonteCarlo.Function = context.Result.SimulationConfiguration.MonteCarloConfiguration.Function;
 

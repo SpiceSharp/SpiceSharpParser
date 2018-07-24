@@ -7,7 +7,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
     public class RandomFunctions
     {
         private static int tickCount = Environment.TickCount;
-        private static ThreadLocal<Random> threadLocalRandom = new ThreadLocal<Random>(() => new Random(Interlocked.Increment(ref tickCount)));
 
         /// <summary>
         /// Create a gauss() custom function.
@@ -15,9 +14,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
         /// <returns>
         /// A new instance of random gauss function.
         /// </returns>
-        public static CustomFunction CreateGauss()
+        public static CustomFunction CreateGauss(int? randomSeed)
         {
-            var random = threadLocalRandom.Value;
+            var random = new Random(randomSeed ?? Interlocked.Increment(ref tickCount));
 
             CustomFunction function = new CustomFunction();
             function.Name = "gauss";
@@ -46,9 +45,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
         /// <returns>
         /// A new instance of random custom function.
         /// </returns>
-        public static CustomFunction CreateRandom()
+        public static CustomFunction CreateRandom(int? randomSeed)
         {
-            var random = threadLocalRandom.Value;
+            var random = new Random(randomSeed ?? Interlocked.Increment(ref tickCount));
 
             CustomFunction function = new CustomFunction();
             function.Name = "random";
@@ -73,9 +72,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
         /// <returns>
         /// A new instance of random custom function.
         /// </returns>
-        public static CustomFunction CreateFlat()
+        public static CustomFunction CreateFlat(int? randomSeed)
         {
-            var random = threadLocalRandom.Value;
+            var random = new Random(randomSeed ?? Interlocked.Increment(ref tickCount));
 
             CustomFunction function = new CustomFunction();
             function.Name = "flat";

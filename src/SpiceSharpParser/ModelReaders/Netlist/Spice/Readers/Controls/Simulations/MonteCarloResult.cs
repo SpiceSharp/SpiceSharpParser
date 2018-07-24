@@ -17,6 +17,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
         public bool Enabled { get; set; }
 
         /// <summary>
+        /// Gets or sets the random seed for monte carlo simulations evaluators.
+        /// </summary>
+        public int? RandomSeed { get; set; }
+
+        /// <summary>
         /// Gets or sets the dictionary of max values.
         /// </summary>
         public Dictionary<Simulation, double> Max { get; protected set; } = new Dictionary<Simulation, double>();
@@ -116,10 +121,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             var max = values.Max();
             var min = values.Min();
             var binWidth = (max - min) / bins;
+            var usedBins = bins;
 
             if (binWidth == 0)
             {
-                bins = 1;
+                usedBins = 1;
             }
 
             var plot = new HistogramPlot(title, VariableName, min, max, binWidth);
@@ -135,11 +141,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
 
                 if (value == max)
                 {
-                    binIndex = bins;
+                    binIndex = usedBins;
                 }
                 else
                 {
-                    binIndex = binWidth != 0 ? (int)Math.Floor((value - min) / binWidth) + 1 : bins;
+                    binIndex = binWidth != 0 ? (int)Math.Floor((value - min) / binWidth) + 1 : usedBins;
                 }
 
                 if (plot.Bins.ContainsKey(binIndex))

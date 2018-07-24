@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.IntegrationMethods;
-using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
@@ -22,6 +21,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         public Trapezoidal Method { get; set; }
 
         public bool? KeepOpInfo { get; set; }
+
+        /// <summary>
+        /// Gets or sets the random seed for simulations.
+        /// </summary>
+        public int? RandomSeed { get; set; }
 
         /// <summary>
         /// Gets or sets the nominal temperature for the circuit
