@@ -112,7 +112,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
 
         protected HistogramPlot GetMinPlot(int bins)
         {
-            var values = Max.Values.ToList();
+            var values = Min.Values.ToList();
             return CreatePlot("MIN - " + VariableName, bins, values);
         }
 
@@ -121,9 +121,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             var max = values.Max();
             var min = values.Min();
             var binWidth = (max - min) / bins;
-            if (binWidth == 0)
+            if (Math.Abs(binWidth) < 1e-16)
             {
                 bins = 1;
+                binWidth = 0;
             }
 
             var plot = new HistogramPlot(title, VariableName, min, max, binWidth);
@@ -131,6 +132,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             for (var i = 1; i <= bins; i++)
             {
                 plot.Bins[i] = new ModelReaders.Netlist.Spice.Readers.Controls.Plots.Bin();
+                plot.Bins[i].Value = (binWidth * (i - 1)) + min;
             }
 
             foreach (var value in values)
@@ -146,15 +148,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
                     binIndex = binWidth != 0 ? (int)Math.Floor((value - min) / binWidth) + 1 : bins;
                 }
 
-                if (plot.Bins.ContainsKey(binIndex))
-                {
-                    plot.Bins[binIndex].Count += 1;
-                }
-                else
-                {
-                    plot.Bins[binIndex].Count = 1;
-                    plot.Bins[binIndex].Value = (binWidth * binIndex) + min;
-                }
+                plot.Bins[binIndex].Count += 1;
             }
 
             return plot;

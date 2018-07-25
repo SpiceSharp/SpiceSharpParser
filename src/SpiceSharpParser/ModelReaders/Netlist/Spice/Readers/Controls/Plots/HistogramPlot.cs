@@ -8,14 +8,13 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots
     /// </summary>
     public class HistogramPlot
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="HistogramPlot"/> class.
         /// </summary>
-        /// <param name="name">The name of plot</param>
-        /// <param name="xUnit">X-unit</param>
-        /// <param name="xMin">Min value of X-Unit</param>
-        /// <param name="xMax">Max value of X-Unit</param>
+        /// <param name="name">The name of plot.</param>
+        /// <param name="xUnit">Unit of x values.</param>
+        /// <param name="xMin">Min value of x values.</param>
+        /// <param name="xMax">Max value of x values.</param>
         public HistogramPlot(string name, string xUnit, double xMin, double xMax, double binWidth)
         {
             BinWidth = binWidth;
@@ -26,8 +25,19 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots
             Bins = new Dictionary<int, Bin>();
         }
 
+        /// <summary>
+        /// Gets width of histogram bin.
+        /// </summary>
         public double BinWidth { get; }
+
+        /// <summary>
+        /// Gets the min value of x values.
+        /// </summary>
         public double XMin { get; }
+
+        /// <summary>
+        /// Gets the max value of x values.
+        /// </summary>
         public double XMax { get; }
 
         /// <summary>
@@ -41,7 +51,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots
         public string XUnit { get; }
 
         /// <summary>
-        /// Gets the bins.
+        /// Gets the bins of histogram.
         /// </summary>
         public Dictionary<int, Bin> Bins { get; }
     }

@@ -46,6 +46,17 @@ namespace SpiceSharpParser.IntegrationTests
             return parserFront.ParseNetlist(text, settings).ReaderResult;
         }
 
+        public static SpiceNetlistReaderResult ParseNetlist(int randomSeed, params string[] lines)
+        {
+            var text = string.Join(Environment.NewLine, lines);
+            var parserFront = new ParserFacade();
+            var settings = new ParserSettings();
+            settings.SpiceNetlistParserSettings.HasTitle = true;
+            settings.SpiceNetlistParserSettings.IsEndRequired = true;
+            settings.SpiceNetlistModelReaderSettings.EvaluatorRandomSeed = randomSeed;
+            return parserFront.ParseNetlist(text, settings).ReaderResult;
+        }
+
         public static SpiceNetlist ParseNetlistToModel(bool isEndRequired, bool hasTitle, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);

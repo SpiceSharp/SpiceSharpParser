@@ -62,12 +62,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
             Settings.Context.Read(netlist.Statements, readingContext);
 
             // Prepare simulation contexts for each simulation
-            simulationContexts.Prepare(Settings.EvaluatorRandomSeed ?? resultService.SimulationConfiguration.RandomSeed);
+            simulationContexts.Prepare(resultService.SimulationConfiguration.RandomSeed ?? Settings.EvaluatorRandomSeed);
 
-            // Return evaluators.
+            // Return and update evaluators info.
             result.Evaluators = simulationContexts.GetSimulationEvaluators();
-
-            // TODO: Remove this hack please ....
+            result.UsedEvaluatorRandomSeed = result.UsedEvaluatorRandomSeed ?? Settings.EvaluatorRandomSeed;
             foreach (var export in result.Exports)
             {
                 if (export is ExpressionExport ee)
