@@ -28,6 +28,7 @@ SpiceSharpParser is a .NET library that parses Spice netlists and creates a mode
 * .FUNC
 * .STEP
 * .PRINT
+* .MC
 
 ### Supported components
 * RLC
