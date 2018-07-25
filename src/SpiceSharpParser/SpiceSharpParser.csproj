@@ -15,6 +15,10 @@
     <PackageId>SpiceSharp-Parser</PackageId>
     <Product>SpiceSharpParser</Product>
     <Description>Netlist parser for SpiceSharp</Description>
+    <PackageReleaseNotes>Adding:
+-  .MC statement
+- .OPTIONS SEED = X</PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
