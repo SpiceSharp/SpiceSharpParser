@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SpiceSharp" Version="2.1.6" />
+    <PackageReference Include="SpiceSharp" Version="2.2.0" />
   </ItemGroup>
 
 </Project>

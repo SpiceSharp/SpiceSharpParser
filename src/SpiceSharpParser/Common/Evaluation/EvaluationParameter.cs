@@ -1,9 +1,11 @@
-﻿namespace SpiceSharpParser.Common
+﻿using SpiceSharp;
+
+namespace SpiceSharpParser.Common
 {
     /// <summary>
     /// An parameter that triggers re-evaluation when changed.
     /// </summary>
-    public class EvaluationParameter : SpiceSharp.Parameter
+    public class EvaluationParameter : Parameter<double>
     {
         private double rawValue;
 
@@ -50,7 +52,7 @@
         /// <returns>
         /// A clone of parameter.
         /// </returns>
-        public override SpiceSharp.Parameter Clone()
+        public override BaseParameter Clone()
         {
             return new EvaluationParameter(Evaluator, ParameterName);
         }

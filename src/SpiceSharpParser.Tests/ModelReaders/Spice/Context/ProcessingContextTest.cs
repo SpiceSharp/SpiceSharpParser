@@ -31,7 +31,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
             context.SetEntityParameter(resistor, "resistance", "a+1");
 
             // assert 
-            Assert.Equal(1.1, resistor.ParameterSets.GetParameter("resistance").Value);
+            Assert.Equal(1.1, resistor.ParameterSets.GetParameter<double>("resistance").Value);
         }
 
         [Fact]
@@ -54,7 +54,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
             context.SetEntityParameter(resistor, "L", "1");
 
             // assert
-            Assert.Equal(1, resistor.ParameterSets.GetParameter("l").Value);
+            Assert.Equal(1, resistor.ParameterSets.GetParameter<double>("l").Value);
         }
 
         [Fact]

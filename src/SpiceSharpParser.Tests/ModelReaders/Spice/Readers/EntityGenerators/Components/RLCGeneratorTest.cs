@@ -143,7 +143,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             Assert.NotNull(cap);
             Assert.IsType<Capacitor>(cap);
             context.Received().SetEntityParameter(cap, "capacitance", "4.3");
-            Assert.Equal(13.3, cap.ParameterSets.GetParameter("ic").Value);
+            Assert.Equal(13.3, cap.ParameterSets.GetParameter<double>("ic").Value);
         }
 
         // cA3 1 0 CModel L=10u W=1u Ic=12
@@ -179,7 +179,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             Assert.IsType<Capacitor>(cap);
 
             context.Received().SetEntityParameter(cap, "L", "10u");
-            Assert.Equal(12, cap.ParameterSets.GetParameter("ic").Value);
+            Assert.Equal(12, cap.ParameterSets.GetParameter<double>("ic").Value);
 
         }
     }

@@ -227,7 +227,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                     }
                 }
 
-                var lengthParameter = res.ParameterSets.GetParameter("l") as GivenParameter;
+                var lengthParameter = res.ParameterSets.GetParameter<double>("l") as GivenParameter<double>;
                 if (lengthParameter == null || !lengthParameter.Given)
                 {
                     throw new GeneralReaderException("l needs to be specified");
