@@ -22,6 +22,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             return model;
         }
 
-        internal abstract Entity GenerateModel(string name, string type);
+        protected abstract Entity GenerateModel(string name, string type);
     }
 }

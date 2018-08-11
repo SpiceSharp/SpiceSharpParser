@@ -17,7 +17,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             return new List<string>() { "npn", "pnp" };
         }
 
-        internal override Entity GenerateModel(string name, string type)
+        protected override Entity GenerateModel(string name, string type)
         {
             BipolarJunctionTransistorModel model = new BipolarJunctionTransistorModel(name);
 

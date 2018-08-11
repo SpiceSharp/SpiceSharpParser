@@ -125,7 +125,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             return model;
         }
 
-        internal override Entity GenerateModel(string name, string type)
+        protected override Entity GenerateModel(string name, string type)
         {
             throw new Exception("Shouldn't be called");
         }
