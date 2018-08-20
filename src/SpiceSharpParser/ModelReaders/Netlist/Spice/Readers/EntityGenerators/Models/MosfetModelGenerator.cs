@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Extensions;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Extensions;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models
 {
@@ -23,8 +23,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                     case "nmos": m.SetParameter("nmos", true); break;
                     case "pmos": m.SetParameter("pmos", true); break;
                 }
+
                 return m;
             });
+
             Levels.Add(2, (Identifier name, string type, string version) =>
             {
                 var m = new Mosfet2Model(name);
@@ -33,8 +35,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                     case "nmos": m.SetParameter("nmos", true); break;
                     case "pmos": m.SetParameter("pmos", true); break;
                 }
+
                 return m;
             });
+
             Levels.Add(3, (Identifier name, string type, string version) =>
             {
                 var m = new Mosfet3Model(name);
@@ -43,21 +47,22 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                     case "nmos": m.SetParameter("nmos", true); break;
                     case "pmos": m.SetParameter("pmos", true); break;
                 }
+
                 return m;
             });
         }
 
         /// <summary>
-        /// Available model generators indexed by their LEVEL.
+        /// Gets available model generators indexed by their LEVEL.
         /// The parameters passed are name, type (nmos or pmos) and the version.
         /// </summary>
-        public Dictionary<int, Func<Identifier, string, string, Entity>> Levels { get; } = new Dictionary<int, Func<Identifier, string, string, Entity>>();
+        protected Dictionary<int, Func<Identifier, string, string, Entity>> Levels { get; } = new Dictionary<int, Func<Identifier, string, string, Entity>>();
 
         /// <summary>
-        /// Gets generated Spice types by generator
+        /// Gets generated Spice types by generator.
         /// </summary>
         /// <returns>
-        /// Generated Spice types
+        /// Generated Spice types.
         /// </returns>
         public override IEnumerable<string> GetGeneratedSpiceTypes()
         {

@@ -21,13 +21,13 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries
         /// <param name="element">
         /// A generator to add
         /// </param>
-        public override void Add(Exporter element)
+        public override void Add(Exporter element, bool canOverride = false)
         {
             foreach (var type in element.GetSupportedTypes())
             {
-                if (ElementsByType.ContainsKey(type))
+                if (ElementsByType.ContainsKey(type) && canOverride == false)
                 {
-                    throw new Exception("Conflict in geneators");
+                    throw new Exception("There is a generator for type: " + type);
                 }
 
                 ElementsByType[type] = element;

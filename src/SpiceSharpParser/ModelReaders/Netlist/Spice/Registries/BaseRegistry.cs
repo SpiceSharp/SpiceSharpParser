@@ -50,7 +50,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries
         /// Adds the element to the registry.
         /// </summary>
         /// <param name="element">Element to add</param>
-        public virtual void Add(TElement element)
+        public virtual void Add(TElement element, bool canOverride = false)
         {
             if (ElementsByType.ContainsKey(element.SpiceCommandName))
             {

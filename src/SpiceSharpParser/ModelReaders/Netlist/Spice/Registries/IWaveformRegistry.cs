@@ -29,6 +29,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries
         /// Adds waveform generator to registry
         /// </summary>
         /// <param name="generator">A waveform generator to add</param>
-        void Add(WaveformGenerator generator);
+        void Add(WaveformGenerator generator, bool canOverride = false);
     }
 }

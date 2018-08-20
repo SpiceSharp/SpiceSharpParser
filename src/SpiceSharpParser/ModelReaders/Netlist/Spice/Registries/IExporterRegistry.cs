@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries
         /// <param name="exporter">
         /// An exporter to add
         /// </param>
-        void Add(Exporter exporter);
+        void Add(Exporter exporter, bool canOverride = false);
 
         /// <summary>
         /// Gets a value indicating whether a specified exporter is in registry

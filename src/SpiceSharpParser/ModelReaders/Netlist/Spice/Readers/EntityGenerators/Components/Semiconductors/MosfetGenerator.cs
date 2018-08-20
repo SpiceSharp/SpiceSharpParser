@@ -1,13 +1,12 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Extensions;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
+﻿using System;
+using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
-using System;
-using System.Collections.Generic;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.ModelsReaders.Netlist.Spice.Extensions;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
 {
@@ -39,6 +38,12 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                 return m;
             });
         }
+
+        /// <summary>
+        /// Generate a mosfet instance based on a model.
+        /// The generator is passed the arguments name and model.
+        /// </summary>
+        protected Dictionary<Type, Func<Identifier, Entity, SpiceSharp.Components.Component>> Mosfets { get; } = new Dictionary<Type, Func<Identifier, Entity, SpiceSharp.Components.Component>>();
 
         public override Entity Generate(Identifier entityName, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
@@ -74,12 +79,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             context.SetParameters(mosfet, parameters.Skip(5));
             return mosfet;
         }
-
-        /// <summary>
-        /// Generate a mosfet instance based on a model.
-        /// The generator is passed the arguments name and model.
-        /// </summary>
-        public Dictionary<Type, Func<Identifier, Entity, SpiceSharp.Components.Component>> Mosfets { get; } = new Dictionary<Type, Func<Identifier, Entity, SpiceSharp.Components.Component>>();
 
         /// <summary>
         /// Gets generated Spice types by generator

@@ -19,11 +19,14 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries
         bool Supports(string type);
 
         /// <summary>
-        /// Adds an entity generator to registy
+        /// Adds an entity generator to registy.
         /// </summary>
         /// <param name="generator">
-        /// A generator to add
+        /// A generator to add.
         /// </param>
-        void Add(EntityGenerator generator);
+        /// <param name="canOverride">
+        /// Can override
+        /// </param>
+        void Add(EntityGenerator generator, bool canOverride = false);
     }
 }

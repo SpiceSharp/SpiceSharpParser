@@ -38,6 +38,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries
         /// Adds a control to registy
         /// </summary>
         /// <param name="control">A control to add</param>
-        void Add(BaseControl control);
+        void Add(BaseControl control, bool canOverride = false);
     }
 }
