@@ -47,7 +47,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
             var resultService = new ResultService(result);
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(new string[] { "0" });
             var objectNameGenerator = new ObjectNameGenerator(string.Empty);
-            var readingEvaluator = new SpiceEvaluator("Main reading evaluator", Settings.EvaluatorMode, Settings.EvaluatorRandomSeed, Settings.Context.Exporters, nodeNameGenerator, objectNameGenerator);
+            var readingEvaluator = new SpiceEvaluator("Main reading evaluator", Settings.EvaluatorMode, Settings.Seed, Settings.Context.Exporters, nodeNameGenerator, objectNameGenerator);
             var simulationContexts = new SimulationContexts(resultService, readingEvaluator);
 
             var readingContext = new ReadingContext(
@@ -62,11 +62,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
             Settings.Context.Read(netlist.Statements, readingContext);
 
             // Prepare simulation contexts for each simulation
-            simulationContexts.Prepare(resultService.SimulationConfiguration.RandomSeed ?? Settings.EvaluatorRandomSeed);
+            simulationContexts.Prepare(resultService.SimulationConfiguration.RandomSeed ?? Settings.Seed);
 
             // Return and update evaluators info.
             result.Evaluators = simulationContexts.GetSimulationEvaluators();
-            result.UsedEvaluatorRandomSeed = result.UsedEvaluatorRandomSeed ?? Settings.EvaluatorRandomSeed;
+            result.UsedEvaluatorRandomSeed = result.UsedEvaluatorRandomSeed ?? Settings.Seed;
             foreach (var export in result.Exports)
             {
                 if (export is ExpressionExport ee)

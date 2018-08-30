@@ -8,17 +8,17 @@ using SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postprocesso
 namespace SpiceSharpParser
 {
     /// <summary>
-    /// A parser facade.
+    /// The parser.
     /// </summary>
-    public class ParserFacade
+    public class Parser
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParserFacade"/> class.
+        /// Initializes a new instance of the <see cref="Parser"/> class.
         /// </summary>
         /// <param name="spiceNetlistParser">Spice netlist parser.</param>
         /// <param name="includesPreprocessor">Includes preprocessor.</param>
         /// <param name="appendModelPreprocessor">Append model preprocessor.</param>
-        public ParserFacade(
+        public Parser(
             ISpiceNetlistParser spiceNetlistParser,
             IIncludesPreprocessor includesPreprocessor,
             IAppendModelPreprocessor appendModelPreprocessor,
@@ -30,24 +30,34 @@ namespace SpiceSharpParser
             SpiceNetlistParser = spiceNetlistParser ?? throw new System.ArgumentNullException(nameof(spiceNetlistParser));
             AppendModelPreprocessor = appendModelPreprocessor ?? throw new System.ArgumentNullException(nameof(appendModelPreprocessor));
             SweepsPreprocessor = sweepsPreprocessor ?? throw new System.ArgumentNullException(nameof(sweepsPreprocessor));
+            Settings = new ParserSettings();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParserFacade"/> class.
+        /// Initializes a new instance of the <see cref="Parser"/> class.
         /// </summary>
-        public ParserFacade()
+        public Parser()
         {
             SpiceNetlistParser = new SpiceNetlistParser();
             IncludesPreprocessor = new IncludesPreprocessor(new FileReader(), SpiceNetlistParser);
             AppendModelPreprocessor = new AppendModelPreprocessor();
             LibPreprocessor = new LibPreprocessor(new FileReader(), SpiceNetlistParser, IncludesPreprocessor);
             SweepsPreprocessor = new SweepsPreprocessor();
+            Settings = new ParserSettings();
         }
 
+        /// <summary>
+        /// Gets or sets the parser settings.
+        /// </summary>
+        public ParserSettings Settings { get; set; }
+
+        /// <summary>
+        /// Gets the sweeps preprocessor.
+        /// </summary>
         protected ISweepsPreprocessor SweepsPreprocessor { get; }
 
         /// <summary>
-        /// Gets the .lib reader.
+        /// Gets the .lib preprocessor.
         /// </summary>
         protected ILibPreprocessor LibPreprocessor { get; }
 
@@ -57,12 +67,12 @@ namespace SpiceSharpParser
         protected ISpiceNetlistParser SpiceNetlistParser { get; }
 
         /// <summary>
-        /// Gets the includes reader.
+        /// Gets the includes preprocessor.
         /// </summary>
         protected IIncludesPreprocessor IncludesPreprocessor { get; }
 
         /// <summary>
-        /// Gets the appendmodel reader.
+        /// Gets the appendmodel preprocessor.
         /// </summary>
         protected IAppendModelPreprocessor AppendModelPreprocessor { get; }
 
@@ -70,28 +80,27 @@ namespace SpiceSharpParser
         /// Parses the netlist.
         /// </summary>
         /// <param name="spiceNetlist">Netlist to parse.</param>
-        /// <param name="settings">Setting for parser.</param>
         /// <returns>
         /// A parsing result.
         /// </returns>
-        public ParserResult ParseNetlist(string spiceNetlist, ParserSettings settings)
+        public ParserResult ParseNetlist(string spiceNetlist)
         {
-            if (settings == null)
-            {
-                throw new System.ArgumentNullException(nameof(settings));
-            }
-
             if (spiceNetlist == null)
             {
                 throw new System.ArgumentNullException(nameof(spiceNetlist));
             }
 
-            SpiceNetlist originalNetlistModel = SpiceNetlistParser.Parse(spiceNetlist, settings.SpiceNetlistParserSettings);
+            if (Settings == null)
+            {
+                throw new System.InvalidOperationException(nameof(Settings));
+            }
+
+            SpiceNetlist originalNetlistModel = SpiceNetlistParser.Parse(spiceNetlist, Settings.NetlistParser);
             SpiceNetlist preprocessedNetListModel = (SpiceNetlist)originalNetlistModel.Clone();
 
             // Preprocessing
-            IncludesPreprocessor.Preprocess(preprocessedNetListModel, settings.WorkingDirectoryPath);
-            LibPreprocessor.Preprocess(preprocessedNetListModel, settings.WorkingDirectoryPath);
+            IncludesPreprocessor.Preprocess(preprocessedNetListModel, Settings.WorkingDirectory);
+            LibPreprocessor.Preprocess(preprocessedNetListModel, Settings.WorkingDirectory);
             AppendModelPreprocessor.Preprocess(preprocessedNetListModel);
             SweepsPreprocessor.Preprocess(preprocessedNetListModel);
             // TODO: more preprocessors
@@ -99,18 +108,18 @@ namespace SpiceSharpParser
             SpiceNetlist postprocessedNetlistModel = (SpiceNetlist)preprocessedNetListModel.Clone();
 
             // Postprocessing
-            var postprocessorEvaluator = new SpiceEvaluator("Postprocessor evaluator", settings.SpiceNetlistModelReaderSettings.EvaluatorMode, settings.SpiceNetlistModelReaderSettings.EvaluatorRandomSeed, new Common.Evaluation.ExpressionRegistry());
+            var postprocessorEvaluator = new SpiceEvaluator("Postprocessor evaluator", Settings.NetlistReader.EvaluatorMode, Settings.NetlistReader.Seed, new Common.Evaluation.ExpressionRegistry());
 
             var ifPostprocessor = new IfPostprocessor(postprocessorEvaluator);
             postprocessedNetlistModel.Statements = ifPostprocessor.PostProcess(postprocessedNetlistModel.Statements);
 
             // Reading model
-            var reader = new SpiceNetlistReader(settings.SpiceNetlistModelReaderSettings);
+            var reader = new SpiceNetlistReader(Settings.NetlistReader);
             SpiceNetlistReaderResult readerResult = reader.Read(postprocessedNetlistModel);
 
             return new ParserResult()
             {
-                ReaderResult = readerResult,
+                Result = readerResult,
                 InitialNetlistModel = originalNetlistModel,
                 PreprocessedNetlistModel = preprocessedNetListModel,
                 PostprocessedNetlistModel = postprocessedNetlistModel,
