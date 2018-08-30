@@ -1,4 +1,4 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions;
+﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
 {
@@ -18,7 +18,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
         /// <summary>
         /// Gets or sets the evaluator random seed.
         /// </summary>
-        public int? EvaluatorRandomSeed { get; set; }
+        public int? Seed { get; set; }
 
         /// <summary>
         /// Gets or sets the context for reader.

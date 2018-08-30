@@ -10,16 +10,16 @@ namespace SpiceSharpParser
         /// <summary>
         /// Gets or sets working directory path.
         /// </summary>
-        public string WorkingDirectoryPath { get; set; }
+        public string WorkingDirectory { get; set; }
 
         /// <summary>
         /// Gets the spice netlist parser settings.
         /// </summary>
-        public SpiceNetlistParserSettings SpiceNetlistParserSettings { get; } = new SpiceNetlistParserSettings();
+        public SpiceNetlistParserSettings NetlistParser { get; } = new SpiceNetlistParserSettings();
 
         /// <summary>
         /// Gets the spice netlist model reader settings.
         /// </summary>
-        public SpiceNetlistReaderSettings SpiceNetlistModelReaderSettings { get; } = new SpiceNetlistReaderSettings();
+        public SpiceNetlistReaderSettings NetlistReader { get; } = new SpiceNetlistReaderSettings();
     }
 }

@@ -23,58 +23,69 @@ namespace SpiceSharpParser.IntegrationTests
         public static SpiceNetlistReaderResult ParseNetlistInWorkingDirectory(string workingDirectory, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
-            var parserFront = new ParserFacade();
+            var parserFront = new Parser();
 
             var settings = new ParserSettings();
-            settings.SpiceNetlistParserSettings.HasTitle = true;
-            settings.SpiceNetlistParserSettings.IsEndRequired = true;
-            settings.WorkingDirectoryPath = workingDirectory;
+            settings.NetlistParser.HasTitle = true;
+            settings.NetlistParser.IsEndRequired = true;
+            settings.WorkingDirectory = workingDirectory;
+            parserFront.Settings = settings;
 
-            var parserResult = parserFront.ParseNetlist(text, settings);
+            var parserResult = parserFront.ParseNetlist(text);
 
-
-            return parserResult.ReaderResult;
+            return parserResult.Result;
         }
 
         public static SpiceNetlistReaderResult ParseNetlist(params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
-            var parserFront = new ParserFacade();
+            var parserFront = new Parser();
             var settings = new ParserSettings();
-            settings.SpiceNetlistParserSettings.HasTitle = true;
-            settings.SpiceNetlistParserSettings.IsEndRequired = true;
-            return parserFront.ParseNetlist(text, settings).ReaderResult;
+            settings.NetlistParser.HasTitle = true;
+            settings.NetlistParser.IsEndRequired = true;
+
+            parserFront.Settings = settings;
+
+            return parserFront.ParseNetlist(text).Result;
         }
 
         public static SpiceNetlistReaderResult ParseNetlist(int randomSeed, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
-            var parserFront = new ParserFacade();
+            var parserFront = new Parser();
             var settings = new ParserSettings();
-            settings.SpiceNetlistParserSettings.HasTitle = true;
-            settings.SpiceNetlistParserSettings.IsEndRequired = true;
-            settings.SpiceNetlistModelReaderSettings.EvaluatorRandomSeed = randomSeed;
-            return parserFront.ParseNetlist(text, settings).ReaderResult;
+            settings.NetlistParser.HasTitle = true;
+            settings.NetlistParser.IsEndRequired = true;
+            settings.NetlistReader.Seed = randomSeed;
+
+            parserFront.Settings = settings;
+
+            return parserFront.ParseNetlist(text).Result;
         }
 
         public static SpiceNetlist ParseNetlistToModel(bool isEndRequired, bool hasTitle, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
-            var parserFront = new ParserFacade();
+            var parserFront = new Parser();
             var settings = new ParserSettings();
-            settings.SpiceNetlistParserSettings.HasTitle = hasTitle;
-            settings.SpiceNetlistParserSettings.IsEndRequired = isEndRequired;
-            return parserFront.ParseNetlist(text, settings).PreprocessedNetlistModel;
+            settings.NetlistParser.HasTitle = hasTitle;
+            settings.NetlistParser.IsEndRequired = isEndRequired;
+
+            parserFront.Settings = settings;
+
+            return parserFront.ParseNetlist(text).PreprocessedNetlistModel;
         }
 
         public static SpiceNetlist ParseNetlistToPostReadedModel(bool isEndRequired, bool hasTitle, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
-            var parserFront = new ParserFacade();
+            var parserFront = new Parser();
             var settings = new ParserSettings();
-            settings.SpiceNetlistParserSettings.HasTitle = hasTitle;
-            settings.SpiceNetlistParserSettings.IsEndRequired = isEndRequired;
-            return parserFront.ParseNetlist(text, settings).PostprocessedNetlistModel;
+            settings.NetlistParser.HasTitle = hasTitle;
+            settings.NetlistParser.IsEndRequired = isEndRequired;
+            parserFront.Settings = settings;
+
+            return parserFront.ParseNetlist(text).PostprocessedNetlistModel;
         }
 
         /// <summary>
