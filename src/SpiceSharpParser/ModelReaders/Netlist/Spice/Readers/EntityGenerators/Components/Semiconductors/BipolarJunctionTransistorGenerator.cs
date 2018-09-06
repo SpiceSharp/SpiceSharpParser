@@ -41,7 +41,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                 throw new ModelNotFoundException($"Could not find model {parameters.GetString(4)} for BJT {name}");
             }
 
-            bjt.SetModel(model);
+            bjt.SetModel((BipolarJunctionTransistorModel)context.ProvideModelFor(bjt, model));
 
             for (int i = 5; i < parameters.Count; i++)
             {

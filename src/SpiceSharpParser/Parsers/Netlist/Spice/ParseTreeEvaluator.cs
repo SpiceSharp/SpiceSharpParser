@@ -227,6 +227,9 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                         return new ExpressionParameter(lexemValue.Trim('{', '}'));
                     case (int)SpiceTokenType.EXPRESSION_SINGLE_QUOTES:
                         return new ExpressionParameter(lexemValue.Trim('\''));
+                    case (int)SpiceTokenType.PERCENT:
+                        return new PercentParameter(lexemValue.TrimEnd('%'));
+
                 }
             }
 

@@ -28,7 +28,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                 throw new ModelNotFoundException($"Could not find model {parameters.GetString(2)} for diode {name}");
             }
 
-            diode.SetModel(model);
+            diode.SetModel((DiodeModel)context.ProvideModelFor(diode, model));
 
             // Read the rest of the parameters
             for (int i = 3; i < parameters.Count; i++)

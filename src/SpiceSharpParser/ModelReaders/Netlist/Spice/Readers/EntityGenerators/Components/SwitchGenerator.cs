@@ -57,7 +57,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             var model = context.FindModel<VoltageSwitchModel>(parameters.GetString(4));
             if (model != null)
             {
-                vsw.SetModel(model);
+                vsw.SetModel((VoltageSwitchModel)context.ProvideModelFor(vsw, model));
             }
             else
             {
@@ -125,7 +125,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             var model = context.FindModel<CurrentSwitchModel>(parameters.GetString(3));
             if (model != null)
             {
-                csw.SetModel(model);
+                csw.SetModel((CurrentSwitchModel)context.ProvideModelFor(csw, model));
             }
             else
             {

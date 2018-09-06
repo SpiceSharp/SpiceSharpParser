@@ -393,5 +393,38 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
             var tokens = lexer.GetTokens(tokensStr).ToArray();
             Assert.Equal(5, tokens.Length);
         }
+
+        [Fact]
+        public void PercentSimpleTest()
+        {
+            var tokensStr = "5%";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+            Assert.True(tokens.Length == 2);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.PERCENT);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
+        public void PercentDotTest()
+        {
+            var tokensStr = "5.4%";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+            Assert.True(tokens.Length == 2);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.PERCENT);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
+        public void PercentCommaTest()
+        {
+            var tokensStr = "5,4%";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+            Assert.True(tokens.Length == 2);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.PERCENT);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
     }
 }

@@ -11,6 +11,11 @@
         EOF = -1,
 
         /// <summary>
+        /// Start token (hidden)
+        /// </summary>
+        START = 0,
+
+        /// <summary>
         /// * character token
         /// </summary>
         ASTERIKS = 1,
@@ -175,5 +180,9 @@
         /// </summary>
         EXPRESSION_SINGLE_QUOTES = 33,
 
+        /// <summary>
+        /// percent token
+        /// </summary>
+        PERCENT = 34
     }
 }

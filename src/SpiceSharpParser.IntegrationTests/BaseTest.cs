@@ -43,7 +43,6 @@ namespace SpiceSharpParser.IntegrationTests
             var settings = new ParserSettings();
             settings.NetlistParser.HasTitle = true;
             settings.NetlistParser.IsEndRequired = true;
-
             parserFront.Settings = settings;
 
             return parserFront.ParseNetlist(text).Result;

@@ -6,6 +6,7 @@ using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 {
@@ -230,6 +231,55 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
             }
 
             component.Connect(nodes);
+        }
+
+        public Dictionary<Entity, Dictionary<Parameter, Parameter>> ModelsWithDev { get; set; } = new Dictionary<Entity, Dictionary<Parameter, Parameter>>();
+        public Dictionary<Entity, Dictionary<Parameter, Parameter>> ModelsWithLot { get; set; } = new Dictionary<Entity, Dictionary<Parameter, Parameter>>();
+        public Dictionary<Entity, Func<string, Entity>> ModelsGenerators { get; set; } = new Dictionary<Entity, Func<string, Entity>>();
+        public Dictionary<Entity, List<Entity>> Models { get; set; } = new Dictionary<Entity, List<Entity>>();
+
+
+        public void RegisterModelDev(Entity model, Func<string, Entity> generator, Parameter parameter, Parameter percent)
+        {
+            if (!ModelsWithDev.ContainsKey(model))
+            {
+                ModelsWithDev[model] = new Dictionary<Parameter, Parameter>();
+            }
+
+            ModelsWithDev[model][parameter] = percent;
+
+            if (!ModelsGenerators.ContainsKey(model))
+            {
+                ModelsGenerators[model] = generator;
+            }
+        }
+
+        public void RegisterModelLot(Entity model, Func<string, Entity> generator, Parameter parameter, Parameter percent)
+        {
+            if (!ModelsWithLot.ContainsKey(model))
+            {
+                ModelsWithLot[model] = new Dictionary<Parameter, Parameter>();
+            }
+
+            ModelsWithLot[model][parameter] = percent;
+        }
+
+        public Entity ProvideModelFor(Entity component, Entity model)
+        {
+            if (ModelsGenerators.ContainsKey(model))
+            {
+                var modelForComponent = ModelsGenerators[model](model.Name + "_" + component.Name);
+
+                if (!Models.ContainsKey(model))
+                {
+                    Models[model] = new List<Entity>();
+                }
+
+                Models[model].Add(modelForComponent);
+                return modelForComponent;
+            }
+
+            return model;
         }
     }
 }

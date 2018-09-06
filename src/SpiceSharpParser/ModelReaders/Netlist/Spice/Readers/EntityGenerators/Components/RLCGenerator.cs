@@ -135,7 +135,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                     if (model != null)
                     {
                         modelBased = true;
-                        capacitor.SetModel(model);
+                        capacitor.SetModel((CapacitorModel)context.ProvideModelFor(capacitor, model));
                     }
                     else
                     {
@@ -213,7 +213,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                     throw new ModelNotFoundException($"Could not find model {parameters.GetString(2)} for resistor {name}");
                 }
 
-                res.SetModel(model);
+                res.SetModel((ResistorModel)context.ProvideModelFor(res, model));
 
                 foreach (var equal in parameters.Skip(3))
                 {

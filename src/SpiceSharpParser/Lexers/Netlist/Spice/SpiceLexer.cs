@@ -275,6 +275,35 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 ignoreCase: options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+              (int)SpiceTokenType.PERCENT,
+              "A percent value with comma seperator",
+              @"([+-]?((<DIGIT>)+(,(<DIGIT>)*)?|\.(<DIGIT>)+)(e(\+|-)?(<DIGIT>)+)?[tgmkunpf]?(<LETTER>)*)%",
+              null,
+              (SpiceLexerState state) =>
+              {
+                  if (state.PreviousReturnedTokenType == (int)SpiceTokenType.EQUAL
+                   || state.PreviousReturnedTokenType == (int)SpiceTokenType.VALUE
+                   || state.PreviousReturnedTokenType == (int)SpiceTokenType.START)
+                  {
+                      return LexerRuleUseState.Use;
+                  }
+
+                  return LexerRuleUseState.Skip;
+              },
+              ignoreCase: options.IgnoreCase));
+
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+                (int)SpiceTokenType.PERCENT,
+                "A percent value with dot seperator",
+                @"([+-]?((<DIGIT>)+(\.(<DIGIT>)*)?|\.(<DIGIT>)+)(e(\+|-)?(<DIGIT>)+)?[tgmkunpf]?(<LETTER>)*)%",
+                null,
+                (SpiceLexerState state) =>
+                {
+                    return LexerRuleUseState.Use;
+                },
+                ignoreCase: options.IgnoreCase));
+
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
              (int)SpiceTokenType.COMMENT_HSPICE,
              "A comment - HSpice style",
              @"\$[^\r\n]*",
@@ -308,7 +337,6 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                     return LexerRuleUseState.Skip;
                 },
                 ignoreCase: options.IgnoreCase));
-            
 
             builder.AddRule(
                 new LexerTokenRule<SpiceLexerState>(

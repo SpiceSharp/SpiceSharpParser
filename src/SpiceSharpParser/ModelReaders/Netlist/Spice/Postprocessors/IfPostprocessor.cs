@@ -7,6 +7,7 @@ using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls;
@@ -245,6 +246,22 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
             throw new NotImplementedException();
         }
 
+    
+        public void RegisterModelDev(Entity model, Func<string, Entity> generator, Parameter parameter, Parameter percent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RegisterModelLot(Entity model, Func<string, Entity> generator, Parameter parameter, Parameter percent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Entity ProvideModelFor(Entity component, Entity model)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEvaluator ReadingEvaluator
         {
             get
@@ -256,5 +273,13 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
         public IDictionary<Simulation, IEvaluator> SimulationEvaluators => throw new NotImplementedException();
 
         public ISimulationContexts SimulationContexts => throw new NotImplementedException();
+
+        public Dictionary<Entity, Dictionary<Parameter, Parameter>> ModelsWithDev => throw new NotImplementedException();
+
+        public Dictionary<Entity, Dictionary<Parameter, Parameter>> ModelsWithLot => throw new NotImplementedException();
+
+        public Dictionary<Entity, Func<string, Entity>> ModelsGenerators => throw new NotImplementedException();
+
+        public Dictionary<Entity, List<Entity>> Models => throw new NotImplementedException();
     }
 }

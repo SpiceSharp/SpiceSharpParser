@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SpiceSharp.Circuits;
+using SpiceSharp.Components;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 {
@@ -37,7 +40,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets the result service for the context.
         /// </summary>
-        IResultService Result { get; }
+        IResultService Result { get; }        
 
         /// <summary>
         /// Gets the node name generator.
@@ -52,7 +55,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets the evaluator for the reading of the model.
         /// </summary>
-        IEvaluator ReadingEvaluator { get; }
+        IEvaluator ReadingEvaluator { get; }        
 
         /// <summary>
         /// Parses an expression to double.
@@ -115,5 +118,17 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <param name="component">A component</param>
         /// <param name="parameters">Parameters of component</param>
         void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters);
+
+        void RegisterModelDev(Entity model, Func<string, Entity> generator, Parameter parameter, Parameter percent);
+
+        void RegisterModelLot(Entity model, Func<string, Entity> generator, Parameter parameter, Parameter percent);
+
+        Entity ProvideModelFor(Entity component, Entity model);
+
+
+        Dictionary<Entity, Dictionary<Parameter, Parameter>> ModelsWithDev { get; }
+        Dictionary<Entity, Dictionary<Parameter, Parameter>> ModelsWithLot { get; }
+        Dictionary<Entity, Func<string, Entity>> ModelsGenerators { get; } 
+        Dictionary<Entity, List<Entity>> Models { get; }
     }
 }

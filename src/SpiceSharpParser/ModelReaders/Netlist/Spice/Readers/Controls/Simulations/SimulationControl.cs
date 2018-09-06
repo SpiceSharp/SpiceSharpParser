@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using SpiceSharp;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations
@@ -17,6 +19,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
     /// TODO: Add comments please ... and please, please refactor me. Please... Please ...
     public abstract class SimulationControl : BaseControl
     {
+        private static int tickCount = Environment.TickCount;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SimulationControl"/> class.
         /// </summary>
@@ -44,16 +48,66 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
         /// </summary>
         protected void CreateSimulations(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
         {
+
+            Func<string, Control, IReadingContext, BaseSimulation> withDevSupport = (string name, Control control, IReadingContext context2) =>
+            {
+                var sim = createSimulation(name, control, context2);
+
+                sim.BeforeExecute += (object s, BeforeExecuteEventArgs arg) =>
+                {
+                    var evaluator = context.SimulationContexts.GetSimulationEvaluator(sim);
+
+                    foreach (var model in context.Models)
+                    {
+                        var baseModel = model.Key;
+                        var modifiedModels = model.Value;
+
+                        foreach (var modifiedModel in modifiedModels)
+                        {
+                            var properties = context.ModelsWithDev[baseModel];
+                            foreach (var property in properties)
+                            {
+                                var paramToModify = property.Key;
+                                var percent = property.Value;
+
+                                if (paramToModify is AssignmentParameter asg)
+                                {
+                                    var asgparamName = asg.Name.ToLower();
+                                    var currentValueParameter = sim.EntityParameters.GetEntityParameters(modifiedModel.Name).GetParameter<double>(asgparamName);
+                                    var currentValue = currentValueParameter.Value;
+                                    var percentValue = evaluator.EvaluateDouble(percent.Image);
+                                    var random = new Random(evaluator.RandomSeed ?? Interlocked.Increment(ref tickCount));
+
+                                    double newValue = 0;
+                                    if (random.Next() % 2 == 0)
+                                    {
+                                        newValue = currentValue + (percentValue / 100.0) * currentValue * random.NextDouble();
+                                    }
+                                    else
+                                    {
+                                        newValue = currentValue - (percentValue / 100.0) * currentValue * random.NextDouble();
+                                    }
+
+                                    context.SimulationContexts.SetModelParameter(asgparamName, modifiedModel, newValue.ToString(), sim);
+                                }
+                            }
+                        }
+                    }
+                };
+
+                return sim;
+            };
+
             if (context.Result.SimulationConfiguration.MonteCarloConfiguration.Enabled == false
                 || statement.Name.ToLower() != context.Result.SimulationConfiguration.MonteCarloConfiguration.SimulationType.ToLower())
             {
                 if (context.Result.SimulationConfiguration.ParameterSweeps.Count == 0)
                 {
-                    CreateSimulationsForAllTemperatures(statement, context, createSimulation);
+                    CreateSimulationsForAllTemperatures(statement, context, withDevSupport);
                 }
                 else
                 {
-                    CreateSimulationsForAllParameterSweepsAndTemperatures(statement, context, createSimulation);
+                    CreateSimulationsForAllParameterSweepsAndTemperatures(statement, context, withDevSupport);
                 }
             }
             else
@@ -67,7 +121,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
                 {
                     for (var i = 0; i < context.Result.SimulationConfiguration.MonteCarloConfiguration.Runs; i++)
                     {
-                        var simulations = CreateSimulationsForAllTemperatures(statement, context, createSimulation);
+                        var simulations = CreateSimulationsForAllTemperatures(statement, context, withDevSupport);
                         AttachMonteCarloDataGathering(context, simulations);
                     }
                 }
@@ -75,7 +129,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
                 {
                     for (var i = 0; i < context.Result.SimulationConfiguration.MonteCarloConfiguration.Runs; i++)
                     {
-                        var simulations = CreateSimulationsForAllParameterSweepsAndTemperatures(statement, context, createSimulation);
+                        var simulations = CreateSimulationsForAllParameterSweepsAndTemperatures(statement, context, withDevSupport);
                         AttachMonteCarloDataGathering(context, simulations);
                     }
                 }
