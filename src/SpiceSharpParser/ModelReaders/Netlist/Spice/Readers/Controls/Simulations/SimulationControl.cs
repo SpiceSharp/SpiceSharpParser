@@ -94,12 +94,12 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
         {
             Exporters.Export export = null;
 
-            simulation.InitializeSimulationExport += (object sender, EventArgs args) =>
+            simulation.BeforeExecute += (object sender, BeforeExecuteEventArgs args) =>
             {
                 export = context.Result.Exports.SingleOrDefault(e => e.Simulation == simulation && e.Name.ToLower() == context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable.ToLower());
             };
 
-            simulation.OnExportSimulationData += (object sender, ExportDataEventArgs args) =>
+            simulation.ExportSimulationData += (object sender, ExportDataEventArgs args) =>
             {
                 if (export != null)
                 {
@@ -253,7 +253,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
                 temp = Circuit.ReferenceTemperature - Circuit.CelsiusKelvin;
             }
 
-            simulation.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs e) =>
+            simulation.BeforeTemperature += (object sender, LoadStateEventArgs e) =>
             {
                 var evaluator = context.SimulationContexts.GetSimulationEvaluator(simulation);
                 evaluator.SetParameter("TEMP", temp, simulation);

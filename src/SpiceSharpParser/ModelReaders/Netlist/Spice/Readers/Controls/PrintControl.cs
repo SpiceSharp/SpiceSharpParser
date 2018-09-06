@@ -163,7 +163,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 
             int index = 1;
 
-            simulation.OnExportSimulationData += (object sender, ExportDataEventArgs e) =>
+            simulation.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
                 Row row = new Row(index);
                 index++;

@@ -22,7 +22,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SpiceSharp" Version="2.2.0" />
+    <Reference Include="SpiceSharp">
+      <HintPath>..\..\..\SpiceSharp\SpiceSharp\bin\Debug\netstandard1.5\SpiceSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
