@@ -2,7 +2,6 @@
 using SpiceSharp;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
-using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints;
@@ -77,8 +76,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
         public IDictionary<Simulation, IEvaluator> Evaluators { get; set; }
 
         /// <summary>
-        /// Gets or sets the evaluator used random seed.
+        /// Gets or sets the used random seed.
         /// </summary>
-        public int? UsedEvaluatorRandomSeed { get; set; }
+        public int? UsedRandomSeed { get; set; }
     }
 }

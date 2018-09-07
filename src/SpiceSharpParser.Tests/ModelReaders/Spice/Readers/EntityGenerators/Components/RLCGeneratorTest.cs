@@ -28,15 +28,15 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             var resistor = generator.Generate(new SpiceSharp.StringIdentifier("r1"), "R1", "r", parameters, context);
 
             Assert.NotNull(resistor);
-            context.Received().SetEntityParameter(resistor, "resistance", "1.2");
+            context.Received().SetParameter(resistor, "resistance", "1.2");
         }
 
         [Fact]
         public void GenerateSemiconductorResistor()
         {
             var context = Substitute.For<IReadingContext>();
-            context.When(a => a.SetEntityParameter(Arg.Any<Entity>(), "L", "12")).Do(x => ((Entity)x[0]).SetParameter("l", 12));
-            context.FindModel<ResistorModel>(Arg.Any<string>()).Returns(new ResistorModel("test"));
+            context.When(a => a.SetParameter(Arg.Any<Entity>(), "L", "12")).Do(x => ((Entity)x[0]).SetParameter("l", 12));
+            context.StochasticModelsRegistry.FindBaseModel<ResistorModel>(Arg.Any<string>()).Returns(new ResistorModel("test"));
             var parameters = new ParameterCollection
             {
                 new ValueParameter("1"),
@@ -49,8 +49,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             var resistor = generator.Generate(new SpiceSharp.StringIdentifier("r1"), "R1", "r", parameters, context);
 
             Assert.NotNull(resistor);
-            context.Received().SetEntityParameter(resistor, "L", "12");
-            context.Received().FindModel<ResistorModel>("test");
+            context.Received().SetParameter(resistor, "L", "12");
+            context.Received().StochasticModelsRegistry.FindBaseModel<ResistorModel>("test");
         }
 
         [Fact]
@@ -70,7 +70,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
 
             Assert.NotNull(mut);
             Assert.IsType<MutualInductance>(mut);
-            context.Received().SetEntityParameter(mut, "k", "12.3");
+            context.Received().SetParameter(mut, "k", "12.3");
         }
 
         [Fact]
@@ -90,7 +90,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
 
             Assert.NotNull(inductor);
             Assert.IsType<Inductor>(inductor);
-            context.Received().SetEntityParameter(inductor, "inductance", "4.3");
+            context.Received().SetParameter(inductor, "inductance", "4.3");
         }
 
         // cA3 1 0 4.3
@@ -111,7 +111,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
 
             Assert.NotNull(cap);
             Assert.IsType<Capacitor>(cap);
-            context.Received().SetEntityParameter(cap, "capacitance", "4.3");
+            context.Received().SetParameter(cap, "capacitance", "4.3");
         }
 
         // cA3 1 0 4.3 ic = 13.3
@@ -120,7 +120,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         {
             var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IReadingContext>();
-            context.When(a => a.SetEntityParameter(
+            context.When(a => a.SetParameter(
                Arg.Any<Capacitor>(),
                Arg.Any<string>(),
                Arg.Any<string>()
@@ -142,7 +142,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
 
             Assert.NotNull(cap);
             Assert.IsType<Capacitor>(cap);
-            context.Received().SetEntityParameter(cap, "capacitance", "4.3");
+            context.Received().SetParameter(cap, "capacitance", "4.3");
             Assert.Equal(13.3, cap.ParameterSets.GetParameter<double>("ic").Value);
         }
 
@@ -152,7 +152,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         {
             var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IReadingContext>();
-            context.When(a => a.SetEntityParameter(
+            context.When(a => a.SetParameter(
                Arg.Any<Capacitor>(),
                Arg.Any<string>(),
                Arg.Any<string>()
@@ -160,7 +160,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                {
                    ((Entity)x[0]).SetParameter(((string)x[1]).ToLower(), evaluator.EvaluateDouble((string)x[2]));
                });
-            context.FindModel<CapacitorModel>(Arg.Any<string>()).Returns(new CapacitorModel("CModel"));
+            context.StochasticModelsRegistry.FindBaseModel<CapacitorModel>(Arg.Any<string>()).Returns(new CapacitorModel("CModel"));
 
             var parameters = new ParameterCollection
             {
@@ -178,7 +178,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             Assert.NotNull(cap);
             Assert.IsType<Capacitor>(cap);
 
-            context.Received().SetEntityParameter(cap, "L", "10u");
+            context.Received().SetParameter(cap, "L", "10u");
             Assert.Equal(12, cap.ParameterSets.GetParameter<double>("ic").Value);
 
         }

@@ -191,11 +191,6 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
             throw new NotImplementedException();
         }
 
-        public T FindModel<T>(string modelName) where T : Entity
-        {
-            throw new NotImplementedException();
-        }
-
         public double ParseDouble(string expression)
         {
             throw new NotImplementedException();
@@ -241,23 +236,7 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
             throw new NotImplementedException();
         }
 
-        public bool SetEntityParameter(Entity entity, string parameterName, string expression)
-        {
-            throw new NotImplementedException();
-        }
-
-    
-        public void RegisterModelDev(Entity model, Func<string, Entity> generator, Parameter parameter, Parameter percent)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RegisterModelLot(Entity model, Func<string, Entity> generator, Parameter parameter, Parameter percent)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Entity ProvideModelFor(Entity component, Entity model)
+        public bool SetParameter(Entity entity, string parameterName, string expression)
         {
             throw new NotImplementedException();
         }
@@ -274,12 +253,6 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
 
         public ISimulationContexts SimulationContexts => throw new NotImplementedException();
 
-        public Dictionary<Entity, Dictionary<Parameter, Parameter>> ModelsWithDev => throw new NotImplementedException();
-
-        public Dictionary<Entity, Dictionary<Parameter, Parameter>> ModelsWithLot => throw new NotImplementedException();
-
-        public Dictionary<Entity, Func<string, Entity>> ModelsGenerators => throw new NotImplementedException();
-
-        public Dictionary<Entity, List<Entity>> Models => throw new NotImplementedException();
+        public IStochasticModelsRegistry StochasticModelsRegistry => throw new NotImplementedException();
     }
 }

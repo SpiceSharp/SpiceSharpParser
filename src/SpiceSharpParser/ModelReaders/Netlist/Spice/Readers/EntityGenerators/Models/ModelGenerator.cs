@@ -1,11 +1,10 @@
-﻿using SpiceSharp;
+﻿using System;
+using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Extensions;
-using System;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models
 {
@@ -19,7 +18,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                 throw new GeneralReaderException("Couldn't generate model");
             }
 
-            ParameterCollection filteredParameters = FilerAndRegisterDevAndLot(parameters, context, model, (string name) =>
+            context.StochasticModelsRegistry.RegisterModel(model);
+
+            ParameterCollection filteredParameters = FilterAndRegisterDevAndLot(parameters, context, model, (string name) =>
             {
                 var newModel = GenerateModel(name, type);
                 context.SetParameters(newModel, FilerDevAndLot(parameters));
@@ -29,7 +30,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             return model;
         }
 
-        private static ParameterCollection FilerAndRegisterDevAndLot(ParameterCollection parameters, IReadingContext context, Entity model, Func<string, Entity> generator)
+        private static ParameterCollection FilterAndRegisterDevAndLot(ParameterCollection parameters, IReadingContext context, Entity model, Func<string, Entity> generator)
         {
             var filteredParameters = new ParameterCollection();
 
@@ -37,12 +38,12 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             {
                 if (parameters[i].Image.ToUpper() == "DEV")
                 {
-                    context.RegisterModelDev(model, generator, parameters[i - 1], (Parameter)parameters[i + 1]);
+                    context.StochasticModelsRegistry.RegisterModelDev(model, generator, parameters[i - 1], (Parameter)parameters[i + 1]);
                     i++;
                 }
                 else if (parameters[i].Image.ToUpper() == "LOT")
                 {
-                    context.RegisterModelLot(model, generator, parameters[i - 1], (Parameter)parameters[i + 1]);
+                    context.StochasticModelsRegistry.RegisterModelLot(model, generator, parameters[i - 1], (Parameter)parameters[i + 1]);
                     i++;
                 }
                 else

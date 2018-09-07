@@ -22,13 +22,13 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             Diode diode = new Diode(name);
             context.CreateNodes(diode, parameters);
 
-            var model = context.FindModel<DiodeModel>(parameters.GetString(2));
+            var model = context.StochasticModelsRegistry.FindBaseModel<DiodeModel>(parameters.GetString(2));
             if (model == null)
             {
                 throw new ModelNotFoundException($"Could not find model {parameters.GetString(2)} for diode {name}");
             }
 
-            diode.SetModel((DiodeModel)context.ProvideModelFor(diode, model));
+            diode.SetModel((DiodeModel)context.StochasticModelsRegistry.ProvideStochasticModel(diode, model));
 
             // Read the rest of the parameters
             for (int i = 3; i < parameters.Count; i++)

@@ -35,13 +35,13 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                 throw new System.Exception();
             }
 
-            var model = context.FindModel<BipolarJunctionTransistorModel>(parameters.GetString(4));
+            var model = context.StochasticModelsRegistry.FindBaseModel<BipolarJunctionTransistorModel>(parameters.GetString(4));
             if (model == null)
             {
                 throw new ModelNotFoundException($"Could not find model {parameters.GetString(4)} for BJT {name}");
             }
 
-            bjt.SetModel((BipolarJunctionTransistorModel)context.ProvideModelFor(bjt, model));
+            bjt.SetModel((BipolarJunctionTransistorModel)context.StochasticModelsRegistry.ProvideStochasticModel(bjt, model));
 
             for (int i = 5; i < parameters.Count; i++)
             {

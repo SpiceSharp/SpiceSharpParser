@@ -8,6 +8,15 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
     public class SpiceLexerTest
     {
         [Fact]
+        public void ReferenceWithFirstNumber()
+        {
+            var tokensStr = "@1N914[Is]";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+            Assert.Equal(2, tokens.Length);
+        }
+
+        [Fact]
         public void BlockCommentSmartSpiceExtended()
         {
             var tokensStr = "*c1\n#com\n k mxanjsh\n .endl\n.options\n.end\n.end\n~~~/._,m\n+&;;d .\\., .\n $ d .,xznxzc jhad 34 a\r////rr/r/r/\n#endcom\n*c2\n";

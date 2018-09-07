@@ -19,7 +19,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Extensions
         {
             // prepare
             var readingContext = Substitute.For<IReadingContext>();
-            readingContext.SetEntityParameter(Arg.Any<Entity>(), Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+            readingContext.SetParameter(Arg.Any<Entity>(), Arg.Any<string>(), Arg.Any<string>()).Returns(true);
 
             var resultService = Substitute.For<IResultService>();
             readingContext.Result.Returns(resultService);
@@ -42,7 +42,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Extensions
         {
             // prepare
             var readingContext = Substitute.For<IReadingContext>();
-            readingContext.SetEntityParameter(Arg.Any<Entity>(), Arg.Any<string>(), Arg.Any<string>()).Returns(false);
+            readingContext.SetParameter(Arg.Any<Entity>(), Arg.Any<string>(), Arg.Any<string>()).Returns(false);
 
             var resultService = Substitute.For<IResultService>();
             readingContext.Result.Returns(resultService);

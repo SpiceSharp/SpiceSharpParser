@@ -84,7 +84,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             mut.InductorName1 = parameters.GetString(0);
             mut.InductorName2 = parameters.GetString(1);
 
-            context.SetEntityParameter(mut, "k", parameters.GetString(2));
+            context.SetParameter(mut, "k", parameters.GetString(2));
 
             return mut;
         }
@@ -108,7 +108,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                 // CXXXXXXX N1 N2 VALUE
                 if (parameters[2] is ExpressionParameter || parameters[2] is ValueParameter)
                 {
-                    context.SetEntityParameter(capacitor, "capacitance", parameters.GetString(2));
+                    context.SetParameter(capacitor, "capacitance", parameters.GetString(2));
                 }
                 else
                 {
@@ -127,15 +127,15 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                 bool modelBased = false;
                 if (parameters[2] is ExpressionParameter || parameters[2] is ValueParameter)
                 {
-                    context.SetEntityParameter(capacitor, "capacitance", parameters.GetString(2));
+                    context.SetParameter(capacitor, "capacitance", parameters.GetString(2));
                 }
                 else
                 {
-                    var model = context.FindModel<CapacitorModel>(parameters.GetString(2));
+                    var model = context.StochasticModelsRegistry.FindBaseModel<CapacitorModel>(parameters.GetString(2));
                     if (model != null)
                     {
                         modelBased = true;
-                        capacitor.SetModel((CapacitorModel)context.ProvideModelFor(capacitor, model));
+                        capacitor.SetModel((CapacitorModel)context.StochasticModelsRegistry.ProvideStochasticModel(capacitor, model));
                     }
                     else
                     {
@@ -177,7 +177,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             var inductor = new Inductor(name);
             context.CreateNodes(inductor, parameters);
 
-            context.SetEntityParameter(inductor, "inductance", parameters.GetString(2));
+            context.SetParameter(inductor, "inductance", parameters.GetString(2));
 
             return inductor;
         }
@@ -198,7 +198,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
 
             if (parameters.Count == 3)
             {
-                context.SetEntityParameter(res, "resistance", parameters.GetString(2));
+                context.SetParameter(res, "resistance", parameters.GetString(2));
             }
             else
             {
@@ -207,19 +207,19 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                     throw new WrongParameterTypeException(name, "Semiconductor resistor requires a valid model name");
                 }
 
-                var model = context.FindModel<ResistorModel>(parameters.GetString(2));
+                var model = context.StochasticModelsRegistry.FindBaseModel<ResistorModel>(parameters.GetString(2));
                 if (model == null)
                 {
                     throw new ModelNotFoundException($"Could not find model {parameters.GetString(2)} for resistor {name}");
                 }
 
-                res.SetModel((ResistorModel)context.ProvideModelFor(res, model));
+                res.SetModel((ResistorModel)context.StochasticModelsRegistry.ProvideStochasticModel(res, model));
 
                 foreach (var equal in parameters.Skip(3))
                 {
                     if (equal is AssignmentParameter ap)
                     {
-                        context.SetEntityParameter(res, ap.Name, ap.Value);
+                        context.SetParameter(res, ap.Name, ap.Value);
                     }
                     else
                     {

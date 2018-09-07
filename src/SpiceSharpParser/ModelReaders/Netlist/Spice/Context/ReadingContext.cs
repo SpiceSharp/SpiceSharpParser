@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharp.Circuits;
-using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 {
@@ -15,8 +13,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
     /// </summary>
     public class ReadingContext : IReadingContext
     {
-        private static object locker = new object();
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ReadingContext"/> class.
         /// </summary>
@@ -53,8 +49,21 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 
             Children = new List<IReadingContext>();
             SimulationContexts = simulationContexts;
+
+            var generators = new List<IObjectNameGenerator>();
+            IReadingContext current = this;
+            while (current != null)
+            {
+                generators.Add(current.ObjectNameGenerator);
+                current = current.Parent;
+            }
+
+            StochasticModelsRegistry = new StochasticModelsRegistry(generators);
         }
 
+        /// <summary>
+        /// Gets or sets the simulation contexts.
+        /// </summary>
         public ISimulationContexts SimulationContexts { get; protected set; }
 
         /// <summary>
@@ -96,6 +105,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// Gets or sets the children of the reading context.
         /// </summary>
         public ICollection<IReadingContext> Children { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the stochastic models registry.
+        /// </summary>
+        public IStochasticModelsRegistry StochasticModelsRegistry { get; protected set; }
 
         /// <summary>
         /// Sets voltage initial condition for node.
@@ -151,7 +165,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <returns>
         /// True if the parameter has been set.
         /// </returns>
-        public bool SetEntityParameter(Entity entity, string parameterName, string expression)
+        public bool SetParameter(Entity entity, string parameterName, string expression)
         {
             double value;
             try
@@ -184,36 +198,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <returns>
         /// True if the parameter has been set.
         /// </returns>
+        [Obsolete]
         public bool SetParameter(Entity entity, string parameterName, object @object)
         {
             return entity.SetParameter(parameterName.ToLower(), @object);
-        }
-
-        /// <summary>
-        /// Finds model in the context and in parent contexts.
-        /// </summary>
-        /// <param name="modelName">Name of model to find.</param>
-        /// <returns>
-        /// A reference to model.
-        /// </returns>
-        public T FindModel<T>(string modelName)
-            where T : Entity
-        {
-            IReadingContext context = this;
-            while (context != null)
-            {
-                var modelNameToSearch = context.ObjectNameGenerator.Generate(modelName);
-
-                Entity model;
-                if (Result.FindObject(modelNameToSearch, out model))
-                {
-                    return (T)model;
-                }
-
-                context = context.Parent;
-            }
-
-            return null;
         }
 
         /// <summary>
@@ -231,55 +219,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
             }
 
             component.Connect(nodes);
-        }
-
-        public Dictionary<Entity, Dictionary<Parameter, Parameter>> ModelsWithDev { get; set; } = new Dictionary<Entity, Dictionary<Parameter, Parameter>>();
-        public Dictionary<Entity, Dictionary<Parameter, Parameter>> ModelsWithLot { get; set; } = new Dictionary<Entity, Dictionary<Parameter, Parameter>>();
-        public Dictionary<Entity, Func<string, Entity>> ModelsGenerators { get; set; } = new Dictionary<Entity, Func<string, Entity>>();
-        public Dictionary<Entity, List<Entity>> Models { get; set; } = new Dictionary<Entity, List<Entity>>();
-
-
-        public void RegisterModelDev(Entity model, Func<string, Entity> generator, Parameter parameter, Parameter percent)
-        {
-            if (!ModelsWithDev.ContainsKey(model))
-            {
-                ModelsWithDev[model] = new Dictionary<Parameter, Parameter>();
-            }
-
-            ModelsWithDev[model][parameter] = percent;
-
-            if (!ModelsGenerators.ContainsKey(model))
-            {
-                ModelsGenerators[model] = generator;
-            }
-        }
-
-        public void RegisterModelLot(Entity model, Func<string, Entity> generator, Parameter parameter, Parameter percent)
-        {
-            if (!ModelsWithLot.ContainsKey(model))
-            {
-                ModelsWithLot[model] = new Dictionary<Parameter, Parameter>();
-            }
-
-            ModelsWithLot[model][parameter] = percent;
-        }
-
-        public Entity ProvideModelFor(Entity component, Entity model)
-        {
-            if (ModelsGenerators.ContainsKey(model))
-            {
-                var modelForComponent = ModelsGenerators[model](model.Name + "_" + component.Name);
-
-                if (!Models.ContainsKey(model))
-                {
-                    Models[model] = new List<Entity>();
-                }
-
-                Models[model].Add(modelForComponent);
-                return modelForComponent;
-            }
-
-            return model;
         }
     }
 }

@@ -22,9 +22,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Extensions
             {
                 if (parameter is AssignmentParameter ap)
                 {
-                    if (context.SetEntityParameter(entity, ap.Name, ap.Value) == false)
+                    if (context.SetParameter(entity, ap.Name, ap.Value) == false)
                     {
-                        context.Result.AddWarning("Couldn't set parameter " + ap.Name);
+                        context.Result.AddWarning("Could not set parameter " + ap.Name);
                     }
                 }
                 else

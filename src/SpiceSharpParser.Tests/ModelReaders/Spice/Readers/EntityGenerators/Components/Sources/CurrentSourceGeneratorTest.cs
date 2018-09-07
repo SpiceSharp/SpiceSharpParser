@@ -29,7 +29,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
 
-            context.Received().SetEntityParameter(entity, "dc", "1.2");
+            context.Received().SetParameter(entity, "dc", "1.2");
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
 
-            context.Received().SetEntityParameter(entity, "dc", "1.2");
+            context.Received().SetParameter(entity, "dc", "1.2");
         }
 
         [Fact]
@@ -95,9 +95,9 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
 
-            context.Received().SetEntityParameter(entity, "dc", "1.2");
-            context.Received().SetEntityParameter(entity, "acmag", "12");
-            context.Received().SetEntityParameter(entity, "acphase", "0");
+            context.Received().SetParameter(entity, "dc", "1.2");
+            context.Received().SetParameter(entity, "acmag", "12");
+            context.Received().SetParameter(entity, "acphase", "0");
         }
 
         [Fact]
@@ -121,8 +121,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
 
-            context.Received().SetEntityParameter(entity, "dc", "1.2");
-            context.Received().SetEntityParameter(entity, "acmag", "12");
+            context.Received().SetParameter(entity, "dc", "1.2");
+            context.Received().SetParameter(entity, "acmag", "12");
         }
 
         [Fact]
@@ -144,7 +144,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
 
-            context.Received().SetEntityParameter(entity, "acmag", "12");
+            context.Received().SetParameter(entity, "acmag", "12");
         }
 
         [Fact]
@@ -184,7 +184,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
 
-            context.Received().SetEntityParameter(entity, "acmag", "12");
+            context.Received().SetParameter(entity, "acmag", "12");
             context.Received().SetParameter(entity, "waveform", sine);
         }
 
@@ -245,7 +245,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
 
-            context.Received().SetEntityParameter(entity, "acmag", "13");
+            context.Received().SetParameter(entity, "acmag", "13");
         }
 
         [Fact]
@@ -268,8 +268,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
 
-            context.Received().SetEntityParameter(entity, "acmag", "13");
-            context.Received().SetEntityParameter(entity, "acphase", "2");
+            context.Received().SetParameter(entity, "acmag", "13");
+            context.Received().SetParameter(entity, "acphase", "2");
         }
 
         [Fact]
@@ -291,7 +291,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             Assert.NotNull(entity);
             Assert.IsType<CurrentControlledCurrentSource>(entity);
             Assert.Equal("v1", ((CurrentControlledCurrentSource)entity).ControllingName.ToString());
-            context.Received().SetEntityParameter(entity, "gain", "3");
+            context.Received().SetParameter(entity, "gain", "3");
         }
 
         [Fact]
@@ -313,7 +313,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
 
             Assert.NotNull(entity);
             Assert.IsType<VoltageControlledCurrentSource>(entity);
-            context.Received().SetEntityParameter(entity, "gain", "1.3");
+            context.Received().SetParameter(entity, "gain", "1.3");
         }
     }
 }

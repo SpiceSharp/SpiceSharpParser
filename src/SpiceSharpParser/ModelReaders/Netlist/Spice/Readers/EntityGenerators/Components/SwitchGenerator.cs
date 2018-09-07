@@ -54,10 +54,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             VoltageSwitch vsw = new VoltageSwitch(name);
             context.CreateNodes(vsw, parameters);
 
-            var model = context.FindModel<VoltageSwitchModel>(parameters.GetString(4));
+            var model = context.StochasticModelsRegistry.FindBaseModel<VoltageSwitchModel>(parameters.GetString(4));
             if (model != null)
             {
-                vsw.SetModel((VoltageSwitchModel)context.ProvideModelFor(vsw, model));
+                vsw.SetModel((VoltageSwitchModel)context.StochasticModelsRegistry.ProvideStochasticModel(vsw, model));
             }
             else
             {
@@ -122,10 +122,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             }
 
             // Get the model
-            var model = context.FindModel<CurrentSwitchModel>(parameters.GetString(3));
+            var model = context.StochasticModelsRegistry.FindBaseModel<CurrentSwitchModel>(parameters.GetString(3));
             if (model != null)
             {
-                csw.SetModel((CurrentSwitchModel)context.ProvideModelFor(csw, model));
+                csw.SetModel((CurrentSwitchModel)context.StochasticModelsRegistry.ProvideStochasticModel(csw, model));
             }
             else
             {

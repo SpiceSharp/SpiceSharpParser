@@ -377,7 +377,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.REFERENCE,
                 "A reference",
-                "@(<LETTER>(<CHARACTER>|<SPECIAL>)*)",
+                "@(<CHARACTER>(<CHARACTER>|<SPECIAL>)*)",
                 ignoreCase: options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(

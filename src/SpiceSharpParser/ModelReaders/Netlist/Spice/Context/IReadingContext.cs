@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SpiceSharp.Circuits;
-using SpiceSharp.Components;
-using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 {
@@ -40,7 +36,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets the result service for the context.
         /// </summary>
-        IResultService Result { get; }        
+        IResultService Result { get; }
 
         /// <summary>
         /// Gets the node name generator.
@@ -55,7 +51,12 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets the evaluator for the reading of the model.
         /// </summary>
-        IEvaluator ReadingEvaluator { get; }        
+        IEvaluator ReadingEvaluator { get; }
+
+        /// <summary>
+        /// Gets the stochastic models registry.
+        /// </summary>
+        IStochasticModelsRegistry StochasticModelsRegistry { get; }
 
         /// <summary>
         /// Parses an expression to double.
@@ -81,7 +82,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         void SetNodeSetVoltage(string nodeName, string expression);
 
         /// <summary>
-        /// Sets the parameter of entity and enables updates.
+        /// Sets the parameter of entity.
         /// </summary>
         /// <param name="entity">An entity of parameter</param>
         /// <param name="parameterName">A parameter name</param>
@@ -89,7 +90,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <returns>
         /// True if parameter has been set.
         /// </returns>
-        bool SetEntityParameter(Entity entity, string parameterName, string expression);
+        bool SetParameter(Entity entity, string parameterName, string expression);
 
         /// <summary>
         /// Sets the parameter of entity.
@@ -103,32 +104,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         bool SetParameter(Entity entity, string parameterName, object @object);
 
         /// <summary>
-        /// Finds model in the context and in parent contexts.
-        /// </summary>
-        /// <param name="modelName">Name of model to find</param>
-        /// <returns>
-        /// A reference to model.
-        /// </returns>
-        T FindModel<T>(string modelName)
-            where T : Entity;
-
-        /// <summary>
         /// Creates nodes for a component.
         /// </summary>
         /// <param name="component">A component</param>
         /// <param name="parameters">Parameters of component</param>
         void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters);
-
-        void RegisterModelDev(Entity model, Func<string, Entity> generator, Parameter parameter, Parameter percent);
-
-        void RegisterModelLot(Entity model, Func<string, Entity> generator, Parameter parameter, Parameter percent);
-
-        Entity ProvideModelFor(Entity component, Entity model);
-
-
-        Dictionary<Entity, Dictionary<Parameter, Parameter>> ModelsWithDev { get; }
-        Dictionary<Entity, Dictionary<Parameter, Parameter>> ModelsWithLot { get; }
-        Dictionary<Entity, Func<string, Entity>> ModelsGenerators { get; } 
-        Dictionary<Entity, List<Entity>> Models { get; }
     }
 }
