@@ -178,5 +178,11 @@ namespace SpiceSharpParser.Common
         /// <param name="expressionString">Expression.</param>
         /// <param name="expressionAction">Expression action.</param>
         void AddAction(string actionName, string expressionString, Action<double> expressionAction);
+
+
+        /// <summary>
+        /// Gets the random seed.
+        /// </summary>
+        int? RandomSeed { get; }
     }
 }

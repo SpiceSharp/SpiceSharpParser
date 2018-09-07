@@ -17,7 +17,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         {
             var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IReadingContext>();
-            context.FindModel<VoltageSwitchModel>(Arg.Any<string>()).Returns(new VoltageSwitchModel("SModel"));
+            context.StochasticModelsRegistry.FindBaseModel<VoltageSwitchModel>(Arg.Any<string>()).Returns(new VoltageSwitchModel("SModel"));
 
             var parameters = new ParameterCollection
             {
@@ -42,7 +42,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         {
             var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IReadingContext>();
-            context.FindModel<VoltageSwitchModel>(Arg.Any<string>()).Returns(new VoltageSwitchModel("SModel"));
+            context.StochasticModelsRegistry.FindBaseModel<VoltageSwitchModel>(Arg.Any<string>()).Returns(new VoltageSwitchModel("SModel"));
 
             var parameters = new ParameterCollection
             {
@@ -67,7 +67,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         {
             var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IReadingContext>();
-            context.FindModel<CurrentSwitchModel>(Arg.Any<string>()).Returns(new CurrentSwitchModel("WModel"));
+            context.StochasticModelsRegistry.FindBaseModel<CurrentSwitchModel>(Arg.Any<string>()).Returns(new CurrentSwitchModel("WModel"));
 
             var parameters = new ParameterCollection
             {
@@ -91,7 +91,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         {
             var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IReadingContext>();
-            context.FindModel<CurrentSwitchModel>(Arg.Any<string>()).Returns(new CurrentSwitchModel("WModel"));
+            context.StochasticModelsRegistry.FindBaseModel<CurrentSwitchModel>(Arg.Any<string>()).Returns(new CurrentSwitchModel("WModel"));
 
             var parameters = new ParameterCollection
             {

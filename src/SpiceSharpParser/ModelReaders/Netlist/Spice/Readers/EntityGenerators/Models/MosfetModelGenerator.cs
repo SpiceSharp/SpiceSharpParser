@@ -126,6 +126,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
 
             // Read all the parameters
             context.SetParameters(model, clonedParameters);
+            context.StochasticModelsRegistry.RegisterModel(model);
 
             return model;
         }

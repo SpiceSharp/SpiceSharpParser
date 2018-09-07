@@ -15,7 +15,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
         {
             Simulation = simulation;
 
-            simulation.InitializeSimulationExport += (obj, e) =>
+            simulation.ExportSimulationData += (obj, e) =>
             {
                 ExceptionsEnabled = true; //TODO: Cleanup
             };

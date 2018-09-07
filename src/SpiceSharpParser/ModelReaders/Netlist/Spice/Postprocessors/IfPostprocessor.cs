@@ -7,6 +7,7 @@ using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls;
@@ -190,11 +191,6 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
             throw new NotImplementedException();
         }
 
-        public T FindModel<T>(string modelName) where T : Entity
-        {
-            throw new NotImplementedException();
-        }
-
         public double ParseDouble(string expression)
         {
             throw new NotImplementedException();
@@ -240,7 +236,7 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
             throw new NotImplementedException();
         }
 
-        public bool SetEntityParameter(Entity entity, string parameterName, string expression)
+        public bool SetParameter(Entity entity, string parameterName, string expression)
         {
             throw new NotImplementedException();
         }
@@ -256,5 +252,7 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
         public IDictionary<Simulation, IEvaluator> SimulationEvaluators => throw new NotImplementedException();
 
         public ISimulationContexts SimulationContexts => throw new NotImplementedException();
+
+        public IStochasticModelsRegistry StochasticModelsRegistry => throw new NotImplementedException();
     }
 }

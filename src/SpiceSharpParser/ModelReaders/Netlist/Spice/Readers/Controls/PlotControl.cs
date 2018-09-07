@@ -89,7 +89,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                 plot.Series.Add(new Series(exports[i].Name) { XUnit = xUnit, YUnit = exports[i].QuantityUnit });
             }
 
-            simulationToPlot.OnExportSimulationData += (object sender, ExportDataEventArgs e) =>
+            simulationToPlot.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
                 double x = 0;
 

@@ -66,7 +66,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
 
             // Return and update evaluators info.
             result.Evaluators = simulationContexts.GetSimulationEvaluators();
-            result.UsedEvaluatorRandomSeed = result.UsedEvaluatorRandomSeed ?? Settings.Seed;
+            result.UsedRandomSeed = result.UsedRandomSeed ?? Settings.Seed;
             foreach (var export in result.Exports)
             {
                 if (export is ExpressionExport ee)

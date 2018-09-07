@@ -58,7 +58,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             }
 
             // Get the model and generate a component for it
-            Entity model = context.FindModel<Entity>(parameters.GetString(4));
+            Entity model = context.StochasticModelsRegistry.FindBaseModel<Entity>(parameters.GetString(4));
             if (model == null)
             {
                 throw new ModelNotFoundException($"Could not find model {parameters.GetString(4)} for mosfet {entityName}");

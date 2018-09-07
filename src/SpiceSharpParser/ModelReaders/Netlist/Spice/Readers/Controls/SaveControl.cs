@@ -216,7 +216,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 
         private void AddOpPointToSeries(ParameterSweep firstParameterSweep, Export export, IReadingContext context, Series series)
         {
-            export.Simulation.OnExportSimulationData += (object sender, ExportDataEventArgs e) =>
+            export.Simulation.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
                 var firstParameterSweepValue = context.SimulationContexts.GetSimulationEvaluator(export.Simulation).GetParameterValue(firstParameterSweep.Parameter.Image, sender);
                 series.Points.Add(new Point() { X = firstParameterSweepValue, Y = export.Extract() });
@@ -225,7 +225,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 
         private void AddTranPointsToSeries(Export export, IReadingContext context, Series series)
         {
-            export.Simulation.OnExportSimulationData += (object sender, ExportDataEventArgs e) =>
+            export.Simulation.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
                 series.Points.Add(new Point() { X = e.Time, Y = export.Extract() });
             };
@@ -233,7 +233,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 
         private void AddAcPointsToSeries(Export export, IReadingContext context, Series series)
         {
-            export.Simulation.OnExportSimulationData += (object sender, ExportDataEventArgs e) =>
+            export.Simulation.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
                 series.Points.Add(new Point() { X = e.Frequency, Y = export.Extract() });
             };
