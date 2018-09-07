@@ -42,11 +42,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         public Circuit Circuit => Result.Circuit;
 
         /// <summary>
-        /// Gets the result where things are added.
-        /// </summary>
-        private SpiceNetlistReaderResult Result { get; }
-
-        /// <summary>
         /// Gets the Monte Carlo result.
         /// </summary>
         public MonteCarloResult MonteCarlo => Result.MonteCarloResult;
@@ -54,7 +49,12 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <summary>
         /// Sets used random seed.
         /// </summary>
-        public int? UsedRandomSeed { set => Result.UsedEvaluatorRandomSeed = value; }
+        public int? UsedRandomSeed { set => Result.UsedRandomSeed = value; }
+
+        /// <summary>
+        /// Gets the result where things are added.
+        /// </summary>
+        private SpiceNetlistReaderResult Result { get; }
 
         /// <summary>
         /// Adds warning.
@@ -120,7 +120,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         }
 
         /// <summary>
-        /// Finds the object.
+        /// Finds the object in the result.
         /// </summary>
         /// <param name="objectName">The object name.</param>
         /// <param name="entity">The found entity.</param>

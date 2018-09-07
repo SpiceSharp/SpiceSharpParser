@@ -51,6 +51,8 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         protected Dictionary<string, EvaluatorExpression> Parameters => ExpressionParser.Parameters;
 
+        public int? RandomSeed => throw new NotImplementedException();
+
         /// <summary>
         /// Evalues a specific string to double.
         /// </summary>

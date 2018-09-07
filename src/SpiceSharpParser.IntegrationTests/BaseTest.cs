@@ -43,7 +43,6 @@ namespace SpiceSharpParser.IntegrationTests
             var settings = new ParserSettings();
             settings.NetlistParser.HasTitle = true;
             settings.NetlistParser.IsEndRequired = true;
-
             parserFront.Settings = settings;
 
             return parserFront.ParseNetlist(text).Result;
@@ -106,7 +105,7 @@ namespace SpiceSharpParser.IntegrationTests
                 {
                     var dcResult = new List<double>();
                     result.Add(dcResult);
-                    simulation.OnExportSimulationData += (sender, e) =>
+                    simulation.ExportSimulationData += (sender, e) =>
                     {
                         dcResult.Add(export.Extract());
                     };
@@ -115,12 +114,12 @@ namespace SpiceSharpParser.IntegrationTests
                 if (simulation is OP)
                 {
                     double opResult = double.NaN;
-                    simulation.OnExportSimulationData += (sender, e) =>
+                    simulation.ExportSimulationData += (sender, e) =>
                     {
                         opResult = export.Extract();
                     };
 
-                    simulation.FinalizeSimulationExport += (sender, e) =>
+                    simulation.AfterExecute += (sender, e) =>
                     {
                         result.Add(opResult);
                     };
@@ -130,7 +129,7 @@ namespace SpiceSharpParser.IntegrationTests
                 {
                     var tranResult = new List<Tuple<double, double>>();
                     result.Add(tranResult);
-                    simulation.OnExportSimulationData += (sender, e) =>
+                    simulation.ExportSimulationData += (sender, e) =>
                     {
                         tranResult.Add(new Tuple<double, double>(e.Time, export.Extract()));
                     };
@@ -165,7 +164,7 @@ namespace SpiceSharpParser.IntegrationTests
             double result = double.NaN;
             var export = readerResult.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
             var simulation = readerResult.Simulations.Single();
-            simulation.OnExportSimulationData += (sender, e) => {
+            simulation.ExportSimulationData += (sender, e) => {
 
                 result = export.Extract();
             };
@@ -180,7 +179,7 @@ namespace SpiceSharpParser.IntegrationTests
             var simulation = readerResult.Simulations.Single();
             double[] result = new double[nameOfExport.Length];
 
-            simulation.OnExportSimulationData += (sender, e) => {
+            simulation.ExportSimulationData += (sender, e) => {
 
                 for (var i = 0; i < nameOfExport.Length; i++) {
                     var export = readerResult.Exports.Find(exp => exp.Name.ToLower() == nameOfExport[i].ToLower()); //TODO: Remove ToLower someday
@@ -198,7 +197,7 @@ namespace SpiceSharpParser.IntegrationTests
             var simulation = readerResult.Simulations.Single();
             Tuple<string, double>[] result = new Tuple<string, double>[readerResult.Exports.Count];
 
-            simulation.OnExportSimulationData += (sender, e) => {
+            simulation.ExportSimulationData += (sender, e) => {
 
                 for (var i = 0; i < readerResult.Exports.Count; i++)
                 {
@@ -225,7 +224,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             var export = readerResult.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
             var simulation = readerResult.Simulations.Single();
-            simulation.OnExportSimulationData += (sender, e) => {
+            simulation.ExportSimulationData += (sender, e) => {
 
                 list.Add(new Tuple<double, double>(e.Time, export.Extract()));
             };
@@ -241,7 +240,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             var export = readerResult.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
             var simulation = readerResult.Simulations.Single();
-            simulation.OnExportSimulationData += (sender, e) => {
+            simulation.ExportSimulationData += (sender, e) => {
 
                 list.Add(new Tuple<double, double>(e.SweepValue, export.Extract()));
             };

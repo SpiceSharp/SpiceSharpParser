@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharp.Circuits;
-using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -14,8 +13,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
     /// </summary>
     public class ReadingContext : IReadingContext
     {
-        private static object locker = new object();
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ReadingContext"/> class.
         /// </summary>
@@ -52,8 +49,21 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 
             Children = new List<IReadingContext>();
             SimulationContexts = simulationContexts;
+
+            var generators = new List<IObjectNameGenerator>();
+            IReadingContext current = this;
+            while (current != null)
+            {
+                generators.Add(current.ObjectNameGenerator);
+                current = current.Parent;
+            }
+
+            StochasticModelsRegistry = new StochasticModelsRegistry(generators);
         }
 
+        /// <summary>
+        /// Gets or sets the simulation contexts.
+        /// </summary>
         public ISimulationContexts SimulationContexts { get; protected set; }
 
         /// <summary>
@@ -95,6 +105,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// Gets or sets the children of the reading context.
         /// </summary>
         public ICollection<IReadingContext> Children { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the stochastic models registry.
+        /// </summary>
+        public IStochasticModelsRegistry StochasticModelsRegistry { get; protected set; }
 
         /// <summary>
         /// Sets voltage initial condition for node.
@@ -150,7 +165,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <returns>
         /// True if the parameter has been set.
         /// </returns>
-        public bool SetEntityParameter(Entity entity, string parameterName, string expression)
+        public bool SetParameter(Entity entity, string parameterName, string expression)
         {
             double value;
             try
@@ -183,36 +198,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// <returns>
         /// True if the parameter has been set.
         /// </returns>
+        [Obsolete]
         public bool SetParameter(Entity entity, string parameterName, object @object)
         {
             return entity.SetParameter(parameterName.ToLower(), @object);
-        }
-
-        /// <summary>
-        /// Finds model in the context and in parent contexts.
-        /// </summary>
-        /// <param name="modelName">Name of model to find.</param>
-        /// <returns>
-        /// A reference to model.
-        /// </returns>
-        public T FindModel<T>(string modelName)
-            where T : Entity
-        {
-            IReadingContext context = this;
-            while (context != null)
-            {
-                var modelNameToSearch = context.ObjectNameGenerator.Generate(modelName);
-
-                Entity model;
-                if (Result.FindObject(modelNameToSearch, out model))
-                {
-                    return (T)model;
-                }
-
-                context = context.Parent;
-            }
-
-            return null;
         }
 
         /// <summary>

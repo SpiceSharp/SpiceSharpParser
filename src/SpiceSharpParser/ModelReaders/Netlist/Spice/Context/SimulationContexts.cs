@@ -139,7 +139,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 if (simulation != null)
                 {
-                    simulation.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs args) =>
+                    simulation.BeforeTemperature += (object sender, LoadStateEventArgs args) =>
                     {
                         var evaluator = GetEvaluator(simulation, @object.Name.ToString());
                         var parameter = simulation.EntityParameters.GetEntityParameters(@object.Name).GetParameter<double>(paramName);
@@ -154,7 +154,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 {
                     foreach (BaseSimulation s in Simulations)
                     {
-                        s.OnBeforeTemperatureCalculations += (object sender, LoadStateEventArgs args) =>
+                        s.BeforeTemperature += (object sender, LoadStateEventArgs args) =>
                         {
                             var evaluator = GetEvaluator(s, @object.Name.ToString());
                             var parameter = s.EntityParameters.GetEntityParameters(@object.Name).GetParameter<double>(paramName);

@@ -17,7 +17,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 //TODO: What to do with complex state?
             };
 
-            simulation.OnBeforeTemperatureCalculations += setState;
+            simulation.BeforeTemperature += setState;
 
             return simulation;
         }

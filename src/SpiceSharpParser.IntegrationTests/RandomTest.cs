@@ -86,8 +86,8 @@ namespace SpiceSharpParser.IntegrationTests
 
             Assert.NotEqual(resultsSeed2224[0], resultsSeed2223[0]);
 
-            Assert.Equal(2223, parseResult2223.UsedEvaluatorRandomSeed);
-            Assert.Equal(2224, parseResult2224.UsedEvaluatorRandomSeed);
+            Assert.Equal(2223, parseResult2223.UsedRandomSeed);
+            Assert.Equal(2224, parseResult2224.UsedRandomSeed);
         }
 
         [Fact]
@@ -151,8 +151,8 @@ namespace SpiceSharpParser.IntegrationTests
 
             Assert.NotEqual(resultsSeed2224[0], resultsSeed2223[0]);
 
-            Assert.Equal(2223, parseResult2223.UsedEvaluatorRandomSeed);
-            Assert.Equal(2224, parseResult2224.UsedEvaluatorRandomSeed);
+            Assert.Equal(2223, parseResult2223.UsedRandomSeed);
+            Assert.Equal(2224, parseResult2224.UsedRandomSeed);
         }
 
         [Fact]
@@ -214,8 +214,8 @@ namespace SpiceSharpParser.IntegrationTests
 
             Assert.NotEqual(resultsSeed2224[0], resultsSeed2223[0]);
 
-            Assert.Equal(2223, parseResult2223.UsedEvaluatorRandomSeed);
-            Assert.Equal(2224, parseResult2224.UsedEvaluatorRandomSeed);
+            Assert.Equal(2223, parseResult2223.UsedRandomSeed);
+            Assert.Equal(2224, parseResult2224.UsedRandomSeed);
         }
     }
 }

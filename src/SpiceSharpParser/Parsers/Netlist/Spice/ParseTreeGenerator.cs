@@ -568,7 +568,8 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 || currentToken.Is(SpiceTokenType.IDENTIFIER)
                 || currentToken.Is(SpiceTokenType.REFERENCE)
                 || currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
-                || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES))
+                || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES)
+                || currentToken.Is(SpiceTokenType.PERCENT))
             {
                 PushProductionExpression(
                     stack,
@@ -707,8 +708,8 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                         || currentToken.Is(SpiceTokenType.IDENTIFIER)
                         || currentToken.Is(SpiceTokenType.REFERENCE)
                         || currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
-                        || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES))
-
+                        || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES)
+                        || currentToken.Is(SpiceTokenType.PERCENT))
                 {
                     PushProductionExpression(
                         stack,
@@ -767,7 +768,8 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                         || currentToken.Is(SpiceTokenType.IDENTIFIER)
                         || currentToken.Is(SpiceTokenType.REFERENCE)
                         || currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
-                        || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES))
+                        || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES)
+                        || currentToken.Is(SpiceTokenType.PERCENT))
                     {
                         PushProductionExpression(
                             stack,
@@ -841,7 +843,8 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 || currentToken.Is(SpiceTokenType.IDENTIFIER)
                 || currentToken.Is(SpiceTokenType.REFERENCE)
                 || currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
-                || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES))
+                || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES)
+                || currentToken.Is(SpiceTokenType.PERCENT))
             {
                 PushProductionExpression(
                     stack,
