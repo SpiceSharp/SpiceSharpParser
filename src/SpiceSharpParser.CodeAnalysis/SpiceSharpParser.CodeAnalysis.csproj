@@ -20,10 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="SpiceSharp" Version="2.3.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta007" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\SpiceSharp\SpiceSharp\SpiceSharp.csproj" />
   </ItemGroup>
 </Project>
