@@ -29,7 +29,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
                 throw new WrongParameterException("Property exports should have two parameters: name of component and property name");
             }
 
-            return new PropertyExport(simulation, new StringIdentifier(parameters[0].Image), parameters[1].Image);
+            return new PropertyExport(simulation, new StringIdentifier(parameters[0].Image), parameters[1].Image.ToLower());
         }
 
         /// <summary>

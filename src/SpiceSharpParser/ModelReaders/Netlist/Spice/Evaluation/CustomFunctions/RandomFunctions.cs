@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Threading;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions
 {
     public class RandomFunctions
     {
-        private static int tickCount = Environment.TickCount;
-
         /// <summary>
         /// Create a gauss() custom function.
         /// </summary>
@@ -16,7 +15,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
         /// </returns>
         public static CustomFunction CreateGauss(int? randomSeed)
         {
-            var random = new Random(randomSeed ?? Interlocked.Increment(ref tickCount));
+            Random random = Randomizer.GetRandom(randomSeed);
 
             CustomFunction function = new CustomFunction();
             function.Name = "gauss";
@@ -47,7 +46,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
         /// </returns>
         public static CustomFunction CreateRandom(int? randomSeed)
         {
-            var random = new Random(randomSeed ?? Interlocked.Increment(ref tickCount));
+            Random random = Randomizer.GetRandom(randomSeed);
 
             CustomFunction function = new CustomFunction();
             function.Name = "random";
@@ -74,7 +73,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
         /// </returns>
         public static CustomFunction CreateFlat(int? randomSeed)
         {
-            var random = new Random(randomSeed ?? Interlocked.Increment(ref tickCount));
+            Random random = Randomizer.GetRandom(randomSeed);
 
             CustomFunction function = new CustomFunction();
             function.Name = "flat";
