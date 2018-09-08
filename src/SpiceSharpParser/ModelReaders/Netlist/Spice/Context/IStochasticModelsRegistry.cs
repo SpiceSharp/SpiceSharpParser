@@ -18,5 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         Dictionary<Entity, List<Entity>> GetStochasticModels();
 
         Dictionary<Parameter, Parameter> GetStochasticModelDevParameters(Entity baseModel);
+
+        Dictionary<Parameter, Parameter> GetStochasticModelLotParameters(Entity baseModel);
     }
 }

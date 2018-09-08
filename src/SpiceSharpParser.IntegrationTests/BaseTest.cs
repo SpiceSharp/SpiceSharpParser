@@ -1,4 +1,5 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice;
 using System;
@@ -10,6 +11,11 @@ namespace SpiceSharpParser.IntegrationTests
 {
     public class BaseTest
     {
+        public BaseTest()
+        {
+            Randomizer.Clear();
+        }
+
         /// <summary>
         /// Absolute tolerance used
         /// </summary>

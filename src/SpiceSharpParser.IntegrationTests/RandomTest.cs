@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice;
 using Xunit;
 
@@ -6,7 +7,6 @@ namespace SpiceSharpParser.IntegrationTests
 {
     public class RandomTest : BaseTest
     {
-
         [Fact]
         public void BasicTest()
         {
@@ -54,6 +54,7 @@ namespace SpiceSharpParser.IntegrationTests
 
                 var exports = RunSimulationsAndReturnExports(parseResult2223);
                 resultsSeed2223.Add((double)exports[0]);
+                Randomizer.Clear(); //TODO think about it.
             }
 
             for (var i = 0; i < n; i++)
@@ -72,6 +73,7 @@ namespace SpiceSharpParser.IntegrationTests
 
                 var exports = RunSimulationsAndReturnExports(parseResult2224);
                 resultsSeed2224.Add((double)exports[0]);
+                Randomizer.Clear();
             }
 
             for (var i = 0; i < n; i++)
@@ -118,6 +120,7 @@ namespace SpiceSharpParser.IntegrationTests
 
                 var exports = RunSimulationsAndReturnExports(parseResult2223);
                 resultsSeed2223.Add((double)exports[0]);
+                Randomizer.Clear();
             }
 
             for (var i = 0; i < n; i++)
@@ -137,6 +140,7 @@ namespace SpiceSharpParser.IntegrationTests
 
                 var exports = RunSimulationsAndReturnExports(parseResult2224);
                 resultsSeed2224.Add((double)exports[0]);
+                Randomizer.Clear();
             }
 
             for (var i = 0; i < n; i++)
@@ -182,6 +186,7 @@ namespace SpiceSharpParser.IntegrationTests
 
                 var exports = RunSimulationsAndReturnExports(parseResult2223);
                 resultsSeed2223.Add((double)exports[0]);
+                Randomizer.Clear();
             }
 
             for (var i = 0; i < n; i++)
@@ -200,6 +205,7 @@ namespace SpiceSharpParser.IntegrationTests
 
                 var exports = RunSimulationsAndReturnExports(parseResult2224);
                 resultsSeed2224.Add((double)exports[0]);
+                Randomizer.Clear();
             }
 
             for (var i = 0; i < n; i++)

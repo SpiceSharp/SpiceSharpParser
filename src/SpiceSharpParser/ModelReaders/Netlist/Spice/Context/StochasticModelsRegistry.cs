@@ -158,11 +158,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         /// <param name="baseModel">A base model.</param>
         /// <returns>
-        /// A dictionary of dev parameters and their percent value.
+        /// A dictionary of DEV parameters and their percent value.
         /// </returns>
         public Dictionary<Parameter, Parameter> GetStochasticModelDevParameters(Entity baseModel)
         {
-            return ModelsWithDev[baseModel];
+            if (ModelsWithDev.ContainsKey(baseModel))
+            {
+                return ModelsWithDev[baseModel];
+            }
+            return null;
         }
 
         /// <summary>
@@ -172,6 +176,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public void RegisterModel(Entity model)
         {
             AllModels.Add(model);
+        }
+
+        /// <summary>
+        /// Gets the stochastic model LOT parameters.
+        /// </summary>
+        /// <param name="baseModel">A base model.</param>
+        /// <returns>
+        /// A dictionary of LOT parameters and their percent value.
+        /// </returns>
+        public Dictionary<Parameter, Parameter> GetStochasticModelLotParameters(Entity baseModel)
+        {
+            if (ModelsWithLot.ContainsKey(baseModel))
+            {
+                return ModelsWithLot[baseModel];
+            }
+            return null;
         }
     }
 }
