@@ -1,9 +1,9 @@
-﻿using SpiceSharp.Simulations;
+﻿using System;
+using System.Threading;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using System;
-using System.Threading;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
 {
@@ -32,32 +32,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
                             if (stochasticDevParameters != null)
                             {
-                                foreach (var stochasticParameter in stochasticDevParameters)
-                                {
-                                    var parameter = stochasticParameter.Key;
-                                    var parameterPercent = stochasticParameter.Value;
-
-                                    if (parameter is AssignmentParameter asg)
-                                    {
-                                        var asgparamName = asg.Name.ToLower();
-                                        var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<double>(asgparamName);
-                                        var currentValue = currentValueParameter.Value;
-                                        var percentValue = evaluator.EvaluateDouble(parameterPercent.Image);
-                                        var random = new Random(evaluator.RandomSeed ?? Interlocked.Increment(ref tickCount));
-
-                                        double newValue = 0;
-                                        if (random.Next() % 2 == 0)
-                                        {
-                                            newValue = currentValue + (percentValue / 100.0) * currentValue * random.NextDouble();
-                                        }
-                                        else
-                                        {
-                                            newValue = currentValue - (percentValue / 100.0) * currentValue * random.NextDouble();
-                                        }
-
-                                        context.SimulationContexts.SetModelParameter(asgparamName, componentModel, newValue.ToString(), sim);
-                                    }
-                                }
+                                SetModelDevModelParameters(context, sim, evaluator, componentModel, stochasticDevParameters);
                             }
                         }
                     }
@@ -65,6 +40,36 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
                 return sim;
             };
+        }
+
+        private static void SetModelDevModelParameters(IReadingContext context, BaseSimulation sim, Common.IEvaluator evaluator, SpiceSharp.Circuits.Entity componentModel, System.Collections.Generic.Dictionary<Parameter, Parameter> stochasticDevParameters)
+        {
+            foreach (var stochasticParameter in stochasticDevParameters)
+            {
+                var parameter = stochasticParameter.Key;
+                var parameterPercent = stochasticParameter.Value;
+
+                if (parameter is AssignmentParameter asg)
+                {
+                    var asgparamName = asg.Name.ToLower();
+                    var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<double>(asgparamName);
+                    var currentValue = currentValueParameter.Value;
+                    var percentValue = evaluator.EvaluateDouble(parameterPercent.Image);
+                    var random = new Random(evaluator.RandomSeed ?? Interlocked.Increment(ref tickCount));
+
+                    double newValue = 0;
+                    if (random.Next() % 2 == 0)
+                    {
+                        newValue = currentValue + ((percentValue / 100.0) * currentValue * random.NextDouble());
+                    }
+                    else
+                    {
+                        newValue = currentValue - ((percentValue / 100.0) * currentValue * random.NextDouble());
+                    }
+
+                    context.SimulationContexts.SetModelParameter(asgparamName, componentModel, newValue.ToString(), sim);
+                }
+            }
         }
     }
 }

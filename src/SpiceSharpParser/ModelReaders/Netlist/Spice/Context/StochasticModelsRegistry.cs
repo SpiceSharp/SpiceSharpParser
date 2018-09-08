@@ -10,6 +10,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
     public class StochasticModelsRegistry : IStochasticModelsRegistry
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="StochasticModelsRegistry"/> class.
+        /// </summary>
+        /// <param name="modelNamesGenerators">The enumerable of model name generators.</param>
+        public StochasticModelsRegistry(IEnumerable<IObjectNameGenerator> modelNamesGenerators)
+        {
+            ModelNamesGenerators = modelNamesGenerators ?? throw new ArgumentNullException(nameof(modelNamesGenerators));
+        }
+
+        /// <summary>
         /// Gets or sets the dictionary of stochastic models with dev parameters.
         /// </summary>
         protected Dictionary<Entity, Dictionary<Parameter, Parameter>> ModelsWithDev { get; set; } = new Dictionary<Entity, Dictionary<Parameter, Parameter>>();
@@ -35,14 +44,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         protected List<Entity> AllModels { get; set; } = new List<Entity>();
 
         /// <summary>
-        /// Gets the object name generators ....
+        /// Gets the object model name generators.
         /// </summary>
-        public IEnumerable<IObjectNameGenerator> ModelNamesGenerators { get; }
+        protected IEnumerable<IObjectNameGenerator> ModelNamesGenerators { get; }
 
-        public StochasticModelsRegistry(IEnumerable<IObjectNameGenerator> modelNamesGenerators)
-        {
-            ModelNamesGenerators = modelNamesGenerators;
-        }
 
         /// <summary>
         /// Registers that a model has a dev parameter.
@@ -115,34 +120,55 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return model;
         }
 
-        public T FindBaseModel<T>(string shortName)
+        /// <summary>
+        /// Finds a model with given name.
+        /// </summary>
+        /// <param name="modelName">Name of model to get.</param>
+        /// <returns>
+        /// A reference to model.
+        /// </returns>
+        public T FindBaseModel<T>(string modelName)
             where T : Entity
         {
-            foreach (var ong in ModelNamesGenerators)
+            foreach (var generator in ModelNamesGenerators)
             {
-                var modelNameToSearch = ong.Generate(shortName);
-
+                var modelNameToSearch = generator.Generate(modelName);
                 var model = AllModels.SingleOrDefault(p => p.Name.ToString() == modelNameToSearch);
-
                 if (model != null)
                 {
                     return (T)model;
                 }
             }
-
             return null;
         }
 
+        /// <summary>
+        /// Gets the stochastic models.
+        /// </summary>
+        /// <returns>
+        /// A dictionary of base models and their stochastic models.
+        /// </returns>
         public Dictionary<Entity, List<Entity>> GetStochasticModels()
         {
             return StochasticModels;
         }
 
+        /// <summary>
+        /// Gets the stochastic model DEV parameters.
+        /// </summary>
+        /// <param name="baseModel">A base model.</param>
+        /// <returns>
+        /// A dictionary of dev parameters and their percent value.
+        /// </returns>
         public Dictionary<Parameter, Parameter> GetStochasticModelDevParameters(Entity baseModel)
         {
             return ModelsWithDev[baseModel];
         }
 
+        /// <summary>
+        /// Registers a model in the registry.
+        /// </summary>
+        /// <param name="model">A model to register.</param>
         public void RegisterModel(Entity model)
         {
             AllModels.Add(model);

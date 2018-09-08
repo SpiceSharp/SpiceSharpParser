@@ -5,6 +5,30 @@ namespace SpiceSharpParser.IntegrationTests
     public class DevTest : BaseTest
     {
         [Fact]
+        public void DevMultipleComponentsSameModelTest()
+        {
+            var netlist = ParseNetlist(
+                "Diodes circuit",
+                "D1 OUT 0 1N914",
+                "D2 OUT 0 1N914",
+                "D3 OUT 0 1N914",
+                "D4 OUT 0 1N914",
+                "V1 OUT 0 0",
+                ".model 1N914 D(Is=2.52e-9 DEV 10%)",
+                ".OP",
+                ".SAVE @1N914[Is] @1N914_D1[Is] @1N914_D2[Is] @1N914_D3[Is] @1N914_D4[Is]",
+                ".END");
+
+            var exports = RunSimulationsAndReturnExports(netlist);
+
+            for  (var i = 1; i < exports.Count; i++)
+            {
+                Assert.NotEqual(exports[0], exports[i]);
+            }
+        }
+
+
+        [Fact]
         public void DevZeroTest()
         {
             int randomSeed1 = 1234;

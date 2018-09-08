@@ -5,7 +5,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
     public interface IModelsRegistry
     {
         /// <summary>
-        /// Gets a model.
+        /// Finds a model with given name.
         /// </summary>
         /// <param name="modelName">Name of model to get.</param>
         /// <returns>
