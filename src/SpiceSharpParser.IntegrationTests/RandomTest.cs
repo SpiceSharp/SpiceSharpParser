@@ -40,6 +40,8 @@ namespace SpiceSharpParser.IntegrationTests
 
             for (var i = 0; i < n; i++)
             {
+                Randomizer.Clear(); //TODO think about it.
+
                 parseResult2223 = ParseNetlist(
                     "Seed test circuit",
                     "V1 0 1 100",
@@ -54,11 +56,12 @@ namespace SpiceSharpParser.IntegrationTests
 
                 var exports = RunSimulationsAndReturnExports(parseResult2223);
                 resultsSeed2223.Add((double)exports[0]);
-                Randomizer.Clear(); //TODO think about it.
             }
 
             for (var i = 0; i < n; i++)
             {
+                Randomizer.Clear();
+
                 parseResult2224 = ParseNetlist(
                     "Seed test circuit",
                     "V1 0 1 100",
@@ -73,7 +76,6 @@ namespace SpiceSharpParser.IntegrationTests
 
                 var exports = RunSimulationsAndReturnExports(parseResult2224);
                 resultsSeed2224.Add((double)exports[0]);
-                Randomizer.Clear();
             }
 
             for (var i = 0; i < n; i++)
@@ -105,6 +107,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             for (var i = 0; i < n; i++)
             {
+                Randomizer.Clear();
                 parseResult2223 = ParseNetlist(
                     1111,
                     "Seed test circuit",
@@ -120,11 +123,12 @@ namespace SpiceSharpParser.IntegrationTests
 
                 var exports = RunSimulationsAndReturnExports(parseResult2223);
                 resultsSeed2223.Add((double)exports[0]);
-                Randomizer.Clear();
             }
 
             for (var i = 0; i < n; i++)
             {
+                Randomizer.Clear();
+
                 parseResult2224 = ParseNetlist(
                     1111,
                     "Seed test circuit",
@@ -140,7 +144,6 @@ namespace SpiceSharpParser.IntegrationTests
 
                 var exports = RunSimulationsAndReturnExports(parseResult2224);
                 resultsSeed2224.Add((double)exports[0]);
-                Randomizer.Clear();
             }
 
             for (var i = 0; i < n; i++)
@@ -172,6 +175,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             for (var i = 0; i < n; i++)
             {
+                Randomizer.Clear();
                 parseResult2223 = ParseNetlist(
                     2223,
                     "Seed test circuit",
@@ -186,11 +190,11 @@ namespace SpiceSharpParser.IntegrationTests
 
                 var exports = RunSimulationsAndReturnExports(parseResult2223);
                 resultsSeed2223.Add((double)exports[0]);
-                Randomizer.Clear();
             }
 
             for (var i = 0; i < n; i++)
             {
+                Randomizer.Clear();
                 parseResult2224 = ParseNetlist(
                     2224,
                     "Seed test circuit",
@@ -205,7 +209,6 @@ namespace SpiceSharpParser.IntegrationTests
 
                 var exports = RunSimulationsAndReturnExports(parseResult2224);
                 resultsSeed2224.Add((double)exports[0]);
-                Randomizer.Clear();
             }
 
             for (var i = 0; i < n; i++)
