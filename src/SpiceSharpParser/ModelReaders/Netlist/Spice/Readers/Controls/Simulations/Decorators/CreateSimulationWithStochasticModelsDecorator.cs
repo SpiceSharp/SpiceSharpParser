@@ -66,7 +66,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<double>(parameterName);
                     var currentValue = currentValueParameter.Value;
                     var percentValue = evaluator.EvaluateDouble(parameterPercent.Image);
-                    double newValue = GetValueForLotProperty(evaluator, baseModel, parameterName, currentValue, percentValue);
+                    double newValue = GetValueForLotParameter(evaluator, baseModel, parameterName, currentValue, percentValue);
                     context.SimulationContexts.SetModelParameter(parameterName, componentModel, newValue.ToString(), sim);
                 }
             }
@@ -86,13 +86,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var currentValue = currentValueParameter.Value;
                     var percentValue = evaluator.EvaluateDouble(parameterPercent.Image);
 
-                    double newValue = GetValueForDevProperty(evaluator, currentValue, percentValue);
+                    double newValue = GetValueForDevParameter(evaluator, currentValue, percentValue);
                     context.SimulationContexts.SetModelParameter(asgparamName, componentModel, newValue.ToString(), sim);
                 }
             }
         }
 
-        private static double GetValueForDevProperty(IEvaluator evaluator, double currentValue, double percentValue)
+        private static double GetValueForDevParameter(IEvaluator evaluator, double currentValue, double percentValue)
         {
             var random = Randomizer.GetRandom(evaluator.RandomSeed);
 
@@ -109,7 +109,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             return newValue;
         }
 
-        private static double GetValueForLotProperty(IEvaluator evaluator, Entity baseModel, string parameterName, double currentValue, double percentValue)
+        private static double GetValueForLotParameter(IEvaluator evaluator, Entity baseModel, string parameterName, double currentValue, double percentValue)
         {
             if (LotValues.ContainsKey(baseModel) && LotValues[baseModel].ContainsKey(parameterName))
             {
