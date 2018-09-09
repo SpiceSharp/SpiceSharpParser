@@ -62,11 +62,5 @@ Documentation for API on SpiceSharpParser is available at <https://spicesharp.gi
 * Windows
 * Linux
 
-## Roadmap
-* Fixing bugs 
-* Refactoring (code reuse, patterns, code cleanup etc.)
-* Saving simulation data to Microsoft Excel, Matlab formats.
-* .MEAS[SURE]
-
 ## License
 SpiceSharpParser is under MIT License
