@@ -249,6 +249,16 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         }
 
         [Fact]
+        public void LineContinuationCurrentLineTest()
+        {
+            var tokensStr = "seq.part1\\\nseq.part2\n";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.Equal(4, tokens.Length);
+        }
+
+        [Fact]
         public void Value1Text()
         {
             var tokensStr = "1picofarad";

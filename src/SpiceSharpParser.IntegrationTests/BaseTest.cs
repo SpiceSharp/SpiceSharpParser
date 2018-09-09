@@ -13,7 +13,6 @@ namespace SpiceSharpParser.IntegrationTests
     {
         public BaseTest()
         {
-            Randomizer.Clear();
         }
 
         /// <summary>

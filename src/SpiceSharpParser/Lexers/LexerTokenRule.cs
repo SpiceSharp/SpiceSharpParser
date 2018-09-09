@@ -23,13 +23,13 @@ namespace SpiceSharpParser.Lexers
             string ruleName,
             string regularExpressionPattern,
             Func<TLexerState, string, LexerRuleResult> returnAction = null,
-            Func<TLexerState, LexerRuleUseState> isActiveAction = null,
+            Func<TLexerState, string, LexerRuleUseState> isActiveAction = null,
             bool ignoreCase = true)
             : base(ruleName, regularExpressionPattern, ignoreCase)
         {
             TokenType = tokenType;
             ReturnAction = returnAction ?? new Func<TLexerState, string, LexerRuleResult>((state, lexem) => LexerRuleResult.ReturnToken);
-            IsActiveAction = isActiveAction ?? new Func<TLexerState, LexerRuleUseState>((state) => LexerRuleUseState.Use);
+            UseAction = isActiveAction ?? new Func<TLexerState, string, LexerRuleUseState>((state, lexem) => LexerRuleUseState.Use);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace SpiceSharpParser.Lexers
         /// <summary>
         /// Gets whether the rule should be skipped.
         /// </summary>
-        protected Func<TLexerState, LexerRuleUseState> IsActiveAction { get; }
+        protected Func<TLexerState, string, LexerRuleUseState> UseAction { get; }
 
         /// <summary>
         /// Returns true if the rule is active or should be skipped.
@@ -54,9 +54,9 @@ namespace SpiceSharpParser.Lexers
         /// <returns>
         /// True if the lexer token rule is active or should be skipped
         /// </returns>
-        public bool IsActive(TLexerState lexerState)
+        public bool CanUse(TLexerState lexerState, string lexem)
         {
-            return IsActiveAction(lexerState) == LexerRuleUseState.Use;
+            return UseAction(lexerState, lexem) == LexerRuleUseState.Use;
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace SpiceSharpParser.Lexers
                 Name,
                 RegularExpressionPattern,
                 ReturnAction,
-                IsActiveAction,
+                UseAction,
                 IgnoreCase);
         }
     }

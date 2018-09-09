@@ -51,7 +51,10 @@ namespace SpiceSharpParser.Lexers
             bool getNextTextToLex = true;
             int currentTokenIndex = 0;
 
-            LexerStringReader strReader = new LexerStringReader(text, Options.LineContinuationCharacter);
+            LexerStringReader strReader = new LexerStringReader(
+                text, 
+                Options.NextLineContinuationCharacter,
+                Options.CurrentLineContinuationCharacter);
 
             while (currentTokenIndex < text.Length)
             {
@@ -133,10 +136,13 @@ namespace SpiceSharpParser.Lexers
             bestMatch = null;
             foreach (LexerTokenRule<TLexerState> tokenRule in Grammar.LexerRules)
             {
-                if (tokenRule.IsActive(state))
+                Match tokenMatch = tokenRule.RegularExpression.Match(remainingText);
+                if (tokenMatch.Success && tokenMatch.Length > 0)
                 {
-                    Match tokenMatch = tokenRule.RegularExpression.Match(remainingText);
-                    if (tokenMatch.Success && tokenMatch.Length > 0)
+                    state.FullMatch = tokenMatch.Length == remainingText.Length;
+                    state.BeforeLineBreak = StartsWithLineBreak(remainingText.Substring(tokenMatch.Length));
+
+                    if (tokenRule.CanUse(state, tokenMatch.Value))
                     {
                         if (bestMatch == null || tokenMatch.Length > bestMatch.Length)
                         {
@@ -148,6 +154,11 @@ namespace SpiceSharpParser.Lexers
             }
 
             return bestMatch != null;
+        }
+
+        private bool StartsWithLineBreak(string v)
+        {
+            return v.StartsWith("\n") || v.StartsWith("\r\n");
         }
     }
 }
