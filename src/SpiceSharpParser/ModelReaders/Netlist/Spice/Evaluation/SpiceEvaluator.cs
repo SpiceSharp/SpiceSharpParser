@@ -37,13 +37,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// Initializes a new instance of the <see cref="SpiceEvaluator"/> class.
         /// </summary>
         public SpiceEvaluator(string name, SpiceEvaluatorMode mode, int? randomSeed, ExpressionRegistry registry)
-            : base(name, new SpiceExpressionParser(mode == SpiceEvaluatorMode.LtSpice), registry)
+            : base(name, new SpiceExpressionParser(mode == SpiceEvaluatorMode.LtSpice), registry, randomSeed)
         {
             Mode = mode;
-            RandomSeed = randomSeed;
-
             Parameters.Add("TEMP", new CachedExpression((e, c, a, ev) => (Circuit.ReferenceTemperature - Circuit.CelsiusKelvin), this));
-
             CreateCustomFunctions(this, randomSeed);
         }
 
@@ -60,11 +57,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// Gets the mode of evaluator.
         /// </summary>
         public SpiceEvaluatorMode Mode { get; }
-
-        /// <summary>
-        /// Gets the random seed.
-        /// </summary>
-        public int? RandomSeed { get; }
 
         /// <summary>
         /// Creates a child evaluator.
