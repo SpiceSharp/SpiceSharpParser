@@ -72,6 +72,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
             Controls.Add(new ParamControl());
             Controls.Add(new FuncControl());
             Controls.Add(new GlobalControl());
+            Controls.Add(new ConnectControl());
             Controls.Add(new OptionControl());
             Controls.Add(new TempControl());
             Controls.Add(new StControl());
