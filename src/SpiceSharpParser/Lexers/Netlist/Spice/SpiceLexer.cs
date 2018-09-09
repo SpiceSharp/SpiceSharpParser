@@ -30,8 +30,8 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
         /// </returns>
         public IEnumerable<SpiceToken> GetTokens(string netlistText)
         {
-            var state = new SpiceLexerState();
-            var lexer = new Lexer<SpiceLexerState>(grammar, new LexerOptions(true, '+'));
+            var state = new SpiceLexerState() { LexerOptions = new LexerOptions(true, '+', '\\') };
+            var lexer = new Lexer<SpiceLexerState>(grammar, state.LexerOptions);
 
             foreach (var token in lexer.GetTokens(netlistText, state))
             {
@@ -51,6 +51,8 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
             builder.AddRule(new LexerInternalRule("CHARACTER", "[a-z0-9\\-+]", options.IgnoreCase));
             builder.AddRule(new LexerInternalRule("DIGIT", "[0-9]", options.IgnoreCase));
             builder.AddRule(new LexerInternalRule("SPECIAL", "[\\\\\\[\\]_\\.\\:\\!%\\#\\-;\\<>\\^+/\\*]", options.IgnoreCase));
+            builder.AddRule(new LexerInternalRule("SPECIAL_WITHOUT_BACKSLASH", "[\\[\\]_\\.\\:\\!%\\#\\-;\\<>\\^+/\\*]", options.IgnoreCase));
+
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.WHITESPACE,
@@ -66,7 +68,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 "The title - first line of spice token",
                 @"[^\r\n]+",
                 null,
-                (SpiceLexerState state) =>
+                (SpiceLexerState state, string lexem) =>
                 {
                     if (state.LineNumber == 1 && options.HasTitle)
                     {
@@ -107,7 +109,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                     state.InCommentBlock = true;
                     return LexerRuleResult.IgnoreToken;
                 },
-                (SpiceLexerState state) =>
+                (SpiceLexerState state, string lexem) =>
                 {
                     if (state.PreviousReturnedTokenType == (int)SpiceTokenType.NEWLINE || state.PreviousReturnedTokenType == 0)
                     {
@@ -127,7 +129,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                   state.InCommentBlock = false;
                   return LexerRuleResult.IgnoreToken;
               },
-              (SpiceLexerState state) =>
+              (SpiceLexerState state, string lexem) =>
               {
                   if (state.InCommentBlock)
                   {
@@ -146,7 +148,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                {
                    return LexerRuleResult.IgnoreToken;
                },
-               (SpiceLexerState state) =>
+               (SpiceLexerState state, string lexem) =>
                {
                    if (state.InCommentBlock)
                    {
@@ -180,7 +182,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.CONTINUE,
                 "A continuation token",
-                @"((\r\n\+|\n\+|\r\+))",
+                @"((\r\n\+|\n\+|\r\+|\\\r|\\\n|\\\r\n))",
                 (SpiceLexerState state, string lexem) =>
                 {
                     state.LineNumber++;
@@ -210,7 +212,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
               "An boolean expression token",
               @"\(.*\)",
               null,
-              (SpiceLexerState state) =>
+              (SpiceLexerState state, string lexem) =>
                {
                    if (state.PreviousReturnedTokenType == (int)SpiceTokenType.IF
                    || state.PreviousReturnedTokenType == (int)SpiceTokenType.ELSE_IF)
@@ -251,7 +253,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                "A value with comma seperator",
                @"([+-]?((<DIGIT>)+(,(<DIGIT>)*)?|\.(<DIGIT>)+)(e(\+|-)?(<DIGIT>)+)?[tgmkunpf]?(<LETTER>)*)",
                null,
-               (SpiceLexerState state) =>
+               (SpiceLexerState state, string lexem) =>
                {
                    if (state.PreviousReturnedTokenType == (int)SpiceTokenType.EQUAL
                     || state.PreviousReturnedTokenType == (int)SpiceTokenType.VALUE)
@@ -268,7 +270,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 "A value with dot seperator",
                 @"([+-]?((<DIGIT>)+(\.(<DIGIT>)*)?|\.(<DIGIT>)+)(e(\+|-)?(<DIGIT>)+)?[tgmkunpf]?(<LETTER>)*)",
                 null,
-                (SpiceLexerState state) =>
+                (SpiceLexerState state, string lexem) =>
                 {
                     return LexerRuleUseState.Use;
                 },
@@ -279,7 +281,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
               "A percent value with comma seperator",
               @"([+-]?((<DIGIT>)+(,(<DIGIT>)*)?|\.(<DIGIT>)+)(e(\+|-)?(<DIGIT>)+)?[tgmkunpf]?(<LETTER>)*)%",
               null,
-              (SpiceLexerState state) =>
+              (SpiceLexerState state, string lexem) =>
               {
                   if (state.PreviousReturnedTokenType == (int)SpiceTokenType.EQUAL
                    || state.PreviousReturnedTokenType == (int)SpiceTokenType.VALUE
@@ -297,7 +299,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 "A percent value with dot seperator",
                 @"([+-]?((<DIGIT>)+(\.(<DIGIT>)*)?|\.(<DIGIT>)+)(e(\+|-)?(<DIGIT>)+)?[tgmkunpf]?(<LETTER>)*)%",
                 null,
-                (SpiceLexerState state) =>
+                (SpiceLexerState state, string lexem) =>
                 {
                     return LexerRuleUseState.Use;
                 },
@@ -326,7 +328,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 "A full line comment",
                 @"\*[^\r\n]*",
                 null,
-                (SpiceLexerState state) =>
+                (SpiceLexerState state, string lexem) =>
                 {
                     if (state.PreviousReturnedTokenType == (int)SpiceTokenType.NEWLINE
                     || (state.LineNumber == 1 && options.HasTitle == false))
@@ -350,7 +352,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
              "A mathematical expression in single quotes",
              "'[^']*'",
              null,
-             (SpiceLexerState state) =>
+             (SpiceLexerState state, string lexem) =>
              {
                  if (state.PreviousReturnedTokenType == (int)SpiceTokenType.EQUAL)
                  {
@@ -378,12 +380,36 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 (int)SpiceTokenType.REFERENCE,
                 "A reference",
                 "@(<CHARACTER>(<CHARACTER>|<SPECIAL>)*)",
+                null,
+                (SpiceLexerState state, string lexem) =>
+                {
+                    if (state.LexerOptions.CurrentLineContinuationCharacter.HasValue 
+                        && lexem.EndsWith(state.LexerOptions.CurrentLineContinuationCharacter.Value.ToString())
+                        && state.BeforeLineBreak)
+                    {
+                        return LexerRuleUseState.Skip;
+                    }
+
+                    return LexerRuleUseState.Use;
+                },
                 ignoreCase: options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.WORD,
                 "A word",
                 "(<LETTER>(<CHARACTER>|<SPECIAL>)*)",
+                null,
+                (SpiceLexerState state, string lexem) =>
+                {
+                    if (state.LexerOptions.CurrentLineContinuationCharacter.HasValue
+                        && lexem.EndsWith(state.LexerOptions.CurrentLineContinuationCharacter.Value.ToString())
+                        && state.BeforeLineBreak)
+                    {
+                        return LexerRuleUseState.Skip;
+                    }
+
+                    return LexerRuleUseState.Use;
+                },
                 ignoreCase: options.IgnoreCase));
 
             builder.AddRule(
@@ -391,6 +417,37 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                     (int)SpiceTokenType.IDENTIFIER,
                     "An identifier",
                     "((<CHARACTER>|_|\\*)(<CHARACTER>|<SPECIAL>)*)",
+                    null,
+                (SpiceLexerState state, string lexem) =>
+                {
+                    if (state.LexerOptions.CurrentLineContinuationCharacter.HasValue
+                        && lexem.EndsWith(state.LexerOptions.CurrentLineContinuationCharacter.Value.ToString())
+                        && state.BeforeLineBreak)
+                    {
+                        return LexerRuleUseState.Skip;
+                    }
+
+                    return LexerRuleUseState.Use;
+                },
+                    ignoreCase: options.IgnoreCase));
+
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+                (int)SpiceTokenType.REFERENCE,
+                "A reference (without ending backslash)",
+                "@(<CHARACTER>(<CHARACTER>|<SPECIAL>)*(<CHARACTER>|<SPECIAL_WITHOUT_BACKSLASH>)+)",
+                ignoreCase: options.IgnoreCase));
+
+            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
+                (int)SpiceTokenType.WORD,
+                "A word (without ending backslash)",
+                "(<LETTER>(<CHARACTER>|<SPECIAL>)*(<CHARACTER>|<SPECIAL_WITHOUT_BACKSLASH>)+)",
+                ignoreCase: options.IgnoreCase));
+
+            builder.AddRule(
+                new LexerTokenRule<SpiceLexerState>(
+                    (int)SpiceTokenType.IDENTIFIER,
+                    "An identifier (without ending backslash)",
+                    "((<CHARACTER>|_|\\*)(<CHARACTER>|<SPECIAL>)*(<CHARACTER>|<SPECIAL_WITHOUT_BACKSLASH>)+)",
                     ignoreCase: options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(

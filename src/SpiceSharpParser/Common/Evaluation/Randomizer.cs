@@ -8,7 +8,8 @@ namespace SpiceSharpParser.Common.Evaluation
     public static class Randomizer
     {
         private static Dictionary<int, Random> generators = new Dictionary<int, Random>();
-        private static int tickCount = Environment.TickCount;
+        private static int startTickCount = Environment.TickCount;
+        private static int tickCount = startTickCount;
 
         public static Random GetRandom(int? randomSeed)
         {
@@ -37,6 +38,7 @@ namespace SpiceSharpParser.Common.Evaluation
             lock (generators)
             {
                 generators.Clear();
+                tickCount = startTickCount;
             }
         }
     }
