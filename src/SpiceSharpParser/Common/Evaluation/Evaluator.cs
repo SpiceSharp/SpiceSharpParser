@@ -11,14 +11,17 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Initializes a new instance of the <see cref="Evaluator"/> class.
         /// </summary>
+        /// <param name="name">Evaluator name.</param>
         /// <param name="parser">Expression parser.</param>
         /// <param name="registry">Expression registry.</param>
-        public Evaluator(string name, IExpressionParser parser, ExpressionRegistry registry)
+        /// <param name="randomSeed">Random seed.</param>
+        public Evaluator(string name, IExpressionParser parser, ExpressionRegistry registry, int? randomSeed)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             ExpressionParser = parser ?? throw new ArgumentNullException(nameof(parser));
             Registry = registry ?? throw new ArgumentNullException(nameof(registry));
             Children = new List<IEvaluator>();
+            RandomSeed = randomSeed;
         }
 
         /// <summary>
@@ -37,6 +40,11 @@ namespace SpiceSharpParser.Common.Evaluation
         public Dictionary<string, CustomFunction> CustomFunctions => ExpressionParser.CustomFunctions;
 
         /// <summary>
+        /// Gets or sets the random seed for the evaluator.
+        /// </summary>
+        public int? RandomSeed { get; }
+
+        /// <summary>
         /// Gets the expression registry.
         /// </summary>
         protected ExpressionRegistry Registry { get; }
@@ -50,8 +58,6 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Gets the dictionary of parameters.
         /// </summary>
         protected Dictionary<string, EvaluatorExpression> Parameters => ExpressionParser.Parameters;
-
-        public int? RandomSeed => throw new NotImplementedException();
 
         /// <summary>
         /// Evalues a specific string to double.
@@ -297,7 +303,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public virtual IEvaluator CreateChildEvaluator(string name)
         {
-            var newEvaluator = new Evaluator(name,  ExpressionParser, Registry); 
+            var newEvaluator = new Evaluator(name, ExpressionParser, Registry, RandomSeed); 
 
             foreach (var parameterName in this.GetParameterNames())
             {
@@ -324,7 +330,7 @@ namespace SpiceSharpParser.Common.Evaluation
             var registry = Registry.Clone();
             registry.Invalidate();
 
-            var newEvaluator = new Evaluator(name, ExpressionParser, registry);
+            var newEvaluator = new Evaluator(name, ExpressionParser, registry, randomSeed);
 
             foreach (var parameterName in this.GetParameterNames())
             {
