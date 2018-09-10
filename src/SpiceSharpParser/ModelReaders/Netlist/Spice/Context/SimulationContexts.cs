@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -145,9 +145,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                         var parameter = simulation.EntityParameters[@object.Name].GetParameter<double>(paramName);
                         parameter.Value = evaluator.EvaluateDouble(expression, simulation);
 
-                        evaluator.AddAction(@object.Name + "-" + paramName, expression, (newValue) => {
-                            parameter.Value = newValue;
-                        });
+                        evaluator.AddAction(
+                            @object.Name + "-" + paramName,
+                            expression,
+                            (newValue) => { parameter.Value = newValue; });
                     };
                 }
                 else
@@ -160,9 +161,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                             var parameter = s.EntityParameters[@object.Name].GetParameter<double>(paramName);
                             parameter.Value = evaluator.EvaluateDouble(expression, s);
 
-                            evaluator.AddAction(@object.Name + "-" + paramName, expression, (newValue) => {
-                                parameter.Value = newValue;
-                            });
+                            evaluator.AddAction(
+                                @object.Name + "-" + paramName,
+                                expression,
+                                (newValue) => { parameter.Value = newValue; });
                         };
                     }
                 }

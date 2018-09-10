@@ -1,14 +1,14 @@
 ﻿using SpiceSharp.Circuits;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
     /// <summary>
-    /// Reads all supported <see cref="Model"/> from spice netlist object model.
+    /// Reads all supported <see cref="Model"/> from SPICE netlist object model.
     /// </summary>
     public class ModelReader : StatementReader<Model>, IModelReader
     {
@@ -22,7 +22,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
         }
 
         /// <summary>
-        /// Gets the registry
+        /// Gets the registry.
         /// </summary>
         public IEntityGeneratorRegistry Registry { get; }
 
@@ -39,10 +39,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
         }
 
         /// <summary>
-        /// Reads a model statement and modifies the context
+        /// Reads a model statement and modifies the context.
         /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modifify</param>
+        /// <param name="statement">A statement to process.</param>
+        /// <param name="context">A context to modify.</param>
         public override void Read(Model statement, IReadingContext context)
         {
             string name = statement.Name;

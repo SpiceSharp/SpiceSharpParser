@@ -40,7 +40,7 @@ namespace SpiceSharpParser.Common.Evaluation
         public Dictionary<string, CustomFunction> CustomFunctions => ExpressionParser.CustomFunctions;
 
         /// <summary>
-        /// Gets or sets the random seed for the evaluator.
+        /// Gets the random seed for the evaluator.
         /// </summary>
         public int? RandomSeed { get; }
 
@@ -193,10 +193,13 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="expressionString">An expression of parameter.</param>
         public void SetParameter(string parameterName, string expressionString, object context = null)
         {
-            Parameters[parameterName] = new CachedExpression(expressionString, (e, c, a, evaluator) =>
-            {
-                return evaluator.EvaluateDouble(e, c);
-            }, this);
+            Parameters[parameterName] = new CachedExpression(
+                expressionString,
+                (e, c, a, evaluator) =>
+                {
+                    return evaluator.EvaluateDouble(e, c);
+                },
+                this);
 
             Registry.UpdateParameterDependencies(parameterName, this.GetParametersFromExpression(expressionString));
             RefreshForParameter(parameterName, context);
@@ -303,7 +306,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public virtual IEvaluator CreateChildEvaluator(string name)
         {
-            var newEvaluator = new Evaluator(name, ExpressionParser, Registry, RandomSeed); 
+            var newEvaluator = new Evaluator(name, ExpressionParser, Registry, RandomSeed);
 
             foreach (var parameterName in this.GetParameterNames())
             {

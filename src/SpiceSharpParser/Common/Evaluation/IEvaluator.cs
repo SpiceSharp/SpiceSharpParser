@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpiceSharp.Simulations;
 
 namespace SpiceSharpParser.Common
 {
     /// <summary>
-    /// An interface for all evaluators
+    /// An interface for all evaluators.
     /// </summary>
     public interface IEvaluator
     {
@@ -18,6 +17,11 @@ namespace SpiceSharpParser.Common
         /// Gets the children evaluators.
         /// </summary>
         List<IEvaluator> Children { get; }
+
+        /// <summary>
+        /// Gets the random seed.
+        /// </summary>
+        int? RandomSeed { get; }
 
         /// <summary>
         /// Gets the custom functions.
@@ -178,11 +182,5 @@ namespace SpiceSharpParser.Common
         /// <param name="expressionString">Expression.</param>
         /// <param name="expressionAction">Expression action.</param>
         void AddAction(string actionName, string expressionString, Action<double> expressionAction);
-
-
-        /// <summary>
-        /// Gets the random seed.
-        /// </summary>
-        int? RandomSeed { get; }
     }
 }

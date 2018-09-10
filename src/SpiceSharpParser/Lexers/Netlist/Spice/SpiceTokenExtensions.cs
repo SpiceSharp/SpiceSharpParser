@@ -1,6 +1,4 @@
-﻿using SpiceSharpParser.Lexers.Netlist.Spice;
-
-namespace SpiceSharpParser.Lexers.Netlist.Spice
+﻿namespace SpiceSharpParser.Lexers.Netlist.Spice
 {
     /// <summary>
     /// Extensions for <see cref="SpiceToken"/> class.
@@ -8,12 +6,12 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
     public static class SpiceTokenExtensions
     {
         /// <summary>
-        /// Checks whether the spice token is given type
+        /// Checks whether the SPICE token is given type.
         /// </summary>
-        /// <param name="token">A token to check</param>
-        /// <param name="type">A given type</param>
+        /// <param name="token">A token to check.</param>
+        /// <param name="type">A given type.</param>
         /// <returns>
-        /// True if <paramref name="token"/> is given type
+        /// True if <paramref name="token"/> is given type.
         /// </returns>
         public static bool Is(this SpiceToken token, SpiceTokenType type)
         {
@@ -21,13 +19,13 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
         }
 
         /// <summary>
-        /// Checks whether the spice token has specified lexem
+        /// Checks whether the SPICE token has specified lexem.
         /// </summary>
-        /// <param name="token">A token to check</param>
-        /// <param name="lexem">A given lexem </param>
-        /// <param name="caseInsensitive">Specified the comparision is case insensitive</param>
+        /// <param name="token">A token to check.</param>
+        /// <param name="lexem">A given lexem.</param>
+        /// <param name="caseInsensitive">Specified the comparision is case insensitive.</param>
         /// <returns>
-        /// True if <paramref name="token"/> has specified lexem
+        /// True if <paramref name="token"/> has specified lexem.
         /// </returns>
         public static bool Equal(this SpiceToken token, string lexem, bool caseInsensitive)
         {

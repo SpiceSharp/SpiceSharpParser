@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
     /// <summary>
     /// Generates a current <see cref="Export"/>

@@ -1,7 +1,7 @@
 ﻿namespace SpiceSharpParser.Lexers.Netlist.Spice
 {
     /// <summary>
-    /// Types of terminals in spice grammar
+    /// Types of terminals in SPICE grammar.
     /// </summary>
     public enum SpiceTokenType
     {
@@ -183,6 +183,6 @@
         /// <summary>
         /// percent token
         /// </summary>
-        PERCENT = 34
+        PERCENT = 34,
     }
 }

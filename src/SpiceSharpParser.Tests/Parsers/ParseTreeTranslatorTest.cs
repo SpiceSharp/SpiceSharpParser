@@ -25,7 +25,7 @@ namespace SpiceSharpParser.Tests.Parsers
             };
 
             var parser = new ParseTreeGenerator();
-            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, Symbols.NETLIST);
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, Symbols.Netlist);
 
             // Act
             ParseTreeEvaluator eval = new ParseTreeEvaluator();
@@ -48,7 +48,7 @@ namespace SpiceSharpParser.Tests.Parsers
             };
 
             var parser = new ParseTreeGenerator();
-            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.VECTOR);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.Vector);
 
             // Act
             ParseTreeEvaluator eval = new ParseTreeEvaluator();
@@ -73,7 +73,7 @@ namespace SpiceSharpParser.Tests.Parsers
             };
 
             var parser = new ParseTreeGenerator();
-            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.VECTOR);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.Vector);
 
             // Act
             ParseTreeEvaluator eval = new ParseTreeEvaluator();
@@ -97,7 +97,7 @@ namespace SpiceSharpParser.Tests.Parsers
             };
 
             var parser = new ParseTreeGenerator();
-            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.PARAMETER);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.Parameter);
 
             // Act
             ParseTreeEvaluator eval = new ParseTreeEvaluator();
@@ -126,7 +126,7 @@ namespace SpiceSharpParser.Tests.Parsers
             };
 
             var parser = new ParseTreeGenerator();
-            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.PARAMETER);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.Parameter);
 
             // Act
             ParseTreeEvaluator eval = new ParseTreeEvaluator();
@@ -157,7 +157,7 @@ namespace SpiceSharpParser.Tests.Parsers
             };
 
             var parser = new ParseTreeGenerator();
-            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.PARAMETER);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.Parameter);
 
             // Act
             ParseTreeEvaluator eval = new ParseTreeEvaluator();
@@ -188,7 +188,7 @@ namespace SpiceSharpParser.Tests.Parsers
             };
 
             var parser = new ParseTreeGenerator();
-            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.PARAMETER);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.Parameter);
 
             // Act
             ParseTreeEvaluator eval = new ParseTreeEvaluator();
@@ -215,7 +215,7 @@ namespace SpiceSharpParser.Tests.Parsers
             };
 
             var parser = new ParseTreeGenerator();
-            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.COMPONENT);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.Component);
 
             // Act
             ParseTreeEvaluator eval = new ParseTreeEvaluator();

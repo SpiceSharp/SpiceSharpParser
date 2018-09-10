@@ -3,7 +3,7 @@ using System.Threading;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
 {
     public class RandomFunctions
     {
@@ -28,6 +28,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
                 {
                     throw new Exception("gauss() expects one argument");
                 }
+
                 double p1 = 1 - random.NextDouble();
                 double p2 = 1 - random.NextDouble();
 
@@ -57,8 +58,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
             {
                 if (args.Length != 0)
                 {
-                    throw new Exception("random expects no arguments");
+                    throw new Exception("random() expects no arguments");
                 }
+
                 return random.NextDouble();
             };
 

@@ -1,9 +1,9 @@
 ﻿using System;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
 using SpiceSharp;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports
 {
     /// <summary>
     /// Real part of a complex current export.
@@ -63,6 +63,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
                 {
                     throw new GeneralReaderException($"Current real export '{Name}' is invalid");
                 }
+
                 return double.NaN;
             }
 

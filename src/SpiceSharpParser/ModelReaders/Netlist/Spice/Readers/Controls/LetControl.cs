@@ -1,13 +1,12 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.Common;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
-    /// Reads .LET <see cref="Control"/> from spice netlist object model.
+    /// Reads .LET <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class LetControl : BaseControl
     {

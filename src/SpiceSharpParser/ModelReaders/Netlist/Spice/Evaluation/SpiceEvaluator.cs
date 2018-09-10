@@ -1,12 +1,12 @@
 ﻿using SpiceSharp;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Parsers.Expression;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 {
     /// <summary>
     /// Spice expressions evaluator.

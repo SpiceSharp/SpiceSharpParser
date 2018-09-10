@@ -1,8 +1,8 @@
 ﻿using SpiceSharp;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
     /// <summary>
     /// Property export.
@@ -63,6 +63,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
                 {
                     throw new GeneralReaderException($"Property export {Name} is invalid");
                 }
+
                 return double.NaN;
             }
 

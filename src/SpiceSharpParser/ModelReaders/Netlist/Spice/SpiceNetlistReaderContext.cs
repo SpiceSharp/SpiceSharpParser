@@ -1,17 +1,17 @@
-﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Waveforms;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
     public class SpiceNetlistReaderContext : ISpiceNetlistReaderContext
     {

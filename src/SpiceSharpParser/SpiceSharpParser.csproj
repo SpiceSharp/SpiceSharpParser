@@ -21,6 +21,10 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.5|AnyCPU'">
+    <DocumentationFile>C:\Users\marcin\Documents\SpiceSharpParser_private\src\SpiceSharpParser\SpiceSharpParser.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="SpiceSharp" Version="2.3.0" />
   </ItemGroup>

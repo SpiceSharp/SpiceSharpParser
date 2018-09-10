@@ -6,12 +6,12 @@
     public enum LexerRuleUseState
     {
         /// <summary>
-        /// Use rule
+        /// Use rule.
         /// </summary>
         Use = 0,
 
         /// <summary>
-        /// Skip rule
+        /// Skip rule.
         /// </summary>
         Skip = 1,
     }

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
     /// Reads .STEP_R <see cref="Control"/> from Spice netlist object model.

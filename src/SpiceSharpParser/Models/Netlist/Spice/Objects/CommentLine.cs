@@ -11,7 +11,7 @@
         public string Text { get; set; }
 
         /// <summary>
-        /// Closes the object.
+        /// Clones the object.
         /// </summary>
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()

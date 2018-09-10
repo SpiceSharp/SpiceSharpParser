@@ -1,8 +1,8 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharp;
+﻿using SpiceSharp;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports
 {
     /// <summary>
     /// Current export.
@@ -77,6 +77,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
                     {
                         throw new GeneralReaderException($"Current export {Name} is invalid");
                     }
+
                     return double.NaN;
                 }
 
@@ -90,8 +91,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
                     {
                         throw new GeneralReaderException($"Current export {Name} is invalid");
                     }
+
                     return double.NaN;
                 }
+
                 return ExportImpl.Value.Real;
             }
         }

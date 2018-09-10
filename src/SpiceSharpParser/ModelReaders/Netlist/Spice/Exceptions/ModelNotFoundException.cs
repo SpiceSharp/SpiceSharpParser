@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
 {
     /// <summary>
     ///  Exception thrown when the model for entity is not found

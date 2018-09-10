@@ -1,7 +1,7 @@
 ﻿using NSubstitute;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;

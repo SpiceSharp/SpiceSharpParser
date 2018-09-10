@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots
 {
     /// <summary>
     /// Data for plot with data series.

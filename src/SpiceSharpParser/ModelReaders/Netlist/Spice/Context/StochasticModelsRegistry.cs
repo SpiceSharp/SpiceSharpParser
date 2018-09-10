@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -47,7 +46,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Gets the object model name generators.
         /// </summary>
         protected IEnumerable<IObjectNameGenerator> ModelNamesGenerators { get; }
-
 
         /// <summary>
         /// Registers that a model has a dev parameter.
@@ -139,6 +137,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                     return (T)model;
                 }
             }
+
             return null;
         }
 
@@ -166,6 +165,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 return ModelsWithDev[baseModel];
             }
+
             return null;
         }
 
@@ -191,6 +191,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 return ModelsWithLot[baseModel];
             }
+
             return null;
         }
     }

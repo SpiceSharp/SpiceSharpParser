@@ -1,5 +1,5 @@
 ﻿using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations

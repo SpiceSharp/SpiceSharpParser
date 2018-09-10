@@ -1,7 +1,7 @@
 ﻿using SpiceSharp;
 using SpiceSharp.Simulations;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     /// <summary>
     /// A parameter sweep.

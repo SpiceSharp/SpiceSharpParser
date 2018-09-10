@@ -6,7 +6,7 @@ using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     /// <summary>
     /// Reading context.

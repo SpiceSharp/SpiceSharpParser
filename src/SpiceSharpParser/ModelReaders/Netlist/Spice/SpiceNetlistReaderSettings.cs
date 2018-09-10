@@ -1,6 +1,6 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
     public class SpiceNetlistReaderSettings
     {

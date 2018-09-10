@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Common;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Registries
 {
     /// <summary>
     /// Registry with base functionalities.

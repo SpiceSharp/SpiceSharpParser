@@ -1,6 +1,6 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Registries
 {
     /// <summary>
     /// Interface for all control registries

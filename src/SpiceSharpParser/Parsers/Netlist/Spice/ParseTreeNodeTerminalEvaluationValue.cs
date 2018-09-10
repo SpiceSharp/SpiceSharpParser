@@ -3,12 +3,12 @@
 namespace SpiceSharpParser.Parsers.Netlist.Spice
 {
     /// <summary>
-    /// The terminal parse tree node evaluation value
+    /// The terminal parse tree node evaluation value.
     /// </summary>
-    public class ParseTreeNodeTerminalTranslationValue : ParseTreeNodeEvaluationValue
+    public class ParseTreeNodeTerminalEvaluationValue : ParseTreeNodeEvaluationValue
     {
         /// <summary>
-        /// Gets or sets value of terminal node
+        /// Gets or sets value of terminal node.
         /// </summary>
         public SpiceToken Token { get; set; }
     }

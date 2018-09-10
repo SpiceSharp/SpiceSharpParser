@@ -1,21 +1,21 @@
 ﻿using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Postprocessors;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Preprocessors;
 using SpiceSharpParser.Models.Netlist.Spice;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors;
-using SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postprocessors;
 
 namespace SpiceSharpParser
 {
     /// <summary>
-    /// The parser.
+    /// The SPICE parser.
     /// </summary>
     public class Parser
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Parser"/> class.
         /// </summary>
-        /// <param name="spiceNetlistParser">Spice netlist parser.</param>
+        /// <param name="spiceNetlistParser">SPICE netlist parser.</param>
         /// <param name="includesPreprocessor">Includes preprocessor.</param>
         /// <param name="appendModelPreprocessor">Append model preprocessor.</param>
         public Parser(
@@ -57,12 +57,12 @@ namespace SpiceSharpParser
         protected ISweepsPreprocessor SweepsPreprocessor { get; }
 
         /// <summary>
-        /// Gets the .lib preprocessor.
+        /// Gets the .LIB preprocessor.
         /// </summary>
         protected ILibPreprocessor LibPreprocessor { get; }
 
         /// <summary>
-        /// Gets the spice netlist parser.
+        /// Gets the SPICE netlist parser.
         /// </summary>
         protected ISpiceNetlistParser SpiceNetlistParser { get; }
 
@@ -103,7 +103,6 @@ namespace SpiceSharpParser
             LibPreprocessor.Preprocess(preprocessedNetListModel, Settings.WorkingDirectory);
             AppendModelPreprocessor.Preprocess(preprocessedNetListModel);
             SweepsPreprocessor.Preprocess(preprocessedNetListModel);
-            // TODO: more preprocessors
 
             SpiceNetlist postprocessedNetlistModel = (SpiceNetlist)preprocessedNetListModel.Clone();
 

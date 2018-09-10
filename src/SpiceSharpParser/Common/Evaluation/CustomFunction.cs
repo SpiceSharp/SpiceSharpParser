@@ -10,7 +10,7 @@ namespace SpiceSharpParser.Common
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets logic for user function
+        /// Gets or sets logic for user function.
         /// Function:
         /// args => simulation => evaluator => result.
         /// </summary>

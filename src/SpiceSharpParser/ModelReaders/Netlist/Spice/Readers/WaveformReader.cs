@@ -1,9 +1,9 @@
 ﻿using SpiceSharp.Components;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
     public class WaveformReader : IWaveformReader
     {

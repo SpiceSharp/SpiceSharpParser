@@ -1,4 +1,4 @@
-﻿namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots
+﻿namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots
 {
     /// <summary>
     /// Plot point.

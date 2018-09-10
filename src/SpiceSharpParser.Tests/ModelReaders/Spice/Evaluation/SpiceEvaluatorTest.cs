@@ -1,7 +1,7 @@
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions;
 using System;
 using System.Linq;
 using Xunit;

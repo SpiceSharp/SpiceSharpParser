@@ -2,7 +2,7 @@
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
 {
     public class BipolarModelGenerator : ModelGenerator
     {

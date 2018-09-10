@@ -6,13 +6,10 @@ using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls;
 
-namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postprocessors
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Postprocessors
 {
     /// <summary>
     /// Not smart .if/.endif "parser".
@@ -26,7 +23,7 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
 
         protected IEvaluator Evaluator { get; }
 
-        //TODO: please do something about .ToLower() in so many places ....
+        // TODO: please do something about .ToLower() in so many places ....
         public Statements PostProcess(Statements statements)
         {
             var readingContext = new IfPostReaderReadingContext(Evaluator);
@@ -48,16 +45,17 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
 
         private Statements ReadIfs(Statements statements)
         {
-            //1. Find first .IF
+            // 1. Find first .IF
             var firstIf = statements.FirstOrDefault(statement => statement is Control c && c.Name.ToLower() == "if");
             if (firstIf == null)
             {
                 return statements;
             }
+
             var firstIfIndex = statements.IndexOf(firstIf);
             var result = (Statements)statements.Clone();
 
-            //2. Find matching .ENDIF
+            // 2. Find matching .ENDIF
             var matchedEndIfIndex = FindFirstMatched(result, firstIfIndex + 1, "endif");
 
             if (matchedEndIfIndex == statements.Count)
@@ -65,13 +63,13 @@ namespace SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postproc
                 throw new Exception("Couldn't find matching .endif");
             }
 
-            //3. Compute result of .if
+            // 3. Compute result of .if
             var ifResultStatements = ComputeIfResult(result, firstIfIndex, matchedEndIfIndex);
 
-            //4.Replace .if statements with its result
+            // 4.Replace .if statements with its result
             result.Replace(firstIfIndex, matchedEndIfIndex, ifResultStatements);
 
-            //5. Do it again.
+            // 5. Do it again.
             result = ReadIfs(result);
 
             return result;

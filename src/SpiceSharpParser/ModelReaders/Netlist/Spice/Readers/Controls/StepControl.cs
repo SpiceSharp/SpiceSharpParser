@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
     /// Reads .STEP <see cref="Control"/> from Spice netlist object model.
@@ -200,8 +199,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                 {
                     Parameter = variableParameter,
                     Sweep = new ListSweep(values),
-                }
-            );
+                });
         }
 
         private void ReadLin(Parameter variableParameter, ParameterCollection parameters, IReadingContext context)

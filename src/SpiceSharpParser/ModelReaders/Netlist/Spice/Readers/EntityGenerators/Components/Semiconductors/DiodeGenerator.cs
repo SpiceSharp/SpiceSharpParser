@@ -2,13 +2,12 @@
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
-
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
 {
     public class DiodeGenerator : EntityGenerator
     {
@@ -59,7 +58,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
 
                 if (parameters[i] is ValueParameter v1 || parameters[i] is ExpressionParameter v2)
                 {
-                    //TODO: Fix this please it's broken ...
+                    // TODO: Fix this please it's broken ...
                     var bp = diode.ParameterSets.Get<SpiceSharp.Components.DiodeBehaviors.BaseParameters>();
                     if (!bp.Area.Given)
                     {

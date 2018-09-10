@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using SpiceSharpParser.Lexers;
 
 namespace SpiceSharpParser.Lexers.Netlist.Spice
 {
     /// <summary>
-    /// A lexer for Spice netlists.
+    /// A lexer for SPICE netlists.
     /// </summary>
     public class SpiceLexer
     {
@@ -22,9 +21,9 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
         }
 
         /// <summary>
-        /// Gets tokens for Spice netlist.
+        /// Gets tokens for SPICE netlist.
         /// </summary>
-        /// <param name="netlistText">A string with Spice netlist.</param>
+        /// <param name="netlistText">A string with SPICE netlist.</param>
         /// <returns>
         /// An enumerable of tokens.
         /// </returns>
@@ -40,20 +39,16 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
         }
 
         /// <summary>
-        /// Builds Spice lexer grammar.
+        /// Builds SPICE lexer grammar.
         /// </summary>
         private void BuildGrammar()
         {
-            // TODO think through about order of rules ...
-
             var builder = new LexerGrammarBuilder<SpiceLexerState>();
             builder.AddRule(new LexerInternalRule("LETTER", "[a-z]", options.IgnoreCase));
             builder.AddRule(new LexerInternalRule("CHARACTER", "[a-z0-9\\-+]", options.IgnoreCase));
             builder.AddRule(new LexerInternalRule("DIGIT", "[0-9]", options.IgnoreCase));
             builder.AddRule(new LexerInternalRule("SPECIAL", "[\\\\\\[\\]_\\.\\:\\!%\\#\\-;\\<>\\^+/\\*]", options.IgnoreCase));
             builder.AddRule(new LexerInternalRule("SPECIAL_WITHOUT_BACKSLASH", "[\\[\\]_\\.\\:\\!%\\#\\-;\\<>\\^+/\\*]", options.IgnoreCase));
-
-
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.WHITESPACE,
                 "A whitespace characters that will be ignored",
@@ -65,7 +60,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.TITLE,
-                "The title - first line of spice token",
+                "The title - first line of SPICE token",
                 @"[^\r\n]+",
                 null,
                 (SpiceLexerState state, string lexem) =>
@@ -176,6 +171,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                     {
                         return LexerRuleResult.IgnoreToken;
                     }
+
                     return LexerRuleResult.ReturnToken;
                 }));
 
@@ -383,8 +379,8 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 null,
                 (SpiceLexerState state, string lexem) =>
                 {
-                    if (state.LexerOptions.CurrentLineContinuationCharacter.HasValue 
-                        && lexem.EndsWith(state.LexerOptions.CurrentLineContinuationCharacter.Value.ToString())
+                    if (state.LexerOptions.CurrentLineContinuationCharacter.HasValue
+                        && lexem.EndsWith(state.LexerOptions.CurrentLineContinuationCharacter.Value.ToString(), System.StringComparison.Ordinal)
                         && state.BeforeLineBreak)
                     {
                         return LexerRuleUseState.Skip;
@@ -402,7 +398,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 (SpiceLexerState state, string lexem) =>
                 {
                     if (state.LexerOptions.CurrentLineContinuationCharacter.HasValue
-                        && lexem.EndsWith(state.LexerOptions.CurrentLineContinuationCharacter.Value.ToString())
+                        && lexem.EndsWith(state.LexerOptions.CurrentLineContinuationCharacter.Value.ToString(), System.StringComparison.Ordinal)
                         && state.BeforeLineBreak)
                     {
                         return LexerRuleUseState.Skip;
@@ -418,17 +414,17 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                     "An identifier",
                     "((<CHARACTER>|_|\\*)(<CHARACTER>|<SPECIAL>)*)",
                     null,
-                (SpiceLexerState state, string lexem) =>
-                {
-                    if (state.LexerOptions.CurrentLineContinuationCharacter.HasValue
-                        && lexem.EndsWith(state.LexerOptions.CurrentLineContinuationCharacter.Value.ToString())
-                        && state.BeforeLineBreak)
+                    (SpiceLexerState state, string lexem) =>
                     {
-                        return LexerRuleUseState.Skip;
-                    }
+                        if (state.LexerOptions.CurrentLineContinuationCharacter.HasValue
+                            && lexem.EndsWith(state.LexerOptions.CurrentLineContinuationCharacter.Value.ToString(), System.StringComparison.Ordinal)
+                            && state.BeforeLineBreak)
+                        {
+                            return LexerRuleUseState.Skip;
+                        }
 
-                    return LexerRuleUseState.Use;
-                },
+                        return LexerRuleUseState.Use;
+                    },
                     ignoreCase: options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
@@ -451,9 +447,9 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                     ignoreCase: options.IgnoreCase));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
-              (int)SpiceTokenType.ASTERIKS,
-              "An asteriks character",
-              "\\*"));
+                (int)SpiceTokenType.ASTERIKS,
+                "An asteriks character",
+                "\\*"));
 
             grammar = builder.GetGrammar();
         }

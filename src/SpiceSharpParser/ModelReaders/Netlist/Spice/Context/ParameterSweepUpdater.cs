@@ -4,7 +4,6 @@ using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {

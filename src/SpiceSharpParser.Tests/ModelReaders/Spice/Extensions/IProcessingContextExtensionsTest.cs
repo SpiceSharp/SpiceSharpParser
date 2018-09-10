@@ -6,9 +6,9 @@ using Xunit;
 using SpiceSharp.Components;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Extensions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Extensions;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Extensions
 {

@@ -3,7 +3,7 @@
 namespace SpiceSharpParser.Lexers
 {
     /// <summary>
-    /// The lexer token rule class. It defines how and when a token will be generated for given regulal expression pattern
+    /// The lexer token rule class. It defines how and when a token will be generated for given regulal expression pattern.
     /// </summary>
     /// <typeparam name="TLexerState">Type of lexer state</typeparam>
     public class LexerTokenRule<TLexerState> : LexerRule
@@ -50,9 +50,9 @@ namespace SpiceSharpParser.Lexers
         /// <summary>
         /// Returns true if the rule is active or should be skipped.
         /// </summary>
-        /// <param name="lexerState">The curent lexer state</param>
+        /// <param name="lexerState">The curent lexer state.</param>
         /// <returns>
-        /// True if the lexer token rule is active or should be skipped
+        /// True if the lexer token rule is active or should be skipped.
         /// </returns>
         public bool CanUse(TLexerState lexerState, string lexem)
         {

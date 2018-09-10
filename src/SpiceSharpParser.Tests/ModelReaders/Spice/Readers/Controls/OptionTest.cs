@@ -1,13 +1,14 @@
 ﻿using NSubstitute;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using Xunit;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharp;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 {
@@ -39,7 +40,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             evaluator.EvaluateDouble("12.2").Returns(12.2);
             evaluator.EvaluateDouble("12.3").Returns(12.3);
 
-            var resultService = new ResultService(new ModelsReaders.Netlist.Spice.SpiceNetlistReaderResult(new Circuit(), "title"));
+            var resultService = new ResultService(new SpiceNetlistReaderResult(new Circuit(), "title"));
             var readingContext = new ReadingContext(
                 string.Empty,
                 Substitute.For<ISimulationContexts>(),
@@ -75,7 +76,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             };
 
             var evaluator = Substitute.For<ISpiceEvaluator>();
-            var resultService = new ResultService(new ModelsReaders.Netlist.Spice.SpiceNetlistReaderResult(new Circuit(), "title"));
+            var resultService = new ResultService(new SpiceNetlistReaderResult(new Circuit(), "title"));
             var readingContext = new ReadingContext(
                 string.Empty,
                 Substitute.For<ISimulationContexts>(),

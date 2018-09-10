@@ -1,5 +1,5 @@
 ﻿using System;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints;
+using SpiceSharpParser.Common.Writers;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints
 {
@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints
 
             var raw = print.ToRaw();
 
-            Common.Writers.CsvWriter.Write(path, raw.Item2, raw.Item3, columnsSeperator, decimalSeparator, addCsvHeader ?? false);
+            CsvWriter.Write(path, raw.Item2, raw.Item3, columnsSeperator, decimalSeparator, addCsvHeader ?? false);
         }
     }
 }

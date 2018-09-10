@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceSharp.Components.BipolarBehaviors;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
 {
     public class BipolarJunctionTransistorGenerator : EntityGenerator
     {
@@ -60,7 +60,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                     }
                     else
                     {
-                        //TODO: Fix this please it's broken ...
+                        // TODO: Fix this please it's broken ...
                         BaseParameters bp = bjt.ParameterSets.Get<BaseParameters>();
                         if (!bp.Area.Given)
                         {
@@ -87,10 +87,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
         }
 
         /// <summary>
-        /// Gets the generated types
+        /// Gets the generated types.
         /// </summary>
         /// <returns>
-        /// A list of generated types
+        /// A list of generated types.
         /// </returns>
         public override IEnumerable<string> GetGeneratedSpiceTypes()
         {

@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.Simulations;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public class ListSweep : Sweep<double>
     {
-        private readonly IEnumerable<double> _points;
+        private readonly IEnumerable<double> points;
 
         public ListSweep(IEnumerable<double> points)
         {
-            _points = points;
+            this.points = points;
         }
 
-        public override IEnumerable<double> Points => _points;
+        public override IEnumerable<double> Points => points;
     }
 }

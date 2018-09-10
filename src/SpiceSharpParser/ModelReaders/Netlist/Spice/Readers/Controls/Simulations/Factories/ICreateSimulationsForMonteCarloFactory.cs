@@ -1,7 +1,7 @@
 ﻿using System;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
 {

@@ -1,9 +1,9 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
+﻿using SpiceSharp.Circuits;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharp.Circuits;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Extensions
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Extensions
 {
     /// <summary>
     /// Extensions for <see cref="IReadingContext"/>

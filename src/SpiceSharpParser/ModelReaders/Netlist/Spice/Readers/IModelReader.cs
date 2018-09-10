@@ -1,6 +1,6 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
     /// <summary>
     /// Interface for all model readers

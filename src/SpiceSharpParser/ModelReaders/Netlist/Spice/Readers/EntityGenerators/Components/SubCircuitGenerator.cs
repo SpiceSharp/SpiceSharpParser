@@ -4,15 +4,14 @@ using System.Globalization;
 using System.Linq;
 using SpiceSharp;
 using SpiceSharp.Circuits;
-using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Postprocessors;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postprocessors;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
 {
     /// <summary>
     /// Generates subcircuits content.
@@ -185,6 +184,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             var subcircuitEvaluator = context.ReadingEvaluator.CreateChildEvaluator(subcircuitFullName);
             var subcircuitParameters = CreateSubcircuitParameters(context.ReadingEvaluator, subCircuitDefiniton, subCktParameters);
             subcircuitEvaluator.SetParameters(subcircuitParameters);
+
             // setting node name generator
             var pinInstanceNames = new List<string>();
             for (var i = 0; i < parameters.Count - assigmentParametersCount - 1; i++)

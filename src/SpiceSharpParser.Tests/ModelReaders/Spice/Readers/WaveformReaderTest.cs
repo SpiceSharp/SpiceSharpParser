@@ -1,8 +1,8 @@
 using NSubstitute;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Waveforms;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp.Components;
 using System;

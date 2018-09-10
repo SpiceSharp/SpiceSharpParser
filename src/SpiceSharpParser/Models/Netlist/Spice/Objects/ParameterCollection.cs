@@ -45,7 +45,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         public Parameter this[int index] => Values[index];
 
         /// <summary>
-        /// Clears the collction.
+        /// Clears the collection.
         /// </summary>
         public void Clear()
         {
@@ -53,11 +53,16 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Adds parameter to the collction.
+        /// Adds parameter to the collection.
         /// </summary>
         /// <param name="parameter">A parameter to add.</param>
         public void Add(Parameter parameter)
         {
+            if (parameter == null)
+            {
+                throw new ArgumentNullException(nameof(parameter));
+            }
+
             Values.Add(parameter);
         }
 
@@ -90,6 +95,11 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// <param name="parameter">A parameter to insert.</param>
         public void Insert(int index, Parameter parameter)
         {
+            if (parameter == null)
+            {
+                throw new ArgumentNullException(nameof(parameter));
+            }
+
             Values.Insert(index, parameter);
         }
 
@@ -108,6 +118,11 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// <param name="collection">A collection to merge.</param>
         public void Set(ParameterCollection collection)
         {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
             foreach (var value in collection.Values)
             {
                 if (value is SingleParameter)

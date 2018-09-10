@@ -1,6 +1,6 @@
 ﻿using NSubstitute;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Registries

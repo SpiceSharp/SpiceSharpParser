@@ -61,7 +61,7 @@ namespace SpiceSharpParser.Common.Writers
                 writer.Flush();
             }
         }
-        
+
         /// <returns>
         /// First item from tule is columns separator, second is decimal separator
         /// </returns>

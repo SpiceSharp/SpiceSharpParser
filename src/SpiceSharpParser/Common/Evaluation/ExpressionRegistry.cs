@@ -304,7 +304,7 @@ namespace SpiceSharpParser.Common.Evaluation
         {
             foreach (var exprDep in ExpressionsDependencies)
             {
-                foreach (var expr  in exprDep.Value)
+                foreach (var expr in exprDep.Value)
                 {
                     expr.Evaluator = newEvaluator;
                 }

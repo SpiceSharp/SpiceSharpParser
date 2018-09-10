@@ -6,12 +6,12 @@
     public enum LexerRuleResult
     {
         /// <summary>
-        /// Specifies that the token is retured if it's a best match
+        /// Specifies that the token is retured if it's a best match.
         /// </summary>
         ReturnToken = 0,
 
         /// <summary>
-        /// Specifies that the token is ignored
+        /// Specifies that the token is ignored.
         /// </summary>
         IgnoreToken = 1,
     }

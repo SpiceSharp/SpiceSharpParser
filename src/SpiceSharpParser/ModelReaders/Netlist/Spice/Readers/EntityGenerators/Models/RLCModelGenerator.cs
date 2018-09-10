@@ -2,15 +2,15 @@
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
 {
     public class RLCModelGenerator : ModelGenerator
     {
         /// <summary>
-        /// Gets generated Spice types by generator
+        /// Gets generated SPICE types by generator.
         /// </summary>
         /// <returns>
-        /// Generated Spice types
+        /// Generated SPICE types.
         /// </returns>
         public override IEnumerable<string> GetGeneratedSpiceTypes()
         {
@@ -21,7 +21,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
         {
             switch (type)
             {
-                case "r": return new ResistorModel(name); 
+                case "r": return new ResistorModel(name);
                 case "c": return new CapacitorModel(name);
             }
 

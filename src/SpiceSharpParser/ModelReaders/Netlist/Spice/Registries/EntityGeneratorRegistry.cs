@@ -1,7 +1,7 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators;
-using System;
+﻿using System;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Registries
 {
     /// <summary>
     /// Registry for <see cref="EntityGenerator"/>s

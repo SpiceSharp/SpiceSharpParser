@@ -1,15 +1,13 @@
 ﻿using SpiceSharp;
-using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
     /// <summary>
-    /// Translates a spice model to Spice#.
+    /// Translates a SPICE model to SpiceSharp model.
     /// </summary>
     public class SpiceNetlistReader
     {

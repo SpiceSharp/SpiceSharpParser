@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public class ObjectNameGenerator : IObjectNameGenerator
     {
