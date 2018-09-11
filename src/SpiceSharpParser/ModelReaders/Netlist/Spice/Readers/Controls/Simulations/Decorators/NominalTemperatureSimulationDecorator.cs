@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     rs.NominalTemperature = nominalTemperatureInKelvins;
                 }
 
-                //TODO: What to do with complex state?
+                // TODO: What to do with complex state?
             };
 
             simulation.BeforeTemperature += setState;

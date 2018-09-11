@@ -1,7 +1,7 @@
 ﻿using System;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Registries
 {
     /// <summary>
     /// Registry for <see cref="Exporter"/>s

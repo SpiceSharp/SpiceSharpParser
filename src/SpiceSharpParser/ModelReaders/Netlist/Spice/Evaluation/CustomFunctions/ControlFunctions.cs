@@ -1,7 +1,7 @@
 ﻿using System;
 using SpiceSharpParser.Common;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
 {
     public class ControlFunctions
     {

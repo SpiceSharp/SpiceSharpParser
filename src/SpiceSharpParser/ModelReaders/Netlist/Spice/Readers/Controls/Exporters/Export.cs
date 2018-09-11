@@ -1,6 +1,6 @@
 ﻿using SpiceSharp.Simulations;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
     /// <summary>
     /// Describes a quantity that can be exported using simulated data.
@@ -17,7 +17,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
 
             simulation.ExportSimulationData += (obj, e) =>
             {
-                ExceptionsEnabled = true; //TODO: Cleanup
+                ExceptionsEnabled = true; // TODO: Cleanup
             };
         }
 

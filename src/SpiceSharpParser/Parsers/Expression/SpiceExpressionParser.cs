@@ -10,7 +10,7 @@ namespace SpiceSharpParser.Parsers.Expression
     /// <summary>
     /// @author: Sven Boulanger
     /// @author: Marcin Gołębiowski (custom functions, lazy evaluation)
-    /// A very light-weight and fast expression parser made for parsing Spice expressions
+    /// A very light-weight and fast expression parser made for parsing SPICE expressions
     /// It is based on Dijkstra's Shunting Yard algorithm. It is very fast for parsing expressions only once.
     /// The parser is also not very expressive for errors, so only use it for relatively simple expressions.
     /// <list type="bullet">
@@ -23,12 +23,7 @@ namespace SpiceSharpParser.Parsers.Expression
     ///     <item><description>Relational ('==', '!=', '&lt;', '&gt;', '&lt;=', '&gt;=')</description></item>
     /// </list>
     /// <list type="bullet">
-    ///     <listheader><description>Supported functions</description></listheader>
-    ///     <item><description>Minimum and maximum ('min(a,b)', 'max(a,b)')</description></item>
-    ///     <item><description>Square root ('sqrt(a)')</description></item>
-    ///     <item><description>Absolute value ('abs(a)')</description></item>
-    ///     <item><description>Exponent and logarithms ('exp(a)', 'log(a)', 'log10(a)')</description></item>
-    ///     <item><description>Powers ('pow(a, b)')</description></item>
+    ///     <listheader><description>Supported built-in functions</description></listheader>
     ///     <item><description>Trigonometry ('sin(a)', 'cos(a)', 'tan(a)', 'asin(a)', 'acos(a)', 'atan(a)', 'sinh(a)', 'cosh(a)', 'tanh(a)', 'atan2(a, b)')</description></item>
     /// </list>
     /// </summary>
@@ -173,7 +168,7 @@ namespace SpiceSharpParser.Parsers.Expression
         /// <summary>
         /// Parses an expression.
         /// </summary>
-        /// <param name="expression">The expression</param>
+        /// <param name="expression">The expression.</param>
         /// <returns>Returns the result of parse.</returns>
         public ExpressionParseResult Parse(string expression, object context = null, IEvaluator evaluator = null)
         {
@@ -220,6 +215,7 @@ namespace SpiceSharpParser.Parsers.Expression
                                 PushOperator(CreateOperatorForCustomFunction("**", evaluator), context);
                                 break;
                             }
+
                             PushOperator(OperatorMultiply, context);
                             break;
                         case '/': PushOperator(OperatorDivide, context); break;
@@ -295,6 +291,7 @@ namespace SpiceSharpParser.Parsers.Expression
                             {
                                 index++;
                             }
+
                             int endIndex = index;
                             if (index != count)
                             {
@@ -302,6 +299,7 @@ namespace SpiceSharpParser.Parsers.Expression
                                     .Push(input.Substring(startIndex + 1, endIndex - startIndex - 1));
                                 index++;
                             }
+
                             break;
                         case '<':
                             if (index + 1 < count && input[index + 1] == '=')
@@ -318,7 +316,7 @@ namespace SpiceSharpParser.Parsers.Expression
                         case '>':
                             if (index + 1 < count && input[index + 1] == '=')
                             {
-                                PushOperator(OperatorGreaterOrEqual,context);
+                                PushOperator(OperatorGreaterOrEqual, context);
                                 index++;
                             }
                             else
@@ -416,6 +414,7 @@ namespace SpiceSharpParser.Parsers.Expression
                             {
                                 throw new Exception("Unknown function: @");
                             }
+
                             infixPostfix = false;
                         }
                     }
@@ -432,8 +431,10 @@ namespace SpiceSharpParser.Parsers.Expression
                             var parseResult = ParseDouble();
                             outputStack.Push(() => parseResult);
                         }
+
                         infixPostfix = true;
                     }
+
                     // Parse a parameter or a function
                     else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
                     {
@@ -456,6 +457,7 @@ namespace SpiceSharpParser.Parsers.Expression
                                 break;
                             }
                         }
+
                         if (index < count && input[index] == '(')
                         {
                             index++;
@@ -557,6 +559,7 @@ namespace SpiceSharpParser.Parsers.Expression
                         {
                             index++;
                         }
+
                         int endIndex = index;
                         if (index != count)
                         {
@@ -566,6 +569,7 @@ namespace SpiceSharpParser.Parsers.Expression
                             infixPostfix = true;
                         }
                     }
+
                     // Prefix operators
                     else
                     {
@@ -622,7 +626,7 @@ namespace SpiceSharpParser.Parsers.Expression
                 }
 
                 var result = customFunction.Logic(values.ToArray(), contextObj, evaluator);
-                return double.Parse(result.ToString()); //TODO: spice expression at the moment evalute only to double ...
+                return double.Parse(result.ToString()); // TODO: SPICE expression at the moment evalute only to double ...
             };
             return cfo;
         }
@@ -650,7 +654,7 @@ namespace SpiceSharpParser.Parsers.Expression
         /// <summary>
         /// Evaluate operators with precedence.
         /// </summary>
-        /// <param name="op">Operator</param>
+        /// <param name="op">Operator.</param>
         private void PushOperator(Operator op, object context)
         {
             while (operatorStack.Count > 0)
@@ -669,9 +673,9 @@ namespace SpiceSharpParser.Parsers.Expression
         }
 
         /// <summary>
-        /// Evaluate an operator
+        /// Evaluate an operator.
         /// </summary>
-        /// <param name="op">Operator</param>
+        /// <param name="op">Operator.</param>
         private void EvaluateOperator(Operator op, object context)
         {
             Func<double> a, b, c;
@@ -756,6 +760,7 @@ namespace SpiceSharpParser.Parsers.Expression
                     {
                         outputStack.Push(() => c());
                     }
+
                     break;
                 case IdOpenConditional:
                     throw new Exception("Unmatched conditional");
@@ -788,7 +793,7 @@ namespace SpiceSharpParser.Parsers.Expression
 
             // Read decimal part
             if (index < count
-                && (input[index] == '.'  || input[index] == ',' && operatorStack.Count == 0))
+                && (input[index] == '.' || (input[index] == ',' && operatorStack.Count == 0)))
             {
                 index++;
                 double mult = 1.0;
@@ -907,9 +912,9 @@ namespace SpiceSharpParser.Parsers.Expression
         }
 
         /// <summary>
-        /// Parse a double value 
+        /// Parse a double value.
         /// </summary>
-        /// <returns>Parse result</returns>
+        /// <returns>Parse result.</returns>
         private double ParseDouble(string expression, bool commaAsDecimalSeparator = false)
         {
             // Read integer part
@@ -924,7 +929,7 @@ namespace SpiceSharpParser.Parsers.Expression
 
             // Read decimal part
             if (expressionIndex < expressionCount
-                && (expression[expressionIndex] == '.' || expression[expressionIndex] == ',' && commaAsDecimalSeparator))
+                && (expression[expressionIndex] == '.' || (expression[expressionIndex] == ',' && commaAsDecimalSeparator)))
             {
                 expressionIndex++;
                 double mult = 1.0;

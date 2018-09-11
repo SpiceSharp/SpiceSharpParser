@@ -1,11 +1,11 @@
 ﻿using System;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
     /// <summary>
     /// Base for all control simulation readers.
@@ -23,7 +23,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
         }
 
         public ICreateSimulationsForAllTemperaturesFactory CreateSimulationsForAllTemperaturesFactory { get; private set; }
+
         public ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory CreateSimulationsForAllParameterSweepsAndTemperaturesFactory { get; private set; }
+
         public ICreateSimulationsForMonteCarloFactory CreateSimulationsForMonteCarloFactory { get; }
 
         /// <summary>

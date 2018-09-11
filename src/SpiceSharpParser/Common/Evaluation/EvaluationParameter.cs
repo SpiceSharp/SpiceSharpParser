@@ -17,7 +17,8 @@ namespace SpiceSharpParser.Common
         public EvaluationParameter(IEvaluator evaluator, string parameterName)
         {
             ParameterName = parameterName ?? throw new System.ArgumentNullException(nameof(parameterName));
-            Evaluator = evaluator ?? throw new System.ArgumentNullException(nameof(evaluator));        }
+            Evaluator = evaluator ?? throw new System.ArgumentNullException(nameof(evaluator));
+        }
 
         /// <summary>
         /// Gets or sets the value of parameter.

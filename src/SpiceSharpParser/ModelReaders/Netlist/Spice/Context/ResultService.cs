@@ -2,20 +2,20 @@
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public class ResultService : IResultService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ResultService"/> class.
         /// </summary>
-        /// <param name="result">A spice model reader result.</param>
+        /// <param name="result">A SPICE model reader result.</param>
         public ResultService(SpiceNetlistReaderResult result)
         {
             Result = result ?? throw new System.ArgumentNullException(nameof(result));

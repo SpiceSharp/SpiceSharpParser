@@ -1,21 +1,21 @@
-﻿using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 {
     /// <summary>
-    /// A vector parameter
+    /// A vector parameter.
     /// </summary>
     public class VectorParameter : Parameter
     {
         /// <summary>
-        /// Gets or sets the elements of the vector
+        /// Gets or sets the elements of the vector.
         /// </summary>
         public List<SingleParameter> Elements { get; set; } = new List<SingleParameter>();
 
         /// <summary>
-        /// Gets the string represenation of the vector
+        /// Gets the string represenation of the vector.
         /// </summary>
         public override string Image
         {
@@ -38,9 +38,9 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Closes the object.
+        /// Clones the object.
         /// </summary>
-        /// <returns>A clone of the object</returns>
+        /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
             return new ValueParameter(this.Image);

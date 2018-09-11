@@ -1,6 +1,6 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Waveforms;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Registries
 {
     /// <summary>
     /// Interface for all waveform registries

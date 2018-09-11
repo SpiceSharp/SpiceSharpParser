@@ -10,15 +10,15 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
     public class ParseTreeNodeEvaluationValues : List<ParseTreeNodeEvaluationValue>
     {
         /// <summary>
-        /// Gets lexem from the <see cref="ParseTreeNodeEvaluationValue"/> at the specied index
+        /// Gets lexem from the <see cref="ParseTreeNodeEvaluationValue"/> at the specied index.
         /// </summary>
-        /// <param name="index">An index of the item</param>
+        /// <param name="index">An index of the item.</param>
         /// <returns>
-        /// A lexem
+        /// A lexem.
         /// </returns>
         public string GetLexem(int index)
         {
-            if (this[index] is ParseTreeNodeTerminalTranslationValue t)
+            if (this[index] is ParseTreeNodeTerminalEvaluationValue t)
             {
                 return t.Token.Lexem;
             }
@@ -27,15 +27,15 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Gets line number from the <see cref="ParseTreeNodeEvaluationValue"/> at the specied index
+        /// Gets line number from the <see cref="ParseTreeNodeEvaluationValue"/> at the specied index.
         /// </summary>
-        /// <param name="index">An index of the item</param>
+        /// <param name="index">An index of the item.</param>
         /// <returns>
-        /// A line number of the lexem
+        /// A line number of the lexem.
         /// </returns>
         public int GetLexemLineNumber(int index)
         {
-            if (this[index] is ParseTreeNodeTerminalTranslationValue t)
+            if (this[index] is ParseTreeNodeTerminalEvaluationValue t)
             {
                 return t.Token.LineNumber;
             }
@@ -44,16 +44,16 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Tries to gets a <see cref="SpiceToken"/> from specific <see cref="ParseTreeNodeEvaluationValue"/> item
+        /// Tries to gets a <see cref="SpiceToken"/> from specific <see cref="ParseTreeNodeEvaluationValue"/> item.
         /// </summary>
-        /// <param name="index">An index of the item</param>
-        /// <param name="result">A spice token</param>
+        /// <param name="index">An index of the item.</param>
+        /// <param name="result">A SPICE token.</param>
         /// <returns>
-        /// True if spice token can be returned
+        /// True if SPICE token can be returned.
         /// </returns>
         public bool TryToGetToken(int index, out SpiceToken result)
         {
-            if (this[index] is ParseTreeNodeTerminalTranslationValue t)
+            if (this[index] is ParseTreeNodeTerminalEvaluationValue t)
             {
                 result = t.Token;
                 return true;
@@ -64,12 +64,12 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Tries to gets a <see cref="SpiceObject"/> from specific <see cref="ParseTreeNodeEvaluationValue"/> item
+        /// Tries to gets a <see cref="SpiceObject"/> from specific <see cref="ParseTreeNodeEvaluationValue"/> item.
         /// </summary>
-        /// <param name="index">An index of the item</param>
-        /// <param name="result">A spice token</param>
+        /// <param name="index">An index of the item.</param>
+        /// <param name="result">A SPICE token.</param>
         /// <returns>
-        /// True if spice token can be returned
+        /// True if SPICE token can be returned.
         /// </returns>
         public bool TryToGetSpiceObject<T>(int index, out T result)
             where T : SpiceObject
@@ -85,12 +85,12 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Gets a <see cref="SpiceObject"/> from specific <see cref="ParseTreeNodeEvaluationValue"/> item
+        /// Gets a <see cref="SpiceObject"/> from specific <see cref="ParseTreeNodeEvaluationValue"/> item.
         /// </summary>
-        /// <typeparam name="T">Type of <see cref="SpiceObject"/> to look</typeparam>
-        /// <param name="index">An index of the item</param>
+        /// <typeparam name="T">Type of <see cref="SpiceObject"/> to look.</typeparam>
+        /// <param name="index">An index of the item.</param>
         /// <returns>
-        /// A reference to <see cref="T"/> spice object
+        /// A reference to <typeparamref name="T"/> SPICE object.
         /// </returns>
         public T GetSpiceObject<T>(int index)
             where T : SpiceObject

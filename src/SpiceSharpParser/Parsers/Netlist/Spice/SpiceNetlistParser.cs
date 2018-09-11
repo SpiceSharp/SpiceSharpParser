@@ -9,12 +9,12 @@ namespace SpiceSharpParser
     public class SpiceNetlistParser : ISpiceNetlistParser
     {
         /// <summary>
-        /// Parses a spice netlist and returns a spice model.
+        /// Parses a SPICE netlist and returns a SPICE model.
         /// </summary>
-        /// <param name="spiceNetlist">Spice netlist to parse.</param>
+        /// <param name="spiceNetlist">SPICE netlist to parse.</param>
         /// <param name="settings">Setting for parser.</param>
         /// <returns>
-        /// A spice netlist model.
+        /// A SPICE netlist model.
         /// </returns>
         public SpiceNetlist Parse(string spiceNetlist, SpiceNetlistParserSettings settings)
         {
@@ -33,7 +33,7 @@ namespace SpiceSharpParser
 
             ParseTreeNonTerminalNode parseTreeRoot = GetParseTree(
                 tokens,
-                settings.HasTitle ? Symbols.NETLIST : Symbols.NETLIST_WITHOUT_TITLE,
+                settings.HasTitle ? Symbols.Netlist : Symbols.NetlistWithoutTitle,
                 settings.IsNewlineRequired);
 
             return GetNetlistModelFromTree(parseTreeRoot);

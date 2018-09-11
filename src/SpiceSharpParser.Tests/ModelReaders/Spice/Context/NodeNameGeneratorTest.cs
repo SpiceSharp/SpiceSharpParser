@@ -1,4 +1,4 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context

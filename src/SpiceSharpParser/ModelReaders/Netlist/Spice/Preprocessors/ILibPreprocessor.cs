@@ -1,6 +1,6 @@
 ﻿using SpiceSharpParser.Models.Netlist.Spice;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Preprocessors
 {
     public interface ILibPreprocessor
     {

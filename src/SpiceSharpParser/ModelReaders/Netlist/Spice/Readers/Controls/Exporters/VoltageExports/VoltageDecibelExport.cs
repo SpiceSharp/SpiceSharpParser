@@ -1,8 +1,8 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharp;
+﻿using SpiceSharp;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports
 {
     /// <summary>
     /// Magnitude in decibels of a complex voltage export.
@@ -31,35 +31,35 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
         }
 
         /// <summary>
-        /// Gets the main node
+        /// Gets the main node.
         /// </summary>
         public Identifier Node { get; }
 
         /// <summary>
-        /// Gets the reference node
+        /// Gets the reference node.
         /// </summary>
         public Identifier Reference { get; }
 
         /// <summary>
-        /// Gets the type name
+        /// Gets the type name.
         /// </summary>
         public override string TypeName => "none";
 
         /// <summary>
-        /// Gets the quantity unit
+        /// Gets the quantity unit.
         /// </summary>
         public override string QuantityUnit => "Voltage (db V)";
 
         /// <summary>
-        /// Gets the complex voltage export that provide voltage decibels
+        /// Gets the complex voltage export that provide voltage decibels.
         /// </summary>
         protected ComplexVoltageExport ExportImpl { get; }
 
         /// <summary>
-        /// Extracts a voltage decibels at the main node
+        /// Extracts a voltage decibels at the main node.
         /// </summary>
         /// <returns>
-        /// A voltage decibles at the main node
+        /// A voltage decibles at the main node.
         /// </returns>
         public override double Extract()
         {
@@ -69,6 +69,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
                 {
                     throw new GeneralReaderException($"Voltage decibel export '{Name}' is invalid");
                 }
+
                 return double.NaN;
             }
 

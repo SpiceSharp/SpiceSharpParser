@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharp.Circuits;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Common;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
 {
     /// <summary>
     /// Entity generator.
@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators
     public abstract class EntityGenerator : ISpiceObjectReader
     {
         /// <summary>
-        /// Gets the spice name.
+        /// Gets the SPICE name.
         /// </summary>
         public string SpiceCommandName => string.Join(".", GetGeneratedSpiceTypes());
 
@@ -34,7 +34,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators
         /// Gets generated Spice types by generator.
         /// </summary>
         /// <returns>
-        /// Generated Spice type.
+        /// Generated SPICE type.
         /// </returns>
         public abstract IEnumerable<string> GetGeneratedSpiceTypes();
     }

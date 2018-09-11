@@ -1,8 +1,8 @@
-﻿using SpiceSharpParser.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using SpiceSharpParser.Common;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
 {
     public class TableFunction
     {
@@ -10,7 +10,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
         /// Create a table() custom function.
         /// </summary>
         /// <returns>
-        /// A new instance of random spice function.
+        /// A new instance of random SPICE function.
         /// </returns>
         public static CustomFunction Create()
         {
@@ -75,7 +75,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
                 result.Add(new LineParameters()
                 {
                     A = a,
-                    B = y1 - a * x1,
+                    B = y1 - (a * x1),
                 });
             }
 

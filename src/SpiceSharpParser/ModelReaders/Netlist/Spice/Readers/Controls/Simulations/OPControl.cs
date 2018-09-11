@@ -1,11 +1,11 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
     /// <summary>
-    /// Reads .OP <see cref="Control"/> from spice netlist object model.
+    /// Reads .OP <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class OPControl : SimulationControl
     {

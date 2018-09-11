@@ -5,25 +5,25 @@ using System.Reflection;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
-    /// Reads .SAVE <see cref="Control"/> from spice netlist object model.
+    /// Reads .SAVE <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class SaveControl : ExportControl
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SaveControl"/> class.
         /// </summary>
-        /// <param name="registry">The exporter registry</param>
-        public SaveControl(IExporterRegistry registry) 
+        /// <param name="registry">The exporter registry.</param>
+        public SaveControl(IExporterRegistry registry)
             : base(registry)
         {
         }
@@ -34,10 +34,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         public override string SpiceCommandName => "save";
 
         /// <summary>
-        /// Reads <see cref="Control"/> statement and modifies the context
+        /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modify</param>
+        /// <param name="statement">A statement to process.</param>
+        /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
             Type simulationType = null;
@@ -99,7 +99,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                     }
                 }
 
-                //3. Group them by name (name contains exported variable)
+                // 3. Group them by name (name contains exported variable)
                 var groups = tranExports.GroupBy(export => export.Name);
 
                 foreach (var group in groups)
@@ -126,7 +126,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                     }
                 }
 
-                //3. Group them by name (name contains exported variable)
+                // 3. Group them by name (name contains exported variable)
                 var groups = acExports.GroupBy(export => export.Name);
 
                 foreach (var group in groups)
@@ -156,7 +156,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                     }
                 }
 
-                //3. Group them by name (name contains exported variable)
+                // 3. Group them by name (name contains exported variable)
                 var groups = opExports.GroupBy(export => export.Name);
 
                 foreach (var group in groups)
@@ -241,7 +241,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 
         private void CreateExportsForAllVoltageAndCurrents(IReadingContext context)
         {
-            context.Result.Circuit.Objects.BuildOrderedComponentList(); //TODO: Verify with Sven
+            context.Result.Circuit.Objects.BuildOrderedComponentList(); // TODO: Verify with Sven
 
             // For all simulations add exports for current and voltages
             foreach (var simulation in context.Result.Simulations)
@@ -304,8 +304,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                             expressionName,
                             evaluator.GetExpression(expressionName),
                             evaluator,
-                            simulation
-                    );
+                            simulation);
+
                     context.Result.AddExport(export);
                 }
             }

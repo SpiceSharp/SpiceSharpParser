@@ -8,17 +8,17 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 namespace SpiceSharpParser.Parsers.Netlist.Spice
 {
     /// <summary>
-    /// Translates a parse tree (<see cref="ParseTreeNode"/> to Spice Object Model - SpiceNetlist library
+    /// Translates a parse tree (<see cref="ParseTreeNode"/> to SPICE object model.
     /// </summary>
     public class ParseTreeEvaluator
     {
         /// <summary>
-        /// The dictionary with tree node values
+        /// The dictionary with tree node values.
         /// </summary>
         private Dictionary<ParseTreeNode, ParseTreeNodeEvaluationValue> treeNodesValues = new Dictionary<ParseTreeNode, ParseTreeNodeEvaluationValue>();
 
         /// <summary>
-        /// The dictionary with non-terminal nodes evaluators
+        /// The dictionary with non-terminal nodes evaluators.
         /// </summary>
         private Dictionary<string, Func<ParseTreeNodeEvaluationValues, SpiceObject>> evaluators = new Dictionary<string, Func<ParseTreeNodeEvaluationValues, SpiceObject>>();
 
@@ -27,34 +27,34 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// </summary>
         public ParseTreeEvaluator()
         {
-            evaluators.Add(Symbols.NETLIST, (ParseTreeNodeEvaluationValues nt) => CreateNetlist(nt));
-            evaluators.Add(Symbols.NETLIST_WITHOUT_TITLE, (ParseTreeNodeEvaluationValues nt) => CreateNetlistWithoutTitle(nt));
-            evaluators.Add(Symbols.NETLIST_ENDING, (ParseTreeNodeEvaluationValues nt) => null);
-            evaluators.Add(Symbols.STATEMENTS, (ParseTreeNodeEvaluationValues nt) => CreateStatements(nt));
-            evaluators.Add(Symbols.STATEMENT, (ParseTreeNodeEvaluationValues nt) => CreateStatement(nt));
-            evaluators.Add(Symbols.MODEL, (ParseTreeNodeEvaluationValues nt) => CreateModel(nt));
-            evaluators.Add(Symbols.CONTROL, (ParseTreeNodeEvaluationValues nt) => CreateControl(nt));
-            evaluators.Add(Symbols.COMPONENT, (ParseTreeNodeEvaluationValues nt) => CreateComponent(nt));
-            evaluators.Add(Symbols.PARAMETERS, (ParseTreeNodeEvaluationValues nt) => CreateParameters(nt));
-            evaluators.Add(Symbols.PARAMETER, (ParseTreeNodeEvaluationValues nt) => CreateParameter(nt));
-            evaluators.Add(Symbols.VECTOR, (ParseTreeNodeEvaluationValues nt) => CreateVector(nt));
-            evaluators.Add(Symbols.VECTOR_CONTINUE, (ParseTreeNodeEvaluationValues nt) => CreateVectorContinue(nt));
-            evaluators.Add(Symbols.PARAMETER_BRACKET, (ParseTreeNodeEvaluationValues nt) => CreateBracketParameter(nt));
-            evaluators.Add(Symbols.PARAMETER_BRACKET_CONTENT, (ParseTreeNodeEvaluationValues nt) => CreateBracketParameterContent(nt));
-            evaluators.Add(Symbols.PARAMETER_EQUAL, (ParseTreeNodeEvaluationValues nt) => CreateAssigmentParameter(nt));
-            evaluators.Add(Symbols.PARAMETER_EQUAL_SINGLE, (ParseTreeNodeEvaluationValues nt) => CreateAssigmentSimpleParameter(nt));
-            evaluators.Add(Symbols.PARAMETER_SINGLE, (ParseTreeNodeEvaluationValues nt) => CreateParameterSingle(nt));
-            evaluators.Add(Symbols.SUBCKT, (ParseTreeNodeEvaluationValues nt) => CreateSubCircuit(nt));
-            evaluators.Add(Symbols.SUBCKT_ENDING, (ParseTreeNodeEvaluationValues nt) => null);
-            evaluators.Add(Symbols.COMMENT_LINE, (ParseTreeNodeEvaluationValues nt) => CreateComment(nt));
-            evaluators.Add(Symbols.NEW_LINE, (ParseTreeNodeEvaluationValues nt) => null);
+            evaluators.Add(Symbols.Netlist, (ParseTreeNodeEvaluationValues nt) => CreateNetlist(nt));
+            evaluators.Add(Symbols.NetlistWithoutTitle, (ParseTreeNodeEvaluationValues nt) => CreateNetlistWithoutTitle(nt));
+            evaluators.Add(Symbols.NetlistEnding, (ParseTreeNodeEvaluationValues nt) => null);
+            evaluators.Add(Symbols.Statements, (ParseTreeNodeEvaluationValues nt) => CreateStatements(nt));
+            evaluators.Add(Symbols.Statement, (ParseTreeNodeEvaluationValues nt) => CreateStatement(nt));
+            evaluators.Add(Symbols.Model, (ParseTreeNodeEvaluationValues nt) => CreateModel(nt));
+            evaluators.Add(Symbols.Control, (ParseTreeNodeEvaluationValues nt) => CreateControl(nt));
+            evaluators.Add(Symbols.Component, (ParseTreeNodeEvaluationValues nt) => CreateComponent(nt));
+            evaluators.Add(Symbols.Parameters, (ParseTreeNodeEvaluationValues nt) => CreateParameters(nt));
+            evaluators.Add(Symbols.Parameter, (ParseTreeNodeEvaluationValues nt) => CreateParameter(nt));
+            evaluators.Add(Symbols.Vector, (ParseTreeNodeEvaluationValues nt) => CreateVector(nt));
+            evaluators.Add(Symbols.VectorContinue, (ParseTreeNodeEvaluationValues nt) => CreateVectorContinue(nt));
+            evaluators.Add(Symbols.ParameterBracket, (ParseTreeNodeEvaluationValues nt) => CreateBracketParameter(nt));
+            evaluators.Add(Symbols.ParameterBracketContent, (ParseTreeNodeEvaluationValues nt) => CreateBracketParameterContent(nt));
+            evaluators.Add(Symbols.ParameterEqual, (ParseTreeNodeEvaluationValues nt) => CreateAssigmentParameter(nt));
+            evaluators.Add(Symbols.ParameterEqualSingle, (ParseTreeNodeEvaluationValues nt) => CreateAssigmentSimpleParameter(nt));
+            evaluators.Add(Symbols.ParameterSingle, (ParseTreeNodeEvaluationValues nt) => CreateParameterSingle(nt));
+            evaluators.Add(Symbols.Subckt, (ParseTreeNodeEvaluationValues nt) => CreateSubCircuit(nt));
+            evaluators.Add(Symbols.SubcktEnding, (ParseTreeNodeEvaluationValues nt) => null);
+            evaluators.Add(Symbols.CommentLine, (ParseTreeNodeEvaluationValues nt) => CreateComment(nt));
+            evaluators.Add(Symbols.NewLine, (ParseTreeNodeEvaluationValues nt) => null);
         }
 
         /// <summary>
-        /// Translates a spice parse tree to a context (SpiceNetlist library)
+        /// Translates a SPICE parse tree to a context.
         /// </summary>
-        /// <param name="root">A parse tree root</param>
-        /// <returns>A net list</returns>
+        /// <param name="root">A parse tree root.</param>
+        /// <returns>A netlist.</returns>
         public SpiceObject Evaluate(ParseTreeNode root)
         {
             var travelsal = new ParseTreeTravelsal();
@@ -83,15 +83,15 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     treeNodesValues[treeNode] = new ParseTreeNonTerminalEvaluationValue
                     {
                         SpiceObject = treeNodeResult,
-                        Node = treeNode
+                        Node = treeNode,
                     };
                 }
                 else
                 {
-                    treeNodesValues[treeNode] = new ParseTreeNodeTerminalTranslationValue()
+                    treeNodesValues[treeNode] = new ParseTreeNodeTerminalEvaluationValue()
                     {
                         Node = treeNode,
-                        Token = ((ParseTreeTerminalNode)treeNode).Token
+                        Token = ((ParseTreeTerminalNode)treeNode).Token,
                     };
                 }
             }
@@ -108,7 +108,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
         /// <summary>
         /// Returns new instance of <see cref="SpiceNetlist"/>
-        /// from the values of children nodes of <see cref="Symbols.NETLIST"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.Netlist"/> parse tree node.
         /// </summary>
         /// <returns>
         /// A new instance of <see cref="SpiceNetlist"/>
@@ -120,7 +120,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 return new SpiceNetlist()
                 {
                     Title = string.Empty,
-                    Statements = values.GetSpiceObject<Statements>(1)
+                    Statements = values.GetSpiceObject<Statements>(1),
                 };
             }
             else
@@ -130,20 +130,21 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     return new SpiceNetlist()
                     {
                         Title = null,
-                        Statements = new Statements()
+                        Statements = new Statements(),
                     };
                 }
+
                 return new SpiceNetlist()
                 {
                     Title = values.GetLexem(0),
-                    Statements = values.Count >= 3 ? values.GetSpiceObject<Statements>(2): new Statements()
+                    Statements = values.Count >= 3 ? values.GetSpiceObject<Statements>(2) : new Statements(),
                 };
             }
         }
 
         /// <summary>
         /// Returns new instance of <see cref="SpiceNetlist"/>
-        /// from the values of children nodes of <see cref="Symbols.NETLIST"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.Netlist"/> parse tree node
         /// </summary>
         /// <returns>
         /// A new instance of <see cref="SpiceNetlist"/>
@@ -153,7 +154,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             return new SpiceNetlist()
             {
                 Title = null,
-                Statements = values.GetSpiceObject<Statements>(0)
+                Statements = values.GetSpiceObject<Statements>(0),
             };
         }
 
@@ -162,7 +163,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// or <see cref="BracketParameter"/>
         /// or <see cref="AssignmentParameter"/>
         /// or <see cref="VectorParameter"/>
-        /// from the values of children nodes of <see cref="Symbols.PARAMETER"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.Parameter"/> parse tree node
         /// </summary>
         /// <returns>
         /// A new instance of <see cref="SingleParameter"/>
@@ -199,14 +200,14 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// Returns new instance of <see cref="ReferenceParameter"/>
         /// or <see cref="ValueParameter"/> or <see cref="WordParameter"/>
         /// or <see cref="ExpressionParameter"/> or <see cref="IdentifierParameter"/>
-        /// from the values of children nodes of <see cref="Symbols.PARAMETER_SINGLE"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.ParameterSingle"/> parse tree node
         /// </summary>
         /// <returns>
         /// A new instance of <see cref="SingleParameter"/>
         /// </returns>
         private SpiceObject CreateParameterSingle(ParseTreeNodeEvaluationValues values)
         {
-            if (values[0] is ParseTreeNodeTerminalTranslationValue t)
+            if (values[0] is ParseTreeNodeTerminalEvaluationValue t)
             {
                 var lexemValue = t.Token.Lexem;
                 switch (t.Token.TokenType)
@@ -229,7 +230,6 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                         return new ExpressionParameter(lexemValue.Trim('\''));
                     case (int)SpiceTokenType.PERCENT:
                         return new PercentParameter(lexemValue.TrimEnd('%'));
-
                 }
             }
 
@@ -238,10 +238,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
         /// <summary>
         /// Returns new instance of <see cref="ParameterCollection"/>
-        /// from the values of children nodes of <see cref="Symbols.PARAMETERS"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.Parameters"/> parse tree node.
         /// </summary>
         /// <returns>
-        /// A new instance of <see cref="ParameterCollection"/>
+        /// A new instance of <see cref="ParameterCollection"/>.
         /// </returns>
         private SpiceObject CreateParameters(ParseTreeNodeEvaluationValues values)
         {
@@ -258,10 +258,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
         /// <summary>
         /// Creates an instance of <see cref="Component"/>
-        /// from the values of children nodes of <see cref="Symbols.COMPONENT"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.Component"/> parse tree node.
         /// </summary>
         /// <returns>
-        /// A new instance of <see cref="Component"/>
+        /// A new instance of <see cref="Component"/>.
         /// </returns>
         private SpiceObject CreateComponent(ParseTreeNodeEvaluationValues values)
         {
@@ -279,10 +279,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
         /// <summary>
         /// Returns new instance of <see cref="Control"/>
-        /// from the values of children nodes of <see cref="Symbols.CONTROL"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.Control"/> parse tree node.
         /// </summary>
         /// <returns>
-        /// A new instance of <see cref="Control"/>
+        /// A new instance of <see cref="Control"/>.
         /// </returns>
         private SpiceObject CreateControl(ParseTreeNodeEvaluationValues values)
         {
@@ -292,7 +292,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             {
                 case ".endl":
                     control.Name = "endl";
-                    control.Parameters = new ParameterCollection(); //TODO: fix it, endl can have a parameter
+                    control.Parameters = new ParameterCollection(); // TODO: fix it, endl can have a parameter
                     control.LineNumber = values.GetLexemLineNumber(0);
                     break;
                 case ".if":
@@ -327,10 +327,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
         /// <summary>
         /// Returns new instance of <see cref="SubCircuit"/>
-        /// from the values of children nodes of <see cref="Symbols.SUBCKT"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.Subckt"/> parse tree node.
         /// </summary>
         /// <returns>
-        /// A new instance of <see cref="SubCircuit"/>
+        /// A new instance of <see cref="SubCircuit"/>.
         /// </returns>
         private SpiceObject CreateSubCircuit(ParseTreeNodeEvaluationValues values)
         {
@@ -400,10 +400,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
         /// <summary>
         /// Returns new instance of <see cref="CommentLine"/>
-        /// from the values of children nodes of <see cref="Symbols.COMMENT_LINE"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.CommentLine"/> parse tree node.
         /// </summary>
         /// <returns>
-        /// A new instance of <see cref="CommentLine"/>
+        /// A new instance of <see cref="CommentLine"/>.
         /// </returns>
         private SpiceObject CreateComment(ParseTreeNodeEvaluationValues values)
         {
@@ -415,10 +415,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
         /// <summary>
         /// Returns new instance of <see cref="Statement"/>
-        /// from the values of children nodes of <see cref="Symbols.STATEMENT"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.Statement"/> parse tree node.
         /// </summary>
         /// <returns>
-        /// A instance of <see cref="Statement"/>
+        /// A instance of <see cref="Statement"/>.
         /// </returns>
         private SpiceObject CreateStatement(ParseTreeNodeEvaluationValues values)
         {
@@ -427,7 +427,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 throw new ParseTreeEvaluationException("Error during translating statement - Wrong elements count for statement");
             }
 
-            if (!(values[values.Count - 1] is ParseTreeNodeTerminalTranslationValue tv && tv.Token.Is(SpiceTokenType.NEWLINE)))
+            if (!(values[values.Count - 1] is ParseTreeNodeTerminalEvaluationValue tv && tv.Token.Is(SpiceTokenType.NEWLINE)))
             {
                 throw new ParseTreeEvaluationException("Error during translating statement - Statement is not finished by newline");
             }
@@ -444,10 +444,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
         /// <summary>
         /// Returns new instance of <see cref="Model"/>
-        /// from the values of children nodes of <see cref="Symbols.MODEL"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.Model"/> parse tree node.
         /// </summary>
         /// <returns>
-        /// A new instance of <see cref="Model"/>
+        /// A new instance of <see cref="Model"/>.
         /// </returns>
         private SpiceObject CreateModel(ParseTreeNodeEvaluationValues values)
         {
@@ -460,10 +460,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
         /// <summary>
         /// Returns new instance of <see cref="VectorParameter"/>
-        /// from the values of children nodes of <see cref="Symbols.VECTOR"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.Vector"/> parse tree node.
         /// </summary>
         /// <returns>
-        /// A new instance of <see cref="VectorParameter"/>
+        /// A new instance of <see cref="VectorParameter"/>.
         /// </returns>
         private SpiceObject CreateVector(ParseTreeNodeEvaluationValues values)
         {
@@ -481,10 +481,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
         /// <summary>
         /// Returns new instance of <see cref="VectorParameter"/>
-        /// from the values of children nodes of <see cref="Symbols.VECTOR_CONTINUE"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.VectorContinue"/> parse tree node.
         /// </summary>
         /// <returns>
-        /// A new instance of <see cref="VectorParameter"/>
+        /// A new instance of <see cref="VectorParameter"/>.
         /// </returns>
         private SpiceObject CreateVectorContinue(ParseTreeNodeEvaluationValues values)
         {
@@ -501,10 +501,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
         /// <summary>
         /// Returns new instance of <see cref="BracketParameter"/>
-        /// from the values of children nodes of <see cref="Symbols.PARAMETER_BRACKET"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.ParameterBracket"/> parse tree node.
         /// </summary>
         /// <returns>
-        /// A new instance of <see cref="BracketParameter"/>
+        /// A new instance of <see cref="BracketParameter"/>.
         /// </returns>
         private SpiceObject CreateBracketParameter(ParseTreeNodeEvaluationValues values)
         {
@@ -524,10 +524,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
         /// <summary>
         /// Returns new instance of <see cref="ParameterCollection"/>
-        /// from the values of children nodes of <see cref="Symbols.BRACKET_CONTENT"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.ParameterBracketContent"/> parse tree node.
         /// </summary>
         /// <returns>
-        /// A new instance of <see cref="ParameterCollection"/>
+        /// A new instance of <see cref="ParameterCollection"/>.
         /// </returns>
         private SpiceObject CreateBracketParameterContent(ParseTreeNodeEvaluationValues values)
         {
@@ -551,145 +551,11 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Returns new instance of <see cref="ParameterCollection"/>
-        /// from the values of children nodes of <see cref="Symbols.PARAMETER_EQUAL_SEQUANCE_CONTINUE"/> parse tree node
-        /// </summary>
-        /// <returns>
-        /// A new instance of <see cref="ParameterCollection"/>
-        /// </returns>
-        private SpiceObject CreateAssigmentParametersContinue(ParseTreeNodeEvaluationValues values)
-        {
-            if (values.Count == 2)
-            {
-                var parameters = new ParameterCollection();
-
-                if (values.TryToGetSpiceObject(0, out AssignmentParameter ap))
-                {
-                    parameters.Add(ap);
-                }
-
-                if (values.TryToGetSpiceObject(1, out ParameterCollection p))
-                {
-                    parameters.Merge(p);
-                }
-
-                return parameters;
-            }
-            else
-            {
-                if (values.Count != 0)
-                {
-                    throw new ParseTreeEvaluationException("Error during translating parse tree to Spice Object Model");
-                }
-
-                return new ParameterCollection();
-            }
-        }
-
-        /// <summary>
-        /// Returns new instance of <see cref="ParameterCollection"/>
-        /// from the values of children nodes of <see cref="Symbols.PARAMETER_EQUAL_SEQUANCE"/> parse tree node
-        /// </summary>
-        /// <returns>
-        /// A new instance of <see cref="ParameterCollection"/>
-        /// </returns>
-        private SpiceObject CreateAssigmentParameters(ParseTreeNodeEvaluationValues values)
-        {
-            if (values.Count == 2)
-            {
-                var parameters = new ParameterCollection();
-
-                if (values.TryToGetSpiceObject(0, out AssignmentParameter ap))
-                {
-                    parameters.Add(ap);
-                }
-
-                if (values.TryToGetSpiceObject(1, out ParameterCollection p))
-                {
-                    parameters.Merge(p);
-                }
-
-                return parameters;
-            }
-            else
-            {
-                throw new ParseTreeEvaluationException("Error during translating parse tree to Spice Object Model");
-            }
-        }
-
-        /// <summary>
-        /// Returns new instance of <see cref="ParameterCollection"/>
-        /// from the values of children nodes of <see cref="Symbols.PARAMETER_SINGLE_SEQUENCE"/> parse tree node
-        /// </summary>
-        /// <returns>
-        /// A new instance of <see cref="ParameterCollection"/>
-        /// </returns>
-        private SpiceObject CreateSingleParametersContinue(ParseTreeNodeEvaluationValues values)
-        {
-            if (values.Count == 2)
-            {
-                var parameters = new ParameterCollection();
-
-                if (values.TryToGetSpiceObject(0, out SingleParameter sp))
-                {
-                    parameters.Add(sp);
-                }
-
-                if (values.TryToGetSpiceObject(1, out ParameterCollection p))
-                {
-                    parameters.Merge(p);
-                }
-
-                return parameters;
-            }
-            else
-            {
-                if (values.Count != 0)
-                {
-                    throw new ParseTreeEvaluationException("Error during translating parse tree to Spice Object Model");
-                }
-
-                return new ParameterCollection();
-            }
-        }
-
-        /// <summary>
-        /// Returns new instance of <see cref="ParameterCollection"/>
-        /// from the values of children nodes of <see cref="Symbols.PARAMETER_EQUAL_SEQUANCE"/> parse tree node
-        /// </summary>
-        /// <returns>
-        /// A new instance of <see cref="ParameterCollection"/>
-        /// </returns>
-        private SpiceObject CreateSingleParameters(ParseTreeNodeEvaluationValues values)
-        {
-            if (values.Count == 2)
-            {
-                var parameters = new ParameterCollection();
-
-                if (values.TryToGetSpiceObject(0, out SingleParameter sp))
-                {
-                    parameters.Add(sp);
-                }
-
-                if (values.TryToGetSpiceObject(1, out ParameterCollection p))
-                {
-                    parameters.Merge(p);
-                }
-
-                return parameters;
-            }
-            else
-            {
-                throw new ParseTreeEvaluationException("Error during translating parse tree to Spice Object Model");
-            }
-        }
-
-        /// <summary>
         /// Returns new instance of <see cref="AssignmentParameter"/>
-        /// from the values of children nodes of <see cref="Symbols.PARAMETER_EQUAL_SINGLE"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.ParameterEqualSingle"/> parse tree node.
         /// </summary>
         /// <returns>
-        /// A new instance of <see cref="AssignmentParameter"/>
+        /// A new instance of <see cref="AssignmentParameter"/>.
         /// </returns>
         private SpiceObject CreateAssigmentSimpleParameter(ParseTreeNodeEvaluationValues values)
         {
@@ -709,10 +575,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
         /// <summary>
         /// Returns new instance of <see cref="AssignmentParameter"/>
-        /// from the values of children nodes of <see cref="Symbols.PARAMETER_EQUAL"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.ParameterEqual"/> parse tree node.
         /// </summary>
         /// <returns>
-        /// A instance of <see cref="AssignmentParameter"/>
+        /// A instance of <see cref="AssignmentParameter"/>.
         /// </returns>
         private SpiceObject CreateAssigmentParameter(ParseTreeNodeEvaluationValues values)
         {
@@ -761,10 +627,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
         /// <summary>
         /// Returns new instance of <see cref="Statements"/>
-        /// from the values of children nodes of <see cref="Symbols.STATEMENTS"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.Statements"/> parse tree node.
         /// </summary>
         /// <returns>
-        /// A new instance of <see cref="Statements"/>
+        /// A new instance of <see cref="Statements"/>.
         /// </returns>
         private SpiceObject CreateStatements(ParseTreeNodeEvaluationValues values)
         {

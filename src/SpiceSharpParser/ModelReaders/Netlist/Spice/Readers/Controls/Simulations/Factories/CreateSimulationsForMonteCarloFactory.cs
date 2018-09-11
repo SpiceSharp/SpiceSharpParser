@@ -1,23 +1,24 @@
-﻿using SpiceSharp.Simulations;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
 {
     public class CreateSimulationsForMonteCarloFactory : ICreateSimulationsForMonteCarloFactory
     {
-        public ICreateSimulationsForAllTemperaturesFactory AllTemperatures { get; }
-        public ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory AllTemperaturesAndSweeps { get; }
-
         public CreateSimulationsForMonteCarloFactory(ICreateSimulationsForAllTemperaturesFactory allTemperatures, ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory allTemperaturesAndSweeps)
         {
             AllTemperaturesAndSweeps = allTemperaturesAndSweeps;
             AllTemperatures = allTemperatures;
         }
+
+        public ICreateSimulationsForAllTemperaturesFactory AllTemperatures { get; }
+
+        public ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory AllTemperaturesAndSweeps { get; }
 
         public void Create(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> simulationWithStochasticModels)
         {
@@ -70,6 +71,5 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 }
             };
         }
-
     }
 }

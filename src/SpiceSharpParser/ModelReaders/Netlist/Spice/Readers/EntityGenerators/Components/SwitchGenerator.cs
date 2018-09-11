@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
 {
     public class SwitchGenerator : EntityGenerator
     {
@@ -24,10 +24,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
         }
 
         /// <summary>
-        /// Gets generated Spice types by generator
+        /// Gets generated Spice types by generator.
         /// </summary>
         /// <returns>
-        /// Generated Spice types
+        /// Generated SPICE types.
         /// </returns>
         public override IEnumerable<string> GetGeneratedSpiceTypes()
         {
@@ -35,13 +35,13 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
         }
 
         /// <summary>
-        /// Generates a voltage switch
+        /// Generates a voltage switch.
         /// </summary>
-        /// <param name="name">Name of voltage switch to generate</param>
-        /// <param name="parameters">Parameters for voltage switch</param>
-        /// <param name="context">Reading context</param>
+        /// <param name="name">Name of voltage switch to generate.</param>
+        /// <param name="parameters">Parameters for voltage switch.</param>
+        /// <param name="context">Reading context.</param>
         /// <returns>
-        /// A new voltage switch
+        /// A new voltage switch.
         /// </returns>
         protected Entity GenerateVoltageSwitch(string name, ParameterCollection parameters, IReadingContext context)
         {
@@ -88,13 +88,13 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
         }
 
         /// <summary>
-        /// Generates a current switch
+        /// Generates a current switch.
         /// </summary>
-        /// <param name="name">Name of current switch</param>
-        /// <param name="parameters">Parameters of current switch</param>
-        /// <param name="context">Reading context</param>
+        /// <param name="name">Name of current switch.</param>
+        /// <param name="parameters">Parameters of current switch.</param>
+        /// <param name="context">Reading context.</param>
         /// <returns>
-        /// A new instance of current switch
+        /// A new instance of current switch.
         /// </returns>
         protected Entity GenerateCurrentSwitch(string name, ParameterCollection parameters, IReadingContext context)
         {

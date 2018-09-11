@@ -1,13 +1,13 @@
 ﻿using NSubstitute;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using Xunit;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using System.Linq;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 {
@@ -34,7 +34,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             evaluator.EvaluateDouble("5").Returns(5.0);
 
             var resultService = new ResultService(
-                new ModelsReaders.Netlist.Spice.SpiceNetlistReaderResult(new SpiceSharp.Circuit(), "title"));
+                new SpiceNetlistReaderResult(new SpiceSharp.Circuit(), "title"));
 
             var readingContext = new ReadingContext(
                 string.Empty,
@@ -76,7 +76,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             evaluator.EvaluateDouble("5").Returns(5.0);
 
             var resultService = new ResultService(
-                new ModelsReaders.Netlist.Spice.SpiceNetlistReaderResult(new SpiceSharp.Circuit(), "title"));
+                new SpiceNetlistReaderResult(new SpiceSharp.Circuit(), "title"));
 
             var readingContext = new ReadingContext(
                 string.Empty,
@@ -118,7 +118,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             evaluator.EvaluateDouble("16").Returns(16);
 
             var resultService = new ResultService(
-                new ModelsReaders.Netlist.Spice.SpiceNetlistReaderResult(new SpiceSharp.Circuit(), "title"));
+                new SpiceNetlistReaderResult(new SpiceSharp.Circuit(), "title"));
 
             var readingContext = new ReadingContext(
                 string.Empty,
@@ -160,7 +160,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             evaluator.EvaluateDouble("16").Returns(16);
 
             var resultService = new ResultService(
-                new ModelsReaders.Netlist.Spice.SpiceNetlistReaderResult(new SpiceSharp.Circuit(), "title"));
+                new SpiceNetlistReaderResult(new SpiceSharp.Circuit(), "title"));
 
             var readingContext = new ReadingContext(
                 string.Empty,
@@ -201,7 +201,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             evaluator.EvaluateDouble("1.0").Returns(1.0);
 
             var resultService = new ResultService(
-                new ModelsReaders.Netlist.Spice.SpiceNetlistReaderResult(new SpiceSharp.Circuit(), "title"));
+                new SpiceNetlistReaderResult(new SpiceSharp.Circuit(), "title"));
 
             var readingContext = new ReadingContext(
                 string.Empty,

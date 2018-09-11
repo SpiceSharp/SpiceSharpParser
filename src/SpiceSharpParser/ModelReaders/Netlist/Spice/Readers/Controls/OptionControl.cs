@@ -1,12 +1,12 @@
 ﻿using SpiceSharp;
 using SpiceSharp.IntegrationMethods;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
-    /// Reads .OPTIONS <see cref="Control"/> from spice netlist object model.
+    /// Reads .OPTIONS <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class OptionControl : BaseControl
     {

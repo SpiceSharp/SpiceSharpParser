@@ -1,9 +1,9 @@
 ﻿using System;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
 using SpiceSharp;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports
 {
     /// <summary>
     /// Magnitude of a complex current export.
@@ -63,10 +63,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
                 {
                     throw new GeneralReaderException($"Current decibel export '{Name}' is invalid");
                 }
+
                 return double.NaN;
             }
 
-            //TODO: Verify with Sven....
+            // TODO: Verify with Sven....
             return 20.0 * Math.Log10(ExportImpl.Value.Magnitude);
         }
     }

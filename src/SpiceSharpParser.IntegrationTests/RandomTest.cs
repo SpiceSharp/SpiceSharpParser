@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice;
+using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests

@@ -20,27 +20,27 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         {
             IsNewLineRequiredAtTheEnd = isNewLineRequiredAtTheEnd;
 
-            parsers.Add(Symbols.NETLIST, ReadNetlist);
-            parsers.Add(Symbols.NETLIST_WITHOUT_TITLE, ReadNetlistWithoutTitle);
-            parsers.Add(Symbols.NETLIST_ENDING, ReadNetlistEnding);
-            parsers.Add(Symbols.STATEMENTS, ReadStatements);
-            parsers.Add(Symbols.STATEMENT, ReadStatement);
-            parsers.Add(Symbols.COMMENT_LINE, ReadCommentLine);
-            parsers.Add(Symbols.SUBCKT, ReadSubckt);
-            parsers.Add(Symbols.SUBCKT_ENDING, ReadSubcktEnding);
-            parsers.Add(Symbols.COMPONENT, ReadComponent);
-            parsers.Add(Symbols.CONTROL, ReadControl);
-            parsers.Add(Symbols.MODEL, ReadModel);
-            parsers.Add(Symbols.PARAMETERS, ReadParameters);
-            parsers.Add(Symbols.PARAMETER, ReadParameter);
-            parsers.Add(Symbols.PARAMETER_SINGLE, ReadParameterSingle);
-            parsers.Add(Symbols.PARAMETER_BRACKET, ReadParameterBracket);
-            parsers.Add(Symbols.PARAMETER_BRACKET_CONTENT, ReadParameterBracketContent);
-            parsers.Add(Symbols.PARAMETER_EQUAL, ReadParameterEqual);
-            parsers.Add(Symbols.PARAMETER_EQUAL_SINGLE, ReadParameterEqualSingle);
-            parsers.Add(Symbols.VECTOR, ReadVector);
-            parsers.Add(Symbols.VECTOR_CONTINUE, ReadVectorContinue);
-            parsers.Add(Symbols.NEW_LINE, ReadNewLine);
+            parsers.Add(Symbols.Netlist, ReadNetlist);
+            parsers.Add(Symbols.NetlistWithoutTitle, ReadNetlistWithoutTitle);
+            parsers.Add(Symbols.NetlistEnding, ReadNetlistEnding);
+            parsers.Add(Symbols.Statements, ReadStatements);
+            parsers.Add(Symbols.Statement, ReadStatement);
+            parsers.Add(Symbols.CommentLine, ReadCommentLine);
+            parsers.Add(Symbols.Subckt, ReadSubckt);
+            parsers.Add(Symbols.SubcktEnding, ReadSubcktEnding);
+            parsers.Add(Symbols.Component, ReadComponent);
+            parsers.Add(Symbols.Control, ReadControl);
+            parsers.Add(Symbols.Model, ReadModel);
+            parsers.Add(Symbols.Parameters, ReadParameters);
+            parsers.Add(Symbols.Parameter, ReadParameter);
+            parsers.Add(Symbols.ParameterSingle, ReadParameterSingle);
+            parsers.Add(Symbols.ParameterBracket, ReadParameterBracket);
+            parsers.Add(Symbols.ParameterBracketContent, ReadParameterBracketContent);
+            parsers.Add(Symbols.ParameterEqual, ReadParameterEqual);
+            parsers.Add(Symbols.ParameterEqualSingle, ReadParameterEqualSingle);
+            parsers.Add(Symbols.Vector, ReadVector);
+            parsers.Add(Symbols.VectorContinue, ReadVectorContinue);
+            parsers.Add(Symbols.NewLine, ReadNewLine);
         }
 
         protected bool IsNewLineRequiredAtTheEnd { get; }
@@ -53,7 +53,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// <returns>
         /// A parse tree.
         /// </returns>
-        public ParseTreeNonTerminalNode GetParseTree(SpiceToken[] tokens, string rootSymbol = Symbols.NETLIST)
+        public ParseTreeNonTerminalNode GetParseTree(SpiceToken[] tokens, string rootSymbol = Symbols.Netlist)
         {
             if (tokens == null)
             {
@@ -112,7 +112,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.SUBCKT_ENDING"/> non-terminal node
+        /// Reads <see cref="Symbols.SubcktEnding"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -147,7 +147,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.NEW_LINE"/> non-terminal node
+        /// Reads <see cref="Symbols.NewLine"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -175,7 +175,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.NETLIST"/> non-terminal node
+        /// Reads <see cref="Symbols.Netlist"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -190,8 +190,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             {
                 PushProductionExpression(
                     stack,
-                    CreateNonTerminalNode(Symbols.NETLIST_ENDING, currentNode)
-                );
+                    CreateNonTerminalNode(Symbols.NetlistEnding, currentNode));
                 return;
             }
 
@@ -200,9 +199,8 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 PushProductionExpression(
                     stack,
                     CreateTerminalNode(SpiceTokenType.NEWLINE, currentNode),
-                    CreateNonTerminalNode(Symbols.STATEMENTS, currentNode),
-                    CreateNonTerminalNode(Symbols.NETLIST_ENDING, currentNode)
-                );
+                    CreateNonTerminalNode(Symbols.Statements, currentNode),
+                    CreateNonTerminalNode(Symbols.NetlistEnding, currentNode));
             }
             else
             {
@@ -211,8 +209,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     PushProductionExpression(
                      stack,
                      CreateTerminalNode(SpiceTokenType.TITLE, currentNode),
-                     CreateNonTerminalNode(Symbols.NETLIST_ENDING, currentNode)
-                 );
+                     CreateNonTerminalNode(Symbols.NetlistEnding, currentNode));
                 }
                 else
                 {
@@ -220,15 +217,14 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                         stack,
                         CreateTerminalNode(SpiceTokenType.TITLE, currentNode),
                         CreateTerminalNode(SpiceTokenType.NEWLINE, currentNode),
-                        CreateNonTerminalNode(Symbols.STATEMENTS, currentNode),
-                        CreateNonTerminalNode(Symbols.NETLIST_ENDING, currentNode)
-                    );
+                        CreateNonTerminalNode(Symbols.Statements, currentNode),
+                        CreateNonTerminalNode(Symbols.NetlistEnding, currentNode));
                 }
             }
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.NETLIST_WITHOUT_TITLE"/> non-terminal node
+        /// Reads <see cref="Symbols.NetlistWithoutTitle"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -239,13 +235,12 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         {
             PushProductionExpression(
                 stack,
-                CreateNonTerminalNode(Symbols.STATEMENTS, currentNode),
-                CreateNonTerminalNode(Symbols.NETLIST_ENDING, currentNode)
-            );
+                CreateNonTerminalNode(Symbols.Statements, currentNode),
+                CreateNonTerminalNode(Symbols.NetlistEnding, currentNode));
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.NETLIST_ENDING"/> non-terminal node
+        /// Reads <see cref="Symbols.NetlistEnding"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -317,7 +312,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.STATEMENTS"/> non-terminal node
+        /// Reads <see cref="Symbols.Statements"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -339,15 +334,15 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             {
                 PushProductionExpression(
                             stack,
-                            CreateNonTerminalNode(Symbols.STATEMENT, current),
-                            CreateNonTerminalNode(Symbols.STATEMENTS, current));
+                            CreateNonTerminalNode(Symbols.Statement, current),
+                            CreateNonTerminalNode(Symbols.Statements, current));
             }
             else if (currentToken.Is(SpiceTokenType.NEWLINE))
             {
                 PushProductionExpression(
                          stack,
                          CreateTerminalNode(SpiceTokenType.NEWLINE, current),
-                         CreateNonTerminalNode(Symbols.STATEMENTS, current));
+                         CreateNonTerminalNode(Symbols.Statements, current));
             }
             else if (currentToken.Is(SpiceTokenType.END))
             {
@@ -368,7 +363,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.STATEMENT"/> non-terminal node
+        /// Reads <see cref="Symbols.Statement"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -384,7 +379,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             {
                 PushProductionExpression(
                     stack,
-                    CreateNonTerminalNode(Symbols.COMPONENT, current),
+                    CreateNonTerminalNode(Symbols.Component, current),
                     CreateTerminalNode(SpiceTokenType.NEWLINE, current));
             }
             else if (currentToken.Is(SpiceTokenType.DOT))
@@ -395,21 +390,21 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     {
                         PushProductionExpression(
                             stack,
-                            CreateNonTerminalNode(Symbols.SUBCKT, current),
+                            CreateNonTerminalNode(Symbols.Subckt, current),
                             CreateTerminalNode(SpiceTokenType.NEWLINE, current));
                     }
                     else if (nextToken.Equal("model", true))
                     {
                         PushProductionExpression(
                             stack,
-                            CreateNonTerminalNode(Symbols.MODEL, current),
+                            CreateNonTerminalNode(Symbols.Model, current),
                             CreateTerminalNode(SpiceTokenType.NEWLINE, current));
                     }
                     else
                     {
                         PushProductionExpression(
                             stack,
-                            CreateNonTerminalNode(Symbols.CONTROL, current),
+                            CreateNonTerminalNode(Symbols.Control, current),
                             CreateTerminalNode(SpiceTokenType.NEWLINE, current));
                     }
                 }
@@ -422,21 +417,20 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             {
                 PushProductionExpression(
                     stack,
-                    CreateNonTerminalNode(Symbols.COMMENT_LINE, current),
+                    CreateNonTerminalNode(Symbols.CommentLine, current),
                     CreateTerminalNode(SpiceTokenType.NEWLINE, current));
             }
             else
             {
-                if (currentToken.Is(SpiceTokenType.ENDL) 
+                if (currentToken.Is(SpiceTokenType.ENDL)
                     || currentToken.Is(SpiceTokenType.IF)
                     || currentToken.Is(SpiceTokenType.ELSE_IF)
                     || currentToken.Is(SpiceTokenType.ELSE)
                     || currentToken.Is(SpiceTokenType.ENDIF))
-
                 {
                     PushProductionExpression(
                            stack,
-                           CreateNonTerminalNode(Symbols.CONTROL, current),
+                           CreateNonTerminalNode(Symbols.Control, current),
                            CreateTerminalNode(SpiceTokenType.NEWLINE, current));
                 }
                 else
@@ -447,7 +441,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.VECTOR"/> non-terminal node
+        /// Reads <see cref="Symbols.Vector"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -458,14 +452,14 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         {
             PushProductionExpression(
                 stack,
-                CreateNonTerminalNode(Symbols.PARAMETER_SINGLE, current),
+                CreateNonTerminalNode(Symbols.ParameterSingle, current),
                 CreateTerminalNode(SpiceTokenType.COMMA, current, ","),
-                CreateNonTerminalNode(Symbols.PARAMETER_SINGLE, current),
-                CreateNonTerminalNode(Symbols.VECTOR_CONTINUE, current));
+                CreateNonTerminalNode(Symbols.ParameterSingle, current),
+                CreateNonTerminalNode(Symbols.VectorContinue, current));
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.VECTOR_CONTINUE"/> non-terminal node
+        /// Reads <see cref="Symbols.VectorContinue"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -490,13 +484,13 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 PushProductionExpression(
                     stack,
                     CreateTerminalNode(SpiceTokenType.COMMA, current, ","),
-                    CreateNonTerminalNode(Symbols.PARAMETER_SINGLE, current),
-                    CreateNonTerminalNode(Symbols.VECTOR_CONTINUE, current));
+                    CreateNonTerminalNode(Symbols.ParameterSingle, current),
+                    CreateNonTerminalNode(Symbols.VectorContinue, current));
             }
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.COMMENT_LINE"/> non-terminal node
+        /// Reads <see cref="Symbols.CommentLine"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -511,7 +505,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.SUBCKT"/> non-terminal node
+        /// Reads <see cref="Symbols.Subckt"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -532,10 +526,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     CreateTerminalNode(currentToken.SpiceTokenType, current, currentToken.Lexem),
                     CreateTerminalNode(nextToken.SpiceTokenType, current, nextToken.Lexem),
                     CreateTerminalNode(SpiceTokenType.WORD, current),
-                    CreateNonTerminalNode(Symbols.PARAMETERS, current),
+                    CreateNonTerminalNode(Symbols.Parameters, current),
                     CreateTerminalNode(SpiceTokenType.NEWLINE, current),
-                    CreateNonTerminalNode(Symbols.STATEMENTS, current),
-                    CreateNonTerminalNode(Symbols.SUBCKT_ENDING, current));
+                    CreateNonTerminalNode(Symbols.Statements, current),
+                    CreateNonTerminalNode(Symbols.SubcktEnding, current));
             }
             else
             {
@@ -544,7 +538,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.PARAMETERS"/> non-terminal node
+        /// Reads <see cref="Symbols.Parameters"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -573,8 +567,8 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             {
                 PushProductionExpression(
                     stack,
-                    CreateNonTerminalNode(Symbols.PARAMETER, current),
-                    CreateNonTerminalNode(Symbols.PARAMETERS, current));
+                    CreateNonTerminalNode(Symbols.Parameter, current),
+                    CreateNonTerminalNode(Symbols.Parameters, current));
             }
             else if (currentToken.Is(SpiceTokenType.EOF))
             {
@@ -600,7 +594,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.PARAMETER_EQUAL"/> non-terminal node
+        /// Reads <see cref="Symbols.ParameterEqual"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -617,7 +611,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             {
                 if (nextToken.Is(SpiceTokenType.EQUAL))
                 {
-                    stack.Push(CreateNonTerminalNode(Symbols.PARAMETER_EQUAL_SINGLE, currentNode));
+                    stack.Push(CreateNonTerminalNode(Symbols.ParameterEqualSingle, currentNode));
                 }
                 else if (nextToken.Is(SpiceTokenType.DELIMITER) && nextToken.Equal("(", true))
                 {
@@ -629,7 +623,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                             CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, "("),
                             CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, ")"),
                             CreateTerminalNode(SpiceTokenType.EQUAL, currentNode),
-                            CreateNonTerminalNode(Symbols.PARAMETER_SINGLE, currentNode));
+                            CreateNonTerminalNode(Symbols.ParameterSingle, currentNode));
                     }
                     else if ((tokens.Length > currentTokenIndex + 4) && tokens[currentTokenIndex + 3].Lexem == ")" && tokens[currentTokenIndex + 4].Lexem == "=")
                     {
@@ -637,10 +631,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                             stack,
                             CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
                             CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, "("),
-                            CreateNonTerminalNode(Symbols.PARAMETER_SINGLE, currentNode),
+                            CreateNonTerminalNode(Symbols.ParameterSingle, currentNode),
                             CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, ")"),
                             CreateTerminalNode(SpiceTokenType.EQUAL, currentNode),
-                            CreateNonTerminalNode(Symbols.PARAMETER_SINGLE, currentNode));
+                            CreateNonTerminalNode(Symbols.ParameterSingle, currentNode));
                     }
                     else
                     {
@@ -648,17 +642,17 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                             stack,
                             CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
                             CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, "("),
-                            CreateNonTerminalNode(Symbols.VECTOR, currentNode),
+                            CreateNonTerminalNode(Symbols.Vector, currentNode),
                             CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, ")"),
                             CreateTerminalNode(SpiceTokenType.EQUAL, currentNode),
-                            CreateNonTerminalNode(Symbols.PARAMETER_SINGLE, currentNode));
+                            CreateNonTerminalNode(Symbols.ParameterSingle, currentNode));
                     }
                 }
             }
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.PARAMETER_EQUAL_SINGLE"/> non-terminal node
+        /// Reads <see cref="Symbols.ParameterEqualSingle"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -671,11 +665,11 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 stack,
                 CreateTerminalNode(SpiceTokenType.WORD, current),
                 CreateTerminalNode(SpiceTokenType.EQUAL, current),
-                CreateNonTerminalNode(Symbols.PARAMETER_SINGLE, current));
+                CreateNonTerminalNode(Symbols.ParameterSingle, current));
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.PARAMETER_BRACKET_CONTENT"/> non-terminal node
+        /// Reads <see cref="Symbols.ParameterBracketContent"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -686,11 +680,11 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         {
             PushProductionExpression(
                 stack,
-                CreateNonTerminalNode(Symbols.PARAMETERS, currentNode));
+                CreateNonTerminalNode(Symbols.Parameters, currentNode));
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.PARAMETER"/> non-terminal node
+        /// Reads <see cref="Symbols.Parameter"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -713,7 +707,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 {
                     PushProductionExpression(
                         stack,
-                        CreateNonTerminalNode(Symbols.PARAMETER_SINGLE, currentNode));
+                        CreateNonTerminalNode(Symbols.ParameterSingle, currentNode));
                     return;
                 }
                 else
@@ -728,7 +722,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             {
                 PushProductionExpression(
                     stack,
-                    CreateNonTerminalNode(Symbols.VECTOR, currentNode));
+                    CreateNonTerminalNode(Symbols.Vector, currentNode));
             }
             else
             {
@@ -736,7 +730,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 {
                     if (nextToken.Is(SpiceTokenType.EQUAL))
                     {
-                        stack.Push(CreateNonTerminalNode(Symbols.PARAMETER_EQUAL, currentNode));
+                        stack.Push(CreateNonTerminalNode(Symbols.ParameterEqual, currentNode));
                     }
                     else if (nextToken.Is(SpiceTokenType.DELIMITER) && nextToken.Equal("(", true))
                     {
@@ -744,20 +738,20 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                         {
                             PushProductionExpression(
                                 stack,
-                                CreateNonTerminalNode(Symbols.PARAMETER_EQUAL, currentNode));
+                                CreateNonTerminalNode(Symbols.ParameterEqual, currentNode));
                         }
                         else
                         {
                             PushProductionExpression(
                                 stack,
-                                CreateNonTerminalNode(Symbols.PARAMETER_BRACKET, currentNode));
+                                CreateNonTerminalNode(Symbols.ParameterBracket, currentNode));
                         }
                     }
                     else
                     {
                         PushProductionExpression(
                             stack,
-                            CreateNonTerminalNode(Symbols.PARAMETER_SINGLE, currentNode));
+                            CreateNonTerminalNode(Symbols.ParameterSingle, currentNode));
                     }
                 }
                 else
@@ -773,7 +767,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     {
                         PushProductionExpression(
                             stack,
-                            CreateNonTerminalNode(Symbols.PARAMETER_SINGLE, currentNode));
+                            CreateNonTerminalNode(Symbols.ParameterSingle, currentNode));
                     }
                     else
                     {
@@ -794,11 +788,12 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             {
                 return false;
             }
+
             return tokens[currentTokenIndex + 1].Lexem == "=";
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.PARAMETER_BRACKET"/> non-terminal node
+        /// Reads <see cref="Symbols.ParameterBracket"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -815,7 +810,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     stack,
                     CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
                     CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, "("),
-                    CreateNonTerminalNode(Symbols.PARAMETER_BRACKET_CONTENT, currentNode),
+                    CreateNonTerminalNode(Symbols.ParameterBracketContent, currentNode),
                     CreateTerminalNode(SpiceTokenType.DELIMITER, currentNode, ")"));
             }
             else
@@ -825,7 +820,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.PARAMETER_SINGLE"/> non-terminal node
+        /// Reads <see cref="Symbols.ParameterSingle"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -857,7 +852,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.MODEL"/> non-terminal node
+        /// Reads <see cref="Symbols.Model"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -880,7 +875,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
                     CreateTerminalNode(nextToken.SpiceTokenType, currentNode),
                     CreateTerminalNode(nextNextToken.SpiceTokenType, currentNode),
-                    CreateNonTerminalNode(Symbols.PARAMETERS, currentNode));
+                    CreateNonTerminalNode(Symbols.Parameters, currentNode));
             }
             else
             {
@@ -889,7 +884,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.CONTROL"/> non-terminal node
+        /// Reads <see cref="Symbols.Control"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -907,7 +902,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     stack,
                     CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
                     CreateTerminalNode(nextToken.SpiceTokenType, currentNode),
-                    CreateNonTerminalNode(Symbols.PARAMETERS, currentNode));
+                    CreateNonTerminalNode(Symbols.Parameters, currentNode));
             }
             else
             {
@@ -916,37 +911,33 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     PushProductionExpression(
                         stack,
                         CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
-                        CreateNonTerminalNode(Symbols.PARAMETERS, currentNode));
+                        CreateNonTerminalNode(Symbols.Parameters, currentNode));
                 }
                 else if (currentToken.Is(SpiceTokenType.IF))
                 {
                     PushProductionExpression(
                         stack,
                         CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
-                        CreateTerminalNode(SpiceTokenType.BOOLEAN_EXPRESSION, currentNode)
-                    );
+                        CreateTerminalNode(SpiceTokenType.BOOLEAN_EXPRESSION, currentNode));
                 }
                 else if (currentToken.Is(SpiceTokenType.ELSE_IF))
                 {
                     PushProductionExpression(
                         stack,
                         CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
-                        CreateTerminalNode(SpiceTokenType.BOOLEAN_EXPRESSION, currentNode)
-                    );
+                        CreateTerminalNode(SpiceTokenType.BOOLEAN_EXPRESSION, currentNode));
                 }
                 else if (currentToken.Is(SpiceTokenType.ELSE))
                 {
                     PushProductionExpression(
                         stack,
-                        CreateTerminalNode(currentToken.SpiceTokenType, currentNode)
-                    );
+                        CreateTerminalNode(currentToken.SpiceTokenType, currentNode));
                 }
                 else if (currentToken.Is(SpiceTokenType.ENDIF))
                 {
                     PushProductionExpression(
                         stack,
-                        CreateTerminalNode(currentToken.SpiceTokenType, currentNode)
-                    );
+                        CreateTerminalNode(currentToken.SpiceTokenType, currentNode));
                 }
                 else
                 {
@@ -956,7 +947,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.COMPONENT"/> non-terminal node
+        /// Reads <see cref="Symbols.Component"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed</param>
@@ -972,7 +963,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 PushProductionExpression(
                     stack,
                     CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
-                    CreateNonTerminalNode(Symbols.PARAMETERS, currentNode));
+                    CreateNonTerminalNode(Symbols.Parameters, currentNode));
             }
             else
             {

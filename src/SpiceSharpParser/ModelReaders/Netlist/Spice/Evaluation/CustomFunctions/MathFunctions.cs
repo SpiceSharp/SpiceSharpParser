@@ -2,7 +2,7 @@
 using System.Numerics;
 using SpiceSharpParser.Common;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
 {
     public class MathFunctions
     {
@@ -40,6 +40,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
                                 return 0;
                             }
                         }
+
                         return Math.Pow(x, y);
 
                     case SpiceEvaluatorMode.SmartSpice:
@@ -87,7 +88,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
                         return Math.Sign(x) * Math.Pow(Math.Abs(x), y);
 
                     default:
-                        return Math.Pow(x, y); //TODO: define logic for default
+                        return Math.Pow(x, y); // TODO: define logic for default
                 }
             };
 
@@ -153,6 +154,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunction
                                 return 0;
                             }
                         }
+
                         return Math.Sqrt(x);
 
                     case SpiceEvaluatorMode.SmartSpice:

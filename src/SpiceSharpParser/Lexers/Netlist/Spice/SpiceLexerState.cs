@@ -9,7 +9,6 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
     {
         public SpiceLexerState()
         {
-
         }
 
         /// <summary>

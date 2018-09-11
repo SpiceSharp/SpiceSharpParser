@@ -1,8 +1,8 @@
 ﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
     /// <summary>
     /// Describes a quantity that can be exported using data from expression.
@@ -26,7 +26,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
             Expression = expression;
             Name = ExpressionName;
             Context = simulation;
-
 
             // Extract the export to register everything.
             // Do not remove it please.

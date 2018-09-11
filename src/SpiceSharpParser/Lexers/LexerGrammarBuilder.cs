@@ -5,16 +5,16 @@ using System.Reflection;
 namespace SpiceSharpParser.Lexers
 {
     /// <summary>
-    /// Builder for LexerGrammar object from lexer rules either of type LexerTokenRole or LexerInternalRule
+    /// Builder for LexerGrammar object from lexer rules either of type LexerTokenRole or LexerInternalRule.
     /// </summary>
-    /// <typeparam name="TLexerState">A type of lexer state</typeparam>
+    /// <typeparam name="TLexerState">A type of lexer state.</typeparam>
     public class LexerGrammarBuilder<TLexerState>
         where TLexerState : LexerState
     {
         private List<LexerRule> rules = new List<LexerRule>();
 
         /// <summary>
-        /// Clears the buildeer
+        /// Clears the builder.
         /// </summary>
         public void Clear()
         {
@@ -22,10 +22,10 @@ namespace SpiceSharpParser.Lexers
         }
 
         /// <summary>
-        /// Adds a rule to builder
+        /// Adds a rule to builder.
         /// </summary>
         /// <param name="rule">
-        /// A lexer rule
+        /// A lexer rule.
         /// </param>
         public void AddRule(LexerRule rule)
         {
@@ -33,10 +33,10 @@ namespace SpiceSharpParser.Lexers
         }
 
         /// <summary>
-        /// Gets the generated grammar
+        /// Gets the generated grammar.
         /// </summary>
         /// <returns>
-        /// A new grammar that contains rules that were added
+        /// A new grammar that contains rules that were added.
         /// </returns>
         public LexerGrammar<TLexerState> GetGrammar()
         {

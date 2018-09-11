@@ -21,6 +21,9 @@
 
   <ItemGroup>
     <PackageReference Include="SpiceSharp" Version="2.3.0" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta007" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta009">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>

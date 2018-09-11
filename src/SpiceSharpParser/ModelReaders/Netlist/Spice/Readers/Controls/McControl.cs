@@ -1,7 +1,7 @@
-﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
     /// Reads .MC <see cref="Control"/> from Spice netlist object model.
@@ -32,7 +32,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
             {
                 if (a.Name.ToLower() == "seed")
                 {
-                    //TODO: refactor it please 
+                    // TODO: refactor it please
                     context.Result.SimulationConfiguration.RandomSeed = int.Parse(a.Value);
                     context.Result.UsedRandomSeed = context.Result.SimulationConfiguration.RandomSeed.Value;
                     context.Result.SimulationConfiguration.MonteCarloConfiguration.RandomSeed = context.Result.SimulationConfiguration.RandomSeed;

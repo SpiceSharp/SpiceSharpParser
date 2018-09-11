@@ -23,17 +23,17 @@ namespace SpiceSharpParser.Lexers
         }
 
         /// <summary>
-        /// Gets name of lexer rule
+        /// Gets name of lexer rule.
         /// </summary>
         public string Name { get; }
 
         /// <summary>
-        /// Gets a value indicating whether case of characters in regular expression is ignored
+        /// Gets a value indicating whether case of characters in regular expression is ignored.
         /// </summary>
         public bool IgnoreCase { get; }
 
         /// <summary>
-        /// Gets or sets a regular expression pattern of lexer rule
+        /// Gets or sets a regular expression pattern of lexer rule.
         /// </summary>
         public string RegularExpressionPattern
         {
@@ -50,7 +50,7 @@ namespace SpiceSharpParser.Lexers
         }
 
         /// <summary>
-        /// Gets a regular expression of lexer rule
+        /// Gets a regular expression of lexer rule.
         /// </summary>
         public Regex RegularExpression
         {
@@ -73,10 +73,10 @@ namespace SpiceSharpParser.Lexers
         }
 
         /// <summary>
-        /// Clones the rule
+        /// Clones the rule.
         /// </summary>
         /// <returns>
-        /// Clone of the rule
+        /// Clone of the rule.
         /// </returns>
         public abstract LexerRule Clone();
     }

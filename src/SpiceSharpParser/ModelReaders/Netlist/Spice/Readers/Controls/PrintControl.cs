@@ -4,18 +4,18 @@ using System.Linq;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
-    /// Reads .PRINT <see cref="Control"/> from spice netlist object model.
+    /// Reads .PRINT <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class PrintControl : ExportControl
     {
@@ -109,7 +109,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         private List<Export> CreateExportsForAllVoltageAndCurrents(Simulation simulation, IReadingContext context)
         {
             var result = new List<Export>();
-            context.Result.Circuit.Objects.BuildOrderedComponentList(); //TODO: Verify with Sven
+            context.Result.Circuit.Objects.BuildOrderedComponentList(); // TODO: Verify with Sven
 
             var nodes = new List<Identifier>();
 
@@ -203,7 +203,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                         double val = exports[i].Extract();
                         row.Columns.Add(val);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         row.Columns.Add(double.NaN);
                     }

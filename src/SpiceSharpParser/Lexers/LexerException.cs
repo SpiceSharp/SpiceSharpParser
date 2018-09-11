@@ -3,7 +3,7 @@
 namespace SpiceSharpParser.Lexers
 {
     /// <summary>
-    /// Exception during lexing
+    /// Exception during lexing.
     /// </summary>
     public class LexerException : Exception
     {

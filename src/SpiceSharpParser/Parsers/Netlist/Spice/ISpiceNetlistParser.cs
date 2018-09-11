@@ -3,17 +3,17 @@
 namespace SpiceSharpParser
 {
     /// <summary>
-    /// Spice netlist parser
+    /// SPICE netlist parser
     /// </summary>
     public interface ISpiceNetlistParser
     {
         /// <summary>
-        /// Parses a spice netlist and returns a spice model.
+        /// Parses a SPICE netlist and returns a SPICE netlist model.
         /// </summary>
-        /// <param name="spiceNetlist">Spice netlist to parse.</param>
+        /// <param name="spiceNetlist">SPICE netlist to parse.</param>
         /// <param name="settings">Setting for parser.</param>
         /// <returns>
-        /// A spice netlist model.
+        /// A SPICE netlist model.
         /// </returns>
         SpiceNetlist Parse(string spiceNetlist, SpiceNetlistParserSettings settings);
     }

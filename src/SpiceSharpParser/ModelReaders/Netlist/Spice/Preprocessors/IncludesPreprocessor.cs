@@ -6,7 +6,7 @@ using SpiceSharpParser.Common;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Preprocessors
 {
     /// <summary>
     /// Preprocess .include statements from netlist file.
@@ -29,7 +29,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors
         public IFileReader FileReader { get; }
 
         /// <summary>
-        /// Gets the spice netlist parser.
+        /// Gets the SPICE netlist parser.
         /// </summary>
         public ISpiceNetlistParser SpiceNetlistParser { get; }
 
@@ -83,14 +83,14 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors
             // check if file exists
             if (!File.Exists(includeFullPath))
             {
-                throw new InvalidOperationException($"Netlist include at { includeFullPath}  is not found");
+                throw new InvalidOperationException($"Netlist include at {includeFullPath}  is not found");
             }
 
             // get include content
             string includeContent = FileReader.GetFileContent(includeFullPath);
             if (includeContent != null)
             {
-                // parse include 
+                // parse include
                 SpiceNetlist includeModel = SpiceNetlistParser.Parse(
                     includeContent,
                     new SpiceNetlistParserSettings() { HasTitle = false, IsEndRequired = false, IsNewlineRequired = false });

@@ -1,13 +1,13 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharp;
+﻿using SpiceSharp;
 using SpiceSharp.Circuits;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
     /// <summary>
-    /// Reads all supported <see cref="Component"/> from spice netlist object model.
+    /// Reads all supported <see cref="Component"/> from SPICE netlist object model.
     /// </summary>
     public class ComponentReader : StatementReader<Component>, IComponentReader
     {

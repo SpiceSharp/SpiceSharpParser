@@ -1,12 +1,12 @@
 ﻿using System;
 using SpiceSharp;
 using SpiceSharp.Circuits;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Extensions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Extensions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
 {
     public abstract class ModelGenerator : EntityGenerator
     {
@@ -29,6 +29,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             context.SetParameters(model, filteredParameters);
             return model;
         }
+
+        protected abstract Entity GenerateModel(string name, string type);
 
         private static ParameterCollection FilterAndRegisterDevAndLot(ParameterCollection parameters, IReadingContext context, Entity model, Func<string, Entity> generator)
         {
@@ -77,8 +79,5 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
 
             return filteredParameters;
         }
-
-
-        protected abstract Entity GenerateModel(string name, string type);
     }
 }

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public class SubcircuitNodeNameGenerator : INodeNameGenerator
     {
-        private Dictionary<string, string> pinMap = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> pinMap = new Dictionary<string, string>();
         private readonly HashSet<string> globalsSet = new HashSet<string>();
 
         /// <summary>

@@ -7,7 +7,7 @@ using SpiceSharpParser.Common;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Preprocessors
 {
     /// <summary>
     /// Preprocess .lib statements with 2 parameters from netlist file.
@@ -31,7 +31,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors
         public IFileReader FileReader { get; }
 
         /// <summary>
-        /// Gets the spice netlist parser.
+        /// Gets the SPICE netlist parser.
         /// </summary>
         public ISpiceNetlistParser SpiceNetlistParser { get; }
 
@@ -103,14 +103,14 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors
             // check if file exists
             if (!File.Exists(libFullPath))
             {
-                throw new InvalidOperationException($"Netlist include at { libFullPath}  is not found");
+                throw new InvalidOperationException($"Netlist include at {libFullPath}  is not found");
             }
 
             // get lib content
             string libContent = FileReader.GetFileContent(libFullPath);
             if (libContent != null)
             {
-                //1. get lib netlist model
+                // 1. get lib netlist model
                 SpiceNetlist includeModel = SpiceNetlistParser.Parse(
                     libContent,
                     new SpiceNetlistParserSettings() { HasTitle = false, IsEndRequired = false, IsNewlineRequired = false });
@@ -128,7 +128,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors
             }
             else
             {
-                throw new InvalidOperationException($"Netlist include at { libFullPath} could not be loaded");
+                throw new InvalidOperationException($"Netlist include at {libFullPath} could not be loaded");
             }
         }
 

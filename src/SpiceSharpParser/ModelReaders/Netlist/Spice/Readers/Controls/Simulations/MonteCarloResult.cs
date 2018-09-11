@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
     /// <summary>
     /// Results of Monte Carlo Analysis.

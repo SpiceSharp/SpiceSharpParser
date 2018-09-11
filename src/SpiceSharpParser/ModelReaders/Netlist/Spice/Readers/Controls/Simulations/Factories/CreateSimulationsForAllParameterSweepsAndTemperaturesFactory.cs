@@ -1,12 +1,11 @@
-﻿using SpiceSharp;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using SpiceSharp;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
 {
@@ -100,7 +99,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             return parameterValues;
         }
-
 
         protected void ProcessTempParameterSweep(IReadingContext context)
         {

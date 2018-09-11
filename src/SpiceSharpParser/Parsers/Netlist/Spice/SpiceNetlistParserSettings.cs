@@ -1,9 +1,9 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice;
 
 namespace SpiceSharpParser
 {
     /// <summary>
-    /// Settings for the spice netlist parser.
+    /// Settings for the SPICE netlist parser.
     /// </summary>
     public class SpiceNetlistParserSettings
     {

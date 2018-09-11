@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
-    //TODO: refactor this even more
+    // TODO: refactor this even more
     public class StatementsOrderer : IStatementsOrderer
     {
         /// <summary>
@@ -54,7 +54,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
                     return 400;
                 }
 
-                //TODO: please do something with that.
+                // TODO: please do something with that.
                 if (c.Name.ToLower() == "param" || c.Name.ToLower() == "func" || c.Name.ToLower() == "step_r" || c.Name.ToLower() == "st_r")
                 {
                     return ControlRegistry.IndexOf(c.Name.ToLower());

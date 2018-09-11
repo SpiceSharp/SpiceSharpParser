@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
     public interface IStatementsOrderer
     {

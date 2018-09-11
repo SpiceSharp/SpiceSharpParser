@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots
 {
     /// <summary>
     /// Data for histogram plot.

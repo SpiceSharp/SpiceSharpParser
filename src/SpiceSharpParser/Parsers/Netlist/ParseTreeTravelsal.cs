@@ -3,18 +3,18 @@
 namespace SpiceSharpParser.Parsers.Netlist
 {
     /// <summary>
-    /// Allows to enumerate parse tree nodes in specific orders
+    /// Allows to enumerate a parse tree nodes in specific order.
     /// </summary>
     public class ParseTreeTravelsal
     {
         /// <summary>
-        /// Returns an enumerable of parse tree nodes in post order
+        /// Returns an enumerable of parse tree nodes in a post order.
         /// </summary>
         /// <param name="rootNode">
-        /// The root node of tree
+        /// The root node of tree.
         /// </param>
         /// <returns>
-        /// An enumrable of parse tree nodes in post order
+        /// An enumrable of parse tree nodes in a post order.
         /// </returns>
         public IEnumerable<ParseTreeNode> GetIterativePostOrder(ParseTreeNode rootNode)
         {
