@@ -2,25 +2,25 @@
 
 namespace SpiceSharpParser.Common.Evaluation
 {
-    public class CachedExpression : EvaluatorExpression
+    public class CachedEvaluatorExpression : EvaluatorExpression
     {
         private double currentValue;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CachedExpression"/> class.
+        /// Initializes a new instance of the <see cref="CachedEvaluatorExpression"/> class.
         /// </summary>
         /// <param name="expressionString">Expression string.</param>
         /// <param name="expressionEvaluator">Expression evaluator.</param>
-        public CachedExpression(string expressionString, Func<string, object, EvaluatorExpression, IEvaluator, double> expressionEvaluator, IEvaluator evaluator)
+        public CachedEvaluatorExpression(string expressionString, Func<string, object, EvaluatorExpression, IEvaluator, double> expressionEvaluator, IEvaluator evaluator)
             : base(expressionString, expressionEvaluator, evaluator)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CachedExpression"/> class.
+        /// Initializes a new instance of the <see cref="CachedEvaluatorExpression"/> class.
         /// </summary>
         /// <param name="expressionEvaluator">Expression evaluator.</param>
-        public CachedExpression(Func<string, object, EvaluatorExpression, IEvaluator, double> expressionEvaluator, IEvaluator evaluator)
+        public CachedEvaluatorExpression(Func<string, object, EvaluatorExpression, IEvaluator, double> expressionEvaluator, IEvaluator evaluator)
             : this(string.Empty, expressionEvaluator, evaluator)
         {
         }
@@ -28,7 +28,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Gets a value indicating whether value of cached expression has been computed.
         /// </summary>
-        protected bool IsLoaded { get; private set; }
+        protected bool IsEvaluated { get; private set; }
 
         /// <summary>
         /// Evaluates the expression.
@@ -39,10 +39,10 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public override double Evaluate(object context)
         {
-            if (!IsLoaded)
+            if (!IsEvaluated)
             {
                 currentValue = ExpressionEvaluator(ExpressionString, context, this, Evaluator);
-                IsLoaded = true;
+                IsEvaluated = true;
             }
 
             return currentValue;
@@ -53,7 +53,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         public override void Invalidate()
         {
-            IsLoaded = false;
+            IsEvaluated = false;
         }
     }
 }

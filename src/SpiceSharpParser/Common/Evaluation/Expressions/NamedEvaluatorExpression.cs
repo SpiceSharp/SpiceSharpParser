@@ -2,14 +2,14 @@
 
 namespace SpiceSharpParser.Common.Evaluation
 {
-    public class NamedExpression : EvaluatorExpression
+    public class NamedEvaluatorExpression : EvaluatorExpression
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NamedExpression"/> class.
+        /// Initializes a new instance of the <see cref="NamedEvaluatorExpression"/> class.
         /// </summary>
         /// <param name="name">A name of expression.</param>
         /// <param name="expression">An expression.</param>
-        public NamedExpression(string name, string expression, Func<string, object, EvaluatorExpression, IEvaluator, double> expressionEvaluator, IEvaluator evaluator)
+        public NamedEvaluatorExpression(string name, string expression, Func<string, object, EvaluatorExpression, IEvaluator, double> expressionEvaluator, IEvaluator evaluator)
             : base(expression, expressionEvaluator, evaluator)
         {
             Name = name;
@@ -26,7 +26,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <returns></returns>
         public override EvaluatorExpression Clone()
         {
-            var result = new NamedExpression(Name, ExpressionString, ExpressionEvaluator, Evaluator);
+            var result = new NamedEvaluatorExpression(Name, ExpressionString, ExpressionEvaluator, Evaluator);
             return result;
         }
     }

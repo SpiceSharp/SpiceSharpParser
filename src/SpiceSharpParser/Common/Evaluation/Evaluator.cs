@@ -156,7 +156,7 @@ namespace SpiceSharpParser.Common.Evaluation
         {
             foreach (var parameter in parameters)
             {
-                Parameters[parameter.Key] = new CachedExpression(
+                Parameters[parameter.Key] = new CachedEvaluatorExpression(
                     parameter.Value,
                     (e, c, a, ev) => ev.EvaluateDouble(e, c),
                     this);
@@ -176,7 +176,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="value">A value of parameter.</param>
         public void SetParameter(string parameterName, double value, object context = null)
         {
-            Parameters[parameterName] = new CachedExpression((e, c, a, ev) => { return value; }, this);
+            Parameters[parameterName] = new CachedEvaluatorExpression((e, c, a, ev) => { return value; }, this);
 
             RefreshForParameter(parameterName, context);
 
@@ -193,7 +193,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="expressionString">An expression of parameter.</param>
         public void SetParameter(string parameterName, string expressionString, object context = null)
         {
-            Parameters[parameterName] = new CachedExpression(
+            Parameters[parameterName] = new CachedEvaluatorExpression(
                 expressionString,
                 (e, c, a, evaluator) =>
                 {
@@ -283,7 +283,7 @@ namespace SpiceSharpParser.Common.Evaluation
         public void SetNamedExpression(string expressionName, string expression)
         {
             var parameters = GetParametersFromExpression(expression);
-            Registry.Add(new NamedExpression(expressionName, expression, (e, c, a, eval) => EvaluateDouble(e, c), this), parameters);
+            Registry.Add(new NamedEvaluatorExpression(expressionName, expression, (e, c, a, eval) => EvaluateDouble(e, c), this), parameters);
         }
 
         /// <summary>
@@ -406,7 +406,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="expressionAction">Expression action.</param>
         public void AddAction(string actionName, string expressionString, Action<double> expressionAction)
         {
-            var namedExpression = new NamedExpression(actionName, expressionString, (expression, context, evaluatorExpression, evaluator) =>
+            var namedExpression = new NamedEvaluatorExpression(actionName, expressionString, (expression, context, evaluatorExpression, evaluator) =>
             {
                 var newValue = evaluator.EvaluateDouble(expression, context);
                 if (newValue != evaluatorExpression.LastValue)

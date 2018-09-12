@@ -40,7 +40,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             : base(name, new SpiceExpressionParser(mode == SpiceEvaluatorMode.LtSpice), registry, randomSeed)
         {
             Mode = mode;
-            Parameters.Add("TEMP", new CachedExpression((e, c, a, ev) => (Circuit.ReferenceTemperature - Circuit.CelsiusKelvin), this));
+            Parameters.Add("TEMP", new CachedEvaluatorExpression((e, c, a, ev) => (Circuit.ReferenceTemperature - Circuit.CelsiusKelvin), this));
             CreateCustomFunctions(this, randomSeed);
         }
 

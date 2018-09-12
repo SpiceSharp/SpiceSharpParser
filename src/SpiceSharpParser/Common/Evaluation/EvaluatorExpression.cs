@@ -36,7 +36,7 @@ namespace SpiceSharpParser.Common
         /// <summary>
         /// Gets the last evaluation value.
         /// </summary>
-        public double LastValue { get; private set; }
+        public double? LastValue { get; private set; }
 
         /// <summary>
         /// Evaluates the expression.
@@ -57,13 +57,13 @@ namespace SpiceSharpParser.Common
         /// </summary>
         public virtual void Invalidate()
         {
-            LastValue = 0;
+            LastValue = null;
         }
 
         public virtual EvaluatorExpression Clone()
         {
             var result = new EvaluatorExpression(ExpressionString, ExpressionEvaluator, Evaluator);
-            result.LastValue = 0;
+            result.LastValue = null;
             return result;
         }
     }

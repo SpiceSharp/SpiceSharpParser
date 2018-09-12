@@ -83,7 +83,7 @@ namespace SpiceSharpParser.Tests.Parsers
         {
             // arrange
             var parser = new SpiceExpressionParser();
-            parser.Parameters["x"] = new Common.Evaluation.CachedExpression((e, c, a, ev) => 1, null);
+            parser.Parameters["x"] = new Common.Evaluation.CachedEvaluatorExpression((e, c, a, ev) => 1, null);
 
             // act and assert
             Assert.Equal(2, parser.Parse("x + 1", null, null).Value());
@@ -94,7 +94,7 @@ namespace SpiceSharpParser.Tests.Parsers
         {
             // arrange
             var parser = new SpiceExpressionParser();
-            parser.Parameters["x"] = new Common.Evaluation.CachedExpression((e, c, a, ev) => 1, null);
+            parser.Parameters["x"] = new Common.Evaluation.CachedEvaluatorExpression((e, c, a, ev) => 1, null);
 
             // act and assert
             Assert.Equal(1, parser.Parse("sin(0) + 1").Value());
@@ -147,10 +147,10 @@ namespace SpiceSharpParser.Tests.Parsers
             var parser = new SpiceExpressionParser();
 
             // act and assert
-            parser.Parameters["TEMP"] = new Common.Evaluation.CachedExpression((e, c, a, ev) => 26, null);
+            parser.Parameters["TEMP"] = new Common.Evaluation.CachedEvaluatorExpression((e, c, a, ev) => 26, null);
             Assert.Equal(2.52e-9, parser.Parse("TEMP == 26 ? 2.52e-9 : 2.24e-9").Value());
 
-            parser.Parameters["TEMP"] = new Common.Evaluation.CachedExpression((e, c, a, ev) => 27,  null);
+            parser.Parameters["TEMP"] = new Common.Evaluation.CachedEvaluatorExpression((e, c, a, ev) => 27,  null);
             Assert.Equal(2.24e-9, parser.Parse("TEMP == 26 ? 2.52e-9 : 2.24e-9").Value());
         }
 

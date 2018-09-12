@@ -11,7 +11,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void AddExpressionWithoutParametersTest()
         {
             var registry = new ExpressionRegistry();
-            registry.Add(new NamedExpression("test", "1", (string s, object o, EvaluatorExpression e, IEvaluator evaluator) => { return 0; }, null), new System.Collections.Generic.List<string>());
+            registry.Add(new NamedEvaluatorExpression("test", "1", (string s, object o, EvaluatorExpression e, IEvaluator evaluator) => { return 0; }, null), new System.Collections.Generic.List<string>());
 
             Assert.Empty(registry.GetDependentExpressions("test"));
         }
