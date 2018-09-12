@@ -55,7 +55,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 "[ \t]*",
                 (SpiceLexerState state, string lexem) =>
                 {
-                    return LexerRuleResult.IgnoreToken;
+                    return LexerRuleReturnState.IgnoreToken;
                 }));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
@@ -67,10 +67,10 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 {
                     if (state.LineNumber == 1 && options.HasTitle)
                     {
-                        return LexerRuleUseState.Use;
+                        return LexerRuleHandleState.Use;
                     }
 
-                    return LexerRuleUseState.Skip;
+                    return LexerRuleHandleState.Next;
                 }));
 
             builder.AddRule(
@@ -92,7 +92,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                     @"(\(|\)|\|)",
                     (SpiceLexerState state, string lexem) =>
                      {
-                         return LexerRuleResult.ReturnToken;
+                         return LexerRuleReturnState.ReturnToken;
                      }));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
@@ -102,16 +102,16 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 (SpiceLexerState state, string lexem) =>
                 {
                     state.InCommentBlock = true;
-                    return LexerRuleResult.IgnoreToken;
+                    return LexerRuleReturnState.IgnoreToken;
                 },
                 (SpiceLexerState state, string lexem) =>
                 {
                     if (state.PreviousReturnedTokenType == (int)SpiceTokenType.NEWLINE || state.PreviousReturnedTokenType == 0)
                     {
-                        return LexerRuleUseState.Use;
+                        return LexerRuleHandleState.Use;
                     }
 
-                    return LexerRuleUseState.Skip;
+                    return LexerRuleHandleState.Next;
                 },
                 ignoreCase: true));
 
@@ -122,16 +122,16 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
               (SpiceLexerState state, string lexem) =>
               {
                   state.InCommentBlock = false;
-                  return LexerRuleResult.IgnoreToken;
+                  return LexerRuleReturnState.IgnoreToken;
               },
               (SpiceLexerState state, string lexem) =>
               {
                   if (state.InCommentBlock)
                   {
-                      return LexerRuleUseState.Use;
+                      return LexerRuleHandleState.Use;
                   }
 
-                  return LexerRuleUseState.Skip;
+                  return LexerRuleHandleState.Next;
               },
               ignoreCase: true));
 
@@ -141,16 +141,16 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                @".*",
                (SpiceLexerState state, string lexem) =>
                {
-                   return LexerRuleResult.IgnoreToken;
+                   return LexerRuleReturnState.IgnoreToken;
                },
                (SpiceLexerState state, string lexem) =>
                {
                    if (state.InCommentBlock)
                    {
-                       return LexerRuleUseState.Use;
+                       return LexerRuleHandleState.Use;
                    }
 
-                   return LexerRuleUseState.Skip;
+                   return LexerRuleHandleState.Next;
                },
                ignoreCase: true));
 
@@ -169,10 +169,10 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
 
                     if (state.InCommentBlock)
                     {
-                        return LexerRuleResult.IgnoreToken;
+                        return LexerRuleReturnState.IgnoreToken;
                     }
 
-                    return LexerRuleResult.ReturnToken;
+                    return LexerRuleReturnState.ReturnToken;
                 }));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
@@ -182,7 +182,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 (SpiceLexerState state, string lexem) =>
                 {
                     state.LineNumber++;
-                    return LexerRuleResult.IgnoreToken;
+                    return LexerRuleReturnState.IgnoreToken;
                 }));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
@@ -213,10 +213,10 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                    if (state.PreviousReturnedTokenType == (int)SpiceTokenType.IF
                    || state.PreviousReturnedTokenType == (int)SpiceTokenType.ELSE_IF)
                    {
-                       return LexerRuleUseState.Use;
+                       return LexerRuleHandleState.Use;
                    }
 
-                   return LexerRuleUseState.Skip;
+                   return LexerRuleHandleState.Next;
                },
               ignoreCase: options.IgnoreCase));
 
@@ -254,10 +254,10 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                    if (state.PreviousReturnedTokenType == (int)SpiceTokenType.EQUAL
                     || state.PreviousReturnedTokenType == (int)SpiceTokenType.VALUE)
                    {
-                       return LexerRuleUseState.Use;
+                       return LexerRuleHandleState.Use;
                    }
 
-                   return LexerRuleUseState.Skip;
+                   return LexerRuleHandleState.Next;
                },
                ignoreCase: options.IgnoreCase));
 
@@ -268,7 +268,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 null,
                 (SpiceLexerState state, string lexem) =>
                 {
-                    return LexerRuleUseState.Use;
+                    return LexerRuleHandleState.Use;
                 },
                 ignoreCase: options.IgnoreCase));
 
@@ -283,10 +283,10 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                    || state.PreviousReturnedTokenType == (int)SpiceTokenType.VALUE
                    || state.PreviousReturnedTokenType == (int)SpiceTokenType.START)
                   {
-                      return LexerRuleUseState.Use;
+                      return LexerRuleHandleState.Use;
                   }
 
-                  return LexerRuleUseState.Skip;
+                  return LexerRuleHandleState.Next;
               },
               ignoreCase: options.IgnoreCase));
 
@@ -297,7 +297,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 null,
                 (SpiceLexerState state, string lexem) =>
                 {
-                    return LexerRuleUseState.Use;
+                    return LexerRuleHandleState.Use;
                 },
                 ignoreCase: options.IgnoreCase));
 
@@ -307,7 +307,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
              @"\$[^\r\n]*",
              (SpiceLexerState state, string lexem) =>
              {
-                 return LexerRuleResult.IgnoreToken;
+                 return LexerRuleReturnState.IgnoreToken;
              }));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
@@ -316,7 +316,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
              @";[^\r\n]*",
              (SpiceLexerState state, string lexem) =>
              {
-                 return LexerRuleResult.IgnoreToken;
+                 return LexerRuleReturnState.IgnoreToken;
              }));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
@@ -329,10 +329,10 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                     if (state.PreviousReturnedTokenType == (int)SpiceTokenType.NEWLINE
                     || (state.LineNumber == 1 && options.HasTitle == false))
                     {
-                        return LexerRuleUseState.Use;
+                        return LexerRuleHandleState.Use;
                     }
 
-                    return LexerRuleUseState.Skip;
+                    return LexerRuleHandleState.Next;
                 },
                 ignoreCase: options.IgnoreCase));
 
@@ -352,10 +352,10 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
              {
                  if (state.PreviousReturnedTokenType == (int)SpiceTokenType.EQUAL)
                  {
-                     return LexerRuleUseState.Use;
+                     return LexerRuleHandleState.Use;
                  }
 
-                 return LexerRuleUseState.Skip;
+                 return LexerRuleHandleState.Next;
              },
              ignoreCase: options.IgnoreCase));
 
@@ -383,10 +383,10 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                         && lexem.EndsWith(state.LexerOptions.CurrentLineContinuationCharacter.Value.ToString(), System.StringComparison.Ordinal)
                         && state.BeforeLineBreak)
                     {
-                        return LexerRuleUseState.Skip;
+                        return LexerRuleHandleState.Next;
                     }
 
-                    return LexerRuleUseState.Use;
+                    return LexerRuleHandleState.Use;
                 },
                 ignoreCase: options.IgnoreCase));
 
@@ -401,10 +401,10 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                         && lexem.EndsWith(state.LexerOptions.CurrentLineContinuationCharacter.Value.ToString(), System.StringComparison.Ordinal)
                         && state.BeforeLineBreak)
                     {
-                        return LexerRuleUseState.Skip;
+                        return LexerRuleHandleState.Next;
                     }
 
-                    return LexerRuleUseState.Use;
+                    return LexerRuleHandleState.Use;
                 },
                 ignoreCase: options.IgnoreCase));
 
@@ -420,10 +420,10 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                             && lexem.EndsWith(state.LexerOptions.CurrentLineContinuationCharacter.Value.ToString(), System.StringComparison.Ordinal)
                             && state.BeforeLineBreak)
                         {
-                            return LexerRuleUseState.Skip;
+                            return LexerRuleHandleState.Next;
                         }
 
-                        return LexerRuleUseState.Use;
+                        return LexerRuleHandleState.Use;
                     },
                     ignoreCase: options.IgnoreCase));
 

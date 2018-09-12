@@ -1,9 +1,9 @@
 ﻿namespace SpiceSharpParser.Lexers
 {
     /// <summary>
-    /// Special token types.
+    /// Base token types.
     /// </summary>
-    public enum SpecialTokenType
+    public enum TokenType
     {
         /// <summary>
         /// Represents 'the end of file' token type
