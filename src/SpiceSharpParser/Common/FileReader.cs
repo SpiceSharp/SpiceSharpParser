@@ -13,6 +13,16 @@ namespace SpiceSharpParser.Common
         /// </returns>
         public string GetFileContent(string path)
         {
+            if (path == null)
+            {
+                throw new System.ArgumentNullException(nameof(path));
+            }
+
+            if (string.IsNullOrEmpty(path))
+            {
+                throw new System.ArgumentException(nameof(path));
+            }
+
             return File.ReadAllText(path);
         }
     }
