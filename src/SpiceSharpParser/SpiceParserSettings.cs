@@ -5,7 +5,7 @@ namespace SpiceSharpParser
     /// <summary>
     /// Settings for the parser.
     /// </summary>
-    public class ParserSettings
+    public class SpiceParserSettings
     {
         /// <summary>
         /// Gets or sets a path of working directory.
