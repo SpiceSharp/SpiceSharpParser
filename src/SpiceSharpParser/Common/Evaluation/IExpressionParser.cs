@@ -8,6 +8,6 @@ namespace SpiceSharpParser.Common.Evaluation
 
         Dictionary<string, CustomFunction> CustomFunctions { get; }
 
-        ExpressionParseResult Parse(string expression, object context = null, IEvaluator evaluator = null);
+        ExpressionParseResult Parse(string expression, IEvaluator evaluator = null);
     }
 }

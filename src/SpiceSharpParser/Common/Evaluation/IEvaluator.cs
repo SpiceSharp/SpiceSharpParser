@@ -19,24 +19,23 @@ namespace SpiceSharpParser.Common
         List<IEvaluator> Children { get; }
 
         /// <summary>
-        /// Gets the random seed.
+        /// Gets or sets the random seed.
         /// </summary>
-        int? RandomSeed { get; }
+        int? Seed { get; set; }
 
         /// <summary>
-        /// Gets the custom functions.
+        /// Gets the context of the evaluator.
         /// </summary>
-        Dictionary<string, CustomFunction> CustomFunctions { get; }
+        object Context { get; }
 
         /// <summary>
         /// Evaluates a specific expression to double.
         /// </summary>
         /// <param name="expressionString">An expression to evaluate.</param>
-        /// <param name="context">Context of expression.</param>
         /// <returns>
         /// A double value.
         /// </returns>
-        double EvaluateDouble(string expressionString, object context = null);
+        double EvaluateDouble(string expressionString);
 
         /// <summary>
         /// Gets the value of expression.
@@ -45,7 +44,7 @@ namespace SpiceSharpParser.Common
         /// <returns>
         /// A value of expression.
         /// </returns>
-        double GetExpressionValue(string expressionName, object context);
+        double GetExpressionValue(string expressionName);
 
         /// <summary>
         /// Gets the names of parameters.
@@ -70,7 +69,7 @@ namespace SpiceSharpParser.Common
         /// <returns>
         /// A value of parameter.
         /// </returns>
-        double GetParameterValue(string parameterName, object context);
+        double GetParameterValue(string parameterName);
 
         /// <summary>
         /// Returns a value indicating whether there is a expression in evaluator with given name.
@@ -93,16 +92,16 @@ namespace SpiceSharpParser.Common
         /// <summary>
         /// Sets a parameter.
         /// </summary>
-        /// <param name="name">Parameter name.</param>
-        /// <param name="expressionString">Parameter expression.</param>
-        void SetParameter(string name, string expressionString, object context = null);
+        /// <param name="parameterName">Parameter name.</param>
+        /// <param name="expression">Parameter expression.</param>
+        void SetParameter(string parameterName, string expression);
 
         /// <summary>
         /// Sets a parameter.
         /// </summary>
-        /// <param name="name">Parameter name.</param>
+        /// <param name="parameterName">Parameter name.</param>
         /// <param name="value">Parameter expression.</param>
-        void SetParameter(string name, double value, object context = null);
+        void SetParameter(string parameterName, double value);
 
         /// <summary>
         /// Sets parameters.
@@ -116,7 +115,7 @@ namespace SpiceSharpParser.Common
         /// <returns>
         /// A child evaluator.
         /// </returns>
-        IEvaluator CreateChildEvaluator(string name);
+        IEvaluator CreateChildEvaluator(string name, object context);
 
         /// <summary>
         /// Creates a cloned evaluator.
@@ -124,7 +123,7 @@ namespace SpiceSharpParser.Common
         /// <returns>
         /// A cloned evaluator.
         /// </returns>
-        IEvaluator CreateClonedEvaluator(string name, int? randomSeed = null);
+        IEvaluator CreateClonedEvaluator(string name, object context, int? randomSeed);
 
         /// <summary>
         /// Invalidate parameters.
@@ -164,7 +163,7 @@ namespace SpiceSharpParser.Common
         /// Refreshes all dependent expressions and parameters.
         /// </summary>
         /// <param name="parameterName">Paramter</param>
-        void RefreshForParameter(string parameterName, object context);
+        void RefreshForParameter(string parameterName);
 
         /// <summary>
         /// Finds a child evaluator with given name.

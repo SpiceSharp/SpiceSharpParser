@@ -8,14 +8,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
     public interface ISimulationContexts
     {
         /// <summary>
-        /// Gets the simulation evaluators.
-        /// </summary>
-        IDictionary<Simulation, IEvaluator> GetSimulationEvaluators();
-
-        /// <summary>
         /// Gets the simulation evaluator.
         /// </summary>
-        /// <param name="simulation">Simulation</param>
+        /// <param name="simulation">Simulation.</param>
         /// <returns>
         /// Simulation evaluator.
         /// </returns>

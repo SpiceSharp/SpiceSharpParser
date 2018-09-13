@@ -11,7 +11,7 @@ namespace SpiceSharpParser.Common
         /// Initializes a new instance of the <see cref="EvaluatorExpression"/> class.
         /// </summary>
         /// <param name="expressionString">A value of expression.</param>
-        public EvaluatorExpression(string expressionString, Func<string, object, EvaluatorExpression, IEvaluator, double> expressionEvaluator, IEvaluator evaluator)
+        public EvaluatorExpression(string expressionString, Func<string, EvaluatorExpression, IEvaluator, double> expressionEvaluator, IEvaluator evaluator)
         {
             Evaluator = evaluator;
             ExpressionString = expressionString ?? throw new ArgumentNullException(nameof(expressionString));
@@ -31,7 +31,7 @@ namespace SpiceSharpParser.Common
         /// <summary>
         /// Gets the logic that computes the value of expression.
         /// </summary>
-        public Func<string, object, EvaluatorExpression, IEvaluator, double> ExpressionEvaluator { get; }
+        public Func<string, EvaluatorExpression, IEvaluator, double> ExpressionEvaluator { get; }
 
         /// <summary>
         /// Gets the last evaluation value.
@@ -41,13 +41,12 @@ namespace SpiceSharpParser.Common
         /// <summary>
         /// Evaluates the expression.
         /// </summary>
-        /// <param name="context">The context of evaluation.</param>
         /// <returns>
         /// The value of the expression.
         /// </returns>
-        public virtual double Evaluate(object context)
+        public virtual double Evaluate()
         {
-            var val = ExpressionEvaluator(ExpressionString, context, this, Evaluator);
+            var val = ExpressionEvaluator(ExpressionString, this, Evaluator);
             LastValue = val;
             return val;
         }

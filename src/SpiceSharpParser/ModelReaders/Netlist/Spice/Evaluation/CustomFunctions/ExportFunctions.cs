@@ -59,9 +59,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
             function.Name = "Exporter: " + exportType;
             function.ArgumentsCount = -1;
 
-            function.Logic = (args, simulation, evaluator) =>
+            function.Logic = (args, evaluator) =>
             {
-                string exporterKey = string.Format("{0}_{1}_{2}", ((Simulation)simulation).Name, exportType, string.Join(",", args));
+                string exporterKey = string.Format("{0}_{1}_{2}", evaluator.Context != null ? ((Simulation)evaluator.Context).Name : "no_simulation", exportType, string.Join(",", args));
 
                 if (!exporters.ContainsKey(exporterKey))
                 {
@@ -73,7 +73,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
 
                     var parameters = new ParameterCollection();
                     parameters.Add(vectorParameter);
-                    var export = exporter.CreateExport(exportType, parameters, (Simulation)simulation, nodeNameGenerator, objectNameGenerator);
+                    var export = exporter.CreateExport(exportType, parameters, evaluator.Context != null ? (Simulation)evaluator.Context : null, nodeNameGenerator, objectNameGenerator);
                     exporters[exporterKey] = export;
                 }
 
@@ -81,7 +81,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
                 {
                     return exporters[exporterKey].Extract();
                 }
-                catch (GeneralReaderException)
+                catch (Exception ex)
                 {
                     return double.NaN;
                 }
@@ -105,9 +105,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
             function.Name = "Exporter: @";
             function.ArgumentsCount = 2;
 
-            function.Logic = (args, simulation, evaluator) =>
+            function.Logic = (args, evaluator) =>
             {
-                string exporterKey = string.Format("{0}_{1}_{2}", ((Simulation)simulation).Name, exportType, string.Join(",", args));
+                string exporterKey = string.Format("{0}_{1}_{2}", evaluator.Context != null ? ((Simulation)evaluator.Context).Name : "no_simulation", exportType, string.Join(",", args));
 
                 if (!exporters.ContainsKey(exporterKey))
                 {
@@ -115,7 +115,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
                     parameters.Add(new WordParameter(args[0].ToString()));
                     parameters.Add(new WordParameter(args[1].ToString()));
 
-                    var export = exporter.CreateExport(exportType, parameters, (Simulation)simulation, nodeNameGenerator, objectNameGenerator);
+                    var export = exporter.CreateExport(exportType, parameters, evaluator.Context != null ? (Simulation)evaluator.Context : null, nodeNameGenerator, objectNameGenerator);
                     exporters[exporterKey] = export;
                 }
 
@@ -123,7 +123,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
                 {
                     return exporters[exporterKey].Extract();
                 }
-                catch (GeneralReaderException)
+                catch (Exception ex)
                 {
                     return double.NaN;
                 }

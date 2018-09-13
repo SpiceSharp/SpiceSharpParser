@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, context, evaluator) =>
+            function.Logic = (args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -46,14 +46,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, context, evaluator) =>
+            function.Logic = (args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
                     throw new ArgumentException("lazy() function expects one argument");
                 }
 
-                return evaluator.CreateChildEvaluator(evaluator.Name + "_lazy").EvaluateDouble(args[0].ToString(), context);
+                return evaluator.CreateChildEvaluator(evaluator.Name + "_lazy", evaluator.Context).EvaluateDouble(args[0].ToString());
             };
 
             return function;
@@ -73,7 +73,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
             function.ArgumentsCount = 3;
             function.ReturnType = typeof(double);
 
-            function.Logic = (args, context, evaluator) =>
+            function.Logic = (args, evaluator) =>
             {
                 if (args.Length != 3)
                 {

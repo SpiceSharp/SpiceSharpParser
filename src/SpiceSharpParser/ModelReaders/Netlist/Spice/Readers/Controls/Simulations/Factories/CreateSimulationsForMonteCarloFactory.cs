@@ -23,7 +23,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         public void Create(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> simulationWithStochasticModels)
         {
             context.Result.MonteCarlo.Enabled = true;
-            context.Result.MonteCarlo.RandomSeed = context.Result.SimulationConfiguration.RandomSeed;
+            context.Result.MonteCarlo.RandomSeed = context.Result.SimulationConfiguration.Seed;
             context.Result.MonteCarlo.VariableName = context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable;
             context.Result.MonteCarlo.Function = context.Result.SimulationConfiguration.MonteCarloConfiguration.Function;
 

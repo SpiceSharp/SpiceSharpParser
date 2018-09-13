@@ -9,7 +9,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         /// <param name="name">A name of expression.</param>
         /// <param name="expression">An expression.</param>
-        public NamedEvaluatorExpression(string name, string expression, Func<string, object, EvaluatorExpression, IEvaluator, double> expressionEvaluator, IEvaluator evaluator)
+        public NamedEvaluatorExpression(string name, string expression, Func<string, EvaluatorExpression, IEvaluator, double> expressionEvaluator, IEvaluator evaluator)
             : base(expression, expressionEvaluator, evaluator)
         {
             Name = name;
@@ -23,7 +23,9 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Clones the named expression.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// A clone of named expression.
+        /// </returns>
         public override EvaluatorExpression Clone()
         {
             var result = new NamedEvaluatorExpression(Name, ExpressionString, ExpressionEvaluator, Evaluator);

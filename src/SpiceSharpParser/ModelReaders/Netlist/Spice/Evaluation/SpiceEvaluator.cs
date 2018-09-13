@@ -14,41 +14,41 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
     public class SpiceEvaluator : Evaluator, ISpiceEvaluator
     {
         public SpiceEvaluator(int? randomSeed = null)
-        : this(string.Empty, SpiceEvaluatorMode.Spice3f5, randomSeed, new ExpressionRegistry())
+        : this(string.Empty, null, SpiceEvaluatorMode.Spice3f5, randomSeed, new ExpressionRegistry())
         {
         }
 
         public SpiceEvaluator(string name, int? randomSeed = null)
-         : this(name, SpiceEvaluatorMode.Spice3f5, randomSeed, new ExpressionRegistry())
+         : this(name, null, SpiceEvaluatorMode.Spice3f5, randomSeed, new ExpressionRegistry())
         {
         }
 
         public SpiceEvaluator(string name, SpiceEvaluatorMode mode, int? randomSeed = null)
-         : this(name, mode, randomSeed, new ExpressionRegistry())
+         : this(name, null, mode, randomSeed, new ExpressionRegistry())
         {
         }
 
         public SpiceEvaluator(SpiceEvaluatorMode mode, int? randomSeed = null)
-        : this(string.Empty, mode, randomSeed, new ExpressionRegistry())
+        : this(string.Empty, null, mode, randomSeed, new ExpressionRegistry())
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceEvaluator"/> class.
         /// </summary>
-        public SpiceEvaluator(string name, SpiceEvaluatorMode mode, int? randomSeed, ExpressionRegistry registry)
-            : base(name, new SpiceExpressionParser(mode == SpiceEvaluatorMode.LtSpice), registry, randomSeed)
+        public SpiceEvaluator(string name, object context, SpiceEvaluatorMode mode, int? randomSeed, ExpressionRegistry registry)
+            : base(name, context, new SpiceExpressionParser(mode == SpiceEvaluatorMode.LtSpice), registry, randomSeed)
         {
             Mode = mode;
-            Parameters.Add("TEMP", new CachedEvaluatorExpression((e, c, a, ev) => (Circuit.ReferenceTemperature - Circuit.CelsiusKelvin), this));
-            CreateCustomFunctions(this, randomSeed);
+            Parameters.Add("TEMP", new CachedEvaluatorExpression((e, a, ev) => (Circuit.ReferenceTemperature - Circuit.CelsiusKelvin), this));
+            CreateCustomFunctions(this);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceEvaluator"/> class.
         /// </summary>
-        public SpiceEvaluator(string name, SpiceEvaluatorMode mode, int? randomSeed, IExporterRegistry exporters, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
-            : this(name, mode, randomSeed, new ExpressionRegistry())
+        public SpiceEvaluator(string name, object context, SpiceEvaluatorMode mode, int? randomSeed, IExporterRegistry exporters, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
+            : this(name, context, mode, randomSeed, new ExpressionRegistry())
         {
             ExportFunctions.Add(CustomFunctions, exporters, nodeNameGenerator, objectNameGenerator);
         }
@@ -64,9 +64,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         /// <returns>
         /// A child evaluator.
         /// </returns>
-        public override IEvaluator CreateChildEvaluator(string name)
+        public override IEvaluator CreateChildEvaluator(string name, object context)
         {
-            var newEvaluator = new SpiceEvaluator(name, Mode, RandomSeed, new ExpressionRegistry());
+            var newEvaluator = new SpiceEvaluator(name, context, Mode, Seed, new ExpressionRegistry());
 
             foreach (var parameterName in this.GetParameterNames())
             {
@@ -89,12 +89,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         /// <returns>
         /// A cloned evaluator.
         /// </returns>
-        public override IEvaluator CreateClonedEvaluator(string name, int? randomSeed = null)
+        public override IEvaluator CreateClonedEvaluator(string name, object context, int? randomSeed = null)
         {
             var registry = Registry.Clone();
             registry.Invalidate();
 
-            var newEvaluator = new SpiceEvaluator(name, Mode, randomSeed ?? RandomSeed, registry);
+            var newEvaluator = new SpiceEvaluator(name, context, Mode, randomSeed, registry);
             registry.UpdateEvaluator(newEvaluator);
 
             foreach (var parameterName in this.GetParameterNames())
@@ -114,13 +114,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
             foreach (var child in Children)
             {
-                newEvaluator.Children.Add(child.CreateClonedEvaluator(child.Name, randomSeed ?? RandomSeed));
+                newEvaluator.Children.Add(child.CreateClonedEvaluator(child.Name, context, randomSeed));
             }
 
             return newEvaluator;
         }
 
-        private void CreateCustomFunctions(SpiceEvaluator evaluator, int? randomSeed)
+        private void CreateCustomFunctions(SpiceEvaluator evaluator)
         {
             evaluator.CustomFunctions.Clear();
             evaluator.CustomFunctions.Add("**", MathFunctions.CreatePowInfix(Mode));
@@ -132,9 +132,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             evaluator.CustomFunctions.Add("def", ControlFunctions.CreateDef());
             evaluator.CustomFunctions.Add("exp", MathFunctions.CreateExp());
             evaluator.CustomFunctions.Add("fabs", MathFunctions.CreateAbs());
-            evaluator.CustomFunctions.Add("flat", RandomFunctions.CreateFlat(randomSeed));
+            evaluator.CustomFunctions.Add("flat", RandomFunctions.CreateFlat());
             evaluator.CustomFunctions.Add("floor", MathFunctions.CreateFloor());
-            evaluator.CustomFunctions.Add("gauss", RandomFunctions.CreateGauss(randomSeed));
+            evaluator.CustomFunctions.Add("gauss", RandomFunctions.CreateGauss());
             evaluator.CustomFunctions.Add("hypot", MathFunctions.CreateHypot());
             evaluator.CustomFunctions.Add("if", ControlFunctions.CreateIf());
             evaluator.CustomFunctions.Add("lazy", ControlFunctions.CreateLazy());
@@ -150,7 +150,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             evaluator.CustomFunctions.Add("pow", MathFunctions.CreatePow(Mode));
             evaluator.CustomFunctions.Add("pwr", MathFunctions.CreatePwr(Mode));
             evaluator.CustomFunctions.Add("pwrs", MathFunctions.CreatePwrs());
-            evaluator.CustomFunctions.Add("random", RandomFunctions.CreateRandom(randomSeed));
+            evaluator.CustomFunctions.Add("random", RandomFunctions.CreateRandom());
             evaluator.CustomFunctions.Add("round", MathFunctions.CreateRound());
             evaluator.CustomFunctions.Add("sqrt", MathFunctions.CreateSqrt(Mode));
             evaluator.CustomFunctions.Add("sgn", MathFunctions.CreateSgn());

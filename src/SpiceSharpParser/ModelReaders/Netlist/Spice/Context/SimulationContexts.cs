@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -39,21 +38,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         protected bool Prepared { get; set; }
 
         /// <summary>
-        /// Gets the simulation evaluators.
-        /// </summary>
-        public IDictionary<Simulation, IEvaluator> GetSimulationEvaluators()
-        {
-            var result = new Dictionary<Simulation, IEvaluator>();
-
-            foreach (var simulation in Simulations)
-            {
-                result[simulation] = GetSimulationEvaluator(simulation);
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// Gets the simulation evaluator.
         /// </summary>
         /// <param name="simulation">Simulation</param>
@@ -62,23 +46,28 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </returns>
         public IEvaluator GetSimulationEvaluator(Simulation simulation)
         {
-            if (Contexts.ContainsKey(simulation))
+            if (!Contexts.ContainsKey(simulation))
             {
-                return Contexts[simulation].Evaluator;
+                Contexts[simulation] = new SimulationContext()
+                {
+                    Evaluator = ReadingEvaluator.CreateClonedEvaluator(simulation.Name.ToString(), simulation, ReadingEvaluator.Seed),
+                };
             }
 
-            throw new Exception("Missing context for simulation");
+            return Contexts[simulation].Evaluator;
         }
 
         /// <summary>
         /// Prepares the simulation contexts.
         /// </summary>
-        public void Prepare(int? randomSeed)
+        public void Prepare()
         {
-            CreateContexts(randomSeed);
-            PrepareActions.ForEach(a => a());
-            PrepareActions.Clear();
-            Prepared = true;
+            if (!Prepared)
+            {
+                PrepareActions.ForEach(a => a());
+                PrepareActions.Clear();
+                Prepared = true;
+            }
         }
 
         public void Add(Action action)
@@ -100,7 +89,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 foreach (var simulation in Simulations)
                 {
-                    simulation.Nodes.InitialConditions[nodeName] = GetSimulationEvaluator(simulation).EvaluateDouble(intialVoltageExpression, simulation);
+                    simulation.Nodes.InitialConditions[nodeName] = GetSimulationEvaluator(simulation).EvaluateDouble(intialVoltageExpression);
                 }
             });
 
@@ -118,7 +107,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="simulation">Simulation.</param>
         public void SetParameter(string paramName, double value, BaseSimulation simulation)
         {
-            Add(() => { GetSimulationEvaluator(simulation).SetParameter(paramName, value, simulation); });
+            Add(() => { GetSimulationEvaluator(simulation).SetParameter(paramName, value); });
 
             if (Prepared)
             {
@@ -143,7 +132,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                     {
                         var evaluator = GetEvaluator(simulation, @object.Name.ToString());
                         var parameter = simulation.EntityParameters[@object.Name].GetParameter<double>(paramName);
-                        parameter.Value = evaluator.EvaluateDouble(expression, simulation);
+                        parameter.Value = evaluator.EvaluateDouble(expression);
 
                         evaluator.AddAction(
                             @object.Name + "-" + paramName,
@@ -159,7 +148,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                         {
                             var evaluator = GetEvaluator(s, @object.Name.ToString());
                             var parameter = s.EntityParameters[@object.Name].GetParameter<double>(paramName);
-                            parameter.Value = evaluator.EvaluateDouble(expression, s);
+                            parameter.Value = evaluator.EvaluateDouble(expression);
 
                             evaluator.AddAction(
                                 @object.Name + "-" + paramName,
@@ -213,20 +202,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             string subcircuitName = entityName.Substring(0, dotIndex);
             return simulationEvaluator.FindChildEvaluator(subcircuitName);
-        }
-
-        protected void CreateContexts(int? randomSeed)
-        {
-            foreach (var simulation in Simulations)
-            {
-                Contexts[simulation] = new SimulationContext()
-                {
-                    Evaluator = ReadingEvaluator.CreateClonedEvaluator(simulation.Name.ToString(), randomSeed != null ? randomSeed++ : null),
-                    Simulation = simulation,
-                };
-            }
-
-            Prepared = true;
         }
     }
 }

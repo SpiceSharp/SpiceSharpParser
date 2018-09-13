@@ -207,9 +207,8 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Refreshes the expressions in the registry that depends on the given parameter.
         /// </summary>
         /// <param name="parameterName">Parameter name.</param>
-        /// <param name="context">Context.</param>
         /// <param name="parameterEval">Evaluation function.</param>
-        public void RefreshDependentParameters(string parameterName, object context, Action<string> parameterEval)
+        public void RefreshDependentParameters(string parameterName, Action<string> parameterEval)
         {
             if (parameterName == null)
             {
@@ -221,7 +220,7 @@ namespace SpiceSharpParser.Common.Evaluation
                 foreach (var parameter in ParametersDependencies[parameterName])
                 {
                     parameterEval?.Invoke(parameter);
-                    RefreshDependentParameters(parameter, context, parameterEval);
+                    RefreshDependentParameters(parameter, parameterEval);
                 }
             }
 
@@ -230,7 +229,7 @@ namespace SpiceSharpParser.Common.Evaluation
                 foreach (var expression in ExpressionsDependencies[parameterName])
                 {
                     expression.Invalidate();
-                    expression.Evaluate(context);
+                    expression.Evaluate();
                 }
             }
         }

@@ -36,7 +36,7 @@ namespace SpiceSharpParser.IntegrationTests
             var resultsSeed2223 = new List<double>();
             var resultsSeed2224 = new List<double>();
 
-            int n = 10;
+            int n = 5;
 
             for (var i = 0; i < n; i++)
             {
@@ -45,7 +45,7 @@ namespace SpiceSharpParser.IntegrationTests
                     "V1 0 1 100",
                     "R1 1 0 {R+N}",
                     ".OP",
-                    ".SAVE i(R1) @R1[resistance]",
+                    ".SAVE @R1[resistance]",
                     ".PARAM N=0",
                     ".PARAM R={random() * 1000}",
                     ".STEP PARAM N LIST 2 3",
@@ -63,7 +63,7 @@ namespace SpiceSharpParser.IntegrationTests
                     "V1 0 1 100",
                     "R1 1 0 {R+N}",
                     ".OP",
-                    ".SAVE i(R1) @R1[resistance]",
+                    ".SAVE @R1[resistance]",
                     ".PARAM N=0",
                     ".PARAM R={random() * 1000}",
                     ".STEP PARAM N LIST 2 3",
@@ -86,8 +86,8 @@ namespace SpiceSharpParser.IntegrationTests
 
             Assert.NotEqual(resultsSeed2224[0], resultsSeed2223[0]);
 
-            Assert.Equal(2223, parseResult2223.UsedRandomSeed);
-            Assert.Equal(2224, parseResult2224.UsedRandomSeed);
+            Assert.Equal(2223, parseResult2223.Seed);
+            Assert.Equal(2224, parseResult2224.Seed);
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace SpiceSharpParser.IntegrationTests
             var resultsSeed2223 = new List<double>();
             var resultsSeed2224 = new List<double>();
 
-            int n = 10;
+            int n = 5;
 
             for (var i = 0; i < n; i++)
             {
@@ -151,14 +151,14 @@ namespace SpiceSharpParser.IntegrationTests
 
             Assert.NotEqual(resultsSeed2224[0], resultsSeed2223[0]);
 
-            Assert.Equal(2223, parseResult2223.UsedRandomSeed);
-            Assert.Equal(2224, parseResult2224.UsedRandomSeed);
+            Assert.Equal(2223, parseResult2223.Seed);
+            Assert.Equal(2224, parseResult2224.Seed);
         }
 
         [Fact]
         public void ParsingSeedTest()
         {
-            for (var index = 0; index < 1000; index++)
+            for (var index = 0; index < 12; index++)
             {
                 SpiceNetlistReaderResult parseResult2223 = null;
                 SpiceNetlistReaderResult parseResult2224 = null;
@@ -216,8 +216,8 @@ namespace SpiceSharpParser.IntegrationTests
 
                 Assert.NotEqual(resultsSeed2224[0], resultsSeed2223[0]);
 
-                Assert.Equal(2223, parseResult2223.UsedRandomSeed);
-                Assert.Equal(2224, parseResult2224.UsedRandomSeed);
+                Assert.Equal(2223, parseResult2223.Seed);
+                Assert.Equal(2224, parseResult2224.Seed);
             }
         }
     }

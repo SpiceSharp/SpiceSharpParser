@@ -107,7 +107,7 @@ namespace SpiceSharpParser
             SpiceNetlist postprocessedNetlistModel = (SpiceNetlist)preprocessedNetListModel.Clone();
 
             // Postprocessing
-            var postprocessorEvaluator = new SpiceEvaluator("Postprocessor evaluator", Settings.NetlistReader.EvaluatorMode, Settings.NetlistReader.Seed, new Common.Evaluation.ExpressionRegistry());
+            var postprocessorEvaluator = new SpiceEvaluator("Postprocessor evaluator", null, Settings.NetlistReader.EvaluatorMode, Settings.NetlistReader.Seed, new Common.Evaluation.ExpressionRegistry());
 
             var ifPostprocessor = new IfPostprocessor(postprocessorEvaluator);
             postprocessedNetlistModel.Statements = ifPostprocessor.PostProcess(postprocessedNetlistModel.Statements);

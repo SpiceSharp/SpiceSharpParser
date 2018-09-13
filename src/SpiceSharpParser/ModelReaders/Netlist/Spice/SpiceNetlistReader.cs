@@ -1,7 +1,6 @@
 ﻿using SpiceSharp;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
@@ -45,7 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             var resultService = new ResultService(result);
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(new string[] { "0" });
             var objectNameGenerator = new ObjectNameGenerator(string.Empty);
-            var readingEvaluator = new SpiceEvaluator("Main reading evaluator", Settings.EvaluatorMode, Settings.Seed, Settings.Context.Exporters, nodeNameGenerator, objectNameGenerator);
+            var readingEvaluator = new SpiceEvaluator("Main reading evaluator", null, Settings.EvaluatorMode, Settings.Seed, Settings.Context.Exporters, nodeNameGenerator, objectNameGenerator);
             var simulationContexts = new SimulationContexts(resultService, readingEvaluator);
 
             var readingContext = new ReadingContext(
@@ -59,19 +58,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             // Read statements form input netlist using created context
             Settings.Context.Read(netlist.Statements, readingContext);
 
-            // Prepare simulation contexts for each simulation
-            simulationContexts.Prepare(resultService.SimulationConfiguration.RandomSeed ?? Settings.Seed);
-
             // Return and update evaluators info.
-            result.Evaluators = simulationContexts.GetSimulationEvaluators();
-            result.UsedRandomSeed = result.UsedRandomSeed ?? Settings.Seed;
-            foreach (var export in result.Exports)
-            {
-                if (export is ExpressionExport ee)
-                {
-                    ee.Evaluator = result.Evaluators[export.Simulation];
-                }
-            }
+            result.Seed = result.Seed ?? Settings.Seed;
+
+            simulationContexts.Prepare();
 
             return result;
         }

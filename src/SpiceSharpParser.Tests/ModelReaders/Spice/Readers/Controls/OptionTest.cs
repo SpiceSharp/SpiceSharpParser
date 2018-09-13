@@ -90,7 +90,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             optionControl.Read(control, readingContext);
 
             // assert
-            Assert.Equal(1234, resultService.SimulationConfiguration.RandomSeed);
+            Assert.Equal(1234, resultService.SimulationConfiguration.Seed);
         }
     }
 }

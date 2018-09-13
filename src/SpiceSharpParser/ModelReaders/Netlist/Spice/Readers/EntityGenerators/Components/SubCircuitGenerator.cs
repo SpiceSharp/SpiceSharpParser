@@ -181,7 +181,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 assigmentParametersCount++;
             }
 
-            var subcircuitEvaluator = context.ReadingEvaluator.CreateChildEvaluator(subcircuitFullName);
+            var subcircuitEvaluator = context.ReadingEvaluator.CreateChildEvaluator(subcircuitFullName, context.ReadingEvaluator.Context);
             var subcircuitParameters = CreateSubcircuitParameters(context.ReadingEvaluator, subCircuitDefiniton, subCktParameters);
             subcircuitEvaluator.SetParameters(subcircuitParameters);
 
