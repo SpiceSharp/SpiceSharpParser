@@ -78,6 +78,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
+        public IDictionary<Simulation, IEvaluator> GetSimulationEvaluators()
+        {
+            var result = new Dictionary<Simulation, IEvaluator>();
+
+            foreach (var simulation in Simulations)
+            {
+                result[simulation] = GetSimulationEvaluator(simulation);
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Sets IC node voltage for every simulation.
         /// </summary>

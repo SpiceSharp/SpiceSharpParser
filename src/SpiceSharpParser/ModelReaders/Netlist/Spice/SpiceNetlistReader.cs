@@ -62,6 +62,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             result.Seed = result.Seed ?? Settings.Seed;
 
             simulationContexts.Prepare();
+            result.Evaluators = simulationContexts.GetSimulationEvaluators();
 
             return result;
         }
