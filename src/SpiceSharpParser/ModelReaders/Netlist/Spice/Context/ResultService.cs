@@ -49,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Sets used random seed.
         /// </summary>
-        public int? UsedRandomSeed { set => Result.UsedRandomSeed = value; }
+        public int? Seed { set => Result.Seed = value; get => Result.Seed; }
 
         /// <summary>
         /// Gets the result where things are added.

@@ -29,14 +29,14 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             p.SetParameter("a", 1);
 
             // act and assert
-            var v = p.CreateChildEvaluator("child");
+            var v = p.CreateChildEvaluator("child", null);
 
             v.SetParameter("xyz", 13.0);
-            Assert.Equal(1, v.GetParameterValue("a", null));
+            Assert.Equal(1, v.GetParameterValue("a"));
 
             v.SetParameter("a", 2);
-            Assert.Equal(2, v.GetParameterValue("a", null));
-            Assert.Equal(1, p.GetParameterValue("a", null));
+            Assert.Equal(2, v.GetParameterValue("a"));
+            Assert.Equal(1, p.GetParameterValue("a"));
         }
 
         [Fact]
@@ -52,7 +52,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             v.AddAction("noname", "xyz + 1", (newValue) => { expressionValue = newValue; });
             v.SetParameter("xyz", 14);
 
-            var val = v.GetParameterValue("xyz", null);
+            var val = v.GetParameterValue("xyz");
 
             // assert
             Assert.Equal(15, expressionValue);
@@ -553,8 +553,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             var p = new SpiceEvaluator();
 
             //TODO: It shouldn't be that messy ...
-            Func<object[], object, IEvaluator, object> fibLogic = null; //TODO: Use smarter methods to define anonymous recursion in C# (there is a nice post on some nice blog on msdn)
-            fibLogic = (object[] args, object context, IEvaluator evaluator) =>
+            Func<object[], IEvaluator, object> fibLogic = null; //TODO: Use smarter methods to define anonymous recursion in C# (there is a nice post on some nice blog on msdn)
+            fibLogic = (object[] args, IEvaluator evaluator) =>
             {
                 double x = (double)args[0];
 
@@ -568,7 +568,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
                     return 1.0;
                 }
 
-                return (double)fibLogic(new object[1] { (x - 1) }, context, evaluator) + (double)fibLogic(new object[1] { (x - 2) }, context, evaluator);
+                return (double)fibLogic(new object[1] { (x - 1) }, evaluator) + (double)fibLogic(new object[1] { (x - 2) }, evaluator);
             };
 
             var fib = new CustomFunction()

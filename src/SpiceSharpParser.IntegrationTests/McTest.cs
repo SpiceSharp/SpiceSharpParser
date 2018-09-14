@@ -138,7 +138,7 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.True(result.MonteCarloResult.Enabled);
             RunSimulations(result);
             Assert.Equal(90, result.MonteCarloResult.RandomSeed);
-            Assert.Equal(90, result.UsedRandomSeed);
+            Assert.Equal(90, result.Seed);
         }
 
         [Fact]
@@ -152,10 +152,10 @@ namespace SpiceSharpParser.IntegrationTests
                 ".IC V(OUT)=0.0",
                 ".TRAN 1e-8 10e-6",
                 ".SAVE V(OUT)",
-                ".MC 10000 TRAN V(OUT) MAX",
+                ".MC 1000 TRAN V(OUT) MAX",
                 ".END");
 
-            Assert.Equal(10000, result.Simulations.Count);
+            Assert.Equal(1000, result.Simulations.Count);
             Assert.True(result.MonteCarloResult.Enabled);
             RunSimulations(result);
             var mcResult = result.MonteCarloResult;

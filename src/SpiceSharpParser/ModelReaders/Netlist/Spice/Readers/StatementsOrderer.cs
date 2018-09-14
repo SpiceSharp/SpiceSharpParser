@@ -55,7 +55,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                 }
 
                 // TODO: please do something with that.
-                if (c.Name.ToLower() == "param" || c.Name.ToLower() == "func" || c.Name.ToLower() == "step_r" || c.Name.ToLower() == "st_r")
+                if (c.Name.ToLower() == "param" || c.Name.ToLower() == "func" || c.Name.ToLower() == "step_r" || c.Name.ToLower() == "st_r" || c.Name.ToLower() == "options")
                 {
                     return ControlRegistry.IndexOf(c.Name.ToLower());
                 }

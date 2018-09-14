@@ -7,32 +7,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
     /// </summary>
     public abstract class Export
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Export"/> class.
-        /// </summary>
-        /// <param name="simulation">Simulation</param>
         public Export(Simulation simulation)
         {
             Simulation = simulation;
 
-            simulation.ExportSimulationData += (obj, e) =>
+            simulation.BeforeExecute += (obj, e) =>
             {
                 ExceptionsEnabled = true; // TODO: Cleanup
             };
         }
 
+        public Simulation Simulation { get; }
+
         /// <summary>
-        /// Gets the type name
+        /// Gets the type name.
         /// </summary>
         public abstract string TypeName { get; }
 
         /// <summary>
-        /// Gets or sets the simulation
-        /// </summary>
-        public Simulation Simulation { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the name
+        /// Gets or sets the name.
         /// </summary>
         public string Name { get; protected set; }
 
@@ -43,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 
         /// <summary>
         /// Gets or sets the type of simulation that the export should act on
-        /// eg. "tran", "dc", etc. Default is null (any simulation/optional)
+        /// eg. "tran", "dc", etc. Default is null (any simulation/optional).
         /// </summary>
         public string SimulationType { get; set; } = null;
 
@@ -53,7 +46,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         protected bool ExceptionsEnabled { get; set; }
 
         /// <summary>
-        /// Extract the quantity from simulated data
+        /// Extract the quantity from simulated data.
         /// </summary>
         /// <returns>
         /// A quantity
@@ -61,10 +54,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         public abstract double Extract();
 
         /// <summary>
-        /// Override string representation
+        /// Override string representation.
         /// </summary>
         /// <returns>
-        /// A string represenation of export
+        /// A string represenation of export.
         /// </returns>
         public override string ToString()
         {

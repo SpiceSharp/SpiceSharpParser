@@ -78,6 +78,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <summary>
         /// Gets or sets the used random seed.
         /// </summary>
-        public int? UsedRandomSeed { get; set; }
+        public int? Seed { get; set; }
     }
 }

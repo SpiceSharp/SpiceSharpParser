@@ -10,15 +10,15 @@ namespace SpiceSharpParser
     /// <summary>
     /// The SPICE parser.
     /// </summary>
-    public class Parser
+    public class SpiceParser
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Parser"/> class.
+        /// Initializes a new instance of the <see cref="SpiceParser"/> class.
         /// </summary>
         /// <param name="spiceNetlistParser">SPICE netlist parser.</param>
         /// <param name="includesPreprocessor">Includes preprocessor.</param>
         /// <param name="appendModelPreprocessor">Append model preprocessor.</param>
-        public Parser(
+        public SpiceParser(
             ISpiceNetlistParser spiceNetlistParser,
             IIncludesPreprocessor includesPreprocessor,
             IAppendModelPreprocessor appendModelPreprocessor,
@@ -30,26 +30,26 @@ namespace SpiceSharpParser
             SpiceNetlistParser = spiceNetlistParser ?? throw new System.ArgumentNullException(nameof(spiceNetlistParser));
             AppendModelPreprocessor = appendModelPreprocessor ?? throw new System.ArgumentNullException(nameof(appendModelPreprocessor));
             SweepsPreprocessor = sweepsPreprocessor ?? throw new System.ArgumentNullException(nameof(sweepsPreprocessor));
-            Settings = new ParserSettings();
+            Settings = new SpiceParserSettings();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Parser"/> class.
+        /// Initializes a new instance of the <see cref="SpiceParser"/> class.
         /// </summary>
-        public Parser()
+        public SpiceParser()
         {
             SpiceNetlistParser = new SpiceNetlistParser();
             IncludesPreprocessor = new IncludesPreprocessor(new FileReader(), SpiceNetlistParser);
             AppendModelPreprocessor = new AppendModelPreprocessor();
             LibPreprocessor = new LibPreprocessor(new FileReader(), SpiceNetlistParser, IncludesPreprocessor);
             SweepsPreprocessor = new SweepsPreprocessor();
-            Settings = new ParserSettings();
+            Settings = new SpiceParserSettings();
         }
 
         /// <summary>
         /// Gets or sets the parser settings.
         /// </summary>
-        public ParserSettings Settings { get; set; }
+        public SpiceParserSettings Settings { get; set; }
 
         /// <summary>
         /// Gets the sweeps preprocessor.
@@ -83,7 +83,7 @@ namespace SpiceSharpParser
         /// <returns>
         /// A parsing result.
         /// </returns>
-        public ParserResult ParseNetlist(string spiceNetlist)
+        public SpiceParserResult ParseNetlist(string spiceNetlist)
         {
             if (spiceNetlist == null)
             {
@@ -107,7 +107,7 @@ namespace SpiceSharpParser
             SpiceNetlist postprocessedNetlistModel = (SpiceNetlist)preprocessedNetListModel.Clone();
 
             // Postprocessing
-            var postprocessorEvaluator = new SpiceEvaluator("Postprocessor evaluator", Settings.NetlistReader.EvaluatorMode, Settings.NetlistReader.Seed, new Common.Evaluation.ExpressionRegistry());
+            var postprocessorEvaluator = new SpiceEvaluator("Postprocessor evaluator", null, Settings.NetlistReader.EvaluatorMode, Settings.NetlistReader.Seed, new Common.Evaluation.ExpressionRegistry());
 
             var ifPostprocessor = new IfPostprocessor(postprocessorEvaluator);
             postprocessedNetlistModel.Statements = ifPostprocessor.PostProcess(postprocessedNetlistModel.Statements);
@@ -116,7 +116,7 @@ namespace SpiceSharpParser
             var reader = new SpiceNetlistReader(Settings.NetlistReader);
             SpiceNetlistReaderResult readerResult = reader.Read(postprocessedNetlistModel);
 
-            return new ParserResult()
+            return new SpiceParserResult()
             {
                 Result = readerResult,
                 InitialNetlistModel = originalNetlistModel,

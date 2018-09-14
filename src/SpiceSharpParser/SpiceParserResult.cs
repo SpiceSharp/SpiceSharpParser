@@ -4,14 +4,14 @@ using SpiceSharpParser.Models.Netlist.Spice;
 namespace SpiceSharpParser
 {
     /// <summary>
-    /// A parser result.
+    /// A result of the parser.
     /// </summary>
-    public class ParserResult
+    public class SpiceParserResult
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParserResult"/> class.
+        /// Initializes a new instance of the <see cref="SpiceParserResult"/> class.
         /// </summary>
-        public ParserResult()
+        public SpiceParserResult()
         {
         }
 

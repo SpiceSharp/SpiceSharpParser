@@ -72,7 +72,7 @@ namespace SpiceSharpParser.Lexers
                 if (FindBestTokenRule(textToLex, state, out bestTokenRule, out bestMatch))
                 {
                     var tokenActionResult = bestTokenRule.ReturnAction(state, bestMatch.Value);
-                    if (tokenActionResult == LexerRuleResult.ReturnToken)
+                    if (tokenActionResult == LexerRuleReturnState.ReturnToken)
                     {
                         yield return new Token(bestTokenRule.TokenType, bestMatch.Value);
                         state.PreviousReturnedTokenType = bestTokenRule.TokenType;
@@ -89,7 +89,7 @@ namespace SpiceSharpParser.Lexers
             }
 
             // yield EOF token
-            yield return new Token((int)SpecialTokenType.EOF, "EOF");
+            yield return new Token((int)TokenType.EOF, "EOF");
         }
 
         /// <summary>

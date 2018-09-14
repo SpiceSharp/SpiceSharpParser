@@ -14,6 +14,11 @@ namespace SpiceSharpParser.Common
         /// </returns>
         public static int[] GetSystemNumber(int value, int[] system)
         {
+            if (system == null)
+            {
+                throw new ArgumentNullException(nameof(system));
+            }
+
             var result = new int[system.Length];
 
             var i = 0;

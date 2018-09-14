@@ -13,17 +13,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
         /// <returns>
         /// A new instance of random gauss function.
         /// </returns>
-        public static CustomFunction CreateGauss(int? randomSeed)
+        public static CustomFunction CreateGauss()
         {
-            Random random = Randomizer.GetRandom(randomSeed);
-
             CustomFunction function = new CustomFunction();
             function.Name = "gauss";
             function.VirtualParameters = false;
             function.ArgumentsCount = 1;
 
-            function.Logic = (args, context, evaluator) =>
+            function.Logic = (args, evaluator) =>
             {
+                Random random = Randomizer.GetRandom(evaluator.Seed);
+
                 if (args.Length != 1)
                 {
                     throw new Exception("gauss() expects one argument");
@@ -45,17 +45,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
         /// <returns>
         /// A new instance of random custom function.
         /// </returns>
-        public static CustomFunction CreateRandom(int? randomSeed)
+        public static CustomFunction CreateRandom()
         {
-            Random random = Randomizer.GetRandom(randomSeed);
-
             CustomFunction function = new CustomFunction();
             function.Name = "random";
             function.VirtualParameters = false;
             function.ArgumentsCount = 0;
 
-            function.Logic = (args, context, evaluator) =>
+            function.Logic = (args, evaluator) =>
             {
+                Random random = Randomizer.GetRandom(evaluator.Seed);
+
                 if (args.Length != 0)
                 {
                     throw new Exception("random() expects no arguments");
@@ -73,17 +73,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
         /// <returns>
         /// A new instance of random custom function.
         /// </returns>
-        public static CustomFunction CreateFlat(int? randomSeed)
+        public static CustomFunction CreateFlat()
         {
-            Random random = Randomizer.GetRandom(randomSeed);
-
             CustomFunction function = new CustomFunction();
             function.Name = "flat";
             function.VirtualParameters = false;
             function.ArgumentsCount = 1;
 
-            function.Logic = (args, context, evaluator) =>
+            function.Logic = (args, evaluator) =>
             {
+                Random random = Randomizer.GetRandom(evaluator.Seed);
+
                 if (args.Length != 1)
                 {
                     throw new ArgumentException("flat() function expects one argument");

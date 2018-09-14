@@ -25,7 +25,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets or sets the random seed for simulations.
         /// </summary>
-        public int? RandomSeed { get; set; }
+        public int? Seed { get; set; }
 
         /// <summary>
         /// Gets or sets the nominal temperature for the circuit

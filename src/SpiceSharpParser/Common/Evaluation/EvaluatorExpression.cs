@@ -2,6 +2,11 @@
 
 namespace SpiceSharpParser.Common
 {
+    public class EvaluatedArgs : EventArgs
+    {
+        public double NewValue { get; set; }
+    }
+
     /// <summary>
     /// An evaluator expression.
     /// </summary>
@@ -10,13 +15,18 @@ namespace SpiceSharpParser.Common
         /// <summary>
         /// Initializes a new instance of the <see cref="EvaluatorExpression"/> class.
         /// </summary>
-        /// <param name="expressionString">A value of expression.</param>
-        public EvaluatorExpression(string expressionString, Func<string, object, EvaluatorExpression, IEvaluator, double> expressionEvaluator, IEvaluator evaluator)
+        /// <param name="expression">Expression.</param>
+        /// <param name="evaluator">Evaluator.</param>
+        public EvaluatorExpression(string expression, IEvaluator evaluator)
         {
             Evaluator = evaluator;
-            ExpressionString = expressionString ?? throw new ArgumentNullException(nameof(expressionString));
-            ExpressionEvaluator = expressionEvaluator ?? throw new ArgumentNullException(nameof(expressionEvaluator));
+            Expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
+
+        /// <summary>
+        /// Thrown when expression is evaluated.
+        /// </summary>
+        public event EventHandler<EvaluatedArgs> Evaluated;
 
         /// <summary>
         /// Gets or sets evalautor for expression.
@@ -26,30 +36,25 @@ namespace SpiceSharpParser.Common
         /// <summary>
         /// Gets the expression string.
         /// </summary>
-        public string ExpressionString { get; }
+        public string Expression { get; }
 
         /// <summary>
-        /// Gets the logic that computes the value of expression.
+        /// Gets or sets the current evaluation value.
         /// </summary>
-        public Func<string, object, EvaluatorExpression, IEvaluator, double> ExpressionEvaluator { get; }
-
-        /// <summary>
-        /// Gets the last evaluation value.
-        /// </summary>
-        public double LastValue { get; private set; }
+        public double CurrentValue { get; protected set; }
 
         /// <summary>
         /// Evaluates the expression.
         /// </summary>
-        /// <param name="context">The context of evaluation.</param>
         /// <returns>
         /// The value of the expression.
         /// </returns>
-        public virtual double Evaluate(object context)
+        public virtual double Evaluate()
         {
-            var val = ExpressionEvaluator(ExpressionString, context, this, Evaluator);
-            LastValue = val;
-            return val;
+            var newValue = Evaluator.EvaluateDouble(Expression);
+            CurrentValue = newValue;
+            OnEvaluated(newValue);
+            return newValue;
         }
 
         /// <summary>
@@ -57,13 +62,18 @@ namespace SpiceSharpParser.Common
         /// </summary>
         public virtual void Invalidate()
         {
-            LastValue = 0;
+            CurrentValue = double.NaN;
+        }
+
+        protected void OnEvaluated(double newValue)
+        {
+            Evaluated?.Invoke(this, new EvaluatedArgs() { NewValue = newValue });
         }
 
         public virtual EvaluatorExpression Clone()
         {
-            var result = new EvaluatorExpression(ExpressionString, ExpressionEvaluator, Evaluator);
-            result.LastValue = 0;
+            var result = new EvaluatorExpression(Expression, Evaluator);
+            result.CurrentValue = double.NaN;
             return result;
         }
     }

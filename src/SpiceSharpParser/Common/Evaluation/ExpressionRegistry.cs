@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpiceSharpParser.Common.Evaluation.Expressions;
+using System;
 using System.Collections.Generic;
 
 namespace SpiceSharpParser.Common.Evaluation
@@ -10,7 +11,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         public ExpressionRegistry()
         {
-            NamedExpressions = new Dictionary<string, NamedExpression>();
+            NamedExpressions = new Dictionary<string, NamedEvaluatorExpression>();
             ExpressionsDependencies = new Dictionary<string, List<EvaluatorExpression>>();
             ParametersDependencies = new Dictionary<string, HashSet<string>>();
             UnnamedExpressions = new List<EvaluatorExpression>();
@@ -19,7 +20,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Gets the dictionary of named expressions.
         /// </summary>
-        protected Dictionary<string, NamedExpression> NamedExpressions { get; }
+        protected Dictionary<string, NamedEvaluatorExpression> NamedExpressions { get; }
 
         /// <summary>
         /// Gets the collection of unnamed expressions.
@@ -78,7 +79,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <returns>
         /// A named expression.
         /// </returns>
-        public NamedExpression GetExpression(string expressionName)
+        public NamedEvaluatorExpression GetExpression(string expressionName)
         {
             if (expressionName == null)
             {
@@ -140,7 +141,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         /// <param name="namedExpression">Named expression to add.</param>
         /// <param name="parameters">Parameters of the expression.</param>
-        public void Add(NamedExpression namedExpression, ICollection<string> parameters)
+        public void Add(NamedEvaluatorExpression namedExpression, ICollection<string> parameters)
         {
             if (namedExpression == null)
             {
@@ -159,7 +160,7 @@ namespace SpiceSharpParser.Common.Evaluation
                     ExpressionsDependencies[parameter] = new List<EvaluatorExpression>();
                 }
 
-                ExpressionsDependencies[parameter].RemoveAll(r => r is NamedExpression n && n.Name == namedExpression.Name);
+                ExpressionsDependencies[parameter].RemoveAll(r => r is NamedEvaluatorExpression n && n.Name == namedExpression.Name);
 
                 ExpressionsDependencies[parameter].Add(namedExpression);
             }
@@ -207,9 +208,8 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Refreshes the expressions in the registry that depends on the given parameter.
         /// </summary>
         /// <param name="parameterName">Parameter name.</param>
-        /// <param name="context">Context.</param>
         /// <param name="parameterEval">Evaluation function.</param>
-        public void RefreshDependentParameters(string parameterName, object context, Action<string> parameterEval)
+        public void RefreshDependentParameters(string parameterName, Action<string> parameterEval)
         {
             if (parameterName == null)
             {
@@ -221,7 +221,7 @@ namespace SpiceSharpParser.Common.Evaluation
                 foreach (var parameter in ParametersDependencies[parameterName])
                 {
                     parameterEval?.Invoke(parameter);
-                    RefreshDependentParameters(parameter, context, parameterEval);
+                    RefreshDependentParameters(parameter, parameterEval);
                 }
             }
 
@@ -230,7 +230,7 @@ namespace SpiceSharpParser.Common.Evaluation
                 foreach (var expression in ExpressionsDependencies[parameterName])
                 {
                     expression.Invalidate();
-                    expression.Evaluate(context);
+                    expression.Evaluate();
                 }
             }
         }
@@ -269,7 +269,7 @@ namespace SpiceSharpParser.Common.Evaluation
                         addedExpresions.Add(expr);
                     }
 
-                    if (expr is NamedExpression ne)
+                    if (expr is NamedEvaluatorExpression ne)
                     {
                         addedExpresions.Add(expr);
                         result.NamedExpressions[ne.Name] = ne;
@@ -281,7 +281,7 @@ namespace SpiceSharpParser.Common.Evaluation
             {
                 if (!addedExpresions.Contains(expression.Value))
                 {
-                    result.NamedExpressions.Add(expression.Key,  (NamedExpression)expression.Value.Clone());
+                    result.NamedExpressions.Add(expression.Key,  (NamedEvaluatorExpression)expression.Value.Clone());
                 }
             }
 

@@ -94,7 +94,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
         private static double GetValueForDevParameter(IEvaluator evaluator, double currentValue, double percentValue)
         {
-            var random = Randomizer.GetRandom(evaluator.RandomSeed);
+            var random = Randomizer.GetRandom(evaluator.Seed);
 
             double newValue = 0;
             if (random.Next() % 2 == 0)
@@ -116,7 +116,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 return LotValues[baseModel][parameterName];
             }
 
-            var random = Randomizer.GetRandom(evaluator.RandomSeed);
+            var random = Randomizer.GetRandom(evaluator.Seed);
 
             double newValue = 0;
             if (random.Next() % 2 == 0)
