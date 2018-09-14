@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SpiceSharpParser.Common.Evaluation
+﻿namespace SpiceSharpParser.Common.Evaluation.Expressions
 {
     public class NamedEvaluatorExpression : EvaluatorExpression
     {
@@ -9,8 +7,8 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         /// <param name="name">A name of expression.</param>
         /// <param name="expression">An expression.</param>
-        public NamedEvaluatorExpression(string name, string expression, Func<string, EvaluatorExpression, IEvaluator, double> expressionEvaluator, IEvaluator evaluator)
-            : base(expression, expressionEvaluator, evaluator)
+        public NamedEvaluatorExpression(string name, string expression, IEvaluator evaluator)
+            : base(expression, evaluator)
         {
             Name = name;
         }
@@ -28,7 +26,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public override EvaluatorExpression Clone()
         {
-            var result = new NamedEvaluatorExpression(Name, ExpressionString, ExpressionEvaluator, Evaluator);
+            var result = new NamedEvaluatorExpression(Name, Expression, Evaluator);
             return result;
         }
     }

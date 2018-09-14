@@ -1,27 +1,21 @@
-﻿using System;
-
-namespace SpiceSharpParser.Common.Evaluation
+﻿namespace SpiceSharpParser.Common.Evaluation.Expressions
 {
     public class CachedEvaluatorExpression : EvaluatorExpression
     {
-        private double currentValue;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CachedEvaluatorExpression"/> class.
         /// </summary>
-        /// <param name="expressionString">Expression string.</param>
-        /// <param name="expressionEvaluator">Expression evaluator.</param>
-        public CachedEvaluatorExpression(string expressionString, Func<string, EvaluatorExpression, IEvaluator, double> expressionEvaluator, IEvaluator evaluator)
-            : base(expressionString, expressionEvaluator, evaluator)
+        /// <param name="expression">Expression string.</param>
+        public CachedEvaluatorExpression(string expression, IEvaluator evaluator)
+            : base(expression, evaluator)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CachedEvaluatorExpression"/> class.
         /// </summary>
-        /// <param name="expressionEvaluator">Expression evaluator.</param>
-        public CachedEvaluatorExpression(Func<string, EvaluatorExpression, IEvaluator, double> expressionEvaluator, IEvaluator evaluator)
-            : this(string.Empty, expressionEvaluator, evaluator)
+        public CachedEvaluatorExpression(IEvaluator evaluator)
+            : this(string.Empty, evaluator)
         {
         }
 
@@ -40,11 +34,11 @@ namespace SpiceSharpParser.Common.Evaluation
         {
             if (!IsEvaluated)
             {
-                currentValue = ExpressionEvaluator(ExpressionString, this, Evaluator);
+                CurrentValue = Evaluator.EvaluateDouble(Expression);
                 IsEvaluated = true;
             }
 
-            return currentValue;
+            return CurrentValue;
         }
 
         /// <summary>

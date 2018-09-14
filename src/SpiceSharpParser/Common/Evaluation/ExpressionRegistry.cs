@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpiceSharpParser.Common.Evaluation.Expressions;
+using System;
 using System.Collections.Generic;
 
 namespace SpiceSharpParser.Common.Evaluation

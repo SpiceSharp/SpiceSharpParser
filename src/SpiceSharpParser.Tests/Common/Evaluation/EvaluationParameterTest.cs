@@ -2,7 +2,7 @@ using NSubstitute;
 using SpiceSharpParser.Common;
 using Xunit;
 
-namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
+namespace SpiceSharpParser.Tests.Common.Evaluation
 {
     public class EvaluationParameterTest
     {

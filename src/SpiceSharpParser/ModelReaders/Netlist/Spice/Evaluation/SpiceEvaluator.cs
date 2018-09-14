@@ -1,6 +1,7 @@
 ﻿using SpiceSharp;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
@@ -40,7 +41,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             : base(name, context, new SpiceExpressionParser(mode == SpiceEvaluatorMode.LtSpice), registry, randomSeed)
         {
             Mode = mode;
-            Parameters.Add("TEMP", new CachedEvaluatorExpression((e, a, ev) => (Circuit.ReferenceTemperature - Circuit.CelsiusKelvin), this));
+            Parameters.Add("TEMP", new ConstantEvaluatorExpression(Circuit.ReferenceTemperature - Circuit.CelsiusKelvin));
             CreateCustomFunctions(this);
         }
 
