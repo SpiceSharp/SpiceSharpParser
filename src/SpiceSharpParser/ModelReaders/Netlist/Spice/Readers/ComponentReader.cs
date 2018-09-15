@@ -1,6 +1,7 @@
 ﻿using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
@@ -15,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// Initializes a new instance of the <see cref="ComponentReader"/> class.
         /// </summary>
         /// <param name="componentRegistry">A component registry</param>
-        public ComponentReader(IEntityGeneratorRegistry componentRegistry)
+        public ComponentReader(IRegistry<EntityGenerator> componentRegistry)
         {
             ComponentRegistry = componentRegistry;
         }
@@ -23,7 +24,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <summary>
         /// Gets the component registry
         /// </summary>
-        public IEntityGeneratorRegistry ComponentRegistry { get; }
+        public IRegistry<EntityGenerator> ComponentRegistry { get; }
 
         /// <summary>
         /// Returns whether reader can process specific statement.

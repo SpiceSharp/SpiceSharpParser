@@ -9,6 +9,7 @@ using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using Xunit;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
 {
@@ -18,7 +19,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
         public void GenerateTest()
         {
             // arrange
-            var generator = Substitute.For<EntityGenerator>();
+            var generator = Substitute.For<ModelGenerator>();
             generator.Generate(
                 Arg.Any<StringIdentifier>(),
                 Arg.Any<string>(),
@@ -26,7 +27,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
                 Arg.Any<ParameterCollection>(),
                 Arg.Any<IReadingContext>()).Returns(x => new BipolarJunctionTransistorModel((StringIdentifier)x[0]));
 
-            var registry = Substitute.For<IEntityGeneratorRegistry>();
+            var registry = Substitute.For<IRegistry<ModelGenerator>>();
             registry.Supports("npn").Returns(true);
             registry.Get("npn").Returns(generator);
 

@@ -29,7 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// Generated SPICE types.
         /// </returns>
-        public override IEnumerable<string> GetGeneratedSpiceTypes()
+        public override IEnumerable<string> GetGeneratedTypes()
         {
             return new List<string> { "s", "w" };
         }

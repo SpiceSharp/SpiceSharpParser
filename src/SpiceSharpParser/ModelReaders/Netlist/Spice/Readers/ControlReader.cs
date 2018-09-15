@@ -1,4 +1,5 @@
 ﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
@@ -13,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// Initializes a new instance of the <see cref="ControlReader"/> class.
         /// </summary>
         /// <param name="registry">Th registry</param>
-        public ControlReader(IControlRegistry registry)
+        public ControlReader(IRegistry<BaseControl> registry)
         {
             Registry = registry;
         }
@@ -21,7 +22,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <summary>
         /// Gets the registry
         /// </summary>
-        public IControlRegistry Registry { get; }
+        public IRegistry<BaseControl> Registry { get; }
 
         /// <summary>
         /// Returns whether reader can process specific statement.

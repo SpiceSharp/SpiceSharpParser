@@ -12,8 +12,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
     /// </summary>
     public class StepControl : BaseControl
     {
-        public override string SpiceCommandName => "step";
-
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>

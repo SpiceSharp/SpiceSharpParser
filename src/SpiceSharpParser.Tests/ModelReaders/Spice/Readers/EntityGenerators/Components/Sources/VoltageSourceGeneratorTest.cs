@@ -14,7 +14,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         [Fact]
         public void GenerateDCVoltageSourceWithoutDCTest()
         {
-            var generator = new VoltageSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new VoltageSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -35,7 +35,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         [Fact]
         public void GenerateDCVoltageSourceWithDCTest()
         {
-            var generator = new VoltageSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new VoltageSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -57,7 +57,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         [Fact]
         public void GenerateDCVoltageSourceWithoutVoltageTest()
         {
-            var generator = new VoltageSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new VoltageSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -76,7 +76,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         [Fact]
         public void GenerateDCACVoltageSourceTest()
         {
-            var generator = new VoltageSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new VoltageSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -103,7 +103,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         [Fact]
         public void GenerateDCACWithoutPhaseVoltageSourceTest()
         {
-            var generator = new VoltageSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new VoltageSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -128,7 +128,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         [Fact]
         public void GeneratACVoltageWithoutPhaseSourceTest()
         {
-            var generator = new VoltageSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new VoltageSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -150,7 +150,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         [Fact]
         public void GeneratACVoltageWithoutPhaseSineSourceTest()
         {
-            var generator = new VoltageSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new VoltageSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -182,7 +182,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         [Fact]
         public void GeneratACVoltageSourceWithPhaseTest()
         {
-            var generator = new VoltageSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new VoltageSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -206,7 +206,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         [Fact]
         public void GenerateCCVSTest()
         {
-            var generator = new VoltageSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new VoltageSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -228,7 +228,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         [Fact]
         public void GeneratVCVSTest()
         {
-            var generator = new VoltageSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new VoltageSourceGenerator();
 
             var parameters = new ParameterCollection
             {

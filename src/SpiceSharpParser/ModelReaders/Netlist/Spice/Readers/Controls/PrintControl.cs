@@ -23,15 +23,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// Initializes a new instance of the <see cref="PrintControl"/> class.
         /// </summary>
         /// <param name="registry">The exporter registry</param>
-        public PrintControl(IExporterRegistry registry)
+        public PrintControl(IRegistry<Exporter> registry)
             : base(registry)
         {
         }
-
-        /// <summary>
-        /// Gets the type of generetor.
-        /// </summary>
-        public override string SpiceCommandName => "print";
 
         protected ICollection<string> SupportedPrintTypes { get; } = new List<string>() { "dc", "ac", "tran", "op" };
 

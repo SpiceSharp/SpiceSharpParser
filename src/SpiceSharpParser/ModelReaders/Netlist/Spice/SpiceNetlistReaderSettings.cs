@@ -7,7 +7,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         public SpiceNetlistReaderSettings()
         {
             EvaluatorMode = SpiceEvaluatorMode.Spice3f5;
-            Context = new SpiceNetlistReaderContext();
+            Entities = new SpiceEntityRegistry();
+            Orderer = new StatementsOrderer();
         }
 
         /// <summary>
@@ -21,8 +22,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         public int? Seed { get; set; }
 
         /// <summary>
-        /// Gets or sets the context for reader.
+        /// Gets or sets the entity registry.
         /// </summary>
-        public ISpiceNetlistReaderContext Context { get; set; }
+        public ISpiceEntityRegistry Entities { get; set; }
+
+        /// <summary>
+        /// Gets or sets the statements orderer.
+        /// </summary>
+        public IStatementsOrderer Orderer { get; set; }
     }
 }

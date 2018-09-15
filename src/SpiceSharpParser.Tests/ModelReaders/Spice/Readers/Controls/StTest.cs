@@ -42,7 +42,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 evaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
-                new ObjectNameGenerator(string.Empty));
+                new ObjectNameGenerator(string.Empty),
+                null);
 
             // act
             var stControl = new StControl();
@@ -84,7 +85,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 evaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
-                new ObjectNameGenerator(string.Empty));
+                new ObjectNameGenerator(string.Empty),
+                null);
 
             // act
             var stControl = new StControl();
@@ -126,7 +128,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 evaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
-                new ObjectNameGenerator(string.Empty));
+                new ObjectNameGenerator(string.Empty),
+                null);
 
             // act
             var stControl = new StControl();
@@ -168,7 +171,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 evaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
-                new ObjectNameGenerator(string.Empty));
+                new ObjectNameGenerator(string.Empty),
+                null);
 
             // act
             var stControl = new StControl();
@@ -209,7 +213,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 evaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
-                new ObjectNameGenerator(string.Empty));
+                new ObjectNameGenerator(string.Empty),
+                null);
 
             // act
             var stControl = new StControl();

@@ -17,16 +17,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <summary>
         /// Initializes a new instance of the <see cref="VoltageSourceGenerator"/> class.
         /// </summary>
-        /// <param name="waveFormGenerator">Waveform reader</param>
-        public VoltageSourceGenerator(IWaveformReader waveFormGenerator)
+        public VoltageSourceGenerator()
         {
-            WaveFormGenerator = waveFormGenerator ?? throw new System.ArgumentNullException(nameof(waveFormGenerator));
         }
-
-        /// <summary>
-        /// Gets the waveform generator
-        /// </summary>
-        public IWaveformReader WaveFormGenerator { get; }
 
         /// <summary>
         /// Generates new voltage source
@@ -57,7 +50,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// Generated Spice Types
         /// </returns>
-        public override IEnumerable<string> GetGeneratedSpiceTypes()
+        public override IEnumerable<string> GetGeneratedTypes()
         {
             return new List<string>() { "v", "h", "e" };
         }
@@ -178,7 +171,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else if (parameters[i] is BracketParameter cp)
                 {
-                    context.SetParameter(vsrc, "waveform", WaveFormGenerator.Generate(cp, context));
+                    context.SetParameter(vsrc, "waveform", context.ReadersRegistry.WaveformReader.Generate(cp, context));
                 }
                 else
                 {

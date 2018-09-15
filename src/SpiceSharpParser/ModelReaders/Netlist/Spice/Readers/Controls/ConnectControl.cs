@@ -10,8 +10,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
     /// </summary>
     public class ConnectControl : BaseControl
     {
-        public override string SpiceCommandName => "connect";
-
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>

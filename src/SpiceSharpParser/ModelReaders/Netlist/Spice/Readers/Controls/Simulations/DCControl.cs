@@ -14,11 +14,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
     public class DCControl : SimulationControl
     {
         /// <summary>
-        /// Gets the Spice type
-        /// </summary>
-        public override string SpiceCommandName => "dc";
-
-        /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>

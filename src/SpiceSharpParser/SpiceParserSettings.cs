@@ -15,11 +15,11 @@ namespace SpiceSharpParser
         /// <summary>
         /// Gets the SPICE netlist parser settings.
         /// </summary>
-        public SpiceNetlistParserSettings NetlistParser { get; } = new SpiceNetlistParserSettings();
+        public SpiceNetlistParserSettings Parsing { get; } = new SpiceNetlistParserSettings();
 
         /// <summary>
         /// Gets the SPICE netlist model reader settings.
         /// </summary>
-        public SpiceNetlistReaderSettings NetlistReader { get; } = new SpiceNetlistReaderSettings();
+        public SpiceNetlistReaderSettings Reading { get; } = new SpiceNetlistReaderSettings();
     }
 }

@@ -6,6 +6,7 @@ using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
@@ -239,6 +240,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Postprocessors
             throw new NotImplementedException();
         }
 
+        public IStatementReader GetReader(Statement statement)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Read(Statement statement)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEvaluator ReadingEvaluator
         {
             get
@@ -252,5 +263,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Postprocessors
         public ISimulationContexts SimulationContexts => throw new NotImplementedException();
 
         public IStochasticModelsRegistry StochasticModelsRegistry => throw new NotImplementedException();
+
+        public ISpiceEntityRegistry EntityRegistry => throw new NotImplementedException();
+
+        public ISpiceReaderRegistry ReadersRegistry => throw new NotImplementedException();
+
+        ISpiceReaderRegistry IReadingContext.ReadersRegistry { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

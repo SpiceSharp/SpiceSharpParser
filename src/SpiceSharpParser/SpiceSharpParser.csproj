@@ -15,10 +15,8 @@
     <PackageId>SpiceSharp-Parser</PackageId>
     <Product>SpiceSharpParser</Product>
     <Description>Netlist parser for SpiceSharp</Description>
-    <PackageReleaseNotes>Adding:
--  .MC statement
-- .OPTIONS SEED = X</PackageReleaseNotes>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>- Refactored</PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.5|AnyCPU'">

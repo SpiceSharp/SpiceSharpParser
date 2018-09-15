@@ -19,7 +19,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
             var waveFormGenerator = Substitute.For<WaveformGenerator>();
             waveFormGenerator.Generate(Arg.Any<BracketParameter>(), Arg.Any<IReadingContext>()).Returns(new Sine());
 
-            var waveFormRegistry = Substitute.For<IWaveformRegistry>();
+            var waveFormRegistry = Substitute.For<IRegistry<WaveformGenerator>>();
             waveFormRegistry.Supports("func").Returns(true);
             waveFormRegistry.Get(Arg.Any<string>()).Returns(waveFormGenerator);
 
@@ -42,7 +42,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
             var waveFormGenerator = Substitute.For<WaveformGenerator>();
             waveFormGenerator.Generate(Arg.Any<BracketParameter>(), Arg.Any<IReadingContext>()).Returns(new Sine());
 
-            var waveFormRegistry = Substitute.For<IWaveformRegistry>();
+            var waveFormRegistry = Substitute.For<IRegistry<WaveformGenerator>>();
             waveFormRegistry.Supports("func").Returns(true);
             waveFormRegistry.Get(Arg.Any<string>()).Returns(waveFormGenerator);
 

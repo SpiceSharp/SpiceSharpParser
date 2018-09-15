@@ -1,4 +1,5 @@
 ﻿using NSubstitute;
+using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components;
@@ -53,8 +54,14 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             var controlReader = Substitute.For<IControlReader>();
             var subcircuitDefinitionReader = Substitute.For<ISubcircuitDefinitionReader>();
 
+            context.ReadersRegistry = Substitute.For<ISpiceReaderRegistry>();
+            context.ReadersRegistry.ComponentReader = componentReader;
+            context.ReadersRegistry.ModelReader = modelReader;
+            context.ReadersRegistry.ControlReader = controlReader;
+            context.ReadersRegistry.SubcircuitDefinitionReader = subcircuitDefinitionReader;
+
             // act
-            var generator = new SubCircuitGenerator(componentReader, modelReader, controlReader, subcircuitDefinitionReader);
+            var generator = new SubCircuitGenerator();
             generator.Generate(new SpiceSharp.StringIdentifier("x1"), "x1", "x", parameters, context);
 
             // assert

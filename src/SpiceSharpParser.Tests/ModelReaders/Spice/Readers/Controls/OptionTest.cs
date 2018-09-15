@@ -47,10 +47,11 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 evaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
-                new ObjectNameGenerator(string.Empty));
+                new ObjectNameGenerator(string.Empty),
+                null);
 
             // act
-            var optionControl = new OptionControl();
+            var optionControl = new OptionsControl();
             optionControl.Read(control, readingContext);
 
             // assert
@@ -83,10 +84,11 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 evaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
-                new ObjectNameGenerator(string.Empty));
+                new ObjectNameGenerator(string.Empty),
+                null);
 
             // act
-            var optionControl = new OptionControl();
+            var optionControl = new OptionsControl();
             optionControl.Read(control, readingContext);
 
             // assert

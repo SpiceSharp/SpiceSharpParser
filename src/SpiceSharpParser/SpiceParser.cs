@@ -95,7 +95,7 @@ namespace SpiceSharpParser
                 throw new System.InvalidOperationException(nameof(Settings));
             }
 
-            SpiceNetlist originalNetlistModel = SpiceNetlistParser.Parse(spiceNetlist, Settings.NetlistParser);
+            SpiceNetlist originalNetlistModel = SpiceNetlistParser.Parse(spiceNetlist, Settings.Parsing);
             SpiceNetlist preprocessedNetListModel = (SpiceNetlist)originalNetlistModel.Clone();
 
             // Preprocessing
@@ -107,13 +107,13 @@ namespace SpiceSharpParser
             SpiceNetlist postprocessedNetlistModel = (SpiceNetlist)preprocessedNetListModel.Clone();
 
             // Postprocessing
-            var postprocessorEvaluator = new SpiceEvaluator("Postprocessor evaluator", null, Settings.NetlistReader.EvaluatorMode, Settings.NetlistReader.Seed, new Common.Evaluation.ExpressionRegistry());
+            var postprocessorEvaluator = new SpiceEvaluator("Postprocessor evaluator", null, Settings.Reading.EvaluatorMode, Settings.Reading.Seed, new Common.Evaluation.ExpressionRegistry());
 
             var ifPostprocessor = new IfPostprocessor(postprocessorEvaluator);
             postprocessedNetlistModel.Statements = ifPostprocessor.PostProcess(postprocessedNetlistModel.Statements);
 
             // Reading model
-            var reader = new SpiceNetlistReader(Settings.NetlistReader);
+            var reader = new SpiceNetlistReader(Settings.Reading);
             SpiceNetlistReaderResult readerResult = reader.Read(postprocessedNetlistModel);
 
             return new SpiceParserResult()
