@@ -8,10 +8,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
     /// <summary>
     /// Reads .OPTIONS <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
-    public class OptionControl : BaseControl
+    public class OptionsControl : BaseControl
     {
-        public override string SpiceCommandName => "options";
-
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context
         /// </summary>

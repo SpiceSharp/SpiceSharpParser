@@ -5,6 +5,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
     public interface IStatementsReader
     {
-        void Read(Statements statements, IReadingContext context);
+        void Read(Statements statements, IReadingContext context, IStatementsOrderer orderer);
     }
 }

@@ -8,8 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
     /// </summary>
     public class McControl : BaseControl
     {
-        public override string SpiceCommandName => "mc";
-
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>

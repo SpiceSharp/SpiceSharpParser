@@ -24,7 +24,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
                 });
 
             var resultService = Substitute.For<IResultService>();
-            var context = new ReadingContext(string.Empty, Substitute.For<ISimulationContexts>(), evaluator, resultService, new MainCircuitNodeNameGenerator(new string[] { }), new ObjectNameGenerator(string.Empty));
+            var context = new ReadingContext(string.Empty, Substitute.For<ISimulationContexts>(), evaluator, resultService, new MainCircuitNodeNameGenerator(new string[] { }), new ObjectNameGenerator(string.Empty), null);
 
             // act
             var resistor = new Resistor("R1");
@@ -47,7 +47,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
                 readingEvaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
-                new ObjectNameGenerator(string.Empty));
+                new ObjectNameGenerator(string.Empty),
+                null);
 
             // act
             var resistor = new Resistor("R1");
@@ -70,7 +71,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
                 readingEvaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
-                new ObjectNameGenerator(string.Empty));
+                new ObjectNameGenerator(string.Empty),
+                null);
 
             // act
             var resistor = new Resistor("R1");
@@ -98,7 +100,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
                 evaluator,
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
-                new ObjectNameGenerator(string.Empty));
+                new ObjectNameGenerator(string.Empty),
+                null);
 
             // act
             context.SetNodeSetVoltage("node1", "x+1");

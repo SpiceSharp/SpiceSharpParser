@@ -21,15 +21,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// Initializes a new instance of the <see cref="PlotControl"/> class.
         /// </summary>
         /// <param name="registry">The exporter registry</param>
-        public PlotControl(IExporterRegistry registry)
+        public PlotControl(IRegistry<Exporter> registry)
             : base(registry)
         {
         }
-
-        /// <summary>
-        /// Gets the type of genereator.
-        /// </summary>
-        public override string SpiceCommandName => "plot";
 
         /// <summary>
         /// Gets the supported plot types.

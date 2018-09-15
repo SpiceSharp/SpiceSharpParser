@@ -4,6 +4,7 @@ using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Parsers.Expression;
 
@@ -48,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceEvaluator"/> class.
         /// </summary>
-        public SpiceEvaluator(string name, object context, SpiceEvaluatorMode mode, int? randomSeed, IExporterRegistry exporters, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
+        public SpiceEvaluator(string name, object context, SpiceEvaluatorMode mode, int? randomSeed, IRegistry<Exporter> exporters, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
             : this(name, context, mode, randomSeed, new ExpressionRegistry())
         {
             ExportFunctions.Add(CustomFunctions, exporters, nodeNameGenerator, objectNameGenerator);
@@ -93,18 +94,28 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         public override IEvaluator CreateClonedEvaluator(string name, object context, int? randomSeed = null)
         {
             var registry = Registry.Clone();
-            registry.Invalidate();
-
             var newEvaluator = new SpiceEvaluator(name, context, Mode, randomSeed, registry);
+
+            registry.Invalidate();
             registry.UpdateEvaluator(newEvaluator);
 
-            foreach (var parameterName in this.GetParameterNames())
-            {
-                newEvaluator.Parameters[parameterName] = this.ExpressionParser.Parameters[parameterName].Clone();
-                newEvaluator.Parameters[parameterName].Evaluator = newEvaluator;
-                newEvaluator.Parameters[parameterName].Invalidate();
-            }
+            CloneParameters(newEvaluator);
+            SetCustomFunctions(newEvaluator);
+            CreateClonedChildEvaluators(context, randomSeed, newEvaluator);
 
+            return newEvaluator;
+        }
+
+        private void CreateClonedChildEvaluators(object context, int? randomSeed, SpiceEvaluator newEvaluator)
+        {
+            foreach (var child in Children)
+            {
+                newEvaluator.Children.Add(child.CreateClonedEvaluator(child.Name, context, randomSeed));
+            }
+        }
+
+        private void SetCustomFunctions(SpiceEvaluator newEvaluator)
+        {
             foreach (var customFunction in CustomFunctions)
             {
                 if (!newEvaluator.CustomFunctions.ContainsKey(customFunction.Key))
@@ -112,13 +123,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
                     newEvaluator.CustomFunctions[customFunction.Key] = customFunction.Value;
                 }
             }
+        }
 
-            foreach (var child in Children)
+        private void CloneParameters(SpiceEvaluator newEvaluator)
+        {
+            foreach (var parameterName in this.GetParameterNames())
             {
-                newEvaluator.Children.Add(child.CreateClonedEvaluator(child.Name, context, randomSeed));
+                newEvaluator.Parameters[parameterName] = this.ExpressionParser.Parameters[parameterName].Clone();
+                newEvaluator.Parameters[parameterName].Evaluator = newEvaluator;
+                newEvaluator.Parameters[parameterName].Invalidate();
             }
-
-            return newEvaluator;
         }
 
         private void CreateCustomFunctions(SpiceEvaluator evaluator)

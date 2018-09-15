@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
@@ -9,10 +8,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
     /// <summary>
     /// Base clas for all exporters.
     /// </summary>
-    public abstract class Exporter : ISpiceObjectReader
+    public abstract class Exporter
     {
-        public string SpiceCommandName => string.Join(".", GetSupportedTypes());
-
         /// <summary>
         /// Creates a new export
         /// </summary>

@@ -23,15 +23,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// Initializes a new instance of the <see cref="SaveControl"/> class.
         /// </summary>
         /// <param name="registry">The exporter registry.</param>
-        public SaveControl(IExporterRegistry registry)
+        public SaveControl(IRegistry<Exporter> registry)
             : base(registry)
         {
         }
-
-        /// <summary>
-        /// Gets the type of generator.
-        /// </summary>
-        public override string SpiceCommandName => "save";
 
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context.

@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -12,8 +9,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
     /// </summary>
     public class StRegisterControl : BaseControl
     {
-        public override string SpiceCommandName => "st_r";
-
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>

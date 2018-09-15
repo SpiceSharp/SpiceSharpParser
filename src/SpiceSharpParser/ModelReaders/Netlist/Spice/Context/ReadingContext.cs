@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
@@ -29,6 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             IResultService resultService,
             INodeNameGenerator nodeNameGenerator,
             IObjectNameGenerator objectNameGenerator,
+            ISpiceEntityRegistry entityRegisty,
             IReadingContext parent = null)
         {
             ContextName = contextName ?? throw new ArgumentNullException(nameof(contextName));
@@ -59,6 +59,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
 
             StochasticModelsRegistry = new StochasticModelsRegistry(generators);
+
+            EntityRegistry = entityRegisty;
+
+            if (parent != null)
+            {
+                ReadersRegistry = parent.ReadersRegistry;
+            }
         }
 
         /// <summary>
@@ -110,6 +117,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Gets or sets the stochastic models registry.
         /// </summary>
         public IStochasticModelsRegistry StochasticModelsRegistry { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets entities registry.
+        /// </summary>
+        public ISpiceEntityRegistry EntityRegistry { get; set; }
+
+        /// <summary>
+        /// Gets or sets readers registry.
+        /// </summary>
+        public ISpiceReaderRegistry ReadersRegistry { get; set; }
 
         /// <summary>
         /// Sets voltage initial condition for node.
@@ -219,6 +236,34 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
 
             component.Connect(nodes);
+        }
+
+        public virtual void Read(Statement statement)
+        {
+            if (statement is Control control)
+            {
+                ReadersRegistry.ControlReader.Read(control, this);
+            }
+
+            if (statement is Component component)
+            {
+                ReadersRegistry.ComponentReader.Read(component, this);
+            }
+
+            if (statement is Model model)
+            {
+                ReadersRegistry.ModelReader.Read(model, this);
+            }
+
+            if (statement is SubCircuit subcircuit)
+            {
+                ReadersRegistry.SubcircuitDefinitionReader.Read(subcircuit, this);
+            }
+
+            if (statement is CommentLine comment)
+            {
+                ReadersRegistry.CommentReader.Read(comment, this);
+            }
         }
     }
 }

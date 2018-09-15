@@ -4,7 +4,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
     /// <summary>
-    /// Base interface for all statement readers
+    /// Base interface for all statement readers.
     /// </summary>
     public interface IStatementReader
     {

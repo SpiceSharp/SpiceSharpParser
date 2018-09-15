@@ -5,6 +5,7 @@ using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -16,7 +17,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
         /// <summary>
         /// Creates export custom functions.
         /// </summary>
-        public static IEnumerable<KeyValuePair<string, CustomFunction>> Create(IExporterRegistry exporterRegistry, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
+        public static IEnumerable<KeyValuePair<string, CustomFunction>> Create(IRegistry<Exporter> exporterRegistry, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
         {
             if (exporterRegistry == null)
             {
@@ -90,7 +91,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
             return function;
         }
 
-        public static void Add(Dictionary<string, CustomFunction> customFunctions, IExporterRegistry exporterRegistry, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
+        public static void Add(Dictionary<string, CustomFunction> customFunctions, IRegistry<Exporter> exporterRegistry, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
         {
             foreach (var func in Create(exporterRegistry, nodeNameGenerator, objectNameGenerator))
             {

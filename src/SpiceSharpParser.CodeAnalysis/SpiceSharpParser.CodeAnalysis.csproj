@@ -16,6 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="..\SpiceSharpParser\ModelReaders\Netlist\Spice\ISpiceObjectReader.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
 

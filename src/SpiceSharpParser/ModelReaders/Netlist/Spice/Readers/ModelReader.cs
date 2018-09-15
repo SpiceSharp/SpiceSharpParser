@@ -1,6 +1,8 @@
 ﻿using SpiceSharp.Circuits;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -16,7 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// Initializes a new instance of the <see cref="ModelReader"/> class.
         /// </summary>
         /// <param name="registry">The registry</param>
-        public ModelReader(IEntityGeneratorRegistry registry)
+        public ModelReader(IRegistry<ModelGenerator> registry)
         {
             Registry = registry ?? throw new System.ArgumentNullException(nameof(registry));
         }
@@ -24,7 +26,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <summary>
         /// Gets the registry.
         /// </summary>
-        public IEntityGeneratorRegistry Registry { get; }
+        public IRegistry<ModelGenerator> Registry { get; }
 
         /// <summary>
         /// Returns whether reader can process specific statement.

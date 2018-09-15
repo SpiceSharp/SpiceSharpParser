@@ -10,11 +10,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
     public class NodeSetControl : BaseControl
     {
         /// <summary>
-        /// Gets name of Spice element
-        /// </summary>
-        public override string SpiceCommandName => "nodeset";
-
-        /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>

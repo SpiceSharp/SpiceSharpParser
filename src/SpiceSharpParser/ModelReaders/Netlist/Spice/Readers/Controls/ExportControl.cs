@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// Initializes a new instance of the <see cref="ExportControl"/> class.
         /// </summary>
         /// <param name="registry">The exporter registry</param>
-        public ExportControl(IExporterRegistry registry)
+        public ExportControl(IRegistry<Exporter> registry)
         {
             Registry = registry ?? throw new System.ArgumentNullException(nameof(registry));
         }
@@ -21,7 +21,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <summary>
         /// Gets the exporter registry.
         /// </summary>
-        protected IExporterRegistry Registry { get; }
+        protected IRegistry<Exporter> Registry { get; }
 
         /// <summary>
         /// Generates a new export.

@@ -1,5 +1,6 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -11,7 +12,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// Initializes a new instance of the <see cref="WaveformReader"/> class.
         /// </summary>
         /// <param name="registry">A waveform registry.</param>
-        public WaveformReader(IWaveformRegistry registry)
+        public WaveformReader(IRegistry<WaveformGenerator> registry)
         {
             Registry = registry;
         }
@@ -19,7 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <summary>
         /// Gets the current waveform registry.
         /// </summary>
-        public IWaveformRegistry Registry { get; }
+        public IRegistry<WaveformGenerator> Registry { get; }
 
         /// <summary>
         /// Gemerates wavefrom from bracket parameter.

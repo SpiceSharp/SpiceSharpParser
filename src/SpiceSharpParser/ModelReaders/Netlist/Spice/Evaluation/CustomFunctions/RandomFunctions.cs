@@ -22,12 +22,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
 
             function.Logic = (args, evaluator) =>
             {
-                Random random = Randomizer.GetRandom(evaluator.Seed);
-
                 if (args.Length != 1)
                 {
                     throw new Exception("gauss() expects one argument");
                 }
+
+                Random random = Randomizer.GetRandom(evaluator.Seed);
 
                 double p1 = 1 - random.NextDouble();
                 double p2 = 1 - random.NextDouble();
@@ -54,13 +54,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
 
             function.Logic = (args, evaluator) =>
             {
-                Random random = Randomizer.GetRandom(evaluator.Seed);
-
                 if (args.Length != 0)
                 {
                     throw new Exception("random() expects no arguments");
                 }
 
+                Random random = Randomizer.GetRandom(evaluator.Seed);
                 return random.NextDouble();
             };
 
@@ -82,12 +81,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
 
             function.Logic = (args, evaluator) =>
             {
-                Random random = Randomizer.GetRandom(evaluator.Seed);
-
                 if (args.Length != 1)
                 {
                     throw new ArgumentException("flat() function expects one argument");
                 }
+
+                Random random = Randomizer.GetRandom(evaluator.Seed);
 
                 double x = (double)args[0];
 

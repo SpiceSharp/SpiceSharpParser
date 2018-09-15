@@ -12,8 +12,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
     /// </summary>
     public class NoiseControl : SimulationControl
     {
-        public override string SpiceCommandName => "noise";
-
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context
         /// </summary>

@@ -27,7 +27,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
                Arg.Any<ParameterCollection>(),
                Arg.Any<IReadingContext>()).Returns(x => new Resistor((StringIdentifier)x[0]));
 
-            var registry = Substitute.For<IEntityGeneratorRegistry>();
+            var registry = Substitute.For<IRegistry<EntityGenerator>>();
             registry.Supports("r").Returns(true);
             registry.Get("r").Returns(generator);
 

@@ -86,7 +86,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// Generated Spice types
         /// </returns>
-        public override IEnumerable<string> GetGeneratedSpiceTypes()
+        public override IEnumerable<string> GetGeneratedTypes()
         {
             return new List<string>() { "m" };
         }

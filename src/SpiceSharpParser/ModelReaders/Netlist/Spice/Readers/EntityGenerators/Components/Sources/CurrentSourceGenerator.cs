@@ -5,8 +5,6 @@ using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -20,16 +18,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <summary>
         /// Initializes a new instance of the <see cref="CurrentSourceGenerator"/> class.
         /// </summary>
-        /// <param name="waveFormGenerator">Waveform reader</param>
-        public CurrentSourceGenerator(IWaveformReader waveFormGenerator)
+        public CurrentSourceGenerator()
         {
-            WaveFormGenerator = waveFormGenerator ?? throw new ArgumentNullException(nameof(waveFormGenerator));
         }
-
-        /// <summary>
-        /// Gets the waveform generator
-        /// </summary>
-        public IWaveformReader WaveFormGenerator { get; }
 
         /// <summary>
         /// Generates a new current source
@@ -60,7 +51,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A list of generated types
         /// </returns>
-        public override IEnumerable<string> GetGeneratedSpiceTypes()
+        public override IEnumerable<string> GetGeneratedTypes()
         {
             return new List<string>() { "i", "g", "f" };
         }
@@ -173,7 +164,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else if (parameters[i] is BracketParameter cp)
                 {
-                    context.SetParameter(isrc, "waveform", WaveFormGenerator.Generate(cp, context));
+                    context.SetParameter(isrc, "waveform", context.ReadersRegistry.WaveformReader.Generate(cp, context));
                 }
                 else
                 {

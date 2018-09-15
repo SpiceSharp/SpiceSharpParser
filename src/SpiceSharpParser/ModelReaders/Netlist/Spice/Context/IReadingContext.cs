@@ -2,6 +2,7 @@
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
@@ -31,7 +32,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets the list of available subcircuit for the context.
         /// </summary>
-        ICollection<SubCircuit> AvailableSubcircuits { get; }
+        ICollection<SubCircuit> AvailableSubcircuits { get; }        
 
         /// <summary>
         /// Gets the result service for the context.
@@ -57,6 +58,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Gets the stochastic models registry.
         /// </summary>
         IStochasticModelsRegistry StochasticModelsRegistry { get; }
+
+        /// <summary>
+        /// Gets the entity registry.
+        /// </summary>
+        ISpiceEntityRegistry EntityRegistry { get; }
+
+        /// <summary>
+        /// Gets the readers registry.
+        /// </summary>
+        ISpiceReaderRegistry ReadersRegistry { get; set; }
 
         /// <summary>
         /// Parses an expression to double.
@@ -109,5 +120,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="component">A component</param>
         /// <param name="parameters">Parameters of component</param>
         void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters);
+
+        void Read(Statement statement);
     }
 }

@@ -9,8 +9,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
     /// </summary>
     public class ParamControl : BaseControl
     {
-        public override string SpiceCommandName => "param";
-
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
