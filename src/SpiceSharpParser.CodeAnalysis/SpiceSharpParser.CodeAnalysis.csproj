@@ -24,10 +24,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SpiceSharp" Version="2.3.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta009">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\SpiceSharp\SpiceSharp\SpiceSharp.csproj" />
+    <ProjectReference Include="..\SpiceSharpParser\SpiceSharpParser.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SpiceSharp">
+      <HintPath>..\..\..\SpiceSharp\SpiceSharp\bin\Debug\netstandard1.5\SpiceSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

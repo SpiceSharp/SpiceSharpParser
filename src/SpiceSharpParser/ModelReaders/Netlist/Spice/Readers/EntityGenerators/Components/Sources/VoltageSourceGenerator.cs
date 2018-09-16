@@ -2,6 +2,7 @@
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -66,16 +67,37 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected Entity GenerateVoltageControlledVoltageSource(string name, ParameterCollection parameters, IReadingContext context)
         {
-            if (parameters.Count != 5)
+            if (parameters.Count == 5)
             {
-                throw new WrongParametersCountException(name, "Voltage controlled voltage source expects 5 parameters");
+                var vcvs = new VoltageControlledVoltageSource(name);
+                context.CreateNodes(vcvs, parameters);
+                context.SetParameter(vcvs, "gain", parameters.GetString(4));
+                return vcvs;
             }
+            else
+            {
+                if (parameters.Count == 3)
+                {
+                    if (!(parameters[2] is AssignmentParameter assigmentParameter))
+                    {
+                        throw new WrongParametersCountException(name, "voltage controlled voltage source expects that third parameter is assigment parameter");
+                    }
 
-            var vcvs = new VoltageControlledVoltageSource(name);
-            context.CreateNodes(vcvs, parameters);
-            context.SetParameter(vcvs, "gain", parameters.GetString(4));
+                    var vcvs = new VoltageControlledVoltageSource2(name);
+                    context.CreateNodes(vcvs, parameters);
+                    context.SetParameter(vcvs, "gain",
+                        (object simulationContext) => 
+                        {
+                            return context.SimulationContexts.GetSimulationEvaluator((Simulation)simulationContext).EvaluateDouble(assigmentParameter.Value);
+                        });
 
-            return vcvs;
+                    return vcvs;
+                }
+                else
+                {
+                     throw new WrongParametersCountException(name, "voltage controlled voltage source expects 3 or 5 parameters");
+                }
+            }
         }
 
         /// <summary>

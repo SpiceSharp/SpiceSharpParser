@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
@@ -102,6 +103,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// True if parameter has been set.
         /// </returns>
         bool SetParameter(Entity entity, string parameterName, string expression);
+
+        /// <summary>
+        /// Sets the parameter of entity.
+        /// </summary>
+        /// <param name="entity">An entity of parameter</param>
+        /// <param name="parameterName">A parameter name</param>
+        /// <param name="parameterValue">Function that provides parameter value.</param>
+        /// <returns>
+        /// True if parameter has been set.
+        /// </returns>
+        bool SetParameter(Entity entity, string parameterName, Func<object, double> parameterValue);
 
         /// <summary>
         /// Sets the parameter of entity.

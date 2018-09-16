@@ -206,6 +206,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return false;
         }
 
+        public bool SetParameter(Entity entity, string parameterName, Func<object, double> parameterValue)
+        {
+            SimulationContexts.SetEntityParameter(parameterName.ToLower(), entity, parameterValue);
+            return true;
+        }
+
         /// <summary>
         /// Sets the parameter of entity.
         /// </summary>
@@ -265,5 +271,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 ReadersRegistry.CommentReader.Read(comment, this);
             }
         }
+
     }
 }

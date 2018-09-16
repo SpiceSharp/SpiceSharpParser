@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
@@ -21,6 +22,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         void SetParameter(string paramName, double value, BaseSimulation simulation);
 
         void SetEntityParameter(string paramName, Entity @object, string expression, BaseSimulation simulation = null);
+
+        void SetEntityParameter(string paramName, Entity @object, Func<object, double> value);
 
         void SetModelParameter(string paramName, Entity model, string expression, BaseSimulation simulation);
     }

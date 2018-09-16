@@ -178,6 +178,32 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         }
 
         /// <summary>
+        /// Sets the entity parameter.
+        /// </summary>
+        /// <param name="paramName">Parameter name.</param>
+        /// <param name="object">Entity object.</param>
+        /// <param name="paramValue">Expression.</param>
+        public void SetEntityParameter(string paramName, Entity @object, Func<object, double> paramValue)
+        {
+            Add(() =>
+            {
+                foreach (BaseSimulation s in Simulations)
+                {
+                    Func<double> paramValueUnwrapped = () => paramValue(s);
+                    s.BeforeTemperature += (object sender, LoadStateEventArgs args) =>
+                    {
+                        s.EntityParameters[@object.Name].SetParameter(paramName, paramValueUnwrapped);
+                    };
+                }
+            });
+
+            if (Prepared)
+            {
+                RunPrepareActions();
+            }
+        }
+
+        /// <summary>
         /// Sets the model parameter.
         /// </summary>
         /// <param name="paramName">Parameter name.</param>
