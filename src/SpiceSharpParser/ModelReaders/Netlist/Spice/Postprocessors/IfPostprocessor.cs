@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Circuits;
+using SpiceSharp.Components;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
@@ -164,14 +165,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Postprocessors
 
     internal class IfPostReaderReadingContext : IReadingContext
     {
-        public IEvaluator Evaluator { get; set; }
-
         public IfPostReaderReadingContext(IEvaluator evaluator)
         {
-            Evaluator = evaluator;
+            ReadingEvaluator = evaluator;
         }
 
         public string ContextName => throw new NotImplementedException();
+
+        public ISimulationContexts SimulationContexts => throw new NotImplementedException();
 
         public IReadingContext Parent => throw new NotImplementedException();
 
@@ -185,10 +186,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Postprocessors
 
         public IObjectNameGenerator ObjectNameGenerator => throw new NotImplementedException();
 
-        public void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters)
-        {
-            throw new NotImplementedException();
-        }
+        public IEvaluator ReadingEvaluator { get; }
+
+        public IStochasticModelsRegistry StochasticModelsRegistry => throw new NotImplementedException();
+
+        public ISpiceEntityRegistry EntityRegistry => throw new NotImplementedException();
+
+        public ISpiceReaderRegistry ReadersRegistry { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public double ParseDouble(string expression)
         {
@@ -205,7 +209,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Postprocessors
             throw new NotImplementedException();
         }
 
-        public bool SetEntityParameter(Entity entity, string parameterName, string expression, Simulation simulation)
+        public bool SetParameter(Entity entity, string parameterName, string expression)
         {
             throw new NotImplementedException();
         }
@@ -215,32 +219,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Postprocessors
             throw new NotImplementedException();
         }
 
-        public IEvaluator GetSimulationEvaluator(Simulation simulation)
-        {
-            throw new Exception();
-        }
-
-        public IEvaluator GetSimulationEvaluator(Simulation simulation, string name = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CreateSimulationEvaluator(Simulation simulation, string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void EnsureSimulationEvaluator(Simulation simulation, string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool SetParameter(Entity entity, string parameterName, string expression)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IStatementReader GetReader(Statement statement)
+        public void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters)
         {
             throw new NotImplementedException();
         }
@@ -249,25 +228,5 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Postprocessors
         {
             throw new NotImplementedException();
         }
-
-        public IEvaluator ReadingEvaluator
-        {
-            get
-            {
-                return Evaluator;
-            }
-        }
-
-        public IDictionary<Simulation, IEvaluator> SimulationEvaluators => throw new NotImplementedException();
-
-        public ISimulationContexts SimulationContexts => throw new NotImplementedException();
-
-        public IStochasticModelsRegistry StochasticModelsRegistry => throw new NotImplementedException();
-
-        public ISpiceEntityRegistry EntityRegistry => throw new NotImplementedException();
-
-        public ISpiceReaderRegistry ReadersRegistry => throw new NotImplementedException();
-
-        ISpiceReaderRegistry IReadingContext.ReadersRegistry { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }
