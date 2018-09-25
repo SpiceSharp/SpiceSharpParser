@@ -15,10 +15,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <summary>
         /// Initializes a new instance of the <see cref="ComponentReader"/> class.
         /// </summary>
-        /// <param name="mapper">A component registry.</param>
+        /// <param name="mapper">A component mapper.</param>
         public ComponentReader(IMapper<EntityGenerator> mapper)
         {
-            Mapper = mapper;
+            Mapper = mapper ?? throw new System.NullReferenceException(nameof(mapper));
         }
 
         /// <summary>

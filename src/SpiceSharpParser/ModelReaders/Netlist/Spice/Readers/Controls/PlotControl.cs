@@ -20,9 +20,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotControl"/> class.
         /// </summary>
-        /// <param name="registry">The exporter registry</param>
-        public PlotControl(IMapper<Exporter> registry)
-            : base(registry)
+        /// <param name="mapper">The exporter mapper.</param>
+        public PlotControl(IMapper<Exporter> mapper)
+            : base(mapper)
         {
         }
 

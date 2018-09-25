@@ -20,7 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Registries
         }
 
         /// <summary>
-        /// Gets the count of elements in registry.
+        /// Gets the count of elements in mapper.
         /// </summary>
         public int Count
         {

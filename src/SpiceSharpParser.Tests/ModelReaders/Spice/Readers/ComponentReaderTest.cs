@@ -27,9 +27,9 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
                Arg.Any<ParameterCollection>(),
                Arg.Any<IReadingContext>()).Returns(x => new Resistor((StringIdentifier)x[0]));
 
-            var registry = Substitute.For<IMapper<EntityGenerator>>();
-            registry.Contains("r").Returns(true);
-            registry.Get("r").Returns(generator);
+            var mapper = Substitute.For<IMapper<EntityGenerator>>();
+            mapper.Contains("r").Returns(true);
+            mapper.Get("r").Returns(generator);
 
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }));
@@ -39,7 +39,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
             readingContext.Result.Returns(resultService);
 
             // act
-            ComponentReader reader = new ComponentReader(registry);
+            ComponentReader reader = new ComponentReader(mapper);
             var component = new Models.Netlist.Spice.Objects.Component() { Name = "Ra1", PinsAndParameters = new ParameterCollection() { new ValueParameter("0"), new ValueParameter("1"), new ValueParameter("12.3") } };
             reader.Read(component, readingContext);
 

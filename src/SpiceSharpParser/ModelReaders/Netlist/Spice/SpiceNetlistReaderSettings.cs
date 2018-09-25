@@ -22,7 +22,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         public int? Seed { get; set; }
 
         /// <summary>
-        /// Gets or sets the entity registry.
+        /// Gets or sets the object mappings.
         /// </summary>
         public ISpiceObjectMappings Mappings { get; set; }
 
