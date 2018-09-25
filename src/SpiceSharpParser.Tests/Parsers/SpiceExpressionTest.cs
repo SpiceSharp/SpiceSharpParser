@@ -102,6 +102,18 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
+        public void ParseWithParameters()
+        {
+            // arrange
+            var parser = new SpiceExpressionParser();
+
+            // act and assert
+            var parseResult = parser.Parse("1 + N + R + s", null, false);
+
+            Assert.Equal(3, parseResult.FoundParameters.Count);
+        }
+
+        [Fact]
         public void ParseWithSpace()
         {
             // arrange

@@ -142,7 +142,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public ICollection<string> GetParametersFromExpression(string expression)
         {
-            var result = ExpressionParser.Parse(expression, this);
+            var result = ExpressionParser.Parse(expression, this, false);
             return result.FoundParameters;
         }
 

@@ -106,6 +106,10 @@ namespace SpiceSharpParser.Parsers.Expression
         private bool infixPostfix;
         private int count;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpiceExpressionParser"/> class.
+        /// </summary>
+        /// <param name="isNegationAssociative">Specifies whether negation is associative.</param>
         public SpiceExpressionParser(bool isNegationAssociative = false)
         {
             OperatorNegative.LeftAssociative = isNegationAssociative;
@@ -169,8 +173,10 @@ namespace SpiceSharpParser.Parsers.Expression
         /// Parses an expression.
         /// </summary>
         /// <param name="expression">The expression.</param>
+        /// <param name="evaluator">The evaluator.</param>
+        /// <param name="validateParameters">Specifies whether parameter validation is on.</param>
         /// <returns>Returns the result of parse.</returns>
-        public ExpressionParseResult Parse(string expression, IEvaluator evaluator = null)
+        public ExpressionParseResult Parse(string expression, IEvaluator evaluator = null, bool validateParameters = true)
         {
             var foundParameters = new Collection<string>();
 
@@ -511,7 +517,18 @@ namespace SpiceSharpParser.Parsers.Expression
                             }
                             else
                             {
-                                throw new UnknownParameterException() { Name = id };
+                                if (validateParameters)
+                                {
+                                    throw new UnknownParameterException() { Name = id };
+                                }
+                                else
+                                {
+                                    foundParameters.Add(id);
+                                    outputStack.Push(() =>
+                                    {
+                                        return double.NaN;
+                                    });
+                                }
                             }
 
                             infixPostfix = true;
