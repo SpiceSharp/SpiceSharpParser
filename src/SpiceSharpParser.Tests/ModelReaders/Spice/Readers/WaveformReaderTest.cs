@@ -19,8 +19,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
             var waveFormGenerator = Substitute.For<WaveformGenerator>();
             waveFormGenerator.Generate(Arg.Any<BracketParameter>(), Arg.Any<IReadingContext>()).Returns(new Sine());
 
-            var waveFormRegistry = Substitute.For<IRegistry<WaveformGenerator>>();
-            waveFormRegistry.Supports("func").Returns(true);
+            var waveFormRegistry = Substitute.For<IMapper<WaveformGenerator>>();
+            waveFormRegistry.Contains("func").Returns(true);
             waveFormRegistry.Get(Arg.Any<string>()).Returns(waveFormGenerator);
 
             var bracketParameter = new Models.Netlist.Spice.Objects.Parameters.BracketParameter();
@@ -42,8 +42,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
             var waveFormGenerator = Substitute.For<WaveformGenerator>();
             waveFormGenerator.Generate(Arg.Any<BracketParameter>(), Arg.Any<IReadingContext>()).Returns(new Sine());
 
-            var waveFormRegistry = Substitute.For<IRegistry<WaveformGenerator>>();
-            waveFormRegistry.Supports("func").Returns(true);
+            var waveFormRegistry = Substitute.For<IMapper<WaveformGenerator>>();
+            waveFormRegistry.Contains("func").Returns(true);
             waveFormRegistry.Get(Arg.Any<string>()).Returns(waveFormGenerator);
 
             var bracketParameter = new Models.Netlist.Spice.Objects.Parameters.BracketParameter();

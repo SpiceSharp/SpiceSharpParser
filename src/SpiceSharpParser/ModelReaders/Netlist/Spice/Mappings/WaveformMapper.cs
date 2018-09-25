@@ -3,14 +3,14 @@
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Registries
 {
     /// <summary>
-    /// Registry for <see cref="WaveformGenerator"/>s
+    /// Mapper for elements of <see cref="WaveformGenerator"/> class.
     /// </summary>
-    public class WaveformRegistry : BaseRegistry<WaveformGenerator>
+    public class WaveformMapper : BaseMapper<WaveformGenerator>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WaveformRegistry"/> class.
+        /// Initializes a new instance of the <see cref="WaveformMapper"/> class.
         /// </summary>
-        public WaveformRegistry()
+        public WaveformMapper()
         {
         }
     }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
@@ -60,14 +59,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         IStochasticModelsRegistry StochasticModelsRegistry { get; }
 
         /// <summary>
-        /// Gets the entity registry.
+        /// Gets the statements reader.
         /// </summary>
-        ISpiceEntityRegistry EntityRegistry { get; }
+        ISpiceStatementsReader StatementsReader { get; set; }
 
         /// <summary>
-        /// Gets the readers registry.
+        /// Gets the waveform reader.
         /// </summary>
-        ISpiceReaderRegistry ReadersRegistry { get; set; }
+        IWaveformReader WaveformReader { get; set; }
 
         /// <summary>
         /// Parses an expression to double.
@@ -121,6 +120,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="parameters">Parameters of component</param>
         void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters);
 
-        void Read(Statement statement);
+        /// <summary>
+        /// Reads the statements with given order.
+        /// </summary>
+        /// <param name="statements">Statements.</param>
+        /// <param name="orderer">Orderer.</param>
+        void Read(Statements statement, ISpiceStatementsOrderer orderer);
     }
 }

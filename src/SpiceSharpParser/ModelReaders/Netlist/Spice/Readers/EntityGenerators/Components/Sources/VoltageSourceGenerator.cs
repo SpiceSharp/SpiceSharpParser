@@ -171,7 +171,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else if (parameters[i] is BracketParameter cp)
                 {
-                    context.SetParameter(vsrc, "waveform", context.ReadersRegistry.WaveformReader.Generate(cp, context));
+                    context.SetParameter(vsrc, "waveform", context.WaveformReader.Generate(cp, context));
                 }
                 else
                 {

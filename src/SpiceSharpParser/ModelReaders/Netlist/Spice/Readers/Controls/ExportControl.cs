@@ -12,16 +12,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="ExportControl"/> class.
         /// </summary>
-        /// <param name="registry">The exporter registry</param>
-        public ExportControl(IRegistry<Exporter> registry)
+        /// <param name="mapper">The exporter mapper.</param>
+        public ExportControl(IMapper<Exporter> mapper)
         {
-            Registry = registry ?? throw new System.ArgumentNullException(nameof(registry));
+            Mapper = mapper ?? throw new System.ArgumentNullException(nameof(mapper));
         }
 
         /// <summary>
-        /// Gets the exporter registry.
+        /// Gets the exporter mapper.
         /// </summary>
-        protected IRegistry<Exporter> Registry { get; }
+        protected IMapper<Exporter> Mapper { get; }
 
         /// <summary>
         /// Generates a new export.
@@ -32,9 +32,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 string type = bp.Name.ToLower();
 
-                if (Registry.Supports(type))
+                if (Mapper.Contains(type))
                 {
-                    return Registry.Get(type).CreateExport(type, bp.Parameters, simulation, nodeNameGenerator, objectNameGenerator);
+                    return Mapper.Get(type).CreateExport(type, bp.Parameters, simulation, nodeNameGenerator, objectNameGenerator);
                 }
             }
 
@@ -42,13 +42,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 string type = "@";
 
-                if (Registry.Supports(type))
+                if (Mapper.Contains(type))
                 {
                     var parameters = new ParameterCollection();
                     parameters.Add(new WordParameter(rp.Name));
                     parameters.Add(new WordParameter(rp.Argument));
 
-                    return Registry.Get(type).CreateExport(type, parameters, simulation, nodeNameGenerator, objectNameGenerator);
+                    return Mapper.Get(type).CreateExport(type, parameters, simulation, nodeNameGenerator, objectNameGenerator);
                 }
             }
 

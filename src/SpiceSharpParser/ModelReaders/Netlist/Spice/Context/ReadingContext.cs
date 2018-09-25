@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
@@ -28,7 +29,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             IResultService resultService,
             INodeNameGenerator nodeNameGenerator,
             IObjectNameGenerator objectNameGenerator,
-            ISpiceEntityRegistry entityRegisty,
+            ISpiceStatementsReader statementsReader,
+            IWaveformReader waveformReader,
             IReadingContext parent = null)
         {
             ContextName = contextName ?? throw new ArgumentNullException(nameof(contextName));
@@ -59,13 +61,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
 
             StochasticModelsRegistry = new StochasticModelsRegistry(generators);
-
-            EntityRegistry = entityRegisty;
-
-            if (parent != null)
-            {
-                ReadersRegistry = parent.ReadersRegistry;
-            }
+            StatementsReader = statementsReader;
+            WaveformReader = waveformReader;
         }
 
         /// <summary>
@@ -119,14 +116,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public IStochasticModelsRegistry StochasticModelsRegistry { get; protected set; }
 
         /// <summary>
-        /// Gets or sets entities registry.
+        /// Gets or sets statements reader.
         /// </summary>
-        public ISpiceEntityRegistry EntityRegistry { get; set; }
+        public ISpiceStatementsReader StatementsReader { get; set; }
 
         /// <summary>
-        /// Gets or sets readers registry.
+        /// Gets or sets waveform reader.
         /// </summary>
-        public ISpiceReaderRegistry ReadersRegistry { get; set; }
+        public IWaveformReader WaveformReader { get; set; }
 
         /// <summary>
         /// Sets voltage initial condition for node.
@@ -238,31 +235,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             component.Connect(nodes);
         }
 
-        public virtual void Read(Statement statement)
+        public virtual void Read(Statements statements, ISpiceStatementsOrderer orderer)
         {
-            if (statement is Control control)
+            foreach (var statement in orderer.Order(statements))
             {
-                ReadersRegistry.ControlReader.Read(control, this);
-            }
-
-            if (statement is Component component)
-            {
-                ReadersRegistry.ComponentReader.Read(component, this);
-            }
-
-            if (statement is Model model)
-            {
-                ReadersRegistry.ModelReader.Read(model, this);
-            }
-
-            if (statement is SubCircuit subcircuit)
-            {
-                ReadersRegistry.SubcircuitDefinitionReader.Read(subcircuit, this);
-            }
-
-            if (statement is CommentLine comment)
-            {
-                ReadersRegistry.CommentReader.Read(comment, this);
+                StatementsReader.Read(statement, this);
             }
         }
     }

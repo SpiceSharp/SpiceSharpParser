@@ -3,12 +3,12 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
-    public class StatementsOrderer : IStatementsOrderer
+    public class SpiceStatementsOrderer : ISpiceStatementsOrderer
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StatementsOrderer"/> class.
+        /// Initializes a new instance of the <see cref="SpiceStatementsOrderer"/> class.
         /// </summary>
-        public StatementsOrderer()
+        public SpiceStatementsOrderer()
         {
         }
 
