@@ -14,7 +14,7 @@ namespace SpiceSharpParser.IntegrationTests
             string incFilePath = Path.Combine(Directory.GetCurrentDirectory(), "params.inc");
             File.WriteAllText(incFilePath, incContent);
 
-            var netlist = ParseNetlistToPostReadedModel(
+            var netlist = ParseNetlistToModel(
                 false,
                 true,
                 "Simplest netlist with if and def",
@@ -39,7 +39,7 @@ namespace SpiceSharpParser.IntegrationTests
             string incFilePath = Path.Combine(Directory.GetCurrentDirectory(), "params.inc");
             File.WriteAllText(incFilePath, incContent);
 
-            var netlist = ParseNetlistToPostReadedModel(
+            var netlist = ParseNetlistToModel(
                 false,
                 true,
                 "Simplest netlist with if and def - include at the bottom",
@@ -63,7 +63,7 @@ namespace SpiceSharpParser.IntegrationTests
         {
             try
             {
-                var netlist = ParseNetlistToPostReadedModel(
+                var netlist = ParseNetlistToModel(
                     false,
                     true,
                    "Missing endif",
@@ -84,7 +84,7 @@ namespace SpiceSharpParser.IntegrationTests
         [Fact]
         public void IfElseTest()
         {
-            var netlist = ParseNetlistToPostReadedModel(
+            var netlist = ParseNetlistToModel(
                 false,
                 true,
                "Simplest netlist with if",
@@ -106,7 +106,7 @@ namespace SpiceSharpParser.IntegrationTests
         [Fact]
         public void IfElseIfElseTest()
         {
-            var netlist = ParseNetlistToPostReadedModel(
+            var netlist = ParseNetlistToModel(
                 false,
                 true,
                "Simplest netlist with if",
@@ -129,7 +129,7 @@ namespace SpiceSharpParser.IntegrationTests
         [Fact]
         public void ManyIfElseIfElseTest()
         {
-            var netlist = ParseNetlistToPostReadedModel(
+            var netlist = ParseNetlistToModel(
                 false,
                 true,
                "Simplest netlist with if",
@@ -159,7 +159,7 @@ namespace SpiceSharpParser.IntegrationTests
         [Fact]
         public void NestedIfElseIfElseTest()
         {
-            var netlist = ParseNetlistToPostReadedModel(
+            var netlist = ParseNetlistToModel(
                 false,
                 true,
                "Simplest netlist with if",
@@ -195,7 +195,7 @@ namespace SpiceSharpParser.IntegrationTests
         [Fact]
         public void NestedIfEleseTest()
         {
-            var netlist = ParseNetlistToPostReadedModel(
+            var netlist = ParseNetlistToModel(
                 false,
                 true,
                "Nested netlist with if",
@@ -221,7 +221,7 @@ namespace SpiceSharpParser.IntegrationTests
         [Fact]
         public void BasicFalseTest()
         {
-            var netlist = ParseNetlistToPostReadedModel(
+            var netlist = ParseNetlistToModel(
                 false, 
                 true,
                "Simplest netlist with if",
@@ -238,7 +238,7 @@ namespace SpiceSharpParser.IntegrationTests
         [Fact]
         public void BasicTrueTest()
         {
-            var netlist = ParseNetlistToPostReadedModel(
+            var netlist = ParseNetlistToModel(
                 false,
                 true,
                "Simplest netlist with if",

@@ -7,19 +7,22 @@ using SpiceSharpParser.Common;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Preprocessors
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
     /// <summary>
     /// Preprocess .lib statements with 2 parameters from netlist file.
     /// </summary>
-    public class LibPreprocessor : ILibPreprocessor
+    public class LibPreprocessor : IProcessor
     {
+        public string WorkingDirectoryPath { get; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LibPreprocessor"/> class.
         /// </summary>
         /// <param name="fileReader">File reader</param>
-        public LibPreprocessor(IFileReader fileReader, ISpiceNetlistParser spiceNetlistParser, IIncludesPreprocessor includesPreReader)
+        public LibPreprocessor(IFileReader fileReader, ISpiceNetlistParser spiceNetlistParser, IProcessor includesPreReader, string workingDirectoryPath = null)
         {
+            WorkingDirectoryPath = workingDirectoryPath ?? Directory.GetCurrentDirectory();
             IncludesPreprocessor = includesPreReader;
             SpiceNetlistParser = spiceNetlistParser;
             FileReader = fileReader;
@@ -36,35 +39,31 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Preprocessors
         public ISpiceNetlistParser SpiceNetlistParser { get; }
 
         /// <summary>
-        /// Getst the inclue preprocessor.
+        /// Getst the include preprocessor.
         /// </summary>
-        public IIncludesPreprocessor IncludesPreprocessor { get; }
+        public IProcessor IncludesPreprocessor { get; }
 
         /// <summary>
         /// Reads .include statements.
         /// </summary>
-        /// <param name="netlistModel">Netlist model to seach for .include statements</param>
-        /// <param name="currentDirectoryPath">Current working directory path</param>
-        public void Preprocess(SpiceNetlist netlistModel, string currentDirectoryPath = null)
+        /// <param name="statements">Netlist model to seach for .include statements</param>
+        public Statements Process(Statements statements)
         {
-            if (currentDirectoryPath == null)
-            {
-                currentDirectoryPath = Directory.GetCurrentDirectory();
-            }
-
-            bool libFound = ReadLibs(netlistModel, currentDirectoryPath);
+            bool libFound = ReadLibs(statements, WorkingDirectoryPath);
 
             while (libFound)
             {
-                IncludesPreprocessor.Preprocess(netlistModel, currentDirectoryPath);
-                libFound = ReadLibs(netlistModel, currentDirectoryPath);
+                IncludesPreprocessor.Process(statements);
+                libFound = ReadLibs(statements, WorkingDirectoryPath);
             }
+
+            return statements;
         }
 
-        private bool ReadLibs(SpiceNetlist netlistModel, string currentDirectoryPath)
+        private bool ReadLibs(Statements statements, string currentDirectoryPath)
         {
             bool result = false;
-            var subCircuits = netlistModel.Statements.Where(statement => statement is SubCircuit s);
+            var subCircuits = statements.Where(statement => statement is SubCircuit s);
             if (subCircuits.Any())
             {
                 foreach (SubCircuit subCircuit in subCircuits.ToArray())
@@ -79,14 +78,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Preprocessors
                 }
             }
 
-            var libs = netlistModel.Statements.Where(statement => statement is Control c && (c.Name.ToLower() == "lib"));
+            var libs = statements.Where(statement => statement is Control c && (c.Name.ToLower() == "lib"));
 
             if (libs.Any())
             {
                 result = true;
                 foreach (Control include in libs.ToArray())
                 {
-                    ReadSingleLib(netlistModel.Statements, currentDirectoryPath, include);
+                    ReadSingleLib(statements, currentDirectoryPath, include);
                 }
             }
 

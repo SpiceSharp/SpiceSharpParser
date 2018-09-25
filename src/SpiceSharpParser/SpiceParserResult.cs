@@ -29,10 +29,5 @@ namespace SpiceSharpParser
         /// Gets or sets the netlist model after preprocessing.
         /// </summary>
         public SpiceNetlist PreprocessedNetlistModel { get; set; }
-
-        /// <summary>
-        /// Gets or sets the netlist model after postprocessing.
-        /// </summary>
-        public SpiceNetlist PostprocessedNetlistModel { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Postprocessors;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Processors;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -41,8 +41,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             SubCircuit subCircuitDefiniton = FindSubcircuitDefinion(parameters, context);
             ReadingContext subCircuitContext = CreateSubcircuitContext(id.ToString(), originalName, subCircuitDefiniton, parameters, context);
 
-            var ifPostprocessor = new IfPostprocessor(subCircuitContext.ReadingEvaluator);
-            subCircuitDefiniton.Statements = ifPostprocessor.PostProcess(subCircuitDefiniton.Statements);
+            var ifPreprocessor = new IfPreprocessor();
+            ifPreprocessor.Evaluator = subCircuitContext.ReadingEvaluator;
+            subCircuitDefiniton.Statements = ifPreprocessor.Process(subCircuitDefiniton.Statements);
 
             ReadParamControl(subCircuitDefiniton, subCircuitContext);
             ReadSubcircuits(subCircuitDefiniton, subCircuitContext);

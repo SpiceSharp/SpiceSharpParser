@@ -6,19 +6,30 @@ using SpiceSharpParser.Common;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Preprocessors
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
     /// <summary>
     /// Preprocess .include statements from netlist file.
     /// </summary>
-    public class IncludesPreprocessor : IIncludesPreprocessor
+    public class IncludesPreprocessor : IProcessor
     {
+        public string WorkingDirectoryPath { get; protected set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="IncludesPreprocessor"/> class.
         /// </summary>
         /// <param name="fileReader">File reader</param>
-        public IncludesPreprocessor(IFileReader fileReader, ISpiceNetlistParser spiceNetlistParser)
+        public IncludesPreprocessor(IFileReader fileReader, ISpiceNetlistParser spiceNetlistParser, string workingDirectoryPath = null)
         {
+            if (workingDirectoryPath == null)
+            {
+                WorkingDirectoryPath = Directory.GetCurrentDirectory();
+            }
+            else
+            {
+                WorkingDirectoryPath = workingDirectoryPath;
+            }
+
             SpiceNetlistParser = spiceNetlistParser;
             FileReader = fileReader;
         }
@@ -36,16 +47,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Preprocessors
         /// <summary>
         /// Reads .include statements.
         /// </summary>
-        /// <param name="netlistModel">Netlist model to seach for .include statements</param>
-        /// <param name="currentDirectoryPath">Current working directory path</param>
-        public void Preprocess(SpiceNetlist netlistModel, string currentDirectoryPath = null)
+        /// <param name="statements">Statements</param>
+        public Statements Process(Statements statements)
         {
-            if (currentDirectoryPath == null)
-            {
-                currentDirectoryPath = Directory.GetCurrentDirectory();
-            }
-
-            var subCircuits = netlistModel.Statements.Where(statement => statement is SubCircuit s);
+            var subCircuits = statements.Where(statement => statement is SubCircuit s);
             if (subCircuits.Any())
             {
                 foreach (SubCircuit subCircuit in subCircuits.ToArray())
@@ -54,20 +59,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Preprocessors
 
                     foreach (Control include in subCircuitIncludes.ToArray())
                     {
-                        ReadSingleInclude(subCircuit.Statements, currentDirectoryPath, include);
+                        ReadSingleInclude(subCircuit.Statements, WorkingDirectoryPath, include);
                     }
                 }
             }
 
-            var includes = netlistModel.Statements.Where(statement => statement is Control c && (c.Name.ToLower() == "include" || c.Name.ToLower() == "inc"));
+            var includes = statements.Where(statement => statement is Control c && (c.Name.ToLower() == "include" || c.Name.ToLower() == "inc"));
 
             if (includes.Any())
             {
                 foreach (Control include in includes.ToArray())
                 {
-                    ReadSingleInclude(netlistModel.Statements, currentDirectoryPath, include);
+                    ReadSingleInclude(statements, WorkingDirectoryPath, include);
                 }
             }
+
+            return statements;
         }
 
         private void ReadSingleInclude(Statements statements, string currentDirectoryPath, Control include)
@@ -96,7 +103,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Preprocessors
                     new SpiceNetlistParserSettings() { HasTitle = false, IsEndRequired = false, IsNewlineRequired = false });
 
                 // process includes of include netlist
-                Preprocess(includeModel, Path.GetDirectoryName(includeFullPath));
+                var savedDirectoryPath = WorkingDirectoryPath;
+                WorkingDirectoryPath = Path.GetDirectoryName(includeFullPath);
+
+                includeModel.Statements = Process(includeModel.Statements);
+
+                WorkingDirectoryPath = savedDirectoryPath;
 
                 // repelace statement by the content of the include
                 statements.Replace(include, includeModel.Statements);

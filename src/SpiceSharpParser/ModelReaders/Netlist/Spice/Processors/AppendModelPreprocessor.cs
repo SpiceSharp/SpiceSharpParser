@@ -1,22 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Preprocessors
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
-    public class AppendModelPreprocessor : IAppendModelPreprocessor
+    public class AppendModelPreprocessor : IProcessor
     {
         /// <summary>
         /// Preprocess .appendmodel statements.
         /// </summary>
-        /// <param name="netlistModel">Netlist model to seach for .appendmodel statements</param>
-        public void Preprocess(SpiceNetlist netlistModel)
+        /// <param name="statements">Statements to process.</param>
+        public Statements Process(Statements statements)
         {
             // 1. Iterate over all subcircuits
-            var subCircuits = netlistModel.Statements.Where(statement => statement is SubCircuit s);
+            var subCircuits = statements.Where(statement => statement is SubCircuit s);
             if (subCircuits.Any())
             {
                 foreach (SubCircuit subCircuit in subCircuits)
@@ -33,16 +32,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Preprocessors
             }
 
             // 4. Find all APPENDMODELs from main circuit
-            var appendModels = netlistModel.Statements.Where(statement => statement is Control c && (c.Name.ToLower() == "appendmodel"));
+            var appendModels = statements.Where(statement => statement is Control c && (c.Name.ToLower() == "appendmodel"));
 
             if (appendModels.Any())
             {
                 foreach (Control appendModel in appendModels)
                 {
                     // 5. Read APPENDMODEL
-                    ReadAppendModel(netlistModel.Statements, appendModel, appendModels);
+                    ReadAppendModel(statements, appendModel, appendModels);
                 }
             }
+
+            return statements;
         }
 
         /// <summary>

@@ -1,20 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using SpiceSharpParser.Models.Netlist.Spice;
+﻿using System.Linq;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Preprocessors
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
-    public class SweepsPreprocessor : ISweepsPreprocessor
+    public class SweepsPreprocessor : IProcessor
     {
         /// <summary>
         /// Preprocess .ST and .STEP.
         /// </summary>
-        /// <param name="netlistModel">Netlist model to seach for .ST and .STEP statements</param>
-        public void Preprocess(SpiceNetlist netlistModel)
+        /// <param name="statements">Statements</param>
+        public Statements Process(Statements statements)
         {
-            foreach (var statement in netlistModel.Statements.ToArray())
+            foreach (var statement in statements.ToArray())
             {
                 if (statement is Control c)
                 {
@@ -22,17 +19,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Preprocessors
                     {
                         var cloned = (Control)c.Clone();
                         cloned.Name = "st_r";
-                        netlistModel.Statements.Add(cloned);
+                        statements.Add(cloned);
                     }
 
                     if (c.Name.ToLower() == "step")
                     {
                         var cloned = (Control)c.Clone();
                         cloned.Name = "step_r";
-                        netlistModel.Statements.Add(cloned);
+                        statements.Add(cloned);
                     }
                 }
             }
+
+            return statements;
         }
     }
 }

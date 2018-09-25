@@ -5,30 +5,33 @@ using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Postprocessors
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
     /// <summary>
     /// Not smart .if/.endif "parser".
     /// </summary>
-    public class IfPostprocessor
+    public class IfPreprocessor : IProcessor, IEvaluatorConsumer
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="IfPostprocessor"/> class.
+        /// Initializes a new instance of the <see cref="IfPreprocessor"/> class.
         /// </summary>
-        /// <param name="evaluator">An evaluator to use.</param>
-        public IfPostprocessor(IEvaluator evaluator)
+        public IfPreprocessor()
         {
-            Evaluator = evaluator ?? throw new ArgumentNullException(nameof(evaluator));
         }
-        
+
         /// <summary>
-        /// Gets the evaluator.
+        /// Gets or sets the evaluator.
         /// </summary>
-        protected IEvaluator Evaluator { get; }
+        public IEvaluator Evaluator { get; set; }
 
         // TODO: please do something about .ToLower() in so many places ....
-        public Statements PostProcess(Statements statements)
+        public Statements Process(Statements statements)
         {
+            if (Evaluator == null)
+            {
+                throw new InvalidOperationException("No evaluator");
+            }
+
             ParamControl paramControl = new ParamControl();
             foreach (Control param in statements.Where(statement => statement is Control c && c.Name.ToLower() == "param"))
             {
