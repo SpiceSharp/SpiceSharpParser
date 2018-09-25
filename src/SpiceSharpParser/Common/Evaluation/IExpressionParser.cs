@@ -8,6 +8,13 @@ namespace SpiceSharpParser.Common.Evaluation
 
         Dictionary<string, CustomFunction> CustomFunctions { get; }
 
-        ExpressionParseResult Parse(string expression, IEvaluator evaluator = null);
+        /// <summary>
+        /// Parses an expression.
+        /// </summary>
+        /// <param name="expression">The expression.</param>
+        /// <param name="evaluator">The evaluator.</param>
+        /// <param name="validateParameters">Specifies whether parameter validation is on.</param>
+        /// <returns>Returns the result of parse.</returns>
+        ExpressionParseResult Parse(string expression, IEvaluator evaluator = null, bool validateParameters = true);
     }
 }
