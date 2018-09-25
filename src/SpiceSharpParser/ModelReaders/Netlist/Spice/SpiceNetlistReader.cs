@@ -45,8 +45,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             var resultService = new ResultService(result);
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(new string[] { "0" });
             var objectNameGenerator = new ObjectNameGenerator(string.Empty);
-            var readingEvaluator = new SpiceEvaluator("Main reading evaluator", null, Settings.EvaluatorMode, Settings.Seed, Settings.Entities.Exporters, nodeNameGenerator, objectNameGenerator);
+            var readingEvaluator = new SpiceEvaluator("Main reading evaluator", null, Settings.EvaluatorMode, Settings.Seed, Settings.Mappings.Exporters, nodeNameGenerator, objectNameGenerator);
             var simulationContexts = new SimulationContexts(resultService, readingEvaluator);
+            var statementsReader = new SpiceStatementsReader(Settings.Mappings.Controls, Settings.Mappings.Models, Settings.Mappings.Components);
+            var waveformReader = new WaveformReader(Settings.Mappings.Waveforms);
 
             var readingContext = new ReadingContext(
                 string.Empty,
@@ -55,27 +57,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 resultService,
                 nodeNameGenerator,
                 objectNameGenerator,
-                Settings.Entities);
-
-            readingContext.ReadersRegistry = CreateReaderRegistry(Settings.Entities);
+                statementsReader,
+                waveformReader);
 
             // Read statements form input netlist using created context
-            var statementsReader = new StatementsReader();
-            statementsReader.Read(netlist.Statements, readingContext, Settings.Orderer);
+            readingContext.Read(netlist.Statements, Settings.Orderer);
 
             // Return and update evaluators info.
             result.Seed = result.Seed ?? Settings.Seed;
 
-            // TODO: please, please, do something about below lines
-            simulationContexts.Prepare();
             result.Evaluators = simulationContexts.GetSimulationEvaluators();
 
             return result;
-        }
-
-        private ISpiceReaderRegistry CreateReaderRegistry(ISpiceEntityRegistry enityRegistry)
-        {
-            return new SpiceReaderRegistry(enityRegistry.WaveForms, enityRegistry.Controls, enityRegistry.Models, enityRegistry.Components);
         }
     }
 }

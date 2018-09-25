@@ -13,45 +13,33 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <summary>
         /// Initializes a new instance of the <see cref="ControlReader"/> class.
         /// </summary>
-        /// <param name="registry">Th registry</param>
-        public ControlReader(IRegistry<BaseControl> registry)
+        /// <param name="mapper">The base control mapper.</param>
+        public ControlReader(IMapper<BaseControl> mapper)
         {
-            Registry = registry;
+            Mapper = mapper ?? throw new System.ArgumentNullException(nameof(mapper));
         }
 
         /// <summary>
-        /// Gets the registry
+        /// Gets the base control mapper.
         /// </summary>
-        public IRegistry<BaseControl> Registry { get; }
+        public IMapper<BaseControl> Mapper { get; }
 
         /// <summary>
-        /// Returns whether reader can process specific statement.
+        /// Reads a control statement and modifies the context.
         /// </summary>
         /// <param name="statement">A statement to process.</param>
-        /// <returns>
-        /// True if the reader can process given statement.
-        /// </returns>
-        public override bool CanRead(Statement statement)
-        {
-            return statement is Control;
-        }
-
-        /// <summary>
-        /// Reads a control statement and modifies the context
-        /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modifify</param>
+        /// <param name="context">A context to modifify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
             string type = statement.Name.ToLower();
 
-            if (!Registry.Supports(type))
+            if (!Mapper.Contains(type))
             {
                 context.Result.AddWarning("Unsupported control: " + statement.Name + " at " + statement.LineNumber + " line");
             }
             else
             {
-                Registry.Get(type).Read(statement, context);
+                Mapper.Get(type).Read(statement, context);
             }
         }
     }

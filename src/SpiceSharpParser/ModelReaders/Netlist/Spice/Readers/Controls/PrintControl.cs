@@ -22,9 +22,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="PrintControl"/> class.
         /// </summary>
-        /// <param name="registry">The exporter registry</param>
-        public PrintControl(IRegistry<Exporter> registry)
-            : base(registry)
+        /// <param name="mapper">The exporter mapper</param>
+        public PrintControl(IMapper<Exporter> mapper)
+            : base(mapper)
         {
         }
 
@@ -126,7 +126,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     }
 
                     // Add current export for component
-                    result.Add(Registry.Get("i").CreateExport("i", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator));
+                    result.Add(Mapper.Get("i").CreateExport("i", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator));
                 }
             }
 
@@ -135,7 +135,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 var @params = new ParameterCollection();
                 @params.Add(new WordParameter(node.ToString()));
 
-                result.Add(Registry.Get("v").CreateExport("v", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator));
+                result.Add(Mapper.Get("v").CreateExport("v", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator));
             }
 
             return result;

@@ -3,7 +3,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
-    public interface IStatementsOrderer
+    public interface ISpiceStatementsOrderer
     {
         /// <summary>
         /// Orders statements for reading.

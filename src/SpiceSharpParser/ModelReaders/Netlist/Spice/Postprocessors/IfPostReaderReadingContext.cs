@@ -13,8 +13,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Postprocessors
 {
-
-    class IfPostReaderReadingContext : IReadingContext
+    public class IfPostReaderReadingContext : IReadingContext
     {
         public IfPostReaderReadingContext(IEvaluator evaluator)
         {
@@ -41,9 +40,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Postprocessors
 
         public IStochasticModelsRegistry StochasticModelsRegistry => throw new NotImplementedException();
 
-        public ISpiceEntityRegistry EntityRegistry => throw new NotImplementedException();
+        public ISpiceObjectMappings ObjectMappings => throw new NotImplementedException();
 
-        public ISpiceReaderRegistry ReadersRegistry { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public ISpiceStatementsReader StatementsReader { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IWaveformReader WaveformReader { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public double ParseDouble(string expression)
         {
@@ -65,11 +65,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Postprocessors
             throw new NotImplementedException();
         }
 
-        public bool SetParameter(Entity entity, string parameterName, Func<object, double> parameterValue)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool SetParameter(Entity entity, string parameterName, object @object)
         {
             throw new NotImplementedException();
@@ -80,12 +75,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Postprocessors
             throw new NotImplementedException();
         }
 
-        public void Read(Statement statement)
+        public void Read(Statements statement, ISpiceStatementsOrderer orderer)
         {
             throw new NotImplementedException();
         }
 
-        public bool SetParameter(Entity entity, string parameterName, Func<object> parameterValue)
+        public bool SetParameter(Entity entity, string parameterName, Func<object, double> parameterValue)
         {
             throw new NotImplementedException();
         }

@@ -7,8 +7,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         public SpiceNetlistReaderSettings()
         {
             EvaluatorMode = SpiceEvaluatorMode.Spice3f5;
-            Entities = new SpiceEntityRegistry();
-            Orderer = new StatementsOrderer();
+            Mappings = new SpiceObjectMappings();
+            Orderer = new SpiceStatementsOrderer();
         }
 
         /// <summary>
@@ -22,13 +22,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         public int? Seed { get; set; }
 
         /// <summary>
-        /// Gets or sets the entity registry.
+        /// Gets or sets the object mappings.
         /// </summary>
-        public ISpiceEntityRegistry Entities { get; set; }
+        public ISpiceObjectMappings Mappings { get; set; }
 
         /// <summary>
         /// Gets or sets the statements orderer.
         /// </summary>
-        public IStatementsOrderer Orderer { get; set; }
+        public ISpiceStatementsOrderer Orderer { get; set; }
     }
 }

@@ -78,14 +78,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 if (parameters.Count == 3)
                 {
-                    if (!(parameters[2] is AssignmentParameter assigmentParameter))
+                    if (!(parameters[2] is AssignmentParameter assigmentParameter) || assigmentParameter.Name.ToLower() != "value")
                     {
                         throw new WrongParametersCountException(name, "voltage controlled voltage source expects that third parameter is assigment parameter");
                     }
 
-                    var vcvs = new VoltageControlledVoltageSource2(name);
+                    var vcvs = new VoltageSource(name);
                     context.CreateNodes(vcvs, parameters);
-                    context.SetParameter(vcvs, "gain",
+                    context.SetParameter(vcvs, "dc",
                         (object simulationContext) => 
                         {
                             return context.SimulationContexts.GetSimulationEvaluator((Simulation)simulationContext).EvaluateDouble(assigmentParameter.Value);
@@ -193,7 +193,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else if (parameters[i] is BracketParameter cp)
                 {
-                    context.SetParameter(vsrc, "waveform", context.ReadersRegistry.WaveformReader.Generate(cp, context));
+                    context.SetParameter(vsrc, "waveform", context.WaveformReader.Generate(cp, context));
                 }
                 else
                 {

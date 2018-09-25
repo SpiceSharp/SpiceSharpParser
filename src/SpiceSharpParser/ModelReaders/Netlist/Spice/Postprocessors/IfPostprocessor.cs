@@ -162,4 +162,5 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Postprocessors
             }
         }
     }
+
 }

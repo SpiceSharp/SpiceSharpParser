@@ -15,28 +15,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <summary>
         /// Initializes a new instance of the <see cref="ComponentReader"/> class.
         /// </summary>
-        /// <param name="componentRegistry">A component registry</param>
-        public ComponentReader(IRegistry<EntityGenerator> componentRegistry)
+        /// <param name="mapper">A component mapper.</param>
+        public ComponentReader(IMapper<EntityGenerator> mapper)
         {
-            ComponentRegistry = componentRegistry;
+            Mapper = mapper ?? throw new System.NullReferenceException(nameof(mapper));
         }
 
         /// <summary>
-        /// Gets the component registry
+        /// Gets the component mapper.
         /// </summary>
-        public IRegistry<EntityGenerator> ComponentRegistry { get; }
-
-        /// <summary>
-        /// Returns whether reader can process specific statement.
-        /// </summary>
-        /// <param name="statement">A statement to process.</param>
-        /// <returns>
-        /// True if the reader can process given statement.
-        /// </returns>
-        public override bool CanRead(Statement statement)
-        {
-            return statement is Component;
-        }
+        public IMapper<EntityGenerator> Mapper { get; }
 
         /// <summary>
         /// Reads a component statement and modifies the context
@@ -48,12 +36,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
             string componentName = statement.Name;
             string componentType = componentName[0].ToString().ToLower();
 
-            if (!ComponentRegistry.Supports(componentType))
+            if (!Mapper.Contains(componentType))
             {
                 throw new System.Exception("Unsupported component type");
             }
 
-            var generator = ComponentRegistry.Get(componentType);
+            var generator = Mapper.Get(componentType);
 
             Entity entity = generator.Generate(
                 new StringIdentifier(context.ObjectNameGenerator.Generate(componentName)),

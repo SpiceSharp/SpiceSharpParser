@@ -6,22 +6,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
     /// <summary>
     /// Reads all <see cref="CommentLine"/> from SPICE netlist object model.
     /// </summary>
-    public class CommentReader : StatementReader<CommentLine>
+    public class CommentReader : StatementReader<CommentLine>, ICommentReader
     {
         public CommentReader()
         {
-        }
-
-        /// <summary>
-        /// Returns whether reader can process specific statement.
-        /// </summary>
-        /// <param name="statement">A statement to process.</param>
-        /// <returns>
-        /// True if the reader can process given statement.
-        /// </returns>
-        public override bool CanRead(Statement statement)
-        {
-            return statement is CommentLine;
         }
 
         /// <summary>

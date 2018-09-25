@@ -27,9 +27,9 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
                 Arg.Any<ParameterCollection>(),
                 Arg.Any<IReadingContext>()).Returns(x => new BipolarJunctionTransistorModel((StringIdentifier)x[0]));
 
-            var registry = Substitute.For<IRegistry<ModelGenerator>>();
-            registry.Supports("npn").Returns(true);
-            registry.Get("npn").Returns(generator);
+            var mapper = Substitute.For<IMapper<ModelGenerator>>();
+            mapper.Contains("npn").Returns(true);
+            mapper.Get("npn").Returns(generator);
 
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }));
@@ -39,7 +39,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
             readingContext.Result.Returns(resultService);
 
             // act
-            ModelReader reader = new ModelReader(registry);
+            ModelReader reader = new ModelReader(mapper);
             var model = new Models.Netlist.Spice.Objects.Model() { Name = "2Na2222", Parameters = new ParameterCollection() { new BracketParameter() { Name = "NPN" } } };
             reader.Read(model, readingContext);
 

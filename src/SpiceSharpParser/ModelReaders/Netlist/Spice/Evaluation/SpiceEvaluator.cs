@@ -49,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceEvaluator"/> class.
         /// </summary>
-        public SpiceEvaluator(string name, object context, SpiceEvaluatorMode mode, int? randomSeed, IRegistry<Exporter> exporters, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
+        public SpiceEvaluator(string name, object context, SpiceEvaluatorMode mode, int? randomSeed, IMapper<Exporter> exporters, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
             : this(name, context, mode, randomSeed, new ExpressionRegistry())
         {
             ExportFunctions.Add(CustomFunctions, exporters, nodeNameGenerator, objectNameGenerator);
