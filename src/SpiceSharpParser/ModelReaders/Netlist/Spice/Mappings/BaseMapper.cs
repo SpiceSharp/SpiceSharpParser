@@ -4,18 +4,18 @@ using System.Collections.Generic;
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Registries
 {
     /// <summary>
-    /// Registry with base functionalities.
+    /// Mapper with base functionalities.
     /// </summary>
     /// <typeparam name="TElement">
-    /// Type of the registry element.
+    /// Type of the element.
     /// </typeparam>
-    public class BaseRegistry<TElement> : IEnumerable<TElement>, IRegistry<TElement>
+    public class BaseMapper<TElement> : IEnumerable<TElement>, IMapper<TElement>
         where TElement : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseRegistry{TElement}"/> class.
+        /// Initializes a new instance of the <see cref="BaseMapper{TElement}"/> class.
         /// </summary>
-        public BaseRegistry()
+        public BaseMapper()
         {
         }
 
@@ -36,57 +36,70 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Registries
         protected Dictionary<string, TElement> Elements { get; } = new Dictionary<string, TElement>();
 
         /// <summary>
-        /// Adds the element to the registry.
+        /// Binds key with element.
         /// </summary>
-        /// <param name="element">Element to add</param>
-        public virtual void Bind(string spiceName, TElement element)
+        /// <param name="key">Key of the element.</param>
+        /// <param name="element">Element to add.</param>
+        public virtual void Map(string key, TElement element)
         {
-            Elements[spiceName] = element;
+            Elements[key] = element;
         }
 
         /// <summary>
-        /// Adds the element to the registry.
+        /// Binds the element to the mapper.
         /// </summary>
         /// <param name="element">Element to add</param>
-        public virtual void Bind(string[] spiceNames, TElement element)
+        public virtual void Map(string[] keys, TElement element)
         {
-            foreach (var spiceName in spiceNames)
+            foreach (var key in keys)
             {
-                Elements[spiceName] = element;
+                Elements[key] = element;
             }
         }
 
         /// <summary>
-        /// Returns a value indicating whether the registry has a element for <paramref name="type"/>.
+        /// Returns a value indicating whether the mapper has a element for <paramref name="key"/>.
         /// </summary>
-        /// <param name="type">
-        /// A type of generator to look
+        /// <param name="key">
+        /// A key.
         /// </param>
         /// <returns>
-        /// A boolean value
+        /// A value indicating whether the mapper has a element with given <paramref name="key"/>.
         /// </returns>
-        public bool Supports(string type)
+        public bool Contains(string key)
         {
-            return Elements.ContainsKey(type);
+            return Elements.ContainsKey(key);
         }
 
         /// <summary>
-        /// Gets the element for given type
+        /// Gets the element for given type.
         /// </summary>
-        /// <param name="type">A type of element</param>
+        /// <param name="type">A type of element.</param>
         /// <returns>
-        /// A reference to the element
+        /// A reference to the element.
         /// </returns>
         public TElement Get(string type)
         {
             return Elements[type];
         }
 
+        /// <summary>
+        /// Gets the typed enumerator.
+        /// </summary>
+        /// <returns>
+        /// The enumerator.
+        /// </returns>
         public IEnumerator<TElement> GetEnumerator()
         {
             return Elements.Values.GetEnumerator();
         }
 
+        /// <summary>
+        /// Gets the enumerator.
+        /// </summary>
+        /// <returns>
+        /// The enumerator.
+        /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return Elements.GetEnumerator();

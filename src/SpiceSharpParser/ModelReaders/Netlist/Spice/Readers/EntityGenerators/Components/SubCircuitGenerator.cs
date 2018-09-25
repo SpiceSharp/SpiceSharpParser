@@ -75,7 +75,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             foreach (Statement statement in subCircuitDefiniton.Statements.Where(s => s is Control && ((Control)s).Name.ToLower() == "param"))
             {
-                subCircuitContext.ReadersRegistry.ControlReader.Read((Control)statement, subCircuitContext);
+                subCircuitContext.StatementsReader.Read(statement, subCircuitContext);
             }
         }
 
@@ -88,7 +88,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             foreach (Statement statement in subCircuitDefiniton.Statements.Where(s => s is SubCircuit))
             {
-                subCircuitContext.ReadersRegistry.SubcircuitDefinitionReader.Read((SubCircuit)statement, subCircuitContext);
+                subCircuitContext.StatementsReader.Read((SubCircuit)statement, subCircuitContext);
             }
         }
 
@@ -101,7 +101,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             foreach (Statement statement in subCircuitDefiniton.Statements.Where(s => s is Component))
             {
-                subCircuitContext.ReadersRegistry.ComponentReader.Read((Component)statement, subCircuitContext);
+                subCircuitContext.StatementsReader.Read((Component)statement, subCircuitContext);
             }
         }
 
@@ -114,7 +114,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             foreach (Statement statement in subCircuitDefiniton.Statements.Where(s => s is Model))
             {
-                subCircuitContext.ReadersRegistry.ModelReader.Read((Model)statement, subCircuitContext);
+                subCircuitContext.StatementsReader.Read(statement, subCircuitContext);
             }
         }
 
@@ -186,7 +186,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             // setting object name generator
             var subcircuitObjectNameGenerator = context.ObjectNameGenerator.CreateChildGenerator(subcircuitName);
 
-            return new ReadingContext(subcircuitName, context.SimulationContexts, subcircuitEvaluator, context.Result, subcircuitNodeNameGenerator, subcircuitObjectNameGenerator, context.EntityRegistry, context);
+            return new ReadingContext(subcircuitName, context.SimulationContexts, subcircuitEvaluator, context.Result, subcircuitNodeNameGenerator, subcircuitObjectNameGenerator, context.StatementsReader, context.WaveformReader, context);
         }
 
         /// <summary>

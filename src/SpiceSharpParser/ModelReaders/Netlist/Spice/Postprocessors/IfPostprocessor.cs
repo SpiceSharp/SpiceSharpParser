@@ -190,9 +190,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Postprocessors
 
         public IStochasticModelsRegistry StochasticModelsRegistry => throw new NotImplementedException();
 
-        public ISpiceEntityRegistry EntityRegistry => throw new NotImplementedException();
+        public ISpiceObjectMappings ObjectMappings => throw new NotImplementedException();
 
-        public ISpiceReaderRegistry ReadersRegistry { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public ISpiceStatementsReader StatementsReader { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IWaveformReader WaveformReader { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public double ParseDouble(string expression)
         {
@@ -224,7 +225,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Postprocessors
             throw new NotImplementedException();
         }
 
-        public void Read(Statement statement)
+        public void Read(Statements statement, ISpiceStatementsOrderer orderer)
         {
             throw new NotImplementedException();
         }

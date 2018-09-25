@@ -54,21 +54,17 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             var controlReader = Substitute.For<IControlReader>();
             var subcircuitDefinitionReader = Substitute.For<ISubcircuitDefinitionReader>();
 
-            context.ReadersRegistry = Substitute.For<ISpiceReaderRegistry>();
-            context.ReadersRegistry.ComponentReader = componentReader;
-            context.ReadersRegistry.ModelReader = modelReader;
-            context.ReadersRegistry.ControlReader = controlReader;
-            context.ReadersRegistry.SubcircuitDefinitionReader = subcircuitDefinitionReader;
+            context.StatementsReader = Substitute.For<ISpiceStatementsReader>();
 
             // act
             var generator = new SubCircuitGenerator();
             generator.Generate(new SpiceSharp.StringIdentifier("x1"), "x1", "x", parameters, context);
 
             // assert
-            componentReader.Received().Read(Arg.Is<Component>(c => c.Name == "R1"), Arg.Any<IReadingContext>());
-            modelReader.Received().Read(Arg.Is<Model>(c => c.Name == "m1"), Arg.Any<IReadingContext>());
-            controlReader.Received().Read(Arg.Is<Control>(c => c.Name == "param"), Arg.Any<IReadingContext>());
-            controlReader.DidNotReceive().Read(Arg.Is<Control>(c => c.Name == "save"), Arg.Any<IReadingContext>());
+            context.StatementsReader.Received().Read(Arg.Is<Component>(c => c.Name == "R1"), Arg.Any<IReadingContext>());
+            context.StatementsReader.Received().Read(Arg.Is<Model>(c => c.Name == "m1"), Arg.Any<IReadingContext>());
+            context.StatementsReader.Received().Read(Arg.Is<Control>(c => c.Name == "param"), Arg.Any<IReadingContext>());
+            context.StatementsReader.DidNotReceive().Read(Arg.Is<Control>(c => c.Name == "save"), Arg.Any<IReadingContext>());
 
             Assert.Single(childrenContexts);
         }

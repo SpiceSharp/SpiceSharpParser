@@ -3,8 +3,8 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
-    public interface IStatementsReader
+    public interface ICommentReader
     {
-        void Read(Statements statements, IReadingContext context, IStatementsOrderer orderer);
+        void Read(CommentLine statement, IReadingContext context);
     }
 }

@@ -17,28 +17,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelReader"/> class.
         /// </summary>
-        /// <param name="registry">The registry</param>
-        public ModelReader(IRegistry<ModelGenerator> registry)
+        /// <param name="mapper">The model mapper.</param>
+        public ModelReader(IMapper<ModelGenerator> mapper)
         {
-            Registry = registry ?? throw new System.ArgumentNullException(nameof(registry));
+            Mapper = mapper ?? throw new System.ArgumentNullException(nameof(mapper));
         }
 
         /// <summary>
-        /// Gets the registry.
+        /// Gets the model mapper.
         /// </summary>
-        public IRegistry<ModelGenerator> Registry { get; }
-
-        /// <summary>
-        /// Returns whether reader can process specific statement.
-        /// </summary>
-        /// <param name="statement">A statement to process.</param>
-        /// <returns>
-        /// True if the reader can process given statement.
-        /// </returns>
-        public override bool CanRead(Statement statement)
-        {
-            return statement is Model;
-        }
+        public IMapper<ModelGenerator> Mapper { get; }
 
         /// <summary>
         /// Reads a model statement and modifies the context.
@@ -55,12 +43,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                 {
                     var type = b.Name.ToLower();
 
-                    if (!Registry.Supports(type))
+                    if (!Mapper.Contains(type))
                     {
                         throw new GeneralReaderException("Unsupported model type: " + type);
                     }
 
-                    var generator = Registry.Get(type);
+                    var generator = Mapper.Get(type);
 
                     Entity spiceSharpModel = generator.Generate(
                         new SpiceSharp.StringIdentifier(context.ObjectNameGenerator.Generate(name)),
@@ -79,12 +67,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                 {
                     var type = single.Image.ToLower();
 
-                    if (!Registry.Supports(type))
+                    if (!Mapper.Contains(type))
                     {
                         throw new GeneralReaderException("Unsupported model type: " + type);
                     }
 
-                    var generator = Registry.Get(type);
+                    var generator = Mapper.Get(type);
                     Entity spiceSharpModel = generator.Generate(new SpiceSharp.StringIdentifier(context.ObjectNameGenerator.Generate(name)), name, type, statement.Parameters.Skip(1), context);
 
                     if (spiceSharpModel != null)

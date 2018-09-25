@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// Initializes a new instance of the <see cref="ExportControl"/> class.
         /// </summary>
         /// <param name="registry">The exporter registry</param>
-        public ExportControl(IRegistry<Exporter> registry)
+        public ExportControl(IMapper<Exporter> registry)
         {
             Registry = registry ?? throw new System.ArgumentNullException(nameof(registry));
         }
@@ -21,7 +21,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <summary>
         /// Gets the exporter registry.
         /// </summary>
-        protected IRegistry<Exporter> Registry { get; }
+        protected IMapper<Exporter> Registry { get; }
 
         /// <summary>
         /// Generates a new export.
@@ -32,7 +32,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 string type = bp.Name.ToLower();
 
-                if (Registry.Supports(type))
+                if (Registry.Contains(type))
                 {
                     return Registry.Get(type).CreateExport(type, bp.Parameters, simulation, nodeNameGenerator, objectNameGenerator);
                 }
@@ -42,7 +42,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 string type = "@";
 
-                if (Registry.Supports(type))
+                if (Registry.Contains(type))
                 {
                     var parameters = new ParameterCollection();
                     parameters.Add(new WordParameter(rp.Name));

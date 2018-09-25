@@ -17,7 +17,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
         /// <summary>
         /// Creates export custom functions.
         /// </summary>
-        public static IEnumerable<KeyValuePair<string, CustomFunction>> Create(IRegistry<Exporter> exporterRegistry, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
+        public static IEnumerable<KeyValuePair<string, CustomFunction>> Create(IMapper<Exporter> exporterRegistry, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
         {
             if (exporterRegistry == null)
             {
@@ -91,7 +91,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
             return function;
         }
 
-        public static void Add(Dictionary<string, CustomFunction> customFunctions, IRegistry<Exporter> exporterRegistry, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
+        public static void Add(Dictionary<string, CustomFunction> customFunctions, IMapper<Exporter> exporterRegistry, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
         {
             foreach (var func in Create(exporterRegistry, nodeNameGenerator, objectNameGenerator))
             {

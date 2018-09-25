@@ -27,8 +27,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
                 Arg.Any<ParameterCollection>(),
                 Arg.Any<IReadingContext>()).Returns(x => new BipolarJunctionTransistorModel((StringIdentifier)x[0]));
 
-            var registry = Substitute.For<IRegistry<ModelGenerator>>();
-            registry.Supports("npn").Returns(true);
+            var registry = Substitute.For<IMapper<ModelGenerator>>();
+            registry.Contains("npn").Returns(true);
             registry.Get("npn").Returns(generator);
 
             var readingContext = Substitute.For<IReadingContext>();

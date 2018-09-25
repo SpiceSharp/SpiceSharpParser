@@ -48,6 +48,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
                 new ObjectNameGenerator(string.Empty),
+                null,
                 null);
 
             // act
@@ -85,6 +86,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
                 new ObjectNameGenerator(string.Empty),
+                null,
                 null);
 
             // act

@@ -11,15 +11,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         where TStatement : Statement
     {
         /// <summary>
-        /// Returns whether reader can process specific statement.
-        /// </summary>
-        /// <param name="statement">A statement to process.</param>
-        /// <returns>
-        /// True if the reader can process given statement.
-        /// </returns>
-        public abstract bool CanRead(Statement statement);
-
-        /// <summary>
         /// Reads a statement (typed) and modifies the context.
         /// </summary>
         /// <param name="statement">A statement to process.</param>

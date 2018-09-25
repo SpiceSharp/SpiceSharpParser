@@ -21,7 +21,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <param name="title">The title of the netlist.</param>
         public SpiceNetlistReaderResult(Circuit circuit, string title)
         {
-            Circuit = circuit;
+            Circuit = circuit ?? throw new System.ArgumentNullException(nameof(circuit));
             Title = title;
         }
 

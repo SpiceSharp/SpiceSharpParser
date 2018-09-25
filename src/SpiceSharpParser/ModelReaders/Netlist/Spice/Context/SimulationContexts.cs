@@ -35,7 +35,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         protected List<Action> PrepareActions { get; set; }
 
-        protected bool Prepared { get; set; }
+        public bool Prepared { get; protected set; }
 
         /// <summary>
         /// Gets the simulation evaluator.
@@ -80,6 +80,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public IDictionary<Simulation, IEvaluator> GetSimulationEvaluators()
         {
+            if (!Prepared)
+            {
+                Prepare();
+            }
+
             var result = new Dictionary<Simulation, IEvaluator>();
 
             foreach (var simulation in Simulations)

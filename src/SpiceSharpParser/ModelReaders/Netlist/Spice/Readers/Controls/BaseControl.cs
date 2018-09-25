@@ -7,9 +7,5 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
     /// </summary>
     public abstract class BaseControl : StatementReader<Control>
     {
-        public override bool CanRead(Statement statement)
-        {
-            return statement is Control;
-        }
     }
 }

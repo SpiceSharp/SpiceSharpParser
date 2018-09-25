@@ -23,7 +23,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// Initializes a new instance of the <see cref="PrintControl"/> class.
         /// </summary>
         /// <param name="registry">The exporter registry</param>
-        public PrintControl(IRegistry<Exporter> registry)
+        public PrintControl(IMapper<Exporter> registry)
             : base(registry)
         {
         }
