@@ -179,28 +179,33 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// True if the parameter has been set.
         /// </returns>
-        public bool SetParameter(Entity entity, string parameterName, string expression)
+        public bool SetParameter(Entity entity, string parameterName, string expression, bool updateSimualtions = true)
         {
-            double value;
+            double value = double.NaN;
+            bool evaluated;
+
             try
             {
                 value = ReadingEvaluator.EvaluateDouble(expression);
+                evaluated = true;
             }
             catch (Exception ex)
             {
                 Result.AddWarning("Exception during parsing expression '" + expression + "': " + ex);
-                return false;
+                evaluated = false;
             }
 
-            bool wasSet = entity.SetParameter(parameterName.ToLower(), value);
+            if (evaluated)
+            {
+                entity.SetParameter(parameterName.ToLower(), value);
+            }
 
-            if (wasSet)
+            if (updateSimualtions)
             {
                 SimulationContexts.SetEntityParameter(parameterName.ToLower(), entity, expression);
-                return true;
             }
 
-            return false;
+            return true;
         }
 
         /// <summary>

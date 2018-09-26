@@ -1,5 +1,6 @@
 ﻿using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Processors;
 using SpiceSharpParser.Models.Netlist.Spice;
@@ -85,7 +86,15 @@ namespace SpiceSharpParser
 
             // Preprocessing
             SpiceNetlist preprocessedNetListModel = (SpiceNetlist)originalNetlistModel.Clone();
-            SpiceEvaluator preprocessorEvaluator = new SpiceEvaluator("Preprocessors evaluator", null, Settings.Reading.EvaluatorMode, Settings.Reading.Seed, new Common.Evaluation.ExpressionRegistry());
+            SpiceEvaluator preprocessorEvaluator = new SpiceEvaluator(
+                "Preprocessors evaluator",
+                null,
+                Settings.Reading.EvaluatorMode,
+                Settings.Reading.Seed,
+                Settings.Reading.Mappings.Exporters,
+                new MainCircuitNodeNameGenerator(new string[] { "0" }),
+                new ObjectNameGenerator(string.Empty));
+
             foreach (var preprocessor in Preprocessors)
             {
                 if (preprocessor is IEvaluatorConsumer consumer)

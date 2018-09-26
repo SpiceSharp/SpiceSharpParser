@@ -114,13 +114,13 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             Assert.Equal(-5, v.EvaluateDouble("table(N, 1, 0, 2, -10"));
 
             v.SetParameter("N", 3);
-            Assert.Equal(-20, v.EvaluateDouble("table(N, 1, 0, 2, -10"));
+            Assert.Equal(-10, v.EvaluateDouble("table(N, 1, 0, 2, -10"));
 
             v.SetParameter("N", 0);
-            Assert.Equal(10, v.EvaluateDouble("table(N, 1, 0, 2, -10"));
+            Assert.Equal(0, v.EvaluateDouble("table(N, 1, 0, 2, -10"));
 
             v.SetParameter("N", -1);
-            Assert.Equal(20, v.EvaluateDouble("table(N, 1, 0, 2, -10"));
+            Assert.Equal(0, v.EvaluateDouble("table(N, 1, 0, 2, -10"));
         }
 
         [Fact]

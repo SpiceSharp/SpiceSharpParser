@@ -67,7 +67,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var currentValue = currentValueParameter.Value;
                     var percentValue = evaluator.EvaluateDouble(parameterPercent.Image);
                     double newValue = GetValueForLotParameter(evaluator, baseModel, parameterName, currentValue, percentValue);
-                    context.SimulationContexts.SetModelParameter(parameterName, componentModel, newValue.ToString(), sim);
+                    context.SimulationContexts.SetModelParameter(parameterName, componentModel, newValue.ToString(), sim, @override: true);
                 }
             }
         }
@@ -87,7 +87,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var percentValue = evaluator.EvaluateDouble(parameterPercent.Image);
 
                     double newValue = GetValueForDevParameter(evaluator, currentValue, percentValue);
-                    context.SimulationContexts.SetModelParameter(asgparamName, componentModel, newValue.ToString(), sim);
+                    context.SimulationContexts.SetModelParameter(asgparamName, componentModel, newValue.ToString(), sim, @override: true);
                 }
             }
         }

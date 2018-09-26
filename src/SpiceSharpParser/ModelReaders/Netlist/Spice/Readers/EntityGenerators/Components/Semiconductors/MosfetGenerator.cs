@@ -76,7 +76,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             // The rest is all just parameters
             context.CreateNodes(mosfet, parameters);
-            context.SetParameters(mosfet, parameters.Skip(5));
+            context.SetParameters(mosfet, parameters.Skip(5), true);
             return mosfet;
         }
 

@@ -31,7 +31,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Extensions
             };
 
             // act
-            readingContext.SetParameters(new VoltageSwitchModel("S1"), parameters);
+            readingContext.SetParameters(new VoltageSwitchModel("S1"), parameters, true);
 
             // assert
             resultService.Received(0).AddWarning(Arg.Any<string>());
@@ -54,7 +54,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Extensions
             };
 
             // act
-            readingContext.SetParameters(new VoltageSwitchModel("S1"), parameters);
+            readingContext.SetParameters(new VoltageSwitchModel("S1"), parameters, true);
 
             // assert
             resultService.Received(2).AddWarning(Arg.Any<string>());

@@ -20,8 +20,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         void SetParameter(string paramName, double value, BaseSimulation simulation);
 
-        void SetEntityParameter(string paramName, Entity @object, string expression, BaseSimulation simulation = null);
+        void SetEntityParameter(string paramName, Entity @object, string expression, BaseSimulation simulation = null, bool @override = false);
 
-        void SetModelParameter(string paramName, Entity model, string expression, BaseSimulation simulation);
+        void SetModelParameter(string paramName, Entity model, string expression, BaseSimulation simulation, bool @override = false);
     }
 }

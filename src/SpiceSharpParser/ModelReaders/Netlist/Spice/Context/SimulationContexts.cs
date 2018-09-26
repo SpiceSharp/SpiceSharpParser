@@ -7,7 +7,7 @@ using SpiceSharpParser.Common;
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     /// <summary>
-    /// TODO: Add comments.
+    /// TODO: Add comments. Please refactor me. Please refactor me. Please refactor me.
     /// </summary>
     public class SimulationContexts : ISimulationContexts
     {
@@ -36,6 +36,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         protected List<Action> PrepareActions { get; set; }
 
         public bool Prepared { get; protected set; }
+
+        protected Dictionary<Simulation, Dictionary<Entity, Dictionary<string, List<EventHandler<LoadStateEventArgs>>>>> BeforeLoads
+            = new Dictionary<Simulation, Dictionary<Entity, Dictionary<string, List<EventHandler<LoadStateEventArgs>>>>>();
+
+
+        protected Dictionary<Simulation, Dictionary<Entity, Dictionary<string, List<EventHandler<LoadStateEventArgs>>>>> BeforeTemperature
+            = new Dictionary<Simulation, Dictionary<Entity, Dictionary<string, List<EventHandler<LoadStateEventArgs>>>>>();
 
         /// <summary>
         /// Gets the simulation evaluator.
@@ -124,12 +131,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="simulation">Simulation.</param>
         public void SetParameter(string paramName, double value, BaseSimulation simulation)
         {
-            Add(() => { GetSimulationEvaluator(simulation).SetParameter(paramName, value); });
-
-            if (Prepared)
-            {
-                RunPrepareActions();
-            }
+            GetSimulationEvaluator(simulation).SetParameter(paramName, value);
         }
 
         /// <summary>
@@ -139,46 +141,121 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="object">Entity object.</param>
         /// <param name="expression">Expression.</param>
         /// <param name="simulation">Simulation.</param>
-        public void SetEntityParameter(string paramName, Entity @object, string expression, BaseSimulation simulation = null)
+        public void SetEntityParameter(string paramName, Entity @object, string expression, BaseSimulation simulation = null, bool @override = false)
         {
-            Add(() =>
+            if (simulation != null)
             {
-                if (simulation != null)
-                {
-                    simulation.BeforeTemperature += (object sender, LoadStateEventArgs args) =>
-                    {
-                        var evaluator = GetEvaluator(simulation, @object.Name.ToString());
-                        var parameter = simulation.EntityParameters[@object.Name].GetParameter<double>(paramName);
-                        parameter.Value = evaluator.EvaluateDouble(expression);
-
-                        evaluator.AddAction(
-                            @object.Name + "-" + paramName,
-                            expression,
-                            (newValue) => { parameter.Value = newValue; });
-                    };
-                }
-                else
+                AttachBeforeTemperature(paramName, @object, expression, simulation, @override);
+                AttachBeforeLoad(paramName, @object, expression, simulation, @override);
+            }
+            else
+            {
+                Add(() =>
                 {
                     foreach (BaseSimulation s in Simulations)
                     {
-                        s.BeforeTemperature += (object sender, LoadStateEventArgs args) =>
-                        {
-                            var evaluator = GetEvaluator(s, @object.Name.ToString());
-                            var parameter = s.EntityParameters[@object.Name].GetParameter<double>(paramName);
-                            parameter.Value = evaluator.EvaluateDouble(expression);
-
-                            evaluator.AddAction(
-                                @object.Name + "-" + paramName,
-                                expression,
-                                (newValue) => { parameter.Value = newValue; });
-                        };
+                        AttachBeforeLoad(paramName, @object, expression, s, @override);
+                        AttachBeforeTemperature(paramName, @object, expression, s, @override);
                     }
-                }
-            });
+                });
+            }
 
             if (Prepared)
             {
                 RunPrepareActions();
+            }
+        }
+
+        private void AttachBeforeTemperature(string paramName, Entity @object, string expression, BaseSimulation simulation, bool @override)
+        {
+            if (!BeforeTemperature.ContainsKey(simulation))
+            {
+                BeforeTemperature[simulation] = new Dictionary<Entity, Dictionary<string, List<EventHandler<LoadStateEventArgs>>>>();
+            }
+
+            if (!BeforeTemperature[simulation].ContainsKey(@object))
+            {
+                BeforeTemperature[simulation][@object] = new Dictionary<string, List<EventHandler<LoadStateEventArgs>>>();
+            }
+
+            if (!BeforeTemperature[simulation][@object].ContainsKey(paramName))
+            {
+                BeforeTemperature[simulation][@object][paramName] = new List<EventHandler<LoadStateEventArgs>>();
+            }
+
+            EventHandler<LoadStateEventArgs> handler = (object sender, LoadStateEventArgs args) =>
+            {
+                var evaluator = GetEvaluator(simulation, @object.Name.ToString());
+                var parameter = simulation.EntityParameters[@object.Name].GetParameter<double>(paramName);
+                parameter.Value = evaluator.EvaluateDouble(expression);
+
+                evaluator.AddAction(
+                    @object.Name + "-" + paramName,
+                    expression,
+                    (newValue) => { parameter.Value = newValue; });
+            };
+
+            if (BeforeTemperature[simulation][@object][paramName].Count == 0)
+            {
+                BeforeTemperature[simulation][@object][paramName].Add(handler);
+                simulation.BeforeTemperature += handler;
+            }
+            else
+            {
+                if (@override)
+                {
+                    simulation.BeforeTemperature -= BeforeTemperature[simulation][@object][paramName][0];
+                    simulation.BeforeTemperature += handler;
+                }
+            }
+        }
+
+        private void AttachBeforeLoad(string paramName, Entity @object, string expression, BaseSimulation simulation, bool @override)
+        {
+            if (!BeforeLoads.ContainsKey(simulation))
+            {
+                BeforeLoads[simulation] = new Dictionary<Entity, Dictionary<string, List<EventHandler<LoadStateEventArgs>>>>();
+            }
+
+            if (!BeforeLoads[simulation].ContainsKey(@object))
+            {
+                BeforeLoads[simulation][@object] = new Dictionary<string, List<EventHandler<LoadStateEventArgs>>>();
+            }
+
+            if (!BeforeLoads[simulation][@object].ContainsKey(paramName))
+            {
+                BeforeLoads[simulation][@object][paramName] = new List<EventHandler<LoadStateEventArgs>>();
+            }
+
+            EventHandler<LoadStateEventArgs> handler = (object sender, LoadStateEventArgs args) =>
+            {
+                //TODO: remove this hack
+                if (simulation is DC dc)
+                {
+                    if (dc.Sweeps[0].Parameter.ToString() == @object.Name.ToString())
+                    {
+                        return;
+                    }
+                }
+
+                var evaluator = GetEvaluator(simulation, @object.Name.ToString());
+                var parameter = simulation.EntityParameters[@object.Name].GetParameter<double>(paramName);
+                var value = evaluator.EvaluateDouble(expression);
+                parameter.Value = value;
+            };
+
+            if (BeforeLoads[simulation][@object][paramName].Count == 0)
+            {
+                BeforeLoads[simulation][@object][paramName].Add(handler);
+                simulation.BeforeLoad += handler;
+            }
+            else
+            {
+                if (@override)
+                {
+                    simulation.BeforeLoad -= BeforeLoads[simulation][@object][paramName][0];
+                    simulation.BeforeLoad += handler;
+                }
             }
         }
 
@@ -189,9 +266,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="model">Entity object.</param>
         /// <param name="expression">Expression.</param>
         /// <param name="simulation">Simulation.</param>
-        public void SetModelParameter(string paramName, Entity model, string expression, BaseSimulation simulation)
+        public void SetModelParameter(string paramName, Entity model, string expression, BaseSimulation simulation, bool @override = false)
         {
-            SetEntityParameter(paramName, model, expression, simulation);
+            SetEntityParameter(paramName, model, expression, simulation, @override);
         }
 
         protected void RunPrepareActions()

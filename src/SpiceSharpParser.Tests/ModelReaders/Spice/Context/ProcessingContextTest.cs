@@ -78,7 +78,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
 
             // act
             var resistor = new Resistor("R1");
-            Assert.False(context.SetParameter(resistor, "uknown", "1"));
+            Assert.True(context.SetParameter(resistor, "uknown", "1"));
         }
 
         [Fact]

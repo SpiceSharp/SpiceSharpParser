@@ -53,6 +53,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
                     index++;
                 }
 
+                if (index == points.Count)
+                {
+                    return points[points.Count - 1].Item2;
+                }
+
+                if (index == 0 && points[0].Item1 > parameterValue)
+                {
+                    return points[0].Item2;
+                }
+
                 return (linesParameters[index].A * parameterValue) + linesParameters[index].B;
             };
 
@@ -78,7 +88,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
                     B = y1 - (a * x1),
                 });
             }
-
             result.Insert(0, result[0]);
             result.Add(result[result.Count - 1]);
             return result.ToArray();

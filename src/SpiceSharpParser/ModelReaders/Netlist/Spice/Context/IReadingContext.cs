@@ -100,7 +100,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// True if parameter has been set.
         /// </returns>
-        bool SetParameter(Entity entity, string parameterName, string expression);
+        bool SetParameter(Entity entity, string parameterName, string expression, bool updateSimualtions = true);
 
         /// <summary>
         /// Sets the parameter of entity.

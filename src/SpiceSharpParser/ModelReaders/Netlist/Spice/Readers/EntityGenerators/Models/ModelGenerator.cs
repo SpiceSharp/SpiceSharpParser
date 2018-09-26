@@ -23,10 +23,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             ParameterCollection filteredParameters = FilterAndRegisterDevAndLot(parameters, context, model, (string name) =>
             {
                 var newModel = GenerateModel(name, type);
-                context.SetParameters(newModel, FilerDevAndLot(parameters));
+                context.SetParameters(newModel, FilerDevAndLot(parameters), true);
                 return newModel;
             });
-            context.SetParameters(model, filteredParameters);
+            context.SetParameters(model, filteredParameters, true);
             return model;
         }
 

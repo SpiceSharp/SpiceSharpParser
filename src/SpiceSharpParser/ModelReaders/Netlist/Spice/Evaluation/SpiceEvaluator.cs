@@ -15,6 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
     /// </summary>
     public class SpiceEvaluator : Evaluator, ISpiceEvaluator
     {
+        //TODO to many constructors 
         public SpiceEvaluator(int? randomSeed = null)
         : this(string.Empty, null, SpiceEvaluatorMode.Spice3f5, randomSeed, new ExpressionRegistry())
         {

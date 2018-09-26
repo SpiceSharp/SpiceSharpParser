@@ -47,7 +47,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             string paramName = rp.Argument;
             if (context.Result.FindObject(objectName, out Entity @object))
             {
-                context.SimulationContexts.SetEntityParameter(paramName.ToLower(), @object, paramToSet.Value.ToString(CultureInfo.InvariantCulture), simulation);
+                context.SimulationContexts.SetEntityParameter(paramName.ToLower(), @object, paramToSet.Value.ToString(CultureInfo.InvariantCulture), simulation, @override: true);
             }
         }
 
@@ -57,7 +57,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             string paramName = bp.Parameters[0].Image;
             if (context.Result.FindObject(modelName, out Entity @model))
             {
-                context.SimulationContexts.SetModelParameter(paramName.ToLower(), model, paramToSet.Value.ToString(CultureInfo.InvariantCulture), simulation);
+                context.SimulationContexts.SetModelParameter(paramName.ToLower(), model, paramToSet.Value.ToString(CultureInfo.InvariantCulture), simulation, @override: true);
             }
         }
 
@@ -70,7 +70,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         {
             if (@object is CurrentSource || @object is VoltageSource)
             {
-                context.SimulationContexts.SetEntityParameter("dc", @object, paramToSet.Value.ToString(CultureInfo.InvariantCulture), simulation);
+                context.SimulationContexts.SetEntityParameter("dc", @object, paramToSet.Value.ToString(CultureInfo.InvariantCulture), simulation, @override: true);
             }
         }
     }

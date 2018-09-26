@@ -141,7 +141,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                 }
 
-                context.SetParameters(capacitor, parameters.Skip(3));
+                context.SetParameters(capacitor, parameters.Skip(3), true);
 
                 if (modelBased)
                 {

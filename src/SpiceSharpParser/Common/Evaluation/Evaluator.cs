@@ -51,7 +51,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Gets the context of the evaluator.
         /// </summary>
-        public object Context { get; private set; }
+        public object Context { get; protected set; }
 
         /// <summary>
         /// Gets the expression registry.

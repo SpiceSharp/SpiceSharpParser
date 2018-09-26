@@ -16,13 +16,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Extensions
         /// <param name="context">Reading context</param>
         /// <param name="entity">Entity to set parameters</param>
         /// <param name="parameters">Parameters to set</param>
-        public static void SetParameters(this IReadingContext context, Entity entity, ParameterCollection parameters)
+        public static void SetParameters(this IReadingContext context, Entity entity, ParameterCollection parameters, bool updateSimualtions)
         {
             foreach (Parameter parameter in parameters)
             {
                 if (parameter is AssignmentParameter ap)
                 {
-                    if (context.SetParameter(entity, ap.Name, ap.Value) == false)
+                    if (context.SetParameter(entity, ap.Name, ap.Value, updateSimualtions) == false)
                     {
                         context.Result.AddWarning("Could not set parameter " + ap.Name);
                     }
