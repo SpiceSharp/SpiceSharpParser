@@ -158,4 +158,5 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             }
         }
     }
+
 }

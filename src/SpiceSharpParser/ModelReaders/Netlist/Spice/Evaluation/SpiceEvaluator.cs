@@ -44,6 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         {
             Mode = mode;
             Parameters.Add("TEMP", new ConstantEvaluatorExpression(Circuit.ReferenceTemperature - Circuit.CelsiusKelvin));
+            Parameters.Add("TIME", new ConstantEvaluatorExpression(0));
             CreateCustomFunctions(this);
         }
 

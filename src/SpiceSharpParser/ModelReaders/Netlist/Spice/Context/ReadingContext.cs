@@ -247,5 +247,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 StatementsReader.Read(statement, this);
             }
         }
+
     }
 }

@@ -23,6 +23,10 @@
             return result;
         }
 
+        public override void Invalidate()
+        {
+        }
+
         public override double Evaluate()
         {
             return CurrentValue;

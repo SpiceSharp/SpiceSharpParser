@@ -2,6 +2,7 @@
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -56,7 +57,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         }
 
         /// <summary>
-        /// Generates new voltage controlled voltage source
+        /// Generates new voltage controlled voltage source: EName
         /// </summary>
         /// <param name="name">The name of voltage source to generate</param>
         /// <param name="parameters">The paramters for voltage source</param>
@@ -66,20 +67,37 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected Entity GenerateVoltageControlledVoltageSource(string name, ParameterCollection parameters, IReadingContext context)
         {
-            if (parameters.Count != 5)
+            if (parameters.Count == 5)
             {
-                throw new WrongParametersCountException(name, "Voltage controlled voltage source expects 5 parameters");
+                var vcvs = new VoltageControlledVoltageSource(name);
+                context.CreateNodes(vcvs, parameters);
+                context.SetParameter(vcvs, "gain", parameters.GetString(4));
+                return vcvs;
             }
+            else
+            {
+                if (parameters.Count == 3)
+                {
+                    if (!(parameters[2] is AssignmentParameter assigmentParameter) || assigmentParameter.Name.ToLower() != "value")
+                    {
+                        throw new WrongParametersCountException(name, "voltage controlled voltage source expects that third parameter is assigment parameter");
+                    }
 
-            var vcvs = new VoltageControlledVoltageSource(name);
-            context.CreateNodes(vcvs, parameters);
-            context.SetParameter(vcvs, "gain", parameters.GetString(4));
+                    var vcvs = new VoltageSource(name);
+                    context.CreateNodes(vcvs, parameters);
+                    context.SetParameter(vcvs, "dc", assigmentParameter.Value, updateSimualtions: true);
 
-            return vcvs;
+                    return vcvs;
+                }
+                else
+                {
+                     throw new WrongParametersCountException(name, "voltage controlled voltage source expects 3 or 5 parameters");
+                }
+            }
         }
 
         /// <summary>
-        /// Generates new current controlled voltage source
+        /// Generates new current controlled voltage source HName
         /// </summary>
         /// <param name="name">The name of voltage source to generate</param>
         /// <param name="parameters">The paramters for voltage source</param>
@@ -89,26 +107,42 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected Entity GenerateCurrentControlledVoltageSource(string name,  ParameterCollection parameters, IReadingContext context)
         {
-            switch (parameters.Count)
+            if (parameters.Count == 3)
             {
-                case 2: throw new WrongParametersCountException(name, "Voltage source expected");
-                case 3: throw new WrongParametersCountException(name, "Gain expected");
-                case 4: break;
-                default:
-                    throw new WrongParametersCountException(name, "Current controlled voltage source expects 4 parameters");
-            }
+                if (!(parameters[2] is AssignmentParameter assigmentParameter) || assigmentParameter.Name.ToLower() != "value")
+                {
+                    throw new WrongParametersCountException(name, "voltage controlled voltage source expects that third parameter is assigment parameter");
+                }
 
-            if (!(parameters[3] is SingleParameter))
+                var vcvs = new VoltageSource(name);
+                context.CreateNodes(vcvs, parameters);
+                context.SetParameter(vcvs, "dc", assigmentParameter.Value, updateSimualtions: true);
+
+                return vcvs;
+            }
+            else
             {
-                throw new WrongParameterTypeException(name,  "Name of controlling voltage source expected");
+                switch (parameters.Count)
+                {
+                    case 2: throw new WrongParametersCountException(name, "Voltage source expected");
+                    case 3: throw new WrongParametersCountException(name, "Gain expected");
+                    case 4: break;
+                    default:
+                        throw new WrongParametersCountException(name, "Current controlled voltage source expects 4 parameters");
+                }
+
+                if (!(parameters[3] is SingleParameter))
+                {
+                    throw new WrongParameterTypeException(name, "Name of controlling voltage source expected");
+                }
+
+                var ccvs = new CurrentControlledVoltageSource(name);
+                context.CreateNodes(ccvs, parameters);
+
+                ccvs.ControllingName = parameters.GetString(2);
+                context.SetParameter(ccvs, "gain", parameters.GetString(3));
+                return ccvs;
             }
-
-            var ccvs = new CurrentControlledVoltageSource(name);
-            context.CreateNodes(ccvs, parameters);
-
-            ccvs.ControllingName = parameters.GetString(2);
-            context.SetParameter(ccvs, "gain", parameters.GetString(3));
-            return ccvs;
         }
 
         /// <summary>
@@ -172,6 +206,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 else if (parameters[i] is BracketParameter cp)
                 {
                     context.SetParameter(vsrc, "waveform", context.WaveformReader.Generate(cp, context));
+                }
+                else if (parameters[i] is AssignmentParameter ap)
+                {
+                    if (ap.Name.ToLower() == "value")
+                    {
+                        context.SetParameter(vsrc, "dc", ap.Value);
+                    }
                 }
                 else
                 {

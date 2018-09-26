@@ -20,4 +20,10 @@
     <ProjectReference Include="..\SpiceSharpParser\SpiceSharpParser.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="SpiceSharp">
+      <HintPath>..\..\..\SpiceSharp\SpiceSharp\bin\Debug\netstandard1.5\SpiceSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

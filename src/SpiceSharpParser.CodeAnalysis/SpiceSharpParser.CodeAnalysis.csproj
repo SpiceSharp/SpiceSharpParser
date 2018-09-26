@@ -16,6 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="..\SpiceSharpParser\ModelReaders\Netlist\Spice\ISpiceObjectReader.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
 
@@ -25,5 +29,15 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SpiceSharpParser\SpiceSharpParser.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SpiceSharp">
+      <HintPath>..\..\..\SpiceSharp\SpiceSharp\bin\Debug\netstandard1.5\SpiceSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
