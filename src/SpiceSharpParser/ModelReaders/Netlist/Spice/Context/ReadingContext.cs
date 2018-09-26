@@ -217,7 +217,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// True if the parameter has been set.
         /// </returns>
-        [Obsolete]
         public bool SetParameter(Entity entity, string parameterName, object @object)
         {
             return entity.SetParameter(parameterName.ToLower(), @object);
@@ -247,6 +246,5 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 StatementsReader.Read(statement, this);
             }
         }
-
     }
 }
