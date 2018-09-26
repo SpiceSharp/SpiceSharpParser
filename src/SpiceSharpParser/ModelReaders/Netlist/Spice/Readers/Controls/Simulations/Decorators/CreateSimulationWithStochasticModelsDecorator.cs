@@ -21,33 +21,37 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             {
                 var sim = createSimulation(name, control, context2);
 
-                sim.BeforeExecute += (object s, BeforeExecuteEventArgs arg) =>
+                var modelsRegistry = context.ModelsRegistry as IStochasticModelsRegistry;
+
+                if (modelsRegistry != null)
                 {
-                    var evaluator = context.SimulationContexts.GetSimulationEvaluator(sim);
-
-                    foreach (var stochasticModels in context.StochasticModelsRegistry.GetStochasticModels())
+                    sim.BeforeExecute += (object s, BeforeExecuteEventArgs arg) =>
                     {
-                        var baseModel = stochasticModels.Key;
-                        var componentModels = stochasticModels.Value;
+                        var evaluator = context.SimulationContexts.GetSimulationEvaluator(sim);
 
-                        foreach (var componentModel in componentModels)
+                        foreach (var stochasticModels in modelsRegistry.GetStochasticModels())
                         {
-                            var stochasticDevParameters = context.StochasticModelsRegistry.GetStochasticModelDevParameters(baseModel);
+                            var baseModel = stochasticModels.Key;
+                            var componentModels = stochasticModels.Value;
 
-                            if (stochasticDevParameters != null)
+                            foreach (var componentModel in componentModels)
                             {
-                                SetModelDevModelParameters(context, sim, evaluator, componentModel, stochasticDevParameters);
-                            }
+                                var stochasticDevParameters = modelsRegistry.GetStochasticModelDevParameters(baseModel);
 
-                            var stochasticLotParameters = context.StochasticModelsRegistry.GetStochasticModelLotParameters(baseModel);
-                            if (stochasticLotParameters != null)
-                            {
-                                SetModelLotModelParameters(context, sim, evaluator, baseModel, componentModel, stochasticLotParameters);
+                                if (stochasticDevParameters != null)
+                                {
+                                    SetModelDevModelParameters(context, sim, evaluator, componentModel, stochasticDevParameters);
+                                }
+
+                                var stochasticLotParameters = modelsRegistry.GetStochasticModelLotParameters(baseModel);
+                                if (stochasticLotParameters != null)
+                                {
+                                    SetModelLotModelParameters(context, sim, evaluator, baseModel, componentModel, stochasticLotParameters);
+                                }
                             }
                         }
-                    }
-                };
-
+                    };
+                }
                 return sim;
             };
         }

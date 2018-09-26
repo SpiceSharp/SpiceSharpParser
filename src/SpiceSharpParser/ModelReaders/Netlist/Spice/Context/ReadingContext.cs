@@ -60,7 +60,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 current = current.Parent;
             }
 
-            StochasticModelsRegistry = new StochasticModelsRegistry(generators);
+            ModelsRegistry = new StochasticModelsRegistry(generators);
             StatementsReader = statementsReader;
             WaveformReader = waveformReader;
         }
@@ -113,7 +113,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets or sets the stochastic models registry.
         /// </summary>
-        public IStochasticModelsRegistry StochasticModelsRegistry { get; protected set; }
+        public IModelsRegistry ModelsRegistry { get; protected set; }
 
         /// <summary>
         /// Gets or sets statements reader.

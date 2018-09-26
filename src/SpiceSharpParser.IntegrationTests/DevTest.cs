@@ -27,6 +27,27 @@ namespace SpiceSharpParser.IntegrationTests
             }
         }
 
+        [Fact]
+        public void DevMultipleComponentsSameModelMosfetTest()
+        {
+            var netlist = ParseNetlist(
+                "Mosfet circuit",
+                "Md d g 0 0 my-nmos",
+                "Md2 d g 0 0 my-nmos",
+                "V1 g 0 10",
+                "V2 d 0 10",
+                ".model my-nmos nmos level = 1 Is=1e-32 DEV 5%",
+                ".OP",
+                ".SAVE @my-nmos[Is] @my-nmos_Md[Is] @my-nmos_Md2[Is]",
+                ".END");
+
+            var exports = RunSimulationsAndReturnExports(netlist);
+
+            for (var i = 1; i < exports.Count; i++)
+            {
+                Assert.NotEqual(exports[0], exports[i]);
+            }
+        }
 
         [Fact]
         public void DevZeroTest()

@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     /// <summary>
     /// Voltage sources generator
     /// </summary>
-    public class VoltageSourceGenerator : EntityGenerator
+    public class VoltageSourceGenerator : IComponentGenerator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="VoltageSourceGenerator"/> class.
@@ -22,38 +22,30 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
         }
 
-        /// <summary>
-        /// Generates new voltage source
-        /// </summary>
-        /// <param name="id">The identifier of new voltage source</param>
-        /// <param name="originalName">The name of voltage source</param>
-        /// <param name="type">A type of voltage source</param>
-        /// <param name="parameters">Parameters for voltage source</param>
-        /// <param name="context">Reading context</param>
-        /// <returns>
-        /// A new instance of voltage source
-        /// </returns>
-        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public SpiceSharp.Components.Component Generate(Identifier componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             switch (type)
             {
-                case "v": return GenerateVoltageSource(id.ToString(), parameters, context);
-                case "h": return GenerateCurrentControlledVoltageSource(id.ToString(), parameters, context);
-                case "e": return GenerateVoltageControlledVoltageSource(id.ToString(), parameters, context);
+                case "v": return GenerateVoltageSource(componentIdentifier.ToString(), parameters, context);
+                case "h": return GenerateCurrentControlledVoltageSource(componentIdentifier.ToString(), parameters, context);
+                case "e": return GenerateVoltageControlledVoltageSource(componentIdentifier.ToString(), parameters, context);
             }
 
             return null;
         }
 
         /// <summary>
-        /// Gets generated Spice types by generator
+        /// Gets generated types.
         /// </summary>
         /// <returns>
-        /// Generated Spice Types
+        /// Generated types.
         /// </returns>
-        public override IEnumerable<string> GetGeneratedTypes()
+        public IEnumerable<string> GeneratedTypes
         {
-            return new List<string>() { "v", "h", "e" };
+            get
+            {
+                return new List<string>() { "v", "h", "e" };
+            }
         }
 
         /// <summary>
@@ -65,7 +57,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of voltage controlled voltage source
         /// </returns>
-        protected Entity GenerateVoltageControlledVoltageSource(string name, ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateVoltageControlledVoltageSource(string name, ParameterCollection parameters, IReadingContext context)
         {
             if (parameters.Count == 5)
             {
@@ -105,7 +97,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of current controlled voltage source
         /// </returns>
-        protected Entity GenerateCurrentControlledVoltageSource(string name,  ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateCurrentControlledVoltageSource(string name,  ParameterCollection parameters, IReadingContext context)
         {
             if (parameters.Count == 3)
             {
@@ -154,7 +146,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of voltage source
         /// </returns>
-        protected Entity GenerateVoltageSource(string name, ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateVoltageSource(string name, ParameterCollection parameters, IReadingContext context)
         {
             var vsrc = new VoltageSource(name);
             context.CreateNodes(vsrc, parameters);

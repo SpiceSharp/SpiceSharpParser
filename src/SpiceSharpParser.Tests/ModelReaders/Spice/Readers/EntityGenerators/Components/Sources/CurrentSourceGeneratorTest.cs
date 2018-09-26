@@ -177,7 +177,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            context.StatementsReader = new SpiceStatementsReader(Substitute.For<IMapper<BaseControl>>(), Substitute.For<IMapper<ModelGenerator>>(), Substitute.For<IMapper<EntityGenerator>>());
+            context.StatementsReader = new SpiceStatementsReader(Substitute.For<IMapper<BaseControl>>(), Substitute.For<IMapper<IModelGenerator>>(), Substitute.For<IMapper<IComponentGenerator>>());
 
             context.WaveformReader = Substitute.For<IWaveformReader>();
             context.WaveformReader.Generate(Arg.Any<BracketParameter>(), Arg.Any<IReadingContext>()).Returns(sine);
@@ -214,7 +214,10 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            context.StatementsReader = new SpiceStatementsReader(Substitute.For<IMapper<BaseControl>>(), Substitute.For<IMapper<ModelGenerator>>(), Substitute.For<IMapper<EntityGenerator>>());
+            context.StatementsReader = new SpiceStatementsReader(
+                Substitute.For<IMapper<BaseControl>>(), 
+                Substitute.For<IMapper<IModelGenerator>>(), 
+                Substitute.For<IMapper<IComponentGenerator>>());
             context.WaveformReader = Substitute.For<IWaveformReader>();
             context.WaveformReader.Generate(Arg.Any<BracketParameter>(), Arg.Any<IReadingContext>()).Returns(sine);
 

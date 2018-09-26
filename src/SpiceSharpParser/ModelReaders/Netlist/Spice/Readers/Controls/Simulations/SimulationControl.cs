@@ -33,22 +33,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// </summary>
         protected void CreateSimulations(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
         {
-            Func<string, Control, IReadingContext, BaseSimulation> simulationWithStochasticModels = CreateSimulationWithStochasticModelsDecorator.Decorate(context, createSimulation);
+            if (context.ModelsRegistry is StochasticModelsRegistry)
+            {
+                createSimulation = CreateSimulationWithStochasticModelsDecorator.Decorate(context, createSimulation);
+            }
 
             if (!IsMonteCarloEnabledForSimulation(statement, context))
             {
                 if (context.Result.SimulationConfiguration.ParameterSweeps.Count == 0)
                 {
-                    CreateSimulationsForAllTemperaturesFactory.CreateSimulations(statement, context, simulationWithStochasticModels);
+                    CreateSimulationsForAllTemperaturesFactory.CreateSimulations(statement, context, createSimulation);
                 }
                 else
                 {
-                    CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(statement, context, simulationWithStochasticModels);
+                    CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(statement, context, createSimulation);
                 }
             }
             else
             {
-                CreateSimulationsForMonteCarloFactory.Create(statement, context, simulationWithStochasticModels);
+                CreateSimulationsForMonteCarloFactory.Create(statement, context, createSimulation);
             }
         }
 

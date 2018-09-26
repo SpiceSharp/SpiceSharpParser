@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
-using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Extensions;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
 {
-    public class DiodeModelGenerator : ModelGenerator
+    public class DiodeModelGenerator : IModelGenerator
     {
         /// <summary>
         /// Gets generated Spice types by generator
@@ -12,14 +14,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
         /// <returns>
         /// Generated Spice types
         /// </returns>
-        public override IEnumerable<string> GetGeneratedTypes()
+        public IEnumerable<string> GeneratedTypes
         {
-            return new List<string>() { "d" };
+            get
+            {
+                return new List<string>() { "d" };
+            }
         }
 
-        protected override Entity GenerateModel(string name, string type)
+        public SpiceSharp.Components.Model Generate(string name, string type, ParameterCollection parameters, IReadingContext context)
         {
-            return new DiodeModel(name);
+            var model = new DiodeModel(name);
+            context.SetParameters(model, parameters, true);
+            return model;
         }
     }
 }

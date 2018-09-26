@@ -1,8 +1,6 @@
-﻿using SpiceSharp.Circuits;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -18,15 +16,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// Initializes a new instance of the <see cref="ModelReader"/> class.
         /// </summary>
         /// <param name="mapper">The model mapper.</param>
-        public ModelReader(IMapper<ModelGenerator> mapper)
+        public ModelReader(IMapper<IModelGenerator> mapper, IModelsGenerator modelsGenerator)
         {
             Mapper = mapper ?? throw new System.ArgumentNullException(nameof(mapper));
+            ModelsGenerator = modelsGenerator ?? throw new System.ArgumentNullException(nameof(modelsGenerator));
         }
 
         /// <summary>
         /// Gets the model mapper.
         /// </summary>
-        public IMapper<ModelGenerator> Mapper { get; }
+        public IMapper<IModelGenerator> Mapper { get; }
+
+        /// <summary>
+        /// Gets the models generator.
+        /// </summary>
+        public IModelsGenerator ModelsGenerator { get; }
 
         /// <summary>
         /// Reads a model statement and modifies the context.
@@ -50,16 +54,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                     var generator = Mapper.Get(type);
 
-                    Entity spiceSharpModel = generator.Generate(
+                    var model = ModelsGenerator.GenerateModel(generator,
                         new SpiceSharp.StringIdentifier(context.ObjectNameGenerator.Generate(name)),
                         name,
                         type,
                         b.Parameters,
                         context);
 
-                    if (spiceSharpModel != null)
+                    if (model != null)
                     {
-                        context.Result.AddEntity(spiceSharpModel);
+                        context.Result.AddEntity(model);
                     }
                 }
 
@@ -73,11 +77,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                     }
 
                     var generator = Mapper.Get(type);
-                    Entity spiceSharpModel = generator.Generate(new SpiceSharp.StringIdentifier(context.ObjectNameGenerator.Generate(name)), name, type, statement.Parameters.Skip(1), context);
+                    var model = ModelsGenerator.GenerateModel(generator,
+                        new SpiceSharp.StringIdentifier(context.ObjectNameGenerator.Generate(name)),
+                        name,
+                        type,
+                        statement.Parameters.Skip(1),
+                        context);
 
-                    if (spiceSharpModel != null)
+                    if (model != null)
                     {
-                        context.Result.AddEntity(spiceSharpModel);
+                        context.Result.AddEntity(model);
                     }
                 }
             }

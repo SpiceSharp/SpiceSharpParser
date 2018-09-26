@@ -57,7 +57,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets the stochastic models registry.
         /// </summary>
-        IStochasticModelsRegistry StochasticModelsRegistry { get; }
+        IModelsRegistry ModelsRegistry { get; }
 
         /// <summary>
         /// Gets the statements reader.
@@ -125,7 +125,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Reads the statements with given order.
         /// </summary>
         /// <param name="statements">Statements.</param>
-        /// <param name="orderer">Orderer.</param>
-        void Read(Statements statement, ISpiceStatementsOrderer orderer);
+        /// <param name="orderer">Orderer of statements.</param>
+        void Read(Statements statements, ISpiceStatementsOrderer orderer);
     }
 }

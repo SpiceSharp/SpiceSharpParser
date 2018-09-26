@@ -10,11 +10,11 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
 {
-    public class BipolarJunctionTransistorGenerator : EntityGenerator
+    public class BipolarJunctionTransistorGenerator : IComponentGenerator
     {
-        public override Entity Generate(Identifier name, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public SpiceSharp.Components.Component Generate(Identifier componentIdenfier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
-            BipolarJunctionTransistor bjt = new BipolarJunctionTransistor(name);
+            BipolarJunctionTransistor bjt = new BipolarJunctionTransistor(componentIdenfier.ToString());
 
             // If the component is of the format QXXX NC NB NE MNAME off we will insert NE again before the model name
             if (parameters.Count == 5 && parameters[4] is WordParameter w && w.Image == "off")
@@ -32,16 +32,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             if (parameters.Count < 5)
             {
-                throw new System.Exception();
+                throw new WrongParametersCountException();
             }
 
-            var model = context.StochasticModelsRegistry.FindBaseModel<BipolarJunctionTransistorModel>(parameters.GetString(4));
-            if (model == null)
-            {
-                throw new ModelNotFoundException($"Could not find model {parameters.GetString(4)} for BJT {name}");
-            }
-
-            bjt.SetModel((BipolarJunctionTransistorModel)context.StochasticModelsRegistry.ProvideStochasticModel(bjt, model));
+            context.ModelsRegistry.SetModel<BipolarJunctionTransistorModel>(
+                bjt, 
+                parameters.GetString(4), 
+                $"Could not find model {parameters.GetString(4)} for BJT {originalName}",
+                (BipolarJunctionTransistorModel model) => bjt.SetModel(model));
 
             for (int i = 5; i < parameters.Count; i++)
             {
@@ -87,14 +85,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         }
 
         /// <summary>
-        /// Gets the generated types.
+        /// Gets generated types.
         /// </summary>
         /// <returns>
-        /// A list of generated types.
+        /// Generated types.
         /// </returns>
-        public override IEnumerable<string> GetGeneratedTypes()
+        public IEnumerable<string> GeneratedTypes
         {
-            return new List<string>() { "q" };
+            get
+            {
+                return new List<string>() { "q" };
+            }
         }
     }
 }

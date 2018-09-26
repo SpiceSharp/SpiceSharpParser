@@ -7,35 +7,40 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Extensions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using Model = SpiceSharp.Components.Model;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
 {
-    public class MosfetGenerator : EntityGenerator
+    public class MosfetGenerator : IComponentGenerator
     {
+        public class MosfetDetails
+        {
+            public SpiceSharp.Components.Component Mosfet { get; set; }
+
+            public Action<Model> SetModelAction { get; set; }
+        }
+
         public MosfetGenerator()
         {
             // MOS1
-            Mosfets.Add(typeof(Mosfet1Model), (Identifier name, Entity model) =>
+            Mosfets.Add(typeof(Mosfet1Model), (Identifier name) =>
             {
-                var m = new Mosfet1(name);
-                m.SetModel((Mosfet1Model)model);
-                return m;
+                var mosfet = new Mosfet1(name);
+                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Model model) => mosfet.SetModel((Mosfet1Model)model) };
             });
 
             // MOS2
-            Mosfets.Add(typeof(Mosfet2Model), (Identifier name, Entity model) =>
+            Mosfets.Add(typeof(Mosfet2Model), (Identifier name) =>
             {
-                var m = new Mosfet2(name);
-                m.SetModel((Mosfet2Model)model);
-                return m;
+                var mosfet = new Mosfet2(name);
+                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Model model) => mosfet.SetModel((Mosfet2Model)model) };
             });
 
             // MOS3
-            Mosfets.Add(typeof(Mosfet3Model), (Identifier name, Entity model) =>
+            Mosfets.Add(typeof(Mosfet3Model), (Identifier name) =>
             {
-                var m = new Mosfet3(name);
-                m.SetModel((Mosfet3Model)model);
-                return m;
+                var mosfet = new Mosfet3(name);
+                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Model model) => mosfet.SetModel((Mosfet3Model)model) };
             });
         }
 
@@ -43,14 +48,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// Generate a mosfet instance based on a model.
         /// The generator is passed the arguments name and model.
         /// </summary>
-        protected Dictionary<Type, Func<Identifier, Entity, SpiceSharp.Components.Component>> Mosfets { get; } = new Dictionary<Type, Func<Identifier, Entity, SpiceSharp.Components.Component>>();
+        protected Dictionary<Type, Func<Identifier, MosfetDetails>> Mosfets { get; } = new Dictionary<Type, Func<Identifier, MosfetDetails>>();
 
-        public override Entity Generate(Identifier entityName, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public SpiceSharp.Components.Component Generate(Identifier componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             // Errors
             switch (parameters.Count)
             {
-                case 0: throw new Exception($"Node expected for component {originalName}");
+                case 0: throw new Exception($"Node expected for component {componentIdentifier.ToString()}");
                 case 1:
                 case 2:
                 case 3: throw new Exception("Node expected");
@@ -58,16 +63,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             // Get the model and generate a component for it
-            Entity model = context.StochasticModelsRegistry.FindBaseModel<Entity>(parameters.GetString(4));
+            SpiceSharp.Components.Component mosfet = null;
+            string modelName = parameters.GetString(4);
+            SpiceSharp.Components.Model model = context.ModelsRegistry.FindModel<SpiceSharp.Components.Model>(modelName);
             if (model == null)
             {
-                throw new ModelNotFoundException($"Could not find model {parameters.GetString(4)} for mosfet {entityName}");
+                throw new ModelNotFoundException($"Could not find model {modelName} for mosfet {originalName}");
             }
 
-            SpiceSharp.Components.Component mosfet = null;
             if (Mosfets.ContainsKey(model.GetType()))
             {
-                mosfet = Mosfets[model.GetType()].Invoke(entityName, model);
+                var mosfetDetails = Mosfets[model.GetType()].Invoke(componentIdentifier);
+                mosfet = mosfetDetails.Mosfet;
+
+                context.ModelsRegistry.SetModel<SpiceSharp.Components.Model>(
+                    mosfetDetails.Mosfet,
+                    modelName,
+                    $"Could not find model {modelName} for mosfet {componentIdentifier}",
+                    mosfetDetails.SetModelAction);
             }
             else
             {
@@ -81,14 +94,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         }
 
         /// <summary>
-        /// Gets generated Spice types by generator
+        /// Gets generated types.
         /// </summary>
         /// <returns>
-        /// Generated Spice types
+        /// Generated types.
         /// </returns>
-        public override IEnumerable<string> GetGeneratedTypes()
+        public IEnumerable<string> GeneratedTypes
         {
-            return new List<string>() { "m" };
+            get
+            {
+                return new List<string>() { "m" };
+            }
         }
     }
 }

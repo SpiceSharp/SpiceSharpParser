@@ -19,7 +19,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
         public void GenerateTest()
         {
             // arrange
-            var generator = Substitute.For<EntityGenerator>();
+            var generator = Substitute.For<IComponentGenerator>();
             generator.Generate(
                Arg.Any<StringIdentifier>(),
                Arg.Any<string>(),
@@ -27,7 +27,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
                Arg.Any<ParameterCollection>(),
                Arg.Any<IReadingContext>()).Returns(x => new Resistor((StringIdentifier)x[0]));
 
-            var mapper = Substitute.For<IMapper<EntityGenerator>>();
+            var mapper = Substitute.For<IMapper<IComponentGenerator>>();
             mapper.Contains("r").Returns(true);
             mapper.Get("r").Returns(generator);
 

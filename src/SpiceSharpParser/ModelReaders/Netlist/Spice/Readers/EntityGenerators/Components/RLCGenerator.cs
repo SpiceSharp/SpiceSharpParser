@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using SpiceSharp;
+﻿using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
@@ -7,47 +6,40 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Extensions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
 {
     /// <summary>
     /// Generator for resistors, capacitors, inductors and mutual inductance
     /// </summary>
-    public class RLCGenerator : EntityGenerator
+    public class RLCGenerator : IComponentGenerator
     {
-        /// <summary>
-        /// Generates a new resistor, capacitor, inductor or mutual inductance
-        /// </summary>
-        /// <param name="id">The identifier for identity</param>
-        /// <param name="originalName">Original name of entity</param>
-        /// <param name="type">The type of entity</param>
-        /// <param name="parameters">Parameters for entity</param>
-        /// <param name="context">Reading context</param>
-        /// <returns>
-        /// A new instance of entity
-        /// </returns>
-        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public SpiceSharp.Components.Component Generate(Identifier componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             switch (type)
             {
-                case "r": return GenerateRes(id.ToString(), parameters, context);
-                case "l": return GenerateInd(id.ToString(), parameters, context);
-                case "c": return GenerateCap(id.ToString(), parameters, context);
-                case "k": return GenerateMut(id.ToString(), parameters, context);
+                case "r": return GenerateRes(componentIdentifier.ToString(), parameters, context);
+                case "l": return GenerateInd(componentIdentifier.ToString(), parameters, context);
+                case "c": return GenerateCap(componentIdentifier.ToString(), parameters, context);
+                case "k": return GenerateMut(componentIdentifier.ToString(), parameters, context);
             }
 
             return null;
         }
 
         /// <summary>
-        /// Gets generated Spice types by generator
+        /// Gets generated types.
         /// </summary>
         /// <returns>
-        /// Generated Spice types
+        /// Generated types.
         /// </returns>
-        public override IEnumerable<string> GetGeneratedTypes()
+        public IEnumerable<string> GeneratedTypes
         {
-            return new List<string> { "r", "l", "c", "k" };
+            get
+            {
+                return new List<string> { "r", "l", "c", "k" };
+            }
         }
 
         /// <summary>
@@ -59,7 +51,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of mutual inductance
         /// </returns>
-        protected Entity GenerateMut(string name, ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateMut(string name, ParameterCollection parameters, IReadingContext context)
         {
             var mut = new MutualInductance(name);
 
@@ -97,7 +89,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of capacitor
         /// </returns>
-        protected Entity GenerateCap(string name, ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateCap(string name, ParameterCollection parameters, IReadingContext context)
         {
             var capacitor = new Capacitor(name);
             context.CreateNodes(capacitor, parameters);
@@ -129,16 +121,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    var model = context.StochasticModelsRegistry.FindBaseModel<CapacitorModel>(parameters.GetString(2));
-                    if (model != null)
-                    {
-                        modelBased = true;
-                        capacitor.SetModel((CapacitorModel)context.StochasticModelsRegistry.ProvideStochasticModel(capacitor, model));
-                    }
-                    else
-                    {
-                        throw new ModelNotFoundException($"Could not find model {parameters.GetString(2)} for capacitor {name}");
-                    }
+                    context.ModelsRegistry.SetModel<CapacitorModel>(
+                        capacitor,
+                        parameters.GetString(2),
+                        $"Could not find model {parameters.GetString(2)} for capacitor {name}",
+                        (CapacitorModel model) => capacitor.SetModel(model));
                 }
 
                 context.SetParameters(capacitor, parameters.Skip(3), true);
@@ -165,7 +152,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of inductor
         /// </returns>
-        protected Entity GenerateInd(string name, ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateInd(string name, ParameterCollection parameters, IReadingContext context)
         {
             if (parameters.Count != 3)
             {
@@ -189,7 +176,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of resistor
         /// </returns>
-        protected Entity GenerateRes(string name, ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateRes(string name, ParameterCollection parameters, IReadingContext context)
         {
             var res = new Resistor(name);
             context.CreateNodes(res, parameters);
@@ -205,13 +192,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     throw new WrongParameterTypeException(name, "Semiconductor resistor requires a valid model name");
                 }
 
-                var model = context.StochasticModelsRegistry.FindBaseModel<ResistorModel>(parameters.GetString(2));
-                if (model == null)
-                {
-                    throw new ModelNotFoundException($"Could not find model {parameters.GetString(2)} for resistor {name}");
-                }
-
-                res.SetModel((ResistorModel)context.StochasticModelsRegistry.ProvideStochasticModel(res, model));
+                context.ModelsRegistry.SetModel<ResistorModel>(
+                    res,
+                    parameters.GetString(2),
+                    $"Could not find model {parameters.GetString(2)} for resistor {name}",
+                    (ResistorModel model) => res.SetModel(model));
 
                 foreach (var equal in parameters.Skip(3))
                 {

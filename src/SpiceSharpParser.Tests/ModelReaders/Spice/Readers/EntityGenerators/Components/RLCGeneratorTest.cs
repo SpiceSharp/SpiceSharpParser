@@ -36,7 +36,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         {
             var context = Substitute.For<IReadingContext>();
             context.When(a => a.SetParameter(Arg.Any<Entity>(), "L", "12")).Do(x => ((Entity)x[0]).SetParameter("l", 12));
-            context.StochasticModelsRegistry.FindBaseModel<ResistorModel>(Arg.Any<string>()).Returns(new ResistorModel("test"));
+            context.ModelsRegistry.FindModel<ResistorModel>(Arg.Any<string>()).Returns(new ResistorModel("test"));
             var parameters = new ParameterCollection
             {
                 new ValueParameter("1"),
@@ -50,7 +50,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
 
             Assert.NotNull(resistor);
             context.Received().SetParameter(resistor, "L", "12");
-            context.Received().StochasticModelsRegistry.FindBaseModel<ResistorModel>("test");
+            context.Received().ModelsRegistry.FindModel<ResistorModel>("test");
         }
 
         [Fact]
@@ -160,7 +160,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                {
                    ((Entity)x[0]).SetParameter(((string)x[1]).ToLower(), evaluator.EvaluateDouble((string)x[2]));
                });
-            context.StochasticModelsRegistry.FindBaseModel<CapacitorModel>(Arg.Any<string>()).Returns(new CapacitorModel("CModel"));
+            context.ModelsRegistry.FindModel<CapacitorModel>(Arg.Any<string>()).Returns(new CapacitorModel("CModel"));
 
             var parameters = new ParameterCollection
             {

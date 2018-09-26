@@ -10,7 +10,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
 {
-    public class MosfetModelGenerator : ModelGenerator
+    public class MosfetModelGenerator : IModelGenerator
     {
         public MosfetModelGenerator()
         {
@@ -56,7 +56,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
         /// Gets available model generators indexed by their LEVEL.
         /// The parameters passed are name, type (nmos or pmos) and the version.
         /// </summary>
-        protected Dictionary<int, Func<Identifier, string, string, Entity>> Levels { get; } = new Dictionary<int, Func<Identifier, string, string, Entity>>();
+        protected Dictionary<int, Func<Identifier, string, string, SpiceSharp.Components.Model>> Levels { get; } = new Dictionary<int, Func<Identifier, string, string, SpiceSharp.Components.Model>>();
 
         /// <summary>
         /// Gets generated Spice types by generator.
@@ -64,12 +64,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
         /// <returns>
         /// Generated Spice types.
         /// </returns>
-        public override IEnumerable<string> GetGeneratedTypes()
+        public IEnumerable<string> GeneratedTypes
         {
-            return new List<string>() { "nmos", "pmos" };
+            get
+            {
+                return new List<string>() { "nmos", "pmos" };
+            }
         }
 
-        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public SpiceSharp.Components.Model Generate(string name, string type, ParameterCollection parameters, IReadingContext context)
         {
             var clonedParameters = (ParameterCollection)parameters.Clone();
             switch (clonedParameters.Count)
@@ -114,10 +117,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             }
 
             // Generate the model
-            Entity model = null;
+            SpiceSharp.Components.Model model = null;
             if (Levels.ContainsKey(level))
             {
-                model = Levels[level].Invoke(id, type, version);
+                model = Levels[level].Invoke(name, type, version);
             }
             else
             {
@@ -126,14 +129,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 
             // Read all the parameters
             context.SetParameters(model, clonedParameters, true);
-            context.StochasticModelsRegistry.RegisterModel(model);
 
             return model;
-        }
-
-        protected override Entity GenerateModel(string name, string type)
-        {
-            throw new Exception("Shouldn't be called");
         }
     }
 }

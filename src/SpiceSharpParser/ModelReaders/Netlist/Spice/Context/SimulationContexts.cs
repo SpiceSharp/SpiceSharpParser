@@ -187,6 +187,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 var evaluator = GetEvaluator(simulation, @object.Name.ToString());
                 var parameter = simulation.EntityParameters[@object.Name].GetParameter<double>(paramName);
+
+                if (parameter == null)
+                {
+                    throw new Exception("Parameter " + paramName + " not found in: " + @object.Name);
+                }
+
                 parameter.Value = evaluator.EvaluateDouble(expression);
 
                 evaluator.AddAction(

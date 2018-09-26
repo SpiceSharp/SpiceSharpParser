@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     /// <summary>
     /// Current sources generator
     /// </summary>
-    public class CurrentSourceGenerator : EntityGenerator
+    public class CurrentSourceGenerator : IComponentGenerator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CurrentSourceGenerator"/> class.
@@ -22,38 +22,30 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
         }
 
-        /// <summary>
-        /// Generates a new current source
-        /// </summary>
-        /// <param name="id">The identifier of new current source</param>
-        /// <param name="originalName">The name of current source</param>
-        /// <param name="type">A type of current source</param>
-        /// <param name="parameters">Parameters for current source</param>
-        /// <param name="context">Reading context</param>
-        /// <returns>
-        /// A new instance of current source
-        /// </returns>
-        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public SpiceSharp.Components.Component Generate(Identifier componentIdenfier, string name, string type, ParameterCollection parameters, IReadingContext context)
         {
             switch (type)
             {
-                case "i": return GenerateCurrentSource(id.ToString(), parameters, context);
-                case "g": return GenerateVoltageControlledCurrentSource(id.ToString(), parameters, context);
-                case "f": return GenerateCurrentControlledCurrentSource(id.ToString(), parameters, context);
+                case "i": return GenerateCurrentSource(componentIdenfier.ToString(), parameters, context);
+                case "g": return GenerateVoltageControlledCurrentSource(componentIdenfier.ToString(), parameters, context);
+                case "f": return GenerateCurrentControlledCurrentSource(componentIdenfier.ToString(), parameters, context);
             }
 
             return null;
         }
 
         /// <summary>
-        /// Gets the generated types
+        /// Gets generated types.
         /// </summary>
         /// <returns>
-        /// A list of generated types
+        /// Generated types.
         /// </returns>
-        public override IEnumerable<string> GetGeneratedTypes()
+        public IEnumerable<string> GeneratedTypes
         {
-            return new List<string>() { "i", "g", "f" };
+            get
+            {
+                return new List<string>() { "i", "g", "f" };
+            }
         }
 
         /// <summary>
@@ -65,7 +57,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of current controlled current source
         /// </returns>
-        protected Entity GenerateCurrentControlledCurrentSource(string name,  ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateCurrentControlledCurrentSource(string name,  ParameterCollection parameters, IReadingContext context)
         {
             CurrentControlledCurrentSource cccs = new CurrentControlledCurrentSource(name);
             context.CreateNodes(cccs, parameters);
@@ -90,7 +82,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of voltage controlled current source
         /// </returns>
-        protected Entity GenerateVoltageControlledCurrentSource(string name, ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateVoltageControlledCurrentSource(string name, ParameterCollection parameters, IReadingContext context)
         {
             if (parameters.Count < 5)
             {
@@ -113,7 +105,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of current source
         /// </returns>
-        protected Entity GenerateCurrentSource(string name,  ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateCurrentSource(string name,  ParameterCollection parameters, IReadingContext context)
         {
             CurrentSource isrc = new CurrentSource(name);
             context.CreateNodes(isrc, parameters);

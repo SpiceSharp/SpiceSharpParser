@@ -90,11 +90,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <summary>
         /// Gets or sets the components mapper.
         /// </summary>
-        public IMapper<EntityGenerator> Components { get; set; }
+        public IMapper<IComponentGenerator> Components { get; set; }
 
         /// <summary>
         /// Gets or sets the models mapper.
         /// </summary>
-        public IMapper<ModelGenerator> Models { get; set; }
+        public IMapper<IModelGenerator> Models { get; set; }
     }
 }

@@ -9,25 +9,23 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
 {
-    public class DiodeGenerator : EntityGenerator
+    public class DiodeGenerator : IComponentGenerator
     {
-        public override Entity Generate(Identifier name, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public SpiceSharp.Components.Component Generate(Identifier componentIdenfier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             if (parameters.Count < 3)
             {
                 throw new System.Exception("Model expected");
             }
 
-            Diode diode = new Diode(name);
+            Diode diode = new Diode(componentIdenfier.ToString());
             context.CreateNodes(diode, parameters);
 
-            var model = context.StochasticModelsRegistry.FindBaseModel<DiodeModel>(parameters.GetString(2));
-            if (model == null)
-            {
-                throw new ModelNotFoundException($"Could not find model {parameters.GetString(2)} for diode {name}");
-            }
-
-            diode.SetModel((DiodeModel)context.StochasticModelsRegistry.ProvideStochasticModel(diode, model));
+            context.ModelsRegistry.SetModel<DiodeModel>(
+              diode,
+              parameters.GetString(2),
+              $"Could not find model {parameters.GetString(2)} for diode {originalName}",
+              (DiodeModel model) => diode.SetModel(model));
 
             // Read the rest of the parameters
             for (int i = 3; i < parameters.Count; i++)
@@ -78,14 +76,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         }
 
         /// <summary>
-        /// Gets generated Spice types by generator
+        /// Gets generated types.
         /// </summary>
         /// <returns>
-        /// Generated Spice types
+        /// Generated types.
         /// </returns>
-        public override IEnumerable<string> GetGeneratedTypes()
+        public IEnumerable<string> GeneratedTypes
         {
-            return new List<string>() { "d" };
+            get
+            {
+                return new List<string>() { "d" };
+            }
         }
     }
 }
