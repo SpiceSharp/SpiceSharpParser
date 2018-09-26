@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.5</TargetFramework>
+    <TargetFramework>net45</TargetFramework>
     <CodeAnalysisRuleSet>stylecop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
