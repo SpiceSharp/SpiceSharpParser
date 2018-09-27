@@ -92,11 +92,11 @@ namespace SpiceSharpParser.IntegrationTests
                 ".SAVE i(R1)",
                 ".PARAM N=0",
                 ".PARAM R={table(N, 1, 10, 3, 30)}",
-                ".STEP PARAM N LIST 1 2 3 4 5",
+                ".STEP PARAM N LIST 1 2 3",
                 ".END");
 
-            Assert.Equal(5, result.Exports.Count);
-            Assert.Equal(5, result.Simulations.Count);
+            Assert.Equal(3, result.Exports.Count);
+            Assert.Equal(3, result.Simulations.Count);
 
             var exports = RunSimulationsAndReturnExports(result);
 

@@ -15,6 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
     /// </summary>
     public class SpiceEvaluator : Evaluator, ISpiceEvaluator
     {
+        //TODO to many constructors 
         public SpiceEvaluator(int? randomSeed = null)
         : this(string.Empty, null, SpiceEvaluatorMode.Spice3f5, randomSeed, new ExpressionRegistry())
         {
@@ -43,6 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         {
             Mode = mode;
             Parameters.Add("TEMP", new ConstantEvaluatorExpression(Circuit.ReferenceTemperature - Circuit.CelsiusKelvin));
+            Parameters.Add("TIME", new ConstantEvaluatorExpression(0));
             CreateCustomFunctions(this);
         }
 

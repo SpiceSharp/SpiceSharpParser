@@ -1,31 +1,34 @@
 ﻿using System.Collections.Generic;
-using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
 {
     public class SwitchModelGenerator : ModelGenerator
     {
-        /// <summary>
-        /// Gets generated Spice types by generator
-        /// </summary>
-        /// <returns>
-        /// Generated Spice Types
-        /// </returns>
-        public override IEnumerable<string> GetGeneratedTypes()
+        public override IEnumerable<string> GeneratedTypes
         {
-            return new List<string>() { "sw", "csw" };
+            get
+            {
+                return new List<string>() { "sw", "csw" };
+            }
         }
 
-        protected override Entity GenerateModel(string name, string type)
+        public override SpiceSharp.Components.Model Generate(string name, string type, ParameterCollection parameters, IReadingContext context)
         {
+            SpiceSharp.Components.Model model = null;
+
             switch (type)
             {
-                case "sw": return new VoltageSwitchModel(name);
-                case "csw": return new CurrentSwitchModel(name);
+                case "sw": model = new VoltageSwitchModel(name);break;
+                case "csw": model = new CurrentSwitchModel(name);break;
             }
-
-            return null;
+            if (model != null)
+            {
+                SetParameters(context, model, parameters);
+            }
+            return model;
         }
     }
 }

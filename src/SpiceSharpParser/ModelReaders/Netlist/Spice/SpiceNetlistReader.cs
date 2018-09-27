@@ -45,15 +45,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             var resultService = new ResultService(result);
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(new string[] { "0" });
             var objectNameGenerator = new ObjectNameGenerator(string.Empty);
-            var readingEvaluator = new SpiceEvaluator("Main reading evaluator", null, Settings.EvaluatorMode, Settings.Seed, Settings.Mappings.Exporters, nodeNameGenerator, objectNameGenerator);
-            var simulationContexts = new SimulationContexts(resultService, readingEvaluator);
+            var readingEvaluator = new SpiceEvaluator("Netlist reading evaluator", null, Settings.EvaluatorMode, Settings.Seed, Settings.Mappings.Exporters, nodeNameGenerator, objectNameGenerator);
+            var evaluatorsContainer = new EvaluatorsContainer(readingEvaluator);
+
+            var simulationParameters = new SimulationsParameters(evaluatorsContainer);
+
             var statementsReader = new SpiceStatementsReader(Settings.Mappings.Controls, Settings.Mappings.Models, Settings.Mappings.Components);
             var waveformReader = new WaveformReader(Settings.Mappings.Waveforms);
 
             var readingContext = new ReadingContext(
-                string.Empty,
-                simulationContexts,
-                readingEvaluator,
+                "Netlist reading context",
+                simulationParameters,
+                evaluatorsContainer,
                 resultService,
                 nodeNameGenerator,
                 objectNameGenerator,
@@ -66,7 +69,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             // Return and update evaluators info.
             result.Seed = result.Seed ?? Settings.Seed;
 
-            result.Evaluators = simulationContexts.GetSimulationEvaluators();
+            result.Evaluators = evaluatorsContainer.GetEvaluators();
 
             return result;
         }

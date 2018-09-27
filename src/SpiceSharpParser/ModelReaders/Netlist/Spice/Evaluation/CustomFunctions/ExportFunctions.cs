@@ -62,7 +62,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
 
             function.Logic = (args, evaluator) =>
             {
-                string exporterKey = string.Format("{0}_{1}_{2}", evaluator.Context != null ? ((Simulation)evaluator.Context).Name : "no_simulation", exportType, string.Join(",", args));
+                if (evaluator.Context == null || !(evaluator.Context is Simulation))
+                {
+                    return double.NaN;
+                }
+
+                string exporterKey = string.Format("{0}_{1}_{2}", ((Simulation)evaluator.Context).Name, exportType, string.Join(",", args));
 
                 if (!exporters.ContainsKey(exporterKey))
                 {
@@ -74,7 +79,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
 
                     var parameters = new ParameterCollection();
                     parameters.Add(vectorParameter);
-                    var export = exporter.CreateExport(exportType, parameters, evaluator.Context != null ? (Simulation)evaluator.Context : null, nodeNameGenerator, objectNameGenerator);
+                    var export = exporter.CreateExport(exportType, parameters, (Simulation)evaluator.Context, nodeNameGenerator, objectNameGenerator);
                     exporters[exporterKey] = export;
                 }
 

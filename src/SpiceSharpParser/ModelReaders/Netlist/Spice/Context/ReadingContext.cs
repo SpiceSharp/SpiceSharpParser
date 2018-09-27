@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharp.Circuits;
-using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -17,15 +17,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Initializes a new instance of the <see cref="ReadingContext"/> class.
         /// </summary>
         /// <param name="contextName">Name of the context.</param>
-        /// <param name="readingEvaluator">Evaluator for the context.</param>
+        /// <param name="parameters">Parameters.</param>
+        /// <param name="evaluators">Evaluator for the context.</param>
         /// <param name="resultService">Result service for the context.</param>
         /// <param name="nodeNameGenerator">Node name generator for the context.</param>
         /// <param name="objectNameGenerator">Object name generator for the context.</param>
+        /// <param name="statementsReader">Statements reader.</param>
+        /// <param name="waveformReader">Waveform reader.</param>
         /// <param name="parent">Parent of th econtext.</param>
         public ReadingContext(
             string contextName,
-            ISimulationContexts simulationContexts,
-            IEvaluator readingEvaluator,
+            ISimulationsParameters parameters,
+            IEvaluatorsContainer evaluators,
             IResultService resultService,
             INodeNameGenerator nodeNameGenerator,
             IObjectNameGenerator objectNameGenerator,
@@ -35,7 +38,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         {
             ContextName = contextName ?? throw new ArgumentNullException(nameof(contextName));
             Result = resultService ?? throw new ArgumentNullException(nameof(resultService));
-            ReadingEvaluator = readingEvaluator ?? throw new ArgumentNullException(nameof(readingEvaluator));
             NodeNameGenerator = nodeNameGenerator ?? throw new ArgumentNullException(nameof(nodeNameGenerator));
             ObjectNameGenerator = objectNameGenerator ?? throw new ArgumentNullException(nameof(objectNameGenerator));
             Parent = parent;
@@ -50,7 +52,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
 
             Children = new List<IReadingContext>();
-            SimulationContexts = simulationContexts;
+
+            SimulationsParameters = parameters;
+            Evaluators = evaluators;
 
             var generators = new List<IObjectNameGenerator>();
             IReadingContext current = this;
@@ -60,25 +64,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 current = current.Parent;
             }
 
-            StochasticModelsRegistry = new StochasticModelsRegistry(generators);
+            ModelsRegistry = new StochasticModelsRegistry(generators);
             StatementsReader = statementsReader;
             WaveformReader = waveformReader;
         }
 
         /// <summary>
-        /// Gets or sets the simulation contexts.
+        /// Gets the evaluators for the context.
         /// </summary>
-        public ISimulationContexts SimulationContexts { get; protected set; }
+        public IEvaluatorsContainer Evaluators { get; }
+
+        /// <summary>
+        /// Gets simulation parameters.
+        /// </summary>
+        public ISimulationsParameters SimulationsParameters { get; }
 
         /// <summary>
         /// Gets or sets the name of context.
         /// </summary>
         public string ContextName { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the reading evaluator.
-        /// </summary>
-        public IEvaluator ReadingEvaluator { get; protected set; }
 
         /// <summary>
         /// Gets or sets the parent of context.
@@ -113,7 +117,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets or sets the stochastic models registry.
         /// </summary>
-        public IStochasticModelsRegistry StochasticModelsRegistry { get; protected set; }
+        public IModelsRegistry ModelsRegistry { get; protected set; }
 
         /// <summary>
         /// Gets or sets statements reader.
@@ -133,22 +137,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public void SetICVoltage(string nodeName, string expression)
         {
             var fullNodeName = NodeNameGenerator.Generate(nodeName);
-            var initialValue = ReadingEvaluator.EvaluateDouble(expression);
-
-            SimulationContexts.SetICVoltage(nodeName, expression);
-        }
-
-        /// <summary>
-        /// Sets voltage guess condition for node.
-        /// </summary>
-        /// <param name="nodeName">Name of node.</param>
-        /// <param name="expression">Expression.</param>
-        public void SetNodeSetVoltage(string nodeName, string expression)
-        {
-            foreach (var simulation in Result.Simulations)
-            {
-                simulation.Nodes.NodeSets[nodeName] = ReadingEvaluator.EvaluateDouble(expression);
-            }
+            SimulationsParameters.SetICVoltage(nodeName, expression);
         }
 
         /// <summary>
@@ -162,60 +151,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         {
             try
             {
-                return ReadingEvaluator.EvaluateDouble(expression);
+                return Evaluators.EvaluateDouble(expression);
             }
             catch (Exception ex)
             {
                 throw new Exception("Exception during evaluation of expression: " + expression, ex);
             }
-        }
-
-        /// <summary>
-        /// Sets the parameter of entity and enables updates.
-        /// </summary>
-        /// <param name="entity">An entity of parameter.</param>
-        /// <param name="parameterName">A parameter name.</param>
-        /// <param name="expression">An expression.</param>
-        /// <returns>
-        /// True if the parameter has been set.
-        /// </returns>
-        public bool SetParameter(Entity entity, string parameterName, string expression)
-        {
-            double value;
-            try
-            {
-                value = ReadingEvaluator.EvaluateDouble(expression);
-            }
-            catch (Exception ex)
-            {
-                Result.AddWarning("Exception during parsing expression '" + expression + "': " + ex);
-                return false;
-            }
-
-            bool wasSet = entity.SetParameter(parameterName.ToLower(), value);
-
-            if (wasSet)
-            {
-                SimulationContexts.SetEntityParameter(parameterName.ToLower(), entity, expression);
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Sets the parameter of entity.
-        /// </summary>
-        /// <param name="entity">An entity of parameter.</param>
-        /// <param name="parameterName">A parameter name.</param>
-        /// <param name="object">An parameter value.</param>
-        /// <returns>
-        /// True if the parameter has been set.
-        /// </returns>
-        [Obsolete]
-        public bool SetParameter(Entity entity, string parameterName, object @object)
-        {
-            return entity.SetParameter(parameterName.ToLower(), @object);
         }
 
         /// <summary>
@@ -241,6 +182,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 StatementsReader.Read(statement, this);
             }
+        }
+
+        public void SetParameter(Entity entity, string parameterName, string expression, bool onload = true)
+        {
+            entity.SetParameter(parameterName.ToLower(), this.Evaluators.EvaluateDouble(expression));
+            SimulationsParameters.SetParameter(entity, parameterName.ToLower(), expression, 0, onload);
+        }
+
+        public void SetParameter(Entity entity, string parameterName, double value)
+        {
+            entity.SetParameter(parameterName.ToLower(), value);
         }
     }
 }

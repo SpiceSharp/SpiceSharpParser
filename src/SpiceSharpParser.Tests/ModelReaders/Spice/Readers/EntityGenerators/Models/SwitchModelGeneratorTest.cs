@@ -24,7 +24,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Mod
 
             var context = Substitute.For<IReadingContext>();
             var generator = new SwitchModelGenerator();
-            var model = generator.Generate("SRES", "SRES", "sw", parameters, context);
+            var model = generator.Generate("SRES", "sw", parameters, context);
 
             Assert.NotNull(model);
         }

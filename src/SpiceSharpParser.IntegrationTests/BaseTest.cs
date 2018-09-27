@@ -249,7 +249,7 @@ namespace SpiceSharpParser.IntegrationTests
             }
         }
 
-        protected void EqualsWithTol(double actual, double expected)
+        protected void EqualsWithTol(double expected, double actual)
         {
             double tol = Math.Max(Math.Abs(actual), Math.Abs(expected)) * RelTol + AbsTol;
             Assert.True(Math.Abs(expected - actual) < tol, $"Actual={actual} expected={expected}");

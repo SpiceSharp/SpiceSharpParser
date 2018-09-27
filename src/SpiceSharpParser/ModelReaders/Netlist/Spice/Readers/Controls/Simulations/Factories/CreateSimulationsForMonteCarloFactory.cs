@@ -20,12 +20,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
         public ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory AllTemperaturesAndSweeps { get; }
 
-        public void Create(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> simulationWithStochasticModels)
+        public List<BaseSimulation> Create(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> simulationWithStochasticModels)
         {
             context.Result.MonteCarlo.Enabled = true;
             context.Result.MonteCarlo.RandomSeed = context.Result.SimulationConfiguration.Seed;
             context.Result.MonteCarlo.VariableName = context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable;
             context.Result.MonteCarlo.Function = context.Result.SimulationConfiguration.MonteCarloConfiguration.Function;
+
+            var result = new List<BaseSimulation>();
 
             if (context.Result.SimulationConfiguration.ParameterSweeps.Count == 0)
             {
@@ -33,6 +35,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 {
                     var simulations = AllTemperatures.CreateSimulations(statement, context, simulationWithStochasticModels);
                     AttachMonteCarloDataGathering(context, simulations);
+
+                    result.AddRange(simulations);
                 }
             }
             else
@@ -41,8 +45,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 {
                     var simulations = AllTemperaturesAndSweeps.CreateSimulations(statement, context, simulationWithStochasticModels);
                     AttachMonteCarloDataGathering(context, simulations);
+                    result.AddRange(simulations);
+
                 }
             }
+
+            return result;
         }
 
         protected static void AttachMonteCarloDataGathering(IReadingContext context, IEnumerable<BaseSimulation> simulations)

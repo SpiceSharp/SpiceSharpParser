@@ -23,7 +23,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 {
                     if (context.Result.FindObject(paramToSet.Key.Image, out Entity @object))
                     {
-                        SetIndependentSource(simulation, context, paramToSet, @object);
+                        SetIndependentSource(@object, simulation, context, paramToSet);
                     }
                 }
 
@@ -47,7 +47,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             string paramName = rp.Argument;
             if (context.Result.FindObject(objectName, out Entity @object))
             {
-                context.SimulationContexts.SetEntityParameter(paramName.ToLower(), @object, paramToSet.Value.ToString(CultureInfo.InvariantCulture), simulation);
+                context.SimulationsParameters.SetParameter(@object, paramName.ToLower(), paramToSet.Value, simulation, int.MaxValue);
             }
         }
 
@@ -57,20 +57,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             string paramName = bp.Parameters[0].Image;
             if (context.Result.FindObject(modelName, out Entity @model))
             {
-                context.SimulationContexts.SetModelParameter(paramName.ToLower(), model, paramToSet.Value.ToString(CultureInfo.InvariantCulture), simulation);
+                context.SimulationsParameters.SetParameter(model, paramName.ToLower(), paramToSet.Value.ToString(CultureInfo.InvariantCulture), simulation, int.MaxValue);
             }
         }
 
         protected void SetSimulationParameter(BaseSimulation simulation, IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet)
         {
-            context.SimulationContexts.SetParameter(paramToSet.Key.Image, paramToSet.Value, simulation);
+            context.Evaluators.GetSimulationEvaluator(simulation).SetParameter(paramToSet.Key.Image, paramToSet.Value);
         }
 
-        protected void SetIndependentSource(BaseSimulation simulation, IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet, Entity @object)
+        protected void SetIndependentSource(Entity @entity, BaseSimulation simulation, IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet)
         {
-            if (@object is CurrentSource || @object is VoltageSource)
+            if (@entity is CurrentSource || @entity is VoltageSource)
             {
-                context.SimulationContexts.SetEntityParameter("dc", @object, paramToSet.Value.ToString(CultureInfo.InvariantCulture), simulation);
+                context.SimulationsParameters.SetParameter(@entity, "dc", paramToSet.Value.ToString(CultureInfo.InvariantCulture), simulation, int.MaxValue);
             }
         }
     }

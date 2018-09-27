@@ -14,10 +14,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
     {
         public SpiceStatementsReader(
             IMapper<BaseControl> controlMapper,
-            IMapper<ModelGenerator> modelMapper,
-            IMapper<EntityGenerator> entityMapper)
+            IMapper<IModelGenerator> modelMapper,
+            IMapper<IComponentGenerator> entityMapper)
         {
-            var modelReader = new ModelReader(modelMapper);
+            var modelReader = new ModelReader(modelMapper, new StochasticModelsGenerator());
             var componentReader = new ComponentReader(entityMapper);
             var controlReader = new ControlReader(controlMapper);
             var subcircuitDefinitionReader = new SubcircuitDefinitionReader();

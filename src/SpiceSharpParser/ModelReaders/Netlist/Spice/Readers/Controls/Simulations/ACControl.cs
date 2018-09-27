@@ -50,7 +50,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             SetBaseConfiguration(ac.BaseConfiguration, context);
             SetACParameters(ac.FrequencyConfiguration, context);
             context.Result.AddSimulation(ac);
-
             return ac;
         }
 

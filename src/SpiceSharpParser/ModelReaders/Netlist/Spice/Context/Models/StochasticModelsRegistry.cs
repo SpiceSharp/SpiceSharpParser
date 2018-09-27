@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Circuits;
+using SpiceSharp.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
@@ -20,22 +22,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets or sets the dictionary of stochastic models with dev parameters.
         /// </summary>
-        protected Dictionary<Entity, Dictionary<Parameter, Parameter>> ModelsWithDev { get; set; } = new Dictionary<Entity, Dictionary<Parameter, Parameter>>();
+        protected Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, Parameter>> ModelsWithDev { get; set; } = new Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, Parameter>>();
 
         /// <summary>
         /// Gets or sets the dictionary of stochastic models with lot parameters.
         /// </summary>
-        protected Dictionary<Entity, Dictionary<Parameter, Parameter>> ModelsWithLot { get; set; } = new Dictionary<Entity, Dictionary<Parameter, Parameter>>();
+        protected Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, Parameter>> ModelsWithLot { get; set; } = new Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, Parameter>>();
 
         /// <summary>
         /// Gets or sets the dictionary of models generators.
         /// </summary>
-        protected Dictionary<Entity, Func<string, Entity>> ModelsGenerators { get; set; } = new Dictionary<Entity, Func<string, Entity>>();
+        protected Dictionary<SpiceSharp.Components.Model, Func<string, SpiceSharp.Components.Model>> ModelsGenerators { get; set; } = new Dictionary<SpiceSharp.Components.Model, Func<string, SpiceSharp.Components.Model>>();
 
         /// <summary>
         /// Gets or sets the dictionary of stochastic models.
         /// </summary>
-        protected Dictionary<Entity, List<Entity>> StochasticModels { get; set; } = new Dictionary<Entity, List<Entity>>();
+        protected Dictionary<SpiceSharp.Components.Model, List<SpiceSharp.Components.Model>> StochasticModels { get; set; } = new Dictionary<SpiceSharp.Components.Model, List<SpiceSharp.Components.Model>>();
 
         /// <summary>
         /// Gets or sets the list of all models in the registry.
@@ -54,7 +56,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="generator">A model generator.</param>
         /// <param name="parameter">A parameter.</param>
         /// <param name="percent">A percent (value of dev).</param>
-        public void RegisterModelDev(Entity model, Func<string, Entity> generator, Parameter parameter, Parameter percent)
+        public void RegisterModelDev(SpiceSharp.Components.Model model, Func<string, SpiceSharp.Components.Model> generator, Parameter parameter, Parameter percent)
         {
             if (!ModelsWithDev.ContainsKey(model))
             {
@@ -76,7 +78,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="generator">A model generator.</param>
         /// <param name="parameter">A parameter.</param>
         /// <param name="percent">A percent (value of lot).</param>
-        public void RegisterModelLot(Entity model, Func<string, Entity> generator, Parameter parameter, Parameter percent)
+        public void RegisterModelLot(SpiceSharp.Components.Model model, Func<string, SpiceSharp.Components.Model> generator, Parameter parameter, Parameter percent)
         {
             if (!ModelsWithLot.ContainsKey(model))
             {
@@ -100,7 +102,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// If a model is stochastic (dev, lot) then a copy of model with be returned.
         /// If a model is not stochastic then a raw model is returned.
         /// </returns>
-        public Entity ProvideStochasticModel(Entity component, Entity model)
+        public SpiceSharp.Components.Model ProvideStochasticModel(Entity component, SpiceSharp.Components.Model model)
         {
             if (ModelsGenerators.ContainsKey(model))
             {
@@ -108,7 +110,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
                 if (!StochasticModels.ContainsKey(model))
                 {
-                    StochasticModels[model] = new List<Entity>();
+                    StochasticModels[model] = new List<SpiceSharp.Components.Model>();
                 }
 
                 StochasticModels[model].Add(modelForComponent);
@@ -118,36 +120,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return model;
         }
 
-        /// <summary>
-        /// Finds a model with given name.
-        /// </summary>
-        /// <param name="modelName">Name of model to get.</param>
-        /// <returns>
-        /// A reference to model.
-        /// </returns>
-        public T FindBaseModel<T>(string modelName)
-            where T : Entity
-        {
-            foreach (var generator in ModelNamesGenerators)
-            {
-                var modelNameToSearch = generator.Generate(modelName);
-                var model = AllModels.SingleOrDefault(p => p.Name.ToString() == modelNameToSearch);
-                if (model != null)
-                {
-                    return (T)model;
-                }
-            }
-
-            return null;
-        }
-
+       
         /// <summary>
         /// Gets the stochastic models.
         /// </summary>
         /// <returns>
         /// A dictionary of base models and their stochastic models.
         /// </returns>
-        public Dictionary<Entity, List<Entity>> GetStochasticModels()
+        public Dictionary<SpiceSharp.Components.Model, List<SpiceSharp.Components.Model>> GetStochasticModels()
         {
             return StochasticModels;
         }
@@ -159,7 +139,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// A dictionary of DEV parameters and their percent value.
         /// </returns>
-        public Dictionary<Parameter, Parameter> GetStochasticModelDevParameters(Entity baseModel)
+        public Dictionary<Parameter, Parameter> GetStochasticModelDevParameters(SpiceSharp.Components.Model baseModel)
         {
             if (ModelsWithDev.ContainsKey(baseModel))
             {
@@ -173,8 +153,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Registers a model in the registry.
         /// </summary>
         /// <param name="model">A model to register.</param>
-        public void RegisterModel(Entity model)
-        {
+        public void RegisterModelInstance(SpiceSharp.Components.Model model)
+        { 
             AllModels.Add(model);
         }
 
@@ -185,11 +165,38 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// A dictionary of LOT parameters and their percent value.
         /// </returns>
-        public Dictionary<Parameter, Parameter> GetStochasticModelLotParameters(Entity baseModel)
+        public Dictionary<Parameter, Parameter> GetStochasticModelLotParameters(SpiceSharp.Components.Model baseModel)
         {
             if (ModelsWithLot.ContainsKey(baseModel))
             {
                 return ModelsWithLot[baseModel];
+            }
+
+            return null;
+        }
+
+        public void SetModel<T>(Entity entity, string modelName, string exceptionMessage, Action<T> setModelAction) where T : SpiceSharp.Components.Model
+        {
+            var model = FindModel<T>(modelName);
+
+            if (model == null)
+            {
+                throw new ModelNotFoundException(exceptionMessage);
+            }
+
+            setModelAction((T)ProvideStochasticModel(entity, model));
+        }
+
+        public T FindModel<T>(string modelName) where T: SpiceSharp.Components.Model
+        {
+            foreach (var generator in ModelNamesGenerators)
+            {
+                var modelNameToSearch = generator.Generate(modelName);
+                var model = AllModels.SingleOrDefault(p => p.Name.ToString() == modelNameToSearch);
+                if (model != null)
+                {
+                    return (T)model;
+                }
             }
 
             return null;

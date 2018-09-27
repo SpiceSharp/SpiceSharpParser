@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
@@ -14,9 +15,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         string ContextName { get; }
 
         /// <summary>
-        /// Gets the simulations contexts.
+        /// Gets the simulation parameters.
         /// </summary>
-        ISimulationContexts SimulationContexts { get; }
+        ISimulationsParameters SimulationsParameters { get; }
+
+        /// <summary>
+        /// Gets the evaluators.
+        /// </summary>
+        IEvaluatorsContainer Evaluators { get; }
 
         /// <summary>
         /// Gets the parent of the context.
@@ -31,7 +37,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets the list of available subcircuit for the context.
         /// </summary>
-        ICollection<SubCircuit> AvailableSubcircuits { get; }        
+        ICollection<SubCircuit> AvailableSubcircuits { get; }
 
         /// <summary>
         /// Gets the result service for the context.
@@ -49,14 +55,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         IObjectNameGenerator ObjectNameGenerator { get; }
 
         /// <summary>
-        /// Gets the evaluator for the reading of the model.
-        /// </summary>
-        IEvaluator ReadingEvaluator { get; }
-
-        /// <summary>
         /// Gets the stochastic models registry.
         /// </summary>
-        IStochasticModelsRegistry StochasticModelsRegistry { get; }
+        IModelsRegistry ModelsRegistry { get; }
 
         /// <summary>
         /// Gets the statements reader.
@@ -77,41 +78,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </returns>
         double ParseDouble(string expression);
 
-        /// <summary>
-        /// Sets voltage initial condition for node
-        /// </summary>
-        /// <param name="nodeName">Name of node</param>
-        /// <param name="expression">Expression</param>
+        void SetParameter(Entity entity, string parameterName, string expression, bool onload = true);
+
         void SetICVoltage(string nodeName, string expression);
-
-        /// <summary>
-        /// Sets voltage guess condition for node.
-        /// </summary>
-        /// <param name="nodeName">Name of node</param>
-        /// <param name="expression">Expression</param>
-        void SetNodeSetVoltage(string nodeName, string expression);
-
-        /// <summary>
-        /// Sets the parameter of entity.
-        /// </summary>
-        /// <param name="entity">An entity of parameter</param>
-        /// <param name="parameterName">A parameter name</param>
-        /// <param name="expression">An expression</param>
-        /// <returns>
-        /// True if parameter has been set.
-        /// </returns>
-        bool SetParameter(Entity entity, string parameterName, string expression);
-
-        /// <summary>
-        /// Sets the parameter of entity.
-        /// </summary>
-        /// <param name="entity">An entity of parameter</param>
-        /// <param name="parameterName">A parameter name</param>
-        /// <param name="object">An parameter value</param>
-        /// <returns>
-        /// True if the parameter has been set.
-        /// </returns>
-        bool SetParameter(Entity entity, string parameterName, object @object);
 
         /// <summary>
         /// Creates nodes for a component.
@@ -124,7 +93,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Reads the statements with given order.
         /// </summary>
         /// <param name="statements">Statements.</param>
-        /// <param name="orderer">Orderer.</param>
-        void Read(Statements statement, ISpiceStatementsOrderer orderer);
+        /// <param name="orderer">Orderer of statements.</param>
+        void Read(Statements statements, ISpiceStatementsOrderer orderer);
     }
 }

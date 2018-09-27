@@ -1,83 +1,30 @@
-﻿using System;
-using SpiceSharp;
+﻿using System.Collections.Generic;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Extensions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
 {
-    public abstract class ModelGenerator : EntityGenerator
+    public abstract class ModelGenerator : IModelGenerator
     {
-        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public abstract IEnumerable<string> GeneratedTypes { get; }
+
+        public abstract SpiceSharp.Components.Model Generate(string name, string type, ParameterCollection parameters, IReadingContext context);
+
+        protected void SetParameters(IReadingContext context, Entity entity, ParameterCollection parameters, bool onload = true)
         {
-            var model = GenerateModel(id.ToString(), type);
-            if (model == null)
+            foreach (Parameter parameter in parameters)
             {
-                throw new GeneralReaderException("Couldn't generate model");
-            }
-
-            context.StochasticModelsRegistry.RegisterModel(model);
-
-            ParameterCollection filteredParameters = FilterAndRegisterDevAndLot(parameters, context, model, (string name) =>
-            {
-                var newModel = GenerateModel(name, type);
-                context.SetParameters(newModel, FilerDevAndLot(parameters));
-                return newModel;
-            });
-            context.SetParameters(model, filteredParameters);
-            return model;
-        }
-
-        protected abstract Entity GenerateModel(string name, string type);
-
-        private static ParameterCollection FilterAndRegisterDevAndLot(ParameterCollection parameters, IReadingContext context, Entity model, Func<string, Entity> generator)
-        {
-            var filteredParameters = new ParameterCollection();
-
-            for (var i = 0; i < parameters.Count; i++)
-            {
-                if (parameters[i].Image.ToUpper() == "DEV")
+                if (parameter is AssignmentParameter ap)
                 {
-                    context.StochasticModelsRegistry.RegisterModelDev(model, generator, parameters[i - 1], (Parameter)parameters[i + 1]);
-                    i++;
-                }
-                else if (parameters[i].Image.ToUpper() == "LOT")
-                {
-                    context.StochasticModelsRegistry.RegisterModelLot(model, generator, parameters[i - 1], (Parameter)parameters[i + 1]);
-                    i++;
+                    context.SetParameter(entity, ap.Name, ap.Value, onload);
                 }
                 else
                 {
-                    filteredParameters.Add(parameters[i]);
+                    context.Result.AddWarning("Unsupported parameter: " + parameter.Image);
                 }
             }
-
-            return filteredParameters;
-        }
-
-        private static ParameterCollection FilerDevAndLot(ParameterCollection parameters)
-        {
-            var filteredParameters = new ParameterCollection();
-
-            for (var i = 0; i < parameters.Count; i++)
-            {
-                if (parameters[i].Image.ToUpper() == "DEV")
-                {
-                    i++;
-                }
-                else if (parameters[i].Image.ToUpper() == "LOT")
-                {
-                    i++;
-                }
-                else
-                {
-                    filteredParameters.Add(parameters[i]);
-                }
-            }
-
-            return filteredParameters;
         }
     }
 }

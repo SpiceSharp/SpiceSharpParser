@@ -16,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// Initializes a new instance of the <see cref="ComponentReader"/> class.
         /// </summary>
         /// <param name="mapper">A component mapper.</param>
-        public ComponentReader(IMapper<EntityGenerator> mapper)
+        public ComponentReader(IMapper<IComponentGenerator> mapper)
         {
             Mapper = mapper ?? throw new System.NullReferenceException(nameof(mapper));
         }
@@ -24,7 +24,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <summary>
         /// Gets the component mapper.
         /// </summary>
-        public IMapper<EntityGenerator> Mapper { get; }
+        public IMapper<IComponentGenerator> Mapper { get; }
 
         /// <summary>
         /// Reads a component statement and modifies the context
@@ -44,7 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
             var generator = Mapper.Get(componentType);
 
             Entity entity = generator.Generate(
-                new StringIdentifier(context.ObjectNameGenerator.Generate(componentName)),
+                context.ObjectNameGenerator.Generate(componentName),
                 componentName,
                 componentType,
                 statement.PinsAndParameters,

@@ -33,22 +33,39 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// </summary>
         protected void CreateSimulations(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
         {
-            Func<string, Control, IReadingContext, BaseSimulation> simulationWithStochasticModels = CreateSimulationWithStochasticModelsDecorator.Decorate(context, createSimulation);
+            if (context.ModelsRegistry is StochasticModelsRegistry)
+            {
+                createSimulation = CreateSimulationWithStochasticModelsDecorator.Decorate(context, createSimulation);
+            }
 
             if (!IsMonteCarloEnabledForSimulation(statement, context))
             {
                 if (context.Result.SimulationConfiguration.ParameterSweeps.Count == 0)
                 {
-                    CreateSimulationsForAllTemperaturesFactory.CreateSimulations(statement, context, simulationWithStochasticModels);
+                    var simulations = CreateSimulationsForAllTemperaturesFactory.CreateSimulations(statement, context, createSimulation);
+
+                    foreach (var simulation in simulations)
+                    {
+                        context.SimulationsParameters.Prepare(simulation);
+                    }
                 }
                 else
                 {
-                    CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(statement, context, simulationWithStochasticModels);
+                    var simulations = CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(statement, context, createSimulation);
+                    foreach (var simulation in simulations)
+                    {
+                        context.SimulationsParameters.Prepare(simulation);
+                    }
                 }
             }
             else
             {
-                CreateSimulationsForMonteCarloFactory.Create(statement, context, simulationWithStochasticModels);
+                var simulations = CreateSimulationsForMonteCarloFactory.Create(statement, context, createSimulation);
+
+                foreach (var simulation in simulations)
+                {
+                    context.SimulationsParameters.Prepare(simulation);
+                }
             }
         }
 

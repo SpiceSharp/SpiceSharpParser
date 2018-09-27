@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
@@ -21,38 +20,40 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             {
                 var sim = createSimulation(name, control, context2);
 
-                sim.BeforeExecute += (object s, BeforeExecuteEventArgs arg) =>
+                var modelsRegistry = context.ModelsRegistry as IStochasticModelsRegistry;
+
+                if (modelsRegistry != null)
                 {
-                    var evaluator = context.SimulationContexts.GetSimulationEvaluator(sim);
-
-                    foreach (var stochasticModels in context.StochasticModelsRegistry.GetStochasticModels())
+                    sim.BeforeExecute += (object s, BeforeExecuteEventArgs arg) =>
                     {
-                        var baseModel = stochasticModels.Key;
-                        var componentModels = stochasticModels.Value;
-
-                        foreach (var componentModel in componentModels)
+                        foreach (var stochasticModels in modelsRegistry.GetStochasticModels())
                         {
-                            var stochasticDevParameters = context.StochasticModelsRegistry.GetStochasticModelDevParameters(baseModel);
+                            var baseModel = stochasticModels.Key;
+                            var componentModels = stochasticModels.Value;
 
-                            if (stochasticDevParameters != null)
+                            foreach (var componentModel in componentModels)
                             {
-                                SetModelDevModelParameters(context, sim, evaluator, componentModel, stochasticDevParameters);
-                            }
+                                var stochasticDevParameters = modelsRegistry.GetStochasticModelDevParameters(baseModel);
 
-                            var stochasticLotParameters = context.StochasticModelsRegistry.GetStochasticModelLotParameters(baseModel);
-                            if (stochasticLotParameters != null)
-                            {
-                                SetModelLotModelParameters(context, sim, evaluator, baseModel, componentModel, stochasticLotParameters);
+                                if (stochasticDevParameters != null)
+                                {
+                                    SetModelDevModelParameters(context, sim, componentModel, stochasticDevParameters);
+                                }
+
+                                var stochasticLotParameters = modelsRegistry.GetStochasticModelLotParameters(baseModel);
+                                if (stochasticLotParameters != null)
+                                {
+                                    SetModelLotModelParameters(context, sim,  baseModel, componentModel, stochasticLotParameters);
+                                }
                             }
                         }
-                    }
-                };
-
+                    };
+                }
                 return sim;
             };
         }
 
-        private static void SetModelLotModelParameters(IReadingContext context, BaseSimulation sim, IEvaluator evaluator, Entity baseModel, Entity componentModel, Dictionary<Parameter, Parameter> stochasticLotParameters)
+        private static void SetModelLotModelParameters(IReadingContext context, BaseSimulation sim, Entity baseModel, Entity componentModel, Dictionary<Parameter, Parameter> stochasticLotParameters)
         {
             foreach (var stochasticParameter in stochasticLotParameters)
             {
@@ -61,18 +62,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
                 if (parameter is AssignmentParameter asg)
                 {
-                    var parameterName = asg.Name.ToLower();
+                    var evaluator = context.Evaluators.GetSimulationEvaluator(sim);
 
+                    var parameterName = asg.Name.ToLower();
                     var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<double>(parameterName);
+
                     var currentValue = currentValueParameter.Value;
                     var percentValue = evaluator.EvaluateDouble(parameterPercent.Image);
                     double newValue = GetValueForLotParameter(evaluator, baseModel, parameterName, currentValue, percentValue);
-                    context.SimulationContexts.SetModelParameter(parameterName, componentModel, newValue.ToString(), sim);
+                    context.SimulationsParameters.SetParameter(componentModel, parameterName, newValue, sim, 1);
                 }
             }
         }
 
-        private static void SetModelDevModelParameters(IReadingContext context, BaseSimulation sim, IEvaluator evaluator, Entity componentModel, System.Collections.Generic.Dictionary<Parameter, Parameter> stochasticDevParameters)
+        private static void SetModelDevModelParameters(IReadingContext context, BaseSimulation sim, Entity componentModel, System.Collections.Generic.Dictionary<Parameter, Parameter> stochasticDevParameters)
         {
             foreach (var stochasticParameter in stochasticDevParameters)
             {
@@ -81,13 +84,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
                 if (parameter is AssignmentParameter asg)
                 {
+                    var evaluator = context.Evaluators.GetSimulationEvaluator(sim);
+
                     var asgparamName = asg.Name.ToLower();
                     var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<double>(asgparamName);
                     var currentValue = currentValueParameter.Value;
                     var percentValue = evaluator.EvaluateDouble(parameterPercent.Image);
 
                     double newValue = GetValueForDevParameter(evaluator, currentValue, percentValue);
-                    context.SimulationContexts.SetModelParameter(asgparamName, componentModel, newValue.ToString(), sim);
+                    context.SimulationsParameters.SetParameter(componentModel, asgparamName, newValue, sim, 1);
                 }
             }
         }
