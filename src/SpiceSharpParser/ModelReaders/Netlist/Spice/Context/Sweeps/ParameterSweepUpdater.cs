@@ -63,7 +63,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         protected void SetSimulationParameter(BaseSimulation simulation, IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet)
         {
-            context.SimulationEvaluators.GetSimulationEvaluator(simulation).SetParameter(paramToSet.Key.Image, paramToSet.Value);
+            context.Evaluators.GetSimulationEvaluator(simulation).SetParameter(paramToSet.Key.Image, paramToSet.Value);
         }
 
         protected void SetIndependentSource(Entity @entity, BaseSimulation simulation, IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet)

@@ -4,6 +4,6 @@ namespace SpiceSharpParser.Common
 {
     public interface IEvaluatorConsumer
     {
-        ISimulationEvaluators Evaluators { set; }
+        IEvaluatorsContainer Evaluators { set; }
     }
 }

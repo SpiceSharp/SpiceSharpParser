@@ -23,7 +23,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <summary>
         /// Gets or sets the evaluator.
         /// </summary>
-        public ISimulationEvaluators Evaluators { get; set; }
+        public IEvaluatorsContainer Evaluators { get; set; }
 
         // TODO: please do something about .ToLower() in so many places ....
         public Statements Process(Statements statements)

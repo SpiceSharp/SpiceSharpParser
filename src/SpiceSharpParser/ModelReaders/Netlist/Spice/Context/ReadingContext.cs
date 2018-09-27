@@ -28,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public ReadingContext(
             string contextName,
             ISimulationsParameters parameters,
-            ISimulationEvaluators evaluators,
+            IEvaluatorsContainer evaluators,
             IResultService resultService,
             INodeNameGenerator nodeNameGenerator,
             IObjectNameGenerator objectNameGenerator,
@@ -54,7 +54,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             Children = new List<IReadingContext>();
 
             SimulationsParameters = parameters;
-            SimulationEvaluators = evaluators;
+            Evaluators = evaluators;
 
             var generators = new List<IObjectNameGenerator>();
             IReadingContext current = this;
@@ -70,12 +70,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         }
 
         /// <summary>
-        /// Gets or sets the evaluators.
+        /// Gets the evaluators for the context.
         /// </summary>
-        public ISimulationEvaluators SimulationEvaluators { get; }
+        public IEvaluatorsContainer Evaluators { get; }
 
         /// <summary>
-        /// Gets or sets simulation parameters.
+        /// Gets simulation parameters.
         /// </summary>
         public ISimulationsParameters SimulationsParameters { get; }
 
@@ -151,7 +151,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         {
             try
             {
-                return SimulationEvaluators.EvaluateDouble(expression);
+                return Evaluators.EvaluateDouble(expression);
             }
             catch (Exception ex)
             {
@@ -186,7 +186,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public void SetParameter(Entity entity, string parameterName, string expression, bool onload = true)
         {
-            entity.SetParameter(parameterName.ToLower(), this.SimulationEvaluators.EvaluateDouble(expression));
+            entity.SetParameter(parameterName.ToLower(), this.Evaluators.EvaluateDouble(expression));
             SimulationsParameters.SetParameter(entity, parameterName.ToLower(), expression, 0, onload);
         }
 

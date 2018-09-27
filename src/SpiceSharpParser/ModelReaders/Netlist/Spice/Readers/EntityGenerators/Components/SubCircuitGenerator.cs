@@ -31,7 +31,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             ReadingContext subCircuitContext = CreateSubcircuitContext(componentIdentifier.ToString(), originalName, subCircuitDefiniton, parameters, context);
 
             var ifPreprocessor = new IfPreprocessor();
-            ifPreprocessor.Evaluators = subCircuitContext.SimulationEvaluators;
+            ifPreprocessor.Evaluators = subCircuitContext.Evaluators;
             subCircuitDefiniton.Statements = ifPreprocessor.Process(subCircuitDefiniton.Statements);
 
             ReadParamControl(subCircuitDefiniton, subCircuitContext);
@@ -161,8 +161,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 assigmentParametersCount++;
             }
 
-            var subcircuitEvaluatorContainer = context.SimulationEvaluators.CreateChildContainer(subcircuitFullName);
-            var subcircuitParameters = CreateSubcircuitParameters(context.SimulationEvaluators, subCircuitDefiniton, subCktParameters);
+            var subcircuitEvaluatorContainer = context.Evaluators.CreateChildContainer(subcircuitFullName);
+            var subcircuitParameters = CreateSubcircuitParameters(context.Evaluators, subCircuitDefiniton, subCktParameters);
             subcircuitEvaluatorContainer.SetParameters(subcircuitParameters);
 
             // setting node name generator
@@ -189,7 +189,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A dictionary of parameters.
         /// </returns>
-        private Dictionary<string, string> CreateSubcircuitParameters(ISimulationEvaluators parentContainer, SubCircuit subCiruitDefiniton, List<AssignmentParameter> subcktParameters)
+        private Dictionary<string, string> CreateSubcircuitParameters(IEvaluatorsContainer parentContainer, SubCircuit subCiruitDefiniton, List<AssignmentParameter> subcktParameters)
         {
             var result = new Dictionary<string, string>();
             foreach (var defaultParameter in subCiruitDefiniton.DefaultParameters)

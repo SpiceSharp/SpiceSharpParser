@@ -39,7 +39,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = new ReadingContext(
                 string.Empty,
                 Substitute.For<ISimulationsParameters>(),
-                new SimulationEvaluators(evaluator),
+                new EvaluatorsContainer(evaluator),
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
                 new ObjectNameGenerator(string.Empty),
@@ -83,7 +83,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = new ReadingContext(
                 string.Empty,
                 Substitute.For<ISimulationsParameters>(),
-                new SimulationEvaluators(evaluator),
+                new EvaluatorsContainer(evaluator),
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
                 new ObjectNameGenerator(string.Empty),
@@ -127,7 +127,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = new ReadingContext(
                 string.Empty,
                 Substitute.For<ISimulationsParameters>(),
-                new SimulationEvaluators(evaluator),
+                new EvaluatorsContainer(evaluator),
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
                 new ObjectNameGenerator(string.Empty),
@@ -171,7 +171,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = new ReadingContext(
                 string.Empty,
                 Substitute.For<ISimulationsParameters>(),
-                new SimulationEvaluators(evaluator),
+                new EvaluatorsContainer(evaluator),
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
                 new ObjectNameGenerator(string.Empty),
@@ -214,7 +214,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = new ReadingContext(
                 string.Empty,
                 Substitute.For<ISimulationsParameters>(),
-                new SimulationEvaluators(evaluator),
+                new EvaluatorsContainer(evaluator),
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }),
                 new ObjectNameGenerator(string.Empty),

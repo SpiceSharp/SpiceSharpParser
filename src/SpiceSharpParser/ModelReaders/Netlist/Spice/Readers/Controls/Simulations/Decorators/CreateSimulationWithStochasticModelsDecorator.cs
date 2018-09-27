@@ -63,7 +63,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
                 if (parameter is AssignmentParameter asg)
                 {
-                    var evaluator = context.SimulationEvaluators.GetSimulationEvaluator(sim);
+                    var evaluator = context.Evaluators.GetSimulationEvaluator(sim);
 
                     var parameterName = asg.Name.ToLower();
                     var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<double>(parameterName);
@@ -85,7 +85,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
                 if (parameter is AssignmentParameter asg)
                 {
-                    var evaluator = context.SimulationEvaluators.GetSimulationEvaluator(sim);
+                    var evaluator = context.Evaluators.GetSimulationEvaluator(sim);
 
                     var asgparamName = asg.Name.ToLower();
                     var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<double>(asgparamName);

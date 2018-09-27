@@ -95,13 +95,13 @@ namespace SpiceSharpParser
                 new MainCircuitNodeNameGenerator(new string[] { "0" }),
                 new ObjectNameGenerator(string.Empty));
 
-            SimulationEvaluators preprocessorEvaluators = new SimulationEvaluators(preprocessorEvaluator);
+            EvaluatorsContainer evaluators = new EvaluatorsContainer(preprocessorEvaluator);
 
             foreach (var preprocessor in Preprocessors)
             {
                 if (preprocessor is IEvaluatorConsumer consumer)
                 {
-                    consumer.Evaluators = preprocessorEvaluators;
+                    consumer.Evaluators = evaluators;
                 }
 
                 preprocessedNetListModel.Statements = preprocessor.Process(preprocessedNetListModel.Statements);

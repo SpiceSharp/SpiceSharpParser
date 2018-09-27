@@ -1,36 +1,20 @@
-﻿using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
-    public class SimulationEvaluators : ISimulationEvaluators
+    public class EvaluatorsContainer : IEvaluatorsContainer
     {
         protected Dictionary<Simulation, IEvaluator> Evaluators = new Dictionary<Simulation, IEvaluator>();
 
+        public EvaluatorsContainer(IEvaluator sourceEvaluator)
+        {
+            SourceEvaluator = sourceEvaluator ?? throw new ArgumentNullException(nameof(sourceEvaluator));
+        }
+
         protected IEvaluator SourceEvaluator { get; }
-
-        public SimulationEvaluators(IEvaluator sourceEvaluator)
-        {
-            SourceEvaluator = sourceEvaluator;
-        }
-
-        public IEvaluator GetSimulationEvaluator(Simulation simulation)
-        {
-            if (simulation == null)
-            {
-                throw new ArgumentNullException(nameof(simulation));
-            }
-
-            if (!Evaluators.ContainsKey(simulation))
-            {
-                Evaluators[simulation] = 
-                    SourceEvaluator.CreateClonedEvaluator(simulation.Name.ToString(), simulation, SourceEvaluator.Seed);
-            }
-
-            return Evaluators[simulation];
-        }
 
         public void AddCustomFunction(string name, List<string> args, string body)
         {
@@ -72,16 +56,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        public double EvaluateDouble(string expression)
-        {
-            return SourceEvaluator.EvaluateDouble(expression);
-        }
-
-        public ISimulationEvaluators CreateChildContainer(string containerName)
-        {
-            return new SimulationEvaluators(SourceEvaluator.CreateChildEvaluator(containerName, null));
-        }
-
         public void SetParameters(Dictionary<string, string> parameterWithValues)
         {
             foreach (var parameterWithValue in parameterWithValues)
@@ -90,14 +64,40 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
+        public double EvaluateDouble(string expression)
+        {
+            return SourceEvaluator.EvaluateDouble(expression);
+        }
+
+        public IEvaluatorsContainer CreateChildContainer(string containerName)
+        {
+            return new EvaluatorsContainer(SourceEvaluator.CreateChildEvaluator(containerName, null));
+        }
+
         public IEnumerable<string> GetExpressionNames()
         {
             return SourceEvaluator.GetExpressionNames();
         }
 
-        internal IDictionary<Simulation, IEvaluator> GetEvaluators()
+        public IDictionary<Simulation, IEvaluator> GetEvaluators()
         {
             return Evaluators;
+        }
+
+        public IEvaluator GetSimulationEvaluator(Simulation simulation)
+        {
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
+
+            if (!Evaluators.ContainsKey(simulation))
+            {
+                Evaluators[simulation] =
+                    SourceEvaluator.CreateClonedEvaluator(simulation.Name.ToString(), simulation, SourceEvaluator.Seed);
+            }
+
+            return Evaluators[simulation];
         }
 
         public void SetSeed(int seed)

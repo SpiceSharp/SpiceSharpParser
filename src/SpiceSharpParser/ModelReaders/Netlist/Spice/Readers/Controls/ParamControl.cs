@@ -17,7 +17,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
-            Read(statement, context.SimulationEvaluators);
+            Read(statement, context.Evaluators);
         }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="evaluators">Evaluators.</param>
-        public void Read(Control statement, ISimulationEvaluators evaluators)
+        public void Read(Control statement, IEvaluatorsContainer evaluators)
         {
             if (statement.Parameters == null)
             {

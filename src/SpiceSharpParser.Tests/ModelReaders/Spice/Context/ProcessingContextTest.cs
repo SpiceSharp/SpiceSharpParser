@@ -19,7 +19,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
 
             var simulation = new DC("DC");
 
-            var evaluators = Substitute.For<ISimulationEvaluators>();
+            var evaluators = Substitute.For<IEvaluatorsContainer>();
             evaluators.GetSimulationEvaluator(Arg.Any<Simulation>()).Returns(evaluator);
 
             var context = new ReadingContext(

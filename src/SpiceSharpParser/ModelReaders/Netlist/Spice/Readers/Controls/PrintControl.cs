@@ -227,7 +227,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 else
                 {
                     string expressionName = parameter.Image;
-                    var evaluator = context.SimulationEvaluators.GetSimulationEvaluator(simulation);
+                    var evaluator = context.Evaluators.GetSimulationEvaluator(simulation);
                     var expressionNames = evaluator.GetExpressionNames();
 
                     if (expressionNames.Contains(expressionName))

@@ -63,7 +63,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             SetTransientParamters(tran, context, useIc);
 
             tran.ExportSimulationData += (object sender, ExportDataEventArgs e) => {
-                context.SimulationEvaluators.SetParameter("TIME", e.Time);
+                context.Evaluators.SetParameter("TIME", e.Time);
             };
 
             context.Result.AddSimulation(tran);

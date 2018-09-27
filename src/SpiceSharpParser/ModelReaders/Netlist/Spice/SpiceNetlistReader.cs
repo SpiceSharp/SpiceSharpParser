@@ -46,7 +46,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(new string[] { "0" });
             var objectNameGenerator = new ObjectNameGenerator(string.Empty);
             var readingEvaluator = new SpiceEvaluator("Netlist reading evaluator", null, Settings.EvaluatorMode, Settings.Seed, Settings.Mappings.Exporters, nodeNameGenerator, objectNameGenerator);
-            var evaluatorsContainer = new SimulationEvaluators(readingEvaluator);
+            var evaluatorsContainer = new EvaluatorsContainer(readingEvaluator);
 
             var simulationParameters = new SimulationsParameters(evaluatorsContainer);
 
