@@ -21,6 +21,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
 
             var evaluators = Substitute.For<IEvaluatorsContainer>();
             evaluators.GetSimulationEvaluator(Arg.Any<Simulation>()).Returns(evaluator);
+            evaluators.EvaluateDouble("x+1", Arg.Any<Simulation>()).Returns(3);
 
             var context = new ReadingContext(
                 string.Empty,

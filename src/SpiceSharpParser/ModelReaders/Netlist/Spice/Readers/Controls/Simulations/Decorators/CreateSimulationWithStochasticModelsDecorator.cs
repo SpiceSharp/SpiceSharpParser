@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
@@ -71,7 +70,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var currentValue = currentValueParameter.Value;
                     var percentValue = evaluator.EvaluateDouble(parameterPercent.Image);
                     double newValue = GetValueForLotParameter(evaluator, baseModel, parameterName, currentValue, percentValue);
-                    context.SimulationsParameters.SetParameter(componentModel, parameterName, newValue.ToString(), sim, 1);
+                    context.SimulationsParameters.SetParameter(componentModel, parameterName, newValue, sim, 1);
                 }
             }
         }
@@ -93,7 +92,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var percentValue = evaluator.EvaluateDouble(parameterPercent.Image);
 
                     double newValue = GetValueForDevParameter(evaluator, currentValue, percentValue);
-                    context.SimulationsParameters.SetParameter(componentModel, asgparamName, newValue.ToString(), sim, 1);
+                    context.SimulationsParameters.SetParameter(componentModel, asgparamName, newValue, sim, 1);
                 }
             }
         }

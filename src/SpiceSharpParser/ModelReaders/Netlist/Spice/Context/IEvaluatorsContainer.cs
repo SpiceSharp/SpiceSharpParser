@@ -12,9 +12,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         IEvaluator GetSimulationEvaluator(Simulation simulation);
 
+        IEvaluator GetSimulationEntityEvaluator(Simulation simulation, string entityName);
+
         IDictionary<Simulation, IEvaluator> GetEvaluators();
 
         double EvaluateDouble(string expression);
+
+        double EvaluateDouble(string expression, Simulation simulation);
 
         void AddCustomFunction(string name, List<string> arguments, string body);
 

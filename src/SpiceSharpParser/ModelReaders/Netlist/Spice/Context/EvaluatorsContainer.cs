@@ -69,6 +69,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return SourceEvaluator.EvaluateDouble(expression);
         }
 
+        public double EvaluateDouble(string expression, Simulation simulation)
+        {
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
+
+            return GetSimulationEvaluator(simulation).EvaluateDouble(expression);
+        }
+
         public IEvaluatorsContainer CreateChildContainer(string containerName)
         {
             return new EvaluatorsContainer(SourceEvaluator.CreateChildEvaluator(containerName, null));
@@ -98,6 +108,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
 
             return Evaluators[simulation];
+        }
+
+        public IEvaluator GetSimulationEntityEvaluator(Simulation simulation, string entityName)
+        {
+            var dotIndex = entityName.LastIndexOf('.');
+            var simulationEvaluator = this.GetSimulationEvaluator(simulation);
+
+            if (dotIndex == -1)
+            {
+                return simulationEvaluator;
+            }
+
+            string subcircuitName = entityName.Substring(0, dotIndex);
+            return simulationEvaluator.FindChildEvaluator(subcircuitName);
         }
 
         public void SetSeed(int seed)
