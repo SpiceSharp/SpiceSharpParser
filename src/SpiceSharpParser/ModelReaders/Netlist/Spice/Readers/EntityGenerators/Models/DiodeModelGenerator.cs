@@ -18,7 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
         public override SpiceSharp.Components.Model Generate(string name, string type, ParameterCollection parameters, IReadingContext context)
         {
             var model = new DiodeModel(name);
-            SetParameters(context, model, parameters, true);
+            SetParameters(context, model, parameters);
             return model;
         }
     }

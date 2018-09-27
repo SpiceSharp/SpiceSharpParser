@@ -48,7 +48,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     if (asg.Name.ToLower() == "ic")
                     {
-                        context.SetParameter(diode, "ic", asg.Value, true);
+                        context.SetParameter(diode, "ic", asg.Value);
                     }
                 }
 

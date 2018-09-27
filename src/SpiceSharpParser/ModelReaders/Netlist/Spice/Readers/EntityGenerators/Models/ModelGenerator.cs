@@ -12,13 +12,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 
         public abstract SpiceSharp.Components.Model Generate(string name, string type, ParameterCollection parameters, IReadingContext context);
 
-        protected void SetParameters(IReadingContext context, Entity entity, ParameterCollection parameters, bool updateSimulations)
+        protected void SetParameters(IReadingContext context, Entity entity, ParameterCollection parameters, bool onload = true)
         {
             foreach (Parameter parameter in parameters)
             {
                 if (parameter is AssignmentParameter ap)
                 {
-                    context.SetParameter(entity, ap.Name, ap.Value, updateSimulations);
+                    context.SetParameter(entity, ap.Name, ap.Value, onload);
                 }
                 else
                 {

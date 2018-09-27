@@ -63,7 +63,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var vcvs = new VoltageControlledVoltageSource(name);
                 context.CreateNodes(vcvs, parameters);
-                context.SetParameter(vcvs, "gain", parameters.GetString(4), true);
+                context.SetParameter(vcvs, "gain", parameters.GetString(4));
                 return vcvs;
             }
             else
@@ -77,7 +77,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                     var vcvs = new VoltageSource(name);
                     context.CreateNodes(vcvs, parameters);
-                    context.SetParameter(vcvs, "dc", assigmentParameter.Value, true);
+                    context.SetParameter(vcvs, "dc", assigmentParameter.Value);
 
                     return vcvs;
                 }
@@ -108,7 +108,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 var vcvs = new VoltageSource(name);
                 context.CreateNodes(vcvs, parameters);
-                context.SetParameter(vcvs, "dc", assigmentParameter.Value, true);
+                context.SetParameter(vcvs, "dc", assigmentParameter.Value);
 
                 return vcvs;
             }
@@ -132,7 +132,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.CreateNodes(ccvs, parameters);
 
                 ccvs.ControllingName = parameters.GetString(2);
-                context.SetParameter(ccvs, "gain", parameters.GetString(3), true);
+                context.SetParameter(ccvs, "gain", parameters.GetString(3));
                 return ccvs;
             }
         }
@@ -157,12 +157,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // DC specification
                 if (i == 2 && parameters[i] is SingleParameter s && s.Image.ToLower() == "dc" && i != parameters.Count - 1)
                 {
-                    context.SetParameter(vsrc, "dc", parameters.GetString(i + 1), true);
+                    context.SetParameter(vsrc, "dc", parameters.GetString(i + 1));
                     i++;
                 }
                 else if (i == 2 && parameters[i] is SingleParameter vp && parameters[i].Image.ToLower() != "dc" && parameters[i].Image.ToLower() != "ac")
                 {
-                    context.SetParameter(vsrc, "dc", parameters.GetString(i), true);
+                    context.SetParameter(vsrc, "dc", parameters.GetString(i));
                 }
                 else if (parameters[i] is SingleParameter s2 && s2.Image.ToLower() == "ac")
                 {
@@ -174,7 +174,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             throw new WrongParameterTypeException(name, "Voltage source AC magnitude has wrong type of parameter: " + parameters[i].GetType());
                         }
 
-                        context.SetParameter(vsrc, "acmag", parameters.GetString(i), true);
+                        context.SetParameter(vsrc, "acmag", parameters.GetString(i));
 
                         // Look forward for one more value
                         if (i + 1 < parameters.Count)
@@ -183,7 +183,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             if (parameters[i + 1] is SingleParameter)
                             {
                                 i++;
-                                context.SetParameter(vsrc, "acphase", parameters.GetString(i), true);
+                                context.SetParameter(vsrc, "acphase", parameters.GetString(i));
                             }
                             else
                             {
@@ -203,7 +203,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     if (ap.Name.ToLower() == "value")
                     {
-                        context.SetParameter(vsrc, "dc", ap.Value, true);
+                        context.SetParameter(vsrc, "dc", ap.Value);
                     }
                 }
                 else

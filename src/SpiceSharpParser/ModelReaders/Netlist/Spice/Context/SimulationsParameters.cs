@@ -60,23 +60,29 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             };
         }
 
-        public void SetParameter(Entity @object, string paramName, string expression, int order)
+        public void SetParameter(Entity @object, string paramName, string expression, int order, bool onload = true)
         {
             SimulationCreated += (object sender, SimulationEventArgs args) =>
             {
-                UpdateParameterBeforeLoad(paramName, @object, expression, args.Simulation, order);
+                if (onload)
+                {
+                    UpdateParameterBeforeLoad(paramName, @object, expression, args.Simulation, order);
+                }
                 UpdateParameterBeforeTemperature(paramName, @object, expression, args.Simulation, order);
             };
         }
 
-        public void SetParameter(Entity @object, string paramName, string expression, BaseSimulation simulation, int order)
+        public void SetParameter(Entity @object, string paramName, string expression, BaseSimulation simulation, int order, bool onload = true)
         {
             if (simulation == null)
             {
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            UpdateParameterBeforeLoad(paramName, @object, expression, simulation, order);
+            if (onload)
+            {
+                UpdateParameterBeforeLoad(paramName, @object, expression, simulation, order);
+            }
             UpdateParameterBeforeTemperature(paramName, @object, expression, simulation, order);
         }
 

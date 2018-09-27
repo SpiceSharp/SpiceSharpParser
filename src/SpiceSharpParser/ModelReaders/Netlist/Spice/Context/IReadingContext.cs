@@ -78,7 +78,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </returns>
         double ParseDouble(string expression);
 
-        void SetParameter(Entity entity, string parameterName, string expression, bool updateSimulations);
+        void SetParameter(Entity entity, string parameterName, string expression, bool onload = true);
 
         void SetICVoltage(string nodeName, string expression);
 

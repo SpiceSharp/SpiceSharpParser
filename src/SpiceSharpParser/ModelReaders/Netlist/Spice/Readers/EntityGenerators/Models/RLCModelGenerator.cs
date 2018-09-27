@@ -28,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 
             if (model != null)
             {
-                SetParameters(context, model, parameters, true);
+                SetParameters(context, model, parameters);
             }
 
             return model;

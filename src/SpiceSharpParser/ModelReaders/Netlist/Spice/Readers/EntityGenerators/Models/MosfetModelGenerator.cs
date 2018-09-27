@@ -127,7 +127,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             }
 
             // Read all the parameters
-            SetParameters(context, model, clonedParameters, true);
+            SetParameters(context, model, clonedParameters);
 
             return model;
         }

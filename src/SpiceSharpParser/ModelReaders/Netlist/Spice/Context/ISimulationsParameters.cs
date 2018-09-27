@@ -11,9 +11,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         void SetNodeSetVoltage(string nodeName, string voltageExpression);
 
-        void SetParameter(Entity entity, string paramName, string expression, int order);
+        void SetParameter(Entity entity, string paramName, string expression, int order, bool onload = true);
 
-        void SetParameter(Entity entity, string paramName, string expression, BaseSimulation simulation, int order);
+        void SetParameter(Entity entity, string paramName, string expression, BaseSimulation simulation, int order, bool onload = true);
 
         void SetParameter(Entity entity, string paramName, double value, int order);
 

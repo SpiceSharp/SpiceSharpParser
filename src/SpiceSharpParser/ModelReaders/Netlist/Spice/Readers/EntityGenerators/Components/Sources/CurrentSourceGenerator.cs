@@ -69,7 +69,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             cccs.ControllingName = new StringIdentifier(parameters.GetString(2));
-            context.SetParameter(cccs, "gain", parameters.GetString(3), true);
+            context.SetParameter(cccs, "gain", parameters.GetString(3));
             return cccs;
         }
 
@@ -91,7 +91,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             VoltageControlledCurrentSource vccs = new VoltageControlledCurrentSource(name);
             context.CreateNodes(vccs, parameters);
-            context.SetParameter(vccs, "gain", parameters.GetString(4), true);
+            context.SetParameter(vccs, "gain", parameters.GetString(4));
 
             return vccs;
         }
@@ -116,12 +116,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // DC specification
                 if (i == 2 && parameters[i] is SingleParameter s && s.Image.ToLower() == "dc" && i != parameters.Count - 1)
                 {
-                    context.SetParameter(isrc, "dc", parameters.GetString(i + 1), true);
+                    context.SetParameter(isrc, "dc", parameters.GetString(i + 1));
                     i++;
                 }
                 else if (i == 2 && parameters[i] is SingleParameter vp && parameters[i].Image.ToLower() != "dc" && parameters[i].Image.ToLower() != "ac")
                 {
-                    context.SetParameter(isrc, "dc", parameters.GetString(i), true);
+                    context.SetParameter(isrc, "dc", parameters.GetString(i));
                 }
                 else if (parameters[i] is SingleParameter s2 && s2.Image.ToLower() == "ac")
                 {
@@ -133,7 +133,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             throw new WrongParameterTypeException(name, "Current source AC magnitude has wrong type of parameter: " + parameters[i].GetType());
                         }
 
-                        context.SetParameter(isrc, "acmag", parameters.GetString(i), true);
+                        context.SetParameter(isrc, "acmag", parameters.GetString(i));
 
                         // Look forward for one more value
                         if (i + 1 < parameters.Count)
@@ -142,7 +142,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             if (parameters[i + 1] is SingleParameter)
                             {
                                 i++;
-                                context.SetParameter(isrc, "acphase", parameters.GetString(i), true);
+                                context.SetParameter(isrc, "acphase", parameters.GetString(i));
                             }
                             else
                             {

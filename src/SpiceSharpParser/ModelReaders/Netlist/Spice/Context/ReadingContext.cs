@@ -22,8 +22,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="resultService">Result service for the context.</param>
         /// <param name="nodeNameGenerator">Node name generator for the context.</param>
         /// <param name="objectNameGenerator">Object name generator for the context.</param>
-        /// <param name="statementsReader"></param>
-        /// <param name="waveformReader"></param>
+        /// <param name="statementsReader">Statements reader.</param>
+        /// <param name="waveformReader">Waveform reader.</param>
         /// <param name="parent">Parent of th econtext.</param>
         public ReadingContext(
             string contextName,
@@ -184,17 +184,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        public void SetParameter(Entity entity, string parameterName, string expression, bool updateSimulations)
+        public void SetParameter(Entity entity, string parameterName, string expression, bool onload = true)
         {
             entity.SetParameter(parameterName.ToLower(), this.SimulationEvaluators.EvaluateDouble(expression));
-
-            if (updateSimulations)
-            {
-                this.SimulationsParameters.SetParameter(entity, parameterName.ToLower(), expression, 0);
-            }
+            SimulationsParameters.SetParameter(entity, parameterName.ToLower(), expression, 0, onload);
         }
 
-        public void SetParameter(Entity entity, string parameterName, double value, bool updateSimulations)
+        public void SetParameter(Entity entity, string parameterName, double value)
         {
             entity.SetParameter(parameterName.ToLower(), value);
         }
