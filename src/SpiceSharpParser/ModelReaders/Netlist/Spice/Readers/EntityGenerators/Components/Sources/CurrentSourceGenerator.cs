@@ -49,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         }
 
         /// <summary>
-        /// Generates a new current controlled current source
+        /// Generates a new current controlled current source: FName
         /// </summary>
         /// <param name="name">Name of generated current controlled current source</param>
         /// <param name="parameters">Parameters for current source</param>
@@ -59,22 +59,37 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected SpiceSharp.Components.Component GenerateCurrentControlledCurrentSource(string name,  ParameterCollection parameters, IReadingContext context)
         {
-            CurrentControlledCurrentSource cccs = new CurrentControlledCurrentSource(name);
-            context.CreateNodes(cccs, parameters);
-
-            switch (parameters.Count)
+            if (parameters.Count == 4)
             {
-                case 2: throw new Exception("Voltage source expected");
-                case 3: throw new Exception("Value expected");
+                CurrentControlledCurrentSource cccs = new CurrentControlledCurrentSource(name);
+                context.CreateNodes(cccs, parameters);
+                cccs.ControllingName = new StringIdentifier(parameters.GetString(2));
+                context.SetParameter(cccs, "gain", parameters.GetString(3));
+                return cccs;
             }
+            else
+            {
+                if (parameters.Count == 3)
+                {
+                    if (!(parameters[2] is AssignmentParameter assigmentParameter) || assigmentParameter.Name.ToLower() != "value")
+                    {
+                        throw new WrongParametersCountException(name, "current controlled current source expects that third parameter is assigment parameter");
+                    }
 
-            cccs.ControllingName = new StringIdentifier(parameters.GetString(2));
-            context.SetParameter(cccs, "gain", parameters.GetString(3));
-            return cccs;
+                    var cs = new CurrentSource(name);
+                    context.CreateNodes(cs, parameters);
+                    context.SetParameter(cs, "dc", assigmentParameter.Value);
+                    return cs;
+                }
+                else
+                {
+                    throw new WrongParametersCountException(name, "current controlled current source expects 3 or 4 parameters");
+                }
+            }
         }
 
         /// <summary>
-        /// Generates a new voltage controlled current source
+        /// Generates a new voltage controlled current source: GName
         /// </summary>
         /// <param name="name">Name of generated voltage controlled current source</param>
         /// <param name="parameters">Parameters for current source</param>
@@ -84,16 +99,33 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected SpiceSharp.Components.Component GenerateVoltageControlledCurrentSource(string name, ParameterCollection parameters, IReadingContext context)
         {
-            if (parameters.Count < 5)
+            if (parameters.Count == 5)
             {
-                throw new Exception("Value expected");
+                VoltageControlledCurrentSource vccs = new VoltageControlledCurrentSource(name);
+                context.CreateNodes(vccs, parameters);
+                context.SetParameter(vccs, "gain", parameters.GetString(4));
+
+                return vccs;
             }
+            else
+            {
+                if (parameters.Count == 3)
+                {
+                    if (!(parameters[2] is AssignmentParameter assigmentParameter) || assigmentParameter.Name.ToLower() != "value")
+                    {
+                        throw new WrongParametersCountException(name, "voltage controlled current source expects that third parameter is assigment parameter");
+                    }
 
-            VoltageControlledCurrentSource vccs = new VoltageControlledCurrentSource(name);
-            context.CreateNodes(vccs, parameters);
-            context.SetParameter(vccs, "gain", parameters.GetString(4));
-
-            return vccs;
+                    var cs = new CurrentSource(name);
+                    context.CreateNodes(cs, parameters);
+                    context.SetParameter(cs, "dc", assigmentParameter.Value);
+                    return cs;
+                }
+                else
+                {
+                    throw new WrongParametersCountException(name, "voltage controlled current source expects 3 or 5 parameters");
+                }
+            }
         }
 
         /// <summary>
@@ -157,6 +189,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 else if (parameters[i] is BracketParameter cp)
                 {
                     isrc.SetParameter("waveform", context.WaveformReader.Generate(cp, context));
+                }
+                else if (parameters[i] is AssignmentParameter ap && ap.Name.ToLower() == "value")
+                {
+                    context.SetParameter(isrc, "dc", ap.Value);
                 }
                 else
                 {

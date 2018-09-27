@@ -274,5 +274,79 @@ namespace SpiceSharpParser.IntegrationTests
             Func<double, double>[] references = { time => (Math.Sin(time * 10e6) * 100) * (Math.Sin(time * 10e6) * 100) };
             EqualsWithTol(exports, references);
         }
+
+        [Fact]
+        public void CurrentSourceValueParsingTest()
+        {
+            var netlist = ParseNetlist(
+                "Current source value circuit",
+                "R1 2 0 100",
+                "I1 1 0 2",
+                "I2 2 0 VALUE = { I(I1) + 2 }",
+                ".OP",
+                ".SAVE I(I2)",
+                ".END");
+
+            Assert.NotNull(netlist);
+            double export = RunOpSimulation(netlist, "I(I2)");
+            Assert.Equal(4, export);
+        }
+
+
+        [Fact]
+        public void CurrentSourceParsingTest()
+        {
+            var netlist = ParseNetlist(
+                "Current source value circuit",
+                "R1 2 0 100",
+                "I1 1 0 2",
+                "I2 2 0 { I(I1) + 2 }",
+                ".OP",
+                ".SAVE I(I2)",
+                ".END");
+
+            Assert.NotNull(netlist);
+            double export = RunOpSimulation(netlist, "I(I2)");
+            Assert.Equal(4, export);
+        }
+
+        [Fact]
+        public void VoltageControlledCurrentSourceValueParsingTest()
+        {
+            var netlist = ParseNetlist(
+                "Diode circuit",
+                "R1 1 0 100",
+                "V1 2 0 2",
+                "GSource 1 0 VALUE = { V(2) + 2 }",
+                ".OP",
+                ".SAVE I(GSource)",
+                ".END");
+
+            Assert.NotNull(netlist);
+
+            double export = RunOpSimulation(netlist, "I(GSource)");
+
+            Assert.Equal(4, export);
+        }
+
+        [Fact]
+        public void CurrentControlledCurrentSourceValueParsingTest()
+        {
+            var netlist = ParseNetlist(
+                "Diode circuit",
+                "R1 1 0 100",
+                "R2 1 0 200",
+                "I1 1 0 2",
+                "FSource 2 0 VALUE = { I(I1) + 2 }",
+                ".OP",
+                ".SAVE I(FSource)",
+                ".END");
+
+            Assert.NotNull(netlist);
+
+            double export = RunOpSimulation(netlist, "I(FSource)");
+
+            Assert.Equal(4, export);
+        }
     }
 }
