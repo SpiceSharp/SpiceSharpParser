@@ -1,9 +1,9 @@
-﻿using SpiceSharpParser.Common;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.Common
 {
     public interface IEvaluatorConsumer
     {
-        IEvaluator Evaluator { set; }
+        ISimulationEvaluators Evaluators { set; }
     }
 }

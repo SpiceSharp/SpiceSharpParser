@@ -17,15 +17,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
-            Read(statement, context.ReadingEvaluator);
+            Read(statement, context.SimulationEvaluators);
         }
 
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
         /// <param name="statement">A statement to process.</param>
-        /// <param name="evaluator">An evaluator.</param>
-        public void Read(Control statement, IEvaluator evaluator)
+        /// <param name="evaluators">Evaluators.</param>
+        public void Read(Control statement, ISimulationEvaluators evaluators)
         {
             if (statement.Parameters == null)
             {
@@ -41,11 +41,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         string parameterName = assigmentParameter.Name;
                         string parameterExpression = assigmentParameter.Value;
 
-                        evaluator.SetParameter(parameterName, parameterExpression);
+                        evaluators.SetParameter(parameterName, parameterExpression);
                     }
                     else
                     {
-                        evaluator.AddCustomFunction(assigmentParameter.Name, assigmentParameter.Arguments, assigmentParameter.Value);
+                        evaluators.AddCustomFunction(assigmentParameter.Name, assigmentParameter.Arguments, assigmentParameter.Value);
                     }
                 }
                 else

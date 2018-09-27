@@ -33,13 +33,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         throw new System.Exception("User function needs to be a function");
                     }
 
-                    context.ReadingEvaluator.AddCustomFunction(assigmentParameter.Name, assigmentParameter.Arguments, assigmentParameter.Value);
+                    context.SimulationEvaluators.AddCustomFunction(assigmentParameter.Name, assigmentParameter.Arguments, assigmentParameter.Value);
                 }
                 else
                 {
                     if (param is Models.Netlist.Spice.Objects.Parameters.BracketParameter bracketParameter)
                     {
-                        context.ReadingEvaluator.AddCustomFunction(
+                        context.SimulationEvaluators.AddCustomFunction(
                             bracketParameter.Name,
                             bracketParameter.Parameters.ToList().Select(p => p.Image).ToList(), // TODO: improve it please
                             statement.Parameters[i + 1].Image);

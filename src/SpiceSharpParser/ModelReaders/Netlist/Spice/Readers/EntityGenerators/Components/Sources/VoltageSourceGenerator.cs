@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     /// <summary>
     /// Voltage sources generator
     /// </summary>
-    public class VoltageSourceGenerator : IComponentGenerator
+    public class VoltageSourceGenerator : ComponentGenerator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="VoltageSourceGenerator"/> class.
@@ -22,7 +22,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
         }
 
-        public SpiceSharp.Components.Component Generate(Identifier componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public override SpiceSharp.Components.Component Generate(Identifier componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             switch (type)
             {
@@ -40,7 +40,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// Generated types.
         /// </returns>
-        public IEnumerable<string> GeneratedTypes
+        public override IEnumerable<string> GeneratedTypes
         {
             get
             {
@@ -63,7 +63,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var vcvs = new VoltageControlledVoltageSource(name);
                 context.CreateNodes(vcvs, parameters);
-                context.SetParameter(vcvs, "gain", parameters.GetString(4));
+                context.SetParameter(vcvs, "gain", parameters.GetString(4), true);
                 return vcvs;
             }
             else
@@ -77,7 +77,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                     var vcvs = new VoltageSource(name);
                     context.CreateNodes(vcvs, parameters);
-                    context.SetParameter(vcvs, "dc", assigmentParameter.Value, updateSimualtions: true);
+                    context.SetParameter(vcvs, "dc", assigmentParameter.Value, true);
 
                     return vcvs;
                 }
@@ -108,7 +108,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 var vcvs = new VoltageSource(name);
                 context.CreateNodes(vcvs, parameters);
-                context.SetParameter(vcvs, "dc", assigmentParameter.Value, updateSimualtions: true);
+                context.SetParameter(vcvs, "dc", assigmentParameter.Value, true);
 
                 return vcvs;
             }
@@ -132,7 +132,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.CreateNodes(ccvs, parameters);
 
                 ccvs.ControllingName = parameters.GetString(2);
-                context.SetParameter(ccvs, "gain", parameters.GetString(3));
+                context.SetParameter(ccvs, "gain", parameters.GetString(3), true);
                 return ccvs;
             }
         }
@@ -157,12 +157,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // DC specification
                 if (i == 2 && parameters[i] is SingleParameter s && s.Image.ToLower() == "dc" && i != parameters.Count - 1)
                 {
-                    context.SetParameter(vsrc, "dc", parameters.GetString(i + 1));
+                    context.SetParameter(vsrc, "dc", parameters.GetString(i + 1), true);
                     i++;
                 }
                 else if (i == 2 && parameters[i] is SingleParameter vp && parameters[i].Image.ToLower() != "dc" && parameters[i].Image.ToLower() != "ac")
                 {
-                    context.SetParameter(vsrc, "dc", parameters.GetString(i));
+                    context.SetParameter(vsrc, "dc", parameters.GetString(i), true);
                 }
                 else if (parameters[i] is SingleParameter s2 && s2.Image.ToLower() == "ac")
                 {
@@ -174,7 +174,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             throw new WrongParameterTypeException(name, "Voltage source AC magnitude has wrong type of parameter: " + parameters[i].GetType());
                         }
 
-                        context.SetParameter(vsrc, "acmag", parameters.GetString(i));
+                        context.SetParameter(vsrc, "acmag", parameters.GetString(i), true);
 
                         // Look forward for one more value
                         if (i + 1 < parameters.Count)
@@ -183,7 +183,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             if (parameters[i + 1] is SingleParameter)
                             {
                                 i++;
-                                context.SetParameter(vsrc, "acphase", parameters.GetString(i));
+                                context.SetParameter(vsrc, "acphase", parameters.GetString(i), true);
                             }
                             else
                             {
@@ -197,13 +197,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else if (parameters[i] is BracketParameter cp)
                 {
-                    context.SetParameter(vsrc, "waveform", context.WaveformReader.Generate(cp, context));
+                    vsrc.SetParameter("waveform", context.WaveformReader.Generate(cp, context));
                 }
                 else if (parameters[i] is AssignmentParameter ap)
                 {
                     if (ap.Name.ToLower() == "value")
                     {
-                        context.SetParameter(vsrc, "dc", ap.Value);
+                        context.SetParameter(vsrc, "dc", ap.Value, true);
                     }
                 }
                 else

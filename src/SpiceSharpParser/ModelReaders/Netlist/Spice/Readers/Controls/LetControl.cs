@@ -35,7 +35,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
 
             string expression = statement.Parameters.GetString(1);
-            context.ReadingEvaluator.SetNamedExpression(expressionName, expression);
+            context.SimulationEvaluators.SetNamedExpression(expressionName, expression);
         }
     }
 }

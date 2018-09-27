@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     /// <summary>
     /// Current sources generator
     /// </summary>
-    public class CurrentSourceGenerator : IComponentGenerator
+    public class CurrentSourceGenerator : ComponentGenerator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CurrentSourceGenerator"/> class.
@@ -22,7 +22,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
         }
 
-        public SpiceSharp.Components.Component Generate(Identifier componentIdenfier, string name, string type, ParameterCollection parameters, IReadingContext context)
+        public override SpiceSharp.Components.Component Generate(Identifier componentIdenfier, string name, string type, ParameterCollection parameters, IReadingContext context)
         {
             switch (type)
             {
@@ -40,7 +40,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// Generated types.
         /// </returns>
-        public IEnumerable<string> GeneratedTypes
+        public override IEnumerable<string> GeneratedTypes
         {
             get
             {
@@ -69,7 +69,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             cccs.ControllingName = new StringIdentifier(parameters.GetString(2));
-            context.SetParameter(cccs, "gain", parameters.GetString(3));
+            context.SetParameter(cccs, "gain", parameters.GetString(3), true);
             return cccs;
         }
 
@@ -91,7 +91,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             VoltageControlledCurrentSource vccs = new VoltageControlledCurrentSource(name);
             context.CreateNodes(vccs, parameters);
-            context.SetParameter(vccs, "gain", parameters.GetString(4));
+            context.SetParameter(vccs, "gain", parameters.GetString(4), true);
 
             return vccs;
         }
@@ -116,12 +116,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // DC specification
                 if (i == 2 && parameters[i] is SingleParameter s && s.Image.ToLower() == "dc" && i != parameters.Count - 1)
                 {
-                    context.SetParameter(isrc, "dc", parameters.GetString(i + 1));
+                    context.SetParameter(isrc, "dc", parameters.GetString(i + 1), true);
                     i++;
                 }
                 else if (i == 2 && parameters[i] is SingleParameter vp && parameters[i].Image.ToLower() != "dc" && parameters[i].Image.ToLower() != "ac")
                 {
-                    context.SetParameter(isrc, "dc", parameters.GetString(i));
+                    context.SetParameter(isrc, "dc", parameters.GetString(i), true);
                 }
                 else if (parameters[i] is SingleParameter s2 && s2.Image.ToLower() == "ac")
                 {
@@ -133,7 +133,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             throw new WrongParameterTypeException(name, "Current source AC magnitude has wrong type of parameter: " + parameters[i].GetType());
                         }
 
-                        context.SetParameter(isrc, "acmag", parameters.GetString(i));
+                        context.SetParameter(isrc, "acmag", parameters.GetString(i), true);
 
                         // Look forward for one more value
                         if (i + 1 < parameters.Count)
@@ -142,7 +142,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             if (parameters[i + 1] is SingleParameter)
                             {
                                 i++;
-                                context.SetParameter(isrc, "acphase", parameters.GetString(i));
+                                context.SetParameter(isrc, "acphase", parameters.GetString(i), true);
                             }
                             else
                             {
@@ -156,7 +156,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else if (parameters[i] is BracketParameter cp)
                 {
-                    context.SetParameter(isrc, "waveform", context.WaveformReader.Generate(cp, context));
+                    isrc.SetParameter("waveform", context.WaveformReader.Generate(cp, context));
                 }
                 else
                 {

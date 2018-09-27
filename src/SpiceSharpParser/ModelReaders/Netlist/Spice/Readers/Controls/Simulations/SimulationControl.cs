@@ -42,16 +42,30 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             {
                 if (context.Result.SimulationConfiguration.ParameterSweeps.Count == 0)
                 {
-                    CreateSimulationsForAllTemperaturesFactory.CreateSimulations(statement, context, createSimulation);
+                    var simulations = CreateSimulationsForAllTemperaturesFactory.CreateSimulations(statement, context, createSimulation);
+
+                    foreach (var simulation in simulations)
+                    {
+                        context.SimulationsParameters.Prepare(simulation);
+                    }
                 }
                 else
                 {
-                    CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(statement, context, createSimulation);
+                    var simulations = CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(statement, context, createSimulation);
+                    foreach (var simulation in simulations)
+                    {
+                        context.SimulationsParameters.Prepare(simulation);
+                    }
                 }
             }
             else
             {
-                CreateSimulationsForMonteCarloFactory.Create(statement, context, createSimulation);
+                var simulations = CreateSimulationsForMonteCarloFactory.Create(statement, context, createSimulation);
+
+                foreach (var simulation in simulations)
+                {
+                    context.SimulationsParameters.Prepare(simulation);
+                }
             }
         }
 

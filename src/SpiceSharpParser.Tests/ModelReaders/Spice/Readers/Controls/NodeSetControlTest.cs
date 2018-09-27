@@ -48,8 +48,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             nodeSetControl.Read(control, readingContext);
 
             // assert
-            readingContext.Received().SetNodeSetVoltage("input", "12");
-            readingContext.Received().SetNodeSetVoltage("x", "13");
+            readingContext.Received().SimulationsParameters.SetNodeSetVoltage("input", "12");
+            readingContext.Received().SimulationsParameters.SetNodeSetVoltage("x", "13");
         }
     }
 }

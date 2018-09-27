@@ -5,13 +5,12 @@ using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Extensions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using Model = SpiceSharp.Components.Model;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
 {
-    public class MosfetGenerator : IComponentGenerator
+    public class MosfetGenerator : ComponentGenerator
     {
         public class MosfetDetails
         {
@@ -50,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </summary>
         protected Dictionary<Type, Func<Identifier, MosfetDetails>> Mosfets { get; } = new Dictionary<Type, Func<Identifier, MosfetDetails>>();
 
-        public SpiceSharp.Components.Component Generate(Identifier componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public  override SpiceSharp.Components.Component Generate(Identifier componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             // Errors
             switch (parameters.Count)
@@ -89,7 +88,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             // The rest is all just parameters
             context.CreateNodes(mosfet, parameters);
-            context.SetParameters(mosfet, parameters.Skip(5), true);
+            SetParameters(context, mosfet, parameters.Skip(5), true);
             return mosfet;
         }
 
@@ -99,7 +98,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// Generated types.
         /// </returns>
-        public IEnumerable<string> GeneratedTypes
+        public override IEnumerable<string> GeneratedTypes
         {
             get
             {

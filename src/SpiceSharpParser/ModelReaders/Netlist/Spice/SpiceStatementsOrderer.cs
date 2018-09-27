@@ -16,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
         protected List<string> ControlsAfterComponents { get; set; } = new List<string>() { "plot", "print", "save" };
 
-        protected List<string> Controls { get; set; } = new List<string>() { "temp", "step", "st", "mc", "op", "ac", "tran", "dc", "ic", "nodeset" };
+        protected List<string> Controls { get; set; } = new List<string>() { "temp", "step", "st", "nodeset", "ic", "mc", "op", "ac", "tran", "dc" };
 
         /// <summary>
         /// Orders statements for reading.

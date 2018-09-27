@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
@@ -22,12 +23,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <summary>
         /// Gets or sets the evaluator.
         /// </summary>
-        public IEvaluator Evaluator { get; set; }
+        public ISimulationEvaluators Evaluators { get; set; }
 
         // TODO: please do something about .ToLower() in so many places ....
         public Statements Process(Statements statements)
         {
-            if (Evaluator == null)
+            if (Evaluators == null)
             {
                 throw new InvalidOperationException("No evaluator");
             }
@@ -35,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             ParamControl paramControl = new ParamControl();
             foreach (Control param in statements.Where(statement => statement is Control c && c.Name.ToLower() == "param"))
             {
-                paramControl.Read(param, Evaluator);
+                paramControl.Read(param, Evaluators);
             }
 
             return ReadIfs(statements);
@@ -120,7 +121,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                 elseIfControl = result[elseIfControlIndex] as Control;
             }
 
-            if (Evaluator.EvaluateDouble(ifCondition.Image) >= 1.0)
+            if (Evaluators.EvaluateDouble(ifCondition.Image) >= 1.0)
             {
                 if (elseIfControl != null)
                 {

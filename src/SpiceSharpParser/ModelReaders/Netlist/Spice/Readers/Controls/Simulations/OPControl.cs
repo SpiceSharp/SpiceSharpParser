@@ -23,6 +23,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         {
             var op = new OP(name);
             SetBaseConfiguration(op.BaseConfiguration, context);
+
             context.Result.AddSimulation(op);
 
             return op;

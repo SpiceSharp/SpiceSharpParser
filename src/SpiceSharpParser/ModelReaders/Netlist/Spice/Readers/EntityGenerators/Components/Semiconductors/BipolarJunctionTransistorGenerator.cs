@@ -76,7 +76,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     if (asg.Name.ToLower() == "ic")
                     {
-                        bjt.SetParameter("ic", context.ParseDouble(asg.Value));
+                        context.SetParameter(bjt, "ic", asg.Value, true);
                     }
                 }
             }

@@ -28,14 +28,14 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             var resistor = generator.Generate(new SpiceSharp.StringIdentifier("r1"), "R1", "r", parameters, context);
 
             Assert.NotNull(resistor);
-            context.Received().SetParameter(resistor, "resistance", "1.2");
+            context.Received().SetParameter(resistor, "resistance", "1.2", true);
         }
 
         [Fact]
         public void GenerateSemiconductorResistor()
         {
             var context = Substitute.For<IReadingContext>();
-            context.When(a => a.SetParameter(Arg.Any<Entity>(), "L", "12")).Do(x => ((Entity)x[0]).SetParameter("l", 12));
+            context.When(a => a.SetParameter(Arg.Any<Entity>(), "L", "12", true)).Do(x => ((Entity)x[0]).SetParameter("l", 12));
             context.ModelsRegistry.FindModel<ResistorModel>(Arg.Any<string>()).Returns(new ResistorModel("test"));
             var parameters = new ParameterCollection
             {
@@ -49,7 +49,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             var resistor = generator.Generate(new SpiceSharp.StringIdentifier("r1"), "R1", "r", parameters, context);
 
             Assert.NotNull(resistor);
-            context.Received().SetParameter(resistor, "L", "12");
+            context.Received().SetParameter(resistor, "L", "12", true);
             context.Received().ModelsRegistry.FindModel<ResistorModel>("test");
         }
 
@@ -70,7 +70,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
 
             Assert.NotNull(mut);
             Assert.IsType<MutualInductance>(mut);
-            context.Received().SetParameter(mut, "k", "12.3");
+            context.Received().SetParameter(mut, "k", "12.3", true);
         }
 
         [Fact]
@@ -90,7 +90,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
 
             Assert.NotNull(inductor);
             Assert.IsType<Inductor>(inductor);
-            context.Received().SetParameter(inductor, "inductance", "4.3");
+            context.Received().SetParameter(inductor, "inductance", "4.3", true);
         }
 
         // cA3 1 0 4.3
@@ -111,7 +111,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
 
             Assert.NotNull(cap);
             Assert.IsType<Capacitor>(cap);
-            context.Received().SetParameter(cap, "capacitance", "4.3");
+            context.Received().SetParameter(cap, "capacitance", "4.3", true);
         }
 
         // cA3 1 0 4.3 ic = 13.3
@@ -123,7 +123,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             context.When(a => a.SetParameter(
                Arg.Any<Capacitor>(),
                Arg.Any<string>(),
-               Arg.Any<string>()
+               Arg.Any<string>(),
+               true
                )).Do(x =>
                {
                    ((Entity)x[0]).SetParameter(((string)x[1]).ToLower(), evaluator.EvaluateDouble((string)x[2]));
@@ -142,7 +143,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
 
             Assert.NotNull(cap);
             Assert.IsType<Capacitor>(cap);
-            context.Received().SetParameter(cap, "capacitance", "4.3");
+            context.Received().SetParameter(cap, "capacitance", "4.3", true);
             Assert.Equal(13.3, cap.ParameterSets.GetParameter<double>("ic").Value);
         }
 
@@ -155,7 +156,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             context.When(a => a.SetParameter(
                Arg.Any<Capacitor>(),
                Arg.Any<string>(),
-               Arg.Any<string>()
+               Arg.Any<string>(),
+               true
                )).Do(x =>
                {
                    ((Entity)x[0]).SetParameter(((string)x[1]).ToLower(), evaluator.EvaluateDouble((string)x[2]));
@@ -178,7 +180,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             Assert.NotNull(cap);
             Assert.IsType<Capacitor>(cap);
 
-            context.Received().SetParameter(cap, "L", "10u");
+            context.Received().SetParameter(cap, "L", "10u", true);
             Assert.Equal(12, cap.ParameterSets.GetParameter<double>("ic").Value);
 
         }

@@ -54,7 +54,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             simulation.BeforeTemperature += (object sender, LoadStateEventArgs e) =>
             {
-                var evaluator = context.SimulationContexts.GetSimulationEvaluator(simulation);
+                var evaluator = context.SimulationEvaluators.GetSimulationEvaluator(simulation);
                 evaluator.SetParameter("TEMP", temp);
             };
         }

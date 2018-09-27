@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp;
-using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -50,7 +48,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     if (asg.Name.ToLower() == "ic")
                     {
-                        diode.SetParameter("ic", context.ParseDouble(asg.Value));
+                        context.SetParameter(diode, "ic", asg.Value, true);
                     }
                 }
 

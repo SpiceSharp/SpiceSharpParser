@@ -4,13 +4,12 @@ using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Extensions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
 {
-    public class MosfetModelGenerator : IModelGenerator
+    public class MosfetModelGenerator : ModelGenerator
     {
         public MosfetModelGenerator()
         {
@@ -64,7 +63,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
         /// <returns>
         /// Generated Spice types.
         /// </returns>
-        public IEnumerable<string> GeneratedTypes
+        public override IEnumerable<string> GeneratedTypes
         {
             get
             {
@@ -72,7 +71,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             }
         }
 
-        public SpiceSharp.Components.Model Generate(string name, string type, ParameterCollection parameters, IReadingContext context)
+        public override SpiceSharp.Components.Model Generate(string name, string type, ParameterCollection parameters, IReadingContext context)
         {
             var clonedParameters = (ParameterCollection)parameters.Clone();
             switch (clonedParameters.Count)
@@ -128,7 +127,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             }
 
             // Read all the parameters
-            context.SetParameters(model, clonedParameters, true);
+            SetParameters(context, model, clonedParameters, true);
 
             return model;
         }

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>netstandard1.5</TargetFramework>
     <CodeAnalysisRuleSet>stylecop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
@@ -13,10 +13,6 @@
 
   <ItemGroup>
     <Compile Remove="..\SpiceSharpParser\obj\**\*.*" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="..\SpiceSharpParser\ModelReaders\Netlist\Spice\ISpiceObjectReader.cs" />
   </ItemGroup>
 
   <ItemGroup>

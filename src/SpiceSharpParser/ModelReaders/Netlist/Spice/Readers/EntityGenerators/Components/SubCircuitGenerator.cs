@@ -16,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     /// <summary>
     /// Generates subcircuits content.
     /// </summary>
-    public class SubCircuitGenerator : IComponentGenerator
+    public class SubCircuitGenerator : ComponentGenerator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SubCircuitGenerator"/> class.
@@ -25,13 +25,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
         }
 
-        public SpiceSharp.Components.Component Generate(Identifier componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public override SpiceSharp.Components.Component Generate(Identifier componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             SubCircuit subCircuitDefiniton = FindSubcircuitDefinion(parameters, context);
             ReadingContext subCircuitContext = CreateSubcircuitContext(componentIdentifier.ToString(), originalName, subCircuitDefiniton, parameters, context);
 
             var ifPreprocessor = new IfPreprocessor();
-            ifPreprocessor.Evaluator = subCircuitContext.ReadingEvaluator;
+            ifPreprocessor.Evaluators = subCircuitContext.SimulationEvaluators;
             subCircuitDefiniton.Statements = ifPreprocessor.Process(subCircuitDefiniton.Statements);
 
             ReadParamControl(subCircuitDefiniton, subCircuitContext);
@@ -51,7 +51,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// Generated types.
         /// </returns>
-        public IEnumerable<string> GeneratedTypes
+        public override IEnumerable<string> GeneratedTypes
         {
             get
             {
@@ -161,9 +161,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 assigmentParametersCount++;
             }
 
-            var subcircuitEvaluator = context.ReadingEvaluator.CreateChildEvaluator(subcircuitFullName, context.ReadingEvaluator.Context);
-            var subcircuitParameters = CreateSubcircuitParameters(context.ReadingEvaluator, subCircuitDefiniton, subCktParameters);
-            subcircuitEvaluator.SetParameters(subcircuitParameters);
+            var subcircuitEvaluatorContainer = context.SimulationEvaluators.CreateChildContainer(subcircuitFullName);
+            var subcircuitParameters = CreateSubcircuitParameters(context.SimulationEvaluators, subCircuitDefiniton, subCktParameters);
+            subcircuitEvaluatorContainer.SetParameters(subcircuitParameters);
 
             // setting node name generator
             var pinInstanceNames = new List<string>();
@@ -178,7 +178,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             // setting object name generator
             var subcircuitObjectNameGenerator = context.ObjectNameGenerator.CreateChildGenerator(subcircuitName);
 
-            return new ReadingContext(subcircuitName, context.SimulationContexts, subcircuitEvaluator, context.Result, subcircuitNodeNameGenerator, subcircuitObjectNameGenerator, context.StatementsReader, context.WaveformReader, context);
+            return new ReadingContext(subcircuitName, context.SimulationsParameters, subcircuitEvaluatorContainer, context.Result, subcircuitNodeNameGenerator, subcircuitObjectNameGenerator, context.StatementsReader, context.WaveformReader, context);
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A dictionary of parameters.
         /// </returns>
-        private Dictionary<string, string> CreateSubcircuitParameters(IEvaluator parentEvaluator, SubCircuit subCiruitDefiniton, List<AssignmentParameter> subcktParameters)
+        private Dictionary<string, string> CreateSubcircuitParameters(ISimulationEvaluators parentContainer, SubCircuit subCiruitDefiniton, List<AssignmentParameter> subcktParameters)
         {
             var result = new Dictionary<string, string>();
             foreach (var defaultParameter in subCiruitDefiniton.DefaultParameters)
@@ -206,7 +206,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 if (parameterName == result[parameterName])
                 {
-                    result[parameterName] = parentEvaluator.EvaluateDouble(parameterName).ToString(CultureInfo.InvariantCulture);
+                    result[parameterName] = parentContainer.EvaluateDouble(parameterName).ToString(CultureInfo.InvariantCulture);
                 }
             }
 
