@@ -7,6 +7,11 @@ namespace SpiceSharpParser
     /// </summary>
     public class SpiceNetlistParserSettings
     {
+        public SpiceNetlistParserSettings(CaseSensitivitySettings caseSettings)
+        {
+            CaseSettings = caseSettings;
+        }
+
         /// <summary>
         /// Gets or sets a value indicating whether '.END' is required at the end of the netlist.
         /// </summary>
@@ -21,5 +26,12 @@ namespace SpiceSharpParser
         /// Gets or sets a value indicating whether netlist has a title at the first line.
         /// </summary>
         public bool HasTitle { get; set; } = true;
+
+        /// <summary>
+        /// Gets a value indicating whether case is ignored for dot statements.
+        /// </summary>
+        public bool IgnoreCaseForDotStatements { get { return CaseSettings.IgnoreCaseForDotStatements; } }
+
+        protected CaseSensitivitySettings CaseSettings { get; }
     }
 }

@@ -25,29 +25,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
             }
 
             var result = new List<KeyValuePair<string, CustomFunction>>();
-            var exporters = new Dictionary<string, Readers.Controls.Exporters.Export>();
+            var exporters = new Dictionary<string, Export>();
 
-            foreach (var exporter in exporterRegistry)
+            foreach (KeyValuePair<string, Exporter> exporter in exporterRegistry)
             {
-                foreach (var exportType in exporter.GetSupportedTypes())
+                CustomFunction spiceFunction;
+
+                if (exporter.Key == "@")
                 {
-                    CustomFunction spiceFunction;
-
-                    if (exportType == "@")
-                    {
-                        spiceFunction = CreateAtExport(exporters, exporter, exportType, nodeNameGenerator, objectNameGenerator);
-                    }
-                    else
-                    {
-                        spiceFunction = CreateOrdinaryExport(exporters, exporter, exportType, nodeNameGenerator, objectNameGenerator);
-                    }
-
-                    result.Add(new KeyValuePair<string, CustomFunction>(exportType, spiceFunction));
-                    if (exportType != exportType.ToUpper())
-                    {
-                        result.Add(new KeyValuePair<string, CustomFunction>(exportType.ToUpper(), spiceFunction));
-                    }
+                    spiceFunction = CreateAtExport(exporters, exporter.Value, exporter.Key, nodeNameGenerator, objectNameGenerator);
                 }
+                else
+                {
+                    spiceFunction = CreateOrdinaryExport(exporters, exporter.Value, exporter.Key, nodeNameGenerator, objectNameGenerator);
+                }
+
+                result.Add(new KeyValuePair<string, CustomFunction>(exporter.Key, spiceFunction));
             }
 
             return result;
@@ -94,14 +87,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
             };
 
             return function;
-        }
-
-        public static void Add(Dictionary<string, CustomFunction> customFunctions, IMapper<Exporter> exporterRegistry, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
-        {
-            foreach (var func in Create(exporterRegistry, nodeNameGenerator, objectNameGenerator))
-            {
-                customFunctions[func.Key] = func.Value;
-            }
         }
 
         public static CustomFunction CreateAtExport(Dictionary<string, Readers.Controls.Exporters.Export> exporters, Readers.Controls.Exporters.Exporter exporter, string exportType, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)

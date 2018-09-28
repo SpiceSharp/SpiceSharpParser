@@ -27,4 +27,8 @@
     <PackageReference Include="SpiceSharp" Version="2.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Common\Extensions\" />
+  </ItemGroup>
+
 </Project>

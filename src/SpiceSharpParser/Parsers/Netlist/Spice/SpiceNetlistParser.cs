@@ -28,13 +28,14 @@ namespace SpiceSharpParser
                 throw new System.ArgumentNullException(nameof(spiceNetlist));
             }
 
-            var tokens = GetTokens(spiceNetlist, settings.HasTitle);
+            var tokens = GetTokens(spiceNetlist, settings.HasTitle, settings.IgnoreCaseForDotStatements);
             CheckTokens(settings, tokens);
 
             ParseTreeNonTerminalNode parseTreeRoot = GetParseTree(
                 tokens,
                 settings.HasTitle ? Symbols.Netlist : Symbols.NetlistWithoutTitle,
-                settings.IsNewlineRequired);
+                settings.IsNewlineRequired,
+                settings.IgnoreCaseForDotStatements);
 
             return GetNetlistModelFromTree(parseTreeRoot);
         }
@@ -50,7 +51,7 @@ namespace SpiceSharpParser
                     && tokens.Length >= 3 && tokens[tokens.Length - 3].SpiceTokenType != SpiceTokenType.END)
                     || (tokens.Length == 1 && tokens[0].SpiceTokenType == SpiceTokenType.EOF))
                 {
-                    throw new System.Exception("No .END keyword");
+                    throw new NoEndKeywordException();
                 }
             }
         }
@@ -63,9 +64,9 @@ namespace SpiceSharpParser
         /// <returns>
         /// Array of tokens.
         /// </returns>
-        private SpiceToken[] GetTokens(string netlist, bool hasTitle)
+        private SpiceToken[] GetTokens(string netlist, bool hasTitle, bool ignoreCaseForDotStatementsNames)
         {
-            var lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = hasTitle });
+            var lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = hasTitle, IgnoreCaseDotStatements = ignoreCaseForDotStatementsNames });
             var tokensEnumerable = lexer.GetTokens(netlist);
             return tokensEnumerable.ToArray();
         }
@@ -78,9 +79,10 @@ namespace SpiceSharpParser
         /// <returns>
         /// A reference to the root of parse tree.
         /// </returns>
-        private ParseTreeNonTerminalNode GetParseTree(SpiceToken[] tokens, string rootSymbol, bool isNewlineRequiredAtTheEnd)
+        private ParseTreeNonTerminalNode GetParseTree(SpiceToken[] tokens, string rootSymbol, bool isNewlineRequiredAtTheEnd, bool ignoreCaseDotStatements)
         {
-            return new ParseTreeGenerator(isNewlineRequiredAtTheEnd).GetParseTree(tokens, rootSymbol);
+            var generator = new ParseTreeGenerator(isNewlineRequiredAtTheEnd, ignoreCaseDotStatements);
+            return generator.GetParseTree(tokens, rootSymbol);
         }
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice
         public void ReadTest()
         {
             // arrange
-            var reader = new SpiceNetlistReader(new SpiceNetlistReaderSettings());
+            var reader = new SpiceNetlistReader(new SpiceNetlistReaderSettings(new CaseSensitivitySettings()));
             var netlist = new SpiceNetlist();
 
             // act

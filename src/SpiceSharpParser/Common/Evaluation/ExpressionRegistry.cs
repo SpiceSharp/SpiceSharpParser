@@ -297,50 +297,28 @@ namespace SpiceSharpParser.Common.Evaluation
         }
 
         /// <summary>
-        /// Updates the evaluator of the registry.
+        /// Invalidates the registry.
         /// </summary>
-        /// <param name="newEvaluator">New evaluator for registry.</param>
-        public void UpdateEvaluator(IEvaluator newEvaluator)
+        public void Invalidate(IEvaluator newEvaluator)
         {
             foreach (var exprDep in ExpressionsDependencies)
             {
                 foreach (var expr in exprDep.Value)
                 {
                     expr.Evaluator = newEvaluator;
-                }
-            }
-
-            foreach (var expression in NamedExpressions.Values)
-            {
-                expression.Evaluator = newEvaluator;
-            }
-
-            foreach (var expression in UnnamedExpressions)
-            {
-                expression.Evaluator = newEvaluator;
-            }
-        }
-
-        /// <summary>
-        /// Invalidates the registry.
-        /// </summary>
-        public void Invalidate()
-        {
-            foreach (var exprDep in ExpressionsDependencies)
-            {
-                foreach (var expr in exprDep.Value)
-                {
                     expr.Invalidate();
                 }
             }
 
             foreach (var expression in NamedExpressions.Values)
             {
+                expression.Evaluator = newEvaluator;
                 expression.Invalidate();
             }
 
             foreach (var expression in UnnamedExpressions)
             {
+                expression.Evaluator = newEvaluator;
                 expression.Invalidate();
             }
         }

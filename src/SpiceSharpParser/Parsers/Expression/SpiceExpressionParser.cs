@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Parsers.Netlist.Spice;
 
 namespace SpiceSharpParser.Parsers.Expression
 {
@@ -105,13 +106,15 @@ namespace SpiceSharpParser.Parsers.Expression
         private string input;
         private bool infixPostfix;
         private int count;
+        readonly bool ignoreCaseFunctionNames;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceExpressionParser"/> class.
         /// </summary>
         /// <param name="isNegationAssociative">Specifies whether negation is associative.</param>
-        public SpiceExpressionParser(bool isNegationAssociative = false)
+        public SpiceExpressionParser(bool isNegationAssociative, bool ignoreCaseFunctionNames)
         {
+            this.ignoreCaseFunctionNames = ignoreCaseFunctionNames;
             OperatorNegative.LeftAssociative = isNegationAssociative;
         }
 
@@ -418,7 +421,7 @@ namespace SpiceSharpParser.Parsers.Expression
                             }
                             else
                             {
-                                throw new Exception("Unknown function: @");
+                                throw new FunctionNotFoundException("@");
                             }
 
                             infixPostfix = false;
@@ -467,49 +470,61 @@ namespace SpiceSharpParser.Parsers.Expression
                         if (index < count && input[index] == '(')
                         {
                             index++;
+                            var specifiedFunctionName = sb.ToString();
+                            var specifiedFunctionNameLowered = specifiedFunctionName.ToLower();
 
-                            // "cos(10)+sin(-1)*max(tanh(1),sinh(1))"
-                            // Benchmark switch statements on function name: 1,000,000 -> 2400ms
-                            // Benchmark switch on first character + if/else function name: 1,000,000 -> 2200ms
-                            // Benchmark using Dictionary<>: 1,000,000 -> 2200ms -- I chose this option
-                            if (BuiltInFunctions.TryGetValue(sb.ToString(), out var function))
+                            if (BuiltInFunctions.TryGetValue(specifiedFunctionName, out var function))
                             {
                                 operatorStack.Push(function);
                             }
                             else
                             {
-                                if (CustomFunctions.ContainsKey(sb.ToString()))
+                                if (this.ignoreCaseFunctionNames && BuiltInFunctions.TryGetValue(specifiedFunctionNameLowered, out var function2))
                                 {
-                                    operatorStack.Push(CreateOperatorForCustomFunction(sb.ToString(), evaluator));
+                                    operatorStack.Push(function2);
                                 }
                                 else
                                 {
-                                    throw new Exception("Unknown function: " + sb.ToString());
+                                    if (CustomFunctions.ContainsKey(specifiedFunctionName))
+                                    {
+                                        operatorStack.Push(CreateOperatorForCustomFunction(specifiedFunctionName, evaluator));
+                                    }
+                                    else
+                                    {
+                                        if (this.ignoreCaseFunctionNames && CustomFunctions.ContainsKey(specifiedFunctionNameLowered))
+                                        {
+                                            operatorStack.Push(CreateOperatorForCustomFunction(specifiedFunctionNameLowered, evaluator));
+                                        }
+                                        else
+                                        {
+                                            throw new FunctionNotFoundException(specifiedFunctionName);
+                                        }
+                                    }
                                 }
                             }
                         }
                         else if (Parameters != null)
                         {
-                            string id = sb.ToString();
+                            string parameterName = sb.ToString();
 
                             if (operatorStack.Count > 0
                                 && operatorStack.Peek().Id == IdUserFunction
                                 && ((CustomFunctionOperator)operatorStack.Peek()).VirtualParameters)
                             {
-                                if (Parameters.TryGetValue(id, out var parameter))
+                                if (Parameters.TryGetValue(parameterName, out var parameter))
                                 {
-                                    foundParameters.Add(id);
+                                    foundParameters.Add(parameterName);
                                 }
 
-                                virtualParamtersStack.Push(id);
+                                virtualParamtersStack.Push(parameterName);
                             }
-                            else if (BuiltInConstants.TryGetValue(id, out var @const))
+                            else if (BuiltInConstants.TryGetValue(parameterName, out var @const))
                             {
                                 outputStack.Push(() => @const);
                             }
-                            else if (Parameters.TryGetValue(id, out var parameter))
+                            else if (Parameters.TryGetValue(parameterName, out var parameter))
                             {
-                                foundParameters.Add(id);
+                                foundParameters.Add(parameterName);
                                 outputStack.Push(() =>
                                 {
                                     return parameter.Evaluate();
@@ -519,11 +534,11 @@ namespace SpiceSharpParser.Parsers.Expression
                             {
                                 if (validateParameters)
                                 {
-                                    throw new UnknownParameterException() { Name = id };
+                                    throw new UnknownParameterException() { Name = parameterName };
                                 }
                                 else
                                 {
-                                    foundParameters.Add(id);
+                                    foundParameters.Add(parameterName);
                                     outputStack.Push(() =>
                                     {
                                         return double.NaN;
@@ -623,7 +638,7 @@ namespace SpiceSharpParser.Parsers.Expression
         {
             if (!CustomFunctions.ContainsKey(functionName))
             {
-                throw new Exception("Unknown function:" + functionName);
+                throw new FunctionNotFoundException(functionName);
             }
 
             var customFunction = CustomFunctions[functionName];

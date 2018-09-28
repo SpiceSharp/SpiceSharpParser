@@ -13,25 +13,27 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
     /// </summary>
     public class IncludesPreprocessor : IProcessor
     {
-        public string WorkingDirectoryPath { get; protected set; }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="IncludesPreprocessor"/> class.
         /// </summary>
         /// <param name="fileReader">File reader</param>
-        public IncludesPreprocessor(IFileReader fileReader, ISpiceNetlistParser spiceNetlistParser, string workingDirectoryPath = null)
+        public IncludesPreprocessor(IFileReader fileReader, ISpiceNetlistParser spiceNetlistParser, Func<string> initialDirectoryPathProvider, SpiceNetlistReaderSettings readerSettings)
         {
-            if (workingDirectoryPath == null)
-            {
-                WorkingDirectoryPath = Directory.GetCurrentDirectory();
-            }
-            else
-            {
-                WorkingDirectoryPath = workingDirectoryPath;
-            }
-
+            ReaderSettings = readerSettings;
             SpiceNetlistParser = spiceNetlistParser;
             FileReader = fileReader;
+            InitialDirectoryPathProvider = initialDirectoryPathProvider;
+        }
+
+        /// <summary>
+        /// Gets the initial directory path.
+        /// </summary>
+        public string InitialDirectoryPath
+        {
+            get
+            {
+                return InitialDirectoryPathProvider() ?? Directory.GetCurrentDirectory();
+            }
         }
 
         /// <summary>
@@ -44,11 +46,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// </summary>
         public ISpiceNetlistParser SpiceNetlistParser { get; }
 
+        protected Func<string> InitialDirectoryPathProvider { get; }
+
+        protected SpiceNetlistReaderSettings ReaderSettings { get; }
+
         /// <summary>
         /// Reads .include statements.
         /// </summary>
         /// <param name="statements">Statements</param>
         public Statements Process(Statements statements)
+        {
+            return Process(statements, InitialDirectoryPath);
+        }
+
+        /// <summary>
+        /// Reads .include statements.
+        /// </summary>
+        /// <param name="statements">Statements</param>
+        /// <param name="currentDirectoryPath">Current directory path.</param>
+        protected Statements Process(Statements statements, string currentDirectoryPath)
         {
             var subCircuits = statements.Where(statement => statement is SubCircuit s);
             if (subCircuits.Any())
@@ -59,7 +75,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
                     foreach (Control include in subCircuitIncludes.ToArray())
                     {
-                        ReadSingleInclude(subCircuit.Statements, WorkingDirectoryPath, include);
+                        ReadSingleInclude(subCircuit.Statements, currentDirectoryPath, include);
                     }
                 }
             }
@@ -70,7 +86,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             {
                 foreach (Control include in includes.ToArray())
                 {
-                    ReadSingleInclude(statements, WorkingDirectoryPath, include);
+                    ReadSingleInclude(statements, currentDirectoryPath, include);
                 }
             }
 
@@ -100,16 +116,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                 // parse include
                 SpiceNetlist includeModel = SpiceNetlistParser.Parse(
                     includeContent,
-                    new SpiceNetlistParserSettings() { HasTitle = false, IsEndRequired = false, IsNewlineRequired = false });
+                    new SpiceNetlistParserSettings(ReaderSettings.CaseSettings) { HasTitle = false, IsEndRequired = false, IsNewlineRequired = false });
 
                 // process includes of include netlist
-                var savedDirectoryPath = WorkingDirectoryPath;
-                WorkingDirectoryPath = Path.GetDirectoryName(includeFullPath);
-
-                includeModel.Statements = Process(includeModel.Statements);
-
-                WorkingDirectoryPath = savedDirectoryPath;
-
+                var savedDirectoryPath = InitialDirectoryPath;
+                includeModel.Statements = Process(includeModel.Statements, Path.GetDirectoryName(includeFullPath));
                 // repelace statement by the content of the include
                 statements.Replace(include, includeModel.Statements);
             }

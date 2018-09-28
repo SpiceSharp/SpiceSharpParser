@@ -2,6 +2,7 @@
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Processors;
 using SpiceSharpParser.Models.Netlist.Spice;
 using System.Collections.Generic;
@@ -39,9 +40,9 @@ namespace SpiceSharpParser
             Settings = new SpiceParserSettings();
             SpiceNetlistParser = new SpiceNetlistParser();
 
-            var includesPreprocessor = new IncludesPreprocessor(new FileReader(), SpiceNetlistParser);
+            var includesPreprocessor = new IncludesPreprocessor(new FileReader(), SpiceNetlistParser, () => Settings.WorkingDirectory, Settings.Reading);
             var appendModelPreprocessor = new AppendModelPreprocessor();
-            var libPreprocessor = new LibPreprocessor(new FileReader(), SpiceNetlistParser, includesPreprocessor);
+            var libPreprocessor = new LibPreprocessor(new FileReader(), SpiceNetlistParser, includesPreprocessor, () => Settings.WorkingDirectory, Settings.Reading);
             var sweepsPreprocessor = new SweepsPreprocessor();
             var ifPostprocessor = new IfPreprocessor();
 
@@ -62,7 +63,7 @@ namespace SpiceSharpParser
         /// Gets the SPICE netlist parser.
         /// </summary>
         protected ISpiceNetlistParser SpiceNetlistParser { get; }
-      
+
         /// <summary>
         /// Parses the netlist.
         /// </summary>
@@ -86,14 +87,7 @@ namespace SpiceSharpParser
 
             // Preprocessing
             SpiceNetlist preprocessedNetListModel = (SpiceNetlist)originalNetlistModel.Clone();
-            SpiceEvaluator preprocessorEvaluator = new SpiceEvaluator(
-                "Preprocessors evaluator",
-                null,
-                Settings.Reading.EvaluatorMode,
-                Settings.Reading.Seed,
-                Settings.Reading.Mappings.Exporters,
-                new MainCircuitNodeNameGenerator(new string[] { "0" }),
-                new ObjectNameGenerator(string.Empty));
+            SpiceEvaluator preprocessorEvaluator = CreatePreprocessorEvaluator();
 
             EvaluatorsContainer evaluators = new EvaluatorsContainer(preprocessorEvaluator);
 
@@ -117,6 +111,29 @@ namespace SpiceSharpParser
                 PreprocessedNetlistModel = preprocessedNetListModel,
                 Result = readerResult,
             };
+        }
+
+        private SpiceEvaluator CreatePreprocessorEvaluator()
+        {
+            SpiceEvaluator preprocessorEvaluator = new SpiceEvaluator(
+                            "Preprocessors evaluator",
+                            null,
+                            Settings.Reading.EvaluatorMode,
+                            Settings.Reading.Seed,
+                            new Common.Evaluation.ExpressionRegistry(),
+                            Settings.CaseSensitivity.IgnoreCaseForFunctions);
+
+            var exportFunctions = ExportFunctions.Create(
+                Settings.Reading.Mappings.Exporters,
+                new MainCircuitNodeNameGenerator(new string[] { "0" }),
+                new ObjectNameGenerator(string.Empty));
+
+            foreach (var exportFunction in exportFunctions)
+            {
+                preprocessorEvaluator.CustomFunctions.Add(exportFunction.Key, exportFunction.Value);
+            }
+
+            return preprocessorEvaluator;
         }
     }
 }

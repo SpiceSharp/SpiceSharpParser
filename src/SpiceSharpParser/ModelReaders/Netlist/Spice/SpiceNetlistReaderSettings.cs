@@ -4,11 +4,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
     public class SpiceNetlistReaderSettings
     {
-        public SpiceNetlistReaderSettings()
+        public SpiceNetlistReaderSettings(CaseSensitivitySettings caseSettings)
         {
             EvaluatorMode = SpiceEvaluatorMode.Spice3f5;
             Mappings = new SpiceObjectMappings();
             Orderer = new SpiceStatementsOrderer();
+            CaseSettings = caseSettings;
         }
 
         /// <summary>
@@ -30,5 +31,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// Gets or sets the statements orderer.
         /// </summary>
         public ISpiceStatementsOrderer Orderer { get; set; }
+
+        /// <summary>
+        /// Gets the case-sensitivity settings.
+        /// </summary>
+        public CaseSensitivitySettings CaseSettings { get; }
     }
 }

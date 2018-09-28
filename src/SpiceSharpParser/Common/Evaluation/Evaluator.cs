@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 
-
 namespace SpiceSharpParser.Common.Evaluation
 {
     /// <summary>
-    /// Evaluator of expressions.
+    /// Abstract evaluator.
     /// </summary>
-    public class Evaluator : IEvaluator
+    public abstract class Evaluator : IEvaluator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Evaluator"/> class.
@@ -17,26 +16,25 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="context">Evaluator context.</param>
         /// <param name="parser">Expression parser.</param>
         /// <param name="registry">Expression registry.</param>
-        /// <param name="randomSeed">Random seed.</param>
-        public Evaluator(string name, object context, IExpressionParser parser, ExpressionRegistry registry, int? randomSeed)
+        /// <param name="seed">Random seed.</param>
+        public Evaluator(string name, object context, IExpressionParser parser, ExpressionRegistry registry, int? seed)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
+            Context = context;
             ExpressionParser = parser ?? throw new ArgumentNullException(nameof(parser));
             Registry = registry ?? throw new ArgumentNullException(nameof(registry));
-            Children = new List<IEvaluator>();
-            Seed = randomSeed;
-            Context = context;
+            Seed = seed;
         }
 
         /// <summary>
-        /// Gets the name of the evaluator.
+        /// Gets or sets the name of the evaluator.
         /// </summary>
-        public string Name { get; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets the children evaluators.
         /// </summary>
-        public List<IEvaluator> Children { get; }
+        public List<IEvaluator> Children { get; } = new List<IEvaluator>();
 
         /// <summary>
         /// Gets the dictionary of custom functions.
@@ -49,9 +47,9 @@ namespace SpiceSharpParser.Common.Evaluation
         public int? Seed { get; set; }
 
         /// <summary>
-        /// Gets the context of the evaluator.
+        /// Gets or sets the context of the evaluator.
         /// </summary>
-        public object Context { get; protected set; }
+        public object Context { get; set; }
 
         /// <summary>
         /// Gets the expression registry.
@@ -304,55 +302,31 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <returns>
         /// A new evaluator.
         /// </returns>
-        public virtual IEvaluator CreateChildEvaluator(string name, object context)
+        public abstract IEvaluator CreateChildEvaluator(string name, object context);
+
+        public abstract IEvaluator Clone(bool deep);
+
+        public void Initialize(Dictionary<string, EvaluatorExpression> parameters, Dictionary<string, CustomFunction> customFunctions, List<IEvaluator> children)
         {
-            var newEvaluator = new Evaluator(name, context, ExpressionParser, Registry, Seed);
-
-            foreach (var parameterName in this.GetParameterNames())
+            foreach (var parameterName in parameters.Keys)
             {
-                newEvaluator.Parameters[parameterName] = this.ExpressionParser.Parameters[parameterName];
+                this.Parameters[parameterName] = parameters[parameterName].Clone();
+                this.Parameters[parameterName].Evaluator = this;
+                this.Parameters[parameterName].Invalidate();
             }
 
-            foreach (var customFunction in CustomFunctions)
+            foreach (var customFunction in customFunctions.Keys)
             {
-                newEvaluator.CustomFunctions[customFunction.Key] = customFunction.Value;
+                CustomFunctions[customFunction] = customFunctions[customFunction];
             }
 
-            return newEvaluator;
-        }
-
-        /// <summary>
-        /// Clones the evaluator.
-        /// </summary>
-        /// <param name="name">Name of cloned evaluator.</param>
-        /// <returns>
-        /// A reference to a clone evaluator.
-        /// </returns>
-        public virtual IEvaluator CreateClonedEvaluator(string name, object context, int? randomSeed = null)
-        {
-            var registry = Registry.Clone();
-            registry.Invalidate();
-
-            var newEvaluator = new Evaluator(name, context, ExpressionParser, registry, randomSeed);
-
-            foreach (var parameterName in this.GetParameterNames())
+            Children.Clear();
+            foreach (var child in children)
             {
-                newEvaluator.Parameters[parameterName] = this.ExpressionParser.Parameters[parameterName].Clone();
-                newEvaluator.Parameters[parameterName].Evaluator = newEvaluator;
-                newEvaluator.Parameters[parameterName].Invalidate();
+                Children.Add(child.Clone(true));
             }
 
-            foreach (var customFunction in CustomFunctions)
-            {
-                newEvaluator.CustomFunctions[customFunction.Key] = customFunction.Value;
-            }
-
-            foreach (var child in Children)
-            {
-                newEvaluator.Children.Add(child.CreateClonedEvaluator(child.Name, context, randomSeed));
-            }
-
-            return newEvaluator;
+            Registry.Invalidate(this);
         }
 
         /// <summary>

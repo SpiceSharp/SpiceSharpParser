@@ -103,8 +103,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             if (!Evaluators.ContainsKey(simulation))
             {
-                Evaluators[simulation] =
-                    SourceEvaluator.CreateClonedEvaluator(simulation.Name.ToString(), simulation, SourceEvaluator.Seed);
+                var simulationEvaluator = SourceEvaluator.Clone(true);
+                simulationEvaluator.Name = simulation.Name.ToString();
+                simulationEvaluator.Context = simulation;
+                simulationEvaluator.Seed = SourceEvaluator.Seed;
+
+                Evaluators[simulation] = simulationEvaluator;
             }
 
             return Evaluators[simulation];

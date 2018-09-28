@@ -5,7 +5,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Registries
     /// <summary>
     /// Interface for all mappers that have a string key and <typeparamref name="TElement"/> as element.
     /// </summary>
-    public interface IMapper<TElement> : IEnumerable<TElement>
+    public interface IMapper<TElement>: IEnumerable<KeyValuePair<string, TElement>>
     {
         /// <summary>
         /// Gets a value indicating whether a element with given key is in the mapper.
@@ -31,7 +31,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Registries
         /// <param name="key">A key of the element.</param>
         /// <param name="element">An element.</param>
         void Map(string key, TElement element);
-        
+
         /// <summary>
         /// Maps the keys with given element.
         /// </summary>
