@@ -47,26 +47,6 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
-        public void StrangeNoExceptionTest2()
-        {
-            try
-            {
-                var netlist = ParseNetlistToModel(
-                    false,
-                    true,
-                    "",
-                    "*$");
-            }
-            catch (ParseException ex)
-            {
-                Assert.True(ex.Message.Contains("NEWLINE"));
-                return;
-            }
-
-            Assert.True(false);
-        }
-
-        [Fact]
         public void StrangeNoExceptionTest3()
         {
             var netlist = ParseNetlistToModel(

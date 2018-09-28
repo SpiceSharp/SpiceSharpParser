@@ -11,8 +11,8 @@
         public bool HasTitle { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether keywords,values are case-sensitive.
+        /// Gets or sets a value indicating whether statements are case-sensitive.
         /// </summary>
-        public bool IgnoreCase { get; set; } = true;
+        public bool IgnoreCaseDotStatements { get; set; } = true;
     }
 }

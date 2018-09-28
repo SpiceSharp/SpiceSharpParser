@@ -19,6 +19,16 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
+        public void EndingNoExceptionOptionalTest()
+        {
+            var netlist = ParseNetlistToModel(
+                false,
+                true,
+                "End test circuit",
+                ".END");
+        }
+
+        [Fact]
         public void NoEndingNoExceptionTest()
         {
             var netlist = ParseNetlistToModel(
@@ -33,7 +43,7 @@ namespace SpiceSharpParser.IntegrationTests
         [Fact]
         public void NoEndingExceptionTest()
         {
-            Assert.Throws<Exception>(() =>
+            Assert.Throws<Parsers.Netlist.Spice.NoEndKeywordException>(() =>
                 ParseNetlistToModel(
                     true,
                     true,

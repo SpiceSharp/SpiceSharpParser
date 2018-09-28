@@ -13,7 +13,7 @@ namespace SpiceSharpParser.Tests.Parsers
         public void ParseWithUserFunction()
         {
             // arrange
-            var parser = new SpiceExpressionParser();
+            var parser = new SpiceExpressionParser(false, true);
 
             parser.CustomFunctions.Add(
                 "v",
@@ -47,7 +47,7 @@ namespace SpiceSharpParser.Tests.Parsers
         public void ParseWithUserFunctionNoArgument()
         {
             // arrange
-            var parser = new SpiceExpressionParser();
+            var parser = new SpiceExpressionParser(false, true);
 
             Random rand = new Random(Environment.TickCount);
 
@@ -73,7 +73,7 @@ namespace SpiceSharpParser.Tests.Parsers
         public void ParseWithUnknownParameter()
         {
             // arrange
-            var parser = new SpiceExpressionParser();
+            var parser = new SpiceExpressionParser(false, true);
 
             // act and assert
             Assert.Throws<UnknownParameterException>(() => parser.Parse("x + 1"));
@@ -83,7 +83,7 @@ namespace SpiceSharpParser.Tests.Parsers
         public void ParseWitKnownParameter()
         {
             // arrange
-            var parser = new SpiceExpressionParser();
+            var parser = new SpiceExpressionParser(false, true);
             parser.Parameters["x"] = new ConstantEvaluatorExpression(1);
 
             // act and assert
@@ -94,7 +94,7 @@ namespace SpiceSharpParser.Tests.Parsers
         public void ParseWithBuildinFunction()
         {
             // arrange
-            var parser = new SpiceExpressionParser();
+            var parser = new SpiceExpressionParser(false, true);
             parser.Parameters["x"] = new ConstantEvaluatorExpression(1);
 
             // act and assert
@@ -105,7 +105,7 @@ namespace SpiceSharpParser.Tests.Parsers
         public void ParseWithParameters()
         {
             // arrange
-            var parser = new SpiceExpressionParser();
+            var parser = new SpiceExpressionParser(false, true);
 
             // act and assert
             var parseResult = parser.Parse("1 + N + R + s", null, false);
@@ -117,7 +117,7 @@ namespace SpiceSharpParser.Tests.Parsers
         public void ParseWithSpace()
         {
             // arrange
-            var parser = new SpiceExpressionParser();
+            var parser = new SpiceExpressionParser(false, true);
 
             // act and assert
             Assert.Equal(3, parser.Parse(" 2 + 1 ").Value());
@@ -127,7 +127,7 @@ namespace SpiceSharpParser.Tests.Parsers
         public void ParseWithComma()
         {
             // arrange
-            var parser = new SpiceExpressionParser();
+            var parser = new SpiceExpressionParser(false, true);
 
             // act and assert
             Assert.Equal(2.1, parser.Parse("2,1").Value());
@@ -137,7 +137,7 @@ namespace SpiceSharpParser.Tests.Parsers
         public void ParseWithConstants()
         {
             // arrange
-            var parser = new SpiceExpressionParser();
+            var parser = new SpiceExpressionParser(false, true);
 
             // act and assert
             Assert.Equal((2 * Math.PI) + (2 * Math.E), parser.Parse("PI + e + pi + E").Value());
@@ -147,7 +147,7 @@ namespace SpiceSharpParser.Tests.Parsers
         public void ParseMinus()
         {
             // arrange
-            var parser = new SpiceExpressionParser();
+            var parser = new SpiceExpressionParser(false, true);
 
             // act and assert
             Assert.Equal(-1, parser.Parse("-1").Value());
@@ -157,7 +157,7 @@ namespace SpiceSharpParser.Tests.Parsers
         public void ParseConditional()
         {
             // arrange
-            var parser = new SpiceExpressionParser();
+            var parser = new SpiceExpressionParser(false, true);
 
             // act and assert
             parser.Parameters["TEMP"] = new ConstantEvaluatorExpression(26);
@@ -171,7 +171,7 @@ namespace SpiceSharpParser.Tests.Parsers
         public void UnicodeU()
         {
             // arrange
-            var parser = new SpiceExpressionParser();
+            var parser = new SpiceExpressionParser(false, true);
 
             // act and assert
             Assert.Equal(12.3 * 1e-6, parser.Parse("12.3μ").Value());
@@ -181,7 +181,7 @@ namespace SpiceSharpParser.Tests.Parsers
         public void ParseWithReference()
         {
             // arrange
-            var parser = new SpiceExpressionParser();
+            var parser = new SpiceExpressionParser(false, true);
 
             parser.CustomFunctions.Add("@", new CustomFunction()
             {

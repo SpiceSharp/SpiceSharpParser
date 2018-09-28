@@ -12,12 +12,15 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
     {
         private Dictionary<string, Action<Stack<ParseTreeNode>, ParseTreeNonTerminalNode, SpiceToken[], int>> parsers = new Dictionary<string, Action<Stack<ParseTreeNode>, ParseTreeNonTerminalNode, SpiceToken[], int>>();
 
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ParseTreeGenerator"/> class.
         /// </summary>
         /// <param name="isNewLineRequiredAtTheEnd">Is NEWLINE required at the end?</param>
-        public ParseTreeGenerator(bool isNewLineRequiredAtTheEnd = false)
+        /// <param name="ignoreCaseDotStatements">Are dot statements case-sensitive?</param>
+        public ParseTreeGenerator(bool isNewLineRequiredAtTheEnd, bool ignoreCaseDotStatements)
         {
+            IgnoreCaseDotStatements = ignoreCaseDotStatements;
             IsNewLineRequiredAtTheEnd = isNewLineRequiredAtTheEnd;
 
             parsers.Add(Symbols.Netlist, ReadNetlist);
@@ -44,6 +47,8 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         protected bool IsNewLineRequiredAtTheEnd { get; }
+
+        protected bool IgnoreCaseDotStatements { get; }
 
         /// <summary>
         /// Generates a parse tree for SPICE grammar.
@@ -98,7 +103,16 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     }
                     else
                     {
-                        throw new ParseException(string.Format("Unexpected token: '{0}' of type: {1}. Expected token type: {2} line={3}", tokens[currentTokenIndex].Lexem, tokens[currentTokenIndex].SpiceTokenType, tn.Token.SpiceTokenType, tokens[currentTokenIndex].LineNumber), tokens[currentTokenIndex].LineNumber);
+                        if (tokens[currentTokenIndex].SpiceTokenType == SpiceTokenType.EOF
+                            && tn.Token.SpiceTokenType == SpiceTokenType.NEWLINE
+                            && (!IsNewLineRequiredAtTheEnd))
+                        {
+                            // do nothing
+                        }
+                        else
+                        {
+                            throw new ParseException(string.Format("Unexpected token: '{0}' of type: {1}. Expected token type: {2} line={3}", tokens[currentTokenIndex].Lexem, tokens[currentTokenIndex].SpiceTokenType, tn.Token.SpiceTokenType, tokens[currentTokenIndex].LineNumber), tokens[currentTokenIndex].LineNumber);
+                        }
                     }
                 }
             }
@@ -386,14 +400,14 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             {
                 if (nextToken.Is(SpiceTokenType.WORD))
                 {
-                    if (nextToken.Equal("subckt", true))
+                    if (nextToken.Equal("SUBCKT", IgnoreCaseDotStatements))
                     {
                         PushProductionExpression(
                             stack,
                             CreateNonTerminalNode(Symbols.Subckt, current),
                             CreateTerminalNode(SpiceTokenType.NEWLINE, current));
                     }
-                    else if (nextToken.Equal("model", true))
+                    else if (nextToken.Equal("MODEL", IgnoreCaseDotStatements))
                     {
                         PushProductionExpression(
                             stack,
@@ -519,7 +533,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
             if (currentToken.Is(SpiceTokenType.DOT)
                 && nextToken.Is(SpiceTokenType.WORD)
-                && nextToken.Equal("subckt", true))
+                && nextToken.Equal("SUBCKT", IgnoreCaseDotStatements))
             {
                 PushProductionExpression(
                     stack,
@@ -867,7 +881,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
             if (currentToken.Is(SpiceTokenType.DOT)
                 && nextToken.Is(SpiceTokenType.WORD)
-                && nextToken.Equal("model", true)
+                && nextToken.Equal("MODEL", IgnoreCaseDotStatements)
                 && (nextNextToken.Is(SpiceTokenType.WORD) || nextNextToken.Is(SpiceTokenType.IDENTIFIER)))
             {
                 PushProductionExpression(

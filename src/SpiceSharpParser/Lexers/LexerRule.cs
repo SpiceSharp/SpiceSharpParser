@@ -23,14 +23,14 @@ namespace SpiceSharpParser.Lexers
         }
 
         /// <summary>
-        /// Gets name of lexer rule.
-        /// </summary>
-        public string Name { get; }
-
-        /// <summary>
         /// Gets a value indicating whether case of characters in regular expression is ignored.
         /// </summary>
         public bool IgnoreCase { get; }
+
+        /// <summary>
+        /// Gets name of lexer rule.
+        /// </summary>
+        public string Name { get; }
 
         /// <summary>
         /// Gets or sets a regular expression pattern of lexer rule.

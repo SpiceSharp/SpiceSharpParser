@@ -9,7 +9,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Registries
     /// <typeparam name="TElement">
     /// Type of the element.
     /// </typeparam>
-    public class BaseMapper<TElement> : IEnumerable<TElement>, IMapper<TElement>
+    public class BaseMapper<TElement> :  IMapper<TElement>
         where TElement : class
     {
         /// <summary>
@@ -83,26 +83,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Registries
             return Elements[type];
         }
 
-        /// <summary>
-        /// Gets the typed enumerator.
-        /// </summary>
-        /// <returns>
-        /// The enumerator.
-        /// </returns>
-        public IEnumerator<TElement> GetEnumerator()
+        public IEnumerator<KeyValuePair<string, TElement>> GetEnumerator()
         {
-            return Elements.Values.GetEnumerator();
+            foreach (KeyValuePair<string, TElement> element in Elements)
+            {
+                yield return element;
+            }
         }
 
-        /// <summary>
-        /// Gets the enumerator.
-        /// </summary>
-        /// <returns>
-        /// The enumerator.
-        /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return Elements.GetEnumerator();
+            foreach (KeyValuePair<string, TElement> element in Elements)
+            {
+                yield return element;
+            }
         }
     }
 }

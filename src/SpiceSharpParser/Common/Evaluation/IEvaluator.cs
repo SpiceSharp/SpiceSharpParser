@@ -9,9 +9,9 @@ namespace SpiceSharpParser.Common
     public interface IEvaluator
     {
         /// <summary>
-        /// Gets the evaluator name.
+        /// Gets or sets the evaluator name.
         /// </summary>
-        string Name { get; }
+        string Name { get; set; }
 
         /// <summary>
         /// Gets the children evaluators.
@@ -24,9 +24,9 @@ namespace SpiceSharpParser.Common
         int? Seed { get; set; }
 
         /// <summary>
-        /// Gets the context of the evaluator.
+        /// Gets or sets the context of the evaluator.
         /// </summary>
-        object Context { get; }
+        object Context { get; set; }
 
         /// <summary>
         /// Evaluates a specific expression to double.
@@ -118,19 +118,6 @@ namespace SpiceSharpParser.Common
         IEvaluator CreateChildEvaluator(string name, object context);
 
         /// <summary>
-        /// Creates a cloned evaluator.
-        /// </summary>
-        /// <returns>
-        /// A cloned evaluator.
-        /// </returns>
-        IEvaluator CreateClonedEvaluator(string name, object context, int? randomSeed);
-
-        /// <summary>
-        /// Invalidate parameters.
-        /// </summary>
-        void InvalidateParameters();
-
-        /// <summary>
         /// Sets a custom function.
         /// </summary>
         /// <param name="functionName">Name of custom function</param>
@@ -181,5 +168,13 @@ namespace SpiceSharpParser.Common
         /// <param name="expressionString">Expression.</param>
         /// <param name="expressionAction">Expression action.</param>
         void AddAction(string actionName, string expressionString, Action<double> expressionAction);
+
+        /// <summary>
+        /// Clones the evaluator.
+        /// </summary>
+        /// <returns>
+        /// A clone of evaluator.
+        /// </returns>
+        IEvaluator Clone();
     }
 }

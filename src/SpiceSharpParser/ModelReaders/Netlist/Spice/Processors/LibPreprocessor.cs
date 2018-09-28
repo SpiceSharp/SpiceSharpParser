@@ -14,19 +14,33 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
     /// </summary>
     public class LibPreprocessor : IProcessor
     {
-        public string WorkingDirectoryPath { get; }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LibPreprocessor"/> class.
         /// </summary>
         /// <param name="fileReader">File reader</param>
-        public LibPreprocessor(IFileReader fileReader, ISpiceNetlistParser spiceNetlistParser, IProcessor includesPreReader, string workingDirectoryPath = null)
+        public LibPreprocessor(IFileReader fileReader, ISpiceNetlistParser spiceNetlistParser, IProcessor includesPreReader, Func<string> initialDirectoryPathProvider, SpiceNetlistReaderSettings readerSettings)
         {
-            WorkingDirectoryPath = workingDirectoryPath ?? Directory.GetCurrentDirectory();
+            ReaderSettings = readerSettings;
             IncludesPreprocessor = includesPreReader;
             SpiceNetlistParser = spiceNetlistParser;
             FileReader = fileReader;
+            InitialDirectoryPathProvider = initialDirectoryPathProvider;
         }
+
+        public SpiceNetlistReaderSettings ReaderSettings { get; }
+
+        /// <summary>
+        /// Gets the initial directory path.
+        /// </summary>
+        public string InitialDirectoryPath
+        {
+            get
+            {
+                return InitialDirectoryPathProvider() ?? Directory.GetCurrentDirectory();
+            }
+        }
+
+        public string IntialDirectoryPath { get; }
 
         /// <summary>
         /// Gets the file reader.
@@ -43,18 +57,29 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// </summary>
         public IProcessor IncludesPreprocessor { get; }
 
+        protected Func<string> InitialDirectoryPathProvider { get; }
+
         /// <summary>
         /// Reads .include statements.
         /// </summary>
         /// <param name="statements">Netlist model to seach for .include statements</param>
         public Statements Process(Statements statements)
         {
-            bool libFound = ReadLibs(statements, WorkingDirectoryPath);
+            return Process(statements, InitialDirectoryPath);
+        }
+
+        /// <summary>
+        /// Reads .include statements.
+        /// </summary>
+        /// <param name="statements">Netlist model to seach for .include statements</param>
+        public Statements Process(Statements statements, string currentDirectoryPath)
+        {
+            bool libFound = ReadLibs(statements, currentDirectoryPath);
 
             while (libFound)
             {
                 IncludesPreprocessor.Process(statements);
-                libFound = ReadLibs(statements, WorkingDirectoryPath);
+                libFound = ReadLibs(statements, currentDirectoryPath);
             }
 
             return statements;
@@ -112,7 +137,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                 // 1. get lib netlist model
                 SpiceNetlist includeModel = SpiceNetlistParser.Parse(
                     libContent,
-                    new SpiceNetlistParserSettings() { HasTitle = false, IsEndRequired = false, IsNewlineRequired = false });
+                    new SpiceNetlistParserSettings(ReaderSettings.CaseSettings) { HasTitle = false, IsEndRequired = false, IsNewlineRequired = false });
 
                 var allStatements = includeModel.Statements.ToList();
 
