@@ -304,7 +304,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public abstract IEvaluator CreateChildEvaluator(string name, object context);
 
-        public abstract IEvaluator Clone();
+        public abstract IEvaluator Clone(bool deep);
 
         public void Initialize(Dictionary<string, EvaluatorExpression> parameters, Dictionary<string, CustomFunction> customFunctions, List<IEvaluator> children)
         {
@@ -323,7 +323,7 @@ namespace SpiceSharpParser.Common.Evaluation
             Children.Clear();
             foreach (var child in children)
             {
-                Children.Add(child.Clone());
+                Children.Add(child.Clone(true));
             }
 
             Registry.Invalidate(this);

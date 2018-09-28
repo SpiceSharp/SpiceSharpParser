@@ -175,6 +175,6 @@ namespace SpiceSharpParser.Common
         /// <returns>
         /// A clone of evaluator.
         /// </returns>
-        IEvaluator Clone();
+        IEvaluator Clone(bool deep);
     }
 }

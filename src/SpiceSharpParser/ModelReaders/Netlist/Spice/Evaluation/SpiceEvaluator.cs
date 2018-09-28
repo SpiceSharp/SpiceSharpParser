@@ -50,20 +50,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         /// </returns>
         public override IEvaluator CreateChildEvaluator(string name, object context)
         {
-            SpiceEvaluator newEvaluator = (SpiceEvaluator)Clone();
+            SpiceEvaluator newEvaluator = (SpiceEvaluator)Clone(false);
             newEvaluator.Name = name;
             newEvaluator.Context = context;
-            newEvaluator.Children.Clear();
-            newEvaluator.Registry.Invalidate(newEvaluator);
 
             Children.Add(newEvaluator);
             return newEvaluator;
         }
 
-        public override IEvaluator Clone()
+        public override IEvaluator Clone(bool deep)
         {
             var clone = new SpiceEvaluator(this.Name, this.Context, this.Mode, this.Seed, this.Registry.Clone(), this.IgnoreCaseFunctionNames);
-            clone.Initialize(this.Parameters, this.CustomFunctions, this.Children);
+
+            clone.Initialize(this.Parameters, this.CustomFunctions, deep ? this.Children : new System.Collections.Generic.List<IEvaluator>());
             return clone;
         }
 
