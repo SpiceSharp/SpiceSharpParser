@@ -197,7 +197,7 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
-        public void NodeNamesSubcircuitPosivieTest()
+        public void NodeNamesSubcircuitPositiveTest()
         {
             var parser = new SpiceParser();
 
@@ -208,7 +208,7 @@ namespace SpiceSharpParser.IntegrationTests
             var text = string.Join(Environment.NewLine,
                 "Subcircuit - SingleSubcircuitWithParams",
                 "V1 IN 0 4.0",
-                "X1 IN OUT twoResistorsInSeries R1=1 R2=2",
+                "X1 IN Out twoResistorsInSeries R1=1 R2=2",
                 "RX OUT 0 1",
                 ".SUBCKT twoResistorsInSeries Input oUtput params: R1=10 R2=100",
                 "R1 input 1 {R1}",
