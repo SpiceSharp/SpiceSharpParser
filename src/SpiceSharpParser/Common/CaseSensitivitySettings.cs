@@ -2,6 +2,8 @@
 {
     public class CaseSensitivitySettings
     {
+        public bool IgnoreCaseForNodes { get; set; } = true;
+
         public bool IgnoreCaseForDotStatements { get; set; } = true;
 
         public bool IgnoreCaseForFunctions { get; set; } = true;

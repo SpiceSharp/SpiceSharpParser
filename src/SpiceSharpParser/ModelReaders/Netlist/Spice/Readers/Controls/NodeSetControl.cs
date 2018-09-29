@@ -25,7 +25,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                     if (type == "v" && ap.Arguments.Count == 1)
                     {
-                        context.SimulationsParameters.SetNodeSetVoltage(ap.Arguments[0], value);
+                        var nodeName = ap.Arguments[0];
+
+                        if (context.CaseSensitivity.IgnoreCaseForNodes)
+                        {
+                            nodeName = nodeName.ToUpper();
+                        }
+
+                        context.SimulationsParameters.SetNodeSetVoltage(nodeName, value);
                     }
                     else
                     {

@@ -23,7 +23,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <returns>
         /// A new export
         /// </returns>
-        public override Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
+        public override Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator, bool ignoreCaseForNodes)
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
             {
@@ -31,7 +31,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             }
 
             // Get the nodes
-            Identifier node = null;
+            Identifier componentIdentifier = null;
             if (parameters[0] is VectorParameter vector)
             {
                 switch (vector.Elements.Count)
@@ -39,7 +39,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                     case 0:
                         throw new Exception("Node expected");
                     case 1:
-                        node = new StringIdentifier(vector.Elements[0].Image);
+                        componentIdentifier = new StringIdentifier(vector.Elements[0].Image);
                         break;
                     default:
                         throw new Exception("Too many nodes specified");
@@ -47,21 +47,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             }
             else
             {
-                node = new StringIdentifier(parameters.GetString(0));
+                componentIdentifier = new StringIdentifier(parameters.GetString(0));
             }
 
-            Export ce = null;
+            Export export = null;
             switch (type.ToLower())
             {
-                case "i": ce = new CurrentExport(simulation, node); break;
-                case "ir": ce = new CurrentRealExport(simulation, node); break;
-                case "ii": ce = new CurrentImaginaryExport(simulation, node); break;
-                case "im": ce = new CurrentMagnitudeExport(simulation, node); break;
-                case "idb": ce = new CurrentDecibelExport(simulation, node); break;
-                case "ip": ce = new CurrentPhaseExport(simulation, node); break;
+                case "i": export = new CurrentExport(simulation, componentIdentifier); break;
+                case "ir": export = new CurrentRealExport(simulation, componentIdentifier); break;
+                case "ii": export = new CurrentImaginaryExport(simulation, componentIdentifier); break;
+                case "im": export = new CurrentMagnitudeExport(simulation, componentIdentifier); break;
+                case "idb": export = new CurrentDecibelExport(simulation, componentIdentifier); break;
+                case "ip": export = new CurrentPhaseExport(simulation, componentIdentifier); break;
             }
 
-            return ce;
+            return export;
         }
 
         /// <summary>

@@ -169,16 +169,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var pinInstanceNames = new List<string>();
             for (var i = 0; i < parameters.Count - assigmentParametersCount - 1; i++)
             {
-                pinInstanceNames.Add(context.NodeNameGenerator.Generate(parameters.GetString(i)));
+                var pinInstanceName = context.NodeNameGenerator.Generate(parameters.GetString(i));
+
+                pinInstanceNames.Add(pinInstanceName);
             }
 
-            var subcircuitNodeNameGenerator = new SubcircuitNodeNameGenerator(subcircuitFullName, subcircuitName, subCircuitDefiniton, pinInstanceNames, context.NodeNameGenerator.Globals);
+            var subcircuitNodeNameGenerator = new SubcircuitNodeNameGenerator(subcircuitFullName, subcircuitName, subCircuitDefiniton, pinInstanceNames, context.NodeNameGenerator.Globals, context.CaseSensitivity.IgnoreCaseForNodes);
             context.NodeNameGenerator.Children.Add(subcircuitNodeNameGenerator);
 
             // setting object name generator
             var subcircuitObjectNameGenerator = context.ObjectNameGenerator.CreateChildGenerator(subcircuitName);
 
-            return new ReadingContext(subcircuitName, context.SimulationsParameters, subcircuitEvaluatorContainer, context.Result, subcircuitNodeNameGenerator, subcircuitObjectNameGenerator, context.StatementsReader, context.WaveformReader, context);
+            return new ReadingContext(subcircuitName, context.SimulationsParameters, subcircuitEvaluatorContainer, context.Result, subcircuitNodeNameGenerator, subcircuitObjectNameGenerator, context.StatementsReader, context.WaveformReader, context.CaseSensitivity, context);
         }
 
         /// <summary>

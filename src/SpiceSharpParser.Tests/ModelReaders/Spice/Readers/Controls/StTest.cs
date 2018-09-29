@@ -41,10 +41,11 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 Substitute.For<ISimulationsParameters>(),
                 new EvaluatorsContainer(evaluator),
                 resultService,
-                new MainCircuitNodeNameGenerator(new string[] { }),
+                new MainCircuitNodeNameGenerator(new string[] { }, true),
                 new ObjectNameGenerator(string.Empty),
                 null,
-                null);
+                null,
+                new CaseSensitivitySettings());
 
             // act
             var stControl = new StControl();
@@ -85,10 +86,11 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 Substitute.For<ISimulationsParameters>(),
                 new EvaluatorsContainer(evaluator),
                 resultService,
-                new MainCircuitNodeNameGenerator(new string[] { }),
+                new MainCircuitNodeNameGenerator(new string[] { }, true),
                 new ObjectNameGenerator(string.Empty),
                 null,
-                null);
+                null,
+                new CaseSensitivitySettings());
 
             // act
             var stControl = new StControl();
@@ -129,10 +131,11 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 Substitute.For<ISimulationsParameters>(),
                 new EvaluatorsContainer(evaluator),
                 resultService,
-                new MainCircuitNodeNameGenerator(new string[] { }),
+                new MainCircuitNodeNameGenerator(new string[] { }, true),
                 new ObjectNameGenerator(string.Empty),
                 null,
-                null);
+                null,
+                new CaseSensitivitySettings());
 
             // act
             var stControl = new StControl();
@@ -173,10 +176,11 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 Substitute.For<ISimulationsParameters>(),
                 new EvaluatorsContainer(evaluator),
                 resultService,
-                new MainCircuitNodeNameGenerator(new string[] { }),
+                new MainCircuitNodeNameGenerator(new string[] { }, true),
                 new ObjectNameGenerator(string.Empty),
                 null,
-                null);
+                null,
+                new CaseSensitivitySettings());
 
             // act
             var stControl = new StControl();
@@ -216,10 +220,11 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 Substitute.For<ISimulationsParameters>(),
                 new EvaluatorsContainer(evaluator),
                 resultService,
-                new MainCircuitNodeNameGenerator(new string[] { }),
+                new MainCircuitNodeNameGenerator(new string[] { }, true),
                 new ObjectNameGenerator(string.Empty),
                 null,
-                null);
+                null,
+                new CaseSensitivitySettings());
 
             // act
             var stControl = new StControl();

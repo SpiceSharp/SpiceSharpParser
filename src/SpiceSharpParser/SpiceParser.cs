@@ -125,8 +125,9 @@ namespace SpiceSharpParser
 
             var exportFunctions = ExportFunctions.Create(
                 Settings.Reading.Mappings.Exporters,
-                new MainCircuitNodeNameGenerator(new string[] { "0" }),
-                new ObjectNameGenerator(string.Empty));
+                new MainCircuitNodeNameGenerator(new string[] { "0" }, Settings.CaseSensitivity.IgnoreCaseForNodes),
+                new ObjectNameGenerator(string.Empty),
+                Settings.CaseSensitivity.IgnoreCaseForNodes);
 
             foreach (var exportFunction in exportFunctions)
             {

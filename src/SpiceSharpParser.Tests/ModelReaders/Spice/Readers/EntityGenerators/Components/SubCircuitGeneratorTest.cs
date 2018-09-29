@@ -17,6 +17,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         {
             // prepare
             var context = Substitute.For<IReadingContext>();
+            context.CaseSensitivity = new CaseSensitivitySettings();
+
             var parameters = new ParameterCollection
             {
                 new IdentifierParameter("net2"),
@@ -40,7 +42,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                     }
                 }
             });
-            context.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }));
+            context.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }, true));
             context.ObjectNameGenerator.Returns(new ObjectNameGenerator(string.Empty));
 
             IReadingContext parent = null;

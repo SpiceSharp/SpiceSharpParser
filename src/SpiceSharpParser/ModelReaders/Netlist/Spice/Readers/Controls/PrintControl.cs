@@ -126,7 +126,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     }
 
                     // Add current export for component
-                    result.Add(Mapper.Get("i").CreateExport("i", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator));
+                    result.Add(Mapper.Get("i").CreateExport("i", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator, context.CaseSensitivity.IgnoreCaseForNodes));
                 }
             }
 
@@ -135,7 +135,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 var @params = new ParameterCollection();
                 @params.Add(new WordParameter(node.ToString()));
 
-                result.Add(Mapper.Get("v").CreateExport("v", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator));
+                result.Add(Mapper.Get("v").CreateExport("v", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator, context.CaseSensitivity.IgnoreCaseForNodes));
             }
 
             return result;
@@ -222,7 +222,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 if (parameter is BracketParameter || parameter is ReferenceParameter)
                 {
-                    result.Add(GenerateExport(parameter, simulation, context.NodeNameGenerator, context.ObjectNameGenerator));
+                    result.Add(GenerateExport(parameter, simulation, context.NodeNameGenerator, context.ObjectNameGenerator, context.CaseSensitivity.IgnoreCaseForNodes));
                 }
                 else
                 {

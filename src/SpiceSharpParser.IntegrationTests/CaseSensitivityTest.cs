@@ -1,3 +1,4 @@
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Parsers.Netlist.Spice;
 using System;
 using Xunit;
@@ -15,17 +16,10 @@ namespace SpiceSharpParser.IntegrationTests
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.CaseSensitivity.IgnoreCaseForDotStatements = false;
 
-            try
-            {
-                var text = string.Join(Environment.NewLine,
-                    "Title",
-                    ".End");
-
-                parser.ParseNetlist(text);
-            }
-            catch (NoEndKeywordException ex)
-            {
-            }
+            var text = string.Join(Environment.NewLine,
+                "Title",
+                ".End");
+            Assert.Throws<NoEndKeywordException>(() => parser.ParseNetlist(text));
         }
 
         [Fact]
@@ -156,6 +150,81 @@ namespace SpiceSharpParser.IntegrationTests
                 ".End");
 
             parser.ParseNetlist(text);
+        }
+
+        [Fact]
+        public void NodeNamesPositiveTest()
+        {
+            var parser = new SpiceParser();
+
+            parser.Settings.Parsing.HasTitle = true;
+            parser.Settings.Parsing.IsEndRequired = true;
+            parser.Settings.CaseSensitivity.IgnoreCaseForNodes = true;
+
+            var text = string.Join(Environment.NewLine,
+                "Title",
+                "R1 0 out {cos(0)}",
+                "V1 0 OUT 10",
+                ".SAVE V(Out)",
+                ".OP",
+                ".END");
+
+            var parseResult = parser.ParseNetlist(text);
+            var export = RunOpSimulation(parseResult.Result, "V(Out)");
+
+            Assert.Equal(-10, export);
+        }
+
+        [Fact]
+        public void NodeNamesNegativeTest()
+        {
+            var parser = new SpiceParser();
+
+            parser.Settings.Parsing.HasTitle = true;
+            parser.Settings.Parsing.IsEndRequired = true;
+            parser.Settings.CaseSensitivity.IgnoreCaseForNodes = false;
+
+            var text = string.Join(Environment.NewLine,
+                "Title",
+                "R1 0 out {cos(0)}",
+                "V1 0 OUT 10",
+                ".SAVE V(Out)",
+                ".OP",
+                ".END");
+
+            var parseResult = parser.ParseNetlist(text);
+            Assert.Throws<GeneralReaderException>(() => RunOpSimulation(parseResult.Result, "V(Out)"));
+        }
+
+        [Fact]
+        public void NodeNamesSubcircuitPositiveTest()
+        {
+            var parser = new SpiceParser();
+
+            parser.Settings.Parsing.HasTitle = true;
+            parser.Settings.Parsing.IsEndRequired = true;
+            parser.Settings.CaseSensitivity.IgnoreCaseForNodes = true;
+
+            var text = string.Join(Environment.NewLine,
+                "Subcircuit - SingleSubcircuitWithParams",
+                "V1 IN 0 4.0",
+                "X1 IN Out twoResistorsInSeries R1=1 R2=2",
+                "RX OUT 0 1",
+                ".SUBCKT twoResistorsInSeries Input oUtput params: R1=10 R2=100",
+                "R1 input 1 {R1}",
+                "R2 1 output {R2}",
+                ".ENDS twoResistorsInSeries",
+                ".OP",
+                ".SAVE V(OUT)",
+                ".END");
+
+            var parseResult = parser.ParseNetlist(text);
+            double export = RunOpSimulation(parseResult.Result, "V(OUT)");
+
+            // Create references
+            double[] references = { 1.0 };
+
+            EqualsWithTol(new double[] { export }, references);
         }
     }
 }

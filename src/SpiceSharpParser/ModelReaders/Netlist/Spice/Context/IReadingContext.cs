@@ -60,14 +60,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         IModelsRegistry ModelsRegistry { get; }
 
         /// <summary>
-        /// Gets the statements reader.
+        /// Gets or sets the statements reader.
         /// </summary>
         ISpiceStatementsReader StatementsReader { get; set; }
 
         /// <summary>
-        /// Gets the waveform reader.
+        /// Gets or sets the waveform reader.
         /// </summary>
         IWaveformReader WaveformReader { get; set; }
+
+        CaseSensitivitySettings CaseSensitivity { get; set; }
 
         /// <summary>
         /// Parses an expression to double.
