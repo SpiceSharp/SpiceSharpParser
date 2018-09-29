@@ -20,7 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
             function.VirtualParameters = false;
             function.ArgumentsCount = 1;
 
-            function.Logic = (args, evaluator) =>
+            function.Logic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -52,7 +52,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
             function.VirtualParameters = false;
             function.ArgumentsCount = 0;
 
-            function.Logic = (args, evaluator) =>
+            function.Logic = (image, args, evaluator) =>
             {
                 if (args.Length != 0)
                 {
@@ -79,7 +79,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
             function.VirtualParameters = false;
             function.ArgumentsCount = 1;
 
-            function.Logic = (args, evaluator) =>
+            function.Logic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {

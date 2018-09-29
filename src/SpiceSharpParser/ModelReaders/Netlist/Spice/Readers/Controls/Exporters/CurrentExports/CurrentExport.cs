@@ -12,16 +12,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <summary>
         /// Initializes a new instance of the <see cref="CurrentExport"/> class.
         /// </summary>
+        /// <param name="name">Name of export.</param>
         /// <param name="simulation">A simulation</param>
         /// <param name="source">A identifier</param>
-        public CurrentExport(Simulation simulation, Identifier source)
+        public CurrentExport(string name, Simulation simulation, Identifier source)
             : base(simulation)
         {
-            if (simulation == null)
-            {
-                throw new System.ArgumentNullException(nameof(simulation));
-            }
-
+            Name = name ?? throw new System.NullReferenceException(nameof(name));
             Source = source ?? throw new System.NullReferenceException(nameof(source));
 
             if (simulation is FrequencySimulation)
@@ -32,8 +29,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             {
                 ExportRealImpl = new RealPropertyExport(simulation, source, "i");
             }
-
-            Name = "i(" + Source + ")";
         }
 
         /// <summary>

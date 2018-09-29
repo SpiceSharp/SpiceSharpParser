@@ -261,7 +261,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         }
 
                         // Add current export for component
-                        context.Result.AddExport(Mapper.Get("i").CreateExport("i", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator, context.CaseSensitivity.IgnoreCaseForNodes));
+                        context.Result.AddExport(Mapper.Get("i").CreateExport("I(" + entity.Name + ")", "i", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator, context.CaseSensitivity.IgnoreCaseForNodes));
                     }
                 }
 
@@ -270,7 +270,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     var @params = new ParameterCollection();
                     @params.Add(new WordParameter(node.ToString()));
 
-                    context.Result.AddExport(Mapper.Get("v").CreateExport("v", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator, context.CaseSensitivity.IgnoreCaseForNodes));
+                    context.Result.AddExport(Mapper.Get("v").CreateExport("V(" + node + ")", "v", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator, context.CaseSensitivity.IgnoreCaseForNodes));
                 }
             }
         }

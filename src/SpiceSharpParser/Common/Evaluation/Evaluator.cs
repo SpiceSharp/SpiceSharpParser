@@ -233,7 +233,7 @@ namespace SpiceSharpParser.Common.Evaluation
             userFunction.VirtualParameters = false;
             userFunction.ArgumentsCount = arguments.Count;
 
-            userFunction.Logic = (args, evaluator) =>
+            userFunction.Logic = (image, args, evaluator) =>
             {
                 var childEvaluator = evaluator.CreateChildEvaluator(evaluator.Name + "_" + name, evaluator.Context);
                 for (var i = 0; i < arguments.Count; i++)

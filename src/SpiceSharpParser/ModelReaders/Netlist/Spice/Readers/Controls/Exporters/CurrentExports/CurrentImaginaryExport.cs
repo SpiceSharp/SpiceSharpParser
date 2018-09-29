@@ -13,20 +13,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <summary>
         /// Initializes a new instance of the <see cref="CurrentImaginaryExport"/> class.
         /// </summary>
+        /// <param name="name">Name of export.</param>
         /// <param name="simulation">A simulation</param>
         /// <param name="source">An identifier</param>
-        public CurrentImaginaryExport(Simulation simulation, Identifier source)
+        public CurrentImaginaryExport(string name, Simulation simulation, Identifier source)
             : base(simulation)
         {
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             Source = source ?? throw new ArgumentNullException(nameof(source));
-            if (simulation == null)
-            {
-                throw new ArgumentNullException(nameof(simulation));
-            }
-
             ExportImpl = new ComplexPropertyExport(simulation, source, "i");
-
-            Name = "ii(" + Source + ")";
         }
 
         /// <summary>

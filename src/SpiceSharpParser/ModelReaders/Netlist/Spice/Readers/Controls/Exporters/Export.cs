@@ -9,7 +9,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
     {
         public Export(Simulation simulation)
         {
-            Simulation = simulation;
+            Simulation = simulation ?? throw new System.ArgumentNullException(nameof(simulation));
         }
 
         public Simulation Simulation { get; }

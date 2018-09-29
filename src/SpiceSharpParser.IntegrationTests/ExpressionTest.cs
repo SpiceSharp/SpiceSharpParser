@@ -20,7 +20,7 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.Equal(1, result.Exports.Count);
             Assert.Equal(1, result.Simulations.Count);
 
-            var export = RunOpSimulation(result, "V(1, 2)");
+            var export = RunOpSimulation(result, "V(1,2)");
 
             Assert.Equal(15, export);
         }

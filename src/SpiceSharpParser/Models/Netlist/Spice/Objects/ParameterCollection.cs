@@ -228,5 +228,10 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         {
             this.Values.RemoveAt(index);
         }
+
+        public override string ToString()
+        {
+            return string.Join(",", Values);
+        }
     }
 }

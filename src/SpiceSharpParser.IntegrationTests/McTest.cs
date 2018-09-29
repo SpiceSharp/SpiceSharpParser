@@ -152,10 +152,10 @@ namespace SpiceSharpParser.IntegrationTests
                 ".IC V(OUT)=0.0",
                 ".TRAN 1e-8 10e-6",
                 ".SAVE V(OUT)",
-                ".MC 1000 TRAN V(OUT) MAX",
+                ".MC 100 TRAN V(OUT) MAX",
                 ".END");
 
-            Assert.Equal(1000, result.Simulations.Count);
+            Assert.Equal(100, result.Simulations.Count);
             Assert.True(result.MonteCarloResult.Enabled);
             RunSimulations(result);
             var mcResult = result.MonteCarloResult;

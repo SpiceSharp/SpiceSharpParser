@@ -34,7 +34,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                 if (Mapper.Contains(type))
                 {
-                    return Mapper.Get(type).CreateExport(type, bp.Parameters, simulation, nodeNameGenerator, objectNameGenerator, ignoreCaseNodes);
+                    return Mapper.Get(type).CreateExport(parameter.Image, type, bp.Parameters, simulation, nodeNameGenerator, objectNameGenerator, ignoreCaseNodes);
                 }
             }
 
@@ -48,7 +48,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     parameters.Add(new WordParameter(rp.Name));
                     parameters.Add(new WordParameter(rp.Argument));
 
-                    return Mapper.Get(type).CreateExport(type, parameters, simulation, nodeNameGenerator, objectNameGenerator, false);
+                    return Mapper.Get(type).CreateExport(parameter.Image, type, parameters, simulation, nodeNameGenerator, objectNameGenerator, false);
                 }
             }
 

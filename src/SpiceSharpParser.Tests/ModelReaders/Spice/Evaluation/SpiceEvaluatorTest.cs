@@ -111,16 +111,16 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             SpiceEvaluator v = new SpiceEvaluator();
 
             v.SetParameter("N", 1.5);
-            Assert.Equal(-5, v.EvaluateDouble("table(N, 1, 0, 2, -10"));
+            Assert.Equal(-5, v.EvaluateDouble("table(N, 1, 0, 2, -10)"));
 
             v.SetParameter("N", 3);
-            Assert.Equal(-10, v.EvaluateDouble("table(N, 1, 0, 2, -10"));
+            Assert.Equal(-10, v.EvaluateDouble("table(N, 1, 0, 2, -10)"));
 
             v.SetParameter("N", 0);
-            Assert.Equal(0, v.EvaluateDouble("table(N, 1, 0, 2, -10"));
+            Assert.Equal(0, v.EvaluateDouble("table(N, 1, 0, 2, -10)"));
 
             v.SetParameter("N", -1);
-            Assert.Equal(0, v.EvaluateDouble("table(N, 1, 0, 2, -10"));
+            Assert.Equal(0, v.EvaluateDouble("table(N, 1, 0, 2, -10)"));
         }
 
         [Fact]
@@ -553,8 +553,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             var p = new SpiceEvaluator();
 
             //TODO: It shouldn't be that messy ...
-            Func<object[], IEvaluator, object> fibLogic = null; //TODO: Use smarter methods to define anonymous recursion in C# (there is a nice post on some nice blog on msdn)
-            fibLogic = (object[] args, IEvaluator evaluator) =>
+            Func<string, object[], IEvaluator, object> fibLogic = null; //TODO: Use smarter methods to define anonymous recursion in C# (there is a nice post on some nice blog on msdn)
+            fibLogic = (string image, object[] args, IEvaluator evaluator) =>
             {
                 double x = (double)args[0];
 
@@ -568,7 +568,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
                     return 1.0;
                 }
 
-                return (double)fibLogic(new object[1] { (x - 1) }, evaluator) + (double)fibLogic(new object[1] { (x - 2) }, evaluator);
+                return (double)fibLogic(image, new object[1] { (x - 1) }, evaluator) + (double)fibLogic(image, new object[1] { (x - 2) }, evaluator);
             };
 
             var fib = new CustomFunction()

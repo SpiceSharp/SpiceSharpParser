@@ -24,7 +24,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <returns>
         /// A new export
         /// </returns>
-        public override Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator, bool ignoreCaseForNodes)
+        public override Export CreateExport(string name, string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator, bool ignoreCaseForNodes)
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
             {
@@ -62,13 +62,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             Export ve = null;
             switch (type.ToLower())
             {
-                case "v": ve = new VoltageExport(simulation, node, reference, nodePath, referencePath); break;
-                case "vr": ve = new VoltageRealExport(simulation, node, reference, nodePath, referencePath); break;
-                case "vi": ve = new VoltageImaginaryExport(simulation, node, reference, nodePath, referencePath); break;
-                case "vm": ve = new VoltageMagnitudeExport(simulation, node, reference, nodePath, referencePath); break;
-                case "vdb": ve = new VoltageDecibelExport(simulation, node, reference, nodePath, referencePath); break;
+                case "v": ve = new VoltageExport(name, simulation, node, reference); break;
+                case "vr": ve = new VoltageRealExport(name, simulation, node, reference); break;
+                case "vi": ve = new VoltageImaginaryExport(name, simulation, node, reference); break;
+                case "vm": ve = new VoltageMagnitudeExport(name, simulation, node, reference); break;
+                case "vdb": ve = new VoltageDecibelExport(name, simulation, node, reference); break;
                 case "vph":
-                case "vp": ve = new VoltagePhaseExport(simulation, node, reference, nodePath, referencePath); break;
+                case "vp": ve = new VoltagePhaseExport(name, simulation, node, reference); break;
             }
 
             return ve;

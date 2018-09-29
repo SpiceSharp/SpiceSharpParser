@@ -15,18 +15,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <param name="simulation">A simulation</param>
         /// <param name="source">A identifier of component</param>
         /// <param name="property">Name of property for export</param>
-        public PropertyExport(Simulation simulation, Identifier source, string property)
+        public PropertyExport(string name, Simulation simulation, Identifier source, string property)
             : base(simulation)
         {
-            if (simulation == null)
-            {
-                throw new System.ArgumentNullException(nameof(simulation));
-            }
-
+            Name = name ?? throw new System.NullReferenceException(nameof(name));
             Source = source ?? throw new System.NullReferenceException(nameof(source));
-
             ExportRealImpl = new RealPropertyExport(simulation, source, property);
-            Name = string.Format("@{0}[{1}]", Source, property);
         }
 
         /// <summary>
