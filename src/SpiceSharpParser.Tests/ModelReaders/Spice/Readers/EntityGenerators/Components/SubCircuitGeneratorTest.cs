@@ -17,6 +17,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         {
             // prepare
             var context = Substitute.For<IReadingContext>();
+            context.CaseSensitivity = new CaseSensitivitySettings();
+
             var parameters = new ParameterCollection
             {
                 new IdentifierParameter("net2"),

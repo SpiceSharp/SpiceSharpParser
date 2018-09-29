@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <returns>
         /// A new export.
         /// </returns>
-        public abstract Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator);
+        public abstract Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator, bool ignoreCaseForNodes);
 
         /// <summary>
         /// Gets supported exports.
@@ -28,5 +28,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// A list of supported exports.
         /// </returns>
         public abstract ICollection<string> GetSupportedTypes();
+
+        protected string GetNodeName(string image, bool ignoreCaseForNodes)
+        {
+            return ignoreCaseForNodes ? image.ToLower() : image;
+        }
     }
 }

@@ -42,6 +42,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             };
 
             var readingContext = Substitute.For<IReadingContext>();
+            readingContext.CaseSensitivity = new SpiceSharpParser.ModelReaders.Netlist.Spice.CaseSensitivitySettings();
 
             // act
             var nodeSetControl = new NodeSetControl();

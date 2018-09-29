@@ -62,7 +62,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 nodeNameGenerator,
                 objectNameGenerator,
                 statementsReader,
-                waveformReader);
+                waveformReader,
+                Settings.CaseSettings);
 
             // Read statements form input netlist using created context
             readingContext.Read(netlist.Statements, Settings.Orderer);
@@ -85,7 +86,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                             new Common.Evaluation.ExpressionRegistry(),
                             Settings.CaseSettings.IgnoreCaseForFunctions);
 
-            var exportFunctions = ExportFunctions.Create(Settings.Mappings.Exporters, nodeNameGenerator, objectNameGenerator);
+            var exportFunctions = ExportFunctions.Create(Settings.Mappings.Exporters, nodeNameGenerator, objectNameGenerator, Settings.CaseSettings.IgnoreCaseForNodes);
             foreach (var exportFunction in exportFunctions)
             {
                 readingEvaluator.CustomFunctions.Add(exportFunction.Key, exportFunction.Value);

@@ -34,6 +34,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             IObjectNameGenerator objectNameGenerator,
             ISpiceStatementsReader statementsReader,
             IWaveformReader waveformReader,
+            CaseSensitivitySettings caseSettings,
             IReadingContext parent = null)
         {
             ContextName = contextName ?? throw new ArgumentNullException(nameof(contextName));
@@ -67,6 +68,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             ModelsRegistry = new StochasticModelsRegistry(generators);
             StatementsReader = statementsReader;
             WaveformReader = waveformReader;
+            CaseSensitivity = caseSettings;
         }
 
         /// <summary>
@@ -129,6 +131,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         public IWaveformReader WaveformReader { get; set; }
 
+        public CaseSensitivitySettings CaseSensitivity { get; set; }
+
         /// <summary>
         /// Sets voltage initial condition for node.
         /// </summary>
@@ -136,6 +140,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="expression">Expression.</param>
         public void SetICVoltage(string nodeName, string expression)
         {
+            if (CaseSensitivity.IgnoreCaseForNodes)
+            {
+                nodeName = nodeName.ToUpper();
+            }
+
             var fullNodeName = NodeNameGenerator.Generate(nodeName);
             SimulationsParameters.SetICVoltage(nodeName, expression);
         }
@@ -170,6 +179,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             for (var i = 0; i < component.PinCount; i++)
             {
                 string pinName = parameters.GetString(i);
+
+                if (CaseSensitivity.IgnoreCaseForNodes)
+                {
+                    pinName = pinName.ToUpper();
+                }
+
                 nodes[i] = NodeNameGenerator.Generate(pinName);
             }
 

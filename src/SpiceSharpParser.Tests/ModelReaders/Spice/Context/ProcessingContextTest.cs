@@ -31,7 +31,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
                 new MainCircuitNodeNameGenerator(new string[] { }),
                 new ObjectNameGenerator(string.Empty),
                 null,
-                null);
+                null,
+                new SpiceSharpParser.ModelReaders.Netlist.Spice.CaseSensitivitySettings());
 
             // act
             context.SimulationsParameters.SetNodeSetVoltage("node1", "x+1");

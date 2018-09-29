@@ -45,7 +45,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// Node name.
         /// </returns>
-        public string Generate(string pinName)
+        public string Generate(string pinName, bool ignoreCaseForNodes = true)
         {
             if (pinName is null)
             {
@@ -53,6 +53,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
 
             if (pinName.ToLower() == "gnd")
+            {
+                return pinName.ToUpper();
+            }
+
+            if (ignoreCaseForNodes)
             {
                 return pinName.ToUpper();
             }
@@ -80,12 +85,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// A node name.
         /// </returns>
-        public string Parse(string path)
+        public string Parse(string path, bool ignoreCaseForNodes = true)
         {
             string[] parts = path.Split('.');
 
             if (parts.Length == 1)
             {
+                if (ignoreCaseForNodes)
+                {
+                    return path.ToUpper();
+                }
+
                 return path; // path contains only single node identifier
             }
             else

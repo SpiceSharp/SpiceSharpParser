@@ -49,7 +49,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 new MainCircuitNodeNameGenerator(new string[] { }),
                 new ObjectNameGenerator(string.Empty),
                 null,
-                null);
+                null,
+                new CaseSensitivitySettings());
 
             // act
             var optionControl = new OptionsControl();
@@ -87,7 +88,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 new MainCircuitNodeNameGenerator(new string[] { }),
                 new ObjectNameGenerator(string.Empty),
                 null,
-                null);
+                null,
+                new CaseSensitivitySettings());
 
             // act
             var optionControl = new OptionsControl();

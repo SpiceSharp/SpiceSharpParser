@@ -15,17 +15,10 @@ namespace SpiceSharpParser.IntegrationTests
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.CaseSensitivity.IgnoreCaseForDotStatements = false;
 
-            try
-            {
-                var text = string.Join(Environment.NewLine,
-                    "Title",
-                    ".End");
-
-                parser.ParseNetlist(text);
-            }
-            catch (NoEndKeywordException ex)
-            {
-            }
+            var text = string.Join(Environment.NewLine,
+                "Title",
+                ".End");
+            Assert.Throws<NoEndKeywordException>(() => parser.ParseNetlist(text));
         }
 
         [Fact]
@@ -156,6 +149,29 @@ namespace SpiceSharpParser.IntegrationTests
                 ".End");
 
             parser.ParseNetlist(text);
+        }
+
+        [Fact]
+        public void NodeNamesPositiveTest()
+        {
+            var parser = new SpiceParser();
+
+            parser.Settings.Parsing.HasTitle = true;
+            parser.Settings.Parsing.IsEndRequired = true;
+            parser.Settings.CaseSensitivity.IgnoreCaseForNodes = true;
+
+            var text = string.Join(Environment.NewLine,
+                "Title",
+                "R1 0 out {cos(0)}",
+                "V1 0 OUT 10",
+                ".SAVE V(Out)",
+                ".OP",
+                ".END");
+
+            var parseResult = parser.ParseNetlist(text);
+            var export = RunOpSimulation(parseResult.Result, "V(Out)");
+
+            Assert.Equal(-10, export);
         }
     }
 }

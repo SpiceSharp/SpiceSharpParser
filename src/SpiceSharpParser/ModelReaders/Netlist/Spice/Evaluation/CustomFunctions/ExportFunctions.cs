@@ -17,7 +17,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
         /// <summary>
         /// Creates export custom functions.
         /// </summary>
-        public static IEnumerable<KeyValuePair<string, CustomFunction>> Create(IMapper<Exporter> exporterRegistry, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
+        public static IEnumerable<KeyValuePair<string, CustomFunction>> Create(IMapper<Exporter> exporterRegistry, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator, bool ignoreCaseForNodes)
         {
             if (exporterRegistry == null)
             {
@@ -37,7 +37,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
                 }
                 else
                 {
-                    spiceFunction = CreateOrdinaryExport(exporters, exporter.Value, exporter.Key, nodeNameGenerator, objectNameGenerator);
+                    spiceFunction = CreateOrdinaryExport(exporters, exporter.Value, exporter.Key, nodeNameGenerator, objectNameGenerator, ignoreCaseForNodes);
                 }
 
                 result.Add(new KeyValuePair<string, CustomFunction>(exporter.Key, spiceFunction));
@@ -46,7 +46,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
             return result;
         }
 
-        public static CustomFunction CreateOrdinaryExport(Dictionary<string, Readers.Controls.Exporters.Export> exporters, Readers.Controls.Exporters.Exporter exporter, string exportType, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
+        public static CustomFunction CreateOrdinaryExport(Dictionary<string, Readers.Controls.Exporters.Export> exporters, Readers.Controls.Exporters.Exporter exporter, string exportType, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator, bool ignoreCaseForNodes)
         {
             CustomFunction function = new CustomFunction();
             function.VirtualParameters = true;
@@ -72,7 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
 
                     var parameters = new ParameterCollection();
                     parameters.Add(vectorParameter);
-                    var export = exporter.CreateExport(exportType, parameters, (Simulation)evaluator.Context, nodeNameGenerator, objectNameGenerator);
+                    var export = exporter.CreateExport(exportType, parameters, (Simulation)evaluator.Context, nodeNameGenerator, objectNameGenerator, ignoreCaseForNodes);
                     exporters[exporterKey] = export;
                 }
 
@@ -106,7 +106,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
                     parameters.Add(new WordParameter(args[0].ToString()));
                     parameters.Add(new WordParameter(args[1].ToString()));
 
-                    var export = exporter.CreateExport(exportType, parameters, evaluator.Context != null ? (Simulation)evaluator.Context : null, nodeNameGenerator, objectNameGenerator);
+                    var export = exporter.CreateExport(exportType, parameters, evaluator.Context != null ? (Simulation)evaluator.Context : null, nodeNameGenerator, objectNameGenerator, false);
                     exporters[exporterKey] = export;
                 }
 

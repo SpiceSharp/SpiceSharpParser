@@ -10,6 +10,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         private readonly Dictionary<string, string> pinMap = new Dictionary<string, string>();
         private readonly HashSet<string> globalsSet = new HashSet<string>();
 
+        public bool IgnoreCaseForNodes { get; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SubcircuitNodeNameGenerator"/> class.
         /// </summary>
@@ -18,8 +20,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="currentSubCircuit">The current subcircuit</param>
         /// <param name="pinInstanceNames">The names of pins</param>
         /// <param name="globals">Global pin names</param>
-        public SubcircuitNodeNameGenerator(string subcircuitFullName, string subCircuitName, SubCircuit currentSubCircuit, List<string> pinInstanceNames, IEnumerable<string> globals)
+        public SubcircuitNodeNameGenerator(string subcircuitFullName, string subCircuitName, SubCircuit currentSubCircuit, List<string> pinInstanceNames, IEnumerable<string> globals, bool ignoreCaseForNodes)
         {
+            IgnoreCaseForNodes = ignoreCaseForNodes;
             if (globals == null)
             {
                 throw new ArgumentNullException(nameof(globals));
@@ -33,7 +36,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             for (var i = 0; i < SubCircuit.Pins.Count; i++)
             {
-                pinMap[SubCircuit.Pins[i]] = PinInstanceNames[i];
+                var pinName = SubCircuit.Pins[i];
+                var pinInstanceName = PinInstanceNames[i];
+                if (IgnoreCaseForNodes)
+                {
+                    pinName = pinName.ToUpper();
+                    pinInstanceName = pinInstanceName.ToUpper();
+                }
+
+                pinMap[pinName] = pinInstanceName;
             }
 
             InitGlobals(globals);
@@ -76,16 +87,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// Node name
         /// </returns>
-        public string Generate(string pinName)
+        public string Generate(string pinName, bool ignoreCaseForNodes = true)
         {
             if (pinName is null)
             {
                 throw new ArgumentNullException(nameof(pinName));
             }
 
-            if (pinName.ToLower() == "gnd")
+            if (ignoreCaseForNodes)
             {
-                return pinName.ToUpper();
+                pinName = pinName.ToUpper();
+            }
+
+            if (pinName == "GND")
+            {
+                return "GND";
             }
 
             if (globalsSet.Contains(pinName))
@@ -109,6 +125,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="pinName">Pin name</param>
         public void SetGlobal(string pinName)
         {
+            if (IgnoreCaseForNodes)
+            {
+                pinName = pinName.ToUpper();
+            }
+
             // ADD thread-safety
             if (!globalsSet.Contains(pinName))
             {
@@ -123,13 +144,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// A node name
         /// </returns>
-        public string Parse(string path)
+        public string Parse(string path, bool ignoreCaseForNodes = true)
         {
             string[] parts = path.Split('.');
 
             if (parts.Length == 1)
             {
                 string pinName = parts[0];
+
+                if (ignoreCaseForNodes)
+                {
+                    pinName = pinName.ToUpper();
+                }
 
                 if (globalsSet.Contains(pinName))
                 {

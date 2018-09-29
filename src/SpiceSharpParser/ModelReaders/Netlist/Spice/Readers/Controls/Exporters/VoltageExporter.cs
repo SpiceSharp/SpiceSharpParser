@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
@@ -23,7 +24,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <returns>
         /// A new export
         /// </returns>
-        public override Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
+        public override Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator, bool ignoreCaseForNodes)
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
             {
@@ -42,7 +43,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                         throw new WrongParametersCountException("No nodes for voltage export. Node expected");
                     case 2:
                         referencePath = vector.Elements[1].Image;
-                        reference = new StringIdentifier(nodeNameGenerator.Parse(referencePath));
+                        reference = new StringIdentifier(nodeNameGenerator.Parse(referencePath, ignoreCaseForNodes));
                         goto case 1;
                     case 1:
                         nodePath = vector.Elements[0].Image;
@@ -55,7 +56,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             else
             {
                 nodePath = parameters.GetString(0);
-                node = new StringIdentifier(nodeNameGenerator.Parse(nodePath));
+                node = new StringIdentifier(nodeNameGenerator.Parse(nodePath, ignoreCaseForNodes ));
             }
 
             Export ve = null;
@@ -83,5 +84,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         {
             return new List<string>() { "v", "vr", "vi", "vm", "vdb", "vp", "vph" };
         }
+
     }
 }
