@@ -12,14 +12,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpressionExport"/> class.
         /// </summary>
-        /// <param name="exportName">Name of export</param>
+        /// <param name="name">Name of export</param>
         /// <param name="expressionName">Name of expression</param>
         /// <param name="expression">Expression</param>
         /// <param name="evaluator">Evaluator</param>
-        public ExpressionExport(string exportName, string expressionName, string expression, IEvaluator evaluator, Simulation simulation)
+        public ExpressionExport(string name, string expressionName, string expression, IEvaluator evaluator, Simulation simulation)
             : base(simulation)
         {
-            Name = exportName;
+            Name = name;
             ExpressionName = expressionName;
             Evaluator = evaluator;
             Expression = expression;

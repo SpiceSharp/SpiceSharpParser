@@ -53,7 +53,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
             function.Name = "Exporter: " + exportType;
             function.ArgumentsCount = -1;
 
-            function.Logic = (args, evaluator) =>
+            function.Logic = (image, args, evaluator) =>
             {
                 if (evaluator.Context == null || !(evaluator.Context is Simulation))
                 {
@@ -72,7 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
 
                     var parameters = new ParameterCollection();
                     parameters.Add(vectorParameter);
-                    var export = exporter.CreateExport(exportType, parameters, (Simulation)evaluator.Context, nodeNameGenerator, objectNameGenerator, ignoreCaseForNodes);
+                    var export = exporter.CreateExport(image, exportType, parameters, (Simulation)evaluator.Context, nodeNameGenerator, objectNameGenerator, ignoreCaseForNodes);
                     exporters[exporterKey] = export;
                 }
 
@@ -96,7 +96,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
             function.Name = "Exporter: @";
             function.ArgumentsCount = 2;
 
-            function.Logic = (args, evaluator) =>
+            function.Logic = (image, args, evaluator) =>
             {
                 string exporterKey = string.Format("{0}_{1}_{2}", evaluator.Context != null ? ((Simulation)evaluator.Context).Name : "no_simulation", exportType, string.Join(",", args));
 
@@ -106,7 +106,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions
                     parameters.Add(new WordParameter(args[0].ToString()));
                     parameters.Add(new WordParameter(args[1].ToString()));
 
-                    var export = exporter.CreateExport(exportType, parameters, evaluator.Context != null ? (Simulation)evaluator.Context : null, nodeNameGenerator, objectNameGenerator, false);
+                    var export = exporter.CreateExport(image, exportType, parameters, evaluator.Context != null ? (Simulation)evaluator.Context : null, nodeNameGenerator, objectNameGenerator, false);
                     exporters[exporterKey] = export;
                 }
 

@@ -23,7 +23,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <returns>
         /// A new export
         /// </returns>
-        public override Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator, bool ignoreCaseForNodes)
+        public override Export CreateExport(string name, string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator, bool ignoreCaseForNodes)
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
             {
@@ -53,12 +53,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             Export export = null;
             switch (type.ToLower())
             {
-                case "i": export = new CurrentExport(simulation, componentIdentifier); break;
-                case "ir": export = new CurrentRealExport(simulation, componentIdentifier); break;
-                case "ii": export = new CurrentImaginaryExport(simulation, componentIdentifier); break;
-                case "im": export = new CurrentMagnitudeExport(simulation, componentIdentifier); break;
-                case "idb": export = new CurrentDecibelExport(simulation, componentIdentifier); break;
-                case "ip": export = new CurrentPhaseExport(simulation, componentIdentifier); break;
+                case "i": export = new CurrentExport(name, simulation, componentIdentifier); break;
+                case "ir": export = new CurrentRealExport(name, simulation, componentIdentifier); break;
+                case "ii": export = new CurrentImaginaryExport(name, simulation, componentIdentifier); break;
+                case "im": export = new CurrentMagnitudeExport(name, simulation, componentIdentifier); break;
+                case "idb": export = new CurrentDecibelExport(name, simulation, componentIdentifier); break;
+                case "ip": export = new CurrentPhaseExport(name, simulation, componentIdentifier); break;
             }
 
             return export;

@@ -146,7 +146,7 @@ namespace SpiceSharpParser.IntegrationTests
         public static double RunOpSimulation(SpiceNetlistReaderResult readerResult, string nameOfExport)
         {
             double result = double.NaN;
-            var export = readerResult.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
+            var export = readerResult.Exports.Find(e => e.Name == nameOfExport); 
             var simulation = readerResult.Simulations.Single();
             simulation.ExportSimulationData += (sender, e) => {
 
@@ -166,7 +166,7 @@ namespace SpiceSharpParser.IntegrationTests
             simulation.ExportSimulationData += (sender, e) => {
 
                 for (var i = 0; i < nameOfExport.Length; i++) {
-                    var export = readerResult.Exports.Find(exp => exp.Name.ToLower() == nameOfExport[i].ToLower()); //TODO: Remove ToLower someday
+                    var export = readerResult.Exports.Find(exp => exp.Name == nameOfExport[i]); 
                     result[i] = export.Extract();
                 }
             };
@@ -206,7 +206,7 @@ namespace SpiceSharpParser.IntegrationTests
         {
             var list = new List<Tuple<double,double>>();
 
-            var export = readerResult.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
+            var export = readerResult.Exports.Find(e => e.Name == nameOfExport); //TODO: Remove ToLower someday
             var simulation = readerResult.Simulations.Single();
             simulation.ExportSimulationData += (sender, e) => {
 
@@ -222,7 +222,7 @@ namespace SpiceSharpParser.IntegrationTests
         {
             var list = new List<Tuple<double, double>>();
 
-            var export = readerResult.Exports.Find(e => e.Name.ToLower() == nameOfExport.ToLower()); //TODO: Remove ToLower someday
+            var export = readerResult.Exports.Find(e => e.Name == nameOfExport); //TODO: Remove ToLower someday
             var simulation = readerResult.Simulations.Single();
             simulation.ExportSimulationData += (sender, e) => {
 

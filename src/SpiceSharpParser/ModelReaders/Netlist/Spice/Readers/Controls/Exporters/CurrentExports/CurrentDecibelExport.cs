@@ -13,47 +13,42 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <summary>
         /// Initializes a new instance of the <see cref="CurrentDecibelExport"/> class.
         /// </summary>
+        /// <param name="name">Name of export.</param>
         /// <param name="simulation">A simulation</param>
         /// <param name="source">An identifier</param>
-        public CurrentDecibelExport(Simulation simulation, Identifier source)
+        public CurrentDecibelExport(string name, Simulation simulation, Identifier source)
             : base(simulation)
         {
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             Source = source ?? throw new ArgumentNullException(nameof(source));
-            if (simulation == null)
-            {
-                throw new ArgumentNullException(nameof(simulation));
-            }
-
             ExportImpl = new ComplexPropertyExport(simulation, source, "i");
-
-            Name = "idb(" + Source + ")";
         }
 
         /// <summary>
-        /// Gets the main node
+        /// Gets the main node.
         /// </summary>
         public Identifier Source { get; }
 
         /// <summary>
-        /// Gets the type name
+        /// Gets the type name.
         /// </summary>
         public override string TypeName => "none";
 
         /// <summary>
-        /// Gets the quantity unit
+        /// Gets the quantity unit.
         /// </summary>
         public override string QuantityUnit => "Current (db A)";
 
         /// <summary>
-        /// Gets the complex property export
+        /// Gets the complex property export.
         /// </summary>
         protected ComplexPropertyExport ExportImpl { get; }
 
         /// <summary>
-        /// Extracts current magnitude value
+        /// Extracts current magnitude value.
         /// </summary>
         /// <returns>
-        /// Current magnitude value
+        /// Current magnitude value.
         /// </returns>
         public override double Extract()
         {

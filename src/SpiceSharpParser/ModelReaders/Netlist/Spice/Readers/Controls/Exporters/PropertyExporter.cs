@@ -22,14 +22,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <returns>
         /// A new export
         /// </returns>
-        public override Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator, bool ignoreCaseForNodes)
+        public override Export CreateExport(string name, string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator, bool ignoreCaseForNodes)
         {
             if (parameters.Count != 2)
             {
                 throw new WrongParameterException("Property exports should have two parameters: name of component and property name");
             }
 
-            return new PropertyExport(simulation, new StringIdentifier(parameters[0].Image), parameters[1].Image.ToLower());
+            return new PropertyExport(name, simulation, new StringIdentifier(parameters[0].Image), parameters[1].Image.ToLower());
         }
 
         /// <summary>
