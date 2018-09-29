@@ -43,7 +43,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                         throw new WrongParametersCountException("No nodes for voltage export. Node expected");
                     case 2:
                         referencePath = vector.Elements[1].Image;
-                        reference = new StringIdentifier(nodeNameGenerator.Parse(referencePath, ignoreCaseForNodes));
+                        reference = new StringIdentifier(nodeNameGenerator.Parse(referencePath));
                         goto case 1;
                     case 1:
                         nodePath = vector.Elements[0].Image;
@@ -56,7 +56,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             else
             {
                 nodePath = parameters.GetString(0);
-                node = new StringIdentifier(nodeNameGenerator.Parse(nodePath, ignoreCaseForNodes ));
+                node = new StringIdentifier(nodeNameGenerator.Parse(nodePath));
             }
 
             Export ve = null;

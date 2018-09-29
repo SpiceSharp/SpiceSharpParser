@@ -13,8 +13,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Initializes a new instance of the <see cref="MainCircuitNodeNameGenerator"/> class.
         /// </summary>
         /// <param name="globals">Global pin names.</param>
-        public MainCircuitNodeNameGenerator(IEnumerable<string> globals)
+        /// <param name="ignoreCaseForNodes">Ignore case for nodes.</param>
+        public MainCircuitNodeNameGenerator(IEnumerable<string> globals, bool ignoreCaseForNodes)
         {
+            IgnoreCaseForNodes = ignoreCaseForNodes;
             if (globals == null)
             {
                 throw new ArgumentNullException(nameof(globals));
@@ -22,6 +24,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             InitGlobals(globals);
         }
+
+        public bool IgnoreCaseForNodes { get; }
 
         /// <summary>
         /// Gets the globals.
@@ -45,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// Node name.
         /// </returns>
-        public string Generate(string pinName, bool ignoreCaseForNodes = true)
+        public string Generate(string pinName)
         {
             if (pinName is null)
             {
@@ -57,7 +61,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 return pinName.ToUpper();
             }
 
-            if (ignoreCaseForNodes)
+            if (IgnoreCaseForNodes)
             {
                 return pinName.ToUpper();
             }
@@ -72,6 +76,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public void SetGlobal(string pinName)
         {
             // ADD thread-safety
+            if (IgnoreCaseForNodes)
+            {
+                pinName = pinName.ToUpper();
+            }
+
             if (!globalsSet.Contains(pinName))
             {
                 globalsSet.Add(pinName);
@@ -85,13 +94,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// A node name.
         /// </returns>
-        public string Parse(string path, bool ignoreCaseForNodes = true)
+        public string Parse(string path)
         {
             string[] parts = path.Split('.');
 
             if (parts.Length == 1)
             {
-                if (ignoreCaseForNodes)
+                if (IgnoreCaseForNodes)
                 {
                     return path.ToUpper();
                 }

@@ -169,7 +169,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var pinInstanceNames = new List<string>();
             for (var i = 0; i < parameters.Count - assigmentParametersCount - 1; i++)
             {
-                var pinInstanceName = context.NodeNameGenerator.Generate(parameters.GetString(i), context.CaseSensitivity.IgnoreCaseForNodes);
+                var pinInstanceName = context.NodeNameGenerator.Generate(parameters.GetString(i));
 
                 pinInstanceNames.Add(pinInstanceName);
             }

@@ -28,7 +28,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
                 new SimulationsParameters(evaluators),
                 evaluators,
                 Substitute.For<IResultService>(),
-                new MainCircuitNodeNameGenerator(new string[] { }),
+                new MainCircuitNodeNameGenerator(new string[] { }, true),
                 new ObjectNameGenerator(string.Empty),
                 null,
                 null,

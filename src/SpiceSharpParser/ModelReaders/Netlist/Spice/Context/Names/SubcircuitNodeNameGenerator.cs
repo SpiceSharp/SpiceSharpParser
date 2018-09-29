@@ -10,8 +10,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         private readonly Dictionary<string, string> pinMap = new Dictionary<string, string>();
         private readonly HashSet<string> globalsSet = new HashSet<string>();
 
-        public bool IgnoreCaseForNodes { get; }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SubcircuitNodeNameGenerator"/> class.
         /// </summary>
@@ -22,12 +20,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="globals">Global pin names</param>
         public SubcircuitNodeNameGenerator(string subcircuitFullName, string subCircuitName, SubCircuit currentSubCircuit, List<string> pinInstanceNames, IEnumerable<string> globals, bool ignoreCaseForNodes)
         {
-            IgnoreCaseForNodes = ignoreCaseForNodes;
             if (globals == null)
             {
                 throw new ArgumentNullException(nameof(globals));
             }
-
+            IgnoreCaseForNodes = ignoreCaseForNodes;
             RootName = subCircuitName;
             FullName = subcircuitFullName;
 
@@ -49,6 +46,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             InitGlobals(globals);
         }
+
+        public bool IgnoreCaseForNodes { get; }
 
         /// <summary>
         /// Gets the subcircuit of this node name generator
@@ -87,14 +86,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// Node name
         /// </returns>
-        public string Generate(string pinName, bool ignoreCaseForNodes = true)
+        public string Generate(string pinName)
         {
             if (pinName is null)
             {
                 throw new ArgumentNullException(nameof(pinName));
             }
 
-            if (ignoreCaseForNodes)
+            if (IgnoreCaseForNodes)
             {
                 pinName = pinName.ToUpper();
             }
@@ -144,7 +143,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// A node name
         /// </returns>
-        public string Parse(string path, bool ignoreCaseForNodes = true)
+        public string Parse(string path)
         {
             string[] parts = path.Split('.');
 
@@ -152,7 +151,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 string pinName = parts[0];
 
-                if (ignoreCaseForNodes)
+                if (IgnoreCaseForNodes)
                 {
                     pinName = pinName.ToUpper();
                 }

@@ -32,7 +32,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
             mapper.Get("r").Returns(generator);
 
             var readingContext = Substitute.For<IReadingContext>();
-            readingContext.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }));
+            readingContext.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }, true));
             readingContext.ObjectNameGenerator.Returns(new ObjectNameGenerator(string.Empty));
 
             var resultService = Substitute.For<IResultService>();

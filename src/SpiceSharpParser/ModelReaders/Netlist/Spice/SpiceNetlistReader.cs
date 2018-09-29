@@ -44,7 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
             // Create reading context
             var resultService = new ResultService(result);
-            var nodeNameGenerator = new MainCircuitNodeNameGenerator(new string[] { "0" });
+            var nodeNameGenerator = new MainCircuitNodeNameGenerator(new string[] { "0" }, Settings.CaseSettings.IgnoreCaseForNodes);
             var objectNameGenerator = new ObjectNameGenerator(string.Empty);
 
             SpiceEvaluator readingEvaluator = CreateReadingEvaluator(nodeNameGenerator, objectNameGenerator);

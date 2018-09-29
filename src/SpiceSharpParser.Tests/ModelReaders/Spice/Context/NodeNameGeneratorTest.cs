@@ -8,7 +8,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
         [Fact]
         public void GenerateNoSubcircuitTest()
         {
-            var generator = new MainCircuitNodeNameGenerator(new string[] { "0" });
+            var generator = new MainCircuitNodeNameGenerator(new string[] { "0" }, true);
 
             // ground nodes
             Assert.Equal("0", generator.Generate("0"));

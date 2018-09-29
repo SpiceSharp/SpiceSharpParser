@@ -29,7 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// A node name
         /// </returns>
-        string Generate(string pinName, bool ignoreCaseForNodes = true);
+        string Generate(string pinName);
 
         /// <summary>
         /// Parses a path and generate a node name
@@ -38,7 +38,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// A node name
         /// </returns>
-        string Parse(string path, bool ignoreCaseForNodes = true);
+        string Parse(string path);
 
         /// <summary>
         /// Makes a pin name a global pin name

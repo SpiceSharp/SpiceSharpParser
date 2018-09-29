@@ -42,7 +42,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                     }
                 }
             });
-            context.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }));
+            context.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }, true));
             context.ObjectNameGenerator.Returns(new ObjectNameGenerator(string.Empty));
 
             IReadingContext parent = null;
