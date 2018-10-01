@@ -1,5 +1,6 @@
 using NSubstitute;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.Common.Evaluation

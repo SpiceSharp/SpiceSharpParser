@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpiceSharp;
 using SpiceSharp.Circuits;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -19,19 +18,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="contextName">Name of the context.</param>
         /// <param name="parameters">Parameters.</param>
         /// <param name="evaluators">Evaluator for the context.</param>
-        /// <param name="resultService">Result service for the context.</param>
-        /// <param name="nodeNameGenerator">Node name generator for the context.</param>
-        /// <param name="objectNameGenerator">Object name generator for the context.</param>
+        /// <param name="resultService">SpiceSharpModel service for the context.</param>
+        /// <param name="nodeNameGenerator">Name generator for the nodes.</param>
+        /// <param name="componentNameGenerator">Name generator for the components.</param>
+        /// <param name="modelNameGenerator">Name generator for the models.</param>
         /// <param name="statementsReader">Statements reader.</param>
         /// <param name="waveformReader">Waveform reader.</param>
-        /// <param name="parent">Parent of th econtext.</param>
+        /// <param name="caseSettings">Case settings</param>
+        /// <param name="parent">Parent of th context.</param>
         public ReadingContext(
             string contextName,
             ISimulationsParameters parameters,
             IEvaluatorsContainer evaluators,
             IResultService resultService,
             INodeNameGenerator nodeNameGenerator,
-            IObjectNameGenerator objectNameGenerator,
+            IObjectNameGenerator componentNameGenerator,
+            IObjectNameGenerator modelNameGenerator,
             ISpiceStatementsReader statementsReader,
             IWaveformReader waveformReader,
             CaseSensitivitySettings caseSettings,
@@ -40,7 +42,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             ContextName = contextName ?? throw new ArgumentNullException(nameof(contextName));
             Result = resultService ?? throw new ArgumentNullException(nameof(resultService));
             NodeNameGenerator = nodeNameGenerator ?? throw new ArgumentNullException(nameof(nodeNameGenerator));
-            ObjectNameGenerator = objectNameGenerator ?? throw new ArgumentNullException(nameof(objectNameGenerator));
+            ComponentNameGenerator = componentNameGenerator ?? throw new ArgumentNullException(nameof(componentNameGenerator));
+            ModelNameGenerator = modelNameGenerator ?? throw new ArgumentNullException(nameof(componentNameGenerator));
             Parent = parent;
 
             if (Parent != null)
@@ -61,14 +64,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             IReadingContext current = this;
             while (current != null)
             {
-                generators.Add(current.ObjectNameGenerator);
+                generators.Add(current.ModelNameGenerator);
                 current = current.Parent;
             }
 
-            ModelsRegistry = new StochasticModelsRegistry(generators);
             StatementsReader = statementsReader;
             WaveformReader = waveformReader;
             CaseSensitivity = caseSettings;
+
+            ModelsRegistry = new StochasticModelsRegistry(generators, caseSettings.IsEntityNameCaseSensitive);
         }
 
         /// <summary>
@@ -107,9 +111,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public INodeNameGenerator NodeNameGenerator { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the object name generator.
+        /// Gets or sets the component name generator.
         /// </summary>
-        public IObjectNameGenerator ObjectNameGenerator { get; protected set; }
+        public IObjectNameGenerator ComponentNameGenerator { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the model name generator.
+        /// </summary>
+        public IObjectNameGenerator ModelNameGenerator { get; protected set; }
 
         /// <summary>
         /// Gets or sets the children of the reading context.
@@ -140,13 +149,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="expression">Expression.</param>
         public void SetICVoltage(string nodeName, string expression)
         {
-            if (CaseSensitivity.IgnoreCaseForNodes)
-            {
-                nodeName = nodeName.ToUpper();
-            }
-
-            var fullNodeName = NodeNameGenerator.Generate(nodeName);
-            SimulationsParameters.SetICVoltage(nodeName, expression);
+            var nodeId = NodeNameGenerator.Generate(nodeName);
+            SimulationsParameters.SetICVoltage(nodeId, expression);
         }
 
         /// <summary>
@@ -175,16 +179,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="parameters">Parameters of component.</param>
         public void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters)
         {
-            Identifier[] nodes = new Identifier[component.PinCount];
+            string[] nodes = new string[component.PinCount];
             for (var i = 0; i < component.PinCount; i++)
             {
                 string pinName = parameters.GetString(i);
-
-                if (CaseSensitivity.IgnoreCaseForNodes)
-                {
-                    pinName = pinName.ToUpper();
-                }
-
                 nodes[i] = NodeNameGenerator.Generate(pinName);
             }
 
@@ -201,13 +199,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public void SetParameter(Entity entity, string parameterName, string expression, bool onload = true)
         {
-            entity.SetParameter(parameterName.ToLower(), this.Evaluators.EvaluateDouble(expression));
-            SimulationsParameters.SetParameter(entity, parameterName.ToLower(), expression, 0, onload);
-        }
-
-        public void SetParameter(Entity entity, string parameterName, double value)
-        {
-            entity.SetParameter(parameterName.ToLower(), value);
+            IEqualityComparer<string> comparer = StringComparerFactory.Create(CaseSensitivity.IsEntityParameterNameCaseSensitive);
+            entity.SetParameter(parameterName, Evaluators.EvaluateDouble(expression), comparer);
+            SimulationsParameters.SetParameter(entity, parameterName, expression, 0, onload, comparer);
         }
     }
 }

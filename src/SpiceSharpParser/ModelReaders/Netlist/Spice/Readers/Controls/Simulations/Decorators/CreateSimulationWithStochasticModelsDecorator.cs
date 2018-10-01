@@ -16,15 +16,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
         public static Func<string, Control, IReadingContext, BaseSimulation> Decorate(IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
         {
-            return (string name, Control control, IReadingContext context2) =>
+            return (string simulationName, Control control, IReadingContext context2) =>
             {
-                var sim = createSimulation(name, control, context2);
-
+                var simulation = createSimulation(simulationName, control, context2);
                 var modelsRegistry = context.ModelsRegistry as IStochasticModelsRegistry;
 
                 if (modelsRegistry != null)
                 {
-                    sim.BeforeExecute += (object s, BeforeExecuteEventArgs arg) =>
+                    simulation.BeforeExecute += (object sender, BeforeExecuteEventArgs arg) =>
                     {
                         foreach (var stochasticModels in modelsRegistry.GetStochasticModels())
                         {
@@ -33,28 +32,29 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
                             foreach (var componentModel in componentModels)
                             {
-                                var stochasticDevParameters = modelsRegistry.GetStochasticModelDevParameters(baseModel);
+                                Dictionary<Parameter, Parameter> stochasticDevParameters = modelsRegistry.GetStochasticModelDevParameters(baseModel);
 
                                 if (stochasticDevParameters != null)
                                 {
-                                    SetModelDevModelParameters(context, sim, componentModel, stochasticDevParameters);
+                                    SetModelDevModelParameters(context, simulation, componentModel, stochasticDevParameters);
                                 }
 
-                                var stochasticLotParameters = modelsRegistry.GetStochasticModelLotParameters(baseModel);
+                                Dictionary<Parameter, Parameter> stochasticLotParameters = modelsRegistry.GetStochasticModelLotParameters(baseModel);
                                 if (stochasticLotParameters != null)
                                 {
-                                    SetModelLotModelParameters(context, sim,  baseModel, componentModel, stochasticLotParameters);
+                                    SetModelLotModelParameters(context, simulation,  baseModel, componentModel, stochasticLotParameters);
                                 }
                             }
                         }
                     };
                 }
-                return sim;
+                return simulation;
             };
         }
 
         private static void SetModelLotModelParameters(IReadingContext context, BaseSimulation sim, Entity baseModel, Entity componentModel, Dictionary<Parameter, Parameter> stochasticLotParameters)
         {
+            var comparer = StringComparerFactory.Create(context.CaseSensitivity.IsEntityParameterNameCaseSensitive);
             foreach (var stochasticParameter in stochasticLotParameters)
             {
                 var parameter = stochasticParameter.Key;
@@ -64,19 +64,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 {
                     var evaluator = context.Evaluators.GetSimulationEvaluator(sim);
 
-                    var parameterName = asg.Name.ToLower();
-                    var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<double>(parameterName);
+                    var parameterName = asg.Name;
+                    var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<double>(parameterName, comparer);
 
                     var currentValue = currentValueParameter.Value;
                     var percentValue = evaluator.EvaluateDouble(parameterPercent.Image);
-                    double newValue = GetValueForLotParameter(evaluator, baseModel, parameterName, currentValue, percentValue);
-                    context.SimulationsParameters.SetParameter(componentModel, parameterName, newValue, sim, 1);
+                    double newValue = GetValueForLotParameter(evaluator, baseModel, parameterName, currentValue, percentValue, comparer);
+                    context.SimulationsParameters.SetParameter(componentModel, parameterName, newValue, sim, 1, comparer);
                 }
             }
         }
 
         private static void SetModelDevModelParameters(IReadingContext context, BaseSimulation sim, Entity componentModel, System.Collections.Generic.Dictionary<Parameter, Parameter> stochasticDevParameters)
         {
+            var comparer = StringComparerFactory.Create(context.CaseSensitivity.IsEntityParameterNameCaseSensitive);
             foreach (var stochasticParameter in stochasticDevParameters)
             {
                 var parameter = stochasticParameter.Key;
@@ -86,13 +87,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 {
                     var evaluator = context.Evaluators.GetSimulationEvaluator(sim);
 
-                    var asgparamName = asg.Name.ToLower();
-                    var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<double>(asgparamName);
+                    var asgparamName = asg.Name;
+                    var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<double>(asgparamName, comparer);
                     var currentValue = currentValueParameter.Value;
                     var percentValue = evaluator.EvaluateDouble(parameterPercent.Image);
 
                     double newValue = GetValueForDevParameter(evaluator, currentValue, percentValue);
-                    context.SimulationsParameters.SetParameter(componentModel, asgparamName, newValue, sim, 1);
+                    context.SimulationsParameters.SetParameter(componentModel, asgparamName, newValue, sim, 1, comparer);
                 }
             }
         }
@@ -114,7 +115,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             return newValue;
         }
 
-        private static double GetValueForLotParameter(IEvaluator evaluator, Entity baseModel, string parameterName, double currentValue, double percentValue)
+        private static double GetValueForLotParameter(IEvaluator evaluator, Entity baseModel, string parameterName, double currentValue, double percentValue, IEqualityComparer<string> comparer)
         {
             if (LotValues.ContainsKey(baseModel) && LotValues[baseModel].ContainsKey(parameterName))
             {
@@ -135,7 +136,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             if (!LotValues.ContainsKey(baseModel))
             {
-                LotValues[baseModel] = new Dictionary<string, double>();
+                LotValues[baseModel] = new Dictionary<string, double>(comparer);
             }
 
             LotValues[baseModel][parameterName] = newValue;

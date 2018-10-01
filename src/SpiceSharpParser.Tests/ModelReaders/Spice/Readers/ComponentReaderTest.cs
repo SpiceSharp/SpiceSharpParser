@@ -21,11 +21,11 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
             // arrange
             var generator = Substitute.For<IComponentGenerator>();
             generator.Generate(
-               Arg.Any<StringIdentifier>(),
+               Arg.Any<string>(),
                Arg.Any<string>(),
                Arg.Any<string>(),
                Arg.Any<ParameterCollection>(),
-               Arg.Any<IReadingContext>()).Returns(x => new Resistor((StringIdentifier)x[0]));
+               Arg.Any<IReadingContext>()).Returns(x => new Resistor((string)x[0]));
 
             var mapper = Substitute.For<IMapper<IComponentGenerator>>();
             mapper.Contains("r").Returns(true);
@@ -33,7 +33,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
 
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }, true));
-            readingContext.ObjectNameGenerator.Returns(new ObjectNameGenerator(string.Empty));
+            readingContext.ComponentNameGenerator.Returns(new ObjectNameGenerator(string.Empty));
 
             var resultService = Substitute.For<IResultService>();
             readingContext.Result.Returns(resultService);
@@ -44,7 +44,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
             reader.Read(component, readingContext);
 
             // assert
-            generator.Received().Generate(new StringIdentifier("Ra1"), "Ra1", "r", Arg.Any<ParameterCollection>(), Arg.Any<IReadingContext>());
+            generator.Received().Generate("Ra1", "Ra1", "r", Arg.Any<ParameterCollection>(), Arg.Any<IReadingContext>());
             resultService.Received().AddEntity(Arg.Is<Entity>((Entity e) => e.Name.ToString() == "Ra1"));
         }
     }

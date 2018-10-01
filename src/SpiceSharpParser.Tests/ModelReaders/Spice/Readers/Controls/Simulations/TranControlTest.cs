@@ -38,6 +38,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.Result.Returns(resultService);
             readingContext.ParseDouble(Arg.Any<string>()).Returns(x => double.Parse((string)x[0]));
+            readingContext.CaseSensitivity.Returns(new SpiceSharpParser.Common.CaseSensitivitySettings());
 
             // act
             var tranControl = new TransientControl();
@@ -77,6 +78,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.Result.Returns(resultService);
             readingContext.ParseDouble(Arg.Any<string>()).Returns(x => double.Parse((string)x[0]));
+            readingContext.CaseSensitivity.Returns(new SpiceSharpParser.Common.CaseSensitivitySettings());
 
             // act
             var tranControl = new TransientControl();

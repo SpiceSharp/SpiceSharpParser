@@ -16,6 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// Initializes a new instance of the <see cref="ModelReader"/> class.
         /// </summary>
         /// <param name="mapper">The model mapper.</param>
+        /// <param name="modelsGenerator">The models generator.</param>
         public ModelReader(IMapper<IModelGenerator> mapper, IModelsGenerator modelsGenerator)
         {
             Mapper = mapper ?? throw new System.ArgumentNullException(nameof(mapper));
@@ -54,8 +55,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                     var generator = Mapper.Get(type);
 
-                    var model = ModelsGenerator.GenerateModel(generator,
-                        new SpiceSharp.StringIdentifier(context.ObjectNameGenerator.Generate(name)),
+                    var model = ModelsGenerator.GenerateModel(
+                        generator,
+                        context.ModelNameGenerator.Generate(name),
                         name,
                         type,
                         b.Parameters,
@@ -77,8 +79,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                     }
 
                     var generator = Mapper.Get(type);
-                    var model = ModelsGenerator.GenerateModel(generator,
-                        new SpiceSharp.StringIdentifier(context.ObjectNameGenerator.Generate(name)),
+                    var model = ModelsGenerator.GenerateModel(
+                        generator,
+                        context.ModelNameGenerator.Generate(name),
                         name,
                         type,
                         statement.Parameters.Skip(1),

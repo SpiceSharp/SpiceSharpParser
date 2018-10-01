@@ -4,7 +4,7 @@ using SpiceSharpParser.Models.Netlist.Spice;
 namespace SpiceSharpParser
 {
     /// <summary>
-    /// A result of the parser.
+    /// A result of the SPICE netlist parser.
     /// </summary>
     public class SpiceParserResult
     {
@@ -18,16 +18,16 @@ namespace SpiceSharpParser
         /// <summary>
         /// Gets or sets the result of reading <see cref="SpiceNetlistReaderResult"/> model.
         /// </summary>
-        public SpiceNetlistReaderResult Result { get; set; }
+        public SpiceNetlistReaderResult SpiceSharpModel { get; set; }
 
         /// <summary>
         /// Gets or sets the netlist model before preprocessing.
         /// </summary>
-        public SpiceNetlist InitialNetlistModel { get; set; }
+        public SpiceNetlist OriginalInputModel { get; set; }
 
         /// <summary>
         /// Gets or sets the netlist model after preprocessing.
         /// </summary>
-        public SpiceNetlist PreprocessedNetlistModel { get; set; }
+        public SpiceNetlist PreprocessedInputModel { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("v1"), "v1", "v", parameters, context);
+            var entity = generator.Generate("v1", "v1", "v", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<VoltageSource>(entity);
@@ -46,7 +46,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("v1"), "v1", "v", parameters, context);
+            var entity = generator.Generate("v1", "v1", "v", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<VoltageSource>(entity);
@@ -67,7 +67,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("v1"), "v1", "v", parameters, context);
+            var entity = generator.Generate("v1", "v1", "v", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<VoltageSource>(entity);
@@ -90,7 +90,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("v1"), "v1", "v", parameters, context);
+            var entity = generator.Generate("v1", "v1", "v", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<VoltageSource>(entity);
@@ -116,7 +116,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("v1"), "v1", "v", parameters, context);
+            var entity = generator.Generate("v1", "v1", "v", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<VoltageSource>(entity);
@@ -139,7 +139,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("v1"), "v1", "v", parameters, context);
+            var entity = generator.Generate("v1", "v1", "v", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<VoltageSource>(entity);
@@ -171,7 +171,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("v1"), "v1", "v", parameters, context);
+            var entity = generator.Generate("v1", "v1", "v", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<VoltageSource>(entity);
@@ -194,7 +194,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("x1.v1"), "v1", "v", parameters, context);
+            var entity = generator.Generate("x1.v1", "v1", "v", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<VoltageSource>(entity);
@@ -217,7 +217,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("x1.h1"), "h1", "h", parameters, context);
+            var entity = generator.Generate("x1.h1", "h1", "h", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentControlledVoltageSource>(entity);
@@ -240,7 +240,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("x1.e1"), "e1", "e", parameters, context);
+            var entity = generator.Generate("x1.e1", "e1", "e", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<VoltageControlledVoltageSource>(entity);

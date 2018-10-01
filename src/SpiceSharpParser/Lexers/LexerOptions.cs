@@ -9,7 +9,8 @@
         /// Initializes a new instance of the <see cref="LexerOptions"/> class.
         /// </summary>
         /// <param name="multipleLineTokens">Allows multiline tokens.</param>
-        /// <param name="nextLineContinuationCharacter">Line continuation character.</param>
+        /// <param name="nextLineContinuationCharacter">Line continuation character (next line).</param>
+        /// <param name="currentLineContinuationCharacter">Line continuation character (currrent line).</param>
         public LexerOptions(bool multipleLineTokens, char? nextLineContinuationCharacter, char? currentLineContinuationCharacter)
         {
             MultipleLineTokens = multipleLineTokens;

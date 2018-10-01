@@ -1,4 +1,5 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
@@ -26,7 +27,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <summary>
         /// Generates a new export.
         /// </summary>
-        protected Export GenerateExport(Parameter parameter, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator, bool ignoreCaseNodes)
+        protected Export GenerateExport(Parameter parameter, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator componentNameGenerator, IObjectNameGenerator modelNameGenerator, IResultService resultService, CaseSensitivitySettings caseSettings)
         {
             if (parameter is BracketParameter bp)
             {
@@ -34,7 +35,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                 if (Mapper.Contains(type))
                 {
-                    return Mapper.Get(type).CreateExport(parameter.Image, type, bp.Parameters, simulation, nodeNameGenerator, objectNameGenerator, ignoreCaseNodes);
+                    return Mapper.Get(type).CreateExport(parameter.Image, type, bp.Parameters, simulation, nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService, caseSettings);
                 }
             }
 
@@ -48,11 +49,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     parameters.Add(new WordParameter(rp.Name));
                     parameters.Add(new WordParameter(rp.Argument));
 
-                    return Mapper.Get(type).CreateExport(parameter.Image, type, parameters, simulation, nodeNameGenerator, objectNameGenerator, false);
+                    return Mapper.Get(type).CreateExport(parameter.Image, type, parameters, simulation, nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService, caseSettings);
                 }
             }
 
-            throw new System.Exception("Unsuported export: " + parameter.Image);
+            throw new System.Exception("Unsupported export: " + parameter.Image);
         }
     }
 }

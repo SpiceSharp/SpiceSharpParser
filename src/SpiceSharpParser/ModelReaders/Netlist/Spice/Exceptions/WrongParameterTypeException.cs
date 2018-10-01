@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpiceSharp;
+using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
 {
@@ -12,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
         }
 
         public WrongParameterTypeException(string componentName, string message)
-            : base(componentName + "-" + message)
+            : base(componentName.ToString() + "-" + message)
         {
         }
 

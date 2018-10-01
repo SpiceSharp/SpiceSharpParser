@@ -9,6 +9,8 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharp;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 {
@@ -36,7 +38,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 }
             };
 
-            var evaluator = Substitute.For<ISpiceEvaluator>();
+            var evaluator = Substitute.For<IEvaluator>();
             evaluator.EvaluateDouble("12.2").Returns(12.2);
             evaluator.EvaluateDouble("12.3").Returns(12.3);
 
@@ -44,9 +46,10 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = new ReadingContext(
                 string.Empty,
                 Substitute.For<ISimulationsParameters>(),
-                new EvaluatorsContainer(evaluator),
+                new EvaluatorsContainer(evaluator, new FunctionFactory()),
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }, true),
+                new ObjectNameGenerator(string.Empty),
                 new ObjectNameGenerator(string.Empty),
                 null,
                 null,
@@ -78,14 +81,15 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 }
             };
 
-            var evaluator = Substitute.For<ISpiceEvaluator>();
+            var evaluator = Substitute.For<IEvaluator>();
             var resultService = new ResultService(new SpiceNetlistReaderResult(new Circuit(), "title"));
             var readingContext = new ReadingContext(
                 string.Empty,
                 Substitute.For<ISimulationsParameters>(),
-                new EvaluatorsContainer(evaluator),
+                new EvaluatorsContainer(evaluator, new FunctionFactory()),
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }, true),
+                new ObjectNameGenerator(string.Empty),
                 new ObjectNameGenerator(string.Empty),
                 null,
                 null,

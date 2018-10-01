@@ -22,18 +22,19 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
 
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }, true));
-            readingContext.ObjectNameGenerator.Returns(new ObjectNameGenerator(string.Empty));
+            readingContext.ComponentNameGenerator.Returns(new ObjectNameGenerator(string.Empty));
+            readingContext.ModelNameGenerator.Returns(new ObjectNameGenerator(string.Empty));
 
             var resultService = Substitute.For<IResultService>();
             readingContext.Result.Returns(resultService);
             var modelsGenerator = Substitute.For<IModelsGenerator>();
             modelsGenerator.GenerateModel(
                 Arg.Any<IModelGenerator>(),
-                Arg.Any<Identifier>(),
+                Arg.Any<string>(),
                 Arg.Any<string>(),
                 Arg.Any<string>(),
                 Arg.Any<ParameterCollection>(),
-                Arg.Any<IReadingContext>()).Returns(x => new BipolarJunctionTransistorModel((Identifier)x[1]));
+                Arg.Any<IReadingContext>()).Returns(x => new BipolarJunctionTransistorModel((string)x[1]));
 
             // act
             ModelReader reader = new ModelReader(mapper, modelsGenerator);
@@ -41,7 +42,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
             reader.Read(model, readingContext);
 
             //assert
-            modelsGenerator.Received().GenerateModel(Arg.Any<IModelGenerator>(), Arg.Any<Identifier>(), "2Na2222", "npn", Arg.Any<ParameterCollection>(), Arg.Any<IReadingContext>());
+            modelsGenerator.Received().GenerateModel(Arg.Any<IModelGenerator>(), Arg.Any<string>(), "2Na2222", "npn", Arg.Any<ParameterCollection>(), Arg.Any<IReadingContext>());
             resultService.Received().AddEntity(Arg.Is<Entity>((Entity e) => e.Name.ToString() == "2Na2222"));
         }
     }

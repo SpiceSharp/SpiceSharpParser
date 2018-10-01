@@ -1,5 +1,6 @@
 ﻿using System;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories;
@@ -76,12 +77,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         }
 
         /// <summary>
-        /// Sets the base parameters.
+        /// Sets the base parameters of a simulation.
         /// </summary>
-        /// <param name="baseConfiguration">The configuration to set.</param>
+        /// <param name="baseSimulation">The simulation to configure.</param>
         /// <param name="context">The reading context.</param>
-        protected void SetBaseConfiguration(BaseConfiguration baseConfiguration, IReadingContext context)
+        protected void ConfigureCommonSettings(BaseSimulation baseSimulation, IReadingContext context)
         {
+            var baseConfiguration = baseSimulation.Configurations.Get<BaseConfiguration>();
             if (context.Result.SimulationConfiguration.Gmin.HasValue)
             {
                 baseConfiguration.Gmin = context.Result.SimulationConfiguration.Gmin.Value;
@@ -101,6 +103,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             {
                 baseConfiguration.DcMaxIterations = context.Result.SimulationConfiguration.DCMaxIterations.Value;
             }
+
+            baseSimulation.Configurations.Add(
+                new CollectionConfiguration()
+                {
+                    EntityComparer = StringComparerFactory.Create(context.CaseSensitivity.IsEntityNameCaseSensitive),
+                    VariableComparer = StringComparerFactory.Create(context.CaseSensitivity.IsNodeNameCaseSensitive)
+                });
         }
     }
 }

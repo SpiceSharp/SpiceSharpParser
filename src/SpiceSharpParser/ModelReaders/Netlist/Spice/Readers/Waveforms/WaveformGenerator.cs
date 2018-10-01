@@ -10,7 +10,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
     public abstract class WaveformGenerator
     {
         /// <summary>
-        /// Generats a new waveform
+        /// Generates a new waveform
         /// </summary>
         /// <param name="bracketParameter">A parameter for waveform</param>
         /// <param name="context">A context</param>

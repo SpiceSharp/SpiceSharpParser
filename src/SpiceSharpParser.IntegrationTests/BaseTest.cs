@@ -35,7 +35,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             var parserResult = parser.ParseNetlist(text);
 
-            return parserResult.Result;
+            return parserResult.SpiceSharpModel;
         }
 
         public static SpiceNetlistReaderResult ParseNetlist(params string[] lines)
@@ -46,7 +46,7 @@ namespace SpiceSharpParser.IntegrationTests
             parser.Settings.Parsing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
 
-            return parser.ParseNetlist(text).Result;
+            return parser.ParseNetlist(text).SpiceSharpModel;
         }
 
         public static SpiceNetlistReaderResult ParseNetlist(int randomSeed, params string[] lines)
@@ -58,7 +58,7 @@ namespace SpiceSharpParser.IntegrationTests
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.Seed = randomSeed;
 
-            return parser.ParseNetlist(text).Result;
+            return parser.ParseNetlist(text).SpiceSharpModel;
         }
 
         public static SpiceNetlist ParseNetlistToModel(bool isEndRequired, bool hasTitle, params string[] lines)
@@ -68,7 +68,7 @@ namespace SpiceSharpParser.IntegrationTests
             parser.Settings.Parsing.HasTitle = hasTitle;
             parser.Settings.Parsing.IsEndRequired = isEndRequired;
 
-            return parser.ParseNetlist(text).PreprocessedNetlistModel;
+            return parser.ParseNetlist(text).PreprocessedInputModel;
         }
 
         /// <summary>
@@ -97,14 +97,9 @@ namespace SpiceSharpParser.IntegrationTests
 
                 if (simulation is OP)
                 {
-                    double opResult = double.NaN;
                     simulation.ExportSimulationData += (sender, e) =>
                     {
-                        opResult = export.Extract();
-                    };
-
-                    simulation.AfterExecute += (sender, e) =>
-                    {
+                        var opResult = export.Extract();
                         result.Add(opResult);
                     };
                 }

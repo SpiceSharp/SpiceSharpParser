@@ -32,7 +32,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         public Dictionary<Simulation, double> Min { get; protected set; } = new Dictionary<Simulation, double>();
 
         /// <summary>
-        /// Gets or sets the varable name.
+        /// Gets or sets the variable name.
         /// </summary>
         public string VariableName { get; set; }
 
@@ -45,7 +45,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// Collects the result and updates <see cref="Max"/>, <see cref="Min"/> dictionaries.
         /// </summary>
         /// <param name="simulation">Simulation</param>
-        /// <param name="result">Result.</param>
+        /// <param name="result">SpiceSharpModel.</param>
         public void Collect(Simulation simulation, double result)
         {
             lock (this)
@@ -73,7 +73,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <summary>
         /// Gets the plot from Monte Carlo results.
         /// </summary>
-        /// <param name="bins">Number of bins</param>
+        /// <param name="bins">Number of bins.</param>
         /// <returns>
         /// A plot.
         /// </returns>
@@ -131,7 +131,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             for (var i = 1; i <= bins; i++)
             {
-                plot.Bins[i] = new ModelReaders.Netlist.Spice.Readers.Controls.Plots.Bin();
+                plot.Bins[i] = new Bin();
                 plot.Bins[i].Value = (binWidth * (i - 1)) + min;
             }
 

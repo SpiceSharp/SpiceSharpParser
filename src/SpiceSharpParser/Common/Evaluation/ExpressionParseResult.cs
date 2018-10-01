@@ -1,10 +1,11 @@
-﻿using System;
+﻿using SpiceSharp;
+using System;
 using System.Collections.ObjectModel;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
     /// <summary>
-    /// Result of parsing expression.
+    /// SpiceSharpModel of parsing expression.
     /// </summary>
     public class ExpressionParseResult
     {

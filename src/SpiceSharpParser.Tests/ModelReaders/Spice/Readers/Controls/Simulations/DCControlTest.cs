@@ -34,10 +34,11 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             resultService.SimulationConfiguration.Returns(new SimulationConfiguration());
             resultService.Simulations.Returns(simulations);
             resultService.When(x => x.AddSimulation(Arg.Any<DC>())).Do(x => { simulations.Add((DC)x[0]); });
+            
 
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.Result.Returns(resultService);
-
+            readingContext.CaseSensitivity.Returns(new SpiceSharpParser.Common.CaseSensitivitySettings());
             // act
             var dcControl = new DCControl();
             dcControl.Read(control, readingContext);

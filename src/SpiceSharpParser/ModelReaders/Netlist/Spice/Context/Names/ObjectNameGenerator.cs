@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpiceSharp;
+using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {

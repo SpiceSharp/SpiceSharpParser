@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using SpiceSharp;
-using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
@@ -25,13 +23,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
         }
 
-        public override SpiceSharp.Components.Component Generate(Identifier componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        /// <summary>
+        /// Gets generated types.
+        /// </summary>
+        /// <returns>
+        /// Generated types.
+        /// </returns>
+        public override IEnumerable<string> GeneratedTypes => new List<string>() { "x" };
+
+        public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
-            SubCircuit subCircuitDefiniton = FindSubcircuitDefinion(parameters, context);
+            SubCircuit subCircuitDefiniton = FindSubcircuitDefinition(parameters, context);
             ReadingContext subCircuitContext = CreateSubcircuitContext(componentIdentifier.ToString(), originalName, subCircuitDefiniton, parameters, context);
 
             var ifPreprocessor = new IfPreprocessor();
             ifPreprocessor.Evaluators = subCircuitContext.Evaluators;
+            ifPreprocessor.CaseSettings = subCircuitContext.CaseSensitivity;
             subCircuitDefiniton.Statements = ifPreprocessor.Process(subCircuitDefiniton.Statements);
 
             ReadParamControl(subCircuitDefiniton, subCircuitContext);
@@ -46,27 +53,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         }
 
         /// <summary>
-        /// Gets generated types.
-        /// </summary>
-        /// <returns>
-        /// Generated types.
-        /// </returns>
-        public override IEnumerable<string> GeneratedTypes
-        {
-            get
-            {
-                return new List<string>() { "x" };
-            }
-        }
-
-        /// <summary>
         /// Read .param controls.
         /// </summary>
-        /// <param name="subCircuitDefiniton">A subcircuit definion</param>
-        /// <param name="subCircuitContext">A subcircuit reading context</param>
-        private void ReadParamControl(SubCircuit subCircuitDefiniton, IReadingContext subCircuitContext)
+        /// <param name="subCircuitDefinition">A subcircuit definition.</param>
+        /// <param name="subCircuitContext">A subcircuit reading context.</param>
+        private void ReadParamControl(SubCircuit subCircuitDefinition, IReadingContext subCircuitContext)
         {
-            foreach (Statement statement in subCircuitDefiniton.Statements.Where(s => s is Control && ((Control)s).Name.ToLower() == "param"))
+            foreach (Statement statement in subCircuitDefinition.Statements.Where(s => s is Control && ((Control)s).Name.ToLower() == "param"))
             {
                 subCircuitContext.StatementsReader.Read(statement, subCircuitContext);
             }
@@ -75,11 +68,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <summary>
         /// Reads .subckt statement.
         /// </summary>
-        /// <param name="subCircuitDefiniton">A subcircuit definion</param>
-        /// <param name="subCircuitContext">A subcircuit reading context</param>
-        private void ReadSubcircuits(SubCircuit subCircuitDefiniton, IReadingContext subCircuitContext)
+        /// <param name="subCircuitDefinition">A subcircuit definition.</param>
+        /// <param name="subCircuitContext">A subcircuit reading context.</param>
+        private void ReadSubcircuits(SubCircuit subCircuitDefinition, IReadingContext subCircuitContext)
         {
-            foreach (Statement statement in subCircuitDefiniton.Statements.Where(s => s is SubCircuit))
+            foreach (Statement statement in subCircuitDefinition.Statements.Where(s => s is SubCircuit))
             {
                 subCircuitContext.StatementsReader.Read((SubCircuit)statement, subCircuitContext);
             }
@@ -88,11 +81,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <summary>
         /// Creates components for subcircuit.
         /// </summary>
-        /// <param name="subCircuitDefiniton">A subcircuit definion</param>
-        /// <param name="subCircuitContext">A subcircuit reading context</param>
-        private void CreateSubcircuitComponents(SubCircuit subCircuitDefiniton, IReadingContext subCircuitContext)
+        /// <param name="subCircuitDefinition">A subcircuit definition.</param>
+        /// <param name="subCircuitContext">A subcircuit reading context.</param>
+        private void CreateSubcircuitComponents(SubCircuit subCircuitDefinition, IReadingContext subCircuitContext)
         {
-            foreach (Statement statement in subCircuitDefiniton.Statements.Where(s => s is Component))
+            foreach (Statement statement in subCircuitDefinition.Statements.Where(s => s is Component))
             {
                 subCircuitContext.StatementsReader.Read((Component)statement, subCircuitContext);
             }
@@ -101,7 +94,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <summary>
         /// Creates models for subcircuit.
         /// </summary>
-        /// <param name="subCircuitDefiniton">A subcircuit definion.</param>
+        /// <param name="subCircuitDefiniton">A subcircuit definition.</param>
         /// <param name="subCircuitContext">A subcircuit reading context.</param>
         private void CreateSubcircuitModels(SubCircuit subCircuitDefiniton, IReadingContext subCircuitContext)
         {
@@ -112,28 +105,28 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         }
 
         /// <summary>
-        /// Finds subcircuit definion.
+        /// Finds subcircuit definition.
         /// </summary>
-        /// <param name="parameters">Paramters of subcircuit instance.</param>
+        /// <param name="parameters">Parameters of subcircuit instance.</param>
         /// <param name="context">A reading context.</param>
         /// <returns>
         /// A reference to subcircuit.
         /// </returns>
-        private SubCircuit FindSubcircuitDefinion(ParameterCollection parameters, IReadingContext context)
+        private SubCircuit FindSubcircuitDefinition(ParameterCollection parameters, IReadingContext context)
         {
-            // first step is to find subcircuit name in parameters, a=b paramters needs to be skipped
-            int assigmentParametersCount = 0;
-            while (parameters[parameters.Count - assigmentParametersCount - 1] is AssignmentParameter a)
+            // first step is to find subcircuit name in parameters, a=b parameters needs to be skipped
+            int assignmentParametersCount = 0;
+            while (parameters[parameters.Count - assignmentParametersCount - 1] is AssignmentParameter a)
             {
-                assigmentParametersCount++;
+                assignmentParametersCount++;
             }
 
-            string subCircuitDefinionName = parameters.GetString(parameters.Count - assigmentParametersCount - 1);
-            var result = context.AvailableSubcircuits.ToList().Find(pred => pred.Name == subCircuitDefinionName);
+            string subCircuitDefinitionName = parameters.GetString(parameters.Count - assignmentParametersCount - 1);
+            var result = context.AvailableSubcircuits.ToList().Find(subCkt => subCkt.Name == subCircuitDefinitionName);
 
             if (result == null)
             {
-                throw new GeneralReaderException("Could't find " + subCircuitDefinionName + " subcircuit");
+                throw new GeneralReaderException("Could not find " + subCircuitDefinitionName + " subcircuit");
             }
 
             return result;
@@ -142,8 +135,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <summary>
         /// Creates subcircuit context.
         /// </summary>
-        /// <param name="name">Subcircuit full name.</param>
-        /// <param name="subCircuitDefiniton">Subcircuit definion.</param>
+        /// <param name="subcircuitFullName">Subcircuit full name.</param>
+        /// <param name="subcircuitName">Subcircuit name.</param>
+        /// <param name="subCircuitDefiniton">Subcircuit definition.</param>
         /// <param name="parameters">Parameters and pins for subcircuit.</param>
         /// <param name="context">Parent reading context.</param>
         /// <returns>
@@ -162,38 +156,55 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             var subcircuitEvaluatorContainer = context.Evaluators.CreateChildContainer(subcircuitFullName);
-            var subcircuitParameters = CreateSubcircuitParameters(context.Evaluators, subCircuitDefiniton, subCktParameters);
+            var subcircuitParameters = CreateSubcircuitParameters(
+                context.Evaluators, 
+                subCircuitDefiniton, 
+                subCktParameters,
+                context.CaseSensitivity
+                );
             subcircuitEvaluatorContainer.SetParameters(subcircuitParameters);
 
             // setting node name generator
-            var pinInstanceNames = new List<string>();
+            var pinInstanceIdentifiers = new List<string>();
             for (var i = 0; i < parameters.Count - assigmentParametersCount - 1; i++)
             {
                 var pinInstanceName = context.NodeNameGenerator.Generate(parameters.GetString(i));
 
-                pinInstanceNames.Add(pinInstanceName);
+                pinInstanceIdentifiers.Add(pinInstanceName);
             }
 
-            var subcircuitNodeNameGenerator = new SubcircuitNodeNameGenerator(subcircuitFullName, subcircuitName, subCircuitDefiniton, pinInstanceNames, context.NodeNameGenerator.Globals, context.CaseSensitivity.IgnoreCaseForNodes);
+            var subcircuitNodeNameGenerator = new SubcircuitNodeNameGenerator(subcircuitFullName, subcircuitName, subCircuitDefiniton, pinInstanceIdentifiers, context.NodeNameGenerator.Globals, context.CaseSensitivity.IsNodeNameCaseSensitive);
             context.NodeNameGenerator.Children.Add(subcircuitNodeNameGenerator);
 
-            // setting object name generator
-            var subcircuitObjectNameGenerator = context.ObjectNameGenerator.CreateChildGenerator(subcircuitName);
+            var subcircuitComponentNameGenerator = context.ComponentNameGenerator.CreateChildGenerator(subcircuitName);
+            var subcircuitModelNameGenerator = context.ModelNameGenerator.CreateChildGenerator(subcircuitName);
 
-            return new ReadingContext(subcircuitName, context.SimulationsParameters, subcircuitEvaluatorContainer, context.Result, subcircuitNodeNameGenerator, subcircuitObjectNameGenerator, context.StatementsReader, context.WaveformReader, context.CaseSensitivity, context);
+            return new ReadingContext(
+                subcircuitName,
+                context.SimulationsParameters,
+                subcircuitEvaluatorContainer,
+                context.Result,
+                subcircuitNodeNameGenerator,
+                subcircuitComponentNameGenerator,
+                subcircuitModelNameGenerator,
+                context.StatementsReader,
+                context.WaveformReader,
+                context.CaseSensitivity,
+                context);
         }
 
         /// <summary>
         /// Creates subcircuit parameters dictionary.
         /// </summary>
-        /// <param name="subCiruitDefiniton">Subcircuit definion.</param>
+        /// <param name="parentContainer">Evaluators container of parent context.</param>
+        /// <param name="subCiruitDefiniton">Subcircuit definition.</param>
         /// <param name="subcktParameters">Subcircuit parameters.</param>
         /// <returns>
         /// A dictionary of parameters.
         /// </returns>
-        private Dictionary<string, string> CreateSubcircuitParameters(IEvaluatorsContainer parentContainer, SubCircuit subCiruitDefiniton, List<AssignmentParameter> subcktParameters)
+        private Dictionary<string, string> CreateSubcircuitParameters(IEvaluatorsContainer parentContainer, SubCircuit subCiruitDefiniton, List<AssignmentParameter> subcktParameters, CaseSensitivitySettings caseSettings)
         {
-            var result = new Dictionary<string, string>();
+            var result = new Dictionary<string, string>(StringComparerFactory.Create(caseSettings.IsParameterNameCaseSensitive));
             foreach (var defaultParameter in subCiruitDefiniton.DefaultParameters)
             {
                 result[defaultParameter.Name] = defaultParameter.Value;
@@ -206,9 +217,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             foreach (var parameterName in result.Keys.ToList())
             {
-                if (parameterName == result[parameterName])
+                if (parameterName.ToString() == result[parameterName])
                 {
-                    result[parameterName] = parentContainer.EvaluateDouble(parameterName).ToString(CultureInfo.InvariantCulture);
+                    result[parameterName] = parentContainer.EvaluateDouble(parameterName.ToString()).ToString(CultureInfo.InvariantCulture);
                 }
             }
 

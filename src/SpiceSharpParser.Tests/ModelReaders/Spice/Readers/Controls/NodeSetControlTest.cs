@@ -4,6 +4,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
+using SpiceSharpParser.Common;
 using Xunit;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 
@@ -42,7 +43,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             };
 
             var readingContext = Substitute.For<IReadingContext>();
-            readingContext.CaseSensitivity = new SpiceSharpParser.ModelReaders.Netlist.Spice.CaseSensitivitySettings();
+            readingContext.CaseSensitivity = new CaseSensitivitySettings();
 
             // act
             var nodeSetControl = new NodeSetControl();

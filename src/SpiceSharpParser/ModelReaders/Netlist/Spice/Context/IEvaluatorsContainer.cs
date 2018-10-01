@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using SpiceSharp;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -20,7 +22,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         double EvaluateDouble(string expression, Simulation simulation);
 
-        void AddCustomFunction(string name, List<string> arguments, string body);
+        void AddFunction(string name, List<string> arguments, string body);
 
         void SetNamedExpression(string expressionName, string expressionBody);
 

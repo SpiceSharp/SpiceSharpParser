@@ -27,10 +27,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         public IMapper<IComponentGenerator> Mapper { get; }
 
         /// <summary>
-        /// Reads a component statement and modifies the context
+        /// Reads a component statement and modifies the context.
         /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modifify</param>
+        /// <param name="statement">A statement to process.</param>
+        /// <param name="context">A context to modify.</param>
         public override void Read(Component statement, IReadingContext context)
         {
             string componentName = statement.Name;
@@ -44,7 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
             var generator = Mapper.Get(componentType);
 
             Entity entity = generator.Generate(
-                context.ObjectNameGenerator.Generate(componentName),
+                context.ComponentNameGenerator.Generate(componentName),
                 componentName,
                 componentType,
                 statement.PinsAndParameters,

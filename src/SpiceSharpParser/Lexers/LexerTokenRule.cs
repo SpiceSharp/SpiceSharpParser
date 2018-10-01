@@ -12,24 +12,24 @@ namespace SpiceSharpParser.Lexers
         /// <summary>
         /// Initializes a new instance of the <see cref="LexerTokenRule{TLexerState}"/> class.
         /// </summary>
-        /// <param name="tokenType">Token type</param>
-        /// <param name="ruleName">Rule name</param>
-        /// <param name="regularExpressionPattern">A token rule pattern</param>
-        /// <param name="returnStateAction">A token rule token action</param>
-        /// <param name="handleStateAction">A token rule active action</param>
-        /// <param name="ignoreCase">Ignore case</param>
+        /// <param name="tokenType">Token type.</param>
+        /// <param name="ruleName">Rule name.</param>
+        /// <param name="regularExpressionPattern">A token rule pattern.</param>
+        /// <param name="returnDecisionProvider">A token rule return decision provider.</param>
+        /// <param name="useDecisionProvider">A token rule use decision provider.</param>
+        /// <param name="ignoreCase">Ignore case.</param>
         public LexerTokenRule(
             int tokenType,
             string ruleName,
             string regularExpressionPattern,
-            Func<TLexerState, string, LexerRuleReturnState> returnStateAction = null,
-            Func<TLexerState, string, LexerRuleHandleState> handleStateAction = null,
+            Func<TLexerState, string, LexerRuleReturnDecision> returnDecisionProvider = null,
+            Func<TLexerState, string, LexerRuleUseDecision> useDecisionProvider = null,
             bool ignoreCase = true)
             : base(ruleName, regularExpressionPattern, ignoreCase)
         {
             TokenType = tokenType;
-            ReturnAction = returnStateAction ?? new Func<TLexerState, string, LexerRuleReturnState>((state, lexem) => LexerRuleReturnState.ReturnToken);
-            UseAction = handleStateAction ?? new Func<TLexerState, string, LexerRuleHandleState>((state, lexem) => LexerRuleHandleState.Use);
+            ReturnDecisionProvider = returnDecisionProvider ?? new Func<TLexerState, string, LexerRuleReturnDecision>((state, lexem) => LexerRuleReturnDecision.ReturnToken);
+            UseDecisionProvider = useDecisionProvider ?? new Func<TLexerState, string, LexerRuleUseDecision>((state, lexem) => LexerRuleUseDecision.Use);
         }
 
         /// <summary>
@@ -38,25 +38,26 @@ namespace SpiceSharpParser.Lexers
         public int TokenType { get; }
 
         /// <summary>
-        /// Gets the function to execute before returning token.
+        /// Gets the provider that tells whether the rule should be returned.
         /// </summary>
-        public Func<TLexerState, string, LexerRuleReturnState> ReturnAction { get; }
+        public Func<TLexerState, string, LexerRuleReturnDecision> ReturnDecisionProvider { get; }
 
         /// <summary>
-        /// Gets whether the rule should be skipped.
+        /// Gets the provider that tells whether the rule should be used.
         /// </summary>
-        protected Func<TLexerState, string, LexerRuleHandleState> UseAction { get; }
+        public Func<TLexerState, string, LexerRuleUseDecision> UseDecisionProvider { get; }
 
         /// <summary>
         /// Returns true if the rule is active or should be skipped.
         /// </summary>
-        /// <param name="lexerState">The curent lexer state.</param>
+        /// <param name="lexerState">The current lexer state.</param>
+        /// <param name="lexem">A lexem value.</param>
         /// <returns>
         /// True if the lexer token rule is active or should be skipped.
         /// </returns>
         public bool CanUse(TLexerState lexerState, string lexem)
         {
-            return UseAction(lexerState, lexem) == LexerRuleHandleState.Use;
+            return UseDecisionProvider(lexerState, lexem) == LexerRuleUseDecision.Use;
         }
 
         /// <summary>
@@ -71,8 +72,8 @@ namespace SpiceSharpParser.Lexers
                 TokenType,
                 Name,
                 RegularExpressionPattern,
-                ReturnAction,
-                UseAction,
+                ReturnDecisionProvider,
+                UseDecisionProvider,
                 IgnoreCase);
         }
     }

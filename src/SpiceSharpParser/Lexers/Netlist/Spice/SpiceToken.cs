@@ -33,7 +33,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
         /// <param name="lineNumber">New line number.</param>
         public void UpdateLineNumber(int lineNumber)
         {
-            this.LineNumber = lineNumber;
+            LineNumber = lineNumber;
         }
     }
 }

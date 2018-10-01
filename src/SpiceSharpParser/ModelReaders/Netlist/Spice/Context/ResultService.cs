@@ -47,9 +47,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public MonteCarloResult MonteCarlo => Result.MonteCarloResult;
 
         /// <summary>
-        /// Sets used random seed.
+        /// Gets or sets used random seed.
         /// </summary>
-        public int? Seed { set => Result.Seed = value; get => Result.Seed; }
+        public int? Seed { get => Result.Seed; set => Result.Seed = value; }
 
         /// <summary>
         /// Gets the result where things are added.
@@ -122,14 +122,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Finds the object in the result.
         /// </summary>
-        /// <param name="objectName">The object name.</param>
+        /// <param name="objectId">The object id.</param>
         /// <param name="entity">The found entity.</param>
         /// <returns>
         /// True if found.
         /// </returns>
-        public bool FindObject(string objectName, out Entity entity)
+        public bool FindObject(string objectId, out Entity entity)
         {
-            return Result.Circuit.Objects.TryGetEntity(objectName, out entity);
+            return Result.Circuit.Objects.TryGetEntity(objectId, out entity);
         }
     }
 }

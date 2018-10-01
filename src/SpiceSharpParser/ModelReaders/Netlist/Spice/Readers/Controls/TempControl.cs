@@ -27,10 +27,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 context.Result.SimulationConfiguration.TemperaturesInKelvins.Remove(context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions.Value);
             }
 
-            foreach (Models.Netlist.Spice.Objects.Parameter param in statement.Parameters)
+            foreach (Parameter param in statement.Parameters)
             {
-                if (param is Models.Netlist.Spice.Objects.Parameters.SingleParameter s
-                    && (param is Models.Netlist.Spice.Objects.Parameters.ValueParameter || param is Models.Netlist.Spice.Objects.Parameters.ExpressionParameter))
+                if (param is Models.Netlist.Spice.Objects.Parameters.SingleParameter
+                    && (param is Models.Netlist.Spice.Objects.Parameters.ValueParameter 
+                        || param is Models.Netlist.Spice.Objects.Parameters.ExpressionParameter))
                 {
                     context.Result.SimulationConfiguration.TemperaturesInKelvins.Add(context.ParseDouble(param.Image) + Circuit.CelsiusKelvin);
                 }

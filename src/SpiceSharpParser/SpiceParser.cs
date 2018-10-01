@@ -1,30 +1,34 @@
-﻿using SpiceSharpParser.Common;
+﻿using System.Collections.Generic;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Common.FileSystem;
+using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Processors;
 using SpiceSharpParser.Models.Netlist.Spice;
-using System.Collections.Generic;
+using SpiceSharpParser.Parsers.Netlist.Spice;
 
 namespace SpiceSharpParser
 {
     /// <summary>
-    /// The SPICE parser.
+    /// The SPICE netlist parser.
     /// </summary>
     public class SpiceParser
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceParser"/> class.
         /// </summary>
-        /// <param name="spiceNetlistParser">SPICE netlist parser.</param>
+        /// <param name="spiceSingleNetlistParser">SPICE netlist parser.</param>
         /// <param name="preProcessors">Preprocessors.</param>
         public SpiceParser(
-            ISpiceNetlistParser spiceNetlistParser,
+            ISingleSpiceNetlistParser spiceSingleNetlistParser,
             IProcessor[] preProcessors)
         {
             Settings = new SpiceParserSettings();
-            SpiceNetlistParser = spiceNetlistParser ?? throw new System.ArgumentNullException(nameof(spiceNetlistParser));
+            SpiceSingleNetlistParser = spiceSingleNetlistParser ?? throw new System.ArgumentNullException(nameof(spiceSingleNetlistParser));
 
             if (preProcessors != null)
             {
@@ -35,14 +39,28 @@ namespace SpiceSharpParser
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceParser"/> class.
         /// </summary>
-        public SpiceParser()
+        public SpiceParser() 
+            : this(new SpiceParserSettings())
         {
-            Settings = new SpiceParserSettings();
-            SpiceNetlistParser = new SpiceNetlistParser();
+        }
 
-            var includesPreprocessor = new IncludesPreprocessor(new FileReader(), SpiceNetlistParser, () => Settings.WorkingDirectory, Settings.Reading);
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpiceParser"/> class.
+        /// </summary>
+        public SpiceParser(SpiceParserSettings settings)
+        {
+            Settings = settings;
+            SpiceSingleNetlistParser = new SingleSpiceNetlistParser(Settings.Parsing);
+
+            TokenProvider = new SpiceTokenProvider();
+            var includesPreprocessor = new IncludesPreprocessor(
+                new FileReader(),
+                TokenProvider,
+                SpiceSingleNetlistParser,
+                () => Settings.WorkingDirectory,
+                Settings.Reading);
+            var libPreprocessor = new LibPreprocessor(new FileReader(), TokenProvider, SpiceSingleNetlistParser, includesPreprocessor, () => Settings.WorkingDirectory, Settings.Reading);
             var appendModelPreprocessor = new AppendModelPreprocessor();
-            var libPreprocessor = new LibPreprocessor(new FileReader(), SpiceNetlistParser, includesPreprocessor, () => Settings.WorkingDirectory, Settings.Reading);
             var sweepsPreprocessor = new SweepsPreprocessor();
             var ifPostprocessor = new IfPreprocessor();
 
@@ -50,9 +68,14 @@ namespace SpiceSharpParser
         }
 
         /// <summary>
+        /// Gets or sets the token provider.
+        /// </summary>
+        public SpiceTokenProvider TokenProvider { get; }
+
+        /// <summary>
         /// Gets or sets the parser settings.
         /// </summary>
-        public SpiceParserSettings Settings { get; set; }
+        public SpiceParserSettings Settings { get; }
 
         /// <summary>
         /// Gets the pre processors.
@@ -62,7 +85,7 @@ namespace SpiceSharpParser
         /// <summary>
         /// Gets the SPICE netlist parser.
         /// </summary>
-        protected ISpiceNetlistParser SpiceNetlistParser { get; }
+        protected ISingleSpiceNetlistParser SpiceSingleNetlistParser { get; }
 
         /// <summary>
         /// Parses the netlist.
@@ -83,19 +106,26 @@ namespace SpiceSharpParser
                 throw new System.InvalidOperationException(nameof(Settings));
             }
 
-            SpiceNetlist originalNetlistModel = SpiceNetlistParser.Parse(spiceNetlist, Settings.Parsing);
+            // Get tokens
+            var tokens = TokenProvider.GetTokens(spiceNetlist,
+                Settings.Parsing.IsDotStatementCaseSensitive,
+                Settings.Parsing.HasTitle,
+                Settings.Parsing.IsEndRequired);
+
+            SpiceNetlist originalNetlistModel = SpiceSingleNetlistParser.Parse(tokens);
 
             // Preprocessing
             SpiceNetlist preprocessedNetListModel = (SpiceNetlist)originalNetlistModel.Clone();
             SpiceEvaluator preprocessorEvaluator = CreatePreprocessorEvaluator();
 
-            EvaluatorsContainer evaluators = new EvaluatorsContainer(preprocessorEvaluator);
+            EvaluatorsContainer evaluators = new EvaluatorsContainer(preprocessorEvaluator, new FunctionFactory());
 
             foreach (var preprocessor in Preprocessors)
             {
                 if (preprocessor is IEvaluatorConsumer consumer)
                 {
                     consumer.Evaluators = evaluators;
+                    consumer.CaseSettings = Settings.CaseSensitivity;
                 }
 
                 preprocessedNetListModel.Statements = preprocessor.Process(preprocessedNetListModel.Statements);
@@ -107,9 +137,9 @@ namespace SpiceSharpParser
 
             return new SpiceParserResult()
             {
-                InitialNetlistModel = originalNetlistModel,
-                PreprocessedNetlistModel = preprocessedNetListModel,
-                Result = readerResult,
+                OriginalInputModel = originalNetlistModel,
+                PreprocessedInputModel = preprocessedNetListModel,
+                SpiceSharpModel = readerResult,
             };
         }
 
@@ -120,18 +150,21 @@ namespace SpiceSharpParser
                             null,
                             Settings.Reading.EvaluatorMode,
                             Settings.Reading.Seed,
-                            new Common.Evaluation.ExpressionRegistry(),
-                            Settings.CaseSensitivity.IgnoreCaseForFunctions);
+                            new ExpressionRegistry(Settings.CaseSensitivity.IsParameterNameCaseSensitive, Settings.CaseSensitivity.IsParameterNameCaseSensitive),
+                            Settings.CaseSensitivity.IsFunctionNameCaseSensitive,
+                            Settings.CaseSensitivity.IsParameterNameCaseSensitive);
 
             var exportFunctions = ExportFunctions.Create(
                 Settings.Reading.Mappings.Exporters,
-                new MainCircuitNodeNameGenerator(new string[] { "0" }, Settings.CaseSensitivity.IgnoreCaseForNodes),
+                new MainCircuitNodeNameGenerator(new string[] { "0" }, Settings.CaseSensitivity.IsNodeNameCaseSensitive),
                 new ObjectNameGenerator(string.Empty),
-                Settings.CaseSensitivity.IgnoreCaseForNodes);
+                new ObjectNameGenerator(string.Empty),
+                null,
+                Settings.CaseSensitivity);
 
             foreach (var exportFunction in exportFunctions)
             {
-                preprocessorEvaluator.CustomFunctions.Add(exportFunction.Key, exportFunction.Value);
+                preprocessorEvaluator.Functions.Add(exportFunction.Key, exportFunction.Value);
             }
 
             return preprocessorEvaluator;

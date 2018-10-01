@@ -1,7 +1,9 @@
 ﻿using SpiceSharp;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.Models.Netlist.Spice;
 
@@ -40,15 +42,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             }
 
             // Create result netlist
-            var result = new SpiceNetlistReaderResult(new Circuit(), netlist.Title);
+            var result = new SpiceNetlistReaderResult(
+                new Circuit(StringComparerFactory.Create(Settings.CaseSettings.IsEntityNameCaseSensitive)),
+                netlist.Title);
 
             // Create reading context
             var resultService = new ResultService(result);
-            var nodeNameGenerator = new MainCircuitNodeNameGenerator(new string[] { "0" }, Settings.CaseSettings.IgnoreCaseForNodes);
-            var objectNameGenerator = new ObjectNameGenerator(string.Empty);
+            var nodeNameGenerator = new MainCircuitNodeNameGenerator(new string[] { "0" }, Settings.CaseSettings.IsNodeNameCaseSensitive);
+            var componentNameGenerator = new ObjectNameGenerator(string.Empty);
+            var modelNameGenerator = new ObjectNameGenerator(string.Empty);
 
-            SpiceEvaluator readingEvaluator = CreateReadingEvaluator(nodeNameGenerator, objectNameGenerator);
-            var evaluatorsContainer = new EvaluatorsContainer(readingEvaluator);
+            SpiceEvaluator readingEvaluator = CreateReadingEvaluator(nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService);
+            var evaluatorsContainer = new EvaluatorsContainer(readingEvaluator, new FunctionFactory());
             var simulationParameters = new SimulationsParameters(evaluatorsContainer);
 
             var statementsReader = new SpiceStatementsReader(Settings.Mappings.Controls, Settings.Mappings.Models, Settings.Mappings.Components);
@@ -60,7 +65,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 evaluatorsContainer,
                 resultService,
                 nodeNameGenerator,
-                objectNameGenerator,
+                componentNameGenerator,
+                modelNameGenerator,
                 statementsReader,
                 waveformReader,
                 Settings.CaseSettings);
@@ -76,20 +82,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             return result;
         }
 
-        private SpiceEvaluator CreateReadingEvaluator(MainCircuitNodeNameGenerator nodeNameGenerator, ObjectNameGenerator objectNameGenerator)
+        private SpiceEvaluator CreateReadingEvaluator(MainCircuitNodeNameGenerator nodeNameGenerator, ObjectNameGenerator componentNameGenerator, ObjectNameGenerator modelNameGenerator, IResultService result)
         {
             var readingEvaluator = new SpiceEvaluator(
                             "Netlist reading evaluator",
                             null,
                             Settings.EvaluatorMode,
                             Settings.Seed,
-                            new Common.Evaluation.ExpressionRegistry(),
-                            Settings.CaseSettings.IgnoreCaseForFunctions);
+                            new Common.Evaluation.ExpressionRegistry(Settings.CaseSettings.IsParameterNameCaseSensitive, Settings.CaseSettings.IsLetExpressionNameCaseSensitive),
+                            Settings.CaseSettings.IsFunctionNameCaseSensitive,
+                            Settings.CaseSettings.IsParameterNameCaseSensitive);
 
-            var exportFunctions = ExportFunctions.Create(Settings.Mappings.Exporters, nodeNameGenerator, objectNameGenerator, Settings.CaseSettings.IgnoreCaseForNodes);
+            var exportFunctions = ExportFunctions.Create(Settings.Mappings.Exporters, nodeNameGenerator, componentNameGenerator, modelNameGenerator, result, Settings.CaseSettings);
             foreach (var exportFunction in exportFunctions)
             {
-                readingEvaluator.CustomFunctions.Add(exportFunction.Key, exportFunction.Value);
+                readingEvaluator.Functions.Add(exportFunction.Key, exportFunction.Value);
             }
 
             return readingEvaluator;

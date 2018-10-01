@@ -16,7 +16,7 @@ namespace SpiceSharpParser.IntegrationTests
                 "V1 OUT 0 0",
                 ".model 1N914 D(Is=2.52e-9 DEV 10%)",
                 ".OP",
-                ".SAVE @1N914[Is] @1N914_D1[Is] @1N914_D2[Is] @1N914_D3[Is] @1N914_D4[Is]",
+                ".SAVE @1N914[Is] @1N914#D1[Is] @1N914#D2[Is] @1N914#D3[Is] @1N914#D4[Is]",
                 ".END");
 
             var exports = RunSimulationsAndReturnExports(netlist);
@@ -38,7 +38,7 @@ namespace SpiceSharpParser.IntegrationTests
                 "V2 d 0 10",
                 ".model my-nmos nmos level = 1 Is=1e-32 DEV 5%",
                 ".OP",
-                ".SAVE @my-nmos[Is] @my-nmos_Md[Is] @my-nmos_Md2[Is]",
+                ".SAVE @my-nmos[Is] @my-nmos#Md[Is] @my-nmos#Md2[Is]",
                 ".END");
 
             var exports = RunSimulationsAndReturnExports(netlist);

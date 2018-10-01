@@ -59,7 +59,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             switch (type.ToLower())
             {
                 case "dec":
-                    ReasDec(variableParameter, parameters.Skip(2), context);
+                    ReadDec(variableParameter, parameters.Skip(2), context);
                     break;
                 case "oct":
                     ReadOct(variableParameter, parameters.Skip(2), context);
@@ -130,11 +130,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             if (parameters[1] is BracketParameter bp)
             {
-                ReasDec(bp, parameters.Skip(2), context); // model parameter
+                ReadDec(bp, parameters.Skip(2), context); // model parameter
             }
             else
             {
-                ReasDec(parameters[0], parameters.Skip(1), context); // source
+                ReadDec(parameters[0], parameters.Skip(1), context); // source
             }
         }
 
@@ -150,7 +150,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void ReasDec(Parameter variableParameter, ParameterCollection parameters, IReadingContext context)
+        private void ReadDec(Parameter variableParameter, ParameterCollection parameters, IReadingContext context)
         {
             var pSweep = new ParameterSweep()
             {

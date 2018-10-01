@@ -1,10 +1,9 @@
 ﻿using NSubstitute;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
-using SpiceSharp.Components;
-using System.Collections.Generic;
 using Xunit;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
 {
@@ -14,7 +13,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
         public void SetNodeSetVoltageTest()
         {
             // prepare
-            var evaluator = Substitute.For<ISpiceEvaluator>();
+            var evaluator = Substitute.For<IEvaluator>();
             evaluator.EvaluateDouble("x+1").Returns(3);
 
             var simulation = new DC("DC");
@@ -30,16 +29,17 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
                 Substitute.For<IResultService>(),
                 new MainCircuitNodeNameGenerator(new string[] { }, true),
                 new ObjectNameGenerator(string.Empty),
+                new ObjectNameGenerator(string.Empty),
                 null,
                 null,
-                new SpiceSharpParser.ModelReaders.Netlist.Spice.CaseSensitivitySettings());
+                new CaseSensitivitySettings());
 
             // act
             context.SimulationsParameters.SetNodeSetVoltage("node1", "x+1");
             context.SimulationsParameters.Prepare(simulation);
 
             // assert
-            Assert.Equal(3, simulation.Nodes.NodeSets["node1"]);
+            Assert.Equal(3, ((BaseSimulation)simulation).Configurations.Get<BaseConfiguration>().Nodesets["node1"]);
         }
     }
 }

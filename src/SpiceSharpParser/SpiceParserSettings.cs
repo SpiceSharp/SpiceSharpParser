@@ -1,16 +1,18 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice;
+﻿using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice;
+using SpiceSharpParser.Parsers.Netlist.Spice;
 
 namespace SpiceSharpParser
 {
     /// <summary>
-    /// Settings for the parser.
+    /// Settings for the SPICE netlist parser.
     /// </summary>
     public class SpiceParserSettings
     {
         public SpiceParserSettings()
         {
             CaseSensitivity = new CaseSensitivitySettings();
-            Parsing = new SpiceNetlistParserSettings(CaseSensitivity);
+            Parsing = new SingleSpiceNetlistParserSettings(CaseSensitivity);
             Reading = new SpiceNetlistReaderSettings(CaseSensitivity);
         }
 
@@ -27,7 +29,7 @@ namespace SpiceSharpParser
         /// <summary>
         /// Gets the SPICE netlist parser settings.
         /// </summary>
-        public SpiceNetlistParserSettings Parsing { get; }
+        public SingleSpiceNetlistParserSettings Parsing { get; }
 
         /// <summary>
         /// Gets the SPICE netlist model reader settings.

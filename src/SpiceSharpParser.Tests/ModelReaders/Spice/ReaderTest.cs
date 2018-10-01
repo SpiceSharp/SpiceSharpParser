@@ -1,8 +1,5 @@
-using NSubstitute;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Models.Netlist.Spice;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using Xunit;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 

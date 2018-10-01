@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -25,6 +26,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// </summary>
         public IEvaluatorsContainer Evaluators { get; set; }
 
+        /// <summary>
+        /// Gets or sets the evaluator.
+        /// </summary>
+        public CaseSensitivitySettings CaseSettings { get; set; }
+
         // TODO: please do something about .ToLower() in so many places ....
         public Statements Process(Statements statements)
         {
@@ -36,7 +42,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             ParamControl paramControl = new ParamControl();
             foreach (Control param in statements.Where(statement => statement is Control c && c.Name.ToLower() == "param"))
             {
-                paramControl.Read(param, Evaluators);
+                paramControl.Read(param, Evaluators, CaseSettings);
             }
 
             return ReadIfs(statements);

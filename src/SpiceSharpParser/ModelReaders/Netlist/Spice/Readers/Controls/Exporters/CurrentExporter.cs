@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -15,6 +16,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
     public class CurrentExporter : Exporter
     {
         /// <summary>
+        /// Gets supported voltage exports
+        /// </summary>
+        /// <returns>
+        /// A list of supported voltage exports.
+        /// </returns>
+        public override ICollection<string> CreatedTypes => new List<string>() { "i", "ir", "ii", "im", "idb", "ip" };
+
+        /// <summary>
         /// Creates a new current export
         /// </summary>
         /// <param name="type">A type of export</param>
@@ -23,7 +32,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <returns>
         /// A new export
         /// </returns>
-        public override Export CreateExport(string name, string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator, bool ignoreCaseForNodes)
+        public override Export CreateExport(string name, string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator componentNameGenerator, IObjectNameGenerator modelNameGenerator, IResultService result, CaseSensitivitySettings caseSettings)
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
             {
@@ -31,7 +40,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             }
 
             // Get the nodes
-            Identifier componentIdentifier = null;
+            string componentIdentifier = null;
             if (parameters[0] is VectorParameter vector)
             {
                 switch (vector.Elements.Count)
@@ -39,7 +48,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                     case 0:
                         throw new Exception("Node expected");
                     case 1:
-                        componentIdentifier = new StringIdentifier(vector.Elements[0].Image);
+                        componentIdentifier = componentNameGenerator.Generate(vector.Elements[0].Image);
                         break;
                     default:
                         throw new Exception("Too many nodes specified");
@@ -47,7 +56,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             }
             else
             {
-                componentIdentifier = new StringIdentifier(parameters.GetString(0));
+                componentIdentifier = componentNameGenerator.Generate(parameters.GetString(0));
             }
 
             Export export = null;
@@ -62,17 +71,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             }
 
             return export;
-        }
-
-        /// <summary>
-        /// Gets supported current exports
-        /// </summary>
-        /// <returns>
-        /// A list of supported current exports
-        /// </returns>
-        public override ICollection<string> GetSupportedTypes()
-        {
-            return new List<string>() { "i", "ir", "ii", "im", "idb", "ip" };
         }
     }
 }

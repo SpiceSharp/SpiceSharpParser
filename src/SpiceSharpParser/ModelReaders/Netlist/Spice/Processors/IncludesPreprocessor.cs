@@ -3,8 +3,11 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.FileSystem;
+using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Parsers.Netlist.Spice;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
@@ -17,10 +20,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// Initializes a new instance of the <see cref="IncludesPreprocessor"/> class.
         /// </summary>
         /// <param name="fileReader">File reader</param>
-        public IncludesPreprocessor(IFileReader fileReader, ISpiceNetlistParser spiceNetlistParser, Func<string> initialDirectoryPathProvider, SpiceNetlistReaderSettings readerSettings)
+        public IncludesPreprocessor(IFileReader fileReader, ISpiceTokenProvider tokenProvider, ISingleSpiceNetlistParser singleSpiceNetlistParser, Func<string> initialDirectoryPathProvider, SpiceNetlistReaderSettings readerSettings)
         {
             ReaderSettings = readerSettings;
-            SpiceNetlistParser = spiceNetlistParser;
+            TokenProvider = tokenProvider;
+            SingleSpiceNetlistParser = singleSpiceNetlistParser;
             FileReader = fileReader;
             InitialDirectoryPathProvider = initialDirectoryPathProvider;
         }
@@ -42,9 +46,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         public IFileReader FileReader { get; }
 
         /// <summary>
+        /// Gets the token provider.
+        /// </summary>
+        public ISpiceTokenProvider TokenProvider { get; }
+
+        /// <summary>
         /// Gets the SPICE netlist parser.
         /// </summary>
-        public ISpiceNetlistParser SpiceNetlistParser { get; }
+        public ISingleSpiceNetlistParser SingleSpiceNetlistParser { get; }
 
         protected Func<string> InitialDirectoryPathProvider { get; }
 
@@ -113,10 +122,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             string includeContent = FileReader.GetFileContent(includeFullPath);
             if (includeContent != null)
             {
-                // parse include
-                SpiceNetlist includeModel = SpiceNetlistParser.Parse(
-                    includeContent,
-                    new SpiceNetlistParserSettings(ReaderSettings.CaseSettings) { HasTitle = false, IsEndRequired = false, IsNewlineRequired = false });
+                // tokens
+                var tokens = TokenProvider.GetTokens(includeContent);
+                
+                // parse 
+                var settings = new SingleSpiceNetlistParserSettings(ReaderSettings.CaseSettings)
+                    { HasTitle = false, IsEndRequired = false, IsNewlineRequired = false };
+
+                SingleSpiceNetlistParser.Settings = settings;
+                SpiceNetlist includeModel = SingleSpiceNetlistParser.Parse(tokens);
+                    
 
                 // process includes of include netlist
                 var savedDirectoryPath = InitialDirectoryPath;

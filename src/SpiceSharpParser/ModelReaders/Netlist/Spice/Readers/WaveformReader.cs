@@ -23,7 +23,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         public IMapper<WaveformGenerator> Mapper { get; }
 
         /// <summary>
-        /// Gemerates wavefrom from bracket parameter.
+        /// Generates a wavefrom from bracket parameter.
         /// </summary>
         /// <param name="cp">A bracket parameter.</param>
         /// <param name="context">A reading context.</param>

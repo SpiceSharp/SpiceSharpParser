@@ -37,7 +37,7 @@ namespace SpiceSharpParser.Tests.Lexers
                         (LexerTestState state, string lexem) =>
                         {
                             state.LineNumber++;
-                            return LexerRuleReturnState.ReturnToken;
+                            return LexerRuleReturnDecision.ReturnToken;
                         })
                 });
 

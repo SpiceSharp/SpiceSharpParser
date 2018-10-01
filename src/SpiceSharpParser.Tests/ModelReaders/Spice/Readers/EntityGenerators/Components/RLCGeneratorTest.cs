@@ -25,7 +25,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var generator = new RLCGenerator();
-            var resistor = generator.Generate(new SpiceSharp.StringIdentifier("r1"), "R1", "r", parameters, context);
+            var resistor = generator.Generate("r1", "R1", "r", parameters, context);
 
             Assert.NotNull(resistor);
             context.Received().SetParameter(resistor, "resistance", "1.2", false);
@@ -46,7 +46,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var generator = new RLCGenerator();
-            var resistor = generator.Generate(new SpiceSharp.StringIdentifier("r1"), "R1", "r", parameters, context);
+            var resistor = generator.Generate("r1", "R1", "r", parameters, context);
 
             Assert.NotNull(resistor);
             context.Received().SetParameter(resistor, "L", "12", true);
@@ -66,7 +66,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var generator = new RLCGenerator();
-            var mut = generator.Generate(new SpiceSharp.StringIdentifier("kR1"), "kR1", "k", parameters, context);
+            var mut = generator.Generate("kR1", "kR1", "k", parameters, context);
 
             Assert.NotNull(mut);
             Assert.IsType<MutualInductance>(mut);
@@ -86,7 +86,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var generator = new RLCGenerator();
-            var inductor = generator.Generate(new SpiceSharp.StringIdentifier("lA3"), "lA3", "l", parameters, context);
+            var inductor = generator.Generate("lA3", "lA3", "l", parameters, context);
 
             Assert.NotNull(inductor);
             Assert.IsType<Inductor>(inductor);
@@ -107,7 +107,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var generator = new RLCGenerator();
-            var cap = generator.Generate(new SpiceSharp.StringIdentifier("cA3"), "cA3", "c", parameters, context);
+            var cap = generator.Generate("cA3", "cA3", "c", parameters, context);
 
             Assert.NotNull(cap);
             Assert.IsType<Capacitor>(cap);
@@ -139,7 +139,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var generator = new RLCGenerator();
-            var cap = generator.Generate(new SpiceSharp.StringIdentifier("cA3"), "cA3", "c", parameters, context);
+            var cap = generator.Generate("cA3", "cA3", "c", parameters, context);
 
             Assert.NotNull(cap);
             Assert.IsType<Capacitor>(cap);
@@ -175,14 +175,13 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var generator = new RLCGenerator();
-            var cap = generator.Generate(new SpiceSharp.StringIdentifier("cA3"), "cA3", "c", parameters, context);
+            var cap = generator.Generate("cA3", "cA3", "c", parameters, context);
 
             Assert.NotNull(cap);
             Assert.IsType<Capacitor>(cap);
 
             context.Received().SetParameter(cap, "L", "10u", true);
             Assert.Equal(12, cap.ParameterSets.GetParameter<double>("ic").Value);
-
         }
     }
 }

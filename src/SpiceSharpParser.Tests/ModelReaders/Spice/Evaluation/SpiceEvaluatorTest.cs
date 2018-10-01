@@ -1,7 +1,7 @@
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.CustomFunctions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions;
 using System;
 using System.Linq;
 using Xunit;
@@ -11,18 +11,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
     public class SpiceEvaluatorTest
     {
         [Fact]
-        public void GetParameterNames()
-        {
-            // arrange
-            var p = new SpiceEvaluator();
-            p.SetParameter("a", 1);
-            p.SetParameter("xyz", 13.0);
-
-            Assert.Equal(4, p.GetParameterNames().Count()); // +1 for TEMP, TIME parameter
-        }
-
-        [Fact]
-        public void ParentEvalautor()
+        public void ParentEvaluator()
         {
             // arrange
             var p = new SpiceEvaluator();
@@ -547,7 +536,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         }
 
         [Fact]
-        public void FibonacciCustomFunction()
+        public void FibonacciFunction()
         {
             // arrange
             var p = new SpiceEvaluator();
@@ -571,13 +560,13 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
                 return (double)fibLogic(image, new object[1] { (x - 1) }, evaluator) + (double)fibLogic(image, new object[1] { (x - 2) }, evaluator);
             };
 
-            var fib = new CustomFunction()
+            var fib = new Function()
             {
                 ArgumentsCount = 1,
                 Logic = fibLogic,
                 VirtualParameters = false,
             };
-            p.CustomFunctions.Add("fib",  fib);
+            p.Functions.Add("fib",  fib);
 
             Assert.Equal(0, p.EvaluateDouble("fib(0)"));
             Assert.Equal(1, p.EvaluateDouble("fib(1)"));
@@ -591,11 +580,13 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         [Fact]
         public void FibonacciAsParam()
         {
+            var functionFactory = new FunctionFactory();
+
             var p = new SpiceEvaluator();
-            p.AddCustomFunction(
-                "fib",
+            p.Functions.Add("fib",
+                functionFactory.Create("fib",
                 new System.Collections.Generic.List<string>() { "x" },
-                "x <= 0 ? 0 : (x == 1 ? 1 : lazy(#fib(x-1) + fib(x-2)#))");
+                "x <= 0 ? 0 : (x == 1 ? 1 : lazy(#fib(x-1) + fib(x-2)#))"));
 
             Assert.Equal(0, p.EvaluateDouble("fib(0)"));
             Assert.Equal(1, p.EvaluateDouble("fib(1)"));
@@ -609,11 +600,13 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         [Fact]
         public void FibonacciAsWithoutLazyParam()
         {
+            var functionFactory = new FunctionFactory();
+
             var p = new SpiceEvaluator();
-            p.AddCustomFunction(
-                "fib",
+            p.Functions.Add("fib",
+                functionFactory.Create("fib",
                 new System.Collections.Generic.List<string>() { "x" },
-                "x <= 0 ? 0 : (x == 1 ? 1 : (fib(x-1) + fib(x-2)))");
+                "x <= 0 ? 0 : (x == 1 ? 1 : (fib(x-1) + fib(x-2)))"));
 
             Assert.Equal(0, p.EvaluateDouble("fib(0)"));
             Assert.Equal(1, p.EvaluateDouble("fib(1)"));
@@ -627,11 +620,13 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         [Fact]
         public void FactAsParam()
         {
+            var functionFactory = new FunctionFactory();
+
             var p = new SpiceEvaluator();
-            p.AddCustomFunction(
-                "fact",
+            p.Functions.Add("fact",
+                functionFactory.Create("fact",
                 new System.Collections.Generic.List<string>() { "x" },
-                "x == 0 ? 1 : (x * lazy(#fact(x-1)#))");
+                "x == 0 ? 1 : (x * lazy(#fact(x-1)#))"));
 
             Assert.Equal(1, p.EvaluateDouble("fact(0)"));
             Assert.Equal(1, p.EvaluateDouble("fact(1)"));
@@ -642,11 +637,13 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         [Fact]
         public void LazySimpleTest()
         {
+            var functionFactory = new FunctionFactory();
+
             var p = new SpiceEvaluator();
-            p.AddCustomFunction(
-                "test_lazy",
-                new System.Collections.Generic.List<string>() { "x" },
-                "x == 0 ? 1: lazy(#3+2#)");
+            p.Functions.Add("test_lazy",
+                functionFactory.Create("test_lazy",
+                    new System.Collections.Generic.List<string>() {"x"},
+                    "x == 0 ? 1: lazy(#3+2#)"));
 
             Assert.Equal(1, p.EvaluateDouble("test_lazy(0)"));
             Assert.Equal(5, p.EvaluateDouble("test_lazy(1)"));
@@ -655,11 +652,13 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         [Fact]
         public void LazyErrorTest()
         {
+            var functionFactory = new FunctionFactory();
+
             var p = new SpiceEvaluator();
-            p.AddCustomFunction(
-                "test_lazy",
-                new System.Collections.Generic.List<string>() { "x" },
-                "x == 0 ? 1: lazy(#1/#)");
+            p.Functions.Add("test_lazy",
+                functionFactory.Create("test_lazy",
+                    new System.Collections.Generic.List<string>() {"x"},
+                    "x == 0 ? 1: lazy(#1/#)"));
 
             Assert.Equal(1, p.EvaluateDouble("test_lazy(0)"));
         }
@@ -698,16 +697,18 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         [Fact]
         public void LazyFuncTest()
         {
+            var functionFactory = new FunctionFactory();
+
             var p = new SpiceEvaluator();
-            p.AddCustomFunction(
+            p.Functions.Add("test", functionFactory.Create(
                 "test",
                 new System.Collections.Generic.List<string>(),
-                "5");
+                "5"));
 
-            p.AddCustomFunction(
+            p.Functions.Add("test2", functionFactory.Create(
                 "test2",
-                new System.Collections.Generic.List<string>() { "x" },
-                "x <= 0 ? 0 : (x == 1 ? 1 : lazy(#test()#))");
+                new System.Collections.Generic.List<string>() {"x"},
+                "x <= 0 ? 0 : (x == 1 ? 1 : lazy(#test()#))"));
 
             //Assert.Equal(0, p.EvaluateDouble("test2(0)"));
             //Assert.Equal(1, p.EvaluateDouble("test2(1)"));

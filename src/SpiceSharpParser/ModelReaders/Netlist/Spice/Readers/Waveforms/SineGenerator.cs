@@ -11,12 +11,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
     public class SineGenerator : WaveformGenerator
     {
         /// <summary>
-        /// Generats a new sinusoidal waveform
+        /// Generates a new sinusoidal waveform.
         /// </summary>
-        /// <param name="bracketParameter">A parameter for waveform</param>
-        /// <param name="context">A context</param>
+        /// <param name="bracketParameter">A parameter for waveform.</param>
+        /// <param name="context">A context.</param>
         /// <returns>
-        /// A new waveform
+        /// A new waveform.
         /// </returns>
         public override Waveform Generate(BracketParameter bracketParameter, IReadingContext context)
         {

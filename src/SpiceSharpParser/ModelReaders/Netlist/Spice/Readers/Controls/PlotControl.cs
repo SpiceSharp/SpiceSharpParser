@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
     /// Reads .PLOT <see cref="Control"/> from SPICE netlist object model.
-    /// It supports DC, AC, TRAN type of .PLOT
+    /// It supports DC, AC, TRAN type of .PLOT.
     /// </summary>
     public class PlotControl : ExportControl
     {
@@ -32,10 +32,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         protected ICollection<string> SupportedPlotTypes { get; } = new List<string>() { "dc", "ac", "tran" };
 
         /// <summary>
-        /// Reads <see cref="Control"/> statement and modifies the context
+        /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modify</param>
+        /// <param name="statement">A statement to process.</param>
+        /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
             if (context == null)
@@ -125,7 +125,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 if (parameter is BracketParameter || parameter is ReferenceParameter)
                 {
-                    result.Add(GenerateExport(parameter, simulationToPlot, context.NodeNameGenerator, context.ObjectNameGenerator, context.CaseSensitivity.IgnoreCaseForNodes));
+                    result.Add(GenerateExport(parameter, simulationToPlot, context.NodeNameGenerator, context.ComponentNameGenerator, context.ModelNameGenerator, context.Result, context.CaseSensitivity));
                 }
                 else
                 {

@@ -105,7 +105,7 @@ namespace SpiceSharpParser.Tests.Parsers
                 new SpiceToken(SpiceTokenType.NEWLINE, "\n"),
             };
 
-            var parser = new ParseTreeGenerator(false, true);
+            var parser = new ParseTreeGenerator(false, false);
             ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.Statement);
         }
 

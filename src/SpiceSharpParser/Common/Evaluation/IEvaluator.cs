@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SpiceSharpParser.Common
+namespace SpiceSharpParser.Common.Evaluation
 {
     /// <summary>
     /// An interface for all evaluators.
@@ -12,6 +12,16 @@ namespace SpiceSharpParser.Common
         /// Gets or sets the evaluator name.
         /// </summary>
         string Name { get; set; }
+
+        /// <summary>
+        /// Gets the parameters.
+        /// </summary>
+        Dictionary<string, Expression> Parameters { get;  }
+
+        /// <summary>
+        /// Gets custom functions.
+        /// </summary>
+        Dictionary<string, Function> Functions { get;  }
 
         /// <summary>
         /// Gets the children evaluators.
@@ -31,28 +41,11 @@ namespace SpiceSharpParser.Common
         /// <summary>
         /// Evaluates a specific expression to double.
         /// </summary>
-        /// <param name="expressionString">An expression to evaluate.</param>
+        /// <param name="expression">An expression to evaluate.</param>
         /// <returns>
         /// A double value.
         /// </returns>
-        double EvaluateDouble(string expressionString);
-
-        /// <summary>
-        /// Gets the value of expression.
-        /// </summary>
-        /// <param name="expressionName">An expression name.</param>
-        /// <returns>
-        /// A value of expression.
-        /// </returns>
-        double GetExpressionValue(string expressionName);
-
-        /// <summary>
-        /// Gets the names of parameters.
-        /// </summary>
-        /// <returns>
-        /// The names of paramaters.
-        /// </returns>
-        IEnumerable<string> GetParameterNames();
+        double EvaluateDouble(string expression);
 
         /// <summary>
         /// Gets the names of expressions.
@@ -72,42 +65,18 @@ namespace SpiceSharpParser.Common
         double GetParameterValue(string parameterName);
 
         /// <summary>
-        /// Returns a value indicating whether there is a expression in evaluator with given name.
-        /// </summary>
-        /// <param name="expressionName">An expression name.</param>
-        /// <returns>
-        /// True if there is expression with given name.
-        /// </returns>
-        bool HasExpression(string expressionName);
-
-        /// <summary>
-        /// Returns a value indicating whether there is a parameter in evaluator with given name.
-        /// </summary>
-        /// <param name="parameterName">A parameter name.</param>
-        /// <returns>
-        /// True if there is a parameter with given name.
-        /// </returns>
-        bool HasParameter(string parameterName);
-
-        /// <summary>
         /// Sets a parameter.
         /// </summary>
-        /// <param name="parameterName">Parameter name.</param>
+        /// <param name="id">Parameter name.</param>
         /// <param name="expression">Parameter expression.</param>
-        void SetParameter(string parameterName, string expression);
+        void SetParameter(string id, string expression);
 
         /// <summary>
         /// Sets a parameter.
         /// </summary>
-        /// <param name="parameterName">Parameter name.</param>
+        /// <param name="id">Parameter name.</param>
         /// <param name="value">Parameter expression.</param>
-        void SetParameter(string parameterName, double value);
-
-        /// <summary>
-        /// Sets parameters.
-        /// </summary>
-        /// <param name="parameters">Dictionary of parameters to set.</param>
-        void SetParameters(Dictionary<string, string> parameters);
+        void SetParameter(string id, double value);
 
         /// <summary>
         /// Creates a child evaluator.
@@ -116,14 +85,6 @@ namespace SpiceSharpParser.Common
         /// A child evaluator.
         /// </returns>
         IEvaluator CreateChildEvaluator(string name, object context);
-
-        /// <summary>
-        /// Sets a custom function.
-        /// </summary>
-        /// <param name="functionName">Name of custom function</param>
-        /// <param name="arguments">Arguments names of custom function</param>
-        /// <param name="functionBody">Body of custom function</param>
-        void AddCustomFunction(string functionName, List<string> arguments, string functionBody);
 
         /// <summary>
         /// Sets a named expression.
@@ -136,21 +97,6 @@ namespace SpiceSharpParser.Common
         /// Gets the expression.
         /// </summary>
         string GetExpression(string expressionName);
-
-        /// <summary>
-        /// Gets the parameters from expression.
-        /// </summary>
-        /// <param name="expression">Expression</param>
-        /// <returns>
-        /// Collection of parameters.
-        /// </returns>
-        ICollection<string> GetParametersFromExpression(string expression);
-
-        /// <summary>
-        /// Refreshes all dependent expressions and parameters.
-        /// </summary>
-        /// <param name="parameterName">Paramter</param>
-        void RefreshForParameter(string parameterName);
 
         /// <summary>
         /// Finds a child evaluator with given name.

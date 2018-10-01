@@ -1,36 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharp;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public class MainCircuitNodeNameGenerator : INodeNameGenerator
     {
-        private HashSet<string> globalsSet = new HashSet<string>();
-        private Dictionary<string, string> pinMap = new Dictionary<string, string>();
+        private HashSet<string> _globals;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainCircuitNodeNameGenerator"/> class.
         /// </summary>
         /// <param name="globals">Global pin names.</param>
-        /// <param name="ignoreCaseForNodes">Ignore case for nodes.</param>
-        public MainCircuitNodeNameGenerator(IEnumerable<string> globals, bool ignoreCaseForNodes)
+        /// <param name="isNodeNameCaseSensitive">Is node name case-sensitive.</param>
+        public MainCircuitNodeNameGenerator(IEnumerable<string> globals, bool isNodeNameCaseSensitive)
         {
-            IgnoreCaseForNodes = ignoreCaseForNodes;
             if (globals == null)
             {
                 throw new ArgumentNullException(nameof(globals));
             }
 
+            IsNodeNameCaseSensitive = isNodeNameCaseSensitive;
             InitGlobals(globals);
         }
 
-        public bool IgnoreCaseForNodes { get; }
+        public bool IsNodeNameCaseSensitive { get; }
 
         /// <summary>
         /// Gets the globals.
         /// </summary>
-        public IEnumerable<string> Globals => this.globalsSet;
+        public IEnumerable<string> Globals => _globals;
 
         /// <summary>
         /// Gets or sets the root name.
@@ -56,16 +57,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(pinName));
             }
 
-            if (pinName.ToLower() == "gnd")
-            {
-                return pinName.ToUpper();
-            }
-
-            if (IgnoreCaseForNodes)
-            {
-                return pinName.ToUpper();
-            }
-
             return pinName;
         }
 
@@ -75,15 +66,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="pinName">Pin name.</param>
         public void SetGlobal(string pinName)
         {
-            // ADD thread-safety
-            if (IgnoreCaseForNodes)
+            if (!_globals.Contains(pinName))
             {
-                pinName = pinName.ToUpper();
-            }
-
-            if (!globalsSet.Contains(pinName))
-            {
-                globalsSet.Add(pinName);
+                _globals.Add(pinName);
             }
         }
 
@@ -100,12 +85,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             if (parts.Length == 1)
             {
-                if (IgnoreCaseForNodes)
-                {
-                    return path.ToUpper();
-                }
-
-                return path; // path contains only single node identifier
+                return path;
             }
             else
             {
@@ -126,9 +106,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         private void InitGlobals(IEnumerable<string> globals)
         {
+            _globals = new HashSet<string>(StringComparerFactory.Create(IsNodeNameCaseSensitive));
+
             foreach (var global in globals)
             {
-                globalsSet.Add(global);
+                _globals.Add(global);
             }
         }
     }

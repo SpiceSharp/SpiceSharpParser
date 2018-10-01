@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp;
-using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceSharp.Components.BipolarBehaviors;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
@@ -12,9 +11,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class BipolarJunctionTransistorGenerator : IComponentGenerator
     {
-        public SpiceSharp.Components.Component Generate(Identifier componentIdenfier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        /// <summary>
+        /// Gets generated types.
+        /// </summary>
+        /// <returns>
+        /// Generated types.
+        /// </returns>
+        public IEnumerable<string> GeneratedTypes => new List<string>() { "q" };
+
+        public SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
-            BipolarJunctionTransistor bjt = new BipolarJunctionTransistor(componentIdenfier.ToString());
+            BipolarJunctionTransistor bjt = new BipolarJunctionTransistor(componentIdentifier);
 
             // If the component is of the format QXXX NC NB NE MNAME off we will insert NE again before the model name
             if (parameters.Count == 5 && parameters[4] is WordParameter w && w.Image == "off")
@@ -37,7 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             context.ModelsRegistry.SetModel<BipolarJunctionTransistorModel>(
                 bjt, 
-                parameters.GetString(4), 
+                parameters.GetString(4),
                 $"Could not find model {parameters.GetString(4)} for BJT {originalName}",
                 (BipolarJunctionTransistorModel model) => bjt.SetModel(model));
 
@@ -82,20 +89,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             return bjt;
-        }
-
-        /// <summary>
-        /// Gets generated types.
-        /// </summary>
-        /// <returns>
-        /// Generated types.
-        /// </returns>
-        public IEnumerable<string> GeneratedTypes
-        {
-            get
-            {
-                return new List<string>() { "q" };
-            }
         }
     }
 }

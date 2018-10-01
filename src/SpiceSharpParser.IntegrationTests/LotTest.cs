@@ -16,7 +16,7 @@ namespace SpiceSharpParser.IntegrationTests
                 "V1 OUT 0 0",
                 ".model 1N914 D(Is=2.52e-9 LOT 10%)",
                 ".OP",
-                ".SAVE @1N914[Is] @1N914_D1[Is] @1N914_D2[Is] @1N914_D3[Is] @1N914_D4[Is]",
+                ".SAVE @1N914[Is] @1N914#D1[Is] @1N914#D2[Is] @1N914#D3[Is] @1N914#D4[Is]",
                 ".END");
 
             var exports = RunSimulationsAndReturnExports(netlist);

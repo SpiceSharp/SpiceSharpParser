@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.Common;
+﻿using SpiceSharp;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -17,7 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
-            Read(statement, context.Evaluators);
+            Read(statement, context.Evaluators, context.CaseSensitivity);
         }
 
         /// <summary>
@@ -25,7 +26,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="evaluators">Evaluators.</param>
-        public void Read(Control statement, IEvaluatorsContainer evaluators)
+        public void Read(Control statement, IEvaluatorsContainer evaluators, CaseSensitivitySettings caseSettings)
         {
             if (statement.Parameters == null)
             {
@@ -34,23 +35,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
             foreach (var param in statement.Parameters)
             {
-                if (param is Models.Netlist.Spice.Objects.Parameters.AssignmentParameter assigmentParameter)
+                if (param is Models.Netlist.Spice.Objects.Parameters.AssignmentParameter assignmentParameter)
                 {
-                    if (!assigmentParameter.HasFunctionSyntax)
+                    if (!assignmentParameter.HasFunctionSyntax)
                     {
-                        string parameterName = assigmentParameter.Name;
-                        string parameterExpression = assigmentParameter.Value;
-
+                        string parameterName = assignmentParameter.Name;
+                        string parameterExpression = assignmentParameter.Value;
                         evaluators.SetParameter(parameterName, parameterExpression);
                     }
                     else
                     {
-                        evaluators.AddCustomFunction(assigmentParameter.Name, assigmentParameter.Arguments, assigmentParameter.Value);
+                        evaluators.AddFunction(
+                            assignmentParameter.Name,
+                            assignmentParameter.Arguments, 
+                            assignmentParameter.Value);
                     }
                 }
                 else
                 {
-                    throw new WrongParameterTypeException(".PARAM supports only assigments");
+                    throw new WrongParameterTypeException(".PARAM supports only assignments");
                 }
             }
         }

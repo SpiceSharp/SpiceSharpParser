@@ -8,6 +8,8 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using System.Linq;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 {
@@ -29,7 +31,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 }
             };
 
-            var evaluator = Substitute.For<ISpiceEvaluator>();
+            var evaluator = Substitute.For<IEvaluator>();
             evaluator.EvaluateDouble("1").Returns(1.0);
             evaluator.EvaluateDouble("5").Returns(5.0);
 
@@ -39,9 +41,10 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = new ReadingContext(
                 string.Empty,
                 Substitute.For<ISimulationsParameters>(),
-                new EvaluatorsContainer(evaluator),
+                new EvaluatorsContainer(evaluator, new FunctionFactory()),
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }, true),
+                new ObjectNameGenerator(string.Empty),
                 new ObjectNameGenerator(string.Empty),
                 null,
                 null,
@@ -74,7 +77,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 }
             };
 
-            var evaluator = Substitute.For<ISpiceEvaluator>();
+            var evaluator = Substitute.For<IEvaluator>();
             evaluator.EvaluateDouble("1").Returns(1.0);
             evaluator.EvaluateDouble("5").Returns(5.0);
 
@@ -84,9 +87,10 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = new ReadingContext(
                 string.Empty,
                 Substitute.For<ISimulationsParameters>(),
-                new EvaluatorsContainer(evaluator),
+                new EvaluatorsContainer(evaluator, new FunctionFactory()),
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }, true),
+                new ObjectNameGenerator(string.Empty),
                 new ObjectNameGenerator(string.Empty),
                 null,
                 null,
@@ -119,7 +123,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 }
             };
 
-            var evaluator = Substitute.For<ISpiceEvaluator>();
+            var evaluator = Substitute.For<IEvaluator>();
             evaluator.EvaluateDouble("1").Returns(1.0);
             evaluator.EvaluateDouble("16").Returns(16);
 
@@ -129,9 +133,10 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = new ReadingContext(
                 string.Empty,
                 Substitute.For<ISimulationsParameters>(),
-                new EvaluatorsContainer(evaluator),
+                new EvaluatorsContainer(evaluator, new FunctionFactory()),
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }, true),
+                new ObjectNameGenerator(string.Empty),
                 new ObjectNameGenerator(string.Empty),
                 null,
                 null,
@@ -164,7 +169,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 }
             };
 
-            var evaluator = Substitute.For<ISpiceEvaluator>();
+            var evaluator = Substitute.For<IEvaluator>();
             evaluator.EvaluateDouble("1").Returns(1.0);
             evaluator.EvaluateDouble("16").Returns(16);
 
@@ -174,9 +179,10 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = new ReadingContext(
                 string.Empty,
                 Substitute.For<ISimulationsParameters>(),
-                new EvaluatorsContainer(evaluator),
+                new EvaluatorsContainer(evaluator, new FunctionFactory()),
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }, true),
+                new ObjectNameGenerator(string.Empty),
                 new ObjectNameGenerator(string.Empty),
                 null,
                 null,
@@ -209,7 +215,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 }
             };
 
-            var evaluator = Substitute.For<ISpiceEvaluator>();
+            var evaluator = Substitute.For<IEvaluator>();
             evaluator.EvaluateDouble("1.0").Returns(1.0);
 
             var resultService = new ResultService(
@@ -218,9 +224,10 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = new ReadingContext(
                 string.Empty,
                 Substitute.For<ISimulationsParameters>(),
-                new EvaluatorsContainer(evaluator),
+                new EvaluatorsContainer(evaluator, new FunctionFactory()),
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }, true),
+                new ObjectNameGenerator(string.Empty),
                 new ObjectNameGenerator(string.Empty),
                 null,
                 null,

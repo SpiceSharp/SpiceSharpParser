@@ -5,7 +5,7 @@ namespace SpiceSharpParser.Common.Evaluation
 {
     public static class Randomizer
     {
-        private static int tickCount = Environment.TickCount;
+        private static int _tickCount = Environment.TickCount;
 
         public static Random GetRandom(int? randomSeed)
         {
@@ -15,7 +15,7 @@ namespace SpiceSharpParser.Common.Evaluation
             }
             else
             {
-                int seed = Interlocked.Increment(ref tickCount);
+                int seed = Interlocked.Increment(ref _tickCount);
                 return new Random(seed);
             }
         }
