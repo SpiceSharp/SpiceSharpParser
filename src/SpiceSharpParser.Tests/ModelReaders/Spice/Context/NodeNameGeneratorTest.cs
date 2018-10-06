@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
+﻿using SpiceSharp;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
@@ -8,12 +9,12 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
         [Fact]
         public void GenerateNoSubcircuitTest()
         {
-            var generator = new MainCircuitNodeNameGenerator(new string[] { "0" });
+            var generator = new MainCircuitNodeNameGenerator(new string[] { "0" }, true);
 
             // ground nodes
             Assert.Equal("0", generator.Generate("0"));
-            Assert.Equal("GND", generator.Generate("gnd"));
-            Assert.Equal("GND", generator.Generate("Gnd"));
+            Assert.Equal("gnd", generator.Generate("gnd"));
+            Assert.Equal("Gnd", generator.Generate("Gnd"));
             Assert.Equal("GND", generator.Generate("GND"));
 
             // ordinary nodes
@@ -31,12 +32,12 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
                     new Models.Netlist.Spice.Objects.Parameters.AssignmentParameter() { Name = "L", Value = "100" },
                     new Models.Netlist.Spice.Objects.Parameters.AssignmentParameter() { Name = "C", Value = "10" } };
 
-            var generator = new SubcircuitNodeNameGenerator("x1", "x1", subcircuit, new System.Collections.Generic.List<string>() { "net2", "net3" }, new string[] { "0" });
+            var generator = new SubcircuitNodeNameGenerator("x1", "x1", subcircuit, new System.Collections.Generic.List<string>() { "net2", "net3" }, new string[] { "0" }, true);
 
             // ground nodes
             Assert.Equal("0", generator.Generate("0"));
-            Assert.Equal("GND", generator.Generate("gnd"));
-            Assert.Equal("GND", generator.Generate("Gnd"));
+            Assert.Equal("gnd", generator.Generate("gnd"));
+            Assert.Equal("Gnd", generator.Generate("Gnd"));
             Assert.Equal("GND", generator.Generate("GND"));
 
             // ordinary nodes

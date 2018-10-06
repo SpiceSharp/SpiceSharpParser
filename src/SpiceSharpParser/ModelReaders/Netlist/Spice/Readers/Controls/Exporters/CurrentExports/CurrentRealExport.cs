@@ -1,9 +1,9 @@
 ﻿using System;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
 using SpiceSharp;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports
 {
     /// <summary>
     /// Real part of a complex current export.
@@ -13,26 +13,21 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
         /// <summary>
         /// Initializes a new instance of the <see cref="CurrentRealExport"/> class.
         /// </summary>
+        /// <param name="name">Name of export.</param>
         /// <param name="simulation">A simulation</param>
         /// <param name="source">An identifier of source</param>
-        public CurrentRealExport(Simulation simulation, Identifier source)
+        public CurrentRealExport(string name, Simulation simulation, string source)
             : base(simulation)
         {
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             Source = source ?? throw new ArgumentNullException(nameof(source));
-            if (simulation == null)
-            {
-                throw new ArgumentNullException(nameof(simulation));
-            }
-
             ExportImpl = new RealPropertyExport(simulation, source, "i");
-
-            Name = "ir(" + Source + ")";
         }
 
         /// <summary>
         /// Gets the main node
         /// </summary>
-        public Identifier Source { get; }
+        public string Source { get; }
 
         /// <summary>
         /// Gets the type name
@@ -63,6 +58,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
                 {
                     throw new GeneralReaderException($"Current real export '{Name}' is invalid");
                 }
+
                 return double.NaN;
             }
 

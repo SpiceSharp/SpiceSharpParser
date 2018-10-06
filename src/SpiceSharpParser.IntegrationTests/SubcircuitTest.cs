@@ -1,3 +1,4 @@
+using SpiceSharpParser.Parsers.Netlist;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests
@@ -185,6 +186,30 @@ namespace SpiceSharpParser.IntegrationTests
             double[] references = { (1.0 / (10.0 + 20.0 + 1.0)) * 4.0 };
 
             EqualsWithTol(new double[] { export }, references);
+        }
+
+        [Fact]
+        public void SubcircuitWithWrongEndingTest()
+        {
+            try
+            {
+                var netlist = ParseNetlist(
+                    "Subcircuit - ComplexContainedSubcircuitWithParams",
+                    "V1 IN 0 4.0",
+                    "X1 IN OUT resistor",
+                    "RX OUT 0 1",
+                    ".SUBCKT resistor input output params: R=1",
+                    "R1 input output {R}",
+                    ".ENDS resistor2",
+                    ".OP",
+                    ".SAVE V(OUT)",
+                    ".END");
+
+                Assert.True(false, "There should be exception");
+            }
+            catch (ParseException)
+            {
+            }
         }
     }
 }

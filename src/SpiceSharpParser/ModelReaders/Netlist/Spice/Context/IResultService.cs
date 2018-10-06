@@ -1,21 +1,28 @@
 ﻿using System.Collections.Generic;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
-using SpiceSharp;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public interface IResultService
     {
         SimulationConfiguration SimulationConfiguration { get; }
 
+        MonteCarloResult MonteCarlo { get; }
+
         IEnumerable<Simulation> Simulations { get; }
 
+        IEnumerable<Export> Exports { get; }
+
         Circuit Circuit { get; }
+
+        int? Seed { get; set; }
 
         void AddWarning(string warning);
 
@@ -23,15 +30,14 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
 
         void AddExport(Export export);
 
-        void AddPlot(Plot plot);
+        void AddPlot(XyPlot plot);
 
         void AddEntity(Entity entity);
 
         void AddSimulation(BaseSimulation simulation);
 
-        void SetInitialVoltageCondition(string nodeName, double initialVoltage);
+        bool FindObject(string objectId, out Entity @object);
 
-        bool FindObject(string objectName, out Entity @object);
         void AddPrint(Print print);
     }
 }

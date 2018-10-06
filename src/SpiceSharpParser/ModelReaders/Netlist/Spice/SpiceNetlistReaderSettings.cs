@@ -1,13 +1,16 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions;
+﻿using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
     public class SpiceNetlistReaderSettings
     {
-        public SpiceNetlistReaderSettings()
+        public SpiceNetlistReaderSettings(SpiceNetlistCaseSensitivitySettings caseSensitivitySettings)
         {
             EvaluatorMode = SpiceEvaluatorMode.Spice3f5;
-            Context = new SpiceNetlistReaderContext();
+            Mappings = new SpiceObjectMappings();
+            Orderer = new SpiceStatementsOrderer();
+            CaseSensitivity = caseSensitivitySettings;
         }
 
         /// <summary>
@@ -16,8 +19,23 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
         public SpiceEvaluatorMode EvaluatorMode { get; set; }
 
         /// <summary>
-        /// Gets or sets the context for reader.
+        /// Gets or sets the evaluator random seed.
         /// </summary>
-        public ISpiceNetlistReaderContext Context { get; set; }
+        public int? Seed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the object mappings.
+        /// </summary>
+        public ISpiceObjectMappings Mappings { get; set; }
+
+        /// <summary>
+        /// Gets or sets the statements orderer.
+        /// </summary>
+        public ISpiceStatementsOrderer Orderer { get; set; }
+
+        /// <summary>
+        /// Gets the case-sensitivity settings.
+        /// </summary>
+        public SpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
     }
 }

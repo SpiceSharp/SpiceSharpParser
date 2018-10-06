@@ -1,3 +1,4 @@
+using SpiceSharp.Simulations;
 using System.IO;
 using Xunit;
 
@@ -58,11 +59,11 @@ namespace SpiceSharpParser.IntegrationTests
         public void LibWithInclude()
         {
             string modelFileContent = ".model 1N914 D(Is=2.52e-9 Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)\n";
-            string modelFilePath = Path.Combine(Directory.GetCurrentDirectory(), "diodes.mod");
+            string modelFilePath = Path.Combine(Directory.GetCurrentDirectory(), "diodeslib.mod");
             File.WriteAllText(modelFilePath, modelFileContent);
 
             string l1Path = Path.Combine(Directory.GetCurrentDirectory(), "l1");
-            File.WriteAllText(l1Path, ".lib a\n.include diodes.mod\n.endl\n");
+            File.WriteAllText(l1Path, ".lib a\n.include diodeslib.mod\n.endl\n");
 
             var netlist = ParseNetlist(
                 "Lib - Diode circuit",
@@ -76,7 +77,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             RunDCSimulation(netlist, "V(OUT)");
-            Assert.Equal(14, netlist.Simulations[0].Nodes.NodeSets["OUT"]);
+            Assert.Equal(14, ((BaseSimulation)netlist.Simulations[0]).Configurations.Get<BaseConfiguration>().Nodesets["OUT"]);
         }
 
 
@@ -102,7 +103,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             RunDCSimulation(netlist, "V(OUT)");
-            Assert.Equal(14, netlist.Simulations[0].Nodes.NodeSets["OUT"]);
+            Assert.Equal(14, ((BaseSimulation)netlist.Simulations[0]).Configurations.Get<BaseConfiguration>().Nodesets["OUT"]);
         }
 
         [Fact]
@@ -130,7 +131,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             RunDCSimulation(netlist, "V(OUT)");
-            Assert.Equal(14, netlist.Simulations[0].Nodes.NodeSets["OUT"]);
+            Assert.Equal(14, ((BaseSimulation)netlist.Simulations[0]).Configurations.Get<BaseConfiguration>().Nodesets["OUT"]);
         }
 
         [Fact]
@@ -158,7 +159,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             RunDCSimulation(netlist, "V(OUT)");
-            Assert.Equal(14, netlist.Simulations[0].Nodes.NodeSets["OUT"]);
+            Assert.Equal(14, ((BaseSimulation)netlist.Simulations[0]).Configurations.Get<BaseConfiguration>().Nodesets["OUT"]);
         }
     }
 }

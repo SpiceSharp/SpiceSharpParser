@@ -1,6 +1,6 @@
 ﻿using NSubstitute;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System;
@@ -24,7 +24,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Mod
 
             var context = Substitute.For<IReadingContext>();
             var generator = new SwitchModelGenerator();
-            var model = generator.Generate("SRES", "SRES", "sw", parameters, context);
+            var model = generator.Generate("SRES", "sw", parameters, context);
 
             Assert.NotNull(model);
         }

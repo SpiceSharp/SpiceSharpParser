@@ -1,25 +1,18 @@
 ﻿using System.Collections.Generic;
-using SpiceSharp.Circuits;
+using SpiceSharp;
 using SpiceSharp.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
 {
     public class BipolarModelGenerator : ModelGenerator
     {
-        /// <summary>
-        /// Gets the generated types
-        /// </summary>
-        /// <returns>
-        /// A list of generated types
-        /// </returns>
-        public override IEnumerable<string> GetGeneratedSpiceTypes()
-        {
-            return new List<string>() { "npn", "pnp" };
-        }
+        public override IEnumerable<string> GeneratedTypes => new List<string>() { "npn", "pnp" };
 
-        internal override Entity GenerateModel(string name, string type)
+        public override SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context)
         {
-            BipolarJunctionTransistorModel model = new BipolarJunctionTransistorModel(name);
+            BipolarJunctionTransistorModel model = new BipolarJunctionTransistorModel(id);
 
             if (type.ToLower() == "npn")
             {
@@ -29,6 +22,8 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             {
                 model.SetParameter("pnp", true);
             }
+
+            SetParameters(context, model, parameters);
 
             return model;
         }

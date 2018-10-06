@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
-    /// Reades .STEP <see cref="Control"/> from Spice netlist object model.
+    /// Reads .STEP <see cref="Control"/> from Spice netlist object model.
     /// </summary>
     public class StepControl : BaseControl
     {
-        public override string SpiceName => "step";
-
         /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context.
+        /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
@@ -62,7 +59,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
             switch (type.ToLower())
             {
                 case "dec":
-                    ReasDec(variableParameter, parameters.Skip(2), context);
+                    ReadDec(variableParameter, parameters.Skip(2), context);
                     break;
                 case "oct":
                     ReadOct(variableParameter, parameters.Skip(2), context);
@@ -83,7 +80,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         {
             bool list = false;
             int index = 0;
-            for (var i = 1; i <= 2; i++)
+            for (var i = 0; i <= 2; i++)
             {
                 if (parameters[i].Image.ToLower() == "list")
                 {
@@ -133,11 +130,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         {
             if (parameters[1] is BracketParameter bp)
             {
-                ReasDec(bp, parameters.Skip(2), context); // model parameter
+                ReadDec(bp, parameters.Skip(2), context); // model parameter
             }
             else
             {
-                ReasDec(parameters[0], parameters.Skip(1), context); // source
+                ReadDec(parameters[0], parameters.Skip(1), context); // source
             }
         }
 
@@ -153,7 +150,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void ReasDec(Parameter variableParameter, ParameterCollection parameters, IReadingContext context)
+        private void ReadDec(Parameter variableParameter, ParameterCollection parameters, IReadingContext context)
         {
             var pSweep = new ParameterSweep()
             {
@@ -200,8 +197,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                 {
                     Parameter = variableParameter,
                     Sweep = new ListSweep(values),
-                }
-            );
+                });
         }
 
         private void ReadLin(Parameter variableParameter, ParameterCollection parameters, IReadingContext context)

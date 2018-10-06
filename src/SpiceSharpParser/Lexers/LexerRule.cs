@@ -15,6 +15,7 @@ namespace SpiceSharpParser.Lexers
         /// </summary>
         /// <param name="ruleName">A name of lexer rule</param>
         /// <param name="regularExpressionPattern">A regular expression</param>
+        /// <param name="ignoreCase">Case is ignored.</param>
         public LexerRule(string ruleName, string regularExpressionPattern, bool ignoreCase)
         {
             RegularExpressionPattern = regularExpressionPattern;
@@ -23,24 +24,21 @@ namespace SpiceSharpParser.Lexers
         }
 
         /// <summary>
-        /// Gets name of lexer rule
-        /// </summary>
-        public string Name { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether case of characters in regular expression is ignored
+        /// Gets a value indicating whether case of characters in regular expression is ignored.
         /// </summary>
         public bool IgnoreCase { get; }
 
         /// <summary>
-        /// Gets or sets a regular expression pattern of lexer rule
+        /// Gets name of lexer rule.
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
+        /// Gets or sets a regular expression pattern of lexer rule.
         /// </summary>
         public string RegularExpressionPattern
         {
-            get
-            {
-                return regularExpressionPattern;
-            }
+            get => regularExpressionPattern;
 
             set
             {
@@ -50,7 +48,7 @@ namespace SpiceSharpParser.Lexers
         }
 
         /// <summary>
-        /// Gets a regular expression of lexer rule
+        /// Gets a regular expression of lexer rule.
         /// </summary>
         public Regex RegularExpression
         {
@@ -73,10 +71,10 @@ namespace SpiceSharpParser.Lexers
         }
 
         /// <summary>
-        /// Clones the rule
+        /// Clones the rule.
         /// </summary>
         /// <returns>
-        /// Clone of the rule
+        /// Clone of the rule.
         /// </returns>
         public abstract LexerRule Clone();
     }

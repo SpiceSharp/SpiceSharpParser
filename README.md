@@ -1,4 +1,4 @@
-# SpiceSharpParser
+# SpiceSharpParser (in development)
 
 ## What is SpiceSharpParser?
 SpiceSharpParser is a .NET library that parses Spice netlists and creates a model of  Spice simulation using SpiceSharp.
@@ -28,6 +28,7 @@ SpiceSharpParser is a .NET library that parses Spice netlists and creates a mode
 * .FUNC
 * .STEP
 * .PRINT
+* .MC
 
 ### Supported components
 * RLC
@@ -60,12 +61,6 @@ Documentation for API on SpiceSharpParser is available at <https://spicesharp.gi
 ## Currently Supported and Tested Platforms
 * Windows
 * Linux
-
-## Roadmap
-* Fixing bugs 
-* Refactoring (code reuse, patterns, code cleanup etc.)
-* Saving simulation data to Microsoft Excel xlsx, Matlab formats.
-* .MEAS[SURE]
 
 ## License
 SpiceSharpParser is under MIT License

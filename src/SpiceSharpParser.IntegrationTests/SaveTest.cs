@@ -8,6 +8,28 @@ namespace SpiceSharpParser.IntegrationTests
     public class SaveTest : BaseTest
     {
         [Fact]
+        public void SpaceInExportTest()
+        {
+            var netlist = ParseNetlist(
+                "Subcircuit test",
+                "V1 IN 0 4.0",
+                "X1 IN OUT twoResistorsInSeries R1=1 R2=2",
+                "RX OUT 0 1",
+                ".SUBCKT twoResistorsInSeries input output params: R1=10 R2=100",
+                "R1 input 1 {R1}",
+                "R2 1 output {R2}",
+                ".ENDS twoResistorsInSeries",
+                ".OP",
+                ".SAVE V(OUT,  0) I(X1.R1)",
+                ".END");
+
+            double[] export = RunOpSimulation(netlist, "V(OUT,0)", "I(X1.R1)");
+
+            Assert.Equal(1, export[0]);
+            Assert.Equal(1, export[1]);
+        }
+
+        [Fact]
         public void SaveWithoutParametersTest()
         {
             var netlist = ParseNetlist(

@@ -1,8 +1,8 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
+﻿using SpiceSharp.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharp.Components;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
     /// <summary>
     /// Interface for all waveform readers
@@ -10,12 +10,12 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
     public interface IWaveformReader
     {
         /// <summary>
-        /// Gemerates wavefrom from bracket parameter
+        /// Generates wavefrom from bracket parameter.
         /// </summary>
-        /// <param name="cp">A bracket parameter</param>
-        /// <param name="context">A processing context</param>
+        /// <param name="cp">A bracket parameter.</param>
+        /// <param name="context">A reading context.</param>
         /// <returns>
-        /// An new instance of waveform
+        /// An new instance of waveform.
         /// </returns>
         Waveform Generate(BracketParameter cp, IReadingContext context);
     }

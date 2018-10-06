@@ -1,76 +1,42 @@
-﻿using System.Globalization;
+﻿using System;
 using SpiceSharp;
-using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
+using SpiceSharpParser.Common.Evaluation.Expressions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions;
 using SpiceSharpParser.Parsers.Expression;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 {
     /// <summary>
     /// Spice expressions evaluator.
     /// </summary>
-    public class SpiceEvaluator : Evaluator, ISpiceEvaluator
+    public class SpiceEvaluator : Evaluator
     {
+        public SpiceEvaluator()
+            : this(string.Empty, null, SpiceEvaluatorMode.LtSpice, null, new ExpressionRegistry(false, false), false, false)
+        {
+        }
+
+        public SpiceEvaluator(SpiceEvaluatorMode mode)
+            : this(string.Empty, null, mode, null, new ExpressionRegistry(false, false), false, false)
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceEvaluator"/> class.
         /// </summary>
-        public SpiceEvaluator(SpiceEvaluatorMode mode = SpiceEvaluatorMode.Spice3f5)
-            : base(new SpiceExpressionParser(mode == SpiceEvaluatorMode.LtSpice), new ExpressionRegistry())
+        public SpiceEvaluator(string name, object context, SpiceEvaluatorMode mode, int? seed, ExpressionRegistry registry, bool isFunctionNameCaseSensitive, bool isParameterNameCaseSensitive)
+            : base(name, context, new SpiceExpressionParser(mode == SpiceEvaluatorMode.LtSpice), registry, seed, isFunctionNameCaseSensitive, isParameterNameCaseSensitive)
         {
             Mode = mode;
-
-            Parameters.Add("TEMP", new LazyExpression((e, c) => (Circuit.ReferenceTemperature - Circuit.CelsiusKelvin), "temp"));
-
-            CustomFunctions.Add("**", MathFunctions.CreatePowInfix(Mode));
-            CustomFunctions.Add("abs", MathFunctions.CreateAbs());
-            CustomFunctions.Add("buf", MathFunctions.CreateBuf());
-            CustomFunctions.Add("cbrt", MathFunctions.CreateCbrt());
-            CustomFunctions.Add("ceil", MathFunctions.CreateCeil());
-            CustomFunctions.Add("db", MathFunctions.CreateDb(Mode));
-            CustomFunctions.Add("def", ControlFunctions.CreateDef());
-            CustomFunctions.Add("exp", MathFunctions.CreateExp());
-            CustomFunctions.Add("fabs", MathFunctions.CreateAbs());
-            CustomFunctions.Add("flat", RandomFunctions.CreateFlat());
-            CustomFunctions.Add("floor", MathFunctions.CreateFloor());
-            CustomFunctions.Add("hypot", MathFunctions.CreateHypot());
-            CustomFunctions.Add("if", ControlFunctions.CreateIf());
-            CustomFunctions.Add("lazy", ControlFunctions.CreateLazy());
-            CustomFunctions.Add("int", MathFunctions.CreateInt());
-            CustomFunctions.Add("inv", MathFunctions.CreateInv());
-            CustomFunctions.Add("ln", MathFunctions.CreateLn());
-            CustomFunctions.Add("log", MathFunctions.CreateLog(Mode));
-            CustomFunctions.Add("log10", MathFunctions.CreateLog10(Mode));
-            CustomFunctions.Add("max", MathFunctions.CreateMax());
-            CustomFunctions.Add("min", MathFunctions.CreateMin());
-            CustomFunctions.Add("nint", MathFunctions.CreateRound());
-            CustomFunctions.Add("pow", MathFunctions.CreatePow(Mode));
-            CustomFunctions.Add("pwr", MathFunctions.CreatePwr(Mode));
-            CustomFunctions.Add("pwrs", MathFunctions.CreatePwrs());
-            CustomFunctions.Add("random", RandomFunctions.CreateRandom());
-            CustomFunctions.Add("round", MathFunctions.CreateRound());
-            CustomFunctions.Add("sqrt", MathFunctions.CreateSqrt(Mode));
-            CustomFunctions.Add("sgn", MathFunctions.CreateSgn());
-            CustomFunctions.Add("table", TableFunction.Create());
-            CustomFunctions.Add("u", MathFunctions.CreateU());
-            CustomFunctions.Add("uramp", MathFunctions.CreateURamp());
+            CreateSpiceParameters();
+            CreateSpiceFunctions();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpiceEvaluator"/> class.
+        /// Gets or sets the mode of evaluator.
         /// </summary>
-        public SpiceEvaluator(SpiceEvaluatorMode mode, IExporterRegistry exporters, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
-            : this(mode)
-        {
-            ExportFunctions.Add(CustomFunctions, exporters, nodeNameGenerator, objectNameGenerator);
-        }
-
-        /// <summary>
-        /// Gets the mode of evaluator.
-        /// </summary>
-        public SpiceEvaluatorMode Mode { get; }
+        public SpiceEvaluatorMode Mode { get; set; }
 
         /// <summary>
         /// Creates a child evaluator.
@@ -78,21 +44,76 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// <returns>
         /// A child evaluator.
         /// </returns>
-        public override IEvaluator CreateChildEvaluator()
+        public override IEvaluator CreateChildEvaluator(string name, object context)
         {
-            var newEvaluator = new SpiceEvaluator(Mode);
+            SpiceEvaluator newEvaluator = (SpiceEvaluator)Clone(false);
+            newEvaluator.Name = name;
+            newEvaluator.Context = context;
 
-            foreach (var parameterName in this.GetParameterNames())
-            {
-                newEvaluator.Parameters[parameterName] = this.ExpressionParser.Parameters[parameterName];
-            }
-
-            foreach (var customFunction in CustomFunctions)
-            {
-                newEvaluator.CustomFunctions[customFunction.Key] = customFunction.Value;
-            }
-
+            Children.Add(newEvaluator);
             return newEvaluator;
+        }
+
+        public override IEvaluator Clone(bool deep)
+        {
+            var clone = new SpiceEvaluator(Name, Context, Mode, Seed, Registry.Clone(), IsFunctionNameCaseSensitive, IsParameterNameCaseSensitive);
+            clone.Initialize(Parameters, Functions, deep ? Children : new System.Collections.Generic.List<IEvaluator>());
+            return clone;
+        }
+
+        private void CreateSpiceFunctions()
+        {
+            this.Functions.Add("**", MathFunctions.CreatePowInfix(Mode));
+            this.Functions.Add("abs", MathFunctions.CreateAbs());
+            this.Functions.Add("buf", MathFunctions.CreateBuf());
+            this.Functions.Add("cbrt", MathFunctions.CreateCbrt());
+            this.Functions.Add("ceil", MathFunctions.CreateCeil());
+            this.Functions.Add("db", MathFunctions.CreateDb(Mode));
+            this.Functions.Add("def", ControlFunctions.CreateDef());
+            this.Functions.Add("exp", MathFunctions.CreateExp());
+            this.Functions.Add("fabs", MathFunctions.CreateAbs());
+            this.Functions.Add("flat", RandomFunctions.CreateFlat());
+            this.Functions.Add("floor", MathFunctions.CreateFloor());
+            this.Functions.Add("gauss", RandomFunctions.CreateGauss());
+            this.Functions.Add("hypot", MathFunctions.CreateHypot());
+            this.Functions.Add("if", ControlFunctions.CreateIf());
+            this.Functions.Add("lazy", ControlFunctions.CreateLazy());
+            this.Functions.Add("int", MathFunctions.CreateInt());
+            this.Functions.Add("inv", MathFunctions.CreateInv());
+            this.Functions.Add("ln", MathFunctions.CreateLn());
+            this.Functions.Add("limit", MathFunctions.CreateLimit());
+            this.Functions.Add("log", MathFunctions.CreateLog(Mode));
+            this.Functions.Add("log10", MathFunctions.CreateLog10(Mode));
+            this.Functions.Add("max", MathFunctions.CreateMax());
+            this.Functions.Add("min", MathFunctions.CreateMin());
+            this.Functions.Add("nint", MathFunctions.CreateRound());
+            this.Functions.Add("pow", MathFunctions.CreatePow(Mode));
+            this.Functions.Add("pwr", MathFunctions.CreatePwr(Mode));
+            this.Functions.Add("pwrs", MathFunctions.CreatePwrs());
+            this.Functions.Add("random", RandomFunctions.CreateRandom());
+            this.Functions.Add("round", MathFunctions.CreateRound());
+            this.Functions.Add("sqrt", MathFunctions.CreateSqrt(Mode));
+            this.Functions.Add("sgn", MathFunctions.CreateSgn());
+            this.Functions.Add("table", TableFunction.Create());
+            this.Functions.Add("u", MathFunctions.CreateU());
+            this.Functions.Add("uramp", MathFunctions.CreateURamp());
+        }
+
+        private void CreateSpiceParameters()
+        {
+            Parameters.Add("TEMP", new ConstantExpression(Circuit.ReferenceTemperature - Circuit.CelsiusKelvin));
+            Parameters.Add("TIME", new ConstantExpression(0));
+            Parameters.Add("PI", new ConstantExpression(Math.PI));
+            Parameters.Add("E", new ConstantExpression(Math.E));
+            Parameters.Add("false", new ConstantExpression(0));
+            Parameters.Add("true", new ConstantExpression(1));
+            Parameters.Add("yes", new ConstantExpression(1));
+            Parameters.Add("no", new ConstantExpression(0));
+            Parameters.Add("kelvin", new ConstantExpression(-273.15));
+            Parameters.Add("echarge", new ConstantExpression(1.60219e-19));
+            Parameters.Add("c", new ConstantExpression(299792500));
+            Parameters.Add("boltz", new ConstantExpression(1.38062e-23));
+            Parameters.Add("NaN", new ConstantExpression(double.NaN));
         }
     }
 }

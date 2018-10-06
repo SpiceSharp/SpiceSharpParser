@@ -1,12 +1,13 @@
 ﻿using NSubstitute;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using Xunit;
+using SpiceSharp;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Components
 {
@@ -17,7 +18,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         {
             var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IReadingContext>();
-            context.FindModel<VoltageSwitchModel>(Arg.Any<string>()).Returns(new VoltageSwitchModel("SModel"));
+            context.ModelsRegistry.FindModel<VoltageSwitchModel>(Arg.Any<string>()).Returns(new VoltageSwitchModel("SModel"));
 
             var parameters = new ParameterCollection
             {
@@ -30,7 +31,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var generator = new SwitchGenerator();
-            var @switch = generator.Generate(new SpiceSharp.StringIdentifier("s1"), "s1", "s", parameters, context);
+            var @switch = generator.Generate("s1", "s1", "s", parameters, context);
 
             Assert.NotNull(@switch);
             Assert.IsType<VoltageSwitch>(@switch);
@@ -42,7 +43,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         {
             var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IReadingContext>();
-            context.FindModel<VoltageSwitchModel>(Arg.Any<string>()).Returns(new VoltageSwitchModel("SModel"));
+            context.ModelsRegistry.FindModel<VoltageSwitchModel>(Arg.Any<string>()).Returns(new VoltageSwitchModel("SModel"));
 
             var parameters = new ParameterCollection
             {
@@ -55,7 +56,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var generator = new SwitchGenerator();
-            var @switch = generator.Generate(new SpiceSharp.StringIdentifier("s1"), "s1", "s", parameters, context);
+            var @switch = generator.Generate("s1", "s1", "s", parameters, context);
 
             Assert.NotNull(@switch);
             Assert.IsType<VoltageSwitch>(@switch);
@@ -67,7 +68,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         {
             var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IReadingContext>();
-            context.FindModel<CurrentSwitchModel>(Arg.Any<string>()).Returns(new CurrentSwitchModel("WModel"));
+            context.ModelsRegistry.FindModel<CurrentSwitchModel>(Arg.Any<string>()).Returns(new CurrentSwitchModel("WModel"));
+            context.ComponentNameGenerator.Generate(Arg.Any<string>()).Returns("V3");
 
             var parameters = new ParameterCollection
             {
@@ -79,7 +81,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var generator = new SwitchGenerator();
-            var @switch = generator.Generate(new SpiceSharp.StringIdentifier("w1"), "w1", "w", parameters, context);
+            var @switch = generator.Generate("w1", "w1", "w", parameters, context);
 
             Assert.NotNull(@switch);
             Assert.IsType<CurrentSwitch>(@switch);
@@ -91,7 +93,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         {
             var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IReadingContext>();
-            context.FindModel<CurrentSwitchModel>(Arg.Any<string>()).Returns(new CurrentSwitchModel("WModel"));
+            context.ModelsRegistry.FindModel<CurrentSwitchModel>(Arg.Any<string>()).Returns(new CurrentSwitchModel("WModel"));
+            context.ComponentNameGenerator.Generate(Arg.Any<string>()).Returns("V3");
 
             var parameters = new ParameterCollection
             {
@@ -103,7 +106,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var generator = new SwitchGenerator();
-            var @switch = generator.Generate(new SpiceSharp.StringIdentifier("w1"), "w1", "w", parameters, context);
+            var @switch = generator.Generate("w1", "w1", "w", parameters, context);
 
             Assert.NotNull(@switch);
             Assert.IsType<CurrentSwitch>(@switch);

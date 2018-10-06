@@ -1,34 +1,22 @@
-﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
     /// <summary>
-    /// Reades all <see cref="CommentLine"/> from spice netlist object model.
+    /// Reads all <see cref="CommentLine"/> from SPICE netlist object model.
     /// </summary>
-    public class CommentReader : StatementReader<CommentLine>
+    public class CommentReader : StatementReader<CommentLine>, ICommentReader
     {
         public CommentReader()
         {
         }
 
         /// <summary>
-        /// Returns whether reader can process specific statement.
+        /// Reads a comment statement and modifies the context.
         /// </summary>
         /// <param name="statement">A statement to process.</param>
-        /// <returns>
-        /// True if the reader can process given statement.
-        /// </returns>
-        public override bool CanRead(Statement statement)
-        {
-            return statement is CommentLine;
-        }
-
-        /// <summary>
-        /// Reades a comment statement and modifies the context
-        /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modifify</param>
+        /// <param name="context">A context to modify.</param>
         public override void Read(CommentLine statement, IReadingContext context)
         {
             context.Result.AddComment(statement);

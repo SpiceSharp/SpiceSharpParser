@@ -5,6 +5,31 @@ namespace SpiceSharpParser.IntegrationTests
     public class StepTest : BaseTest
     {
         [Fact]
+        public void StepWithoutDeclarationTest()
+        {
+            var result = ParseNetlist(
+                "Test circuit",
+                "V1 0 1 100",
+                "R1 1 0 {R}",
+                ".OP",
+                ".SAVE i(R1)",
+                ".PARAM S=3",
+                ".PARAM R={table(N, 1, 10, 2, 20, 3, 30)}",
+                ".STEP PARAM N LIST 1 2 {S}",
+                ".END");
+
+            Assert.Equal(3, result.Exports.Count);
+            Assert.Equal(3, result.Simulations.Count);
+
+            var exports = RunSimulationsAndReturnExports(result);
+
+            for (var i = 0; i < exports.Count; i++)
+            {
+                Assert.Equal(-100 / (10.00 * (i + 1)), exports[i]);
+            }
+        }
+
+        [Fact]
         public void ParamListTest()
         {
             var result = ParseNetlist(
@@ -30,6 +55,33 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
+        public void ParamDependencyListTest()
+        {
+            var result = ParseNetlist(
+                "Test circuit",
+                "V1 0 1 100",
+                "R1 1 0 {R}",
+                ".OP",
+                ".SAVE i(R1)",
+                ".PARAM N=0",
+                ".PARAM M={N+0*10}",
+                ".PARAM S={M+0*100}",
+                ".PARAM R={table(S, 1, 10, 2, 20, 3, 30)}",
+                ".STEP PARAM N LIST 1 2 3",
+                ".END");
+
+            Assert.Equal(3, result.Exports.Count);
+            Assert.Equal(3, result.Simulations.Count);
+
+            var exports = RunSimulationsAndReturnExports(result);
+
+            for (var i = 0; i < exports.Count; i++)
+            {
+                Assert.Equal(-100 / (10.00 * (i + 1)), exports[i]);
+            }
+        }
+
+        [Fact]
         public void ParamListWithTableInterpolationTest()
         {
             var result = ParseNetlist(
@@ -40,11 +92,11 @@ namespace SpiceSharpParser.IntegrationTests
                 ".SAVE i(R1)",
                 ".PARAM N=0",
                 ".PARAM R={table(N, 1, 10, 3, 30)}",
-                ".STEP PARAM N LIST 1 2 3 4 5",
+                ".STEP PARAM N LIST 1 2 3",
                 ".END");
 
-            Assert.Equal(5, result.Exports.Count);
-            Assert.Equal(5, result.Simulations.Count);
+            Assert.Equal(3, result.Exports.Count);
+            Assert.Equal(3, result.Simulations.Count);
 
             var exports = RunSimulationsAndReturnExports(result);
 
@@ -76,6 +128,102 @@ namespace SpiceSharpParser.IntegrationTests
             for (var i = 0; i < exports.Count; i++)
             {
                 Assert.Equal(-100 / (10.00 * (i + 1)), exports[i]);
+            }
+        }
+
+        [Fact]
+        public void StepParamSubcktGlobalTest()
+        {
+            var result = ParseNetlist(
+                "Subcircuit + STEP",
+                "V1 IN 0 4.0",
+                "X1 IN OUT twoResistors R1=1 R2=2",
+                "RX OUT 0 1",
+                ".SUBCKT twoResistors input output params: R1=10 R2=10",
+                "R1 input 1 {X*R1}",
+                "R2 1 output {R2}",
+                ".ENDS twoResistors",
+                ".OP",
+                ".SAVE V(OUT)",
+                ".STEP PARAM X LIST 1 5",
+                ".END");
+
+            Assert.Equal(2, result.Exports.Count);
+            Assert.Equal(2, result.Simulations.Count);
+
+            var exports = RunSimulationsAndReturnExports(result);
+
+            // Create references
+            double[] references = { 1.0, 0.5 };
+
+            for (var i = 0; i < exports.Count; i++)
+            {
+                EqualsWithTol((double)exports[i], references[i]);
+            }
+        }
+
+        [Fact]
+        public void StepParamSubcktParamTest()
+        {
+            var result = ParseNetlist(
+                "Subcircuit + STEP",
+                "V1 IN 0 4.0",
+                "X1 IN OUT twoResistors R1={X} R2=2",
+                "RX OUT 0 1",
+                ".SUBCKT twoResistors input output params: R1=10 R2=10",
+                "R1 input 1 {R1}",
+                "R2 1 output {R2}",
+                ".ENDS twoResistors",
+                ".OP",
+                ".SAVE V(OUT)",
+                ".STEP PARAM X LIST 1 5",
+                ".END");
+
+            Assert.Equal(2, result.Exports.Count);
+            Assert.Equal(2, result.Simulations.Count);
+
+            var exports = RunSimulationsAndReturnExports(result);
+
+            // Create references
+            double[] references = { 1.0, 0.5 };
+
+            for (var i = 0; i < exports.Count; i++)
+            {
+                EqualsWithTol((double)exports[i], references[i]);
+            }
+        }
+
+        [Fact]
+        public void StepParamSubcktParamComplexTest()
+        {
+            var result = ParseNetlist(
+                "Subcircuit + STEP",
+                "V1 IN 0 4.0",
+                "X1 IN OUT twoResistors R1={X} R2=2",
+                "RX OUT 0 1",
+                ".SUBCKT twoResistors input output params: R1=10 R2=10",
+                "X1 input 1 resistor R={R1+0}",
+                "X2 1 output resistor R={R2}",
+                ".ENDS twoResistors",
+                ".SUBCKT resistor input output params: R=1000",
+                "R1 input output {R+0}",
+                ".ENDS resistor",
+                ".OP",
+                ".SAVE V(OUT)",
+                ".STEP PARAM X LIST 1 5",
+                ".END");
+
+            Assert.Equal(2, result.Exports.Count);
+            Assert.Equal(2, result.Simulations.Count);
+
+            var exports = RunSimulationsAndReturnExports(result);
+
+            // Create references
+            double[] references = { 1.0, 0.5 };
+
+            for (var i = 0; i < exports.Count; i++)
+            {
+                EqualsWithTol((double)exports[i], references[i]);
             }
         }
 

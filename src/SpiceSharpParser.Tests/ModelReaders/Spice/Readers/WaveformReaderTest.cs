@@ -1,8 +1,8 @@
 using NSubstitute;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Waveforms;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp.Components;
 using System;
@@ -19,8 +19,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
             var waveFormGenerator = Substitute.For<WaveformGenerator>();
             waveFormGenerator.Generate(Arg.Any<BracketParameter>(), Arg.Any<IReadingContext>()).Returns(new Sine());
 
-            var waveFormRegistry = Substitute.For<IWaveformRegistry>();
-            waveFormRegistry.Supports("func").Returns(true);
+            var waveFormRegistry = Substitute.For<IMapper<WaveformGenerator>>();
+            waveFormRegistry.Contains("func").Returns(true);
             waveFormRegistry.Get(Arg.Any<string>()).Returns(waveFormGenerator);
 
             var bracketParameter = new Models.Netlist.Spice.Objects.Parameters.BracketParameter();
@@ -42,8 +42,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
             var waveFormGenerator = Substitute.For<WaveformGenerator>();
             waveFormGenerator.Generate(Arg.Any<BracketParameter>(), Arg.Any<IReadingContext>()).Returns(new Sine());
 
-            var waveFormRegistry = Substitute.For<IWaveformRegistry>();
-            waveFormRegistry.Supports("func").Returns(true);
+            var waveFormRegistry = Substitute.For<IMapper<WaveformGenerator>>();
+            waveFormRegistry.Contains("func").Returns(true);
             waveFormRegistry.Get(Arg.Any<string>()).Returns(waveFormGenerator);
 
             var bracketParameter = new Models.Netlist.Spice.Objects.Parameters.BracketParameter();

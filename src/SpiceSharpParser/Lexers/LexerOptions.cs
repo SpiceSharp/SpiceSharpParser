@@ -8,14 +8,16 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="LexerOptions"/> class.
         /// </summary>
-        /// <param name="multipleLineTokens">Allows multiline tokens</param>
-        /// <param name="lineContinuationCharacter">Line continuation character</param>
-        public LexerOptions(bool multipleLineTokens, char? lineContinuationCharacter)
+        /// <param name="multipleLineTokens">Allows multiline tokens.</param>
+        /// <param name="nextLineContinuationCharacter">Line continuation character (next line).</param>
+        /// <param name="currentLineContinuationCharacter">Line continuation character (current line).</param>
+        public LexerOptions(bool multipleLineTokens, char? nextLineContinuationCharacter, char? currentLineContinuationCharacter)
         {
             MultipleLineTokens = multipleLineTokens;
-            LineContinuationCharacter = lineContinuationCharacter;
+            NextLineContinuationCharacter = nextLineContinuationCharacter;
+            CurrentLineContinuationCharacter = currentLineContinuationCharacter;
 
-            if (MultipleLineTokens && !LineContinuationCharacter.HasValue)
+            if (MultipleLineTokens && !NextLineContinuationCharacter.HasValue)
             {
                 throw new System.Exception();
             }
@@ -27,11 +29,19 @@
         public bool MultipleLineTokens { get; } = false;
 
         /// <summary>
-        /// Gets the character that makes next line to be part of current line.
+        /// Gets the character that makes next line to be part of current line (character is at first position on second line).
         /// </summary>
         /// <remarks>
         /// In Spice netlist this is '+' character.
         /// </remarks>
-        public char? LineContinuationCharacter { get; }
+        public char? NextLineContinuationCharacter { get; }
+
+        /// <summary>
+        /// Gets the character that makes next line to be part of current line ((character is at last position on current line).
+        /// </summary>
+        /// <remarks>
+        /// For example: '\' character.
+        /// </remarks>
+        public char? CurrentLineContinuationCharacter { get; }
     }
 }

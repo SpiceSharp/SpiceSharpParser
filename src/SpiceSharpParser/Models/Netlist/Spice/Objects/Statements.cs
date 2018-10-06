@@ -6,7 +6,7 @@ using System.Linq;
 namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 {
     /// <summary>
-    /// Ordered collection of statements.
+    /// An ordered collection of statements.
     /// </summary>
     public class Statements : SpiceObject, IEnumerable<Statement>
     {
@@ -56,6 +56,11 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// </returns>
         public int IndexOf(Statement statement)
         {
+            if (statement == null)
+            {
+                throw new ArgumentNullException(nameof(statement));
+            }
+
             return this.list.IndexOf(statement);
         }
 
@@ -69,6 +74,11 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 
         public void Replace(int start, int end, IEnumerable<Statement> statements)
         {
+            if (statements == null)
+            {
+                throw new ArgumentNullException(nameof(statements));
+            }
+
             list.RemoveRange(start, end - start + 1);
             list.InsertRange(start, statements);
         }
@@ -79,6 +89,11 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// <param name="statement">A statement to add.</param>
         public void Add(Statement statement)
         {
+            if (statement == null)
+            {
+                throw new ArgumentNullException(nameof(statement));
+            }
+
             list.Add(statement);
         }
 
@@ -110,6 +125,11 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// <param name="sts">A collection to merge.</param>
         public void Merge(Statements sts)
         {
+            if (sts == null)
+            {
+                throw new ArgumentNullException(nameof(sts));
+            }
+
             list.AddRange(sts.list);
         }
 
@@ -120,6 +140,16 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// <param name="statements">Statements to replace with.</param>
         public void Replace(Statement statement, IEnumerable<Statement> statements)
         {
+            if (statement == null)
+            {
+                throw new ArgumentNullException(nameof(statement));
+            }
+
+            if (statements == null)
+            {
+                throw new ArgumentNullException(nameof(statements));
+            }
+
             if (list.Contains(statement))
             {
                 var index = list.IndexOf(statement);
@@ -141,13 +171,18 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// </returns>
         public IEnumerable<Statement> OrderBy(Func<Statement, int> orderByFunc)
         {
+            if (orderByFunc == null)
+            {
+                throw new ArgumentNullException(nameof(orderByFunc));
+            }
+
             return list.OrderBy(orderByFunc);
         }
 
         /// <summary>
-        /// Closes the object.
+        /// Clones the object.
         /// </summary>
-        /// <returns>A clone of the object</returns>
+        /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
             var clone = new Statements();

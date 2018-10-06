@@ -1,11 +1,12 @@
 ﻿using NSubstitute;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp.Simulations;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
@@ -34,10 +35,11 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             resultService.SimulationConfiguration.Returns(new SimulationConfiguration());
             resultService.Simulations.Returns(simulations);
             resultService.When(x => x.AddSimulation(Arg.Any<DC>())).Do(x => { simulations.Add((DC)x[0]); });
+            
 
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.Result.Returns(resultService);
-
+            readingContext.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
             // act
             var dcControl = new DCControl();
             dcControl.Read(control, readingContext);

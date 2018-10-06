@@ -5,17 +5,17 @@ using System.Text.RegularExpressions;
 namespace SpiceSharpParser.Lexers
 {
     /// <summary>
-    /// General lexer. It produces tokens from given text
+    /// General lexer. It produces tokens from given text.
     /// </summary>
-    /// <typeparam name="TLexerState">Type of lexer state</typeparam>
+    /// <typeparam name="TLexerState">Type of lexer state.</typeparam>
     public class Lexer<TLexerState>
         where TLexerState : LexerState
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Lexer{TLexerState}"/> class.
         /// </summary>
-        /// <param name="grammar">Lexer grammar</param>
-        /// <param name="options">Lexer options</param>
+        /// <param name="grammar">Lexer grammar.</param>
+        /// <param name="options">Lexer options.</param>
         public Lexer(LexerGrammar<TLexerState> grammar, LexerOptions options)
         {
             Options = options;
@@ -23,21 +23,21 @@ namespace SpiceSharpParser.Lexers
         }
 
         /// <summary>
-        /// Gets lexer grammar
+        /// Gets lexer grammar.
         /// </summary>
         protected LexerGrammar<TLexerState> Grammar { get; }
 
         /// <summary>
-        /// Gets lexer options
+        /// Gets lexer options.
         /// </summary>
         protected LexerOptions Options { get; }
 
         /// <summary>
-        /// Gets tokens for grammar
+        /// Gets tokens for grammar.
         /// </summary>
-        /// <param name="text">A text for which tokens will be returned</param>
-        /// <param name="state">A state for lexer</param>
-        /// <returns>An enumerable of tokens</returns>
+        /// <param name="text">A text for which tokens will be returned.</param>
+        /// <param name="state">A state for lexer.</param>
+        /// <returns>An enumerable of tokens.</returns>
         public IEnumerable<Token> GetTokens(string text, TLexerState state = null)
         {
             if (text == null)
@@ -51,7 +51,10 @@ namespace SpiceSharpParser.Lexers
             bool getNextTextToLex = true;
             int currentTokenIndex = 0;
 
-            LexerStringReader strReader = new LexerStringReader(text, Options.LineContinuationCharacter);
+            LexerStringReader strReader = new LexerStringReader(
+                text,
+                Options.NextLineContinuationCharacter,
+                Options.CurrentLineContinuationCharacter);
 
             while (currentTokenIndex < text.Length)
             {
@@ -68,8 +71,8 @@ namespace SpiceSharpParser.Lexers
 
                 if (FindBestTokenRule(textToLex, state, out bestTokenRule, out bestMatch))
                 {
-                    var tokenActionResult = bestTokenRule.ReturnAction(state, bestMatch.Value);
-                    if (tokenActionResult == LexerRuleResult.ReturnToken)
+                    var tokenActionResult = bestTokenRule.ReturnDecisionProvider(state, bestMatch.Value);
+                    if (tokenActionResult == LexerRuleReturnDecision.ReturnToken)
                     {
                         yield return new Token(bestTokenRule.TokenType, bestMatch.Value);
                         state.PreviousReturnedTokenType = bestTokenRule.TokenType;
@@ -86,11 +89,11 @@ namespace SpiceSharpParser.Lexers
             }
 
             // yield EOF token
-            yield return new Token((int)SpecialTokenType.EOF, "EOF");
+            yield return new Token((int)TokenType.EOF, "EOF");
         }
 
         /// <summary>
-        /// Updates a text to lex by skipping characters which are part of a generated token
+        /// Updates a text to lex by skipping characters which are part of a generated token.
         /// </summary>
         private void UpdateTextToLex(ref string textToLex, ref bool getNextTextToLex, int tokenLength)
         {
@@ -103,7 +106,7 @@ namespace SpiceSharpParser.Lexers
         }
 
         /// <summary>
-        /// Gets a text from which the tokens will be generated
+        /// Gets a text from which the tokens will be generated.
         /// </summary>
         private string GetTextToLex(LexerStringReader strReader, int currentTokenIndex)
         {
@@ -122,10 +125,10 @@ namespace SpiceSharpParser.Lexers
         }
 
         /// <summary>
-        /// Finds the best matched <see cref="LexerTokenRule{TLexerState}" /> for remaining text to generate new token
+        /// Finds the best matched <see cref="LexerTokenRule{TLexerState}" /> for remaining text to generate new token.
         /// </summary>
         /// <returns>
-        /// True if there is matching <see cref="LexerTokenRule{TLexerState}" />
+        /// True if there is matching <see cref="LexerTokenRule{TLexerState}" />.
         /// </returns>
         private bool FindBestTokenRule(string remainingText, TLexerState state, out LexerTokenRule<TLexerState> bestMatchTokenRule, out Match bestMatch)
         {
@@ -133,10 +136,13 @@ namespace SpiceSharpParser.Lexers
             bestMatch = null;
             foreach (LexerTokenRule<TLexerState> tokenRule in Grammar.LexerRules)
             {
-                if (tokenRule.IsActive(state))
+                Match tokenMatch = tokenRule.RegularExpression.Match(remainingText);
+                if (tokenMatch.Success && tokenMatch.Length > 0)
                 {
-                    Match tokenMatch = tokenRule.RegularExpression.Match(remainingText);
-                    if (tokenMatch.Success && tokenMatch.Length > 0)
+                    state.FullMatch = tokenMatch.Length == remainingText.Length;
+                    state.BeforeLineBreak = StartsWithLineBreak(remainingText.Substring(tokenMatch.Length));
+
+                    if (tokenRule.CanUse(state, tokenMatch.Value))
                     {
                         if (bestMatch == null || tokenMatch.Length > bestMatch.Length)
                         {
@@ -148,6 +154,11 @@ namespace SpiceSharpParser.Lexers
             }
 
             return bestMatch != null;
+        }
+
+        private bool StartsWithLineBreak(string v)
+        {
+            return v.StartsWith("\n", StringComparison.Ordinal) || v.StartsWith("\r\n", StringComparison.Ordinal);
         }
     }
 }

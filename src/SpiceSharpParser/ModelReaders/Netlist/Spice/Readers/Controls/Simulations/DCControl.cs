@@ -1,28 +1,22 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
     /// <summary>
-    /// Reades .DC <see cref="Control"/> from spice netlist object model.
+    /// Reads .DC <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class DCControl : SimulationControl
     {
         /// <summary>
-        /// Gets the Spice type
+        /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
-        public override string SpiceName => "dc";
-
-        /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context
-        /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modify</param>
+        /// <param name="statement">A statement to process.</param>
+        /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
             CreateSimulations(statement, context, CreateDCSimulation);
@@ -63,23 +57,23 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             DC dc = new DC(name, sweeps);
             dc.OnParameterSearch += (sender, e) =>
             {
-                string sweepParameterName = e.Name.ToString();
-                if (context.Evaluator.HasParameter(sweepParameterName))
+                string sweepParameterName = e.Name;
+                if (context.Evaluators.GetSimulationEvaluator(dc).Parameters.ContainsKey(sweepParameterName))
                 {
                     e.TemperatureNeeded = true;
-                    e.Result = new EvaluationParameter(context.Evaluator, sweepParameterName);
+                    e.Result = new EvaluationParameter(context.Evaluators.GetSimulationEvaluator(dc), sweepParameterName);
                 }
             };
 
-            SetBaseConfiguration(dc.BaseConfiguration, context);
-            SetDcParameters(dc.DcConfiguration, context);
+            ConfigureCommonSettings(dc, context);
+            ConfigureDcSettings(dc.Configurations.Get<DCConfiguration>(), context);
 
             context.Result.AddSimulation(dc);
 
             return dc;
         }
 
-        private void SetDcParameters(DcConfiguration dCConfiguration, IReadingContext context)
+        private void ConfigureDcSettings(DCConfiguration dCConfiguration, IReadingContext context)
         {
             if (context.Result.SimulationConfiguration.SweepMaxIterations.HasValue)
             {

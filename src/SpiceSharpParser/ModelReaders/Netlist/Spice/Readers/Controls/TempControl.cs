@@ -1,19 +1,17 @@
 ﻿using SpiceSharp;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
-    /// Reades .TEMP <see cref="Control"/> from spice netlist object model.
+    /// Reads .TEMP <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class TempControl : BaseControl
     {
-        public override string SpiceName => "temp";
-
         /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context.
+        /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
@@ -29,10 +27,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                 context.Result.SimulationConfiguration.TemperaturesInKelvins.Remove(context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions.Value);
             }
 
-            foreach (Models.Netlist.Spice.Objects.Parameter param in statement.Parameters)
+            foreach (Parameter param in statement.Parameters)
             {
-                if (param is Models.Netlist.Spice.Objects.Parameters.SingleParameter s
-                    && (param is Models.Netlist.Spice.Objects.Parameters.ValueParameter || param is Models.Netlist.Spice.Objects.Parameters.ExpressionParameter))
+                if (param is Models.Netlist.Spice.Objects.Parameters.SingleParameter
+                    && (param is Models.Netlist.Spice.Objects.Parameters.ValueParameter 
+                        || param is Models.Netlist.Spice.Objects.Parameters.ExpressionParameter))
                 {
                     context.Result.SimulationConfiguration.TemperaturesInKelvins.Add(context.ParseDouble(param.Image) + Circuit.CelsiusKelvin);
                 }

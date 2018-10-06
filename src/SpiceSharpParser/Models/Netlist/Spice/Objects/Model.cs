@@ -1,7 +1,7 @@
 ﻿namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 {
     /// <summary>
-    /// A spice model.
+    /// A SPICE model.
     /// </summary>
     public class Model : Statement
     {
@@ -16,7 +16,7 @@
         public ParameterCollection Parameters { get; set; }
 
         /// <summary>
-        /// Closes the object.
+        /// Clones the object.
         /// </summary>
         /// <returns>A clone of the object</returns>
         public override SpiceObject Clone()
