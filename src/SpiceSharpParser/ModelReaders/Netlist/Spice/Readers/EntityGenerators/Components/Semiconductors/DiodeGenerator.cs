@@ -1,34 +1,37 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp;
-using SpiceSharp.Circuits;
 using SpiceSharp.Components;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
-
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
 {
-    public class DiodeGenerator : EntityGenerator
+    public class DiodeGenerator : IComponentGenerator
     {
-        public override Entity Generate(Identifier name, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        /// <summary>
+        /// Gets generated types.
+        /// </summary>
+        /// <returns>
+        /// Generated types.
+        /// </returns>
+        public IEnumerable<string> GeneratedTypes => new List<string>() { "d" };
+
+        public SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             if (parameters.Count < 3)
             {
                 throw new System.Exception("Model expected");
             }
 
-            Diode diode = new Diode(name);
+            Diode diode = new Diode(componentIdentifier);
             context.CreateNodes(diode, parameters);
 
-            var model = context.FindModel<DiodeModel>(parameters.GetString(2));
-            if (model == null)
-            {
-                throw new ModelNotFoundException($"Could not find model {parameters.GetString(2)} for diode {name}");
-            }
-
-            diode.SetModel(model);
+            context.ModelsRegistry.SetModel<DiodeModel>(
+              diode,
+              parameters.GetString(2),
+              $"Could not find model {parameters.GetString(2)} for diode {originalName}",
+              (DiodeModel model) => diode.SetModel(model));
 
             // Read the rest of the parameters
             for (int i = 3; i < parameters.Count; i++)
@@ -53,13 +56,13 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                 {
                     if (asg.Name.ToLower() == "ic")
                     {
-                        diode.SetParameter("ic", context.ParseDouble(asg.Value));
+                        context.SetParameter(diode, "ic", asg.Value);
                     }
                 }
 
                 if (parameters[i] is ValueParameter v1 || parameters[i] is ExpressionParameter v2)
                 {
-                    //TODO: Fix this please it's broken ...
+                    // TODO: Fix this please it's broken ...
                     var bp = diode.ParameterSets.Get<SpiceSharp.Components.DiodeBehaviors.BaseParameters>();
                     if (!bp.Area.Given)
                     {
@@ -76,17 +79,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             }
 
             return diode;
-        }
-
-        /// <summary>
-        /// Gets generated Spice types by generator
-        /// </summary>
-        /// <returns>
-        /// Generated Spice types
-        /// </returns>
-        public override IEnumerable<string> GetGeneratedSpiceTypes()
-        {
-            return new List<string>() { "d" };
         }
     }
 }

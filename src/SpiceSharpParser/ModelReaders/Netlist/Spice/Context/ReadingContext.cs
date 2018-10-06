@@ -1,40 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     /// <summary>
-    /// Reading context
+    /// Reading context.
     /// </summary>
     public class ReadingContext : IReadingContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ReadingContext"/> class.
         /// </summary>
-        /// <param name="contextName">Name of the context</param>
-        /// <param name="evaluator">Evaluator for the context</param>
-        /// <param name="resultService">Result service for the context</param>
-        /// <param name="nodeNameGenerator">Node name generator for the context</param>
-        /// <param name="objectNameGenerator">Object name generator for the context</param>
-        /// <param name="parent">Parent of th econtext</param>
+        /// <param name="contextName">Name of the context.</param>
+        /// <param name="parameters">Parameters.</param>
+        /// <param name="evaluators">Evaluator for the context.</param>
+        /// <param name="resultService">SpiceSharpModel service for the context.</param>
+        /// <param name="nodeNameGenerator">Name generator for the nodes.</param>
+        /// <param name="componentNameGenerator">Name generator for the components.</param>
+        /// <param name="modelNameGenerator">Name generator for the models.</param>
+        /// <param name="statementsReader">Statements reader.</param>
+        /// <param name="waveformReader">Waveform reader.</param>
+        /// <param name="caseSettings">Case settings</param>
+        /// <param name="parent">Parent of th context.</param>
         public ReadingContext(
             string contextName,
-            IEvaluator evaluator,
+            ISimulationsParameters parameters,
+            IEvaluatorsContainer evaluators,
             IResultService resultService,
             INodeNameGenerator nodeNameGenerator,
-            IObjectNameGenerator objectNameGenerator,
+            IObjectNameGenerator componentNameGenerator,
+            IObjectNameGenerator modelNameGenerator,
+            ISpiceStatementsReader statementsReader,
+            IWaveformReader waveformReader,
+            CaseSensitivitySettings caseSettings,
             IReadingContext parent = null)
         {
             ContextName = contextName ?? throw new ArgumentNullException(nameof(contextName));
-            Evaluator = evaluator ?? throw new ArgumentNullException(nameof(evaluator));
             Result = resultService ?? throw new ArgumentNullException(nameof(resultService));
             NodeNameGenerator = nodeNameGenerator ?? throw new ArgumentNullException(nameof(nodeNameGenerator));
-            ObjectNameGenerator = objectNameGenerator ?? throw new ArgumentNullException(nameof(objectNameGenerator));
+            ComponentNameGenerator = componentNameGenerator ?? throw new ArgumentNullException(nameof(componentNameGenerator));
+            ModelNameGenerator = modelNameGenerator ?? throw new ArgumentNullException(nameof(componentNameGenerator));
             Parent = parent;
 
             if (Parent != null)
@@ -47,189 +56,130 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
             }
 
             Children = new List<IReadingContext>();
+
+            SimulationsParameters = parameters;
+            Evaluators = evaluators;
+
+            var generators = new List<IObjectNameGenerator>();
+            IReadingContext current = this;
+            while (current != null)
+            {
+                generators.Add(current.ModelNameGenerator);
+                current = current.Parent;
+            }
+
+            StatementsReader = statementsReader;
+            WaveformReader = waveformReader;
+            CaseSensitivity = caseSettings;
+
+            ModelsRegistry = new StochasticModelsRegistry(generators, caseSettings.IsEntityNameCaseSensitive);
         }
 
         /// <summary>
-        /// Gets or sets the name of context
+        /// Gets the evaluators for the context.
+        /// </summary>
+        public IEvaluatorsContainer Evaluators { get; }
+
+        /// <summary>
+        /// Gets simulation parameters.
+        /// </summary>
+        public ISimulationsParameters SimulationsParameters { get; }
+
+        /// <summary>
+        /// Gets or sets the name of context.
         /// </summary>
         public string ContextName { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the parent of context
+        /// Gets or sets the parent of context.
         /// </summary>
         public IReadingContext Parent { get; protected set; }
 
         /// <summary>
-        /// Gets available subcircuits in context
+        /// Gets available subcircuits in context.
         /// </summary>
         public ICollection<SubCircuit> AvailableSubcircuits { get; }
 
         /// <summary>
-        /// Gets or sets the evaluator
-        /// </summary>
-        public IEvaluator Evaluator { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the result service
+        /// Gets or sets the result service.
         /// </summary>
         public IResultService Result { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the node name generator
+        /// Gets or sets the node name generator.
         /// </summary>
         public INodeNameGenerator NodeNameGenerator { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the object name generator
+        /// Gets or sets the component name generator.
         /// </summary>
-        public IObjectNameGenerator ObjectNameGenerator { get; protected set; }
+        public IObjectNameGenerator ComponentNameGenerator { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the children of the processing context
+        /// Gets or sets the model name generator.
+        /// </summary>
+        public IObjectNameGenerator ModelNameGenerator { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the children of the reading context.
         /// </summary>
         public ICollection<IReadingContext> Children { get; protected set; }
 
         /// <summary>
-        /// Sets voltage initial condition for node
+        /// Gets or sets the stochastic models registry.
         /// </summary>
-        /// <param name="nodeName">Name of node</param>
-        /// <param name="expression">Expression</param>
+        public IModelsRegistry ModelsRegistry { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets statements reader.
+        /// </summary>
+        public ISpiceStatementsReader StatementsReader { get; set; }
+
+        /// <summary>
+        /// Gets or sets waveform reader.
+        /// </summary>
+        public IWaveformReader WaveformReader { get; set; }
+
+        public CaseSensitivitySettings CaseSensitivity { get; set; }
+
+        /// <summary>
+        /// Sets voltage initial condition for node.
+        /// </summary>
+        /// <param name="nodeName">Name of node.</param>
+        /// <param name="expression">Expression.</param>
         public void SetICVoltage(string nodeName, string expression)
         {
-            var fullNodeName = NodeNameGenerator.Generate(nodeName);
-            var initialValue = Evaluator.EvaluateDouble(expression);
-
-            Result.SetInitialVoltageCondition(fullNodeName, initialValue);
-
-            Evaluator.AddActionExpression(
-                new ActionExpression(
-                    expression,
-                    value => Result.SetInitialVoltageCondition(nodeName, value)),
-                Evaluator.GetParametersFromExpression(expression));
+            var nodeId = NodeNameGenerator.Generate(nodeName);
+            SimulationsParameters.SetICVoltage(nodeId, expression);
         }
 
         /// <summary>
-        /// Sets voltage guess condition for node
+        /// Parses an expression to double.
         /// </summary>
-        /// <param name="nodeName">Name of node</param>
-        /// <param name="expression">Expression</param>
-        public void SetNodeSetVoltage(string nodeName, string expression)
-        {
-            foreach (var simulation in Result.Simulations)
-            {
-                simulation.Nodes.NodeSets[nodeName] = Evaluator.EvaluateDouble(expression);
-            }
-        }
-
-        /// <summary>
-        /// Parses an expression to double
-        /// </summary>
-        /// <param name="expression">Expression to parse</param>
+        /// <param name="expression">Expression to parse.</param>
         /// <returns>
-        /// A value of expression
+        /// A value of expression..
         /// </returns>
         public double ParseDouble(string expression)
         {
             try
             {
-                return Evaluator.EvaluateDouble(expression);
+                return Evaluators.EvaluateDouble(expression);
             }
             catch (Exception ex)
             {
-                throw new Exception("Exception during evaluation of expression: " + expression);
+                throw new Exception("Exception during evaluation of expression: " + expression, ex);
             }
         }
 
         /// <summary>
-        /// Sets the parameter of entity and enables updates
+        /// Creates nodes for a component.
         /// </summary>
-        /// <param name="entity">An entity of parameter</param>
-        /// <param name="parameterName">A parameter name</param>
-        /// <param name="expression">An expression</param>
-        /// <returns>
-        /// True if the parameter has been set
-        /// </returns>
-        public bool SetParameter(Entity entity, string parameterName, string expression)
-        {
-            double value;
-            try
-            {
-                value = Evaluator.EvaluateDouble(expression);
-            }
-            catch (Exception ex)
-            {
-                Result.AddWarning("Exception during parsing expression '" + expression + "': " + ex);
-                return false;
-            }
-
-            var set = entity.SetParameter(parameterName.ToLower(), value);
-
-            if (set)
-            {
-                var parameters = Evaluator.GetParametersFromExpression(expression);
-                var setter = entity.ParameterSets.GetSetter(parameterName.ToLower());
-
-                // re-evaluation makes sense only if there is a setter
-                if (setter != null)
-                {
-                    Evaluator.AddActionExpression(new ActionExpression(expression, setter), parameters);
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Sets the parameter of entity
-        /// </summary>
-        /// <param name="entity">An entity of parameter</param>
-        /// <param name="parameterName">A parameter name</param>
-        /// <param name="object">An parameter value</param>
-        /// <returns>
-        /// True if the parameter has been set
-        /// </returns>
-        public bool SetParameter(Entity entity, string parameterName, object @object)
-        {
-            return entity.SetParameter(parameterName.ToLower(), @object);
-        }
-
-        /// <summary>
-        /// Finds model in the context and in parent contexts
-        /// </summary>
-        /// <param name="modelName">Name of model to find</param>
-        /// <returns>
-        /// A reference to model
-        /// </returns>
-        public T FindModel<T>(string modelName)
-            where T : Entity
-        {
-            IReadingContext context = this;
-            while (context != null)
-            {
-                var modelNameToSearch = context.ObjectNameGenerator.Generate(modelName);
-
-                Entity model;
-                if (Result.FindObject(modelNameToSearch, out model))
-                {
-                    return (T)model;
-                }
-
-                context = context.Parent;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Creates nodes for a component
-        /// </summary>
-        /// <param name="component">A component</param>
-        /// <param name="parameters">Parameters of component</param>
+        /// <param name="component">A component.</param>
+        /// <param name="parameters">Parameters of component.</param>
         public void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters)
         {
-            Identifier[] nodes = new Identifier[component.PinCount];
+            string[] nodes = new string[component.PinCount];
             for (var i = 0; i < component.PinCount; i++)
             {
                 string pinName = parameters.GetString(i);
@@ -237,6 +187,21 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
             }
 
             component.Connect(nodes);
+        }
+
+        public virtual void Read(Statements statements, ISpiceStatementsOrderer orderer)
+        {
+            foreach (var statement in orderer.Order(statements))
+            {
+                StatementsReader.Read(statement, this);
+            }
+        }
+
+        public void SetParameter(Entity entity, string parameterName, string expression, bool onload = true)
+        {
+            IEqualityComparer<string> comparer = StringComparerFactory.Create(CaseSensitivity.IsEntityParameterNameCaseSensitive);
+            entity.SetParameter(parameterName, Evaluators.EvaluateDouble(expression), comparer);
+            SimulationsParameters.SetParameter(entity, parameterName, expression, 0, onload, comparer);
         }
     }
 }

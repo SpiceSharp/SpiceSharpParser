@@ -1,40 +1,78 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
-using SpiceSharpParser.Common;
-using SpiceSharpParser.Common.Evaluation;
+﻿using System;
+using System.Collections.Generic;
+using SpiceSharpParser.Common.Evaluation.Expressions;
+using SpiceSharpParser.Common.Evaluation.Functions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
+namespace SpiceSharpParser.Common.Evaluation
 {
     /// <summary>
-    /// Evaluator of expressions.
+    /// Abstract evaluator.
     /// </summary>
-    public class Evaluator : IEvaluator
+    public abstract class Evaluator : IEvaluator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Evaluator"/> class.
         /// </summary>
-        public Evaluator(
-            IExpressionParser expressionParser,
-            ExpressionRegistry registry)
+        /// <param name="name">Evaluator name.</param>
+        /// <param name="context">Evaluator context.</param>
+        /// <param name="parser">Expression parser.</param>
+        /// <param name="registry">Expression registry.</param>
+        /// <param name="seed">Random seed.</param>
+        /// <param name="isFunctionNameCaseSensitive">Is function name case-sensitive.</param>
+        /// <param name="isParameterNameCaseSensitive">Is parameter name case-sensitive.</param>
+        public Evaluator(string name, object context, IExpressionParser parser, ExpressionRegistry registry, int? seed, bool isFunctionNameCaseSensitive, bool isParameterNameCaseSensitive)
         {
-            ExpressionParser = expressionParser;
-            Registry = registry;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+            Context = context;
+            ExpressionParser = parser ?? throw new ArgumentNullException(nameof(parser));
+            Registry = registry ?? throw new ArgumentNullException(nameof(registry));
+            Seed = seed;
+            IsFunctionNameCaseSensitive = isFunctionNameCaseSensitive;
+            IsParameterNameCaseSensitive = isParameterNameCaseSensitive;
+            Parameters = new Dictionary<string, Expression>(StringComparerFactory.Create(isParameterNameCaseSensitive));
+            Functions = new Dictionary<string, Function>(StringComparerFactory.Create(isFunctionNameCaseSensitive));
+            CreateCommonFunctions();
         }
 
         /// <summary>
-        /// Gets the dictionary of custom functions.
+        /// Gets or sets the name of the evaluator.
         /// </summary>
-        public Dictionary<string, CustomFunction> CustomFunctions => ExpressionParser.CustomFunctions;
+        public string Name { get; set; }
 
         /// <summary>
-        /// Gets the expression parser.
+        /// Gets or sets the parameters.
         /// </summary>
-        protected IExpressionParser ExpressionParser { get; private set; }
+        public Dictionary<string, Expression> Parameters { get; protected set; }
 
         /// <summary>
-        /// Gets the dictionary of parameters.
+        /// Gets or sets custom functions.
         /// </summary>
-        protected Dictionary<string, LazyExpression> Parameters => ExpressionParser.Parameters;
+        public Dictionary<string, Function> Functions { get; protected set; }
+
+        /// <summary>
+        /// Gets a value indicating whether function names are case-sensitive.
+        /// </summary>
+        public bool IsFunctionNameCaseSensitive { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether parameter names are case-sensitive.
+        /// </summary>
+        public bool IsParameterNameCaseSensitive { get; }
+
+        /// <summary>
+        /// Gets the children evaluators.
+        /// </summary>
+        public List<IEvaluator> Children { get; } = new List<IEvaluator>();
+
+        /// <summary>
+        /// Gets or sets the random seed for the evaluator.
+        /// </summary>
+        public int? Seed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the context of the evaluator.
+        /// </summary>
+        public object Context { get; set; }
 
         /// <summary>
         /// Gets the expression registry.
@@ -42,139 +80,41 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         protected ExpressionRegistry Registry { get; }
 
         /// <summary>
-        /// Evalues a specific string to double.
+        /// Gets the expression parser.
+        /// </summary>
+        protected IExpressionParser ExpressionParser { get; private set; }
+
+        /// <summary>
+        /// Evaluates a specific expression to double.
         /// </summary>
         /// <param name="expression">An expression to evaluate.</param>
-        /// <param name="context">Context of expression.</param>
         /// <returns>
         /// A double value.
         /// </returns>
-        public double EvaluateDouble(string expression, object context = null)
+        public double EvaluateDouble(string expression)
         {
             if (Parameters.ContainsKey(expression))
             {
-                return Parameters[expression].GetValue(context);
+                return Parameters[expression].Evaluate();
             }
 
-            return ExpressionParser.Parse(expression, context, this).Value();
-        }
+            var parseResult = ExpressionParser.Parse(
+                expression,
+                new ExpressionParserContext() { Functions = Functions, Parameters = Parameters, Evaluator = this });
 
-        /// <summary>
-        /// Sets the parameter value and updates the values expressions.
-        /// </summary>
-        /// <param name="parameterName">A name of parameter.</param>
-        /// <param name="value">A value of parameter.</param>
-        public void SetParameter(string parameterName, double value)
-        {
-            Parameters[parameterName] = new LazyExpression((e, c) => value, value.ToString(CultureInfo.InvariantCulture));
-            Refresh(parameterName);
-        }
-
-        /// <summary>
-        /// Sets the parameter value to the value of expression and updates the values expressions.
-        /// </summary>
-        /// <param name="parameterName">A name of parameter.</param>
-        /// <param name="expression">A value of parameter.</param>
-        public void SetParameter(string parameterName, string expression)
-        {
-            Parameters[parameterName] = new LazyExpression((e,c) => this.EvaluateDouble(e,c), expression);
-            Refresh(parameterName);
-        }
-
-        /// <summary>
-        /// Adds double expression to registry that will be updated when value of parameter change.
-        /// </summary>
-        /// <param name="expression">An expression to add.</param>
-        /// <param name="parameters">Parameters of expression.</param>
-        public void AddActionExpression(ActionExpression expression, IEnumerable<string> parameters)
-        {
-            Registry.Add(expression, parameters);
-        }
-
-        /// <summary>
-        /// Adds double expression to registry that will be updated when value of parameter change.
-        /// </summary>
-        /// <param name="expressionName">Name of expression.</param>
-        /// <param name="expression">An expression to add.</param>
-        /// <param name="parameters">Parameters of expression.</param>
-        public void AddNamedActionExpression(string expressionName, ActionExpression expression, IEnumerable<string> parameters)
-        {
-            Registry.Add(expressionName, expression, parameters);
-        }
-
-        /// <summary>
-        /// Returns names of all parameters.
-        /// </summary>
-        /// <returns>
-        /// True if there is parameter.
-        /// </returns>
-        public IEnumerable<string> GetParameters()
-        {
-            return Parameters.Keys;
-        }
-
-        /// <summary>
-        /// Returns a value indicating whether there is a parameter in evaluator with given name.
-        /// </summary>
-        /// <param name="parameterName">A parameter name.</param>
-        /// <returns>
-        /// True if there is parameter.
-        /// </returns>
-        public bool HasParameter(string parameterName)
-        {
-            return Parameters.ContainsKey(parameterName);
+            return parseResult.Value();
         }
 
         /// <summary>
         /// Gets the value of parameter.
         /// </summary>
-        /// <param name="parameterName">A parameter name.</param>
+        /// <param name="id">A parameter identifier.</param>
         /// <returns>
         /// A value of parameter.
         /// </returns>
-        public double GetParameterValue(string parameterName, object context)
+        public double GetParameterValue(string id)
         {
-            return Parameters[parameterName].GetValue(context);
-        }
-
-        /// <summary>
-        /// Gets the expression.
-        /// </summary>
-        /// <param name="expressionName">A expression name</param>
-        /// <returns>
-        /// An expression.
-        /// </returns>
-        public string GetExpression(string expressionName)
-        {
-            return Registry.GetExpression(expressionName);
-        }
-
-        /// <summary>
-        /// Gets the names of parameters.
-        /// </summary>
-        /// <returns>
-        /// The names of paramaters.
-        /// </returns>
-        public IEnumerable<string> GetParameterNames()
-        {
-            return Parameters.Keys;
-        }
-
-        /// <summary>
-        /// Sets the parameters values and updates the values expressions.
-        /// </summary>
-        /// <param name="parameters">A dictionary of parameter values.</param>
-        public void SetParameters(Dictionary<string, string> parameters)
-        {
-            foreach (var parameter in parameters)
-            {
-                Parameters[parameter.Key] = new LazyExpression((e, c) => this.EvaluateDouble(e, c), parameter.Value);
-            }
-
-            foreach (var parameter in parameters)
-            {
-                Refresh(parameter.Key);
-            }
+            return Parameters[id].Evaluate();
         }
 
         /// <summary>
@@ -184,10 +124,63 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         /// <returns>
         /// Parameters from expression.
         /// </returns>
-        public IEnumerable<string> GetParametersFromExpression(string expression)
+        public ICollection<string> GetParametersFromExpression(string expression)
         {
-            var result = ExpressionParser.Parse(expression, null, this);
+            var result = ExpressionParser.Parse(expression, new ExpressionParserContext() { Functions = Functions, Parameters = Parameters, Evaluator = this }, false);
             return result.FoundParameters;
+        }
+
+        /// <summary>
+        /// Sets parameters.
+        /// </summary>
+        /// <param name="parameters">Parameters to set.</param>
+        public void SetParameters(Dictionary<string, string> parameters)
+        {
+            foreach (var parameter in parameters)
+            {
+                Parameters[parameter.Key] = new CachedExpression(parameter.Value, this);
+                Registry.UpdateParameterDependencies(parameter.Key, GetParametersFromExpression(parameter.Value));
+            }
+
+            foreach (var parameter in parameters)
+            {
+                RefreshForParameter(parameter.Key);
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter.
+        /// </summary>
+        /// <param name="id">A name of parameter.</param>
+        /// <param name="value">A value of parameter.</param>
+        public void SetParameter(string id, double value)
+        {
+            Parameters[id] = new ConstantExpression(value);
+
+            RefreshForParameter(id);
+
+            foreach (var child in Children)
+            {
+                child.SetParameter(id, value);
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter.
+        /// </summary>
+        /// <param name="id">A name of parameter.</param>
+        /// <param name="expression">An expression of parameter.</param>
+        public void SetParameter(string id, string expression)
+        {
+            Parameters[id] = new CachedExpression(expression, this);
+
+            Registry.UpdateParameterDependencies(id, GetParametersFromExpression(expression));
+            RefreshForParameter(id);
+
+            foreach (var child in Children)
+            {
+                child.SetParameter(id, expression);
+            }
         }
 
         /// <summary>
@@ -202,83 +195,148 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation
         }
 
         /// <summary>
+        /// Gets value of named expression.
+        /// </summary>
+        /// <param name="expressionName">Name of expression</param>
+        /// <returns>
+        /// Value of expression.
+        /// </returns>
+        public double GetExpressionValue(string expressionName)
+        {
+            return Registry.GetExpression(expressionName).Evaluate();
+        }
+
+        /// <summary>
+        /// Sets the named expression.
+        /// </summary>
+        /// <param name="expressionName">Expression name.</param>
+        /// <param name="expression">Expression.</param>
+        public void SetNamedExpression(string expressionName, string expression)
+        {
+            var parameters = GetParametersFromExpression(expression);
+            Registry.Add(new NamedExpression(expressionName, expression, this), parameters);
+        }
+
+        /// <summary>
+        /// Gets the expression by name.
+        /// </summary>
+        /// <param name="expressionName">Name of expression.</param>
+        /// <returns>
+        /// Expression.
+        /// </returns>
+        public string GetExpression(string expressionName)
+        {
+            return Registry.GetExpression(expressionName)?.String;
+        }
+
+        /// <summary>
         /// Creates a child evaluator.
         /// </summary>
         /// <returns>
         /// A new evaluator.
         /// </returns>
-        public virtual IEvaluator CreateChildEvaluator()
+        public abstract IEvaluator CreateChildEvaluator(string name, object context);
+
+        public abstract IEvaluator Clone(bool deep);
+
+        public void Initialize(Dictionary<string, Expression> parameters, Dictionary<string, Function> customFunctions, List<IEvaluator> children)
         {
-            var newEvaluator = new Evaluator(ExpressionParser, Registry);
-
-            foreach (var parameterName in this.GetParameterNames())
+            foreach (var parameterName in parameters.Keys)
             {
-                newEvaluator.Parameters[parameterName] = this.ExpressionParser.Parameters[parameterName];
+                Parameters[parameterName] = parameters[parameterName].Clone();
+                Parameters[parameterName].Evaluator = this;
+                Parameters[parameterName].Invalidate();
             }
 
-            foreach (var customFunction in CustomFunctions)
+            foreach (var customFunction in customFunctions.Keys)
             {
-                newEvaluator.CustomFunctions[customFunction.Key] = customFunction.Value;
+                Functions[customFunction] = customFunctions[customFunction];
             }
 
-            return newEvaluator;
+            Children.Clear();
+            foreach (var child in children)
+            {
+                Children.Add(child.Clone(true));
+            }
+
+            Registry.Invalidate(this);
         }
 
         /// <summary>
-        /// Defines a new custom function.
+        /// Refreshes parameter.
         /// </summary>
-        public void DefineCustomFunction(
-            string name,
-            List<string> arguments,
-            string functionBody)
+        /// <param name="parameterName">Parameter name.</param>
+        public void RefreshForParameter(string parameterName)
         {
-            CustomFunction userFunction = new CustomFunction();
-            userFunction.Name = name;
-            userFunction.VirtualParameters = false;
-            userFunction.ArgumentsCount = arguments.Count;
-
-            userFunction.Logic = (args, context, evaluator) =>
+            Registry.RefreshDependentParameters(parameterName, parameterToRefresh =>
             {
-                var childEvaluator = evaluator.CreateChildEvaluator();
-                for (var i = 0; i < arguments.Count; i++)
+                if (parameterToRefresh != parameterName)
                 {
-                    childEvaluator.SetParameter(arguments[i], (double)args[i]);
+                    Parameters[parameterToRefresh].Invalidate();
+                    Parameters[parameterToRefresh].Evaluate();
                 }
-
-                return childEvaluator.EvaluateDouble(functionBody, context);
-            };
-
-            this.CustomFunctions.Add(name, userFunction);
+            });
         }
 
         /// <summary>
-        /// Invalidates paramters.
+        /// Finds the child evaluator with given name.
         /// </summary>
-        public void InvalidateParameters()
+        /// <param name="evaluatorName">Name of child evaluator to find.</param>
+        /// <returns>
+        /// A reference to evaluator.
+        /// </returns>
+        public IEvaluator FindChildEvaluator(string evaluatorName)
         {
-            var clonedParameters = new Dictionary<string, LazyExpression>(Parameters);
-            foreach (var parameter in clonedParameters)
+            if (evaluatorName == Name)
             {
-                parameter.Value.Invalidate();
+                return this;
             }
 
-            foreach (var parameter in clonedParameters)
+            foreach (var child in Children)
             {
-                Refresh(parameter.Key);
+                var result = child.FindChildEvaluator(evaluatorName);
+
+                if (result != null)
+                {
+                    return result;
+                }
             }
+
+            return null;
         }
 
         /// <summary>
-        /// Refreshes expressions in evaluator that contains given parameter.
+        /// Adds evaluator action.
         /// </summary>
-        /// <param name="parameterName">A parameter name.</param>
-        private void Refresh(string parameterName)
+        /// <param name="actionName">Action name.</param>
+        /// <param name="expressionString">Expression.</param>
+        /// <param name="expressionAction">Expression action.</param>
+        public void AddAction(string actionName, string expressionString, Action<double> expressionAction)
         {
-            foreach (ActionExpression actionExpression in Registry.GetDependentExpressions(parameterName))
+            if (expressionAction == null)
             {
-                var newValue = ExpressionParser.Parse(actionExpression.Expression, null, this).Value();
-                actionExpression.Action(newValue);
+                throw new ArgumentNullException(nameof(expressionAction));
             }
+
+            var namedExpression = new NamedExpression(actionName, expressionString, this);
+            namedExpression.Evaluated += (sender, args) => { expressionAction(args.NewValue); };
+
+            var parameters = GetParametersFromExpression(expressionString);
+            Registry.Add(namedExpression, parameters);
+        }
+
+        private void CreateCommonFunctions()
+        {
+            this.Functions.Add("acos", MathFunctions.CreateACos());
+            this.Functions.Add("asin", MathFunctions.CreateASin());
+            this.Functions.Add("atan", MathFunctions.CreateATan());
+            this.Functions.Add("atan2", MathFunctions.CreateATan2());
+            this.Functions.Add("cos", MathFunctions.CreateCos());
+            this.Functions.Add("cosh", MathFunctions.CreateCosh());
+            this.Functions.Add("sin", MathFunctions.CreateSin());
+            this.Functions.Add("sinh", MathFunctions.CreateSinh());
+            this.Functions.Add("tan", MathFunctions.CreateTan());
+            this.Functions.Add("tanh", MathFunctions.CreateTanh());
         }
     }
 }

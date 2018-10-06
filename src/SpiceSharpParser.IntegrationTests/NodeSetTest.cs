@@ -1,3 +1,4 @@
+using SpiceSharp.Simulations;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests
@@ -19,7 +20,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             RunDCSimulation(netlist, "V(OUT)");
-            Assert.Equal(14, netlist.Simulations[0].Nodes.NodeSets["OUT"]);
+            Assert.Equal(14, ((BaseSimulation)netlist.Simulations[0]).Configurations.Get<BaseConfiguration>().Nodesets["OUT"]);
         }
     }
 }

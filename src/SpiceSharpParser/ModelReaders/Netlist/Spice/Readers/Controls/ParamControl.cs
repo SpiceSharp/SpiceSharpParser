@@ -1,23 +1,32 @@
-﻿using SpiceSharpParser.Common;
+﻿using SpiceSharp;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
-    /// Reades .PARAM <see cref="Control"/> from spice netlist object model.
+    /// Reads .PARAM <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class ParamControl : BaseControl
     {
-        public override string SpiceName => "param";
-
         /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context.
+        /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
+        {
+            Read(statement, context.Evaluators, context.CaseSensitivity);
+        }
+
+        /// <summary>
+        /// Reads <see cref="Control"/> statement and modifies the context.
+        /// </summary>
+        /// <param name="statement">A statement to process.</param>
+        /// <param name="evaluators">Evaluators.</param>
+        public void Read(Control statement, IEvaluatorsContainer evaluators, CaseSensitivitySettings caseSettings)
         {
             if (statement.Parameters == null)
             {
@@ -26,31 +35,25 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 
             foreach (var param in statement.Parameters)
             {
-                if (param is Models.Netlist.Spice.Objects.Parameters.AssignmentParameter assigmentParameter)
+                if (param is Models.Netlist.Spice.Objects.Parameters.AssignmentParameter assignmentParameter)
                 {
-                    if (!assigmentParameter.HasFunctionSyntax)
+                    if (!assignmentParameter.HasFunctionSyntax)
                     {
-                        string name = assigmentParameter.Name;
-                        string expression = assigmentParameter.Value;
-
-                        //TODO: Please refactor this, there should be a better API for that
-                        context.Evaluator.SetParameter(name, expression);
-
-                        var depParameters = context.Evaluator.GetParametersFromExpression(expression);
-                        context.Evaluator.AddActionExpression(
-                            new ActionExpression(
-                                expression,
-                                (val) => context.Evaluator.SetParameter(name, expression)),
-                            depParameters);
+                        string parameterName = assignmentParameter.Name;
+                        string parameterExpression = assignmentParameter.Value;
+                        evaluators.SetParameter(parameterName, parameterExpression);
                     }
                     else
                     {
-                        context.Evaluator.DefineCustomFunction(assigmentParameter.Name, assigmentParameter.Arguments, assigmentParameter.Value);
+                        evaluators.AddFunction(
+                            assignmentParameter.Name,
+                            assignmentParameter.Arguments, 
+                            assignmentParameter.Value);
                     }
                 }
                 else
                 {
-                    throw new WrongParameterTypeException(".PARAM supports only assigments");
+                    throw new WrongParameterTypeException(".PARAM supports only assignments");
                 }
             }
         }

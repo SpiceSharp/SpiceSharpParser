@@ -1,17 +1,23 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Common;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
     /// <summary>
-    /// Base clas for all exporters.
+    /// Base class for all exporters.
     /// </summary>
-    public abstract class Exporter : ISpiceObjectReader
+    public abstract class Exporter
     {
-        public string SpiceName => string.Join(".", GetSupportedTypes());
+        /// <summary>
+        /// Gets created exports.
+        /// </summary>
+        /// <returns>
+        /// A list of created exports.
+        /// </returns>
+        public abstract ICollection<string> CreatedTypes { get; }
 
         /// <summary>
         /// Creates a new export
@@ -22,14 +28,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
         /// <returns>
         /// A new export.
         /// </returns>
-        public abstract Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator);
-
-        /// <summary>
-        /// Gets supported exports.
-        /// </summary>
-        /// <returns>
-        /// A list of supported exports.
-        /// </returns>
-        public abstract ICollection<string> GetSupportedTypes();
+        public abstract Export CreateExport(string name, string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator componentNameGenerator, IObjectNameGenerator modelNameGenerator, IResultService result, CaseSensitivitySettings caseSettings);
     }
 }

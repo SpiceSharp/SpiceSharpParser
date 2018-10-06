@@ -1,8 +1,8 @@
 using NSubstitute;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp;
@@ -19,32 +19,32 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
         public void GenerateTest()
         {
             // arrange
-            var generator = Substitute.For<EntityGenerator>();
+            var generator = Substitute.For<IComponentGenerator>();
             generator.Generate(
-               Arg.Any<StringIdentifier>(),
+               Arg.Any<string>(),
                Arg.Any<string>(),
                Arg.Any<string>(),
                Arg.Any<ParameterCollection>(),
-               Arg.Any<IReadingContext>()).Returns(x => new Resistor((StringIdentifier)x[0]));
+               Arg.Any<IReadingContext>()).Returns(x => new Resistor((string)x[0]));
 
-            var registry = Substitute.For<IEntityGeneratorRegistry>();
-            registry.Supports("r").Returns(true);
-            registry.Get("r").Returns(generator);
+            var mapper = Substitute.For<IMapper<IComponentGenerator>>();
+            mapper.Contains("r").Returns(true);
+            mapper.Get("r").Returns(generator);
 
             var readingContext = Substitute.For<IReadingContext>();
-            readingContext.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }));
-            readingContext.ObjectNameGenerator.Returns(new ObjectNameGenerator(string.Empty));
+            readingContext.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }, true));
+            readingContext.ComponentNameGenerator.Returns(new ObjectNameGenerator(string.Empty));
 
             var resultService = Substitute.For<IResultService>();
             readingContext.Result.Returns(resultService);
 
             // act
-            ComponentReader reader = new ComponentReader(registry);
+            ComponentReader reader = new ComponentReader(mapper);
             var component = new Models.Netlist.Spice.Objects.Component() { Name = "Ra1", PinsAndParameters = new ParameterCollection() { new ValueParameter("0"), new ValueParameter("1"), new ValueParameter("12.3") } };
             reader.Read(component, readingContext);
 
             // assert
-            generator.Received().Generate(new StringIdentifier("Ra1"), "Ra1", "r", Arg.Any<ParameterCollection>(), Arg.Any<IReadingContext>());
+            generator.Received().Generate("Ra1", "Ra1", "r", Arg.Any<ParameterCollection>(), Arg.Any<IReadingContext>());
             resultService.Received().AddEntity(Arg.Is<Entity>((Entity e) => e.Name.ToString() == "Ra1"));
         }
     }

@@ -6,6 +6,42 @@ namespace SpiceSharpParser.IntegrationTests
     public class LetTest : BaseTest
     {
         [Fact]
+        public void LetConstTest()
+        {
+            var netlist = ParseNetlist(
+                "Lowpass RC circuit - The capacitor should act like an open circuit",
+                "V1 IN 0 10.0",
+                "R1 IN OUT 10e3",
+                "C1 OUT 0 10e-6",
+                ".OP",
+                ".SAVE VX",
+                ".LET VX {1}",
+                ".END");
+
+            double export = RunOpSimulation(netlist, "VX");
+
+            Assert.Equal(1, export);
+        }
+
+        [Fact]
+        public void LetVoltageTest()
+        {
+            var netlist = ParseNetlist(
+                "Lowpass RC circuit - The capacitor should act like an open circuit",
+                "V1 IN 0 10.0",
+                "R1 IN OUT 10e3",
+                "C1 OUT 0 10e-6",
+                ".OP",
+                ".SAVE VX",
+                ".LET VX {V(IN)}",
+                ".END");
+
+            double export = RunOpSimulation(netlist, "VX");
+
+            Assert.Equal(10, export);
+        }
+
+        [Fact]
         public void LetBasicTest()
         {
             var netlist = ParseNetlist(
@@ -23,6 +59,23 @@ namespace SpiceSharpParser.IntegrationTests
 
             Assert.Equal(2, export[0]);
             Assert.Equal(10, export[1]);
+        }
+
+        [Fact]
+        public void LetResitanceTest()
+        {
+            var netlist = ParseNetlist(
+                "Simple circuit",
+                "V1 0 1 10.0",
+                "R1 1 0 {R}",
+                ".OP",
+                ".PARAM R = { 1000 }",
+                ".LET something {@R1[resistance]}",
+                ".SAVE something",
+                ".END");
+
+            double export = RunOpSimulation(netlist, "something");
+            Assert.Equal(1000, export);
         }
 
         [Fact]

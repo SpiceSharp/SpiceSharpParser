@@ -1,8 +1,9 @@
-﻿using SpiceSharp;
+﻿using System.Collections.Generic;
+using SpiceSharp;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
     /// <summary>
     /// Property export.
@@ -15,24 +16,19 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
         /// <param name="simulation">A simulation</param>
         /// <param name="source">A identifier of component</param>
         /// <param name="property">Name of property for export</param>
-        public PropertyExport(Simulation simulation, Identifier source, string property)
+        /// <param name="comparer">Entity property name comparer.</param>
+        public PropertyExport(string name, Simulation simulation, string source, string property, IEqualityComparer<string> comparer)
             : base(simulation)
         {
-            if (simulation == null)
-            {
-                throw new System.ArgumentNullException(nameof(simulation));
-            }
-
+            Name = name ?? throw new System.NullReferenceException(nameof(name));
             Source = source ?? throw new System.NullReferenceException(nameof(source));
-
-            ExportRealImpl = new RealPropertyExport(simulation, source, property);
-            Name = string.Format("@{0}[{1}]", Source, property);
+            ExportRealImpl = new RealPropertyExport(simulation, source, property, comparer);
         }
 
         /// <summary>
         /// Gets the main node
         /// </summary>
-        public Identifier Source { get; }
+        public string Source { get; }
 
         /// <summary>
         /// Gets the type name
@@ -63,6 +59,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
                 {
                     throw new GeneralReaderException($"Property export {Name} is invalid");
                 }
+
                 return double.NaN;
             }
 

@@ -24,6 +24,24 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
+        public void FuncMulipleTest()
+        {
+            var netlist = ParseNetlist(
+                "FUNC user function test",
+                "V1 OUT 0 10.0",
+                "R1 OUT 0 {otherfunction(somefunction(4))}",
+                ".OP",
+                ".SAVE V(OUT) @R1[i]",
+                ".FUNC somefunction(x) = {x * x} otherfunction(x) = {x + 5}",
+                ".END");
+
+            double[] export = RunOpSimulation(netlist, new string[] { "V(OUT)", "@R1[i]" });
+
+            Assert.Equal(10.0, export[0]);
+            Assert.Equal(10.0 / 21.0, export[1]);
+        }
+
+        [Fact]
         public void FuncWithoutEqTest()
         {
             var netlist = ParseNetlist(

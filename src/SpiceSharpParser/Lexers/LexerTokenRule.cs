@@ -3,7 +3,7 @@
 namespace SpiceSharpParser.Lexers
 {
     /// <summary>
-    /// The lexer token rule class. It defines how and when a token will be generated for given regulal expression pattern
+    /// The lexer token rule class. It defines how and when a token will be generated for given regulal expression pattern.
     /// </summary>
     /// <typeparam name="TLexerState">Type of lexer state</typeparam>
     public class LexerTokenRule<TLexerState> : LexerRule
@@ -12,24 +12,24 @@ namespace SpiceSharpParser.Lexers
         /// <summary>
         /// Initializes a new instance of the <see cref="LexerTokenRule{TLexerState}"/> class.
         /// </summary>
-        /// <param name="tokenType">Token type</param>
-        /// <param name="ruleName">Rule name</param>
-        /// <param name="regularExpressionPattern">A token rule pattern</param>
-        /// <param name="returnAction">A token rule token action</param>
-        /// <param name="isActiveAction">A token rule active action</param>
-        /// <param name="ignoreCase">Ignore case</param>
+        /// <param name="tokenType">Token type.</param>
+        /// <param name="ruleName">Rule name.</param>
+        /// <param name="regularExpressionPattern">A token rule pattern.</param>
+        /// <param name="returnDecisionProvider">A token rule return decision provider.</param>
+        /// <param name="useDecisionProvider">A token rule use decision provider.</param>
+        /// <param name="ignoreCase">Ignore case.</param>
         public LexerTokenRule(
             int tokenType,
             string ruleName,
             string regularExpressionPattern,
-            Func<TLexerState, string, LexerRuleResult> returnAction = null,
-            Func<TLexerState, LexerRuleUseState> isActiveAction = null,
+            Func<TLexerState, string, LexerRuleReturnDecision> returnDecisionProvider = null,
+            Func<TLexerState, string, LexerRuleUseDecision> useDecisionProvider = null,
             bool ignoreCase = true)
             : base(ruleName, regularExpressionPattern, ignoreCase)
         {
             TokenType = tokenType;
-            ReturnAction = returnAction ?? new Func<TLexerState, string, LexerRuleResult>((state, lexem) => LexerRuleResult.ReturnToken);
-            IsActiveAction = isActiveAction ?? new Func<TLexerState, LexerRuleUseState>((state) => LexerRuleUseState.Use);
+            ReturnDecisionProvider = returnDecisionProvider ?? new Func<TLexerState, string, LexerRuleReturnDecision>((state, lexem) => LexerRuleReturnDecision.ReturnToken);
+            UseDecisionProvider = useDecisionProvider ?? new Func<TLexerState, string, LexerRuleUseDecision>((state, lexem) => LexerRuleUseDecision.Use);
         }
 
         /// <summary>
@@ -38,25 +38,26 @@ namespace SpiceSharpParser.Lexers
         public int TokenType { get; }
 
         /// <summary>
-        /// Gets the function to execute before returning token.
+        /// Gets the provider that tells whether the rule should be returned.
         /// </summary>
-        public Func<TLexerState, string, LexerRuleResult> ReturnAction { get; }
+        public Func<TLexerState, string, LexerRuleReturnDecision> ReturnDecisionProvider { get; }
 
         /// <summary>
-        /// Gets whether the rule should be skipped.
+        /// Gets the provider that tells whether the rule should be used.
         /// </summary>
-        protected Func<TLexerState, LexerRuleUseState> IsActiveAction { get; }
+        public Func<TLexerState, string, LexerRuleUseDecision> UseDecisionProvider { get; }
 
         /// <summary>
         /// Returns true if the rule is active or should be skipped.
         /// </summary>
-        /// <param name="lexerState">The curent lexer state</param>
+        /// <param name="lexerState">The current lexer state.</param>
+        /// <param name="lexem">A lexem value.</param>
         /// <returns>
-        /// True if the lexer token rule is active or should be skipped
+        /// True if the lexer token rule is active or should be skipped.
         /// </returns>
-        public bool IsActive(TLexerState lexerState)
+        public bool CanUse(TLexerState lexerState, string lexem)
         {
-            return IsActiveAction(lexerState) == LexerRuleUseState.Use;
+            return UseDecisionProvider(lexerState, lexem) == LexerRuleUseDecision.Use;
         }
 
         /// <summary>
@@ -71,8 +72,8 @@ namespace SpiceSharpParser.Lexers
                 TokenType,
                 Name,
                 RegularExpressionPattern,
-                ReturnAction,
-                IsActiveAction,
+                ReturnDecisionProvider,
+                UseDecisionProvider,
                 IgnoreCase);
         }
     }

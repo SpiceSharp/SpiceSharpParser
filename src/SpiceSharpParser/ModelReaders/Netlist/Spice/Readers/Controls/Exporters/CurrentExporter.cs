@@ -1,19 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
     /// <summary>
     /// Generates a current <see cref="Export"/>
     /// </summary>
     public class CurrentExporter : Exporter
     {
+        /// <summary>
+        /// Gets supported voltage exports
+        /// </summary>
+        /// <returns>
+        /// A list of supported voltage exports.
+        /// </returns>
+        public override ICollection<string> CreatedTypes => new List<string>() { "i", "ir", "ii", "im", "idb", "ip" };
+
         /// <summary>
         /// Creates a new current export
         /// </summary>
@@ -23,7 +32,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
         /// <returns>
         /// A new export
         /// </returns>
-        public override Export CreateExport(string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)
+        public override Export CreateExport(string name, string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator componentNameGenerator, IObjectNameGenerator modelNameGenerator, IResultService result, CaseSensitivitySettings caseSettings)
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
             {
@@ -31,7 +40,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
             }
 
             // Get the nodes
-            Identifier node = null;
+            string componentIdentifier = null;
             if (parameters[0] is VectorParameter vector)
             {
                 switch (vector.Elements.Count)
@@ -39,7 +48,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
                     case 0:
                         throw new Exception("Node expected");
                     case 1:
-                        node = new StringIdentifier(vector.Elements[0].Image);
+                        componentIdentifier = componentNameGenerator.Generate(vector.Elements[0].Image);
                         break;
                     default:
                         throw new Exception("Too many nodes specified");
@@ -47,32 +56,21 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
             }
             else
             {
-                node = new StringIdentifier(parameters.GetString(0));
+                componentIdentifier = componentNameGenerator.Generate(parameters.GetString(0));
             }
 
-            Export ce = null;
+            Export export = null;
             switch (type.ToLower())
             {
-                case "i": ce = new CurrentExport(simulation, node); break;
-                case "ir": ce = new CurrentRealExport(simulation, node); break;
-                case "ii": ce = new CurrentImaginaryExport(simulation, node); break;
-                case "im": ce = new CurrentMagnitudeExport(simulation, node); break;
-                case "idb": ce = new CurrentDecibelExport(simulation, node); break;
-                case "ip": ce = new CurrentPhaseExport(simulation, node); break;
+                case "i": export = new CurrentExport(name, simulation, componentIdentifier); break;
+                case "ir": export = new CurrentRealExport(name, simulation, componentIdentifier); break;
+                case "ii": export = new CurrentImaginaryExport(name, simulation, componentIdentifier); break;
+                case "im": export = new CurrentMagnitudeExport(name, simulation, componentIdentifier); break;
+                case "idb": export = new CurrentDecibelExport(name, simulation, componentIdentifier); break;
+                case "ip": export = new CurrentPhaseExport(name, simulation, componentIdentifier); break;
             }
 
-            return ce;
-        }
-
-        /// <summary>
-        /// Gets supported current exports
-        /// </summary>
-        /// <returns>
-        /// A list of supported current exports
-        /// </returns>
-        public override ICollection<string> GetSupportedTypes()
-        {
-            return new List<string>() { "i", "ir", "ii", "im", "idb", "ip" };
+            return export;
         }
     }
 }

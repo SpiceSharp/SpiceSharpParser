@@ -1,0 +1,826 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class SimulationControl
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class SimulationControl
+   ">
+    <meta name="generator" content="docfx 2.37.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl">
+  
+  
+  <h1 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl" class="text-break">Class SimulationControl
+  </h1>
+  <div class="markdown level0 summary"><p>Base for all control simulation readers.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.StatementReader-1.html">StatementReader</a>&lt;<a class="xref" href="SpiceSharpParser.Models.Netlist.Spice.Objects.Control.html">Control</a>&gt;</div>
+    <div class="level2"><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.BaseControl.html">BaseControl</a></div>
+    <div class="level3"><span class="xref">SimulationControl</span></div>
+      <div class="level4"><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.ACControl.html">ACControl</a></div>
+      <div class="level4"><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.DCControl.html">DCControl</a></div>
+      <div class="level4"><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.html">NoiseControl</a></div>
+      <div class="level4"><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.OPControl.html">OPControl</a></div>
+      <div class="level4"><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.TransientControl.html">TransientControl</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.IStatementReader.html">IStatementReader</a></div>
+    <div><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Common.ISpiceObjectReader.html">ISpiceObjectReader</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.BaseControl.html#SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_BaseControl_SpiceCommandName">BaseControl.SpiceCommandName</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.BaseControl.html#SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_BaseControl_CanRead_SpiceSharpParser_Models_Netlist_Spice_Objects_Statement_">BaseControl.CanRead(Statement)</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.StatementReader-1.html#SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_StatementReader_1_Read__0_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_">StatementReader&lt;Control&gt;.Read(Control, IReadingContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.StatementReader-1.html#SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_StatementReader_1_Read_SpiceSharpParser_Models_Netlist_Spice_Objects_Statement_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_">StatementReader&lt;Control&gt;.Read(Statement, IReadingContext)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.html">SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations</a></h6>
+  <h6><strong>Assembly</strong>: SpiceSharpParser.dll</h6>
+  <h5 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class SimulationControl : BaseControl, IStatementReader, ISpiceObjectReader</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl__ctor.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/SimulationControl.cs/#L23">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl__ctor_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.#ctor*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl__ctor" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.#ctor">SimulationControl()</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.html">SimulationControl</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SimulationControl()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl__ctor_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_IParameterSweepUpdater_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.%23ctor(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IParameterSweepUpdater)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/SimulationControl.cs/#L32">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl__ctor_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.#ctor*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl__ctor_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_IParameterSweepUpdater_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.#ctor(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IParameterSweepUpdater)">SimulationControl(IParameterSweepUpdater)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.html">SimulationControl</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SimulationControl(IParameterSweepUpdater updater)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IParameterSweepUpdater.html">IParameterSweepUpdater</a></td>
+        <td><span class="parametername">updater</span></td>
+        <td><p>The sweep parameter updater.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_ParameterUpdater.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.ParameterUpdater%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/SimulationControl.cs/#L40">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_ParameterUpdater_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.ParameterUpdater*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_ParameterUpdater" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.ParameterUpdater">ParameterUpdater</h4>
+  <div class="markdown level1 summary"><p>Gets the parameter updater.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IParameterSweepUpdater ParameterUpdater { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IParameterSweepUpdater.html">IParameterSweepUpdater</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_CreateSimulationForTemperature_SpiceSharpParser_Models_Netlist_Spice_Objects_Control_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_System_Func_System_String_SpiceSharpParser_Models_Netlist_Spice_Objects_Control_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_SpiceSharp_Simulations_BaseSimulation__System_Collections_Generic_List_SpiceSharp_Simulations_BaseSimulation__System_Nullable_System_Double__.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulationForTemperature(SpiceSharpParser.Models.Netlist.Spice.Objects.Control%2CSpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext%2CSystem.Func%7BSystem.String%2CSpiceSharpParser.Models.Netlist.Spice.Objects.Control%2CSpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext%2CSpiceSharp.Simulations.BaseSimulation%7D%2CSystem.Collections.Generic.List%7BSpiceSharp.Simulations.BaseSimulation%7D%2CSystem.Nullable%7BSystem.Double%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/SimulationControl.cs/#L175">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_CreateSimulationForTemperature_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulationForTemperature*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_CreateSimulationForTemperature_SpiceSharpParser_Models_Netlist_Spice_Objects_Control_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_System_Func_System_String_SpiceSharpParser_Models_Netlist_Spice_Objects_Control_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_SpiceSharp_Simulations_BaseSimulation__System_Collections_Generic_List_SpiceSharp_Simulations_BaseSimulation__System_Nullable_System_Double__" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulationForTemperature(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext,System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext,SpiceSharp.Simulations.BaseSimulation},System.Collections.Generic.List{SpiceSharp.Simulations.BaseSimulation},System.Nullable{System.Double})">CreateSimulationForTemperature(Control, IReadingContext, Func&lt;String, Control, IReadingContext, BaseSimulation&gt;, List&lt;BaseSimulation&gt;, Nullable&lt;Double&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void CreateSimulationForTemperature(Control statement, IReadingContext context, Func&lt;string, Control, IReadingContext, BaseSimulation&gt; createSimulation, List&lt;BaseSimulation&gt; result, double? temp)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Models.Netlist.Spice.Objects.Control.html">Control</a></td>
+        <td><span class="parametername">statement</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext.html">IReadingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="SpiceSharpParser.Models.Netlist.Spice.Objects.Control.html">Control</a>, <a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext.html">IReadingContext</a>, <span class="xref">SpiceSharp.Simulations.BaseSimulation</span>&gt;</td>
+        <td><span class="parametername">createSimulation</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">SpiceSharp.Simulations.BaseSimulation</span>&gt;</td>
+        <td><span class="parametername">result</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
+        <td><span class="parametername">temp</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_CreateSimulations_SpiceSharpParser_Models_Netlist_Spice_Objects_Control_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_System_Func_System_String_SpiceSharpParser_Models_Netlist_Spice_Objects_Control_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_SpiceSharp_Simulations_BaseSimulation__.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control%2CSpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext%2CSystem.Func%7BSystem.String%2CSpiceSharpParser.Models.Netlist.Spice.Objects.Control%2CSpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext%2CSpiceSharp.Simulations.BaseSimulation%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/SimulationControl.cs/#L45">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_CreateSimulations_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulations*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_CreateSimulations_SpiceSharpParser_Models_Netlist_Spice_Objects_Control_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_System_Func_System_String_SpiceSharpParser_Models_Netlist_Spice_Objects_Control_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_SpiceSharp_Simulations_BaseSimulation__" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext,System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext,SpiceSharp.Simulations.BaseSimulation})">CreateSimulations(Control, IReadingContext, Func&lt;String, Control, IReadingContext, BaseSimulation&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates simulations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void CreateSimulations(Control statement, IReadingContext context, Func&lt;string, Control, IReadingContext, BaseSimulation&gt; createSimulation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Models.Netlist.Spice.Objects.Control.html">Control</a></td>
+        <td><span class="parametername">statement</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext.html">IReadingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="SpiceSharpParser.Models.Netlist.Spice.Objects.Control.html">Control</a>, <a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext.html">IReadingContext</a>, <span class="xref">SpiceSharp.Simulations.BaseSimulation</span>&gt;</td>
+        <td><span class="parametername">createSimulation</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_CreateSimulationsForAllParameterSweepsAndTemperatures_SpiceSharpParser_Models_Netlist_Spice_Objects_Control_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_System_Func_System_String_SpiceSharpParser_Models_Netlist_Spice_Objects_Control_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_SpiceSharp_Simulations_BaseSimulation__.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulationsForAllParameterSweepsAndTemperatures(SpiceSharpParser.Models.Netlist.Spice.Objects.Control%2CSpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext%2CSystem.Func%7BSystem.String%2CSpiceSharpParser.Models.Netlist.Spice.Objects.Control%2CSpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext%2CSpiceSharp.Simulations.BaseSimulation%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/SimulationControl.cs/#L57">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_CreateSimulationsForAllParameterSweepsAndTemperatures_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulationsForAllParameterSweepsAndTemperatures*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_CreateSimulationsForAllParameterSweepsAndTemperatures_SpiceSharpParser_Models_Netlist_Spice_Objects_Control_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_System_Func_System_String_SpiceSharpParser_Models_Netlist_Spice_Objects_Control_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_SpiceSharp_Simulations_BaseSimulation__" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulationsForAllParameterSweepsAndTemperatures(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext,System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext,SpiceSharp.Simulations.BaseSimulation})">CreateSimulationsForAllParameterSweepsAndTemperatures(Control, IReadingContext, Func&lt;String, Control, IReadingContext, BaseSimulation&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void CreateSimulationsForAllParameterSweepsAndTemperatures(Control statement, IReadingContext context, Func&lt;string, Control, IReadingContext, BaseSimulation&gt; createSimulation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Models.Netlist.Spice.Objects.Control.html">Control</a></td>
+        <td><span class="parametername">statement</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext.html">IReadingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="SpiceSharpParser.Models.Netlist.Spice.Objects.Control.html">Control</a>, <a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext.html">IReadingContext</a>, <span class="xref">SpiceSharp.Simulations.BaseSimulation</span>&gt;</td>
+        <td><span class="parametername">createSimulation</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_CreateSimulationsForAllTemperatures_SpiceSharpParser_Models_Netlist_Spice_Objects_Control_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_System_Func_System_String_SpiceSharpParser_Models_Netlist_Spice_Objects_Control_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_SpiceSharp_Simulations_BaseSimulation__.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulationsForAllTemperatures(SpiceSharpParser.Models.Netlist.Spice.Objects.Control%2CSpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext%2CSystem.Func%7BSystem.String%2CSpiceSharpParser.Models.Netlist.Spice.Objects.Control%2CSpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext%2CSpiceSharp.Simulations.BaseSimulation%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/SimulationControl.cs/#L156">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_CreateSimulationsForAllTemperatures_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulationsForAllTemperatures*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_CreateSimulationsForAllTemperatures_SpiceSharpParser_Models_Netlist_Spice_Objects_Control_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_System_Func_System_String_SpiceSharpParser_Models_Netlist_Spice_Objects_Control_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_SpiceSharp_Simulations_BaseSimulation__" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulationsForAllTemperatures(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext,System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext,SpiceSharp.Simulations.BaseSimulation})">CreateSimulationsForAllTemperatures(Control, IReadingContext, Func&lt;String, Control, IReadingContext, BaseSimulation&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IEnumerable&lt;BaseSimulation&gt; CreateSimulationsForAllTemperatures(Control statement, IReadingContext context, Func&lt;string, Control, IReadingContext, BaseSimulation&gt; createSimulation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Models.Netlist.Spice.Objects.Control.html">Control</a></td>
+        <td><span class="parametername">statement</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext.html">IReadingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="SpiceSharpParser.Models.Netlist.Spice.Objects.Control.html">Control</a>, <a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext.html">IReadingContext</a>, <span class="xref">SpiceSharp.Simulations.BaseSimulation</span>&gt;</td>
+        <td><span class="parametername">createSimulation</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">SpiceSharp.Simulations.BaseSimulation</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_GetSimulationName_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_System_Nullable_System_Double__.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.GetSimulationName(SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext%2CSystem.Nullable%7BSystem.Double%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/SimulationControl.cs/#L204">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_GetSimulationName_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.GetSimulationName*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_GetSimulationName_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_System_Nullable_System_Double__" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.GetSimulationName(SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext,System.Nullable{System.Double})">GetSimulationName(IReadingContext, Nullable&lt;Double&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected string GetSimulationName(IReadingContext context, double? temperatureInKelvin = default(double? ))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext.html">IReadingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
+        <td><span class="parametername">temperatureInKelvin</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_GetSimulationNameSuffix_System_Collections_Generic_List_System_Collections_Generic_KeyValuePair_SpiceSharpParser_Models_Netlist_Spice_Objects_Parameter_System_Double___.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.GetSimulationNameSuffix(System.Collections.Generic.List%7BSystem.Collections.Generic.KeyValuePair%7BSpiceSharpParser.Models.Netlist.Spice.Objects.Parameter%2CSystem.Double%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/SimulationControl.cs/#L124">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_GetSimulationNameSuffix_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.GetSimulationNameSuffix*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_GetSimulationNameSuffix_System_Collections_Generic_List_System_Collections_Generic_KeyValuePair_SpiceSharpParser_Models_Netlist_Spice_Objects_Parameter_System_Double___" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.GetSimulationNameSuffix(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}})">GetSimulationNameSuffix(List&lt;KeyValuePair&lt;Parameter, Double&gt;&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected string GetSimulationNameSuffix(List&lt;KeyValuePair&lt;Parameter, double&gt;&gt; parameterValues)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;<a class="xref" href="SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.html">Parameter</a>, <span class="xref">System.Double</span>&gt;&gt;</td>
+        <td><span class="parametername">parameterValues</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_GetSweepParameterValues_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_System_Collections_Generic_List_System_Collections_Generic_List_System_Double___System_Int32___System_Int32___.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.GetSweepParameterValues(SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext%2CSystem.Collections.Generic.List%7BSystem.Collections.Generic.List%7BSystem.Double%7D%7D%2CSystem.Int32%5B%5D%2CSystem.Int32%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/SimulationControl.cs/#L141">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_GetSweepParameterValues_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.GetSweepParameterValues*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_GetSweepParameterValues_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_System_Collections_Generic_List_System_Collections_Generic_List_System_Double___System_Int32___System_Int32___" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.GetSweepParameterValues(SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext,System.Collections.Generic.List{System.Collections.Generic.List{System.Double}},System.Int32[],System.Int32[])">GetSweepParameterValues(IReadingContext, List&lt;List&lt;Double&gt;&gt;, Int32[], Int32[])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected List&lt;KeyValuePair&lt;Parameter, double&gt;&gt; GetSweepParameterValues(IReadingContext context, List&lt;List&lt;double&gt;&gt; sweeps, int[] system, int[] indexes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext.html">IReadingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Double</span>&gt;&gt;</td>
+        <td><span class="parametername">sweeps</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span>[]</td>
+        <td><span class="parametername">system</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span>[]</td>
+        <td><span class="parametername">indexes</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;<a class="xref" href="SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.html">Parameter</a>, <span class="xref">System.Double</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_ProcessTempParameterSweep_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.ProcessTempParameterSweep(SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/SimulationControl.cs/#L96">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_ProcessTempParameterSweep_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.ProcessTempParameterSweep*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_ProcessTempParameterSweep_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.ProcessTempParameterSweep(SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext)">ProcessTempParameterSweep(IReadingContext)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void ProcessTempParameterSweep(IReadingContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext.html">IReadingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_SetBaseConfiguration_SpiceSharp_Simulations_BaseConfiguration_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.SetBaseConfiguration(SpiceSharp.Simulations.BaseConfiguration%2CSpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/SimulationControl.cs/#L232">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_SetBaseConfiguration_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.SetBaseConfiguration*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_SetBaseConfiguration_SpiceSharp_Simulations_BaseConfiguration_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.SetBaseConfiguration(SpiceSharp.Simulations.BaseConfiguration,SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext)">SetBaseConfiguration(BaseConfiguration, IReadingContext)</h4>
+  <div class="markdown level1 summary"><p>Sets the base parameters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void SetBaseConfiguration(BaseConfiguration baseConfiguration, IReadingContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SpiceSharp.Simulations.BaseConfiguration</span></td>
+        <td><span class="parametername">baseConfiguration</span></td>
+        <td><p>The configuration to set.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext.html">IReadingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The reading context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_SetSimulationTemperatures_SpiceSharp_Simulations_BaseSimulation_System_Nullable_System_Double__System_Nullable_System_Double__.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.SetSimulationTemperatures(SpiceSharp.Simulations.BaseSimulation%2CSystem.Nullable%7BSystem.Double%7D%2CSystem.Nullable%7BSystem.Double%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/SimulationControl.cs/#L214">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_SetSimulationTemperatures_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.SetSimulationTemperatures*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_SetSimulationTemperatures_SpiceSharp_Simulations_BaseSimulation_System_Nullable_System_Double__System_Nullable_System_Double__" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.SetSimulationTemperatures(SpiceSharp.Simulations.BaseSimulation,System.Nullable{System.Double},System.Nullable{System.Double})">SetSimulationTemperatures(BaseSimulation, Nullable&lt;Double&gt;, Nullable&lt;Double&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void SetSimulationTemperatures(BaseSimulation simulation, double? operatingTemperatureInKelvins, double? nominalTemperatureInKelvins)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SpiceSharp.Simulations.BaseSimulation</span></td>
+        <td><span class="parametername">simulation</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
+        <td><span class="parametername">operatingTemperatureInKelvins</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
+        <td><span class="parametername">nominalTemperatureInKelvins</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_SetSweepSimulation_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_System_Collections_Generic_List_System_Collections_Generic_KeyValuePair_SpiceSharpParser_Models_Netlist_Spice_Objects_Parameter_System_Double___SpiceSharp_Simulations_BaseSimulation_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.SetSweepSimulation(SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext%2CSystem.Collections.Generic.List%7BSystem.Collections.Generic.KeyValuePair%7BSpiceSharpParser.Models.Netlist.Spice.Objects.Parameter%2CSystem.Double%7D%7D%2CSpiceSharp.Simulations.BaseSimulation)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/SimulationControl.cs/#L119">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_SetSweepSimulation_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.SetSweepSimulation*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_SetSweepSimulation_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_System_Collections_Generic_List_System_Collections_Generic_KeyValuePair_SpiceSharpParser_Models_Netlist_Spice_Objects_Parameter_System_Double___SpiceSharp_Simulations_BaseSimulation_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.SetSweepSimulation(SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}},SpiceSharp.Simulations.BaseSimulation)">SetSweepSimulation(IReadingContext, List&lt;KeyValuePair&lt;Parameter, Double&gt;&gt;, BaseSimulation)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void SetSweepSimulation(IReadingContext context, List&lt;KeyValuePair&lt;Parameter, double&gt;&gt; parameterValues, BaseSimulation simulation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext.html">IReadingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;<a class="xref" href="SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.html">Parameter</a>, <span class="xref">System.Double</span>&gt;&gt;</td>
+        <td><span class="parametername">parameterValues</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SpiceSharp.Simulations.BaseSimulation</span></td>
+        <td><span class="parametername">simulation</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_SetTempVariable_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_System_Nullable_System_Double__SpiceSharp_Simulations_BaseSimulation_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.SetTempVariable(SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext%2CSystem.Nullable%7BSystem.Double%7D%2CSpiceSharp.Simulations.BaseSimulation)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/SimulationControl.cs/#L185">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_SetTempVariable_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.SetTempVariable*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl_SetTempVariable_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IReadingContext_System_Nullable_System_Double__SpiceSharp_Simulations_BaseSimulation_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.SetTempVariable(SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext,System.Nullable{System.Double},SpiceSharp.Simulations.BaseSimulation)">SetTempVariable(IReadingContext, Nullable&lt;Double&gt;, BaseSimulation)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void SetTempVariable(IReadingContext context, double? operatingTemperatureInKelvins, BaseSimulation simulation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext.html">IReadingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Double</span>&gt;</td>
+        <td><span class="parametername">operatingTemperatureInKelvins</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SpiceSharp.Simulations.BaseSimulation</span></td>
+        <td><span class="parametername">simulation</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.IStatementReader.html">IStatementReader</a>
+  </div>
+  <div>
+      <a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Common.ISpiceObjectReader.html">ISpiceObjectReader</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Readers_Controls_Simulations_SimulationControl.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/SimulationControl.cs/#L18" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

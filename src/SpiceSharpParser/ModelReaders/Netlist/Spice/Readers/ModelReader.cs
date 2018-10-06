@@ -1,48 +1,43 @@
-﻿using SpiceSharp.Circuits;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
     /// <summary>
-    /// Reades all supported <see cref="Model"/> from spice netlist object model.
+    /// Reads all supported <see cref="Model"/> from SPICE netlist object model.
     /// </summary>
     public class ModelReader : StatementReader<Model>, IModelReader
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelReader"/> class.
         /// </summary>
-        /// <param name="registry">The registry</param>
-        public ModelReader(IEntityGeneratorRegistry registry)
+        /// <param name="mapper">The model mapper.</param>
+        /// <param name="modelsGenerator">The models generator.</param>
+        public ModelReader(IMapper<IModelGenerator> mapper, IModelsGenerator modelsGenerator)
         {
-            Registry = registry ?? throw new System.ArgumentNullException(nameof(registry));
+            Mapper = mapper ?? throw new System.ArgumentNullException(nameof(mapper));
+            ModelsGenerator = modelsGenerator ?? throw new System.ArgumentNullException(nameof(modelsGenerator));
         }
 
         /// <summary>
-        /// Gets the registry
+        /// Gets the model mapper.
         /// </summary>
-        public IEntityGeneratorRegistry Registry { get; }
+        public IMapper<IModelGenerator> Mapper { get; }
 
         /// <summary>
-        /// Returns whether reader can process specific statement.
+        /// Gets the models generator.
+        /// </summary>
+        public IModelsGenerator ModelsGenerator { get; }
+
+        /// <summary>
+        /// Reads a model statement and modifies the context.
         /// </summary>
         /// <param name="statement">A statement to process.</param>
-        /// <returns>
-        /// True if the reader can process given statement.
-        /// </returns>
-        public override bool CanRead(Statement statement)
-        {
-            return statement is Model;
-        }
-
-        /// <summary>
-        /// Reades a model statement and modifies the context
-        /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modifify</param>
+        /// <param name="context">A context to modify.</param>
         public override void Read(Model statement, IReadingContext context)
         {
             string name = statement.Name;
@@ -53,23 +48,24 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
                 {
                     var type = b.Name.ToLower();
 
-                    if (!Registry.Supports(type))
+                    if (!Mapper.Contains(type))
                     {
                         throw new GeneralReaderException("Unsupported model type: " + type);
                     }
 
-                    var generator = Registry.Get(type);
+                    var generator = Mapper.Get(type);
 
-                    Entity spiceSharpModel = generator.Generate(
-                        new SpiceSharp.StringIdentifier(context.ObjectNameGenerator.Generate(name)),
+                    var model = ModelsGenerator.GenerateModel(
+                        generator,
+                        context.ModelNameGenerator.Generate(name),
                         name,
                         type,
                         b.Parameters,
                         context);
 
-                    if (spiceSharpModel != null)
+                    if (model != null)
                     {
-                        context.Result.AddEntity(spiceSharpModel);
+                        context.Result.AddEntity(model);
                     }
                 }
 
@@ -77,17 +73,23 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
                 {
                     var type = single.Image.ToLower();
 
-                    if (!Registry.Supports(type))
+                    if (!Mapper.Contains(type))
                     {
                         throw new GeneralReaderException("Unsupported model type: " + type);
                     }
 
-                    var generator = Registry.Get(type);
-                    Entity spiceSharpModel = generator.Generate(new SpiceSharp.StringIdentifier(context.ObjectNameGenerator.Generate(name)), name, type, statement.Parameters.Skip(1), context);
+                    var generator = Mapper.Get(type);
+                    var model = ModelsGenerator.GenerateModel(
+                        generator,
+                        context.ModelNameGenerator.Generate(name),
+                        name,
+                        type,
+                        statement.Parameters.Skip(1),
+                        context);
 
-                    if (spiceSharpModel != null)
+                    if (model != null)
                     {
-                        context.Result.AddEntity(spiceSharpModel);
+                        context.Result.AddEntity(model);
                     }
                 }
             }

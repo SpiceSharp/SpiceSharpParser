@@ -1,21 +1,19 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
-    /// Reades .ST <see cref="Control"/> from Spice netlist object model.
+    /// Reads .ST <see cref="Control"/> from Spice netlist object model.
     /// </summary>
     public class StControl : BaseControl
     {
-        public override string SpiceName => "st";
-
         /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context.
+        /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
@@ -103,8 +101,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                 {
                     Parameter = variableParameter,
                     Sweep = new ListSweep(values),
-                }
-            );
+                });
         }
 
         private void ReadLin(ParameterCollection parameters, IReadingContext context)

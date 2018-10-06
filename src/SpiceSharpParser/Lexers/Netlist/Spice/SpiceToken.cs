@@ -3,7 +3,7 @@
 namespace SpiceSharpParser.Lexers.Netlist.Spice
 {
     /// <summary>
-    /// A token from spice netlist
+    /// A token from SPICE netlist.
     /// </summary>
     public class SpiceToken : Token
     {
@@ -18,22 +18,22 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
         }
 
         /// <summary>
-        /// Gets token line number
+        /// Gets token line number.
         /// </summary>
         public int LineNumber { get; private set; }
 
         /// <summary>
-        /// Gets token type
+        /// Gets token type.
         /// </summary>
         public SpiceTokenType SpiceTokenType { get; }
 
         /// <summary>
-        /// Updates the line number
+        /// Updates the line number.
         /// </summary>
-        /// <param name="lineNumber">New line number</param>
+        /// <param name="lineNumber">New line number.</param>
         public void UpdateLineNumber(int lineNumber)
         {
-            this.LineNumber = lineNumber;
+            LineNumber = lineNumber;
         }
     }
 }

@@ -1,17 +1,17 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
     /// <summary>
-    /// Interface for all model readers
+    /// Interface for all model readers.
     /// </summary>
     public interface IModelReader
     {
         /// <summary>
-        /// Reades a model statement and modifies the context
+        /// Reads a model statement.
         /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modifify</param>
+        /// <param name="statement">A statement to process,</param>
+        /// <param name="context">A context.</param>
         void Read(Models.Netlist.Spice.Objects.Model statement, IReadingContext context);
     }
 }

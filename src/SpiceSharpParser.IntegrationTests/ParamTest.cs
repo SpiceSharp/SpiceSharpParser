@@ -6,7 +6,7 @@ namespace SpiceSharpParser.IntegrationTests
     public class ParamTest : BaseTest
     {
         [Fact]
-        public void ParamCustomFunctionAdvancedTest()
+        public void ParamFunctionAdvancedTest()
         {
             var netlist = ParseNetlist(
                 "PARAM custom function test",
@@ -26,7 +26,7 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
-        public void ParamCustomFunctionManyArgumentsTest()
+        public void ParamFunctionManyArgumentsTest()
         {
             var netlist = ParseNetlist(
                 "PARAM custom function test",
@@ -45,7 +45,7 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
-        public void ParamWithoutArgumentsTest()
+        public void ParamFunctionWithoutArgumentsTest()
         {
             var netlist = ParseNetlist(
                 "PARAM custom function test",
@@ -63,7 +63,7 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
-        public void ParamFactRecursiveFunctionTest()
+        public void ParamFunctionFunctionFactRecursiveFunctionTest()
         {
             var netlist = ParseNetlist(
                 "PARAM recurisve custom function test",
@@ -81,7 +81,7 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
-        public void ParamFactRecursiveFunctionCleanSyntaxTest()
+        public void ParamFunctionFactRecursiveFunctionCleanSyntaxTest()
         {
             var netlist = ParseNetlist(
                 "PARAM recurisve custom function test",

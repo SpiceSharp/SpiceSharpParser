@@ -1,0 +1,594 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class SpiceEvaluator
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class SpiceEvaluator
+   ">
+    <meta name="generator" content="docfx 2.37.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator">
+  
+  
+  <h1 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator" class="text-break">Class SpiceEvaluator
+  </h1>
+  <div class="markdown level0 summary"><p>Spice expressions evaluator.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html">Evaluator</a></div>
+    <div class="level2"><span class="xref">SpiceEvaluator</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.ISpiceEvaluator.html">ISpiceEvaluator</a></div>
+    <div><a class="xref" href="SpiceSharpParser.Common.IEvaluator.html">IEvaluator</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_Name">Evaluator.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_Children">Evaluator.Children</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_CustomFunctions">Evaluator.CustomFunctions</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_Registry">Evaluator.Registry</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_ExpressionParser">Evaluator.ExpressionParser</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_Parameters">Evaluator.Parameters</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_EvaluateDouble_System_String_System_Object_">Evaluator.EvaluateDouble(String, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_GetParameters">Evaluator.GetParameters()</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_HasParameter_System_String_">Evaluator.HasParameter(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_GetParameterValue_System_String_System_Object_">Evaluator.GetParameterValue(String, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_GetParameterNames">Evaluator.GetParameterNames()</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_GetParametersFromExpression_System_String_">Evaluator.GetParametersFromExpression(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_InvalidateParameters">Evaluator.InvalidateParameters()</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_SetParameters_System_Collections_Generic_Dictionary_System_String_System_String__">Evaluator.SetParameters(Dictionary&lt;String, String&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_SetParameter_System_String_System_Double_System_Object_">Evaluator.SetParameter(String, Double, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_SetParameter_System_String_System_String_System_Object_">Evaluator.SetParameter(String, String, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_GetExpressionNames">Evaluator.GetExpressionNames()</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_AddCustomFunction_System_String_System_Collections_Generic_List_System_String__System_String_">Evaluator.AddCustomFunction(String, List&lt;String&gt;, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_GetExpressionValue_System_String_System_Object_">Evaluator.GetExpressionValue(String, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_HasExpression_System_String_">Evaluator.HasExpression(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_SetNamedExpression_System_String_System_String_">Evaluator.SetNamedExpression(String, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_GetExpression_System_String_">Evaluator.GetExpression(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_RefreshForParameter_System_String_System_Object_">Evaluator.RefreshForParameter(String, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_FindChildEvaluator_System_String_">Evaluator.FindChildEvaluator(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_AddAction_System_String_System_String_System_Action_System_Double__">Evaluator.AddAction(String, String, Action&lt;Double&gt;)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.html">SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation</a></h6>
+  <h6><strong>Assembly</strong>: SpiceSharpParser.dll</h6>
+  <h5 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class SpiceEvaluator : Evaluator, ISpiceEvaluator, IEvaluator</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator__ctor.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluator.cs/#L17">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator__ctor_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.#ctor*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator__ctor" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.#ctor">SpiceEvaluator()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SpiceEvaluator()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator__ctor_SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_CustomFunctions_SpiceEvaluatorMode_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.%23ctor(SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.SpiceEvaluatorMode)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluator.cs/#L34">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator__ctor_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.#ctor*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator__ctor_SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_CustomFunctions_SpiceEvaluatorMode_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.#ctor(SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.SpiceEvaluatorMode)">SpiceEvaluator(SpiceEvaluatorMode)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SpiceEvaluator(SpiceEvaluatorMode mode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.SpiceEvaluatorMode.html">SpiceEvaluatorMode</a></td>
+        <td><span class="parametername">mode</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator__ctor_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluator.cs/#L23">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator__ctor_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.#ctor*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator__ctor_System_String_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.#ctor(System.String)">SpiceEvaluator(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SpiceEvaluator(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator__ctor_System_String_SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_CustomFunctions_SpiceEvaluatorMode_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.%23ctor(System.String%2CSpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.SpiceEvaluatorMode)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluator.cs/#L29">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator__ctor_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.#ctor*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator__ctor_System_String_SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_CustomFunctions_SpiceEvaluatorMode_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.#ctor(System.String,SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.SpiceEvaluatorMode)">SpiceEvaluator(String, SpiceEvaluatorMode)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SpiceEvaluator(string name, SpiceEvaluatorMode mode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.SpiceEvaluatorMode.html">SpiceEvaluatorMode</a></td>
+        <td><span class="parametername">mode</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator__ctor_System_String_SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_CustomFunctions_SpiceEvaluatorMode_SpiceSharpParser_Common_Evaluation_ExpressionRegistry_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.%23ctor(System.String%2CSpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.SpiceEvaluatorMode%2CSpiceSharpParser.Common.Evaluation.ExpressionRegistry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluator.cs/#L42">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator__ctor_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.#ctor*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator__ctor_System_String_SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_CustomFunctions_SpiceEvaluatorMode_SpiceSharpParser_Common_Evaluation_ExpressionRegistry_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.#ctor(System.String,SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.SpiceEvaluatorMode,SpiceSharpParser.Common.Evaluation.ExpressionRegistry)">SpiceEvaluator(String, SpiceEvaluatorMode, ExpressionRegistry)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.html">SpiceEvaluator</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SpiceEvaluator(string name, SpiceEvaluatorMode mode, ExpressionRegistry registry)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.SpiceEvaluatorMode.html">SpiceEvaluatorMode</a></td>
+        <td><span class="parametername">mode</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.ExpressionRegistry.html">ExpressionRegistry</a></td>
+        <td><span class="parametername">registry</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator__ctor_System_String_SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_CustomFunctions_SpiceEvaluatorMode_SpiceSharpParser_ModelsReaders_Netlist_Spice_Registries_IExporterRegistry_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_INodeNameGenerator_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IObjectNameGenerator_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.%23ctor(System.String%2CSpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.SpiceEvaluatorMode%2CSpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.IExporterRegistry%2CSpiceSharpParser.ModelsReaders.Netlist.Spice.Context.INodeNameGenerator%2CSpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IObjectNameGenerator)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluator.cs/#L87">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator__ctor_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.#ctor*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator__ctor_System_String_SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_CustomFunctions_SpiceEvaluatorMode_SpiceSharpParser_ModelsReaders_Netlist_Spice_Registries_IExporterRegistry_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_INodeNameGenerator_SpiceSharpParser_ModelsReaders_Netlist_Spice_Context_IObjectNameGenerator_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.#ctor(System.String,SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.SpiceEvaluatorMode,SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.IExporterRegistry,SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.INodeNameGenerator,SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IObjectNameGenerator)">SpiceEvaluator(String, SpiceEvaluatorMode, IExporterRegistry, INodeNameGenerator, IObjectNameGenerator)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.html">SpiceEvaluator</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SpiceEvaluator(string name, SpiceEvaluatorMode mode, IExporterRegistry exporters, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.SpiceEvaluatorMode.html">SpiceEvaluatorMode</a></td>
+        <td><span class="parametername">mode</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.IExporterRegistry.html">IExporterRegistry</a></td>
+        <td><span class="parametername">exporters</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.INodeNameGenerator.html">INodeNameGenerator</a></td>
+        <td><span class="parametername">nodeNameGenerator</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IObjectNameGenerator.html">IObjectNameGenerator</a></td>
+        <td><span class="parametername">objectNameGenerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator_Mode.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.Mode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluator.cs/#L96">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator_Mode_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.Mode*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator_Mode" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.Mode">Mode</h4>
+  <div class="markdown level1 summary"><p>Gets the mode of evaluator.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SpiceEvaluatorMode Mode { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.SpiceEvaluatorMode.html">SpiceEvaluatorMode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator_CreateChildEvaluator_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.CreateChildEvaluator(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluator.cs/#L104">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator_CreateChildEvaluator_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.CreateChildEvaluator*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator_CreateChildEvaluator_System_String_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.CreateChildEvaluator(System.String)">CreateChildEvaluator(String)</h4>
+  <div class="markdown level1 summary"><p>Creates a child evaluator.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEvaluator CreateChildEvaluator(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Common.IEvaluator.html">IEvaluator</a></td>
+        <td><p>A child evaluator.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_CreateChildEvaluator_System_String_">Evaluator.CreateChildEvaluator(String)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator_CreateClonedEvaluator_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.CreateClonedEvaluator(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluator.cs/#L129">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator_CreateClonedEvaluator_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.CreateClonedEvaluator*"></a>
+  <h4 id="SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator_CreateClonedEvaluator_System_String_" data-uid="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.CreateClonedEvaluator(System.String)">CreateClonedEvaluator(String)</h4>
+  <div class="markdown level1 summary"><p>Creates a cloned evaluator.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEvaluator CreateClonedEvaluator(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Common.IEvaluator.html">IEvaluator</a></td>
+        <td><p>A cloned evaluator.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html#SpiceSharpParser_Common_Evaluation_Evaluator_CreateClonedEvaluator_System_String_">Evaluator.CreateClonedEvaluator(String)</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.ISpiceEvaluator.html">ISpiceEvaluator</a>
+  </div>
+  <div>
+      <a class="xref" href="SpiceSharpParser.Common.IEvaluator.html">IEvaluator</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelsReaders_Netlist_Spice_Evaluation_SpiceEvaluator.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluator.cs/#L15" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

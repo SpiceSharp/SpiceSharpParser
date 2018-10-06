@@ -1,11 +1,12 @@
 ﻿using NSubstitute;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
+using SpiceSharpParser.Common;
 using Xunit;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 {
@@ -42,14 +43,15 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             };
 
             var readingContext = Substitute.For<IReadingContext>();
+            readingContext.CaseSensitivity = new CaseSensitivitySettings();
 
             // act
             var nodeSetControl = new NodeSetControl();
             nodeSetControl.Read(control, readingContext);
 
             // assert
-            readingContext.Received().SetNodeSetVoltage("input", "12");
-            readingContext.Received().SetNodeSetVoltage("x", "13");
+            readingContext.Received().SimulationsParameters.SetNodeSetVoltage("input", "12");
+            readingContext.Received().SimulationsParameters.SetNodeSetVoltage("x", "13");
         }
     }
 }

@@ -1,20 +1,18 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
     /// <summary>
-    /// Reades .TRAN <see cref="Control"/> from spice netlist object model.
+    /// Reads .TRAN <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class TransientControl : SimulationControl
     {
-        public override string SpiceName => "tran";
-
         /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context
+        /// Reads <see cref="Control"/> statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
@@ -61,27 +59,31 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
                     throw new WrongParametersCountException(".tran control - Too many parameters for .tran");
             }
 
-            SetBaseConfiguration(tran.BaseConfiguration, context);
-            SetTransientParamters(tran, context, useIc);
+            ConfigureCommonSettings(tran, context);
+            ConfigureTransientSettings(tran, context, useIc);
+
+            tran.ExportSimulationData += (object sender, ExportDataEventArgs e) => {
+                context.Evaluators.SetParameter("TIME", e.Time);
+            };
 
             context.Result.AddSimulation(tran);
 
             return tran;
         }
 
-        private void SetTransientParamters(Transient tran, IReadingContext context, bool useIc)
+        private void ConfigureTransientSettings(Transient tran, IReadingContext context, bool useIc)
         {
             if (context.Result.SimulationConfiguration.Method != null)
             {
-                tran.ParameterSets.Get<TimeConfiguration>().Method = context.Result.SimulationConfiguration.Method;
+                tran.Configurations.Get<TimeConfiguration>().Method = context.Result.SimulationConfiguration.Method;
             }
 
             if (context.Result.SimulationConfiguration.TranMaxIterations.HasValue)
             {
-                tran.ParameterSets.Get<TimeConfiguration>().TranMaxIterations = context.Result.SimulationConfiguration.TranMaxIterations.Value;
+                tran.Configurations.Get<TimeConfiguration>().TranMaxIterations = context.Result.SimulationConfiguration.TranMaxIterations.Value;
             }
 
-            tran.ParameterSets.Get<TimeConfiguration>().UseIc = useIc;
+            tran.Configurations.Get<TimeConfiguration>().UseIc = useIc;
         }
     }
 }

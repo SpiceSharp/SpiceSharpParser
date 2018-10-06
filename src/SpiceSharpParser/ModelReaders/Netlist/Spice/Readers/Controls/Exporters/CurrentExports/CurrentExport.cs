@@ -1,8 +1,8 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharp;
+﻿using SpiceSharp;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports
 {
     /// <summary>
     /// Current export.
@@ -12,16 +12,13 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
         /// <summary>
         /// Initializes a new instance of the <see cref="CurrentExport"/> class.
         /// </summary>
+        /// <param name="name">Name of export.</param>
         /// <param name="simulation">A simulation</param>
         /// <param name="source">A identifier</param>
-        public CurrentExport(Simulation simulation, Identifier source)
+        public CurrentExport(string name, Simulation simulation, string source)
             : base(simulation)
         {
-            if (simulation == null)
-            {
-                throw new System.ArgumentNullException(nameof(simulation));
-            }
-
+            Name = name ?? throw new System.NullReferenceException(nameof(name));
             Source = source ?? throw new System.NullReferenceException(nameof(source));
 
             if (simulation is FrequencySimulation)
@@ -32,14 +29,12 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
             {
                 ExportRealImpl = new RealPropertyExport(simulation, source, "i");
             }
-
-            Name = "i(" + Source + ")";
         }
 
         /// <summary>
         /// Gets the main node
         /// </summary>
-        public Identifier Source { get; }
+        public string Source { get; }
 
         /// <summary>
         /// Gets the type name
@@ -77,6 +72,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
                     {
                         throw new GeneralReaderException($"Current export {Name} is invalid");
                     }
+
                     return double.NaN;
                 }
 
@@ -90,8 +86,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
                     {
                         throw new GeneralReaderException($"Current export {Name} is invalid");
                     }
+
                     return double.NaN;
                 }
+
                 return ExportImpl.Value.Real;
             }
         }

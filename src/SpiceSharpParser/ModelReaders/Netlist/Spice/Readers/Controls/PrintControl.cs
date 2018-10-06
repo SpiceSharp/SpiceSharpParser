@@ -4,39 +4,34 @@ using System.Linq;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
-    /// Reades .PRINT <see cref="Control"/> from spice netlist object model.
+    /// Reads .PRINT <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class PrintControl : ExportControl
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PrintControl"/> class.
         /// </summary>
-        /// <param name="registry">The exporter registry</param>
-        public PrintControl(IExporterRegistry registry)
-            : base(registry)
+        /// <param name="mapper">The exporter mapper</param>
+        public PrintControl(IMapper<Exporter> mapper)
+            : base(mapper)
         {
         }
-
-        /// <summary>
-        /// Gets the type of generetor.
-        /// </summary>
-        public override string SpiceName => "print";
 
         protected ICollection<string> SupportedPrintTypes { get; } = new List<string>() { "dc", "ac", "tran", "op" };
 
         /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context
+        /// Reads <see cref="Control"/> statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
@@ -100,7 +95,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 
                     if (simulation is OP)
                     {
-                        CreatePrint(statement.Parameters, context, simulation, "Final result");
+                        CreatePrint(statement.Parameters, context, simulation, null);
                     }
                 }
             }
@@ -109,9 +104,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         private List<Export> CreateExportsForAllVoltageAndCurrents(Simulation simulation, IReadingContext context)
         {
             var result = new List<Export>();
-            context.Result.Circuit.Objects.BuildOrderedComponentList(); //TODO: Verify with Sven
+            context.Result.Circuit.Objects.BuildOrderedComponentList(); // TODO: Verify with Sven
 
-            var nodes = new List<Identifier>();
+            var nodes = new List<string>();
 
             foreach (Entity entity in context.Result.Circuit.Objects)
             {
@@ -131,7 +126,18 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                     }
 
                     // Add current export for component
-                    result.Add(Registry.Get("i").CreateExport("i", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator));
+                    result.Add(
+                        Mapper
+                        .Get("i")
+                        .CreateExport(
+                            "I(" + @params.ToString() + ")", "i",
+                            @params,
+                            simulation,
+                            context.NodeNameGenerator,
+                            context.ComponentNameGenerator,
+                            context.ModelNameGenerator,
+                            context.Result,
+                            context.CaseSensitivity));
                 }
             }
 
@@ -140,7 +146,19 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                 var @params = new ParameterCollection();
                 @params.Add(new WordParameter(node.ToString()));
 
-                result.Add(Registry.Get("v").CreateExport("v", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator));
+                result.Add(
+                    Mapper
+                    .Get("v")
+                    .CreateExport(
+                        "V(" + @params + ")",
+                        "v",
+                        @params,
+                        simulation,
+                        context.NodeNameGenerator,
+                        context.ComponentNameGenerator,
+                        context.ModelNameGenerator,
+                        context.Result,
+                        context.CaseSensitivity));
             }
 
             return result;
@@ -149,7 +167,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         private void CreatePrint(ParameterCollection parameters, IReadingContext context, Simulation simulation, string firstColumnName)
         {
             var print = new Print(simulation.Name.ToString());
-            print.ColumnNames.Add(firstColumnName);
+
+            if (firstColumnName != null)
+            {
+                print.ColumnNames.Add(firstColumnName);
+            }
 
             List<Export> exports = GenerateExports(parameters, simulation, context);
             for (var i = 0; i < exports.Count; i++)
@@ -159,7 +181,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 
             int index = 1;
 
-            simulation.OnExportSimulationData += (object sender, ExportDataEventArgs e) =>
+            simulation.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
                 Row row = new Row(index);
                 index++;
@@ -176,11 +198,6 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                     x = e.Frequency;
                 }
 
-                if (simulation is OP)
-                {
-                    x = 1;
-                }
-
                 if (simulation is DC dc)
                 {
                     if (dc.Sweeps.Count > 1)
@@ -192,7 +209,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                     x = e.SweepValue;
                 }
 
-                row.Columns.Add(x);
+                if (!(simulation is OP))
+                {
+                    row.Columns.Add(x);
+                }
 
                 for (var i = 0; i < exports.Count; i++)
                 {
@@ -201,7 +221,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                         double val = exports[i].Extract();
                         row.Columns.Add(val);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         row.Columns.Add(double.NaN);
                     }
@@ -221,20 +241,23 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
             }
 
             List<Export> result = new List<Export>();
-            foreach (Models.Netlist.Spice.Objects.Parameter parameter in parameterCollection)
+            foreach (Parameter parameter in parameterCollection)
             {
                 if (parameter is BracketParameter || parameter is ReferenceParameter)
                 {
-                    result.Add(GenerateExport(parameter, simulation, context.NodeNameGenerator, context.ObjectNameGenerator));
+                    result.Add(GenerateExport(parameter, simulation, context.NodeNameGenerator, context.ComponentNameGenerator, context.ModelNameGenerator, context.Result, context.CaseSensitivity));
                 }
                 else
                 {
                     string expressionName = parameter.Image;
-                    var expressionNames = context.Evaluator.GetExpressionNames();
+                    var evaluator = context.Evaluators.GetSimulationEvaluator(simulation);
+                    var expressionNames = evaluator.GetExpressionNames();
 
                     if (expressionNames.Contains(expressionName))
                     {
-                        result.Add(new ExpressionExport(simulation.Name.ToString(), expressionName, context.Evaluator.GetExpression(expressionName), context.Evaluator, simulation));
+                        var export = new ExpressionExport(simulation.Name.ToString(), expressionName, evaluator.GetExpression(expressionName), evaluator, simulation);
+                        export.Extract();
+                        result.Add(export);
                     }
                 }
             }

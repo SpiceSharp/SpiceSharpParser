@@ -1,20 +1,18 @@
 ﻿using System;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
     /// <summary>
-    /// Reades .AC <see cref="Control"/> from spice netlist object model.
+    /// Reads .AC <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class ACControl : SimulationControl
     {
-        public override string SpiceName => "ac";
-
         /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context
+        /// Reads <see cref="Control"/> statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
@@ -49,14 +47,14 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
                     throw new WrongParameterException("LIN, DEC or OCT expected");
             }
 
-            SetBaseConfiguration(ac.BaseConfiguration, context);
-            SetACParameters(ac.FrequencyConfiguration, context);
-            context.Result.AddSimulation(ac);
+            ConfigureCommonSettings(ac, context);
+            ConfigureAcSettings(ac.Configurations.Get<FrequencyConfiguration>(), context);
 
+            context.Result.AddSimulation(ac);
             return ac;
         }
 
-        private void SetACParameters(FrequencyConfiguration frequencyConfiguration, IReadingContext context)
+        private void ConfigureAcSettings(FrequencyConfiguration frequencyConfiguration, IReadingContext context)
         {
             if (context.Result.SimulationConfiguration.KeepOpInfo.HasValue)
             {

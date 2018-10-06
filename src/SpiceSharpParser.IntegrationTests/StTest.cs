@@ -43,6 +43,24 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
+        public void ListParamWithoutDeclarationCountTest()
+        {
+            var result = ParseNetlist(
+                "Diode circuit",
+                "D1 OUT 0 1N914",
+                "R1 OUT 1 100",
+                "V1 1 0 {X}",
+                ".model 1N914 D(Is=2.52e-9 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
+                ".OP",
+                ".SAVE i(V1)",
+                ".ST LIST X 1 2 3 4 5",
+                ".END");
+
+            Assert.Equal(5, result.Exports.Count);
+            Assert.Equal(5, result.Simulations.Count);
+        }
+
+        [Fact]
         public void ListParamCountTest()
         {
             var result = ParseNetlist(
@@ -181,6 +199,28 @@ namespace SpiceSharpParser.IntegrationTests
                 "R1 1 0 100",
                 ".OP",
                 ".SAVE i(R1)",
+                ".ST LIST @V1[dc] 100 200 400",
+                ".END");
+
+            Assert.Equal(3, result.Exports.Count);
+            Assert.Equal(3, result.Simulations.Count);
+
+            var exports = RunSimulationsAndReturnExports(result);
+
+            Assert.Equal(-1.0, exports[0]);
+            Assert.Equal(-2.0, exports[1]);
+            Assert.Equal(-4.0, exports[2]);
+        }
+
+        [Fact]
+        public void ListDeviceParameterResitanceTest()
+        {
+            var result = ParseNetlist(
+                "Test circuit",
+                "V1 0 1 1",
+                "R1 1 0 100",
+                ".OP",
+                ".SAVE i(R1)",
                 ".ST LIST @R1[resistance] 100 200 400",
                 ".END");
 
@@ -192,6 +232,7 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.Equal(-0.01, exports[0]);
             Assert.Equal(-0.005, exports[1]);
             Assert.Equal(-0.0025, exports[2]);
+
         }
 
         [Fact]

@@ -1,6 +1,6 @@
 ﻿using NSubstitute;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp.Simulations;
@@ -38,6 +38,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.Result.Returns(resultService);
             readingContext.ParseDouble(Arg.Any<string>()).Returns(x => double.Parse((string)x[0]));
+            readingContext.CaseSensitivity.Returns(new SpiceSharpParser.Common.CaseSensitivitySettings());
 
             // act
             var tranControl = new TransientControl();
@@ -77,6 +78,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.Result.Returns(resultService);
             readingContext.ParseDouble(Arg.Any<string>()).Returns(x => double.Parse((string)x[0]));
+            readingContext.CaseSensitivity.Returns(new SpiceSharpParser.Common.CaseSensitivitySettings());
 
             // act
             var tranControl = new TransientControl();

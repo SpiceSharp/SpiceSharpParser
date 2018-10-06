@@ -1,11 +1,18 @@
 ﻿using NSubstitute;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp.Components;
 using Xunit;
+using SpiceSharpParser.ModelReaders.Netlist.Spice;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models;
+using SpiceSharp;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Components.Sources
 {
@@ -14,7 +21,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         [Fact]
         public void GenerateDCCurrentSourceWithoutDCTest()
         {
-            var generator = new CurrentSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new CurrentSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -24,18 +31,18 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("i1"), "i1", "i", parameters, context);
+            var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
 
-            context.Received().SetParameter(entity, "dc", "1.2");
+            context.Received().SetParameter(entity, "dc", "1.2", true);
         }
 
         [Fact]
         public void GenerateDCCurrentSourceWithDCTest()
         {
-            var generator = new CurrentSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new CurrentSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -46,18 +53,18 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("i1"), "i1", "i", parameters, context);
+            var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
 
-            context.Received().SetParameter(entity, "dc", "1.2");
+            context.Received().SetParameter(entity, "dc", "1.2", true);
         }
 
         [Fact]
         public void GenerateDCCurrentSourceWithoutCurrentTest()
         {
-            var generator = new CurrentSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new CurrentSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -67,7 +74,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("i1"), "i1", "i", parameters, context);
+            var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
@@ -76,7 +83,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         [Fact]
         public void GenerateDCACCurrentSourceTest()
         {
-            var generator = new CurrentSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new CurrentSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -90,20 +97,20 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("i1"), "i1", "i", parameters, context);
+            var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
 
-            context.Received().SetParameter(entity, "dc", "1.2");
-            context.Received().SetParameter(entity, "acmag", "12");
-            context.Received().SetParameter(entity, "acphase", "0");
+            context.Received().SetParameter(entity, "dc", "1.2", true);
+            context.Received().SetParameter(entity, "acmag", "12", true);
+            context.Received().SetParameter(entity, "acphase", "0", true);
         }
 
         [Fact]
         public void GenerateDCACWithoutPhaseCurrentSourceTest()
         {
-            var generator = new CurrentSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new CurrentSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -116,19 +123,19 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("i1"), "i1", "i", parameters, context);
+            var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
 
-            context.Received().SetParameter(entity, "dc", "1.2");
-            context.Received().SetParameter(entity, "acmag", "12");
+            context.Received().SetParameter(entity, "dc", "1.2", true);
+            context.Received().SetParameter(entity, "acmag", "12", true);
         }
 
         [Fact]
         public void GenerateACWithoutPhaseCurrentSourceTest()
         {
-            var generator = new CurrentSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new CurrentSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -139,27 +146,19 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("i1"), "i1", "i", parameters, context);
+            var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
 
-            context.Received().SetParameter(entity, "acmag", "12");
+            context.Received().SetParameter(entity, "acmag", "12", true);
         }
 
         [Fact]
         public void GenerateACWithoutPhaseWithSineCurrentSourceTest()
         {
-            var waveformReader = Substitute.For<IWaveformReader>();
-
             var sine = new Sine();
-            waveformReader.Generate(
-                Arg.Any<BracketParameter>(), 
-                Arg.Any<IReadingContext>()).Returns(
-               sine);
-
-            var generator = new CurrentSourceGenerator(waveformReader);
-
+            var generator = new CurrentSourceGenerator();
             var parameters = new ParameterCollection
             {
                 new ValueParameter("1"), // pin
@@ -179,27 +178,24 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("i1"), "i1", "i", parameters, context);
+            context.StatementsReader = new SpiceStatementsReader(Substitute.For<IMapper<BaseControl>>(), Substitute.For<IMapper<IModelGenerator>>(), Substitute.For<IMapper<IComponentGenerator>>());
+
+            context.WaveformReader = Substitute.For<IWaveformReader>();
+            context.WaveformReader.Generate(Arg.Any<BracketParameter>(), Arg.Any<IReadingContext>()).Returns(sine);
+
+            var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
 
-            context.Received().SetParameter(entity, "acmag", "12");
-            context.Received().SetParameter(entity, "waveform", sine);
+            context.Received().SetParameter(entity, "acmag", "12", true);
         }
 
         [Fact]
         public void GenerateWaveformCurrentSourceTest()
         {
-            var waveformReader = Substitute.For<IWaveformReader>();
-
             var sine = new Sine();
-            waveformReader.Generate(
-                Arg.Any<BracketParameter>(),
-                Arg.Any<IReadingContext>()).Returns(
-               sine);
-
-            var generator = new CurrentSourceGenerator(waveformReader);
+            var generator = new CurrentSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -218,18 +214,23 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("i1"), "i1", "i", parameters, context);
+            context.StatementsReader = new SpiceStatementsReader(
+                Substitute.For<IMapper<BaseControl>>(),
+                Substitute.For<IMapper<IModelGenerator>>(),
+                Substitute.For<IMapper<IComponentGenerator>>());
+            context.WaveformReader = Substitute.For<IWaveformReader>();
+            context.WaveformReader.Generate(Arg.Any<BracketParameter>(), Arg.Any<IReadingContext>()).Returns(sine);
+
+            var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
-
-            context.Received().SetParameter(entity, "waveform", sine);
         }
 
         [Fact]
         public void GeneratACCurrentSourceTest()
         {
-            var generator = new CurrentSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new CurrentSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -240,18 +241,18 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("i1"), "i1", "i", parameters, context);
+            var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
 
-            context.Received().SetParameter(entity, "acmag", "13");
+            context.Received().SetParameter(entity, "acmag", "13", true);
         }
 
         [Fact]
         public void GeneratACCurrentSourceWithPhaseTest()
         {
-            var generator = new CurrentSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new CurrentSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -263,19 +264,19 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("i1"), "i1", "i", parameters, context);
+            var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentSource>(entity);
 
-            context.Received().SetParameter(entity, "acmag", "13");
-            context.Received().SetParameter(entity, "acphase", "2");
+            context.Received().SetParameter(entity, "acmag", "13", true);
+            context.Received().SetParameter(entity, "acphase", "2", true);
         }
 
         [Fact]
         public void GeneratCCCSTest()
         {
-            var generator = new CurrentSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new CurrentSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -286,18 +287,20 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("f1"), "f1", "f", parameters, context);
+            context.ComponentNameGenerator.Generate(Arg.Any<string>()).Returns("v1");
+
+            var entity = generator.Generate("f1", "f1", "f", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentControlledCurrentSource>(entity);
-            Assert.Equal("v1", ((CurrentControlledCurrentSource)entity).ControllingName.ToString());
-            context.Received().SetParameter(entity, "gain", "3");
+            Assert.Equal("v1", ((CurrentControlledCurrentSource)entity).ControllingName);
+            context.Received().SetParameter(entity, "gain", "3", true);
         }
 
         [Fact]
         public void GeneratCCVSTest()
         {
-            var generator = new CurrentSourceGenerator(Substitute.For<IWaveformReader>());
+            var generator = new CurrentSourceGenerator();
 
             var parameters = new ParameterCollection
             {
@@ -309,11 +312,11 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate(new SpiceSharp.StringIdentifier("g1"), "g1", "g", parameters, context);
+            var entity = generator.Generate("g1", "g1", "g", parameters, context);
 
             Assert.NotNull(entity);
             Assert.IsType<VoltageControlledCurrentSource>(entity);
-            context.Received().SetParameter(entity, "gain", "1.3");
+            context.Received().SetParameter(entity, "gain", "1.3", true);
         }
     }
 }

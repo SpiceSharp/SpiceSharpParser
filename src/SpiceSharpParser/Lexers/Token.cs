@@ -1,7 +1,7 @@
 ﻿namespace SpiceSharpParser.Lexers
 {
     /// <summary>
-    /// A token produces by <see cref="Lexer{TLexerState}"/>
+    /// A token produces by <see cref="Lexer{TLexerState}"/>.
     /// </summary>
     public class Token
     {
@@ -15,17 +15,17 @@
         }
 
         /// <summary>
-        /// Gets token type
+        /// Gets token type.
         /// </summary>
         public int TokenType { get; }
 
         /// <summary>
-        /// Gets token lexem
+        /// Gets token lexem.
         /// </summary>
         public string Lexem { get; private set; }
 
         /// <summary>
-        /// Gets th length of lexem
+        /// Gets th length of lexem.
         /// </summary>
         public int Length
         {
@@ -43,12 +43,12 @@
         }
 
         /// <summary>
-        /// Updates <see cref="Token"/>'s lexem
+        /// Updates <see cref="Token"/>'s lexem.
         /// </summary>
-        /// <param name="lexem">A new value of lexem</param>
+        /// <param name="lexem">A new value of lexem.</param>
         public void UpdateLexem(string lexem)
         {
-            this.Lexem = lexem;
+            Lexem = lexem;
         }
     }
 }

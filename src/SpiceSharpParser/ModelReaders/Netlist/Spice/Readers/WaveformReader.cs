@@ -1,43 +1,44 @@
 ﻿using SpiceSharp.Components;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
     public class WaveformReader : IWaveformReader
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WaveformReader"/> class.
         /// </summary>
-        /// <param name="registry">A waveform registry.</param>
-        public WaveformReader(IWaveformRegistry registry)
+        /// <param name="mapper">A waveform mapper.</param>
+        public WaveformReader(IMapper<WaveformGenerator> mapper)
         {
-            Registry = registry;
+            Mapper = mapper;
         }
 
         /// <summary>
-        /// Gets the current waveform registry.
+        /// Gets the waveform mapper.
         /// </summary>
-        public IWaveformRegistry Registry { get; }
+        public IMapper<WaveformGenerator> Mapper { get; }
 
         /// <summary>
-        /// Gemerates wavefrom from bracket parameter.
+        /// Generates a wavefrom from bracket parameter.
         /// </summary>
         /// <param name="cp">A bracket parameter.</param>
-        /// <param name="context">A processing context.</param>
+        /// <param name="context">A reading context.</param>
         /// <returns>
         /// An new instance of waveform.
         /// </returns>
         public Waveform Generate(BracketParameter cp, IReadingContext context)
         {
             string type = cp.Name.ToLower();
-            if (!Registry.Supports(type))
+            if (!Mapper.Contains(type))
             {
                 throw new System.Exception("Unsupported waveform");
             }
 
-            return Registry.Get(type).Generate(cp, context);
+            return Mapper.Get(type).Generate(cp, context);
         }
     }
 }
