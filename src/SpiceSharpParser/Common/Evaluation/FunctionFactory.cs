@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
@@ -7,11 +8,29 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Creates a new function.
         /// </summary>
+        /// <param name="name">Name of a function.</param>
+        /// <param name="arguments">Arguments of a function.</param>
+        /// <param name="functionBodyExpression">Body expression of a function.</param>
         public Function Create(
             string name,
             List<string> arguments,
-            string functionBody)
+            string functionBodyExpression)
         {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            if (arguments == null)
+            {
+                throw new ArgumentNullException(nameof(arguments));
+            }
+
+            if (functionBodyExpression == null)
+            {
+                throw new ArgumentNullException(nameof(functionBodyExpression));
+            }
+
             Function userFunction = new Function();
             userFunction.Name = name;
             userFunction.VirtualParameters = false;
@@ -25,9 +44,8 @@ namespace SpiceSharpParser.Common.Evaluation
                     childEvaluator.SetParameter(arguments[i], (double)args[i]);
                 }
 
-                var functionBodyExpression = new Expression(functionBody, childEvaluator);
-
-                return functionBodyExpression.Evaluate();
+                var expression = new Expression(functionBodyExpression, childEvaluator);
+                return expression.Evaluate();
             };
 
             return userFunction;

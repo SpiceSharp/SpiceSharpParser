@@ -6,9 +6,9 @@ using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -263,7 +263,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         // Add current export for component
                         context.Result.AddExport(
                             Mapper
-                            .Get("i")
+                            .Get("I", true)
                             .CreateExport(
                                 "I(" + entity.Name + ")",
                                 "i",
@@ -284,7 +284,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                     context.Result.AddExport(
                         Mapper
-                        .Get("v")
+                        .Get("V", true)
                         .CreateExport(
                             "V(" + node + ")",
                             "v",

@@ -107,8 +107,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             baseSimulation.Configurations.Add(
                 new CollectionConfiguration()
                 {
-                    EntityComparer = StringComparerFactory.Create(context.CaseSensitivity.IsEntityNameCaseSensitive),
-                    VariableComparer = StringComparerFactory.Create(context.CaseSensitivity.IsNodeNameCaseSensitive)
+                    EntityComparer = StringComparerProvider.Get(context.CaseSensitivity.IsEntityNameCaseSensitive),
+                    VariableComparer = StringComparerProvider.Get(context.CaseSensitivity.IsNodeNameCaseSensitive)
                 });
         }
     }

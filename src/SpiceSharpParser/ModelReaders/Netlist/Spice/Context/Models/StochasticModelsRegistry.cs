@@ -20,7 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         {
             ModelNamesGenerators = modelNamesGenerators ?? throw new ArgumentNullException(nameof(modelNamesGenerators));
 
-            AllModels = new Dictionary<string, Entity>(StringComparerFactory.Create(isModelNameCaseSensitive));
+            AllModels = new Dictionary<string, Entity>(StringComparerProvider.Get(isModelNameCaseSensitive));
         }
 
         /// <summary>

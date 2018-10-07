@@ -19,19 +19,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <summary>
         /// Initializes a new instance of the <see cref="LibPreprocessor"/> class.
         /// </summary>
-        /// <param name="fileReader">File reader</param>
+        /// <param name="fileReader">File reader.</param>
+        /// <param name="tokenProvider">Token provider.</param>
+        /// <param name="spiceNetlistParser">Single spice netlist parser.</param>
+        /// <param name="includesPreprocessor">Includes preprocessor.</param>
+        /// <param name="initialDirectoryPathProvider">Initial directory path provider.</param>
+        /// <param name="readerSettings">Reader settings.</param>
+        /// <param name="lexerSettings">Lexer settings.</param>
         public LibPreprocessor(
-            IFileReader fileReader, 
+            IFileReader fileReader,
             ISpiceTokenProvider tokenProvider,
-            ISingleSpiceNetlistParser spiceNetlistParser, 
-            IProcessor includesPreReader,
+            ISingleSpiceNetlistParser spiceNetlistParser,
+            IProcessor includesPreprocessor,
             Func<string> initialDirectoryPathProvider,
             SpiceNetlistReaderSettings readerSettings,
             SpiceLexerSettings lexerSettings)
         {
             ReaderSettings = readerSettings;
             TokenProvider = tokenProvider;
-            IncludesPreprocessor = includesPreReader;
+            IncludesPreprocessor = includesPreprocessor;
             SpiceNetlistParser = spiceNetlistParser;
             FileReader = fileReader;
             InitialDirectoryPathProvider = initialDirectoryPathProvider;
@@ -83,11 +89,44 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             return Process(statements, InitialDirectoryPath);
         }
 
+        private static void ReadSingleLibWithOneArgument(Statements statements, Control lib, List<Statement> allStatements)
+        {
+            var libStatements = allStatements;
+            statements.Replace(lib, libStatements);
+        }
+
+        private static void ReadSingleLibWithTwoArguments(Statements statements, Control lib, List<Statement> allStatements)
+        {
+            // Find lib by entry
+            var libEntry = allStatements.SingleOrDefault(s => s is Control c && c.Name == "lib" && c.Parameters.GetString(0) == lib.Parameters.GetString(1));
+            if (libEntry != null)
+            {
+                // look for .endl
+                int position = allStatements.IndexOf(libEntry);
+                int libPosition = position;
+
+                for (; !(allStatements[position] is Control c && c.Name.ToLower() == "endl") && position < allStatements.Count; position++)
+                {
+                }
+
+                if (position == allStatements.Count)
+                {
+                    throw new Exception("No .ENDL found");
+                }
+                else
+                {
+                    var libStatements = allStatements.Skip(libPosition + 1).Take(position - libPosition);
+                    statements.Replace(lib, libStatements);
+                }
+            }
+        }
+
         /// <summary>
         /// Reads .include statements.
         /// </summary>
         /// <param name="statements">Netlist model to search for .include statements</param>
-        public Statements Process(Statements statements, string currentDirectoryPath)
+        /// <param name="currentDirectoryPath">Current directory path.</param>
+        private Statements Process(Statements statements, string currentDirectoryPath)
         {
             bool libFound = ReadLibs(statements, currentDirectoryPath);
 
@@ -160,7 +199,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                 SpiceNetlistParser.Settings = new SingleSpiceNetlistParserSettings(lexerSettings)
                 {
                     IsNewlineRequired = false,
-                    IsEndRequired = false
+                    IsEndRequired = false,
                 };
 
                 SpiceNetlist includeModel = SpiceNetlistParser.Parse(tokens);
@@ -179,38 +218,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             else
             {
                 throw new InvalidOperationException($"Netlist include at {libFullPath} could not be loaded");
-            }
-        }
-
-        private static void ReadSingleLibWithOneArgument(Statements statements, Control lib, List<Statement> allStatements)
-        {
-            var libStatements = allStatements;
-            statements.Replace(lib, libStatements);
-        }
-
-        private static void ReadSingleLibWithTwoArguments(Statements statements, Control lib, List<Statement> allStatements)
-        {
-            // Find lib by entry
-            var libEntry = allStatements.SingleOrDefault(s => s is Control c && c.Name == "lib" && c.Parameters.GetString(0) == lib.Parameters.GetString(1));
-            if (libEntry != null)
-            {
-                // look for .endl
-                int position = allStatements.IndexOf(libEntry);
-                int libPosition = position;
-
-                for (; !(allStatements[position] is Control c && c.Name.ToLower() == "endl") && position < allStatements.Count; position++)
-                {
-                }
-
-                if (position == allStatements.Count)
-                {
-                    throw new Exception("No .ENDL found");
-                }
-                else
-                {
-                    var libStatements = allStatements.Skip(libPosition + 1).Take(position - libPosition);
-                    statements.Replace(lib, libStatements);
-                }
             }
         }
 

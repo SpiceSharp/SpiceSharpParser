@@ -19,7 +19,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             var export = RunDCSimulation(netlist, "i(V1)");
 
-            // Create reference
+            // Get reference
             double[] references =
             {
                1.00999976741763E-12,

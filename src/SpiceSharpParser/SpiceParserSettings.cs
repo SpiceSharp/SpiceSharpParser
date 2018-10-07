@@ -14,7 +14,7 @@ namespace SpiceSharpParser
         {
             Lexing = new SpiceLexerSettings();
             Parsing = new SingleSpiceNetlistParserSettings(Lexing);
-            Reading = new SpiceNetlistReaderSettings(new SpiceNetlistCaseSensitivitySettings());
+            Reading = new SpiceNetlistReaderSettings(new SpiceNetlistCaseSensitivitySettings(Lexing));
         }
 
         /// <summary>

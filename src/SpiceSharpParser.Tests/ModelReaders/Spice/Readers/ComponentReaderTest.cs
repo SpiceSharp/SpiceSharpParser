@@ -2,13 +2,14 @@ using NSubstitute;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using System;
+using SpiceSharpParser.ModelReaders.Netlist.Spice;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
@@ -28,12 +29,13 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
                Arg.Any<IReadingContext>()).Returns(x => new Resistor((string)x[0]));
 
             var mapper = Substitute.For<IMapper<IComponentGenerator>>();
-            mapper.Contains("r").Returns(true);
-            mapper.Get("r").Returns(generator);
+            mapper.Contains("R", false).Returns(true);
+            mapper.Get("R", false).Returns(generator);
 
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }, true));
             readingContext.ComponentNameGenerator.Returns(new ObjectNameGenerator(string.Empty));
+            readingContext.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
 
             var resultService = Substitute.For<IResultService>();
             readingContext.Result.Returns(resultService);
@@ -44,8 +46,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
             reader.Read(component, readingContext);
 
             // assert
-            generator.Received().Generate("Ra1", "Ra1", "r", Arg.Any<ParameterCollection>(), Arg.Any<IReadingContext>());
-            resultService.Received().AddEntity(Arg.Is<Entity>((Entity e) => e.Name.ToString() == "Ra1"));
+            generator.Received().Generate("Ra1", "Ra1", "R", Arg.Any<ParameterCollection>(), Arg.Any<IReadingContext>());
+            resultService.Received().AddEntity(Arg.Is<Entity>((Entity e) => e.Name== "Ra1"));
         }
     }
 }

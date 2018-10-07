@@ -153,7 +153,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             var exports = RunSimulationsAndReturnExports(result);
 
-            // Create references
+            // Get references
             double[] references = { 1.0, 0.5 };
 
             for (var i = 0; i < exports.Count; i++)
@@ -184,7 +184,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             var exports = RunSimulationsAndReturnExports(result);
 
-            // Create references
+            // Get references
             double[] references = { 1.0, 0.5 };
 
             for (var i = 0; i < exports.Count; i++)
@@ -218,7 +218,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             var exports = RunSimulationsAndReturnExports(result);
 
-            // Create references
+            // Get references
             double[] references = { 1.0, 0.5 };
 
             for (var i = 0; i < exports.Count; i++)

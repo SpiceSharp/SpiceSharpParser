@@ -48,7 +48,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             string paramName = rp.Argument;
             if (context.Result.FindObject(objectName, out Entity @object))
             {
-                context.SimulationsParameters.SetParameter(@object, paramName, paramToSet.Value, simulation, int.MaxValue, StringComparerFactory.Create(context.CaseSensitivity.IsEntityParameterNameCaseSensitive));
+                context.SimulationsParameters.SetParameter(@object, paramName, paramToSet.Value, simulation, int.MaxValue, StringComparerProvider.Get(context.CaseSensitivity.IsEntityParameterNameCaseSensitive));
             }
         }
 
@@ -66,7 +66,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                         paramToSet.Value,
                         simulation,
                         int.MaxValue,
-                        StringComparerFactory.Create(context.CaseSensitivity.IsEntityParameterNameCaseSensitive));
+                        StringComparerProvider.Get(context.CaseSensitivity.IsEntityParameterNameCaseSensitive));
             }
         }
 

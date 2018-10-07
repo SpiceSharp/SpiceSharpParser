@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -49,9 +48,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             return result;
         }
 
-        public static Function CreateOrdinaryExport(Dictionary<string, Readers.Controls.Exporters.Export> exporters,
-            Readers.Controls.Exporters.Exporter exporter, string exportType, INodeNameGenerator nodeNameGenerator,
-            IObjectNameGenerator componentNameGenerator, IObjectNameGenerator modelNameGenerator, IResultService result,
+        public static Function CreateOrdinaryExport(
+            Dictionary<string, Export> exporters,
+            Exporter exporter,
+            string exportType,
+            INodeNameGenerator nodeNameGenerator,
+            IObjectNameGenerator componentNameGenerator, 
+            IObjectNameGenerator modelNameGenerator, 
+            IResultService result,
             SpiceNetlistCaseSensitivitySettings caseSensitivity)
         {
             Function function = new Function();
@@ -66,8 +70,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     return double.NaN;
                 }
 
-                string exporterKey = string.Format("{0}_{1}_{2}", ((Simulation) evaluator.Context).Name, exportType,
-                    string.Join(",", args));
+                string exporterKey = string.Format("{0}_{1}_{2}", ((Simulation)evaluator.Context).Name, exportType, string.Join(",", args));
 
                 if (!exporters.ContainsKey(exporterKey))
                 {
@@ -79,8 +82,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 
                     var parameters = new ParameterCollection();
                     parameters.Add(vectorParameter);
-                    var export = exporter.CreateExport(image, exportType, parameters, (Simulation) evaluator.Context,
-                        nodeNameGenerator, componentNameGenerator, modelNameGenerator, result, caseSensitivity);
+                    var export = exporter.CreateExport(
+                        image,
+                        exportType,
+                        parameters,
+                        (Simulation)evaluator.Context,
+                        nodeNameGenerator,
+                        componentNameGenerator,
+                        modelNameGenerator,
+                        result,
+                        caseSensitivity);
                     exporters[exporterKey] = export;
                 }
 
@@ -97,9 +108,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             return function;
         }
 
-        public static Function CreateAtExport(Dictionary<string, Export> exporters, Exporter exporter,
-            string exportType, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator componentNameGenerator,
-            IObjectNameGenerator modelNameGenerator, IResultService result, SpiceNetlistCaseSensitivitySettings caseSettings)
+        public static Function CreateAtExport(
+            Dictionary<string, Export> exporters,
+            Exporter exporter,
+            string exportType,
+            INodeNameGenerator nodeNameGenerator,
+            IObjectNameGenerator componentNameGenerator,
+            IObjectNameGenerator modelNameGenerator,
+            IResultService result,
+            SpiceNetlistCaseSensitivitySettings caseSettings)
         {
             Function function = new Function();
             function.VirtualParameters = true;
@@ -128,6 +145,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                         modelNameGenerator,
                         result,
                         caseSettings);
+
                     exporters[exporterKey] = export;
                 }
 

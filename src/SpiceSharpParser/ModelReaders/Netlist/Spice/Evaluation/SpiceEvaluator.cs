@@ -13,12 +13,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
     public class SpiceEvaluator : Evaluator
     {
         public SpiceEvaluator()
-            : this(string.Empty, null, SpiceEvaluatorMode.LtSpice, null, new ExpressionRegistry(false, false), false, false)
+            : this(string.Empty, null, new SpiceExpressionParser(true), SpiceEvaluatorMode.Spice3f5, null, new ExpressionRegistry(false, false), false, false)
         {
         }
 
         public SpiceEvaluator(SpiceEvaluatorMode mode)
-            : this(string.Empty, null, mode, null, new ExpressionRegistry(false, false), false, false)
+            : this(string.Empty, null, new SpiceExpressionParser(mode == SpiceEvaluatorMode.LtSpice), mode, null, new ExpressionRegistry(false, false), false, false)
         {
         }
 
@@ -26,7 +26,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         /// Initializes a new instance of the <see cref="SpiceEvaluator"/> class.
         /// </summary>
         public SpiceEvaluator(string name, object context, SpiceEvaluatorMode mode, int? seed, ExpressionRegistry registry, bool isFunctionNameCaseSensitive, bool isParameterNameCaseSensitive)
-            : base(name, context, new SpiceExpressionParser(mode == SpiceEvaluatorMode.LtSpice), registry, seed, isFunctionNameCaseSensitive, isParameterNameCaseSensitive)
+            : this(name, context, new SpiceExpressionParser(mode == SpiceEvaluatorMode.LtSpice), mode, seed, registry, isFunctionNameCaseSensitive, isParameterNameCaseSensitive)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpiceEvaluator"/> class.
+        /// </summary>
+        public SpiceEvaluator(string name, object context, IExpressionParser expressionParser, SpiceEvaluatorMode mode, int? seed, ExpressionRegistry registry, bool isFunctionNameCaseSensitive, bool isParameterNameCaseSensitive)
+            : base(name, context, expressionParser, seed, registry, isFunctionNameCaseSensitive, isParameterNameCaseSensitive)
         {
             Mode = mode;
             CreateSpiceParameters();
@@ -54,6 +62,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             return newEvaluator;
         }
 
+        /// <summary>
+        /// Clones the evaluator.
+        /// </summary>
+        /// <param name="deep">Specifies whether cloning is deep.</param>
+        /// <returns>
+        /// A clone of evaluator.
+        /// </returns>
         public override IEvaluator Clone(bool deep)
         {
             var clone = new SpiceEvaluator(Name, Context, Mode, Seed, Registry.Clone(), IsFunctionNameCaseSensitive, IsParameterNameCaseSensitive);
@@ -63,40 +78,40 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
         private void CreateSpiceFunctions()
         {
-            this.Functions.Add("**", MathFunctions.CreatePowInfix(Mode));
-            this.Functions.Add("abs", MathFunctions.CreateAbs());
-            this.Functions.Add("buf", MathFunctions.CreateBuf());
-            this.Functions.Add("cbrt", MathFunctions.CreateCbrt());
-            this.Functions.Add("ceil", MathFunctions.CreateCeil());
-            this.Functions.Add("db", MathFunctions.CreateDb(Mode));
-            this.Functions.Add("def", ControlFunctions.CreateDef());
-            this.Functions.Add("exp", MathFunctions.CreateExp());
-            this.Functions.Add("fabs", MathFunctions.CreateAbs());
-            this.Functions.Add("flat", RandomFunctions.CreateFlat());
-            this.Functions.Add("floor", MathFunctions.CreateFloor());
-            this.Functions.Add("gauss", RandomFunctions.CreateGauss());
-            this.Functions.Add("hypot", MathFunctions.CreateHypot());
-            this.Functions.Add("if", ControlFunctions.CreateIf());
-            this.Functions.Add("lazy", ControlFunctions.CreateLazy());
-            this.Functions.Add("int", MathFunctions.CreateInt());
-            this.Functions.Add("inv", MathFunctions.CreateInv());
-            this.Functions.Add("ln", MathFunctions.CreateLn());
-            this.Functions.Add("limit", MathFunctions.CreateLimit());
-            this.Functions.Add("log", MathFunctions.CreateLog(Mode));
-            this.Functions.Add("log10", MathFunctions.CreateLog10(Mode));
-            this.Functions.Add("max", MathFunctions.CreateMax());
-            this.Functions.Add("min", MathFunctions.CreateMin());
-            this.Functions.Add("nint", MathFunctions.CreateRound());
-            this.Functions.Add("pow", MathFunctions.CreatePow(Mode));
-            this.Functions.Add("pwr", MathFunctions.CreatePwr(Mode));
-            this.Functions.Add("pwrs", MathFunctions.CreatePwrs());
-            this.Functions.Add("random", RandomFunctions.CreateRandom());
-            this.Functions.Add("round", MathFunctions.CreateRound());
-            this.Functions.Add("sqrt", MathFunctions.CreateSqrt(Mode));
-            this.Functions.Add("sgn", MathFunctions.CreateSgn());
-            this.Functions.Add("table", TableFunction.Create());
-            this.Functions.Add("u", MathFunctions.CreateU());
-            this.Functions.Add("uramp", MathFunctions.CreateURamp());
+            Functions.Add("**", MathFunctions.CreatePowInfix(Mode));
+            Functions.Add("abs", MathFunctions.CreateAbs());
+            Functions.Add("buf", MathFunctions.CreateBuf());
+            Functions.Add("cbrt", MathFunctions.CreateCbrt());
+            Functions.Add("ceil", MathFunctions.CreateCeil());
+            Functions.Add("db", MathFunctions.CreateDb(Mode));
+            Functions.Add("def", ControlFunctions.CreateDef());
+            Functions.Add("exp", MathFunctions.CreateExp());
+            Functions.Add("fabs", MathFunctions.CreateAbs());
+            Functions.Add("flat", RandomFunctions.CreateFlat());
+            Functions.Add("floor", MathFunctions.CreateFloor());
+            Functions.Add("gauss", RandomFunctions.CreateGauss());
+            Functions.Add("hypot", MathFunctions.CreateHypot());
+            Functions.Add("if", ControlFunctions.CreateIf());
+            Functions.Add("lazy", ControlFunctions.CreateLazy());
+            Functions.Add("int", MathFunctions.CreateInt());
+            Functions.Add("inv", MathFunctions.CreateInv());
+            Functions.Add("ln", MathFunctions.CreateLn());
+            Functions.Add("limit", MathFunctions.CreateLimit());
+            Functions.Add("log", MathFunctions.CreateLog(Mode));
+            Functions.Add("log10", MathFunctions.CreateLog10(Mode));
+            Functions.Add("max", MathFunctions.CreateMax());
+            Functions.Add("min", MathFunctions.CreateMin());
+            Functions.Add("nint", MathFunctions.CreateRound());
+            Functions.Add("pow", MathFunctions.CreatePow(Mode));
+            Functions.Add("pwr", MathFunctions.CreatePwr(Mode));
+            Functions.Add("pwrs", MathFunctions.CreatePwrs());
+            Functions.Add("random", RandomFunctions.CreateRandom());
+            Functions.Add("round", MathFunctions.CreateRound());
+            Functions.Add("sqrt", MathFunctions.CreateSqrt(Mode));
+            Functions.Add("sgn", MathFunctions.CreateSgn());
+            Functions.Add("table", TableFunction.Create());
+            Functions.Add("u", MathFunctions.CreateU());
+            Functions.Add("uramp", MathFunctions.CreateURamp());
         }
 
         private void CreateSpiceParameters()

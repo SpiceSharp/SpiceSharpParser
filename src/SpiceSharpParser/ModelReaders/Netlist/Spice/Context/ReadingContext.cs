@@ -199,7 +199,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public void SetParameter(Entity entity, string parameterName, string expression, bool onload = true)
         {
-            IEqualityComparer<string> comparer = StringComparerFactory.Create(CaseSensitivity.IsEntityParameterNameCaseSensitive);
+            IEqualityComparer<string> comparer = StringComparerProvider.Get(CaseSensitivity.IsEntityParameterNameCaseSensitive);
             entity.SetParameter(parameterName, Evaluators.EvaluateDouble(expression), comparer);
             SimulationsParameters.SetParameter(entity, parameterName, expression, 0, onload, comparer);
         }

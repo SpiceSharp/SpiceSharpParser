@@ -1,5 +1,4 @@
-﻿using SpiceSharp;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 
 namespace SpiceSharpParser.Common.Evaluation
@@ -18,5 +17,10 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Gets or sets found parameters in expression.
         /// </summary>
         public Collection<string> FoundParameters { get; set; }
+
+        /// <summary>
+        /// Gets or sets found functions in expression.
+        /// </summary>
+        public Collection<string> FoundFunctions { get; set; }
     }
 }

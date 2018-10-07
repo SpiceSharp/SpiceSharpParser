@@ -26,15 +26,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// Generated types.
         /// </returns>
-        public override IEnumerable<string> GeneratedTypes => new List<string>() { "i", "g", "f" };
+        public override IEnumerable<string> GeneratedTypes => new List<string>() { "I", "G", "F" };
 
-        public override SpiceSharp.Components.Component Generate(string componentIdenfier, string name, string type, ParameterCollection parameters, IReadingContext context)
+        public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
-            switch (type)
+            switch (type.ToLower())
             {
-                case "i": return GenerateCurrentSource(componentIdenfier, parameters, context);
-                case "g": return GenerateVoltageControlledCurrentSource(componentIdenfier, parameters, context);
-                case "f": return GenerateCurrentControlledCurrentSource(componentIdenfier, parameters, context);
+                case "i": return GenerateCurrentSource(componentIdentifier, parameters, context);
+                case "g": return GenerateVoltageControlledCurrentSource(componentIdentifier, parameters, context);
+                case "f": return GenerateCurrentControlledCurrentSource(componentIdentifier, parameters, context);
             }
 
             return null;
@@ -43,9 +43,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <summary>
         /// Generates a new current controlled current source: FName
         /// </summary>
-        /// <param name="name">Name of generated current controlled current source</param>
-        /// <param name="parameters">Parameters for current source</param>
-        /// <param name="context">Reading context</param>
+        /// <param originalName="name">Name of generated current controlled current source</param>
+        /// <param originalName="parameters">Parameters for current source</param>
+        /// <param originalName="context">Reading context</param>
         /// <returns>
         /// A new instance of current controlled current source
         /// </returns>
@@ -83,9 +83,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <summary>
         /// Generates a new voltage controlled current source: GName
         /// </summary>
-        /// <param name="name">Name of generated voltage controlled current source</param>
-        /// <param name="parameters">Parameters for current source</param>
-        /// <param name="context">Reading context</param>
+        /// <param originalName="name">Name of generated voltage controlled current source</param>
+        /// <param originalName="parameters">Parameters for current source</param>
+        /// <param originalName="context">Reading context</param>
         /// <returns>
         /// A new instance of voltage controlled current source
         /// </returns>
@@ -123,9 +123,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <summary>
         /// Generates a new current source.
         /// </summary>
-        /// <param name="name">Name of generated current source.</param>
-        /// <param name="parameters">Parameters for current source.</param>
-        /// <param name="context">Reading context.</param>
+        /// <param originalName="name">Name of generated current source.</param>
+        /// <param originalName="parameters">Parameters for current source.</param>
+        /// <param originalName="context">Reading context.</param>
         /// <returns>
         /// A new instance of current source.
         /// </returns>

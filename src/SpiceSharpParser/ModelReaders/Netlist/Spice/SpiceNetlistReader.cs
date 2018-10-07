@@ -41,12 +41,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 throw new System.ArgumentNullException(nameof(netlist));
             }
 
-            // Create result netlist
+            // Get result netlist
             var result = new SpiceNetlistReaderResult(
-                new Circuit(StringComparerFactory.Create(Settings.CaseSensitivity.IsEntityNameCaseSensitive)),
+                new Circuit(StringComparerProvider.Get(Settings.CaseSensitivity.IsEntityNameCaseSensitive)),
                 netlist.Title);
 
-            // Create reading context
+            // Get reading context
             var resultService = new ResultService(result);
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(new string[] { "0" }, Settings.CaseSensitivity.IsNodeNameCaseSensitive);
             var componentNameGenerator = new ObjectNameGenerator(string.Empty);

@@ -7,7 +7,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
     public class MathFunctions
     {
         /// <summary>
-        /// Create a pow() function.
+        /// Get a pow() function.
         /// </summary>
         /// <param name="mode">Evaluator mode.</param>
         /// <returns>
@@ -56,7 +56,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a pwr() function.
+        /// Get a pwr() function.
         /// </summary>
         /// <param name="mode">Evaluator mode.</param>
         /// <returns>
@@ -92,7 +92,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a pwrs() function.
+        /// Get a pwrs() function.
         /// </summary>
         /// <returns>
         /// A new instance of pwrs function.
@@ -116,7 +116,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a sqrt function.
+        /// Get a sqrt function.
         /// </summary>
         /// <param name="mode">Evaluator mode.</param>
         /// <returns>
@@ -171,7 +171,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a ** function.
+        /// Get a ** function.
         /// </summary>
         /// <param name="mode">Evaluator mode.</param>
         /// <returns>
@@ -232,7 +232,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a min() function.
+        /// Get a min() function.
         /// </summary>
         /// <returns>
         /// A new instance of min function.
@@ -269,7 +269,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a max() function.
+        /// Get a max() function.
         /// </summary>
         /// <returns>
         /// A new instance of min function.
@@ -306,7 +306,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a limit(x, xmin, xmax) function.
+        /// Get a limit(x, xmin, xmax) function.
         /// </summary>
         /// <returns>
         /// A new instance of limit function.
@@ -347,7 +347,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a ln() function.
+        /// Get a ln() function.
         /// </summary>
         /// <returns>
         /// A new instance of ln function.
@@ -375,7 +375,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a log() function.
+        /// Get a log() function.
         /// </summary>
         /// <returns>
         /// A new instance of log function.
@@ -409,7 +409,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a log10() function.
+        /// Get a log10() function.
         /// </summary>
         /// <returns>
         /// A new instance of log10 function.
@@ -443,7 +443,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a cbrt() function.
+        /// Get a cbrt() function.
         /// </summary>
         /// <returns>
         /// A new instance of cbrt function.
@@ -472,7 +472,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a buf() function.
+        /// Get a buf() function.
         /// </summary>
         /// <returns>
         /// A new instance of buf function.
@@ -501,7 +501,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a ceil() function.
+        /// Get a ceil() function.
         /// </summary>
         /// <returns>
         /// A new instance of ceil function.
@@ -529,7 +529,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a abs() function.
+        /// Get a abs() function.
         /// </summary>
         /// <returns>
         /// A new instance of abs function.
@@ -557,7 +557,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a floor() function.
+        /// Get a floor() function.
         /// </summary>
         /// <returns>
         /// A new instance of floor function.
@@ -585,7 +585,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a hypot() function.
+        /// Get a hypot() function.
         /// </summary>
         /// <returns>
         /// A new instance of hypot function.
@@ -615,7 +615,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a int() function.
+        /// Get a int() function.
         /// </summary>
         /// <returns>
         /// A new instance of int function.
@@ -643,7 +643,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a inv() function.
+        /// Get a inv() function.
         /// </summary>
         /// <returns>
         /// A new instance of int function.
@@ -672,7 +672,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a exp() function.
+        /// Get a exp() function.
         /// </summary>
         /// <returns>
         /// A new instance of exp function.
@@ -700,7 +700,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a db() function.
+        /// Get a db() function.
         /// </summary>
         /// <returns>
         /// A new instance of db function.
@@ -734,7 +734,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a round() function.
+        /// Get a round() function.
         /// </summary>
         /// <returns>
         /// A new instance of round function.
@@ -762,7 +762,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a u() function.
+        /// Get a u() function.
         /// </summary>
         /// <returns>
         /// A new instance of u function.
@@ -790,7 +790,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a uramp() function.
+        /// Get a uramp() function.
         /// </summary>
         /// <returns>
         /// A new instance of uramp function.
@@ -818,7 +818,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a sgn() function.
+        /// Get a sgn() function.
         /// </summary>
         /// <returns>
         /// A new instance of sgn function.

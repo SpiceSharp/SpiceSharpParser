@@ -20,17 +20,17 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="seed">Random seed.</param>
         /// <param name="isFunctionNameCaseSensitive">Is function name case-sensitive.</param>
         /// <param name="isParameterNameCaseSensitive">Is parameter name case-sensitive.</param>
-        public Evaluator(string name, object context, IExpressionParser parser, ExpressionRegistry registry, int? seed, bool isFunctionNameCaseSensitive, bool isParameterNameCaseSensitive)
+        public Evaluator(string name, object context, IExpressionParser parser, int? seed, ExpressionRegistry registry, bool isFunctionNameCaseSensitive, bool isParameterNameCaseSensitive)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Context = context;
             ExpressionParser = parser ?? throw new ArgumentNullException(nameof(parser));
-            Registry = registry ?? throw new ArgumentNullException(nameof(registry));
             Seed = seed;
+            Registry = registry ?? throw new ArgumentNullException(nameof(registry));
             IsFunctionNameCaseSensitive = isFunctionNameCaseSensitive;
             IsParameterNameCaseSensitive = isParameterNameCaseSensitive;
-            Parameters = new Dictionary<string, Expression>(StringComparerFactory.Create(isParameterNameCaseSensitive));
-            Functions = new Dictionary<string, Function>(StringComparerFactory.Create(isFunctionNameCaseSensitive));
+            Parameters = new Dictionary<string, Expression>(StringComparerProvider.Get(isParameterNameCaseSensitive));
+            Functions = new Dictionary<string, Function>(StringComparerProvider.Get(isFunctionNameCaseSensitive));
             CreateCommonFunctions();
         }
 
@@ -100,7 +100,7 @@ namespace SpiceSharpParser.Common.Evaluation
 
             var parseResult = ExpressionParser.Parse(
                 expression,
-                new ExpressionParserContext() { Functions = Functions, Parameters = Parameters, Evaluator = this });
+                new ExpressionParserContext() {Functions = Functions, Parameters = Parameters, Evaluator = this});
 
             return parseResult.Value();
         }
@@ -131,21 +131,27 @@ namespace SpiceSharpParser.Common.Evaluation
         }
 
         /// <summary>
-        /// Sets parameters.
+        /// 
         /// </summary>
-        /// <param name="parameters">Parameters to set.</param>
-        public void SetParameters(Dictionary<string, string> parameters)
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        public ICollection<string> GetFunctionsFromExpression(string expression)
         {
-            foreach (var parameter in parameters)
-            {
-                Parameters[parameter.Key] = new CachedExpression(parameter.Value, this);
-                Registry.UpdateParameterDependencies(parameter.Key, GetParametersFromExpression(parameter.Value));
-            }
+            var result = ExpressionParser.Parse(expression, new ExpressionParserContext() { Functions = Functions, Parameters = Parameters, Evaluator = this }, false);
+            return result.FoundFunctions;
+        }
 
-            foreach (var parameter in parameters)
-            {
-                RefreshForParameter(parameter.Key);
-            }
+        /// <summary>
+        /// Gets a value indicating whether an expression has a constant value.
+        /// </summary>
+        /// <param name="expression">An expression.</param>
+        /// <returns>
+        /// A value indicating whether an expression has a constant value.
+        /// </returns>
+        public bool IsConstantExpression(string expression)
+        {
+            var result = ExpressionParser.Parse(expression, new ExpressionParserContext() { Functions = Functions, Parameters = Parameters, Evaluator = this }, false);
+            return result.FoundFunctions.Count == 0 && result.FoundParameters.Count == 0;
         }
 
         /// <summary>
@@ -237,9 +243,22 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public abstract IEvaluator CreateChildEvaluator(string name, object context);
 
+        /// <summary>
+        /// Clones the evaluator.
+        /// </summary>
+        /// <param name="deep">Specifies whether cloning is deep.</param>
+        /// <returns>
+        /// A clone of evaluator.
+        /// </returns>
         public abstract IEvaluator Clone(bool deep);
 
-        public void Initialize(Dictionary<string, Expression> parameters, Dictionary<string, Function> customFunctions, List<IEvaluator> children)
+        /// <summary>
+        /// Initializes the evaluator.
+        /// </summary>
+        /// <param name="parameters">Parameters to use.</param>
+        /// <param name="functions">Functions to use.</param>
+        /// <param name="children">Child evaluator to use.</param>
+        public void Initialize(Dictionary<string, Expression> parameters, Dictionary<string, Function> functions, List<IEvaluator> children)
         {
             foreach (var parameterName in parameters.Keys)
             {
@@ -248,9 +267,9 @@ namespace SpiceSharpParser.Common.Evaluation
                 Parameters[parameterName].Invalidate();
             }
 
-            foreach (var customFunction in customFunctions.Keys)
+            foreach (var customFunction in functions.Keys)
             {
-                Functions[customFunction] = customFunctions[customFunction];
+                Functions[customFunction] = functions[customFunction];
             }
 
             Children.Clear();
@@ -327,16 +346,16 @@ namespace SpiceSharpParser.Common.Evaluation
 
         private void CreateCommonFunctions()
         {
-            this.Functions.Add("acos", MathFunctions.CreateACos());
-            this.Functions.Add("asin", MathFunctions.CreateASin());
-            this.Functions.Add("atan", MathFunctions.CreateATan());
-            this.Functions.Add("atan2", MathFunctions.CreateATan2());
-            this.Functions.Add("cos", MathFunctions.CreateCos());
-            this.Functions.Add("cosh", MathFunctions.CreateCosh());
-            this.Functions.Add("sin", MathFunctions.CreateSin());
-            this.Functions.Add("sinh", MathFunctions.CreateSinh());
-            this.Functions.Add("tan", MathFunctions.CreateTan());
-            this.Functions.Add("tanh", MathFunctions.CreateTanh());
+            Functions.Add("acos", MathFunctions.CreateACos());
+            Functions.Add("asin", MathFunctions.CreateASin());
+            Functions.Add("atan", MathFunctions.CreateATan());
+            Functions.Add("atan2", MathFunctions.CreateATan2());
+            Functions.Add("cos", MathFunctions.CreateCos());
+            Functions.Add("cosh", MathFunctions.CreateCosh());
+            Functions.Add("sin", MathFunctions.CreateSin());
+            Functions.Add("sinh", MathFunctions.CreateSinh());
+            Functions.Add("tan", MathFunctions.CreateTan());
+            Functions.Add("tanh", MathFunctions.CreateTanh());
         }
     }
 }

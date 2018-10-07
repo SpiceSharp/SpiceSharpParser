@@ -4,15 +4,15 @@ namespace SpiceSharpParser.Common.Evaluation
 {
     public class ExpressionParserContext
     {
-        public ExpressionParserContext() 
+        public ExpressionParserContext()
             : this(false, false)
         {
         }
 
         public ExpressionParserContext(bool caseSensitiveParameters, bool caseSensitiveFunctions)
         {
-            Parameters = new Dictionary<string, Expression>(StringComparerFactory.Create(caseSensitiveParameters));
-            Functions = new Dictionary<string, Function>(StringComparerFactory.Create(caseSensitiveFunctions));
+            Parameters = new Dictionary<string, Expression>(StringComparerProvider.Get(caseSensitiveParameters));
+            Functions = new Dictionary<string, Function>(StringComparerProvider.Get(caseSensitiveFunctions));
         }
 
         /// <summary>

@@ -11,18 +11,18 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Initializes a new instance of the <see cref="ExpressionRegistry"/> class.
         /// </summary>
         /// <param name="isParameterNameCaseSensitive">Is parameter name case-sensitive.</param>
-        /// <param name="isExpressionNameCaseSensitive">Is expression name case-sensitivie.</param>
+        /// <param name="isExpressionNameCaseSensitive">Is expression name case-sensitive.</param>
         public ExpressionRegistry(bool isParameterNameCaseSensitive, bool isExpressionNameCaseSensitive)
         {
             IsExpressionNameCaseSensitive = isExpressionNameCaseSensitive;
-            IsParamterNameCaseSensitive = isParameterNameCaseSensitive;
-            NamedExpressions = new Dictionary<string, NamedExpression>(StringComparerFactory.Create(isExpressionNameCaseSensitive));
-            ParametersExpressionsDependencies = new Dictionary<string, List<Expression>>(StringComparerFactory.Create(isParameterNameCaseSensitive));
-            ParametersDependencies = new Dictionary<string, HashSet<string>>(StringComparerFactory.Create(isParameterNameCaseSensitive));
+            IsParameterNameCaseSensitive = isParameterNameCaseSensitive;
+            NamedExpressions = new Dictionary<string, NamedExpression>(StringComparerProvider.Get(isExpressionNameCaseSensitive));
+            ParametersExpressionsDependencies = new Dictionary<string, List<Expression>>(StringComparerProvider.Get(isParameterNameCaseSensitive));
+            ParametersDependencies = new Dictionary<string, HashSet<string>>(StringComparerProvider.Get(isParameterNameCaseSensitive));
             UnnamedExpressions = new List<Expression>();
         }
 
-        public bool IsParamterNameCaseSensitive { get; }
+        public bool IsParameterNameCaseSensitive { get; }
 
         public bool IsExpressionNameCaseSensitive { get; }
 
@@ -78,7 +78,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public HashSet<string> GetExpressionNames()
         {
-            return new HashSet<string>(NamedExpressions.Keys, StringComparerFactory.Create(IsExpressionNameCaseSensitive));
+            return new HashSet<string>(NamedExpressions.Keys, StringComparerProvider.Get(IsExpressionNameCaseSensitive));
         }
 
         /// <summary>
@@ -96,23 +96,6 @@ namespace SpiceSharpParser.Common.Evaluation
             }
 
             return NamedExpressions[expressionName];
-        }
-
-        /// <summary>
-        /// Returns whether expression with given name exits.
-        /// </summary>
-        /// <param name="expressionName">Expression name.</param>
-        /// <returns>
-        /// True if expression exists.
-        /// </returns>
-        public bool HasExpression(string expressionName)
-        {
-            if (expressionName == null)
-            {
-                throw new ArgumentNullException(nameof(expressionName));
-            }
-
-            return NamedExpressions.ContainsKey(expressionName);
         }
 
         /// <summary>
@@ -251,14 +234,14 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public ExpressionRegistry Clone()
         {
-            var result = new ExpressionRegistry(IsParamterNameCaseSensitive, IsExpressionNameCaseSensitive);
+            var result = new ExpressionRegistry(IsParameterNameCaseSensitive, IsExpressionNameCaseSensitive);
 
             foreach (var dep in ParametersDependencies)
             {
                 result.ParametersDependencies[dep.Key] = new HashSet<string>(dep.Value);
             }
 
-            List<Expression> addedExpresions = new List<Expression>();
+            List<Expression> addedExpressions = new List<Expression>();
             foreach (var exprDep in ParametersExpressionsDependencies)
             {
                 foreach (var expr in exprDep.Value)
@@ -274,12 +257,12 @@ namespace SpiceSharpParser.Common.Evaluation
                     if (UnnamedExpressions.Contains(expr))
                     {
                         result.UnnamedExpressions.Add(clone);
-                        addedExpresions.Add(expr);
+                        addedExpressions.Add(expr);
                     }
 
                     if (expr is NamedExpression ne)
                     {
-                        addedExpresions.Add(expr);
+                        addedExpressions.Add(expr);
                         result.NamedExpressions[ne.Name] = ne;
                     }
                 }
@@ -287,7 +270,7 @@ namespace SpiceSharpParser.Common.Evaluation
 
             foreach (var expression in NamedExpressions)
             {
-                if (!addedExpresions.Contains(expression.Value))
+                if (!addedExpressions.Contains(expression.Value))
                 {
                     result.NamedExpressions.Add(expression.Key,  (NamedExpression)expression.Value.Clone());
                 }
@@ -295,7 +278,7 @@ namespace SpiceSharpParser.Common.Evaluation
 
             foreach (var expression in UnnamedExpressions)
             {
-                if (!addedExpresions.Contains(expression))
+                if (!addedExpressions.Contains(expression))
                 {
                     result.UnnamedExpressions.Add(expression.Clone());
                 }

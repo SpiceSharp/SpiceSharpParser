@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
@@ -7,7 +8,6 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Compo
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
@@ -22,54 +22,54 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Exporters = new ExporterMapper();
 
             // Register waveform generators
-            Waveforms.Map("sine", new SineGenerator());
-            Waveforms.Map("pulse", new PulseGenerator());
+            Waveforms.Map("SINE", new SineGenerator());
+            Waveforms.Map("PULSE", new PulseGenerator());
 
             // Register exporters
-            Exporters.Map(new string[] { "v", "vi", "vr", "vm", "vdb", "vph", "vp" }, new VoltageExporter());
-            Exporters.Map(new string[] { "i", "ir", "ii", "im", "idb", "ip" }, new CurrentExporter());
+            Exporters.Map(new string[] { "V", "VI", "VR", "VM", "VDB", "VPH", "VP" }, new VoltageExporter());
+            Exporters.Map(new string[] { "I", "IR", "II", "IM", "IDB", "IP" }, new CurrentExporter());
             Exporters.Map("@", new PropertyExporter());
 
             // Register model generators
-            Models.Map(new string[] { "r", "l", "c", "k" }, new RLCModelGenerator());
-            Models.Map("d", new DiodeModelGenerator());
-            Models.Map(new string[] { "npn", "pnp" }, new BipolarModelGenerator());
-            Models.Map(new string[] { "sw", "cs" }, new SwitchModelGenerator());
-            Models.Map(new string[] { "pmos", "nmos" }, new MosfetModelGenerator());
+            Models.Map(new string[] { "R", "L", "C", "K" }, new RLCModelGenerator());
+            Models.Map("D", new DiodeModelGenerator());
+            Models.Map(new string[] { "NPN", "PNP" }, new BipolarModelGenerator());
+            Models.Map(new string[] { "SW", "CS" }, new SwitchModelGenerator());
+            Models.Map(new string[] { "PMOS", "NMOS" }, new MosfetModelGenerator());
 
             // Register controls
-            Controls.Map("st_r", new StRegisterControl());
-            Controls.Map("step_r", new StepRegisterControl());
-            Controls.Map("param", new ParamControl());
-            Controls.Map("func", new FuncControl());
-            Controls.Map("global", new GlobalControl());
-            Controls.Map("connect", new ConnectControl());
-            Controls.Map("options", new OptionsControl());
-            Controls.Map("temp", new TempControl());
-            Controls.Map("st", new StControl());
-            Controls.Map("step", new StepControl());
-            Controls.Map("mc", new McControl());
-            Controls.Map("tran", new TransientControl());
-            Controls.Map("ac", new ACControl());
-            Controls.Map("dc", new DCControl());
-            Controls.Map("op", new OPControl());
-            Controls.Map("noise", new NoiseControl());
-            Controls.Map("let", new LetControl());
-            Controls.Map("save", new SaveControl(Exporters));
-            Controls.Map("plot", new PlotControl(Exporters));
-            Controls.Map("print", new PrintControl(Exporters));
-            Controls.Map("ic", new ICControl());
-            Controls.Map("nodeset", new NodeSetControl());
+            Controls.Map("ST_R", new StRegisterControl());
+            Controls.Map("STEP_R", new StepRegisterControl());
+            Controls.Map("PARAM", new ParamControl());
+            Controls.Map("FUNC", new FuncControl());
+            Controls.Map("GLOBAL", new GlobalControl());
+            Controls.Map("CONNECT", new ConnectControl());
+            Controls.Map("OPTIONS", new OptionsControl());
+            Controls.Map("TEMP", new TempControl());
+            Controls.Map("ST", new StControl());
+            Controls.Map("STEP", new StepControl());
+            Controls.Map("MC", new McControl());
+            Controls.Map("TRAN", new TransientControl());
+            Controls.Map("AC", new ACControl());
+            Controls.Map("DC", new DCControl());
+            Controls.Map("OP", new OPControl());
+            Controls.Map("NOISE", new NoiseControl());
+            Controls.Map("LET", new LetControl());
+            Controls.Map("SAVE", new SaveControl(Exporters));
+            Controls.Map("PLOT", new PlotControl(Exporters));
+            Controls.Map("PRINT", new PrintControl(Exporters));
+            Controls.Map("IC", new ICControl());
+            Controls.Map("NODESET", new NodeSetControl());
 
             // Register component generators
-            Components.Map(new string[] { "r", "l", "c", "k" }, new RLCGenerator());
-            Components.Map(new string[] { "v", "h", "e" }, new VoltageSourceGenerator());
-            Components.Map(new string[] { "i", "g", "f" }, new CurrentSourceGenerator());
-            Components.Map(new string[] { "s", "w" }, new SwitchGenerator());
-            Components.Map("q", new BipolarJunctionTransistorGenerator());
-            Components.Map("d", new DiodeGenerator());
-            Components.Map("m", new MosfetGenerator());
-            Components.Map("x", new SubCircuitGenerator());
+            Components.Map(new string[] { "R", "L", "C", "K" }, new RLCGenerator());
+            Components.Map(new string[] { "V", "H", "E" }, new VoltageSourceGenerator());
+            Components.Map(new string[] { "I", "G", "F" }, new CurrentSourceGenerator());
+            Components.Map(new string[] { "S", "W" }, new SwitchGenerator());
+            Components.Map("Q", new BipolarJunctionTransistorGenerator());
+            Components.Map("D", new DiodeGenerator());
+            Components.Map("M", new MosfetGenerator());
+            Components.Map("X", new SubCircuitGenerator());
         }
 
         /// <summary>

@@ -15,7 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// Generated types.
         /// </returns>
-        public IEnumerable<string> GeneratedTypes => new List<string>() { "d" };
+        public IEnumerable<string> GeneratedTypes => new List<string>() { "D" };
 
         public SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {

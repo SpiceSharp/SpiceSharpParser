@@ -20,7 +20,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             double export = RunOpSimulation(netlist, "V(OUT)");
 
-            // Create references
+            // Get references
             double[] references = { 1.0 };
 
             EqualsWithTol(new double[] { export }, references);

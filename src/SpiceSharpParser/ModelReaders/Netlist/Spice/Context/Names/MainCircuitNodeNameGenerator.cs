@@ -106,7 +106,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         private void InitGlobals(IEnumerable<string> globals)
         {
-            _globals = new HashSet<string>(StringComparerFactory.Create(IsNodeNameCaseSensitive));
+            _globals = new HashSet<string>(StringComparerProvider.Get(IsNodeNameCaseSensitive));
 
             foreach (var global in globals)
             {

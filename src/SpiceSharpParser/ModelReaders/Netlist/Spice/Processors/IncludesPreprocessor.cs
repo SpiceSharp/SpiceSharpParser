@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
@@ -30,6 +29,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             LexerSettings = lexerSettings;
         }
 
+        /// <summary>
+        /// Gets the lexer settings.
+        /// </summary>
         public SpiceLexerSettings LexerSettings { get; set; }
 
         /// <summary>
@@ -143,6 +145,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
                 // process includes of include netlist
                 includeModel.Statements = Process(includeModel.Statements, Path.GetDirectoryName(includeFullPath));
+                
                 // replace statement by the content of the include
                 statements.Replace(include, includeModel.Statements);
             }

@@ -251,7 +251,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             var exports = RunDCSimulation(netlist, "V(out)");
 
-            // Create references
+            // Get references
             Func<double, double>[] references = { sweep => sweep + 100 };
             EqualsWithTol(exports, references);
         }
@@ -270,7 +270,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             var exports = RunTransientSimulation(netlist, "V(out)");
 
-            // Create references
+            // Get references
             Func<double, double>[] references = { time => (Math.Sin(time * 10e6) * 100) * (Math.Sin(time * 10e6) * 100) };
             EqualsWithTol(exports, references);
         }

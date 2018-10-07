@@ -54,7 +54,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
         private static void SetModelLotModelParameters(IReadingContext context, BaseSimulation sim, Entity baseModel, Entity componentModel, Dictionary<Parameter, Parameter> stochasticLotParameters)
         {
-            var comparer = StringComparerFactory.Create(context.CaseSensitivity.IsEntityParameterNameCaseSensitive);
+            var comparer = StringComparerProvider.Get(context.CaseSensitivity.IsEntityParameterNameCaseSensitive);
             foreach (var stochasticParameter in stochasticLotParameters)
             {
                 var parameter = stochasticParameter.Key;
@@ -77,7 +77,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
         private static void SetModelDevModelParameters(IReadingContext context, BaseSimulation sim, Entity componentModel, System.Collections.Generic.Dictionary<Parameter, Parameter> stochasticDevParameters)
         {
-            var comparer = StringComparerFactory.Create(context.CaseSensitivity.IsEntityParameterNameCaseSensitive);
+            var comparer = StringComparerProvider.Get(context.CaseSensitivity.IsEntityParameterNameCaseSensitive);
             foreach (var stochasticParameter in stochasticDevParameters)
             {
                 var parameter = stochasticParameter.Key;

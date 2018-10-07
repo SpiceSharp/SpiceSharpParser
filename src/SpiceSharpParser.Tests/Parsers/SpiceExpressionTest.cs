@@ -155,7 +155,7 @@ namespace SpiceSharpParser.Tests.Parsers
         {
             // arrange
             var parser = new SpiceExpressionParser();
-            var parameters = new Dictionary<string, Expression>(StringComparerFactory.Create(false));
+            var parameters = new Dictionary<string, Expression>(StringComparerProvider.Get(false));
             parameters["PI"] = new ConstantExpression(Math.PI);
             parameters["e"] = new ConstantExpression(Math.E);
 
@@ -178,7 +178,7 @@ namespace SpiceSharpParser.Tests.Parsers
         {
             // arrange
             var parser = new SpiceExpressionParser();
-            var parameters = new Dictionary<string, Expression>(StringComparerFactory.Create(false));
+            var parameters = new Dictionary<string, Expression>(StringComparerProvider.Get(false));
             parameters["TEMP"] = new ConstantExpression(26);
             // act and assert
             Assert.Equal(2.52e-9, parser.Parse("TEMP == 26 ? 2.52e-9 : 2.24e-9", new ExpressionParserContext() { Parameters = parameters }).Value());

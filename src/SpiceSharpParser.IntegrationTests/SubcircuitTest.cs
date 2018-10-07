@@ -28,7 +28,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             double export = RunOpSimulation(netlist, "V(OUT)");
 
-            // Create references
+            // Get references
             double[] references = { 1.0 };
 
             EqualsWithTol(new double[] { export }, references);
@@ -52,7 +52,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             double export = RunOpSimulation(netlist, "V(OUT)");
 
-            // Create references
+            // Get references
             double[] references = { 1.0 };
 
             EqualsWithTol(new double[] { export }, references);
@@ -76,7 +76,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             double export = RunOpSimulation(netlist, "V(OUT)");
 
-            // Create references
+            // Get references
             double[] references = { 1.0 };
 
             EqualsWithTol(new double[] { export }, references);
@@ -100,7 +100,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             double export = RunOpSimulation(netlist, "V(OUT)");
 
-            // Create references
+            // Get references
             double[] references = { (1.0 / ( 10.0 + 20.0 + 1.0)) * 4.0};
 
             EqualsWithTol(new double[] { export }, references);
@@ -127,7 +127,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             double export = RunOpSimulation(netlist, "V(OUT)");
 
-            // Create references
+            // Get references
             double[] references = { (1.0 / (10.0 + 20.0 + 1.0)) * 4.0 };
 
             EqualsWithTol(new double[] { export }, references);
@@ -154,7 +154,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             double export = RunOpSimulation(netlist, "V(OUT)");
 
-            // Create references
+            // Get references
             double[] references = { (1.0 / (10.0 + 20.0 + 1.0)) * 4.0 };
 
             EqualsWithTol(new double[] { export }, references);
@@ -182,7 +182,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             double export = RunOpSimulation(netlist, "V(OUT)");
 
-            // Create references
+            // Get references
             double[] references = { (1.0 / (10.0 + 20.0 + 1.0)) * 4.0 };
 
             EqualsWithTol(new double[] { export }, references);

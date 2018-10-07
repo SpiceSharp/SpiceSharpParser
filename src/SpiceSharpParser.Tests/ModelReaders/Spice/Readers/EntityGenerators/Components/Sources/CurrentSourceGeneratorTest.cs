@@ -7,12 +7,12 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp.Components;
 using Xunit;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models;
 using SpiceSharp;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Components.Sources
 {

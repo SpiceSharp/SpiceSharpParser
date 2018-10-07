@@ -6,7 +6,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
     public class ControlFunctions
     {
         /// <summary>
-        /// Create a def() function.
+        /// Get a def() function.
         /// </summary>
         /// <returns>
         /// A new instance of def function.
@@ -33,7 +33,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a lazy() function.
+        /// Get a lazy() function.
         /// </summary>
         /// <returns>
         /// A new instance of lazy  function.
@@ -60,7 +60,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a if() function.
+        /// Get a if() function.
         /// </summary>
         /// <returns>
         /// A new instance of if function.

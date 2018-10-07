@@ -94,7 +94,7 @@ namespace SpiceSharpParser.Parsers.Expression
         /// Private variables.
         /// </summary>
         private readonly Stack<Func<double>> outputStack = new Stack<Func<double>>();
-        private readonly Stack<object> virtualParamtersStack = new Stack<object>();
+        private readonly Stack<object> virtualParametersStack = new Stack<object>();
         private readonly Stack<Operator> operatorStack = new Stack<Operator>();
         private readonly StringBuilder sb = new StringBuilder();
         private string input;
@@ -131,6 +131,7 @@ namespace SpiceSharpParser.Parsers.Expression
             }
 
             var foundParameters = new Collection<string>();
+            var foundFunctions = new Collection<string>();
 
             // Initialize for parsing the expression
             int index = 0;
@@ -253,7 +254,7 @@ namespace SpiceSharpParser.Parsers.Expression
                             int endIndex = index;
                             if (index != count)
                             {
-                                virtualParamtersStack
+                                virtualParametersStack
                                     .Push(input.Substring(startIndex + 1, endIndex - startIndex - 1));
                                 index++;
                             }
@@ -371,7 +372,7 @@ namespace SpiceSharpParser.Parsers.Expression
                             {
                                 int startIndex = index;
                                 ParseDouble(expression, ref index);
-                                virtualParamtersStack.Push(expression.Substring(startIndex, index - startIndex));
+                                virtualParametersStack.Push(expression.Substring(startIndex, index - startIndex));
                             }
                             else
                             {
@@ -413,15 +414,16 @@ namespace SpiceSharpParser.Parsers.Expression
                         if (index < count && input[index] == '(')
                         {
                             index++;
-                            var functionId = sb.ToString();
+                            var functionName = sb.ToString();
 
-                            if (context.Functions.ContainsKey(functionId))
+                            if (context.Functions.ContainsKey(functionName))
                             {
-                                operatorStack.Push(CreateOperatorForFunction(functionId, index, context));
+                                foundFunctions.Add(functionName);
+                                operatorStack.Push(CreateOperatorForFunction(functionName, index, context));
                             }
                             else
                             {
-                                throw new FunctionNotFoundException(functionId.ToString());
+                                throw new FunctionNotFoundException(functionName);
                             }
                         }
                         else if (context.Parameters != null)
@@ -437,7 +439,7 @@ namespace SpiceSharpParser.Parsers.Expression
                                     foundParameters.Add(parameterName);
                                 }
 
-                                virtualParamtersStack.Push(parameterName);
+                                virtualParametersStack.Push(parameterName);
                             }
                             else if (context.Parameters.TryGetValue(parameterName, out var parameter))
                             {
@@ -448,7 +450,7 @@ namespace SpiceSharpParser.Parsers.Expression
                             {
                                 if (validateParameters)
                                 {
-                                    throw new UnknownParameterException() { Name = parameterName.ToString() };
+                                    throw new UnknownParameterException() { Name = parameterName };
                                 }
                                 else
                                 {
@@ -498,8 +500,7 @@ namespace SpiceSharpParser.Parsers.Expression
                         int endIndex = index;
                         if (index != count)
                         {
-                            virtualParamtersStack
-                                .Push(input.Substring(startIndex + 1, endIndex - startIndex - 1));
+                            virtualParametersStack.Push(input.Substring(startIndex + 1, endIndex - startIndex - 1));
                             index++;
                             infixPostfix = true;
                         }
@@ -534,7 +535,12 @@ namespace SpiceSharpParser.Parsers.Expression
                 throw new Exception("Invalid expression");
             }
 
-            return new ExpressionParseResult() { Value = outputStack.Pop(), FoundParameters = foundParameters };
+            return new ExpressionParseResult()
+            {
+                Value = outputStack.Pop(),
+                FoundFunctions = foundFunctions,
+                FoundParameters = foundParameters,
+            };
         }
 
         private FunctionOperator CreateOperatorForFunction(string functionName, int startIndex, ExpressionParserContext context)
@@ -571,8 +577,8 @@ namespace SpiceSharpParser.Parsers.Expression
         {
             if (op.VirtualParameters)
             {
-                var argCount = op.ArgumentsCount != -1 ? op.ArgumentsCount : virtualParamtersStack.Count;
-                var args = PopAndReturnElements(virtualParamtersStack, argCount);
+                var argCount = op.ArgumentsCount != -1 ? op.ArgumentsCount : virtualParametersStack.Count;
+                var args = PopAndReturnElements(virtualParametersStack, argCount);
 
                 outputStack.Push(() =>
                 {

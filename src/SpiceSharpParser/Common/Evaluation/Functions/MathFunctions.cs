@@ -5,7 +5,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
     public class MathFunctions
     {
         /// <summary>
-        /// Create a cos() function.
+        /// Get a cos() function.
         /// </summary>
         /// <returns>
         /// A new instance of cos() function.
@@ -28,7 +28,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a sin() function.
+        /// Get a sin() function.
         /// </summary>
         /// <returns>
         /// A new instance of sin() function.
@@ -51,7 +51,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a tan() function.
+        /// Get a tan() function.
         /// </summary>
         /// <returns>
         /// A new instance of tan() function.
@@ -73,7 +73,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a cosh() function.
+        /// Get a cosh() function.
         /// </summary>
         /// <returns>
         /// A new instance of cosh() function.
@@ -95,7 +95,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a sinh() function.
+        /// Get a sinh() function.
         /// </summary>
         /// <returns>
         /// A new instance of sinh() function.
@@ -117,7 +117,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a tanh() function.
+        /// Get a tanh() function.
         /// </summary>
         /// <returns>
         /// A new instance of tanh() function.
@@ -139,7 +139,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a acos() function.
+        /// Get a acos() function.
         /// </summary>
         /// <returns>
         /// A new instance of acos() function.
@@ -161,7 +161,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a asin() function.
+        /// Get a asin() function.
         /// </summary>
         /// <returns>
         /// A new instance of asin() function.
@@ -183,7 +183,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a atan() function.
+        /// Get a atan() function.
         /// </summary>
         /// <returns>
         /// A new instance of atan() function.
@@ -205,7 +205,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a atan() function.
+        /// Get a atan() function.
         /// </summary>
         /// <returns>
         /// A new instance of atan() function.

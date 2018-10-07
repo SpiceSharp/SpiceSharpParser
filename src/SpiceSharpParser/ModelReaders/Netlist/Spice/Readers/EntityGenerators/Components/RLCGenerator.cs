@@ -19,11 +19,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// Generated types.
         /// </returns>
-        public override IEnumerable<string> GeneratedTypes => new List<string> { "r", "l", "c", "k" };
+        public override IEnumerable<string> GeneratedTypes => new List<string> { "R", "L", "C", "K" };
 
         public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
-            switch (type)
+            switch (type.ToLower())
             {
                 case "r": return GenerateRes(componentIdentifier, parameters, context);
                 case "l": return GenerateInd(componentIdentifier, parameters, context);

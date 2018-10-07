@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
@@ -108,19 +107,30 @@ namespace SpiceSharpParser.Common.Evaluation
         IEvaluator FindChildEvaluator(string name);
 
         /// <summary>
-        /// Adds evaluator action.
-        /// </summary>
-        /// <param name="actionName">Action name.</param>
-        /// <param name="expressionString">Expression.</param>
-        /// <param name="expressionAction">Expression action.</param>
-        void AddAction(string actionName, string expressionString, Action<double> expressionAction);
-
-        /// <summary>
         /// Clones the evaluator.
         /// </summary>
+        /// <param name="deep">Specifies whether cloning is deep.</param>
         /// <returns>
         /// A clone of evaluator.
         /// </returns>
         IEvaluator Clone(bool deep);
+
+        /// <summary>
+        /// Gets found functions from expression.
+        /// </summary>
+        /// <param name="expression">Expression.</param>
+        /// <returns>
+        /// A collection of names of functions found in expression.
+        /// </returns>
+        ICollection<string> GetFunctionsFromExpression(string expression);
+
+        /// <summary>
+        /// Gets a value indicating whether expression is constant expression.
+        /// </summary>
+        /// <param name="expression">Expression.</param>
+        /// <returns>
+        /// A value indicating whether expression is constant expression.
+        /// </returns>
+        bool IsConstantExpression(string expression);
     }
 }

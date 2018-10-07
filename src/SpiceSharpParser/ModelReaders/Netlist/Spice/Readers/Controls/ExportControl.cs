@@ -1,8 +1,8 @@
 ﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -31,11 +31,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             if (parameter is BracketParameter bp)
             {
-                string type = bp.Name.ToLower();
+                string type = bp.Name;
 
-                if (Mapper.Contains(type))
+                if (Mapper.Contains(type, caseSettings.IsFunctionNameCaseSensitive))
                 {
-                    return Mapper.Get(type).CreateExport(parameter.Image, type, bp.Parameters, simulation, nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService, caseSettings);
+                    return Mapper
+                        .Get(type, caseSettings.IsFunctionNameCaseSensitive)
+                        .CreateExport(parameter.Image, type, bp.Parameters, simulation, nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService, caseSettings);
                 }
             }
 
@@ -43,13 +45,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 string type = "@";
 
-                if (Mapper.Contains(type))
+                if (Mapper.Contains(type, true))
                 {
                     var parameters = new ParameterCollection();
                     parameters.Add(new WordParameter(rp.Name));
                     parameters.Add(new WordParameter(rp.Argument));
 
-                    return Mapper.Get(type).CreateExport(parameter.Image, type, parameters, simulation, nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService, caseSettings);
+                    return Mapper.Get(type, true).CreateExport(parameter.Image, type, parameters, simulation, nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService, caseSettings);
                 }
             }
 

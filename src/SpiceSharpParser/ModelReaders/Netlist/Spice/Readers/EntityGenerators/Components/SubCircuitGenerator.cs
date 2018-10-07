@@ -29,7 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// Generated types.
         /// </returns>
-        public override IEnumerable<string> GeneratedTypes => new List<string>() { "x" };
+        public override IEnumerable<string> GeneratedTypes => new List<string>() { "X" };
 
         public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
@@ -204,7 +204,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         private Dictionary<string, string> CreateSubcircuitParameters(IEvaluatorsContainer parentContainer, SubCircuit subCiruitDefiniton, List<AssignmentParameter> subcktParameters, SpiceNetlistCaseSensitivitySettings caseSettings)
         {
-            var result = new Dictionary<string, string>(StringComparerFactory.Create(caseSettings.IsParameterNameCaseSensitive));
+            var result = new Dictionary<string, string>(StringComparerProvider.Get(caseSettings.IsParameterNameCaseSensitive));
             foreach (var defaultParameter in subCiruitDefiniton.DefaultParameters)
             {
                 result[defaultParameter.Name] = defaultParameter.Value;

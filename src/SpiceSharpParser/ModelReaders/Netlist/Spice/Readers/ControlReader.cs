@@ -1,6 +1,6 @@
 ﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
@@ -31,15 +31,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
-            string type = statement.Name.ToLower();
+            string type = statement.Name;
 
-            if (!Mapper.Contains(type))
+            if (!Mapper.Contains(type, context.CaseSensitivity.IsDotStatementNameCaseSensitive))
             {
                 context.Result.AddWarning("Unsupported control: " + statement.Name + " at " + statement.LineNumber + " line");
             }
             else
             {
-                Mapper.Get(type).Read(statement, context);
+                var mapper = Mapper.Get(type, context.CaseSensitivity.IsDotStatementNameCaseSensitive);
+                mapper.Read(statement, context);
             }
         }
     }

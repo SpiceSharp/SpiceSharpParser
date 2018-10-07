@@ -6,7 +6,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
     public class RandomFunctions
     {
         /// <summary>
-        /// Create a gauss() function.
+        /// Get a gauss() function.
         /// </summary>
         /// <returns>
         /// A new instance of random gauss function.
@@ -38,7 +38,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a random() function. It generates number between 0.0 and 1.0 (uniform distribution).
+        /// Get a random() function. It generates number between 0.0 and 1.0 (uniform distribution).
         /// </summary>
         /// <returns>
         /// A new instance of random function.
@@ -65,7 +65,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Create a flat() function. It generates number between -x and +x.
+        /// Get a flat() function. It generates number between -x and +x.
         /// </summary>
         /// <returns>
         /// A new instance of random function.

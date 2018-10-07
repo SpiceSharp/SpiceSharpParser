@@ -33,7 +33,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             SubCircuit = currentSubCircuit ?? throw new ArgumentNullException(nameof(currentSubCircuit));
             PinInstanceNames = pinInstanceNames ?? throw new ArgumentNullException(nameof(pinInstanceNames));
 
-            _pinMap = new Dictionary<string, string>(StringComparerFactory.Create(isNodeNameCaseSensitive));
+            _pinMap = new Dictionary<string, string>(StringComparerProvider.Get(isNodeNameCaseSensitive));
             for (var i = 0; i < SubCircuit.Pins.Count; i++)
             {
                 var pinIdentifier = SubCircuit.Pins[i];
@@ -172,7 +172,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         private void InitGlobals(IEnumerable<string> globals)
         {
-            _globals = new HashSet<string>(StringComparerFactory.Create(IsNodeNameCaseSensitive));
+            _globals = new HashSet<string>(StringComparerProvider.Get(IsNodeNameCaseSensitive));
 
             foreach (var global in globals)
             {

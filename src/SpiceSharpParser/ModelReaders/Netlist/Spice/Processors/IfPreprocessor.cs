@@ -31,7 +31,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// </summary>
         public SpiceNetlistCaseSensitivitySettings CaseSettings { get; set; }
 
-        // TODO: please do something about .ToLower() in so many places ....
         public Statements Process(Statements statements)
         {
             if (Evaluators == null)
@@ -109,8 +108,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
         private IEnumerable<Statement> ComputeIfResult(Statements result, int ifIndex, int endIfIndex)
         {
-            var ifControl = result[ifIndex] as Control;
-            var ifCondition = ifControl.Parameters[0] as Models.Netlist.Spice.Objects.Parameters.ExpressionParameter;
+            var ifControl = (Control)result[ifIndex];
+            var ifCondition = (Models.Netlist.Spice.Objects.Parameters.ExpressionParameter)ifControl.Parameters[0];
 
             Control elseControl = null;
             Control elseIfControl = null;

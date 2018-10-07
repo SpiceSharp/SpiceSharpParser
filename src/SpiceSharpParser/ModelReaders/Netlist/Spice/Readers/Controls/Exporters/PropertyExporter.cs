@@ -38,7 +38,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 throw new WrongParameterException("Property exports should have two parameters: name of component and property name");
             }
 
-            var comparer = StringComparerFactory.Create(caseSettings.IsEntityParameterNameCaseSensitive);
+            var comparer = StringComparerProvider.Get(caseSettings.IsEntityParameterNameCaseSensitive);
 
             var entityName = parameters[0].Image;
             if (result != null)

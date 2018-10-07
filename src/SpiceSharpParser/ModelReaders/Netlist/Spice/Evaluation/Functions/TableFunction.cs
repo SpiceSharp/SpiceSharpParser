@@ -7,7 +7,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
     public class TableFunction
     {
         /// <summary>
-        /// Create a table() function.
+        /// Get a table() function.
         /// </summary>
         /// <returns>
         /// A new instance of a function.
@@ -43,7 +43,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new Exception("There is only one point for table interpolation.");
                 }
 
-                // Create point + 1 line parameters for each segment of line
+                // Get point + 1 line parameters for each segment of line
                 LineParameters[] linesParameters = CreateLineParameters(points);
 
                 int index = 0;

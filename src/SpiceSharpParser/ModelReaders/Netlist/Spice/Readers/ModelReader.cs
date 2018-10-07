@@ -1,7 +1,7 @@
 ﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -46,14 +46,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
             {
                 if (statement.Parameters[0] is BracketParameter b)
                 {
-                    var type = b.Name.ToLower();
+                    var type = b.Name;
 
-                    if (!Mapper.Contains(type))
+                    if (!Mapper.Contains(type, context.CaseSensitivity.IsEntityNameCaseSensitive))
                     {
                         throw new GeneralReaderException("Unsupported model type: " + type);
                     }
 
-                    var generator = Mapper.Get(type);
+                    var generator = Mapper.Get(type, context.CaseSensitivity.IsModelTypeCaseSensitive);
 
                     var model = ModelsGenerator.GenerateModel(
                         generator,
@@ -71,14 +71,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                 if (statement.Parameters[0] is SingleParameter single)
                 {
-                    var type = single.Image.ToLower();
+                    var type = single.Image;
 
-                    if (!Mapper.Contains(type))
+                    if (!Mapper.Contains(type, context.CaseSensitivity.IsModelTypeCaseSensitive))
                     {
                         throw new GeneralReaderException("Unsupported model type: " + type);
                     }
 
-                    var generator = Mapper.Get(type);
+                    var generator = Mapper.Get(type, context.CaseSensitivity.IsModelTypeCaseSensitive);
+
                     var model = ModelsGenerator.GenerateModel(
                         generator,
                         context.ModelNameGenerator.Generate(name),
