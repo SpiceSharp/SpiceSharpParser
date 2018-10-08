@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         void AddSimulation(BaseSimulation simulation);
 
-        bool FindObject(string objectName, out Entity @object);
+        bool FindObject(string objectId, out Entity @object);
 
         void AddPrint(Print print);
     }

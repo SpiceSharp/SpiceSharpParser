@@ -16,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <param name="name">Name of export.</param>
         /// <param name="simulation">A simulation</param>
         /// <param name="source">An identifier of source</param>
-        public CurrentRealExport(string name, Simulation simulation, Identifier source)
+        public CurrentRealExport(string name, Simulation simulation, string source)
             : base(simulation)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
@@ -27,7 +27,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <summary>
         /// Gets the main node
         /// </summary>
-        public Identifier Source { get; }
+        public string Source { get; }
 
         /// <summary>
         /// Gets the type name

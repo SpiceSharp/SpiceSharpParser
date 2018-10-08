@@ -1,8 +1,7 @@
-﻿using SpiceSharp;
-using SpiceSharp.Circuits;
+﻿using SpiceSharp.Circuits;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
@@ -27,24 +26,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         public IMapper<IComponentGenerator> Mapper { get; }
 
         /// <summary>
-        /// Reads a component statement and modifies the context
+        /// Reads a component statement and modifies the context.
         /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modifify</param>
+        /// <param name="statement">A statement to process.</param>
+        /// <param name="context">A context to modify.</param>
         public override void Read(Component statement, IReadingContext context)
         {
             string componentName = statement.Name;
-            string componentType = componentName[0].ToString().ToLower();
+            string componentType = componentName[0].ToString();
 
-            if (!Mapper.Contains(componentType))
+            if (!Mapper.Contains(componentType, context.CaseSensitivity.IsEntityNameCaseSensitive))
             {
                 throw new System.Exception("Unsupported component type");
             }
 
-            var generator = Mapper.Get(componentType);
+            var generator = Mapper.Get(componentType, context.CaseSensitivity.IsEntityNameCaseSensitive);
 
             Entity entity = generator.Generate(
-                context.ObjectNameGenerator.Generate(componentName),
+                context.ComponentNameGenerator.Generate(componentName),
                 componentName,
                 componentType,
                 statement.PinsAndParameters,

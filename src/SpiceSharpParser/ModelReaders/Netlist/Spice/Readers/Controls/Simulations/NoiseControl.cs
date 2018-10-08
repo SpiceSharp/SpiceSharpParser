@@ -29,7 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             // Check parameter count
             switch (statement.Parameters.Count)
             {
-                case 0: throw new WrongParametersCountException("Output expected for .NOISE");
+                case 0: throw new WrongParametersCountException("SpiceSharpModel expected for .NOISE");
                 case 1: throw new WrongParametersCountException("Source expected");
                 case 2: throw new WrongParametersCountException("Step type expected");
                 case 3: throw new WrongParametersCountException("Number of points expected");
@@ -69,15 +69,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                         case 1:
                             if (bracket.Parameters[0] is VectorParameter v && v.Elements.Count == 2)
                             {
-                                var output = new StringIdentifier(v.Elements[0].Image);
-                                var reference = new StringIdentifier(v.Elements[1].Image);
-                                var input = new StringIdentifier(statement.Parameters[2].Image);
+                                var output = v.Elements[0].Image;
+                                var reference = v.Elements[1].Image;
+                                var input = statement.Parameters[2].Image;
                                 noise = new Noise(name, output, reference, input, sweep);
                             }
                             else if (bracket.Parameters[0] is SingleParameter s)
                             {
-                                var output = new StringIdentifier(s.Image);
-                                var input = new StringIdentifier(statement.Parameters[1].Image);
+                                var output = s.Image;
+                                var input = statement.Parameters[1].Image;
                                 noise = new Noise(name, output, input, sweep);
                             }
 

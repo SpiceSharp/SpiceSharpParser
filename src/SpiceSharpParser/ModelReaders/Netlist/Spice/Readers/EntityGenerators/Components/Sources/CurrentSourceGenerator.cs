@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SpiceSharp;
-using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
@@ -22,38 +20,32 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
         }
 
-        public override SpiceSharp.Components.Component Generate(Identifier componentIdenfier, string name, string type, ParameterCollection parameters, IReadingContext context)
-        {
-            switch (type)
-            {
-                case "i": return GenerateCurrentSource(componentIdenfier.ToString(), parameters, context);
-                case "g": return GenerateVoltageControlledCurrentSource(componentIdenfier.ToString(), parameters, context);
-                case "f": return GenerateCurrentControlledCurrentSource(componentIdenfier.ToString(), parameters, context);
-            }
-
-            return null;
-        }
-
         /// <summary>
         /// Gets generated types.
         /// </summary>
         /// <returns>
         /// Generated types.
         /// </returns>
-        public override IEnumerable<string> GeneratedTypes
+        public override IEnumerable<string> GeneratedTypes => new List<string>() { "I", "G", "F" };
+
+        public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
-            get
+            switch (type.ToLower())
             {
-                return new List<string>() { "i", "g", "f" };
+                case "i": return GenerateCurrentSource(componentIdentifier, parameters, context);
+                case "g": return GenerateVoltageControlledCurrentSource(componentIdentifier, parameters, context);
+                case "f": return GenerateCurrentControlledCurrentSource(componentIdentifier, parameters, context);
             }
+
+            return null;
         }
 
         /// <summary>
         /// Generates a new current controlled current source: FName
         /// </summary>
-        /// <param name="name">Name of generated current controlled current source</param>
-        /// <param name="parameters">Parameters for current source</param>
-        /// <param name="context">Reading context</param>
+        /// <param originalName="name">Name of generated current controlled current source</param>
+        /// <param originalName="parameters">Parameters for current source</param>
+        /// <param originalName="context">Reading context</param>
         /// <returns>
         /// A new instance of current controlled current source
         /// </returns>
@@ -63,7 +55,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 CurrentControlledCurrentSource cccs = new CurrentControlledCurrentSource(name);
                 context.CreateNodes(cccs, parameters);
-                cccs.ControllingName = new StringIdentifier(parameters.GetString(2));
+                cccs.ControllingName = context.ComponentNameGenerator.Generate(parameters.GetString(2));
                 context.SetParameter(cccs, "gain", parameters.GetString(3));
                 return cccs;
             }
@@ -71,14 +63,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 if (parameters.Count == 3)
                 {
-                    if (!(parameters[2] is AssignmentParameter assigmentParameter) || assigmentParameter.Name.ToLower() != "value")
+                    if (!(parameters[2] is AssignmentParameter assignmentParameter) || assignmentParameter.Name.ToLower() != "value")
                     {
-                        throw new WrongParametersCountException(name, "current controlled current source expects that third parameter is assigment parameter");
+                        throw new WrongParametersCountException(name, "current controlled current source expects that third parameter is assignment parameter");
                     }
 
                     var cs = new CurrentSource(name);
                     context.CreateNodes(cs, parameters);
-                    context.SetParameter(cs, "dc", assigmentParameter.Value);
+                    context.SetParameter(cs, "dc", assignmentParameter.Value);
                     return cs;
                 }
                 else
@@ -91,9 +83,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <summary>
         /// Generates a new voltage controlled current source: GName
         /// </summary>
-        /// <param name="name">Name of generated voltage controlled current source</param>
-        /// <param name="parameters">Parameters for current source</param>
-        /// <param name="context">Reading context</param>
+        /// <param originalName="name">Name of generated voltage controlled current source</param>
+        /// <param originalName="parameters">Parameters for current source</param>
+        /// <param originalName="context">Reading context</param>
         /// <returns>
         /// A new instance of voltage controlled current source
         /// </returns>
@@ -111,14 +103,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 if (parameters.Count == 3)
                 {
-                    if (!(parameters[2] is AssignmentParameter assigmentParameter) || assigmentParameter.Name.ToLower() != "value")
+                    if (!(parameters[2] is AssignmentParameter assignmentParameter) || assignmentParameter.Name.ToLower() != "value")
                     {
-                        throw new WrongParametersCountException(name, "voltage controlled current source expects that third parameter is assigment parameter");
+                        throw new WrongParametersCountException(name, "voltage controlled current source expects that third parameter is assignment parameter");
                     }
 
                     var cs = new CurrentSource(name);
                     context.CreateNodes(cs, parameters);
-                    context.SetParameter(cs, "dc", assigmentParameter.Value);
+                    context.SetParameter(cs, "dc", assignmentParameter.Value);
                     return cs;
                 }
                 else
@@ -129,13 +121,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         }
 
         /// <summary>
-        /// Generates a new current source
+        /// Generates a new current source.
         /// </summary>
-        /// <param name="name">Name of generated current source</param>
-        /// <param name="parameters">Parameters for current source</param>
-        /// <param name="context">Reading context</param>
+        /// <param originalName="name">Name of generated current source.</param>
+        /// <param originalName="parameters">Parameters for current source.</param>
+        /// <param originalName="context">Reading context.</param>
         /// <returns>
-        /// A new instance of current source
+        /// A new instance of current source.
         /// </returns>
         protected SpiceSharp.Components.Component GenerateCurrentSource(string name,  ParameterCollection parameters, IReadingContext context)
         {

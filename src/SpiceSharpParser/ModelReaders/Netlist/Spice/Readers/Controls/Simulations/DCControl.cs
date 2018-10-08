@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
@@ -14,10 +13,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
     public class DCControl : SimulationControl
     {
         /// <summary>
-        /// Reads <see cref="Control"/> statement and modifies the context
+        /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modify</param>
+        /// <param name="statement">A statement to process.</param>
+        /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
             CreateSimulations(statement, context, CreateDCSimulation);
@@ -58,23 +57,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             DC dc = new DC(name, sweeps);
             dc.OnParameterSearch += (sender, e) =>
             {
-                string sweepParameterName = e.Name.ToString();
-                if (context.Evaluators.GetSimulationEvaluator(dc).HasParameter(sweepParameterName))
+                string sweepParameterName = e.Name;
+                if (context.Evaluators.GetSimulationEvaluator(dc).Parameters.ContainsKey(sweepParameterName))
                 {
                     e.TemperatureNeeded = true;
                     e.Result = new EvaluationParameter(context.Evaluators.GetSimulationEvaluator(dc), sweepParameterName);
                 }
             };
 
-            SetBaseConfiguration(dc.BaseConfiguration, context);
-            SetDcParameters(dc.DcConfiguration, context);
+            ConfigureCommonSettings(dc, context);
+            ConfigureDcSettings(dc.Configurations.Get<DCConfiguration>(), context);
 
             context.Result.AddSimulation(dc);
 
             return dc;
         }
 
-        private void SetDcParameters(DcConfiguration dCConfiguration, IReadingContext context)
+        private void ConfigureDcSettings(DCConfiguration dCConfiguration, IReadingContext context)
         {
             if (context.Result.SimulationConfiguration.SweepMaxIterations.HasValue)
             {

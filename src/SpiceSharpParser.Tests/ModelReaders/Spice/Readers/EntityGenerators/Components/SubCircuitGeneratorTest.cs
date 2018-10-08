@@ -6,6 +6,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Compo
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
+using SpiceSharpParser.Common;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Components
@@ -17,7 +18,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         {
             // prepare
             var context = Substitute.For<IReadingContext>();
-            context.CaseSensitivity = new CaseSensitivitySettings();
+            context.CaseSensitivity = new SpiceNetlistCaseSensitivitySettings();
 
             var parameters = new ParameterCollection
             {
@@ -43,7 +44,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 }
             });
             context.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }, true));
-            context.ObjectNameGenerator.Returns(new ObjectNameGenerator(string.Empty));
+            context.ComponentNameGenerator.Returns(new ObjectNameGenerator(string.Empty));
 
             IReadingContext parent = null;
             context.Parent.Returns<IReadingContext>(parent);
@@ -60,7 +61,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
 
             // act
             var generator = new SubCircuitGenerator();
-            generator.Generate(new SpiceSharp.StringIdentifier("x1"), "x1", "x", parameters, context);
+            generator.Generate("x1", "x1", "x", parameters, context);
 
             // assert
             context.StatementsReader.Received().Read(Arg.Is<Component>(c => c.Name == "R1"), Arg.Any<IReadingContext>());

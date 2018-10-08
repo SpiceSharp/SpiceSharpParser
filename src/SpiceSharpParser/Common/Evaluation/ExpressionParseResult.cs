@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 namespace SpiceSharpParser.Common.Evaluation
 {
     /// <summary>
-    /// Result of parsing expression.
+    /// SpiceSharpModel of parsing expression.
     /// </summary>
     public class ExpressionParseResult
     {
@@ -17,5 +17,10 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Gets or sets found parameters in expression.
         /// </summary>
         public Collection<string> FoundParameters { get; set; }
+
+        /// <summary>
+        /// Gets or sets found functions in expression.
+        /// </summary>
+        public Collection<string> FoundFunctions { get; set; }
     }
 }

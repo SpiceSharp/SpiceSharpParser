@@ -6,6 +6,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp.Simulations;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
@@ -38,6 +39,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.Result.Returns(resultService);
             readingContext.ParseDouble(Arg.Any<string>()).Returns(x => double.Parse((string)x[0]));
+            readingContext.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
 
             // act
             var tranControl = new TransientControl();
@@ -77,6 +79,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.Result.Returns(resultService);
             readingContext.ParseDouble(Arg.Any<string>()).Returns(x => double.Parse((string)x[0]));
+            readingContext.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
 
             // act
             var tranControl = new TransientControl();

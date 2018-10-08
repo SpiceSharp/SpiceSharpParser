@@ -1,4 +1,6 @@
-﻿namespace SpiceSharpParser.Lexers.Netlist.Spice
+﻿using System;
+
+namespace SpiceSharpParser.Lexers.Netlist.Spice
 {
     /// <summary>
     /// Extensions for <see cref="SpiceToken"/> class.
@@ -23,15 +25,15 @@
         /// </summary>
         /// <param name="token">A token to check.</param>
         /// <param name="lexem">A given lexem.</param>
-        /// <param name="caseInsensitive">Specified the comparision is case insensitive.</param>
+        /// <param name="caseSensitive">Specified the comparision is case sensitive.</param>
         /// <returns>
         /// True if <paramref name="token"/> has specified lexem.
         /// </returns>
-        public static bool Equal(this SpiceToken token, string lexem, bool caseInsensitive)
+        public static bool Equal(this SpiceToken token, string lexem, bool caseSensitive)
         {
-            if (caseInsensitive)
+            if (!caseSensitive)
             {
-                return token.Lexem.ToLower() == lexem.ToLower();
+                return string.Equals(token.Lexem, lexem, StringComparison.CurrentCultureIgnoreCase);
             }
 
             return token.Lexem == lexem;

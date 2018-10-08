@@ -102,7 +102,7 @@ namespace SpiceSharpParser.IntegrationTests
         {
             var result = ParseNetlist(
                 "Monte Carlo Analysis - OP (power test)",
-                "V1 0 1 100",
+                "V1 0 1 {100 + 100 / 100 - 1 + 5 + 3 + 10 -100}",
                 "R1 1 0 {R}",
                 ".OP",
                 ".PARAM R={abs(gauss(10))*1000}",

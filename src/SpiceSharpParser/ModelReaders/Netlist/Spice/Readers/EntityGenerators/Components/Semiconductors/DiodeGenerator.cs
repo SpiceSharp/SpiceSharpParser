@@ -9,14 +9,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class DiodeGenerator : IComponentGenerator
     {
-        public SpiceSharp.Components.Component Generate(Identifier componentIdenfier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        /// <summary>
+        /// Gets generated types.
+        /// </summary>
+        /// <returns>
+        /// Generated types.
+        /// </returns>
+        public IEnumerable<string> GeneratedTypes => new List<string>() { "D" };
+
+        public SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             if (parameters.Count < 3)
             {
                 throw new System.Exception("Model expected");
             }
 
-            Diode diode = new Diode(componentIdenfier.ToString());
+            Diode diode = new Diode(componentIdentifier);
             context.CreateNodes(diode, parameters);
 
             context.ModelsRegistry.SetModel<DiodeModel>(
@@ -71,20 +79,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             return diode;
-        }
-
-        /// <summary>
-        /// Gets generated types.
-        /// </summary>
-        /// <returns>
-        /// Generated types.
-        /// </returns>
-        public IEnumerable<string> GeneratedTypes
-        {
-            get
-            {
-                return new List<string>() { "d" };
-            }
         }
     }
 }

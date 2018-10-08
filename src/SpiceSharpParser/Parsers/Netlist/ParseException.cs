@@ -10,8 +10,8 @@ namespace SpiceSharpParser.Parsers.Netlist
         /// <summary>
         /// Initializes a new instance of the <see cref="ParseException"/> class.
         /// </summary>
-        /// <param name="message">An exception message</param>
-        /// <param name="lineNumber">A line number of SPICE netlist where exception occurs</param>
+        /// <param name="message">An exception message.</param>
+        /// <param name="lineNumber">A line number of SPICE netlist where exception occurs.</param>
         public ParseException(string message, int lineNumber)
             : base(message)
         {
@@ -24,7 +24,7 @@ namespace SpiceSharpParser.Parsers.Netlist
         public int LineNumber { get; }
 
         /// <summary>
-        /// Gets the string represenation of the exception.
+        /// Gets the string representation of the exception.
         /// </summary>
         /// <returns>
         /// A string representation of the object.

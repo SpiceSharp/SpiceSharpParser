@@ -48,7 +48,7 @@
         /// <param name="lexem">A new value of lexem.</param>
         public void UpdateLexem(string lexem)
         {
-            this.Lexem = lexem;
+            Lexem = lexem;
         }
     }
 }

@@ -59,8 +59,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     throw new WrongParametersCountException(".tran control - Too many parameters for .tran");
             }
 
-            SetBaseConfiguration(tran.BaseConfiguration, context);
-            SetTransientParamters(tran, context, useIc);
+            ConfigureCommonSettings(tran, context);
+            ConfigureTransientSettings(tran, context, useIc);
 
             tran.ExportSimulationData += (object sender, ExportDataEventArgs e) => {
                 context.Evaluators.SetParameter("TIME", e.Time);
@@ -71,19 +71,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             return tran;
         }
 
-        private void SetTransientParamters(Transient tran, IReadingContext context, bool useIc)
+        private void ConfigureTransientSettings(Transient tran, IReadingContext context, bool useIc)
         {
             if (context.Result.SimulationConfiguration.Method != null)
             {
-                tran.ParameterSets.Get<TimeConfiguration>().Method = context.Result.SimulationConfiguration.Method;
+                tran.Configurations.Get<TimeConfiguration>().Method = context.Result.SimulationConfiguration.Method;
             }
 
             if (context.Result.SimulationConfiguration.TranMaxIterations.HasValue)
             {
-                tran.ParameterSets.Get<TimeConfiguration>().TranMaxIterations = context.Result.SimulationConfiguration.TranMaxIterations.Value;
+                tran.Configurations.Get<TimeConfiguration>().TranMaxIterations = context.Result.SimulationConfiguration.TranMaxIterations.Value;
             }
 
-            tran.ParameterSets.Get<TimeConfiguration>().UseIc = useIc;
+            tran.Configurations.Get<TimeConfiguration>().UseIc = useIc;
         }
     }
 }

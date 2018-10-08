@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -10,7 +11,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
     {
         public abstract IEnumerable<string> GeneratedTypes { get; }
 
-        public abstract SpiceSharp.Components.Model Generate(string name, string type, ParameterCollection parameters, IReadingContext context);
+        public abstract SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context);
 
         protected void SetParameters(IReadingContext context, Entity entity, ParameterCollection parameters, bool onload = true)
         {

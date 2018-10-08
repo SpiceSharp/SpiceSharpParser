@@ -9,7 +9,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         {
             EventHandler<LoadStateEventArgs> setState = (object sender, LoadStateEventArgs e) =>
             {
-                if (e.State is RealState rs)
+                if (e.State is BaseSimulationState rs)
                 {
                     rs.NominalTemperature = nominalTemperatureInKelvins;
                 }

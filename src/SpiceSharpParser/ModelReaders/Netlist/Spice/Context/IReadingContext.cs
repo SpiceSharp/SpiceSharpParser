@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
@@ -50,9 +49,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         INodeNameGenerator NodeNameGenerator { get; }
 
         /// <summary>
-        /// Gets the object name generator.
+        /// Gets the component name generator.
         /// </summary>
-        IObjectNameGenerator ObjectNameGenerator { get; }
+        IObjectNameGenerator ComponentNameGenerator { get; }
+
+        /// <summary>
+        /// Gets the model name generator.
+        /// </summary>
+        IObjectNameGenerator ModelNameGenerator { get; }
 
         /// <summary>
         /// Gets the stochastic models registry.
@@ -69,7 +73,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         IWaveformReader WaveformReader { get; set; }
 
-        CaseSensitivitySettings CaseSensitivity { get; set; }
+        /// <summary>
+        /// Gets or sets case-sensitivity settings.
+        /// </summary>
+        SpiceNetlistCaseSensitivitySettings CaseSensitivity { get; set; }
 
         /// <summary>
         /// Parses an expression to double.
@@ -80,8 +87,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </returns>
         double ParseDouble(string expression);
 
+        /// <summary>
+        /// Sets parameter of entity to value of expression.
+        /// </summary>
+        /// <param name="entity">Entity</param>
+        /// <param name="parameterName">Parameter name.</param>
+        /// <param name="expression">Expression.</param>
+        /// <param name="onload">Should be re-evaluated OnBeforeLoad</param>
         void SetParameter(Entity entity, string parameterName, string expression, bool onload = true);
 
+        /// <summary>
+        /// Sets the initial voltage.
+        /// </summary>
+        /// <param name="nodeName">Node name.</param>
+        /// <param name="expression">Node voltage expression.</param>
         void SetICVoltage(string nodeName, string expression);
 
         /// <summary>

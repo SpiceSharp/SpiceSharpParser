@@ -46,7 +46,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var simulations = AllTemperaturesAndSweeps.CreateSimulations(statement, context, simulationWithStochasticModels);
                     AttachMonteCarloDataGathering(context, simulations);
                     result.AddRange(simulations);
-
                 }
             }
 

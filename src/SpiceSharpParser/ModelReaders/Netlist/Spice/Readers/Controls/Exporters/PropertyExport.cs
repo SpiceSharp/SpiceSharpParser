@@ -1,4 +1,5 @@
-﻿using SpiceSharp;
+﻿using System.Collections.Generic;
+using SpiceSharp;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
@@ -15,18 +16,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <param name="simulation">A simulation</param>
         /// <param name="source">A identifier of component</param>
         /// <param name="property">Name of property for export</param>
-        public PropertyExport(string name, Simulation simulation, Identifier source, string property)
+        /// <param name="comparer">Entity property name comparer.</param>
+        public PropertyExport(string name, Simulation simulation, string source, string property, IEqualityComparer<string> comparer)
             : base(simulation)
         {
             Name = name ?? throw new System.NullReferenceException(nameof(name));
             Source = source ?? throw new System.NullReferenceException(nameof(source));
-            ExportRealImpl = new RealPropertyExport(simulation, source, property);
+            ExportRealImpl = new RealPropertyExport(simulation, source, property, comparer);
         }
 
         /// <summary>
         /// Gets the main node
         /// </summary>
-        public Identifier Source { get; }
+        public string Source { get; }
 
         /// <summary>
         /// Gets the type name

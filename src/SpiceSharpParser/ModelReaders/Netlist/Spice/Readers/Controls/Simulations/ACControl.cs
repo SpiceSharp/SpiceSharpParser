@@ -47,13 +47,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     throw new WrongParameterException("LIN, DEC or OCT expected");
             }
 
-            SetBaseConfiguration(ac.BaseConfiguration, context);
-            SetACParameters(ac.FrequencyConfiguration, context);
+            ConfigureCommonSettings(ac, context);
+            ConfigureAcSettings(ac.Configurations.Get<FrequencyConfiguration>(), context);
+
             context.Result.AddSimulation(ac);
             return ac;
         }
 
-        private void SetACParameters(FrequencyConfiguration frequencyConfiguration, IReadingContext context)
+        private void ConfigureAcSettings(FrequencyConfiguration frequencyConfiguration, IReadingContext context)
         {
             if (context.Result.SimulationConfiguration.KeepOpInfo.HasValue)
             {

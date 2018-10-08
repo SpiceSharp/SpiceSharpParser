@@ -11,7 +11,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void ReferenceWithFirstNumber()
         {
             var tokensStr = "@1N914[Is]";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
             Assert.Equal(2, tokens.Length);
         }
@@ -20,7 +20,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void BlockCommentSmartSpiceExtended()
         {
             var tokensStr = "*c1\n#com\n k mxanjsh\n .endl\n.options\n.end\n.end\n~~~/._,m\n+&;;d .\\., .\n $ d .,xznxzc jhad 34 a\r////rr/r/r/\n#endcom\n*c2\n";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.Equal(6, tokens.Length);
@@ -30,7 +30,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void BlockCommentSmartSpiceBasic()
         {
             var tokensStr = "*c1\n#com\n#endcom\n*c2\n";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.Equal(6, tokens.Length);
@@ -40,7 +40,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void BlockCommentSmartSpiceFromStart()
         {
             var tokensStr = "#com\n#endcom\n*c2\n";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.Equal(4, tokens.Length);
@@ -50,7 +50,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void BlockCommentMultipleSmartSpice()
         {
             var tokensStr = "#com\ncontent1\n#endcom\n#com\ncontent2\n#endcom\n*c2\n";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.Equal(5, tokens.Length);
@@ -60,7 +60,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void Reference()
         {
             var tokensStr = "@X1.X1.R1[i]";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.Equal(2, tokens.Length);
@@ -72,7 +72,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void CommaInValue()
         {
             var tokensStr = "R_R25 HD2- 0  0.5 TC=0,0";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.Equal(8, tokens.Length);
@@ -85,7 +85,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void PlusAsName()
         {
             var tokensStr = ".SUBCKT noise_macro_0 + -";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.True(tokens[3].SpiceTokenType == SpiceTokenType.IDENTIFIER);
@@ -98,7 +98,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void CommaInModelTest()
         {
             var tokensStr = ".model 1N914 D(Is= 2.52e-9 Rs= 0.568 N= 1,752 Cjo = 4e-12 M = 0,4 tt = 20e-9)";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
             Assert.Equal(25, tokens.Length);
         }
@@ -107,7 +107,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void IdenfierWithPlus()
         {
             var tokensStr = "CMP2_IN+";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.Equal(2, tokens.Length);
@@ -121,7 +121,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         {
             // lexer can't find matching token for remaining text '}'
             var tokensStr = "T";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = true });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = true });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.Equal(2, tokens.Length);
@@ -134,7 +134,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         {
             // lexer can't find matching token for remaining text '}'
             var tokensStr = "V1 in gnd 10}";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             Assert.Throws<LexerException>(() => lexer.GetTokens(tokensStr).ToArray());
         }
 
@@ -142,7 +142,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void TwoStringTest()
         {
             var tokensStr = "\"ele1\"\"ele2\"";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.Equal(3, tokens.Length);
@@ -156,7 +156,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void StringQuotedTest()
         {
             var tokensStr = "\"ele1\\\"ele2\\\"\"";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
             Assert.Equal(2, tokens.Length);
             Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.DOUBLE_QUOTED_STRING);
@@ -167,7 +167,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void EndAllCapitalTest()
         {
             var tokensStr = ".END";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.Equal(2, tokens.Length);
@@ -179,7 +179,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void EndMixedTest()
         {
             var tokensStr = ".End";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.Equal(2, tokens.Length);
@@ -191,7 +191,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void EndSmallTest()
         {
             var tokensStr = ".end";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.Equal(2, tokens.Length);
@@ -203,7 +203,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void VectorTest()
         {
             var tokensStr = "v(3,0)";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.Equal(7, tokens.Length);
@@ -213,7 +213,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void TitleTest()
         {
             var tokensStr = "Example of title";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = true });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = true });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.Equal(2, tokens.Length);
@@ -226,7 +226,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void SimplesNetlistTest()
         {
             var tokensStr = "a\r\n.end\r\n";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = true });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = true });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.Equal(5, tokens.Length);
@@ -242,7 +242,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void LineContinuationTest()
         {
             var tokensStr = "Example of title\nseq.part1\n+seq.part2\n+seq.part3\n";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = true });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = true });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.Equal(7, tokens.Length);
@@ -252,7 +252,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void LineContinuationCurrentLineTest()
         {
             var tokensStr = "seq.part1\\\nseq.part2\n";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.Equal(4, tokens.Length);
@@ -262,7 +262,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void Value1Text()
         {
             var tokensStr = "1picofarad";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.True(tokens.Length == 2);
@@ -274,7 +274,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void Value2Text()
         {
             var tokensStr = "1pVolt";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.True(tokens.Length == 2);
@@ -286,7 +286,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void Value3Text()
         {
             var tokensStr = "1e-12F";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.True(tokens.Length == 2);
@@ -298,7 +298,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void Value4Text()
         {
             var tokensStr = "123.3k";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.True(tokens.Length == 2);
@@ -310,7 +310,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void Value5Text()
         {
             var tokensStr = "1e-12";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.True(tokens.Length == 2);
@@ -322,7 +322,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void Value6Text()
         {
             var tokensStr = "4.00000E+000";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.True(tokens.Length == 2);
@@ -334,7 +334,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void Value7Text()
         {
             var tokensStr = ".568";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.True(tokens.Length == 2);
@@ -346,7 +346,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void IdentifierTest()
         {
             var tokensStr = "1N914";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.True(tokens.Length == 2);
@@ -358,7 +358,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void CommentPSpiceTest()
         {
             var tokensStr = "V12 ; test";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.True(tokens.Length == 2);
@@ -370,7 +370,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void CommentHSpiceTest()
         {
             var tokensStr = "V12 $ test";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.True(tokens.Length == 2);
@@ -382,7 +382,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void StringWithDollarTest()
         {
             var tokensStr = "V12 \"$ test\"";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.True(tokens.Length == 3);
@@ -395,7 +395,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void StringWithSemicolonTest()
         {
             var tokensStr = "V12 \"; test\"";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
             Assert.True(tokens.Length == 3);
@@ -408,7 +408,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void BracketParameterTest()
         {
             var tokensStr = "1N914(N)";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
             Assert.Equal(5, tokens.Length);
         }
@@ -417,7 +417,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void PercentSimpleTest()
         {
             var tokensStr = "5%";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
             Assert.True(tokens.Length == 2);
             Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.PERCENT);
@@ -428,7 +428,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void PercentDotTest()
         {
             var tokensStr = "5.4%";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
             Assert.True(tokens.Length == 2);
             Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.PERCENT);
@@ -439,7 +439,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         public void PercentCommaTest()
         {
             var tokensStr = "5,4%";
-            SpiceLexer lexer = new SpiceLexer(new SpiceLexerOptions { HasTitle = false });
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
             Assert.True(tokens.Length == 2);
             Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.PERCENT);

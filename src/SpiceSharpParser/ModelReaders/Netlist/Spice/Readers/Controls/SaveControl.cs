@@ -6,9 +6,9 @@ using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -186,7 +186,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             for (var i = 0; i < exports.Count; i++)
             {
                 var series = new Series(exports[i].Simulation.Name.ToString()) { XUnit = "Time (s)", YUnit = exports[i].QuantityUnit };
-                AddTranPointsToSeries(exports[i], context, series);
+                AddTranPointsToSeries(exports[i], series);
 
                 plot.Series.Add(series);
             }
@@ -201,7 +201,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             for (var i = 0; i < exports.Count; i++)
             {
                 var series = new Series(exports[i].Simulation.Name.ToString()) { XUnit = "Freq (s)", YUnit = exports[i].QuantityUnit };
-                AddAcPointsToSeries(exports[i], context, series);
+                AddAcPointsToSeries(exports[i], series);
 
                 plot.Series.Add(series);
             }
@@ -218,7 +218,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             };
         }
 
-        private void AddTranPointsToSeries(Export export, IReadingContext context, Series series)
+        private void AddTranPointsToSeries(Export export, Series series)
         {
             export.Simulation.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
@@ -226,7 +226,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             };
         }
 
-        private void AddAcPointsToSeries(Export export, IReadingContext context, Series series)
+        private void AddAcPointsToSeries(Export export, Series series)
         {
             export.Simulation.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
@@ -241,7 +241,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             // For all simulations add exports for current and voltages
             foreach (var simulation in context.Result.Simulations)
             {
-                var nodes = new List<Identifier>();
+                var nodes = new List<string>();
 
                 foreach (Entity entity in context.Result.Circuit.Objects)
                 {
@@ -261,7 +261,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         }
 
                         // Add current export for component
-                        context.Result.AddExport(Mapper.Get("i").CreateExport("I(" + entity.Name + ")", "i", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator, context.CaseSensitivity.IgnoreCaseForNodes));
+                        context.Result.AddExport(
+                            Mapper
+                            .Get("I", true)
+                            .CreateExport(
+                                "I(" + entity.Name + ")",
+                                "i",
+                                @params,
+                                simulation,
+                                context.NodeNameGenerator,
+                                context.ComponentNameGenerator,
+                                context.ModelNameGenerator,
+                                context.Result,
+                                context.CaseSensitivity));
                     }
                 }
 
@@ -270,16 +282,36 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     var @params = new ParameterCollection();
                     @params.Add(new WordParameter(node.ToString()));
 
-                    context.Result.AddExport(Mapper.Get("v").CreateExport("V(" + node + ")", "v", @params, simulation, context.NodeNameGenerator, context.ObjectNameGenerator, context.CaseSensitivity.IgnoreCaseForNodes));
+                    context.Result.AddExport(
+                        Mapper
+                        .Get("V", true)
+                        .CreateExport(
+                            "V(" + node + ")",
+                            "v",
+                            @params,
+                            simulation,
+                            context.NodeNameGenerator,
+                            context.ComponentNameGenerator,
+                            context.ModelNameGenerator,
+                            context.Result,
+                            context.CaseSensitivity));
                 }
             }
         }
 
-        private void AddCommonExport(IReadingContext context, Type simulationType, Models.Netlist.Spice.Objects.Parameter parameter)
+        private void AddCommonExport(IReadingContext context, Type simulationType, Parameter parameter)
         {
             foreach (var simulation in Filter(context.Result.Simulations, simulationType))
             {
-                context.Result.AddExport(GenerateExport(parameter, simulation, context.NodeNameGenerator, context.ObjectNameGenerator, context.CaseSensitivity.IgnoreCaseForNodes));
+                context.Result.AddExport(
+                    GenerateExport(
+                        parameter,
+                        simulation,
+                        context.NodeNameGenerator,
+                        context.ComponentNameGenerator,
+                        context.ModelNameGenerator,
+                        context.Result,
+                        context.CaseSensitivity));
             }
         }
 
@@ -295,16 +327,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 {
                     var evaluator = context.Evaluators.GetSimulationEvaluator(simulation);
                     var export = new ExpressionExport(
-                            simulation.Name.ToString(),
+                            simulation.Name,
                             expressionName,
                             evaluator.GetExpression(expressionName),
                             evaluator,
                             simulation);
 
-                    export.Extract();
-
                     context.Result.AddExport(export);
                 }
+            }
+            else
+            {
+                throw new Exception("There is no " + expressionName + " expression");
             }
         }
 

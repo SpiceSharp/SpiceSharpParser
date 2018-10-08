@@ -1,15 +1,24 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
     /// <summary>
-    /// Base clas for all exporters.
+    /// Base class for all exporters.
     /// </summary>
     public abstract class Exporter
     {
+        /// <summary>
+        /// Gets created exports.
+        /// </summary>
+        /// <returns>
+        /// A list of created exports.
+        /// </returns>
+        public abstract ICollection<string> CreatedTypes { get; }
+
         /// <summary>
         /// Creates a new export
         /// </summary>
@@ -19,14 +28,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <returns>
         /// A new export.
         /// </returns>
-        public abstract Export CreateExport(string name, string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator objectNameGenerator, bool ignoreCaseForNodes);
-
-        /// <summary>
-        /// Gets supported exports.
-        /// </summary>
-        /// <returns>
-        /// A list of supported exports.
-        /// </returns>
-        public abstract ICollection<string> GetSupportedTypes();
+        public abstract Export CreateExport(string name, string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator componentNameGenerator, IObjectNameGenerator modelNameGenerator, IResultService result, SpiceNetlistCaseSensitivitySettings caseSettings);
     }
 }

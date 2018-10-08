@@ -45,12 +45,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             for (var i = 0; i < productCount; i++)
             {
-                int[] indexes = Numbers.GetSystemNumber(i, system);
+                int[] indexes = NumberSystem.GetValueInSystem(i, system);
 
-                Func<string, Control, IReadingContext, BaseSimulation> modifiedCreateSimulation =
+                Func<string, Control, IReadingContext, BaseSimulation> createSimulationWithSweepParametersFactory =
                     (name, control, modifiedContext) =>
                     {
-                        List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues = GetSweepParameterValues(context, sweeps, system, indexes);
+                        List<KeyValuePair<Parameter, double>> parameterValues = GetSweepParameterValues(context, sweeps, system, indexes);
                         string suffix = GetSimulationNameSuffix(parameterValues);
 
                         var simulation = createSimulation(name + " (" + suffix + ")", control, modifiedContext);
@@ -62,13 +62,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 result.AddRange(AllTemperaturesFactory.CreateSimulations(
                     statement,
                     context,
-                    modifiedCreateSimulation));
+                    createSimulationWithSweepParametersFactory
+                    ));
             }
 
             return result;
         }
 
-        protected string GetSimulationNameSuffix(List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues)
+        protected string GetSimulationNameSuffix(List<KeyValuePair<Parameter, double>> parameterValues)
         {
             string result = string.Empty;
 
@@ -85,16 +86,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             return result;
         }
 
-        protected List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> GetSweepParameterValues(IReadingContext context, List<List<double>> sweeps, int[] system, int[] indexes)
+        protected List<KeyValuePair<Parameter, double>> GetSweepParameterValues(IReadingContext context, List<List<double>> sweeps, int[] system, int[] indexes)
         {
-            List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues = new List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>>();
+            List<KeyValuePair<Parameter, double>> parameterValues = new List<KeyValuePair<Parameter, double>>();
 
             for (var j = 0; j < system.Length; j++)
             {
-                Models.Netlist.Spice.Objects.Parameter parameter = context.Result.SimulationConfiguration.ParameterSweeps[j].Parameter;
+                Parameter parameter = context.Result.SimulationConfiguration.ParameterSweeps[j].Parameter;
 
                 double parameterValue = sweeps[j][indexes[j]];
-                parameterValues.Add(new KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>(parameter, parameterValue));
+                parameterValues.Add(new KeyValuePair<Parameter, double>(parameter, parameterValue));
             }
 
             return parameterValues;
@@ -123,7 +124,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             }
         }
 
-        protected void SetSweepSimulation(IReadingContext context, List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues, BaseSimulation simulation)
+        protected void SetSweepSimulation(IReadingContext context, List<KeyValuePair<Parameter, double>> parameterValues, BaseSimulation simulation)
         {
             ParameterUpdater.Update(simulation, context, parameterValues);
         }

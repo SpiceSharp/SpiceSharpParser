@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SpiceSharp;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -7,17 +8,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 {
     public class BipolarModelGenerator : ModelGenerator
     {
-        public override IEnumerable<string> GeneratedTypes
-        {
-            get
-            {
-                return new List<string>() { "npn", "pnp" };
-            }
-        }
+        public override IEnumerable<string> GeneratedTypes => new List<string>() { "npn", "pnp" };
 
-        public override SpiceSharp.Components.Model Generate(string name, string type, ParameterCollection parameters, IReadingContext context)
+        public override SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context)
         {
-            BipolarJunctionTransistorModel model = new BipolarJunctionTransistorModel(name);
+            BipolarJunctionTransistorModel model = new BipolarJunctionTransistorModel(id);
 
             if (type.ToLower() == "npn")
             {

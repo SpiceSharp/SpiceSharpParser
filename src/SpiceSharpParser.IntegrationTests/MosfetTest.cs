@@ -1,3 +1,4 @@
+using SpiceSharp;
 using SpiceSharp.Components;
 using Xunit;
 

@@ -1,4 +1,5 @@
 using NSubstitute;
+using SpiceSharp;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Evaluation.Expressions;
@@ -12,11 +13,11 @@ namespace SpiceSharpParser.Tests.Common.Evaluation
         [Fact]
         public void AddExpressionWithoutParametersTest()
         {
-            var registry = new ExpressionRegistry();
+            var registry = new ExpressionRegistry(false, false);
             var evaluator = Substitute.For<IEvaluator>();
             evaluator.EvaluateDouble(Arg.Any<string>()).Returns(1);
 
-            registry.Add(new NamedEvaluatorExpression("test", "1", evaluator), new System.Collections.Generic.List<string>());
+            registry.Add(new NamedExpression("test", "1", evaluator), new System.Collections.Generic.List<string>());
 
             Assert.Empty(registry.GetDependentExpressions("test"));
         }
@@ -26,8 +27,8 @@ namespace SpiceSharpParser.Tests.Common.Evaluation
         {
             var evaluator = Substitute.For<IEvaluator>();
             evaluator.EvaluateDouble(Arg.Any<string>()).Returns(1);
-            var registry = new ExpressionRegistry();
-            registry.Add(new EvaluatorExpression("x+1", evaluator), new System.Collections.Generic.List<string>() { "x" });
+            var registry = new ExpressionRegistry(false, false);
+            registry.Add(new Expression("x+1", evaluator), new System.Collections.Generic.List<string>() { "x" });
 
             Assert.Single(registry.GetDependentExpressions("x"));
         }
@@ -38,10 +39,10 @@ namespace SpiceSharpParser.Tests.Common.Evaluation
             var evaluator = Substitute.For<IEvaluator>();
             evaluator.EvaluateDouble(Arg.Any<string>()).Returns(1);
 
-            var registry = new ExpressionRegistry();
-            registry.Add(new EvaluatorExpression("x+1", evaluator), new System.Collections.Generic.List<string>() { "x" });
-            registry.Add(new EvaluatorExpression("y+1", evaluator), new System.Collections.Generic.List<string>() { "y" });
-            registry.Add(new EvaluatorExpression("x+1", evaluator), new System.Collections.Generic.List<string>() { "x" });
+            var registry = new ExpressionRegistry(false, false);
+            registry.Add(new Expression("x+1", evaluator), new System.Collections.Generic.List<string>() { "x" });
+            registry.Add(new Expression("y+1", evaluator), new System.Collections.Generic.List<string>() { "y" });
+            registry.Add(new Expression("x+1", evaluator), new System.Collections.Generic.List<string>() { "x" });
 
             Assert.Single(registry.GetDependentExpressions("y"));
             Assert.Equal(2, registry.GetDependentExpressions("x").Count());
@@ -52,10 +53,10 @@ namespace SpiceSharpParser.Tests.Common.Evaluation
         {
             var evaluator = Substitute.For<IEvaluator>();
             evaluator.EvaluateDouble(Arg.Any<string>()).Returns(1);
-            var registry = new ExpressionRegistry();
-            registry.Add(new EvaluatorExpression("x+y+1", evaluator), new System.Collections.Generic.List<string>() { "x", "y" });
-            registry.Add(new EvaluatorExpression("y+x+1", evaluator), new System.Collections.Generic.List<string>() { "y", "x" });
-            registry.Add(new EvaluatorExpression("x+1", evaluator), new System.Collections.Generic.List<string>() { "x" });
+            var registry = new ExpressionRegistry(false, false);
+            registry.Add(new Expression("x+y+1", evaluator), new System.Collections.Generic.List<string>() { "x", "y" });
+            registry.Add(new Expression("y+x+1", evaluator), new System.Collections.Generic.List<string>() { "y", "x" });
+            registry.Add(new Expression("x+1", evaluator), new System.Collections.Generic.List<string>() { "x" });
 
             Assert.Equal(2, registry.GetDependentExpressions("y").Count());
             Assert.Equal(3, registry.GetDependentExpressions("x").Count());

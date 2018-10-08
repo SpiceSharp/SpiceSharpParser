@@ -43,7 +43,7 @@ namespace SpiceSharpParser.IntegrationTests
         [Fact]
         public void NoEndingExceptionTest()
         {
-            Assert.Throws<Parsers.Netlist.Spice.NoEndKeywordException>(() =>
+            Assert.Throws<Exception>(() =>
                 ParseNetlistToModel(
                     true,
                     true,
