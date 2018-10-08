@@ -1,5 +1,5 @@
 # <img src="https://spicesharp.github.io/SpiceSharp/api/images/logo_full.svg" width="45px" /> Spice#/SpiceSharpParser
-SpiceSharpParser is a .NET library that enables to simulate circuits described by Spice netlist.
+SpiceSharpParser is a .NET library that enables to simulate electronics circuits defined by Spice netlists.
 
 ## Quickstart
 
