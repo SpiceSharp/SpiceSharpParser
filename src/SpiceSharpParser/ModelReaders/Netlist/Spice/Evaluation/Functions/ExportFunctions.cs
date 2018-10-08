@@ -10,6 +10,8 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 {
+    using System.Collections.Concurrent;
+
     public class ExportFunctions
     {
         /// <summary>
@@ -25,7 +27,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             }
 
             var result = new List<KeyValuePair<string, Function>>();
-            var exporters = new Dictionary<string, Export>();
+            var exporters = new ConcurrentDictionary<string, Export>();
 
             foreach (KeyValuePair<string, Exporter> exporter in exporterRegistry)
             {
@@ -49,7 +51,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         public static Function CreateOrdinaryExport(
-            Dictionary<string, Export> exporters,
+            ConcurrentDictionary<string, Export> exporters,
             Exporter exporter,
             string exportType,
             INodeNameGenerator nodeNameGenerator,
@@ -109,7 +111,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         public static Function CreateAtExport(
-            Dictionary<string, Export> exporters,
+            ConcurrentDictionary<string, Export> exporters,
             Exporter exporter,
             string exportType,
             INodeNameGenerator nodeNameGenerator,

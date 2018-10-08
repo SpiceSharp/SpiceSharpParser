@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
+    using System.Collections.Concurrent;
+
     public class SimulationEventArgs: EventArgs
     {
         public BaseSimulation Simulation { get; set; }
@@ -18,6 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         protected Dictionary<Simulation, Dictionary<Entity, Dictionary<string, List<EventHandler<LoadStateEventArgs>>>>> BeforeTemperature = new Dictionary<Simulation, Dictionary<Entity, Dictionary<string, List<EventHandler<LoadStateEventArgs>>>>>();
         protected Dictionary<Simulation, Dictionary<Entity, Dictionary<string, int>>> BeforeLoadsOrder = new Dictionary<Simulation, Dictionary<Entity, Dictionary<string, int>>>();
         protected Dictionary<Simulation, Dictionary<Entity, Dictionary<string, int>>> BeforeTemperatureOrder = new Dictionary<Simulation, Dictionary<Entity, Dictionary<string, int>>>();
+        protected ConcurrentDictionary<string, Parameter<double>> SimulationEntityParametersCache = new ConcurrentDictionary<string, Parameter<double>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SimulationsParameters"/> class.
@@ -249,9 +251,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        private SpiceSharp.Parameter<double> GetEntitySimulationParameter(string paramName, Entity @object, BaseSimulation simulation, IEqualityComparer<string> comparer)
+        private Parameter<double> GetEntitySimulationParameter(string paramName, Entity @object, BaseSimulation simulation, IEqualityComparer<string> comparer)
         {
-            return simulation.EntityParameters[@object.Name].GetParameter<double>(paramName, comparer);
+            string comparerSubKey = comparer != null ? comparer.GetType().ToString() : "null";
+            string key = $"{simulation.Name}_{@object.Name}_{paramName}_{comparerSubKey}";
+
+            if (!SimulationEntityParametersCache.ContainsKey(key))
+            {
+                SimulationEntityParametersCache[key] = simulation.EntityParameters[@object.Name].GetParameter<double>(paramName, comparer);
+            }
+
+            return SimulationEntityParametersCache[key];
         }
 
         private EventHandler<LoadStateEventArgs> CreateUpdateHandler(string paramName, Entity @object, double value, BaseSimulation simulation, IEqualityComparer<string> comparer)
