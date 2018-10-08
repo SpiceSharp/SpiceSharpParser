@@ -28,8 +28,7 @@ simulation.Run(spiceSharpModel.Circuit);
 ### Parsing components:
 RLC, Switches, Voltage and current sources, BJT, Diodes, Mosfets
 
-### Parsed Spice grammar
-<https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Parsers/Netlist/Spice/SpiceGrammarBNF.txt>
+### [Supported Spice grammar](https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Parsers/Netlist/Spice/SpiceGrammarBNF.txt)
 
 ## Build status
 
