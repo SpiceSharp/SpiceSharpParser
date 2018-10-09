@@ -22,7 +22,7 @@ var netlist = string.Join(Environment.NewLine,
 
 var parser = new SpiceParser();
 var parseResult = parser.ParseNetlist(netlist);
-var spiceSharpModel = parsereResult.SpiceSharpModel;
+var spiceSharpModel = parseResult.SpiceSharpModel;
 var simulation = spiceSharpModel.Simulations.Single();
 simulation.Run(spiceSharpModel.Circuit);            
 ```
