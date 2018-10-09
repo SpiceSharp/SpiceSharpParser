@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class LexerOptions
    ">
-    <meta name="generator" content="docfx 2.37.0.0">
+    <meta name="generator" content="docfx 2.39.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -115,19 +115,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerOptions__ctor_System_Boolean_System_Nullable_System_Char__.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerOptions.%23ctor(System.Boolean%2CSystem.Nullable%7BSystem.Char%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerOptions__ctor_System_Boolean_System_Nullable_System_Char__System_Nullable_System_Char__.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerOptions.%23ctor(System.Boolean%2CSystem.Nullable%7BSystem.Char%7D%2CSystem.Nullable%7BSystem.Char%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexers/LexerOptions.cs/#L13">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerOptions.cs/#L14">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerOptions__ctor_" data-uid="SpiceSharpParser.Lexers.LexerOptions.#ctor*"></a>
-  <h4 id="SpiceSharpParser_Lexers_LexerOptions__ctor_System_Boolean_System_Nullable_System_Char__" data-uid="SpiceSharpParser.Lexers.LexerOptions.#ctor(System.Boolean,System.Nullable{System.Char})">LexerOptions(Boolean, Nullable&lt;Char&gt;)</h4>
+  <h4 id="SpiceSharpParser_Lexers_LexerOptions__ctor_System_Boolean_System_Nullable_System_Char__System_Nullable_System_Char__" data-uid="SpiceSharpParser.Lexers.LexerOptions.#ctor(System.Boolean,System.Nullable{System.Char},System.Nullable{System.Char})">LexerOptions(Boolean, Nullable&lt;Char&gt;, Nullable&lt;Char&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="SpiceSharpParser.Lexers.LexerOptions.html">LexerOptions</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public LexerOptions(bool multipleLineTokens, char? lineContinuationCharacter)</code></pre>
+    <pre><code class="lang-csharp hljs">public LexerOptions(bool multipleLineTokens, char? nextLineContinuationCharacter, char? currentLineContinuationCharacter)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -142,13 +142,19 @@
       <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">multipleLineTokens</span></td>
-        <td><p>Allows multiline tokens</p>
+        <td><p>Allows multiline tokens.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Char</span>&gt;</td>
-        <td><span class="parametername">lineContinuationCharacter</span></td>
-        <td><p>Line continuation character</p>
+        <td><span class="parametername">nextLineContinuationCharacter</span></td>
+        <td><p>Line continuation character (next line).</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Char</span>&gt;</td>
+        <td><span class="parametername">currentLineContinuationCharacter</span></td>
+        <td><p>Line continuation character (current line).</p>
 </td>
       </tr>
     </tbody>
@@ -157,19 +163,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerOptions_LineContinuationCharacter.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerOptions.LineContinuationCharacter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerOptions_CurrentLineContinuationCharacter.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerOptions.CurrentLineContinuationCharacter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexers/LexerOptions.cs/#L35">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerOptions.cs/#L45">View Source</a>
   </span>
-  <a id="SpiceSharpParser_Lexers_LexerOptions_LineContinuationCharacter_" data-uid="SpiceSharpParser.Lexers.LexerOptions.LineContinuationCharacter*"></a>
-  <h4 id="SpiceSharpParser_Lexers_LexerOptions_LineContinuationCharacter" data-uid="SpiceSharpParser.Lexers.LexerOptions.LineContinuationCharacter">LineContinuationCharacter</h4>
-  <div class="markdown level1 summary"><p>Gets the character that makes next line to be part of current line.</p>
+  <a id="SpiceSharpParser_Lexers_LexerOptions_CurrentLineContinuationCharacter_" data-uid="SpiceSharpParser.Lexers.LexerOptions.CurrentLineContinuationCharacter*"></a>
+  <h4 id="SpiceSharpParser_Lexers_LexerOptions_CurrentLineContinuationCharacter" data-uid="SpiceSharpParser.Lexers.LexerOptions.CurrentLineContinuationCharacter">CurrentLineContinuationCharacter</h4>
+  <div class="markdown level1 summary"><p>Gets the character that makes next line to be part of current line ((character is at last position on current line).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public char? LineContinuationCharacter { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public char? CurrentLineContinuationCharacter { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -186,15 +192,15 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="SpiceSharpParser_Lexers_LexerOptions_LineContinuationCharacter_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>In Spice netlist this is '+' character.</p>
+  <h5 id="SpiceSharpParser_Lexers_LexerOptions_CurrentLineContinuationCharacter_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>For example: '&amp;apos; character.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerOptions_MultipleLineTokens.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerOptions.MultipleLineTokens%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerOptions_MultipleLineTokens.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerOptions.MultipleLineTokens%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexers/LexerOptions.cs/#L27">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerOptions.cs/#L29">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerOptions_MultipleLineTokens_" data-uid="SpiceSharpParser.Lexers.LexerOptions.MultipleLineTokens*"></a>
   <h4 id="SpiceSharpParser_Lexers_LexerOptions_MultipleLineTokens" data-uid="SpiceSharpParser.Lexers.LexerOptions.MultipleLineTokens">MultipleLineTokens</h4>
@@ -220,6 +226,40 @@
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerOptions_NextLineContinuationCharacter.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerOptions.NextLineContinuationCharacter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerOptions.cs/#L37">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Lexers_LexerOptions_NextLineContinuationCharacter_" data-uid="SpiceSharpParser.Lexers.LexerOptions.NextLineContinuationCharacter*"></a>
+  <h4 id="SpiceSharpParser_Lexers_LexerOptions_NextLineContinuationCharacter" data-uid="SpiceSharpParser.Lexers.LexerOptions.NextLineContinuationCharacter">NextLineContinuationCharacter</h4>
+  <div class="markdown level1 summary"><p>Gets the character that makes next line to be part of current line (character is at first position on second line).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public char? NextLineContinuationCharacter { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Char</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="SpiceSharpParser_Lexers_LexerOptions_NextLineContinuationCharacter_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>In Spice netlist this is '+' character.</p>
+</div>
 </article>
           </div>
           
@@ -228,10 +268,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerOptions.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerOptions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerOptions.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerOptions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexers/LexerOptions.cs/#L6" class="contribution-link">View Source</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerOptions.cs/#L6" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

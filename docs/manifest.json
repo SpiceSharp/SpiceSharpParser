@@ -1,15 +1,15 @@
 {
   "homepages": [],
-  "source_base_path": "C:/dev/git/SpiceSharp-Parser/src/docs",
+  "source_base_path": "C:/Users/marcin/Documents/SpiceSharpParser_private/src/docs",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.CustomFunction.yml",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.EvaluatedArgs.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.CustomFunction.html",
-          "hash": "yz5pAN6gP6tRiCTe2hedTw=="
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.EvaluatedArgs.html",
+          "hash": "1oqbbbyla+7e2z9fuyMflw=="
         }
       },
       "is_incremental": true,
@@ -17,11 +17,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.CachedExpression.yml",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.EvaluationParameter.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Evaluation.CachedExpression.html",
-          "hash": "+zo9pHJYmiBj0nmV7CGXpA=="
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.EvaluationParameter.html",
+          "hash": "t1OZltCdq0rm53WNApO+Tw=="
         }
       },
       "is_incremental": true,
@@ -33,7 +33,19 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.Evaluator.html",
-          "hash": "nV/au6Tq4wgfm+GhLFN4jg=="
+          "hash": "NkNWH5zTyIKWauqC4kfPaA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.Expression.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.Expression.html",
+          "hash": "VZrIwRTty6RyPGGeuP8ttg=="
         }
       },
       "is_incremental": true,
@@ -45,7 +57,19 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.ExpressionParseResult.html",
-          "hash": "VKwHKeqoFIRkTPAK9dVT/w=="
+          "hash": "ee0jXdUfMPspLIP9z8Iulw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.ExpressionParserContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.ExpressionParserContext.html",
+          "hash": "7y3hC9EZbgcHUwpS4Ch0cg=="
         }
       },
       "is_incremental": true,
@@ -57,7 +81,127 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.ExpressionRegistry.html",
-          "hash": "TjSz/hfzCz+cr+2vuYhGQw=="
+          "hash": "DZrwwHsADpmfFqsHUnx1LA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.Expressions.CachedExpression.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.Expressions.CachedExpression.html",
+          "hash": "bL7dAgNOKJ+9g7hJiOmq3A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.Expressions.ConstantExpression.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.Expressions.ConstantExpression.html",
+          "hash": "8M4tzfHXD/VRD3nQ40NYxA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.Expressions.NamedExpression.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.Expressions.NamedExpression.html",
+          "hash": "Y4T0L4NtunaB0OFg4ipXSg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.Expressions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.Expressions.html",
+          "hash": "9xcoZj8VNYd/siIAx3NC3Q=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.Function.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.Function.html",
+          "hash": "Oq66LfEaAiYgIaLvNfF6NA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.FunctionFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.FunctionFactory.html",
+          "hash": "rEI85sOWR5s2H0wfQ3c+iw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.html",
+          "hash": "bAZIpbue1aNVsowUCorvMA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.html",
+          "hash": "bb+1N3HZO+VbraAhTQ5fIA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.IEvaluator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.IEvaluator.html",
+          "hash": "LHbSrKvI1hKHIFafoGTxjA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.IEvaluatorConsumer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.IEvaluatorConsumer.html",
+          "hash": "VtnD8gb1TCsstBFPRHs2rQ=="
         }
       },
       "is_incremental": true,
@@ -69,7 +213,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.IExpressionParser.html",
-          "hash": "ESr1g4YLm93u8457NEyegA=="
+          "hash": "CHQI8A1yi4PSE7UFzz5CVw=="
         }
       },
       "is_incremental": true,
@@ -77,11 +221,23 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.NamedExpression.yml",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.IFunctionFactory.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Evaluation.NamedExpression.html",
-          "hash": "fOAXLXiH4F2sRdB/m5nkMg=="
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.IFunctionFactory.html",
+          "hash": "vsdPtTZyaBY7Qt+MilgQMQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.Randomizer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.Randomizer.html",
+          "hash": "OgnY8M7m6EuFA9gejBV6Nw=="
         }
       },
       "is_incremental": true,
@@ -93,7 +249,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.UnknownParameterException.html",
-          "hash": "KWvJE2sxWsRhZ46gpfFPEA=="
+          "hash": "NaMPsM51shFyYG150gX7Dg=="
         }
       },
       "is_incremental": true,
@@ -105,7 +261,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.html",
-          "hash": "J0ucffngqBwwrzdYKmjqow=="
+          "hash": "w2nbZgHHrSbWRiDjf3rlcQ=="
         }
       },
       "is_incremental": true,
@@ -113,11 +269,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.EvaluationParameter.yml",
+      "source_relative_path": "api/SpiceSharpParser.Common.FileSystem.CsvFileWriter.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.EvaluationParameter.html",
-          "hash": "WgkEt4Gt6296KXaYl3baKA=="
+          "relative_path": "api/SpiceSharpParser.Common.FileSystem.CsvFileWriter.html",
+          "hash": "SeA8M5vesbuPgtNKmFIcMg=="
         }
       },
       "is_incremental": true,
@@ -125,11 +281,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.EvaluatorExpression.yml",
+      "source_relative_path": "api/SpiceSharpParser.Common.FileSystem.FileReader.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.EvaluatorExpression.html",
-          "hash": "MJvbMKZ5DifBveL5f3R6Aw=="
+          "relative_path": "api/SpiceSharpParser.Common.FileSystem.FileReader.html",
+          "hash": "j+IBG9foYyKNFvT5lCLWeQ=="
         }
       },
       "is_incremental": true,
@@ -137,11 +293,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.FileReader.yml",
+      "source_relative_path": "api/SpiceSharpParser.Common.FileSystem.IFileReader.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.FileReader.html",
-          "hash": "uN6Kfm6V8oLQZi5+eBYTZQ=="
+          "relative_path": "api/SpiceSharpParser.Common.FileSystem.IFileReader.html",
+          "hash": "mS6jPymyn4f/wmxW27xuHQ=="
         }
       },
       "is_incremental": true,
@@ -149,11 +305,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.IEvaluator.yml",
+      "source_relative_path": "api/SpiceSharpParser.Common.FileSystem.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.IEvaluator.html",
-          "hash": "dXDmT8LvAc5Oneo4swbP2w=="
+          "relative_path": "api/SpiceSharpParser.Common.FileSystem.html",
+          "hash": "Pnx4mFaa5J62IzmRQDvQKQ=="
         }
       },
       "is_incremental": true,
@@ -161,11 +317,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.IFileReader.yml",
+      "source_relative_path": "api/SpiceSharpParser.Common.NumberSystem.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.IFileReader.html",
-          "hash": "Yb0kyb6jwxtB+KEwuJNspQ=="
+          "relative_path": "api/SpiceSharpParser.Common.NumberSystem.html",
+          "hash": "W4vfegXV4mqlb1Ox9dEOgg=="
         }
       },
       "is_incremental": true,
@@ -173,11 +329,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Numbers.yml",
+      "source_relative_path": "api/SpiceSharpParser.Common.StringComparerProvider.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Numbers.html",
-          "hash": "aQ0VIVrkT66DJHuMFsyKPg=="
+          "relative_path": "api/SpiceSharpParser.Common.StringComparerProvider.html",
+          "hash": "ng4wzzbK2jt9zpkzv4GbCQ=="
         }
       },
       "is_incremental": true,
@@ -185,11 +341,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Writers.CsvWriter.yml",
+      "source_relative_path": "api/SpiceSharpParser.Common.StringComparers.CaseInsensitiveComparer.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Writers.CsvWriter.html",
-          "hash": "xaNyOlstpXBljFdzDWM7JQ=="
+          "relative_path": "api/SpiceSharpParser.Common.StringComparers.CaseInsensitiveComparer.html",
+          "hash": "lEgEkbNnmOS4TLfmGFci6g=="
         }
       },
       "is_incremental": true,
@@ -197,11 +353,23 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Writers.yml",
+      "source_relative_path": "api/SpiceSharpParser.Common.StringComparers.CaseSensitiveComparer.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Writers.html",
-          "hash": "YawvINhttBFVGEg4l+hr/A=="
+          "relative_path": "api/SpiceSharpParser.Common.StringComparers.CaseSensitiveComparer.html",
+          "hash": "3ey5jzqEymUvpAlLlR5N+w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Common.StringComparers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Common.StringComparers.html",
+          "hash": "aqA8uVLh+8ceXmydCn6Xew=="
         }
       },
       "is_incremental": true,
@@ -213,19 +381,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.html",
-          "hash": "G9rvafpMXRpcVrNCzJhBbw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ISpiceNetlistParser.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ISpiceNetlistParser.html",
-          "hash": "HJJkPO+WTVK1UehFyyyBig=="
+          "hash": "hE57XbiVo9oIFlIk87Q08w=="
         }
       },
       "is_incremental": true,
@@ -237,7 +393,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.Lexer-1.html",
-          "hash": "vP8Km5TW00ur4LNjrr0ipA=="
+          "hash": "Ygmc2jfC3rJ413jA+fTZfQ=="
         }
       },
       "is_incremental": true,
@@ -249,7 +405,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.LexerException.html",
-          "hash": "0eihpHHEPzUhofyoTU3WYQ=="
+          "hash": "roW4JYi7Nqtj6ABvR9ex0Q=="
         }
       },
       "is_incremental": true,
@@ -261,7 +417,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.LexerGrammar-1.html",
-          "hash": "ztgRggCZRi61T0o5VfdYJA=="
+          "hash": "PYLfqL0XgnTe5WoU1tJ3fA=="
         }
       },
       "is_incremental": true,
@@ -273,7 +429,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.LexerGrammarBuilder-1.html",
-          "hash": "xqZ8rIpfjVzQAGeWsmCXqQ=="
+          "hash": "iRGFzrL574sM/Ms77L8sug=="
         }
       },
       "is_incremental": true,
@@ -285,7 +441,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.LexerInternalRule.html",
-          "hash": "RZZYiIRBvZigBdvs0dCsWQ=="
+          "hash": "cl8cpGzQyEPRs7UyCZZzXw=="
         }
       },
       "is_incremental": true,
@@ -297,7 +453,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.LexerOptions.html",
-          "hash": "KU0kAkK6hBVknAmR3Caysw=="
+          "hash": "mFZ/Er7KUvlceCLi+Ewy2A=="
         }
       },
       "is_incremental": true,
@@ -309,7 +465,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.LexerRule.html",
-          "hash": "f8tfJSStSmv1n30rVn0McA=="
+          "hash": "0Ick8rAmWssiSeolbZoz/Q=="
         }
       },
       "is_incremental": true,
@@ -317,11 +473,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Lexers.LexerRuleResult.yml",
+      "source_relative_path": "api/SpiceSharpParser.Lexers.LexerRuleReturnDecision.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Lexers.LexerRuleResult.html",
-          "hash": "6r484tvXYGiLc2wxNADxrg=="
+          "relative_path": "api/SpiceSharpParser.Lexers.LexerRuleReturnDecision.html",
+          "hash": "BjYjbsKs2J1/XxQfqkBeQQ=="
         }
       },
       "is_incremental": true,
@@ -329,11 +485,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Lexers.LexerRuleUseState.yml",
+      "source_relative_path": "api/SpiceSharpParser.Lexers.LexerRuleUseDecision.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Lexers.LexerRuleUseState.html",
-          "hash": "lC5fsxfoMOV1ZEreaBgF8g=="
+          "relative_path": "api/SpiceSharpParser.Lexers.LexerRuleUseDecision.html",
+          "hash": "bqyuq3C8l6d6xAiLYgGc6Q=="
         }
       },
       "is_incremental": true,
@@ -345,7 +501,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.LexerState.html",
-          "hash": "J2+9i9RAKuisFpr7jMVvew=="
+          "hash": "1MZ0boSt3JgHyZo965dEnw=="
         }
       },
       "is_incremental": true,
@@ -357,7 +513,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.LexerStringReader.html",
-          "hash": "URZgG5bFvCDQI1Sn+rdLQw=="
+          "hash": "7SAxTlPDUKMCq7egXQX+4g=="
         }
       },
       "is_incremental": true,
@@ -369,7 +525,19 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.LexerTokenRule-1.html",
-          "hash": "5DHl6iS1yeutOZkLFPosxA=="
+          "hash": "Glj9qzeQw5p8owrH3EdOIw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProvider.html",
+          "hash": "4F17q5kGa7EWuwBPp+cBVw=="
         }
       },
       "is_incremental": true,
@@ -381,7 +549,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexer.html",
-          "hash": "T6ROUOcDCKNEdd6wT9I2tA=="
+          "hash": "VfA5R2RyeN8p6VmfDkQUSQ=="
         }
       },
       "is_incremental": true,
@@ -389,11 +557,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerOptions.yml",
+      "source_relative_path": "api/SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerOptions.html",
-          "hash": "60ZFUVh9spWsfzu0DmWPsw=="
+          "relative_path": "api/SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings.html",
+          "hash": "VKd3SX+8jU/Yw6bMdOAluA=="
         }
       },
       "is_incremental": true,
@@ -405,7 +573,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerState.html",
-          "hash": "lD7VEbk2gHJYqyuAeB4fhQ=="
+          "hash": "/Aa7IPYqAh88CGRTCS1PXw=="
         }
       },
       "is_incremental": true,
@@ -417,7 +585,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken.html",
-          "hash": "0PHG3A6M5UK7345KmdCTYw=="
+          "hash": "AtiFrMmrmufSfjGZnssC+w=="
         }
       },
       "is_incremental": true,
@@ -429,7 +597,19 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenExtensions.html",
-          "hash": "VO17NE9CsoceYZ89s1DA8A=="
+          "hash": "7fBhehi+7ZUBQVBEi4d3BQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenProvider.html",
+          "hash": "OI5P/U9MSDkVK8eJP9T0iA=="
         }
       },
       "is_incremental": true,
@@ -441,7 +621,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.html",
-          "hash": "/Pm9tGVf4tA48gfetM8zdw=="
+          "hash": "QHuB6tCDbvEkuPm7OWIORg=="
         }
       },
       "is_incremental": true,
@@ -453,19 +633,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.Netlist.Spice.html",
-          "hash": "T0v38QwW3zrKGDTaJjmdBA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Lexers.SpecialTokenType.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.Lexers.SpecialTokenType.html",
-          "hash": "5Wb43OOyjJxUcf+GdX6RPg=="
+          "hash": "IhMp1ka7jhVfVW8RIQl6og=="
         }
       },
       "is_incremental": true,
@@ -477,7 +645,19 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.Token.html",
-          "hash": "2PeM3hlb6JFelMjmRIEIMQ=="
+          "hash": "OvkjeOa+UsbGOqgJ3zl6cA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Lexers.TokenType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Lexers.TokenType.html",
+          "hash": "KzFIpQEDo9hioOaFwTaxfA=="
         }
       },
       "is_incremental": true,
@@ -489,7 +669,67 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.html",
-          "hash": "LV71fkqzWp2QLyjCgh6pBA=="
+          "hash": "/kFE5j2dUq/FtUc7XLUxUw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.EvaluatorsContainer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.EvaluatorsContainer.html",
+          "hash": "HS1bBk3D/URK57Rk4EDsMg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IEvaluatorsContainer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IEvaluatorsContainer.html",
+          "hash": "tTIpKh8rGjuIEEEGCVbWIA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IModelsRegistry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IModelsRegistry.html",
+          "hash": "WBVQ3pYwKo010ZrNJinO5w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INodeNameGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INodeNameGenerator.html",
+          "hash": "dZ2al10bl+Yj4l4Eo+C0cQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IObjectNameGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IObjectNameGenerator.html",
+          "hash": "SgnC9PjJsfCAJaZJKSQK3g=="
         }
       },
       "is_incremental": true,
@@ -501,7 +741,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IParameterSweepUpdater.html",
-          "hash": "7cTzoUoqdV++8Z+D2Ka+HQ=="
+          "hash": "YKyMQw0ddEOMR300l0WDaQ=="
         }
       },
       "is_incremental": true,
@@ -509,11 +749,107 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ISimulationContexts.yml",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IReadingContext.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ISimulationContexts.html",
-          "hash": "zFG5i3gsNN83C+qFkJr3NA=="
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IReadingContext.html",
+          "hash": "ZeZZFp7lyBbctftY4A+lVw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService.html",
+          "hash": "10Mt7TU9yKgOuO+azK/UGQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ISimulationsParameters.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ISimulationsParameters.html",
+          "hash": "LTlqAw6bMYZBNZJbnM6kYw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IStochasticModelsRegistry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IStochasticModelsRegistry.html",
+          "hash": "70xbmUnZK+WIr+UuZdvvIA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ListSweep.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ListSweep.html",
+          "hash": "T3bpcDPPHcyZSPyZfVg1Dg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.MainCircuitNodeNameGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.MainCircuitNodeNameGenerator.html",
+          "hash": "D7KX+xzhCW/KpzIvoETJNA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.MonteCarloConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.MonteCarloConfiguration.html",
+          "hash": "idvJ99MEM4RSYKxWHk14hA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ObjectNameGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ObjectNameGenerator.html",
+          "hash": "LFbnjgS/TMY1KXLRDg0VNA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ParameterSweep.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ParameterSweep.html",
+          "hash": "WwpQG9ymk/HbJA5prUmpbQ=="
         }
       },
       "is_incremental": true,
@@ -525,7 +861,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ParameterSweepUpdater.html",
-          "hash": "7MRggDUSxh2thd8Uh4rTmQ=="
+          "hash": "R+zmlwFDbHePZw4CS4QCJg=="
         }
       },
       "is_incremental": true,
@@ -533,11 +869,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationContext.yml",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ReadingContext.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationContext.html",
-          "hash": "XoHzPw0I0LwxwdofHSIorA=="
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ReadingContext.html",
+          "hash": "jBb2pZfBCqR21lRwTz633w=="
         }
       },
       "is_incremental": true,
@@ -545,11 +881,71 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationContexts.yml",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ResultService.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationContexts.html",
-          "hash": "x2mH1uDgbayhkG8MJvHoOw=="
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ResultService.html",
+          "hash": "/rq1pFPlP1FHlaHlNcHjVA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationConfiguration.html",
+          "hash": "6G/SumKQ4/uPinS+K2c6pg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEventArgs.html",
+          "hash": "n4H4F2jtT+TP6Ol/u00WKQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationsParameters.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationsParameters.html",
+          "hash": "/GMORr/fs1JIeLn4iz5ILQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.StochasticModelsRegistry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.StochasticModelsRegistry.html",
+          "hash": "8e4j9XTupEXh4AwNbpUMmg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SubcircuitNodeNameGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SubcircuitNodeNameGenerator.html",
+          "hash": "N9KUYAknc5D9Lw5d3FhZGw=="
         }
       },
       "is_incremental": true,
@@ -561,7 +957,955 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.html",
-          "hash": "AxPXeDn8h9A8A3e10/U0Aw=="
+          "hash": "CZbCfGN6upOHh2FKfyFoFQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.ControlFunctions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.ControlFunctions.html",
+          "hash": "e+vog5HhUt3Nj5c7/yac3A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.ExportFunctions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.ExportFunctions.html",
+          "hash": "y4vOqr8yChIDxMMCiwlYIg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.LineParameters.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.LineParameters.html",
+          "hash": "CM1vmFg7d5sZhtYPWfEWkA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.MathFunctions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.MathFunctions.html",
+          "hash": "6pPeW42BWknoeLi/55b3vw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.html",
+          "hash": "+mBUXiI6yBD2TogR4en3aw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.TableFunction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.TableFunction.html",
+          "hash": "KT5GVKZEJMJ4XUuH7HRv7g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.html",
+          "hash": "peyueOQ+xGiBU5WcRVlX8w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluator.html",
+          "hash": "OPupAdlrI3ilQ6zj5kw/FA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluatorMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluatorMode.html",
+          "hash": "73+/R/BSMsMDcH5ZxRJAmA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.html",
+          "hash": "0/lmY8ZubQfNvgzEey1LVA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.GeneralReaderException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.GeneralReaderException.html",
+          "hash": "QtxykMEi1R2bGbys2AGmmA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.ModelNotFoundException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.ModelNotFoundException.html",
+          "hash": "eteF/9jmmtCR1zC7uNU6bA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.WrongParameterException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.WrongParameterException.html",
+          "hash": "PEbhDLJCQ8m/c99xRLB+fQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.WrongParameterTypeException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.WrongParameterTypeException.html",
+          "hash": "ZUcR408+YAzx+yBVE+aAXQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.WrongParametersCountException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.WrongParametersCountException.html",
+          "hash": "WFu0x8VX9KgYK83KJfaWbg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.html",
+          "hash": "KthTp24fJlMFMhWlydFT5A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceObjectMappings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceObjectMappings.html",
+          "hash": "auOr402Gav+tdbzYnqPz5g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsOrderer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsOrderer.html",
+          "hash": "BhakW4LRn/mRsWMctD/KpQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsReader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsReader.html",
+          "hash": "kElr/OllHHPIvas5YlLGzg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper-1.html",
+          "hash": "AJRsQq6DvcNWxdSP4E0dmw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ControlMapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ControlMapper.html",
+          "hash": "Jt7w0st7Q8dhDk47l7/cvA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.EntityGeneratorMapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.EntityGeneratorMapper.html",
+          "hash": "A3n8pMVdrplVimJ8CY3oGQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ExporterMapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ExporterMapper.html",
+          "hash": "bVNZIFef6EyuAD5skRDSNA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper-1.html",
+          "hash": "xV0wgnuPjn/LcU+zeg/PZg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ModelGeneratorMapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ModelGeneratorMapper.html",
+          "hash": "N6VtaIskdqE9vVm3aMF9Pg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.WaveformMapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.WaveformMapper.html",
+          "hash": "SKC/5YH0wxV4flccuzWlMQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.html",
+          "hash": "grczjnBG6ipGUf0BuC5kCA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.AppendModelPreprocessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.AppendModelPreprocessor.html",
+          "hash": "MeVtgWCNjoNpDwwIWyk5sQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.html",
+          "hash": "2Lfd8J48T3o9ZyToZp5D9w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.html",
+          "hash": "ivQqkvyWpkRRXQoBcNSA3Q=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.html",
+          "hash": "vaJJvYPRTe4f4OTetP6cKQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.LibPreprocessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.LibPreprocessor.html",
+          "hash": "ch3HAKiiwsrUPMNYaaF4xQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.SweepsPreprocessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.SweepsPreprocessor.html",
+          "hash": "WG1owi/iPo8AYF6cC27kJw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.html",
+          "hash": "VP85lLGxI4UXnCj7mWJXKw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.CommentReader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.CommentReader.html",
+          "hash": "OSTz5aKtTvIy4e1+JOj3hA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ComponentReader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ComponentReader.html",
+          "hash": "xgS6kGUDx6Buk7UGLYLePA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ControlReader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ControlReader.html",
+          "hash": "j2Pr9f7LjYUylWzSJ3v4Ig=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.BaseControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.BaseControl.html",
+          "hash": "l1hrHBrLCTDAbcN7h4fODA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.ConnectControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.ConnectControl.html",
+          "hash": "xeAnBNPV17X9JdSE0xT7GA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.ExportControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.ExportControl.html",
+          "hash": "wi/C+LpqUTwhJcxoRI512Q=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExporter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExporter.html",
+          "hash": "iX9UATIJSyW8GMKsGamAmw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentDecibelExport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentDecibelExport.html",
+          "hash": "OBNOlHn6J1hX8kIXJ0PzaQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentExport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentExport.html",
+          "hash": "nhXs2HP6+/k4ChwKImm1Ug=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentImaginaryExport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentImaginaryExport.html",
+          "hash": "lVaiLmm0SHrvzMbRysahrw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentMagnitudeExport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentMagnitudeExport.html",
+          "hash": "Wd1C7leL+5lxI7ADM3QRkg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentPhaseExport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentPhaseExport.html",
+          "hash": "D4ctAWGKrrzUIAtqUa1ANA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentRealExport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentRealExport.html",
+          "hash": "wfINsPTCFEoIbE/VNFsdEg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.html",
+          "hash": "HQggCbdVt8qqRF5N3YqI3w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.html",
+          "hash": "NlTFVRO6BDfM15LGXbNbaw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter.html",
+          "hash": "tetnQECvSA8Jr3SBr644IA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.html",
+          "hash": "gjhZBusOJCqCzsHfjDt/kA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.PropertyExport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.PropertyExport.html",
+          "hash": "PGeY+Gz2DV59Te/05MRoKg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.PropertyExporter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.PropertyExporter.html",
+          "hash": "hmL6kHSDnj+cvBD6A1Y63g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExporter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExporter.html",
+          "hash": "lmj0uYfh5rYzRGREdvcldw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageDecibelExport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageDecibelExport.html",
+          "hash": "drOYjVXOjctb9hcnjFTQdA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageExport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageExport.html",
+          "hash": "afRQ2XUnXnlLJ+dTE4UXaQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageImaginaryExport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageImaginaryExport.html",
+          "hash": "bMw7rA0eReEmDx6NjmXK9Q=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageMagnitudeExport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageMagnitudeExport.html",
+          "hash": "4xgheSAo7zdfycWJKHlDsg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltagePhaseExport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltagePhaseExport.html",
+          "hash": "wSuapzrS6LLE9QSGXYL1aw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageRealExport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageRealExport.html",
+          "hash": "khJQhzDk737xW4FsTmyzHg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.html",
+          "hash": "Q2uRP+OwFqQUJ9o5VQR7ZQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.html",
+          "hash": "EF4mm+twdpJCEWRbDXc9ew=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.FuncControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.FuncControl.html",
+          "hash": "YQAVJXLtcskSykiUE8sSGQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.GlobalControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.GlobalControl.html",
+          "hash": "wH2eAbz6Cf8KxV04saYpAw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.ICControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.ICControl.html",
+          "hash": "MTiCRLKKkLNpe5TM46tEwQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.LetControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.LetControl.html",
+          "hash": "EzVNtHq61IfPCFOb728DqA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.McControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.McControl.html",
+          "hash": "rJL0zc8+WI2MK0jkf/XK1g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.NodeSetControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.NodeSetControl.html",
+          "hash": "QyS7VKXf8viRX2yBkz8UVw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.OptionsControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.OptionsControl.html",
+          "hash": "VHH0MpuP3YIBK2vEiAt7QQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.ParamControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.ParamControl.html",
+          "hash": "PPiF0TQKoZGqc9cehZF5oA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.PlotControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.PlotControl.html",
+          "hash": "wJwknXv024O/+Ua1NL281w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.Bin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.Bin.html",
+          "hash": "iaXg2Rnq4U3cglw0SaKqgg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.HistogramPlot.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.HistogramPlot.html",
+          "hash": "qlK4U4Wc+KlByZyFkFMwow=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.Point.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.Point.html",
+          "hash": "aQnbzB/McmA9A34lh6i9QQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.Series.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.Series.html",
+          "hash": "jW9HJX2OPfFoh6Sr0NP99g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.XyPlot.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.XyPlot.html",
+          "hash": "pIaVwwKIHg90I3dVdF9U3A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.html",
+          "hash": "DG7PI2UHjTHMZ8oxyLPTiw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.PrintControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.PrintControl.html",
+          "hash": "IzPYaUsY6Ng1hJ4ktJtmyg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints.Print.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints.Print.html",
+          "hash": "vcGcBZcT+doSwLvhAH10WQ=="
         }
       },
       "is_incremental": true,
@@ -573,7 +1917,19 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints.PrintCsvWriter.html",
-          "hash": "l13S3Ozmk06l1It1nW4C4Q=="
+          "hash": "47Mu84V4QCqLl64s43SNEw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints.Row.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints.Row.html",
+          "hash": "zVNJdGK3VntiAXMTUm6Uhw=="
         }
       },
       "is_incremental": true,
@@ -585,7 +1941,43 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints.html",
-          "hash": "e+YqhlBe8BYgNWQrPpMjQw=="
+          "hash": "BXVqgJQf8xpnb5QlDSXGow=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.SaveControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.SaveControl.html",
+          "hash": "6OJKNUe/1CIDs7aZdVBFrw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ACControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ACControl.html",
+          "hash": "zdmSLVpwemsSjC4vXvpUZQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.DCControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.DCControl.html",
+          "hash": "evAMzA86/R3/s5Nh4OfMfw=="
         }
       },
       "is_incremental": true,
@@ -597,7 +1989,19 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator.html",
-          "hash": "aBlRNEgDqm6eOiya5+o2tw=="
+          "hash": "S9TyrstRkif1kQVcHdWqvg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CreateSimulationWithStochasticModelsDecorator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CreateSimulationWithStochasticModelsDecorator.html",
+          "hash": "oAL6ls1O23AUb9F/7ny2mg=="
         }
       },
       "is_incremental": true,
@@ -609,7 +2013,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.NominalTemperatureSimulationDecorator.html",
-          "hash": "uncWRl0tWUhbIKXfRgCkPg=="
+          "hash": "KC4VUMpI4eGBN3p86vI8hA=="
         }
       },
       "is_incremental": true,
@@ -621,7 +2025,823 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.html",
-          "hash": "0T6N2VUgIWRTae4ropC9Fg=="
+          "hash": "wMfIq5upZcmkPIxTE6gaNw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.html",
+          "hash": "vFz2jcaUVjCSQKvtqH8Dng=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllTemperaturesFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllTemperaturesFactory.html",
+          "hash": "TPtiB1yLl006kmyIUS09cA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForMonteCarloFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForMonteCarloFactory.html",
+          "hash": "6vifId6jkGMNtb+0JhJIvA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory.html",
+          "hash": "w0s70n3zX2C9ct+gkLY0cA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllTemperaturesFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllTemperaturesFactory.html",
+          "hash": "5tivRY76eMv8Nex4IcwFNA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForMonteCarloFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForMonteCarloFactory.html",
+          "hash": "hpfOElLyjSejjjbqYE/uzQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.html",
+          "hash": "xqSNxvUiblpuqS1oomniFA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.MonteCarloResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.MonteCarloResult.html",
+          "hash": "R1um87jK8sgQD7LZ/YhEMg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.html",
+          "hash": "Us73CHLRsSkWE/7IdyqgXA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.OPControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.OPControl.html",
+          "hash": "JG7eoXURl5lbMBppaXNiQw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.html",
+          "hash": "Ka25MafqU48EOcocPe0A6w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.TransientControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.TransientControl.html",
+          "hash": "DEsEqHOiwk8J7yvnVNUsvw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.html",
+          "hash": "fQxzRlUjRborIO4Zmz4zEA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.StControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.StControl.html",
+          "hash": "UevSqBN/aQJ2jN2wH8dkVA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.StRegisterControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.StRegisterControl.html",
+          "hash": "6+snUAcxGutYZqurT0Z2ug=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.StepControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.StepControl.html",
+          "hash": "ZEJXGVGaX/xlUB5MiH5P1Q=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.StepRegisterControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.StepRegisterControl.html",
+          "hash": "26MGoomaEujNhX94ptuLdA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.TempControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.TempControl.html",
+          "hash": "mC3nWtuIPPkbto9tIxfTvw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.html",
+          "hash": "LqAGTzrhtnJmroIcaNmSdw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.html",
+          "hash": "C8niboVjQDisOOYPr0x9Ow=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.RLCGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.RLCGenerator.html",
+          "hash": "HG8/Z/y9LOxMaWYzNoByUg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.BipolarJunctionTransistorGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.BipolarJunctionTransistorGenerator.html",
+          "hash": "3D6b9cFfPlvLTix7ZxfCiA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.DiodeGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.DiodeGenerator.html",
+          "hash": "TBU287QJ3LXyLszmHy0uqQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.MosfetGenerator.MosfetDetails.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.MosfetGenerator.MosfetDetails.html",
+          "hash": "F1KwlZxr1UfwvADsNhSHLg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.MosfetGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.MosfetGenerator.html",
+          "hash": "5oj3Dni5YvY+3+L9JaOL4A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.html",
+          "hash": "dLLKQPmSPkRqzJuen6k3YQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.CurrentSourceGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.CurrentSourceGenerator.html",
+          "hash": "HIIGM83eH2w+J5DMbNVaWw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.html",
+          "hash": "nWIP8EjPkp2Z1Fu4EhSsHQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.html",
+          "hash": "z0OppOmcpNshEaSqPpe9Wg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.html",
+          "hash": "c+iSLu7yGdzvCWKmtpd3zQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SwitchGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SwitchGenerator.html",
+          "hash": "OY6O0XKkdM3yK+4FvLFXtw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.html",
+          "hash": "eeSRApsM4RtyLk9CnIIruw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IComponentGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IComponentGenerator.html",
+          "hash": "npvvoOrqeWSYn9eVehZ7Sw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator.html",
+          "hash": "oEEW3bo4192vLQqIMKzPfg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelsGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelsGenerator.html",
+          "hash": "V0IVGT/V8SRymzB0l5hv1w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.BipolarModelGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.BipolarModelGenerator.html",
+          "hash": "rzPNQukHCSlVozYG+86NaQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.DiodeModelGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.DiodeModelGenerator.html",
+          "hash": "yea4ygHpZMthQXXg9hhxTw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.ModelGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.ModelGenerator.html",
+          "hash": "yAHWCjVb3wjYyYoArRzgxQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.MosfetModelGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.MosfetModelGenerator.html",
+          "hash": "AJQoN+r90fcp3qheMH5fWA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.RLCModelGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.RLCModelGenerator.html",
+          "hash": "/yOp7/IQVK1M7ij4EfCq/g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.SwitchModelGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.SwitchModelGenerator.html",
+          "hash": "YPOLEwjSWuytN2hHCu02EQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.html",
+          "hash": "O4i8xLtSt4c5brs1v7s2Rw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.StochasticModelsGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.StochasticModelsGenerator.html",
+          "hash": "sksVsaTjtvH3PRxPeTvtAA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.html",
+          "hash": "S/8Abqmnb2t3cH6ezM105A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ICommentReader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ICommentReader.html",
+          "hash": "c0fAWODhYGGTr1ENju6i9A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IComponentReader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IComponentReader.html",
+          "hash": "zPVh44fHVejBbDFsRDKPQg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IControlReader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IControlReader.html",
+          "hash": "WG6Zlz3/kuMljCyswXFzqQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IModelReader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IModelReader.html",
+          "hash": "zKP6L8QljpoVtCu96Mbsaw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IStatementReader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IStatementReader.html",
+          "hash": "0pgnzbEH7g24RdotJECplQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ISubcircuitDefinitionReader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ISubcircuitDefinitionReader.html",
+          "hash": "4I4fCrYeY6os8PDWiJ0R4g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IWaveformReader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IWaveformReader.html",
+          "hash": "g6yvGbe8rJuIkgJPGJVzBw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ModelReader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ModelReader.html",
+          "hash": "Y02HiUJB/J5LGhT5wF6u+A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader-1.html",
+          "hash": "LDFz1KlFFhs2yV9Y8PrSKw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.SubcircuitDefinitionReader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.SubcircuitDefinitionReader.html",
+          "hash": "0ON/lfINkJyh1UsI67v66g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.WaveformReader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.WaveformReader.html",
+          "hash": "kuYaAXN59QrxeIS6JePXgw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.PulseGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.PulseGenerator.html",
+          "hash": "C6Yj9+qZXXQ9+lq3gSjqwQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.SineGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.SineGenerator.html",
+          "hash": "1vqWSplm2hQPkpsjbUribw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.WaveformGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.WaveformGenerator.html",
+          "hash": "V09namY/4Bu3TGq6mKZvnw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.html",
+          "hash": "SeQhMV7i+M5o3J5KdSttwQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.html",
+          "hash": "aw2grbXf3ngTNgHvJRTZRQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistCaseSensitivitySettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistCaseSensitivitySettings.html",
+          "hash": "GhXfc4jNGYPWdvAhs3hRfA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReader.html",
+          "hash": "u4PC5/lhLucUqrJ0UwKIbw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.html",
+          "hash": "qbknHMSNMmvmNkGGJTDC9Q=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderSettings.html",
+          "hash": "Icq7yOskka4/fNauAS15Dw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceObjectMappings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceObjectMappings.html",
+          "hash": "sAuGTbA9W8Wr6dNQfTwKLQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.html",
+          "hash": "xCSp1WBN7ki46VlKRq+PTQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsReader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsReader.html",
+          "hash": "w5R32Q/LF4f3MYOyO25c8A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.html",
+          "hash": "IK90bvKN/u9G8uw7LIbp2Q=="
         }
       },
       "is_incremental": true,
@@ -633,7 +2853,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.CommentLine.html",
-          "hash": "B5n+Nzt+vF34oKac/qLDUg=="
+          "hash": "0BE7QviFHbDMvfVbE19zUQ=="
         }
       },
       "is_incremental": true,
@@ -645,7 +2865,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Component.html",
-          "hash": "A6ZDxi5EfRVoSH+kDlRp4w=="
+          "hash": "OsoZEjX6b2we/osmYPbopg=="
         }
       },
       "is_incremental": true,
@@ -657,7 +2877,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Control.html",
-          "hash": "ewWsnt5b/v+80xBONjmrqw=="
+          "hash": "MVFVJtfmfYklAB/pYuO+KQ=="
         }
       },
       "is_incremental": true,
@@ -669,7 +2889,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Model.html",
-          "hash": "2eezjjMiRNOzMFH8Z/LrEg=="
+          "hash": "JXehSG/wWrED1783BGBP9g=="
         }
       },
       "is_incremental": true,
@@ -681,7 +2901,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.html",
-          "hash": "vuXOBdzQqj4TO60rns3/4Q=="
+          "hash": "Rwj3rPDFWZNYyAqyhaXe6A=="
         }
       },
       "is_incremental": true,
@@ -693,7 +2913,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.html",
-          "hash": "4OXaigCySMYOF4xcaObyRA=="
+          "hash": "CbdFh4dpNRAqLY0fPpnYNg=="
         }
       },
       "is_incremental": true,
@@ -705,7 +2925,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.html",
-          "hash": "sCPpswTHWVz+8JTRJHZTtg=="
+          "hash": "M0cqI7RNKJn0lDMCTHC98w=="
         }
       },
       "is_incremental": true,
@@ -717,7 +2937,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.BracketParameter.html",
-          "hash": "xuYxIlOQW0+ffE/2PseUWg=="
+          "hash": "Ujt7xjUAdg+wcHxe7Ffozw=="
         }
       },
       "is_incremental": true,
@@ -729,7 +2949,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ExpressionParameter.html",
-          "hash": "W1QPxMvbBVG87uidbXCEDw=="
+          "hash": "UaZes4Iret+LVPGJ2adw1w=="
         }
       },
       "is_incremental": true,
@@ -741,7 +2961,19 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.IdentifierParameter.html",
-          "hash": "A2hG5bzByQPtUvP97SS0XQ=="
+          "hash": "c6I8FFYFFgwVglR1Ovj4yA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.PercentParameter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.PercentParameter.html",
+          "hash": "RFLpMejex7pYWLBpmFpZnw=="
         }
       },
       "is_incremental": true,
@@ -753,7 +2985,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ReferenceParameter.html",
-          "hash": "ECyzsXuw3U8/1IQdx7Uhyg=="
+          "hash": "MesWP4zvjbBGBw/bms3QNQ=="
         }
       },
       "is_incremental": true,
@@ -765,7 +2997,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.SingleParameter.html",
-          "hash": "LAfZiG6EDHFCE+deQf02Gw=="
+          "hash": "VeQE7BIeDqC6RSlOrh/Y6A=="
         }
       },
       "is_incremental": true,
@@ -777,7 +3009,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.StringParameter.html",
-          "hash": "FHbWs6N2SD+p0TCu2ditZA=="
+          "hash": "6/3WS8EE0+jcTpyu0ZCFug=="
         }
       },
       "is_incremental": true,
@@ -789,7 +3021,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ValueParameter.html",
-          "hash": "io6+X+tAyK/OjBoeIlarTA=="
+          "hash": "phU7Jmsur0R0foi8zyOrQg=="
         }
       },
       "is_incremental": true,
@@ -801,7 +3033,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.WordParameter.html",
-          "hash": "xyxrpdXBp1Y9muHUHHrR0g=="
+          "hash": "Kak+y5AU0Vg8LtXssl6phg=="
         }
       },
       "is_incremental": true,
@@ -813,7 +3045,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.html",
-          "hash": "Brq5wH4u1JYe8fWO6tICQA=="
+          "hash": "WmC3+P/aoXvtq+z3GEcXDA=="
         }
       },
       "is_incremental": true,
@@ -825,7 +3057,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Statement.html",
-          "hash": "TzG8JVsU4xk1swxxPP7HKA=="
+          "hash": "8GcSvjlhcyKDmwVZ4UlAIw=="
         }
       },
       "is_incremental": true,
@@ -837,7 +3069,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Statements.html",
-          "hash": "WZvKWzORkANRq8/84xW1pQ=="
+          "hash": "aNzkbPjs0vVBXQDq/m8LZA=="
         }
       },
       "is_incremental": true,
@@ -849,7 +3081,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.SubCircuit.html",
-          "hash": "FtY7VfWv/nRj3ADzsN8X7g=="
+          "hash": "vUf+E6NMRrMEOcXu6cVuoQ=="
         }
       },
       "is_incremental": true,
@@ -861,7 +3093,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.VectorParameter.html",
-          "hash": "5wV1L0p7Fi3K8a/sPhuIaA=="
+          "hash": "o/2OLevCiqhNm22VYvDa5w=="
         }
       },
       "is_incremental": true,
@@ -873,7 +3105,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.html",
-          "hash": "qUZEZlRbv6HV0jDgi8RLFg=="
+          "hash": "sdsrxGlm2AQc00KmoMt2Zg=="
         }
       },
       "is_incremental": true,
@@ -885,7 +3117,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.SpiceNetlist.html",
-          "hash": "XiXgIMJ2Q6UO6tusgjoeBQ=="
+          "hash": "MJAoRlk5kqI7XIAgOlC5qg=="
         }
       },
       "is_incremental": true,
@@ -897,7 +3129,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.SpiceObject.html",
-          "hash": "ypGmyHsgvCITf5p3WlHVvQ=="
+          "hash": "SsWJSNRgccLENSRnQ4AVrw=="
         }
       },
       "is_incremental": true,
@@ -909,1915 +3141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.html",
-          "hash": "3rTEUdry0wOXPHIXJ1MeNw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Common.ISpiceObjectReader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Common.ISpiceObjectReader.html",
-          "hash": "bJyAK7Rm59k/CIfCitiIaw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Common.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Common.html",
-          "hash": "IWrXbJfiPh/1RhNZUBxyMw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.INodeNameGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.INodeNameGenerator.html",
-          "hash": "DPGa4qcOVMBqJYKwuItiBw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IObjectNameGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IObjectNameGenerator.html",
-          "hash": "iyV7bv3X0O83ledYbWYMPg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IReadingContext.html",
-          "hash": "zbW5YIsMkJqfzOd8lys63Q=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IResultService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.IResultService.html",
-          "hash": "i5t7M9PUcaALqPZ02QxS3g=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.ListSweep.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.ListSweep.html",
-          "hash": "Ff8jJCwNnG+jC6EA1EtGBQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.MainCircuitNodeNameGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.MainCircuitNodeNameGenerator.html",
-          "hash": "etpZpFFaw2y5C8V2wQ6ZmA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.ObjectNameGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.ObjectNameGenerator.html",
-          "hash": "hasrIIf6UnDk5D5mRRjFSw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.ParameterSweep.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.ParameterSweep.html",
-          "hash": "pAsAwazqiSAT36EQTRGlwg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.ReadingContext.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.ReadingContext.html",
-          "hash": "U1pbkieGL/OI+3OIgYVZLQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.ResultService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.ResultService.html",
-          "hash": "uGixUgJBrsXQqU7nRgBrtw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.SimulationConfiguration.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.SimulationConfiguration.html",
-          "hash": "w4AeOHhx1rXZh0MOcw6VaA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.SubcircuitNodeNameGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.SubcircuitNodeNameGenerator.html",
-          "hash": "n7rDv1o2YacjKD8L8gSnpQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Context.html",
-          "hash": "1RP5aQhBT0TiyrRviWJIVw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.ControlFunctions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.ControlFunctions.html",
-          "hash": "yrF3AgxASj9Y73fI+nvEeQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.ExportFunctions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.ExportFunctions.html",
-          "hash": "Y9aGspqQAHCQ4LOoZSo/gg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.LineParameters.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.LineParameters.html",
-          "hash": "d2FBLOryBnXXXWLFCzX3jw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.MathFunctions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.MathFunctions.html",
-          "hash": "0feUBYysOjy+L/AKIN9WzQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.RandomFunctions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.RandomFunctions.html",
-          "hash": "qkmnNjdl1D7zO0pAaI072Q=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.SpiceEvaluatorMode.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.SpiceEvaluatorMode.html",
-          "hash": "Zxgb9ulhMXLAs7h/k2VKDw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.TableFunction.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.TableFunction.html",
-          "hash": "XaHdpQdZAtiOu7iy7RGLWg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.CustomFunctions.html",
-          "hash": "btNP3E0gkRYTOJOhR+Xn8g=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.ISpiceEvaluator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.ISpiceEvaluator.html",
-          "hash": "L4hHT9DK/9GsJewuYSAIzg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.html",
-          "hash": "XQCmF1vephjuvCva66bh2w=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.html",
-          "hash": "vPEyGR5UoKbDfKEb2XhVxA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions.GeneralReaderException.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions.GeneralReaderException.html",
-          "hash": "o20Rux0f7h4o8XOo8FLFkQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions.ModelNotFoundException.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions.ModelNotFoundException.html",
-          "hash": "vBiakNS+uXFfJ0/eDpo9qQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions.WrongParameterException.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions.WrongParameterException.html",
-          "hash": "G3Yoc/6joqHVqDUC5DzRxg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions.WrongParameterTypeException.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions.WrongParameterTypeException.html",
-          "hash": "w4gTPAjaoPiTn22RokoWOg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions.WrongParametersCountException.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions.WrongParametersCountException.html",
-          "hash": "DK4j2Giye9PLt/BHSXvKVw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions.html",
-          "hash": "AIcA1OvlFSA5HrhJibXtnw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Extensions.IReadingContextExtensions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Extensions.IReadingContextExtensions.html",
-          "hash": "J1iGDgAtrt/Vfl8IlBu5WQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Extensions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Extensions.html",
-          "hash": "ciS+vTLaD8rTxNd1xYAFcQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.ISpiceNetlistReaderContext.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.ISpiceNetlistReaderContext.html",
-          "hash": "XozK6ZiFCyouP4aSuesfrg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors.AppendModelPreprocessor.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors.AppendModelPreprocessor.html",
-          "hash": "nuhT8PKFnRfUwRFTgRoNCQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors.IAppendModelPreprocessor.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors.IAppendModelPreprocessor.html",
-          "hash": "yguMER+Da7wxTIF7oC0gVw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors.IIncludesPreprocessor.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors.IIncludesPreprocessor.html",
-          "hash": "xVTjP+9XMHk3kUItooJB1Q=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors.ILibPreprocessor.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors.ILibPreprocessor.html",
-          "hash": "H4m4wi5dWEKfi14pwvSIfw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors.ISweepsPreprocessor.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors.ISweepsPreprocessor.html",
-          "hash": "B8HskmoFaUvEcve/llZzlw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors.IncludesPreprocessor.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors.IncludesPreprocessor.html",
-          "hash": "YcXyffUSUE2z+RCrGJPIKA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors.LibPreprocessor.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors.LibPreprocessor.html",
-          "hash": "vMKLjb/k2kk7UcorXN6/uQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors.SweepsPreprocessor.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors.SweepsPreprocessor.html",
-          "hash": "mKQuyTwpmue3XmxqBWLhkw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Preprocessors.html",
-          "hash": "ZYM++SEeqWLiFDLfcjMMYw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.CommentReader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.CommentReader.html",
-          "hash": "HaQpREvWNNlUqhdwsSqstQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.ComponentReader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.ComponentReader.html",
-          "hash": "h8RqxxEmYK+cCvOpMZkRhQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.ControlReader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.ControlReader.html",
-          "hash": "NmD5000+iTFp239x//XXig=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.BaseControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.BaseControl.html",
-          "hash": "oIbLghtvpUbAN0JoM9LGBw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.ExportControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.ExportControl.html",
-          "hash": "JWOpVHC7KaQPkD0NBKdvIw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExporter.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExporter.html",
-          "hash": "odei786FovEt8wUXlBKvzg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentDecibelExport.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentDecibelExport.html",
-          "hash": "dhNkQToxDxUHNAVkGPQiIw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentExport.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentExport.html",
-          "hash": "ctiwgMmalIjMmCZRBxLnlQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentImaginaryExport.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentImaginaryExport.html",
-          "hash": "OqvOVCOssaaq1z+2ROgGNA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentMagnitudeExport.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentMagnitudeExport.html",
-          "hash": "20y17ixU8LsgLHQ15NlibA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentPhaseExport.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentPhaseExport.html",
-          "hash": "KFtaRkpAAqpitlcFzG4AUg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentRealExport.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentRealExport.html",
-          "hash": "jy/OVPpsNxYOZNdNzrCP6Q=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.html",
-          "hash": "4CFZ5I+saLWl73o7o01tEw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.Export.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.Export.html",
-          "hash": "Bktetc4HOVFsXUENAWmfcg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter.html",
-          "hash": "mWB198QV6cyDtlqGlVj5Zg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.html",
-          "hash": "POTez8TrbP/2eIT1C/yyQA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.PropertyExport.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.PropertyExport.html",
-          "hash": "OLJLOyQZLuvFS7YXCd1Xtw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.PropertyExporter.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.PropertyExporter.html",
-          "hash": "2r3YOEHXQNyzIFmw2VGn4Q=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExporter.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExporter.html",
-          "hash": "u/x/WTxQtIV+4qJBOciimw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageDecibelExport.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageDecibelExport.html",
-          "hash": "4MJZ3YneX6vuntjCJPHCvQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageExport.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageExport.html",
-          "hash": "CHYzSWkqgrM7MaMykIsN2A=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageImaginaryExport.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageImaginaryExport.html",
-          "hash": "YhTPllO9fAdpkbol5C4vBA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageMagnitudeExport.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageMagnitudeExport.html",
-          "hash": "RSuUfIm43dBYprGLUHkRng=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltagePhaseExport.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltagePhaseExport.html",
-          "hash": "sQtHHkF2AhLpXIUMvX/PyA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageRealExport.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageRealExport.html",
-          "hash": "O7Eqk64hX7pPhkkB2TR+DA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.html",
-          "hash": "Sj01XllLgO7ee8INtMj9Kg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.html",
-          "hash": "5CFOgbMs0IgEWvrU/qWxog=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.FuncControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.FuncControl.html",
-          "hash": "fNbbpCaPa24SgGUig31JVA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.GlobalControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.GlobalControl.html",
-          "hash": "7Ct2bzjbHgTqp6OSKDV/jw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.ICControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.ICControl.html",
-          "hash": "an6TQImgLL8GWGGVvDN6yw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.LetControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.LetControl.html",
-          "hash": "SrHbZSgZkm5wcsG600/n5A=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.NodeSetControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.NodeSetControl.html",
-          "hash": "1Te9jjSS3i8MTijMvZaHgA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.OptionControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.OptionControl.html",
-          "hash": "BFE0CN/zOhQkLVB038cn/A=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.ParamControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.ParamControl.html",
-          "hash": "CpCUNBixRRM/T1QZSo67jw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.PlotControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.PlotControl.html",
-          "hash": "YktoJhLQvXsobT62H67yGQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots.Plot.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots.Plot.html",
-          "hash": "ufvobo11BB3DEfgdNjK1Ug=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots.Point.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots.Point.html",
-          "hash": "flWie7dbJIokRSFU6NkXBw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots.Series.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots.Series.html",
-          "hash": "HOGUmnPV5QcQ9a7Wymr/Mw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots.html",
-          "hash": "yDJMqUFyIalxdOZJQQPnvg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.PrintControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.PrintControl.html",
-          "hash": "OHjfC3emlxco2pedlXSZlA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints.Print.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints.Print.html",
-          "hash": "4pWfW+trXIga/mbVZdRYCA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints.Row.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints.Row.html",
-          "hash": "RJ9Tu6MxBE91p1zVFmvlXQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints.html",
-          "hash": "6C0qSILKL2YDaEyMvw60hg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.SaveControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.SaveControl.html",
-          "hash": "yP+sH0W1nMDF0wL1O3zILg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.ACControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.ACControl.html",
-          "hash": "6Ve6yQJv/Mi3KdZX2Ymbgw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.DCControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.DCControl.html",
-          "hash": "1eznvrPX2LPmJJafrUeXwA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.html",
-          "hash": "MEpmPXXn4KMO+qKp0OIRcw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.OPControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.OPControl.html",
-          "hash": "zJRRYC3ppVuIeAYw6UkFsQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.html",
-          "hash": "oVRkJ7JJH3uUl/UnC8YR4g=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.TransientControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.TransientControl.html",
-          "hash": "9LGOvZMUXdBJxSxAM1v3Og=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations.html",
-          "hash": "TPiig8a7z4v6klxkHY/4yQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.StControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.StControl.html",
-          "hash": "1t22E7XfsBme2qEaUNSAwA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.StRegisterControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.StRegisterControl.html",
-          "hash": "5tYMcOViZG4ywESdGH3nAQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.StepControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.StepControl.html",
-          "hash": "ofAP3nRXg1fRQS289skbUw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.StepRegisterControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.StepRegisterControl.html",
-          "hash": "U4D0dndRSj0ZQuimsiQBNg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.TempControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.TempControl.html",
-          "hash": "GETq8DESEFaFT4ybSk0WHA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.html",
-          "hash": "hWDxPNF43aDLkOFlFK21Hg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.RLCGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.RLCGenerator.html",
-          "hash": "CAePnm1G4Pu+0U2e4ZCrIg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.BipolarJunctionTransistorGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.BipolarJunctionTransistorGenerator.html",
-          "hash": "z2iYeSLWhgkBr5TrxE7XFQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.DiodeGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.DiodeGenerator.html",
-          "hash": "82j6jb6Ho9dNMGemZoSzQg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.MosfetGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.MosfetGenerator.html",
-          "hash": "IRQRb5QdJTI5MA/Miy7xbw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.html",
-          "hash": "UMJshZY06RvnDpOwvoipTg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.CurrentSourceGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.CurrentSourceGenerator.html",
-          "hash": "BYWgX5Aqe6k5+XDMY/l/BQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.html",
-          "hash": "97CEuBTsz2wg9YEOjlu5tA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.html",
-          "hash": "0y6iFvPomhdMgl9s20z0EQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.html",
-          "hash": "Fj/YX/nj1G/I+ohRj67iMw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.SwitchGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.SwitchGenerator.html",
-          "hash": "Hj98UWgYsa7SvA08Rj6wDA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.html",
-          "hash": "y2KxmmrvRzuJffTSNs2VzA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.EntityGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.EntityGenerator.html",
-          "hash": "5o4rOL0LCioRhO4iisYVVA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models.BipolarModelGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models.BipolarModelGenerator.html",
-          "hash": "UNts9LdCYJaBLQ38U0DPbw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models.DiodeModelGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models.DiodeModelGenerator.html",
-          "hash": "aJc1yq2jN07n2cr3JGY/AQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models.ModelGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models.ModelGenerator.html",
-          "hash": "oyBzVn9vobcjnJiwfDYP+g=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models.MosfetModelGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models.MosfetModelGenerator.html",
-          "hash": "FRZjfe9mdtNCqClLX7UMIQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models.RLCModelGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models.RLCModelGenerator.html",
-          "hash": "ocLBSu0RWCpbeMKWxfNv5A=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models.SwitchModelGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models.SwitchModelGenerator.html",
-          "hash": "f29kZ7b18l4MOT5nG1rdPg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models.html",
-          "hash": "dYgrBYLdfpNef+Fvz8mDJw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.html",
-          "hash": "nSYGfMB2fP/PlZjANjyKng=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.IComponentReader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.IComponentReader.html",
-          "hash": "f3/sE6Zjn6De0K3AF+98SQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.IControlReader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.IControlReader.html",
-          "hash": "VWqrvKx4TMSVxrU/GiJzRw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.IModelReader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.IModelReader.html",
-          "hash": "yfKQZt6eFP/tL0lBGR2aaw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.IStatementReader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.IStatementReader.html",
-          "hash": "dq7rW1eH26RaTQcLkRhc8Q=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.IStatementsOrderer.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.IStatementsOrderer.html",
-          "hash": "Fz2YfxbSM1Fcd6Dmpf05NA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.IStatementsReader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.IStatementsReader.html",
-          "hash": "L9aV6flibOqFOtfXidO5ng=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.ISubcircuitDefinitionReader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.ISubcircuitDefinitionReader.html",
-          "hash": "x6Tc0CNN664HzhxOB2h1ag=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.IWaveformReader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.IWaveformReader.html",
-          "hash": "pE7biLnfOr1FMgD3hlXZ2A=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.ModelReader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.ModelReader.html",
-          "hash": "NSh+Cn3V2owfDFaNNb6QRA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.StatementReader-1.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.StatementReader-1.html",
-          "hash": "05E5Dg93joAVspmhfrQwgw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.StatementsOrderer.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.StatementsOrderer.html",
-          "hash": "qK3N6KeDxV2wKE8b7GZ0QQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.StatementsReader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.StatementsReader.html",
-          "hash": "roqaMHUE44nox1igWZ/NXQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.SubcircuitDefinitionReader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.SubcircuitDefinitionReader.html",
-          "hash": "qjFcMUQ1FKxXaAmiskzPzA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.WaveformReader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.WaveformReader.html",
-          "hash": "Xz0GPgTKqZ9RCB18200jGA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Waveforms.PulseGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Waveforms.PulseGenerator.html",
-          "hash": "bZ2mwfcWrqNdyiFKz2+D7w=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Waveforms.SineGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Waveforms.SineGenerator.html",
-          "hash": "rk3p6buh/SU2ARJjp/xnrA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Waveforms.WaveformGenerator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Waveforms.WaveformGenerator.html",
-          "hash": "a2y8ay9MExah73l2nb/nlQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Waveforms.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Waveforms.html",
-          "hash": "OaJkb4IBO5Zk34zzu3nmTA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.html",
-          "hash": "fA67gUoSOgX4X9EM5zsmPw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.BaseRegistry-1.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.BaseRegistry-1.html",
-          "hash": "/HQSt40cWbjZM2gC2UDkPQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.ControlRegistry.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.ControlRegistry.html",
-          "hash": "VHH8eQJemHYsEu1TfeF9YQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.EntityGeneratorRegistry.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.EntityGeneratorRegistry.html",
-          "hash": "FKYebGPDgHonXorl5oWp3Q=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.ExporterRegistry.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.ExporterRegistry.html",
-          "hash": "QYrmzxMcs3Qo8WPSnB33Kw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.IControlRegistry.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.IControlRegistry.html",
-          "hash": "cNzC/XTDxSTE71FC5o6uAg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.IEntityGeneratorRegistry.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.IEntityGeneratorRegistry.html",
-          "hash": "xlE/7zTT91HUteP1qNTV+Q=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.IExporterRegistry.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.IExporterRegistry.html",
-          "hash": "+snu8RuG2ifxBRjPO8qOGQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.IRegistry.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.IRegistry.html",
-          "hash": "82jdYP4NbSUhsGTht7Nd2Q=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.IWaveformRegistry.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.IWaveformRegistry.html",
-          "hash": "9mLne2B9nDDs39fP0itajw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.WaveformRegistry.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.WaveformRegistry.html",
-          "hash": "0ALy1oRd95RoFEnN4aIiaw=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries.html",
-          "hash": "dceC1YAs5Cp+EnChJkrf3Q=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.SpiceNetlistReader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.SpiceNetlistReader.html",
-          "hash": "MT+QoP7k7GwURNMje1hBKA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.SpiceNetlistReaderContext.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.SpiceNetlistReaderContext.html",
-          "hash": "62FOKJWe2HuIqyhzMlRNZA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.SpiceNetlistReaderResult.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.SpiceNetlistReaderResult.html",
-          "hash": "4tet7dZ8/4fxilLpDxscvg=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.SpiceNetlistReaderSettings.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.SpiceNetlistReaderSettings.html",
-          "hash": "ZuE9vB5kydG8cnQ5OkESjA=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelsReaders.Netlist.Spice.html",
-          "hash": "vmR37HkzCR0Sq2BEUF0COQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ParserFacade.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ParserFacade.html",
-          "hash": "LDwiPrW9DK4EwGC5rhdt3A=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ParserResult.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ParserResult.html",
-          "hash": "JBCQ4TWVOl0RmIVpK5JRoQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ParserSettings.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ParserSettings.html",
-          "hash": "hfc7moUbOvG932gzzDsrfw=="
+          "hash": "OzKUE9vvlaF3RzKXeS/YOg=="
         }
       },
       "is_incremental": true,
@@ -2829,7 +3153,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Parsers.Expression.SpiceExpressionParser.html",
-          "hash": "yNiObnuJxSR4Xa399HNE4A=="
+          "hash": "MxfkIXMalq8VdsP2RqT8sg=="
         }
       },
       "is_incremental": true,
@@ -2841,7 +3165,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Parsers.Expression.html",
-          "hash": "nCDMni+HsfII7VdwbDpT1w=="
+          "hash": "5oQ1KU/xIifMZcNEjNML0A=="
         }
       },
       "is_incremental": true,
@@ -2853,7 +3177,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Parsers.Netlist.ParseException.html",
-          "hash": "Mxu3wirpADCy2gIae2Zwnw=="
+          "hash": "RdJDJU27+toXtjNOTXhklw=="
         }
       },
       "is_incremental": true,
@@ -2865,7 +3189,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Parsers.Netlist.ParseTreeEvaluationException.html",
-          "hash": "iWI9E39W3sqr0XB36zRH6w=="
+          "hash": "3SVPQCSBkuz1BoQrCXYKPw=="
         }
       },
       "is_incremental": true,
@@ -2877,7 +3201,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Parsers.Netlist.ParseTreeNode.html",
-          "hash": "FgmbgVKDsJ/O11kfeEalTg=="
+          "hash": "MYkuu1sRAdxOoS6XUWrHCw=="
         }
       },
       "is_incremental": true,
@@ -2889,7 +3213,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Parsers.Netlist.ParseTreeNonTerminalNode.html",
-          "hash": "kHPjR56o3G6WgKDH++H5vw=="
+          "hash": "KSacOQYnfTvA7c7Gkh8HDQ=="
         }
       },
       "is_incremental": true,
@@ -2901,7 +3225,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Parsers.Netlist.ParseTreeTerminalNode.html",
-          "hash": "TmOwMzjPtsB2LEPQbSgppQ=="
+          "hash": "46FdW1zXvZtEA6ap2BChrQ=="
         }
       },
       "is_incremental": true,
@@ -2909,11 +3233,35 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Parsers.Netlist.ParseTreeTravelsal.yml",
+      "source_relative_path": "api/SpiceSharpParser.Parsers.Netlist.ParseTreeTraversal.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Parsers.Netlist.ParseTreeTravelsal.html",
-          "hash": "zOXYh98PzdQnrVBcZdynlQ=="
+          "relative_path": "api/SpiceSharpParser.Parsers.Netlist.ParseTreeTraversal.html",
+          "hash": "1+Yd59XYw/ThqmZ3W+r+pw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.FunctionNotFoundException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.FunctionNotFoundException.html",
+          "hash": "kDI9wmGugYTmOM4Jhk4JaA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser.html",
+          "hash": "bSgtNNc532LbPV15BWXFoQ=="
         }
       },
       "is_incremental": true,
@@ -2925,7 +3273,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator.html",
-          "hash": "1ZnxVfbS4rBsHr3I1oQYhw=="
+          "hash": "YSkh/6CPRN/BUvkMD53i7g=="
         }
       },
       "is_incremental": true,
@@ -2937,7 +3285,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeGenerator.html",
-          "hash": "GJLja8EkEU5T/HqemgkXHw=="
+          "hash": "nm03mo4fkjNOsw3LnPqDbA=="
         }
       },
       "is_incremental": true,
@@ -2949,7 +3297,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeNodeEvaluationValue.html",
-          "hash": "CoHZ89jDlkO01h/Anx5+3A=="
+          "hash": "MSzC9O/BgPEtqMh87+fs0A=="
         }
       },
       "is_incremental": true,
@@ -2961,7 +3309,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeNodeEvaluationValues.html",
-          "hash": "TO34IKRO7QrebGDRdB8ldw=="
+          "hash": "Y00gmp24t6KiI2O0naeBow=="
         }
       },
       "is_incremental": true,
@@ -2969,11 +3317,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeNodeTerminalTranslationValue.yml",
+      "source_relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeNodeTerminalEvaluationValue.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeNodeTerminalTranslationValue.html",
-          "hash": "sFvh1e1FFn1JWS0HM8DJ/g=="
+          "relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeNodeTerminalEvaluationValue.html",
+          "hash": "Pwzw474T+EtWBiWCyaUyag=="
         }
       },
       "is_incremental": true,
@@ -2985,7 +3333,31 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeNonTerminalEvaluationValue.html",
-          "hash": "2jBH/YcDavjqITWjxO2sng=="
+          "hash": "//H96/TcVesaUGhC2yZapw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParser.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParser.html",
+          "hash": "X/N49wsxTSja9aITyBQYMg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.html",
+          "hash": "EuOO2NhgskzYGmQBfv88kA=="
         }
       },
       "is_incremental": true,
@@ -2997,7 +3369,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.Symbols.html",
-          "hash": "iPIlFyzD0gejfemAi/b1qg=="
+          "hash": "w0eJGSsMSeex5rwLQuLIzQ=="
         }
       },
       "is_incremental": true,
@@ -3009,7 +3381,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.html",
-          "hash": "5lRV/Vuo2viCrCmlJuWSJw=="
+          "hash": "S0KX80u0H1rhDdVDNPFG2Q=="
         }
       },
       "is_incremental": true,
@@ -3021,7 +3393,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Parsers.Netlist.html",
-          "hash": "7fhfjqbll4RErsaYMuXAFA=="
+          "hash": "ITi3epTiC+7ycBYMSlkp5A=="
         }
       },
       "is_incremental": true,
@@ -3029,11 +3401,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.SpiceNetlistParser.yml",
+      "source_relative_path": "api/SpiceSharpParser.SpiceParser.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.SpiceNetlistParser.html",
-          "hash": "OxxpFDibKOhO2i4sj/nkLQ=="
+          "relative_path": "api/SpiceSharpParser.SpiceParser.html",
+          "hash": "cSw5amZLFSmy1D7LZtd0iw=="
         }
       },
       "is_incremental": true,
@@ -3041,11 +3413,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.SpiceNetlistParserSettings.yml",
+      "source_relative_path": "api/SpiceSharpParser.SpiceParserResult.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.SpiceNetlistParserSettings.html",
-          "hash": "xSvsmGbPGVfPBhrMBDsUsQ=="
+          "relative_path": "api/SpiceSharpParser.SpiceParserResult.html",
+          "hash": "mvMPinEQXJCp5QxB9SSHsg=="
         }
       },
       "is_incremental": true,
@@ -3053,23 +3425,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postprocessors.IfPostprocessor.yml",
+      "source_relative_path": "api/SpiceSharpParser.SpiceParserSettings.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postprocessors.IfPostprocessor.html",
-          "hash": "t9deMP02I75vQdnKnxU2cQ=="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postprocessors.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.SpiceSharpParser.ModelsReaders.Netlist.Spice.Postprocessors.html",
-          "hash": "MFlQlyjNCBtvAYnRAatOgg=="
+          "relative_path": "api/SpiceSharpParser.SpiceParserSettings.html",
+          "hash": "CFcYYELlVo7R1c//iAUWeQ=="
         }
       },
       "is_incremental": true,
@@ -3081,7 +3441,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.html",
-          "hash": "8tfiwxODCGiB3Ji1G9YvAw=="
+          "hash": "EQP+2wnS/SpchA0QwcO/3g=="
         }
       },
       "is_incremental": true,
@@ -3093,7 +3453,7 @@
       "output": {
         ".html": {
           "relative_path": "api/index.html",
-          "hash": "OLR6rW+OYyM+ft8fGlQfrg=="
+          "hash": "yDb0dIlAN7baUH8Hi6honQ=="
         }
       },
       "is_incremental": true,
@@ -3105,7 +3465,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "/rZLAytAdWBuqv9Enn5jBA=="
+          "hash": "hfaDLWgav36iJj0llPDzsQ=="
         }
       },
       "is_incremental": false,
@@ -3117,7 +3477,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/intro.html",
-          "hash": "zomK88s564ZIqJ7Snz2wzw=="
+          "hash": "5gNWZHKN6d5gsdDHHgbxwQ=="
         }
       },
       "is_incremental": true,
@@ -3129,7 +3489,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/toc.html",
-          "hash": "xVlQaX7Tk85omoiWv3O+Ag=="
+          "hash": "t7iiFrmuYmrKWisdq+lN6Q=="
         }
       },
       "is_incremental": false,
@@ -3141,7 +3501,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "W1TqVWEnCz+fRXYYuEDKyQ=="
+          "hash": "3iMxBibTwpYbDYNP+Py9HQ=="
         }
       },
       "is_incremental": true,
@@ -3153,7 +3513,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "ob7LqWp4kTNLz+9W4omdTw=="
+          "hash": "k+/dkjFuwAVS32HduMpmBw=="
         }
       },
       "is_incremental": false,
@@ -3167,17 +3527,17 @@
         "incrementalPhase": "build"
       },
       "processors": {
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": true,
           "incrementalPhase": "build"
         },
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build"
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": true,
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         }
       }
