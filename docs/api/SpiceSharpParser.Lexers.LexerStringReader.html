@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class LexerStringReader
    ">
-    <meta name="generator" content="docfx 2.37.0.0">
+    <meta name="generator" content="docfx 2.39.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -73,7 +73,7 @@
   
   <h1 id="SpiceSharpParser_Lexers_LexerStringReader" data-uid="SpiceSharpParser.Lexers.LexerStringReader" class="text-break">Class LexerStringReader
   </h1>
-  <div class="markdown level0 summary"><p>Allows fast reading of text lines</p>
+  <div class="markdown level0 summary"><p>Allows fast reading of text lines with line continuation support.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -115,19 +115,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerStringReader__ctor_System_String_System_Nullable_System_Char__.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerStringReader.%23ctor(System.String%2CSystem.Nullable%7BSystem.Char%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerStringReader__ctor_System_String_System_Nullable_System_Char__System_Nullable_System_Char__.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerStringReader.%23ctor(System.String%2CSystem.Nullable%7BSystem.Char%7D%2CSystem.Nullable%7BSystem.Char%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexers/LexerStringReader.cs/#L18">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerStringReader.cs/#L21">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerStringReader__ctor_" data-uid="SpiceSharpParser.Lexers.LexerStringReader.#ctor*"></a>
-  <h4 id="SpiceSharpParser_Lexers_LexerStringReader__ctor_System_String_System_Nullable_System_Char__" data-uid="SpiceSharpParser.Lexers.LexerStringReader.#ctor(System.String,System.Nullable{System.Char})">LexerStringReader(String, Nullable&lt;Char&gt;)</h4>
+  <h4 id="SpiceSharpParser_Lexers_LexerStringReader__ctor_System_String_System_Nullable_System_Char__System_Nullable_System_Char__" data-uid="SpiceSharpParser.Lexers.LexerStringReader.#ctor(System.String,System.Nullable{System.Char},System.Nullable{System.Char})">LexerStringReader(String, Nullable&lt;Char&gt;, Nullable&lt;Char&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="SpiceSharpParser.Lexers.LexerStringReader.html">LexerStringReader</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public LexerStringReader(string str, char? continuationCharacter)</code></pre>
+    <pre><code class="lang-csharp hljs">public LexerStringReader(string string, char? nextLineContinuationCharacter, char? currentLineContinuationCharacter)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -141,14 +141,20 @@
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">str</span></td>
+        <td><span class="parametername">string</span></td>
         <td><p>A string to read</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Char</span>&gt;</td>
-        <td><span class="parametername">continuationCharacter</span></td>
-        <td><p>A line continuation character</p>
+        <td><span class="parametername">nextLineContinuationCharacter</span></td>
+        <td><p>A line continuation character (in the next line).</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Char</span>&gt;</td>
+        <td><span class="parametername">currentLineContinuationCharacter</span></td>
+        <td><p>A line continuation character (in the current line).</p>
 </td>
       </tr>
     </tbody>
@@ -157,14 +163,14 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerStringReader_GetSubstring_System_Int32_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerStringReader.GetSubstring(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerStringReader_GetSubstring_System_Int32_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerStringReader.GetSubstring(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexers/LexerStringReader.cs/#L108">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerStringReader.cs/#L116">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerStringReader_GetSubstring_" data-uid="SpiceSharpParser.Lexers.LexerStringReader.GetSubstring*"></a>
   <h4 id="SpiceSharpParser_Lexers_LexerStringReader_GetSubstring_System_Int32_" data-uid="SpiceSharpParser.Lexers.LexerStringReader.GetSubstring(System.Int32)">GetSubstring(Int32)</h4>
-  <div class="markdown level1 summary"><p>Gets the substring of all text</p>
+  <div class="markdown level1 summary"><p>Gets the substring of all text.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -184,7 +190,7 @@
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">startIndex</span></td>
-        <td><p>Start index of the substrign</p>
+        <td><p>Start index of the substring.</p>
 </td>
       </tr>
     </tbody>
@@ -200,17 +206,17 @@
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><p>A string</p>
+        <td><p>A substring from the text.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerStringReader_PeekNextLine_System_Int32__.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerStringReader.PeekNextLine(System.Int32%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerStringReader_PeekNextLine_System_Int32__.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerStringReader.PeekNextLine(System.Int32%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexers/LexerStringReader.cs/#L64">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerStringReader.cs/#L67">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerStringReader_PeekNextLine_" data-uid="SpiceSharpParser.Lexers.LexerStringReader.PeekNextLine*"></a>
   <h4 id="SpiceSharpParser_Lexers_LexerStringReader_PeekNextLine_System_Int32__" data-uid="SpiceSharpParser.Lexers.LexerStringReader.PeekNextLine(System.Int32@)">PeekNextLine(out Int32)</h4>
@@ -234,7 +240,7 @@
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">nextLineIndex</span></td>
-        <td><p>A index at the end of peeked line</p>
+        <td><p>A index at the end of peeked line.</p>
 </td>
       </tr>
     </tbody>
@@ -250,21 +256,21 @@
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><p>A text line</p>
+        <td><p>A text line.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerStringReader_ReadLine.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerStringReader.ReadLine%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerStringReader_ReadLine.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerStringReader.ReadLine%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexers/LexerStringReader.cs/#L29">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerStringReader.cs/#L32">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerStringReader_ReadLine_" data-uid="SpiceSharpParser.Lexers.LexerStringReader.ReadLine*"></a>
   <h4 id="SpiceSharpParser_Lexers_LexerStringReader_ReadLine" data-uid="SpiceSharpParser.Lexers.LexerStringReader.ReadLine">ReadLine()</h4>
-  <div class="markdown level1 summary"><p>Read next text line with line ending characters</p>
+  <div class="markdown level1 summary"><p>Read next text line with line ending characters.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -289,10 +295,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerStringReader_ReadLineWithContinuation.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerStringReader.ReadLineWithContinuation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerStringReader_ReadLineWithContinuation.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerStringReader.ReadLineWithContinuation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexers/LexerStringReader.cs/#L79">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerStringReader.cs/#L82">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerStringReader_ReadLineWithContinuation_" data-uid="SpiceSharpParser.Lexers.LexerStringReader.ReadLineWithContinuation*"></a>
   <h4 id="SpiceSharpParser_Lexers_LexerStringReader_ReadLineWithContinuation" data-uid="SpiceSharpParser.Lexers.LexerStringReader.ReadLineWithContinuation">ReadLineWithContinuation()</h4>
@@ -314,7 +320,7 @@
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><p>A continuation line</p>
+        <td><p>A continuation line.</p>
 </td>
       </tr>
     </tbody>
@@ -327,10 +333,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerStringReader.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerStringReader%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerStringReader.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerStringReader%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexers/LexerStringReader.cs/#L6" class="contribution-link">View Source</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerStringReader.cs/#L8" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

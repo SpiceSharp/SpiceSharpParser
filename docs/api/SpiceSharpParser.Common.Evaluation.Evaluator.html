@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Evaluator
    ">
-    <meta name="generator" content="docfx 2.37.0.0">
+    <meta name="generator" content="docfx 2.39.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -73,18 +73,18 @@
   
   <h1 id="SpiceSharpParser_Common_Evaluation_Evaluator" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator" class="text-break">Class Evaluator
   </h1>
-  <div class="markdown level0 summary"><p>Evaluator of expressions.</p>
+  <div class="markdown level0 summary"><p>Abstract evaluator.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">Evaluator</span></div>
-      <div class="level2"><a class="xref" href="SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation.SpiceEvaluator.html">SpiceEvaluator</a></div>
+      <div class="level2"><a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluator.html">SpiceEvaluator</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="SpiceSharpParser.Common.IEvaluator.html">IEvaluator</a></div>
+    <div><a class="xref" href="SpiceSharpParser.Common.Evaluation.IEvaluator.html">IEvaluator</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -114,25 +114,25 @@
   <h6><strong>Assembly</strong>: SpiceSharpParser.dll</h6>
   <h5 id="SpiceSharpParser_Common_Evaluation_Evaluator_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Evaluator : IEvaluator</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class Evaluator : IEvaluator</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator__ctor_System_String_SpiceSharpParser_Common_Evaluation_IExpressionParser_SpiceSharpParser_Common_Evaluation_ExpressionRegistry_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.%23ctor(System.String%2CSpiceSharpParser.Common.Evaluation.IExpressionParser%2CSpiceSharpParser.Common.Evaluation.ExpressionRegistry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator__ctor_System_String_System_Object_SpiceSharpParser_Common_Evaluation_IExpressionParser_System_Nullable_System_Int32__SpiceSharpParser_Common_Evaluation_ExpressionRegistry_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.%23ctor(System.String%2CSystem.Object%2CSpiceSharpParser.Common.Evaluation.IExpressionParser%2CSystem.Nullable%7BSystem.Int32%7D%2CSpiceSharpParser.Common.Evaluation.ExpressionRegistry%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L16">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L23">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Evaluator__ctor_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.#ctor*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator__ctor_System_String_SpiceSharpParser_Common_Evaluation_IExpressionParser_SpiceSharpParser_Common_Evaluation_ExpressionRegistry_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.#ctor(System.String,SpiceSharpParser.Common.Evaluation.IExpressionParser,SpiceSharpParser.Common.Evaluation.ExpressionRegistry)">Evaluator(String, IExpressionParser, ExpressionRegistry)</h4>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator__ctor_System_String_System_Object_SpiceSharpParser_Common_Evaluation_IExpressionParser_System_Nullable_System_Int32__SpiceSharpParser_Common_Evaluation_ExpressionRegistry_System_Boolean_System_Boolean_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.#ctor(System.String,System.Object,SpiceSharpParser.Common.Evaluation.IExpressionParser,System.Nullable{System.Int32},SpiceSharpParser.Common.Evaluation.ExpressionRegistry,System.Boolean,System.Boolean)">Evaluator(String, Object, IExpressionParser, Nullable&lt;Int32&gt;, ExpressionRegistry, Boolean, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="SpiceSharpParser.Common.Evaluation.Evaluator.html">Evaluator</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Evaluator(string name, IExpressionParser parser, ExpressionRegistry registry)</code></pre>
+    <pre><code class="lang-csharp hljs">public Evaluator(string name, object context, IExpressionParser parser, int? seed, ExpressionRegistry registry, bool isFunctionNameCaseSensitive, bool isParameterNameCaseSensitive)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -147,7 +147,14 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td></td>
+        <td><p>Evaluator name.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Evaluator context.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.IExpressionParser.html">IExpressionParser</a></td>
@@ -156,9 +163,27 @@
 </td>
       </tr>
       <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">seed</span></td>
+        <td><p>Random seed.</p>
+</td>
+      </tr>
+      <tr>
         <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.ExpressionRegistry.html">ExpressionRegistry</a></td>
         <td><span class="parametername">registry</span></td>
         <td><p>Expression registry.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">isFunctionNameCaseSensitive</span></td>
+        <td><p>Is function name case-sensitive.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">isParameterNameCaseSensitive</span></td>
+        <td><p>Is parameter name case-sensitive.</p>
 </td>
       </tr>
     </tbody>
@@ -167,10 +192,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_Children.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.Children%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_Children.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.Children%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L32">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L65">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Evaluator_Children_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Children*"></a>
   <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_Children" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Children">Children</h4>
@@ -191,26 +216,26 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="SpiceSharpParser.Common.IEvaluator.html">IEvaluator</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="SpiceSharpParser.Common.Evaluation.IEvaluator.html">IEvaluator</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_CustomFunctions.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.CustomFunctions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_Context.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.Context%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L37">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L75">View Source</a>
   </span>
-  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_CustomFunctions_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.CustomFunctions*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_CustomFunctions" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.CustomFunctions">CustomFunctions</h4>
-  <div class="markdown level1 summary"><p>Gets the dictionary of custom functions.</p>
+  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_Context_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Context*"></a>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_Context" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Context">Context</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the context of the evaluator.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, CustomFunction&gt; CustomFunctions { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public object Context { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -222,17 +247,17 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="SpiceSharpParser.Common.CustomFunction.html">CustomFunction</a>&gt;</td>
+        <td><span class="xref">System.Object</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_ExpressionParser.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.ExpressionParser%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_ExpressionParser.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.ExpressionParser%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L47">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L85">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Evaluator_ExpressionParser_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.ExpressionParser*"></a>
   <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_ExpressionParser" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.ExpressionParser">ExpressionParser</h4>
@@ -260,19 +285,112 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_Name.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_Functions.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.Functions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L27">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L50">View Source</a>
   </span>
-  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_Name_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Name*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_Name" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Name">Name</h4>
-  <div class="markdown level1 summary"><p>Gets the name of the evaluator.</p>
+  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_Functions_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Functions*"></a>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_Functions" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Functions">Functions</h4>
+  <div class="markdown level1 summary"><p>Gets or sets custom functions.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Name { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, Function&gt; Functions { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="SpiceSharpParser.Common.Evaluation.Function.html">Function</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_IsFunctionNameCaseSensitive.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.IsFunctionNameCaseSensitive%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L55">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_IsFunctionNameCaseSensitive_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.IsFunctionNameCaseSensitive*"></a>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_IsFunctionNameCaseSensitive" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.IsFunctionNameCaseSensitive">IsFunctionNameCaseSensitive</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether function names are case-sensitive.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsFunctionNameCaseSensitive { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_IsParameterNameCaseSensitive.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.IsParameterNameCaseSensitive%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L60">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_IsParameterNameCaseSensitive_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.IsParameterNameCaseSensitive*"></a>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_IsParameterNameCaseSensitive" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.IsParameterNameCaseSensitive">IsParameterNameCaseSensitive</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether parameter names are case-sensitive.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsParameterNameCaseSensitive { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_Name.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L40">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_Name_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Name*"></a>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_Name" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Name">Name</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the name of the evaluator.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Name { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -291,19 +409,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_Parameters.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.Parameters%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_Parameters.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.Parameters%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L52">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L45">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Evaluator_Parameters_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Parameters*"></a>
   <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_Parameters" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Parameters">Parameters</h4>
-  <div class="markdown level1 summary"><p>Gets the dictionary of parameters.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the parameters.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Dictionary&lt;string, EvaluatorExpression&gt; Parameters { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, Expression&gt; Parameters { get; protected set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -315,17 +433,17 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="SpiceSharpParser.Common.EvaluatorExpression.html">EvaluatorExpression</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="SpiceSharpParser.Common.Evaluation.Expression.html">Expression</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_Registry.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.Registry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_Registry.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.Registry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L42">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L80">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Evaluator_Registry_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Registry*"></a>
   <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_Registry" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Registry">Registry</h4>
@@ -351,14 +469,45 @@
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_Seed.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.Seed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L70">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_Seed_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Seed*"></a>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_Seed" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Seed">Seed</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the random seed for the evaluator.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int? Seed { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_AddAction_System_String_System_String_System_Action_System_Double__.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.AddAction(System.String%2CSystem.String%2CSystem.Action%7BSystem.Double%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_AddAction_System_String_System_String_System_Action_System_Double__.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.AddAction(System.String%2CSystem.String%2CSystem.Action%7BSystem.Double%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L396">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L333">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Evaluator_AddAction_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.AddAction*"></a>
   <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_AddAction_System_String_System_String_System_Action_System_Double__" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.AddAction(System.String,System.String,System.Action{System.Double})">AddAction(String, String, Action&lt;Double&gt;)</h4>
@@ -401,19 +550,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_AddCustomFunction_System_String_System_Collections_Generic_List_System_String__System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.AddCustomFunction(System.String%2CSystem.Collections.Generic.List%7BSystem.String%7D%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_Clone_System_Boolean_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.Clone(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L216">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L253">View Source</a>
   </span>
-  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_AddCustomFunction_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.AddCustomFunction*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_AddCustomFunction_System_String_System_Collections_Generic_List_System_String__System_String_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.AddCustomFunction(System.String,System.Collections.Generic.List{System.String},System.String)">AddCustomFunction(String, List&lt;String&gt;, String)</h4>
-  <div class="markdown level1 summary"><p>Adds a new custom function.</p>
+  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_Clone_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Clone*"></a>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_Clone_System_Boolean_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Clone(System.Boolean)">Clone(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Clones the evaluator.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void AddCustomFunction(string name, List&lt;string&gt; arguments, string functionBody)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract IEvaluator Clone(bool deep)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -426,37 +575,44 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">name</span></td>
-        <td></td>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">deep</span></td>
+        <td><p>Specifies whether cloning is deep.</p>
+</td>
       </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.String</span>&gt;</td>
-        <td><span class="parametername">arguments</span></td>
-        <td></td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
+    </thead>
+    <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">functionBody</span></td>
-        <td></td>
+        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.IEvaluator.html">IEvaluator</a></td>
+        <td><p>A clone of evaluator.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_CreateChildEvaluator_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.CreateChildEvaluator(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_CreateChildEvaluator_System_String_System_Object_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.CreateChildEvaluator(System.String%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L296">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L244">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Evaluator_CreateChildEvaluator_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.CreateChildEvaluator*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_CreateChildEvaluator_System_String_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.CreateChildEvaluator(System.String)">CreateChildEvaluator(String)</h4>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_CreateChildEvaluator_System_String_System_Object_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.CreateChildEvaluator(System.String,System.Object)">CreateChildEvaluator(String, Object)</h4>
   <div class="markdown level1 summary"><p>Creates a child evaluator.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual IEvaluator CreateChildEvaluator(string name)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract IEvaluator CreateChildEvaluator(string name, object context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -471,6 +627,11 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -485,7 +646,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="SpiceSharpParser.Common.IEvaluator.html">IEvaluator</a></td>
+        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.IEvaluator.html">IEvaluator</a></td>
         <td><p>A new evaluator.</p>
 </td>
       </tr>
@@ -493,69 +654,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_CreateClonedEvaluator_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.CreateClonedEvaluator(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_EvaluateDouble_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.EvaluateDouble(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L320">View Source</a>
-  </span>
-  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_CreateClonedEvaluator_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.CreateClonedEvaluator*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_CreateClonedEvaluator_System_String_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.CreateClonedEvaluator(System.String)">CreateClonedEvaluator(String)</h4>
-  <div class="markdown level1 summary"><p>Clones the evaluator.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual IEvaluator CreateClonedEvaluator(string name)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>Name of cloned evaluator.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="SpiceSharpParser.Common.IEvaluator.html">IEvaluator</a></td>
-        <td><p>A reference to a clone evaluator.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_EvaluateDouble_System_String_System_Object_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.EvaluateDouble(System.String%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L62">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L94">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Evaluator_EvaluateDouble_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.EvaluateDouble*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_EvaluateDouble_System_String_System_Object_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.EvaluateDouble(System.String,System.Object)">EvaluateDouble(String, Object)</h4>
-  <div class="markdown level1 summary"><p>Evalues a specific string to double.</p>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_EvaluateDouble_System_String_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.EvaluateDouble(System.String)">EvaluateDouble(String)</h4>
+  <div class="markdown level1 summary"><p>Evaluates a specific expression to double.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double EvaluateDouble(string expression, object context = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public double EvaluateDouble(string expression)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -571,12 +682,6 @@
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">expression</span></td>
         <td><p>An expression to evaluate.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Object</span></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>Context of expression.</p>
 </td>
       </tr>
     </tbody>
@@ -599,10 +704,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_FindChildEvaluator_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.FindChildEvaluator(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_FindChildEvaluator_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.FindChildEvaluator(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L370">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L307">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Evaluator_FindChildEvaluator_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.FindChildEvaluator*"></a>
   <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_FindChildEvaluator_System_String_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.FindChildEvaluator(System.String)">FindChildEvaluator(String)</h4>
@@ -641,7 +746,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="SpiceSharpParser.Common.IEvaluator.html">IEvaluator</a></td>
+        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.IEvaluator.html">IEvaluator</a></td>
         <td><p>A reference to evaluator.</p>
 </td>
       </tr>
@@ -649,10 +754,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_GetExpression_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.GetExpression(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_GetExpression_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.GetExpression(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L285">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L233">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Evaluator_GetExpression_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.GetExpression*"></a>
   <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_GetExpression_System_String_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.GetExpression(System.String)">GetExpression(String)</h4>
@@ -699,10 +804,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_GetExpressionNames.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.GetExpressionNames%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_GetExpressionNames.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.GetExpressionNames%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L208">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L198">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Evaluator_GetExpressionNames_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.GetExpressionNames*"></a>
   <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_GetExpressionNames" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.GetExpressionNames">GetExpressionNames()</h4>
@@ -731,19 +836,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_GetExpressionValue_System_String_System_Object_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.GetExpressionValue(System.String%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_GetExpressionValue_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.GetExpressionValue(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L250">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L210">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Evaluator_GetExpressionValue_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.GetExpressionValue*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_GetExpressionValue_System_String_System_Object_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.GetExpressionValue(System.String,System.Object)">GetExpressionValue(String, Object)</h4>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_GetExpressionValue_System_String_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.GetExpressionValue(System.String)">GetExpressionValue(String)</h4>
   <div class="markdown level1 summary"><p>Gets value of named expression.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double GetExpressionValue(string expressionName, object context)</code></pre>
+    <pre><code class="lang-csharp hljs">public double GetExpressionValue(string expressionName)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -759,12 +864,6 @@
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">expressionName</span></td>
         <td><p>Name of expression</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Object</span></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>Context</p>
 </td>
       </tr>
     </tbody>
@@ -787,20 +886,36 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_GetParameterNames.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.GetParameterNames%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_GetFunctionsFromExpression_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.GetFunctionsFromExpression(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L113">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L138">View Source</a>
   </span>
-  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_GetParameterNames_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.GetParameterNames*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_GetParameterNames" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.GetParameterNames">GetParameterNames()</h4>
-  <div class="markdown level1 summary"><p>Gets the names of parameters.</p>
-</div>
+  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_GetFunctionsFromExpression_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.GetFunctionsFromExpression*"></a>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_GetFunctionsFromExpression_System_String_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.GetFunctionsFromExpression(System.String)">GetFunctionsFromExpression(String)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;string&gt; GetParameterNames()</code></pre>
+    <pre><code class="lang-csharp hljs">public ICollection&lt;string&gt; GetFunctionsFromExpression(string expression)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">expression</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -811,50 +926,17 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
-        <td><p>The names of paramaters.</p>
-</td>
+        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_GetParameters.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.GetParameters%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_GetParametersFromExpression_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.GetParametersFromExpression(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L78">View Source</a>
-  </span>
-  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_GetParameters_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.GetParameters*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_GetParameters" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.GetParameters">GetParameters()</h4>
-  <div class="markdown level1 summary"><p>Returns names of all parameters.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;string&gt; GetParameters()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
-        <td><p>True if there is parameter.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_GetParametersFromExpression_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.GetParametersFromExpression(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L125">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L127">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Evaluator_GetParametersFromExpression_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.GetParametersFromExpression*"></a>
   <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_GetParametersFromExpression_System_String_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.GetParametersFromExpression(System.String)">GetParametersFromExpression(String)</h4>
@@ -901,19 +983,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_GetParameterValue_System_String_System_Object_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.GetParameterValue(System.String%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_GetParameterValue_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.GetParameterValue(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L102">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L115">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Evaluator_GetParameterValue_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.GetParameterValue*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_GetParameterValue_System_String_System_Object_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.GetParameterValue(System.String,System.Object)">GetParameterValue(String, Object)</h4>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_GetParameterValue_System_String_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.GetParameterValue(System.String)">GetParameterValue(String)</h4>
   <div class="markdown level1 summary"><p>Gets the value of parameter.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double GetParameterValue(string parameterName, object context)</code></pre>
+    <pre><code class="lang-csharp hljs">public double GetParameterValue(string id)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -927,14 +1009,9 @@
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">parameterName</span></td>
-        <td><p>A parameter name.</p>
+        <td><span class="parametername">id</span></td>
+        <td><p>A parameter identifier.</p>
 </td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Object</span></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
       </tr>
     </tbody>
   </table>
@@ -956,19 +1033,65 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_HasExpression_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.HasExpression(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_Initialize_System_Collections_Generic_Dictionary_System_String_SpiceSharpParser_Common_Evaluation_Expression__System_Collections_Generic_Dictionary_System_String_SpiceSharpParser_Common_Evaluation_Function__System_Collections_Generic_List_SpiceSharpParser_Common_Evaluation_IEvaluator__.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.Initialize(System.Collections.Generic.Dictionary%7BSystem.String%2CSpiceSharpParser.Common.Evaluation.Expression%7D%2CSystem.Collections.Generic.Dictionary%7BSystem.String%2CSpiceSharpParser.Common.Evaluation.Function%7D%2CSystem.Collections.Generic.List%7BSpiceSharpParser.Common.Evaluation.IEvaluator%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L262">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L261">View Source</a>
   </span>
-  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_HasExpression_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.HasExpression*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_HasExpression_System_String_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.HasExpression(System.String)">HasExpression(String)</h4>
-  <div class="markdown level1 summary"><p>Checks whether expression exists.</p>
+  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_Initialize_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Initialize*"></a>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_Initialize_System_Collections_Generic_Dictionary_System_String_SpiceSharpParser_Common_Evaluation_Expression__System_Collections_Generic_Dictionary_System_String_SpiceSharpParser_Common_Evaluation_Function__System_Collections_Generic_List_SpiceSharpParser_Common_Evaluation_IEvaluator__" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.Initialize(System.Collections.Generic.Dictionary{System.String,SpiceSharpParser.Common.Evaluation.Expression},System.Collections.Generic.Dictionary{System.String,SpiceSharpParser.Common.Evaluation.Function},System.Collections.Generic.List{SpiceSharpParser.Common.Evaluation.IEvaluator})">Initialize(Dictionary&lt;String, Expression&gt;, Dictionary&lt;String, Function&gt;, List&lt;IEvaluator&gt;)</h4>
+  <div class="markdown level1 summary"><p>Initializes the evaluator.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool HasExpression(string expressionName)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Initialize(Dictionary&lt;string, Expression&gt; parameters, Dictionary&lt;string, Function&gt; functions, List&lt;IEvaluator&gt; children)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="SpiceSharpParser.Common.Evaluation.Expression.html">Expression</a>&gt;</td>
+        <td><span class="parametername">parameters</span></td>
+        <td><p>Parameters to use.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="SpiceSharpParser.Common.Evaluation.Function.html">Function</a>&gt;</td>
+        <td><span class="parametername">functions</span></td>
+        <td><p>Functions to use.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="SpiceSharpParser.Common.Evaluation.IEvaluator.html">IEvaluator</a>&gt;</td>
+        <td><span class="parametername">children</span></td>
+        <td><p>Child evaluator to use.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_IsConstantExpression_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.IsConstantExpression(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L151">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_IsConstantExpression_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.IsConstantExpression*"></a>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_IsConstantExpression_System_String_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.IsConstantExpression(System.String)">IsConstantExpression(String)</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether an expression has a constant value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsConstantExpression(string expression)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -982,8 +1105,8 @@
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">expressionName</span></td>
-        <td><p>Name of expression.</p>
+        <td><span class="parametername">expression</span></td>
+        <td><p>An expression.</p>
 </td>
       </tr>
     </tbody>
@@ -999,92 +1122,26 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><p>True if expression exists with given name.</p>
+        <td><p>A value indicating whether an expression has a constant value.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_HasParameter_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.HasParameter(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_RefreshForParameter_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.RefreshForParameter(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L90">View Source</a>
-  </span>
-  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_HasParameter_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.HasParameter*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_HasParameter_System_String_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.HasParameter(System.String)">HasParameter(String)</h4>
-  <div class="markdown level1 summary"><p>Returns a value indicating whether there is a parameter in evaluator with given name.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool HasParameter(string parameterName)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">parameterName</span></td>
-        <td><p>A parameter name.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><p>True if there is parameter.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_InvalidateParameters.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.InvalidateParameters%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L134">View Source</a>
-  </span>
-  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_InvalidateParameters_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.InvalidateParameters*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_InvalidateParameters" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.InvalidateParameters">InvalidateParameters()</h4>
-  <div class="markdown level1 summary"><p>Invalidates paramters.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void InvalidateParameters()</code></pre>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_RefreshForParameter_System_String_System_Object_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.RefreshForParameter(System.String%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L351">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L288">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Evaluator_RefreshForParameter_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.RefreshForParameter*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_RefreshForParameter_System_String_System_Object_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.RefreshForParameter(System.String,System.Object)">RefreshForParameter(String, Object)</h4>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_RefreshForParameter_System_String_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.RefreshForParameter(System.String)">RefreshForParameter(String)</h4>
   <div class="markdown level1 summary"><p>Refreshes parameter.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void RefreshForParameter(string parameterName, object context)</code></pre>
+    <pre><code class="lang-csharp hljs">public void RefreshForParameter(string parameterName)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1102,19 +1159,14 @@
         <td><p>Parameter name.</p>
 </td>
       </tr>
-      <tr>
-        <td><span class="xref">System.Object</span></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_SetNamedExpression_System_String_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.SetNamedExpression(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_SetNamedExpression_System_String_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.SetNamedExpression(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L272">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L220">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Evaluator_SetNamedExpression_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.SetNamedExpression*"></a>
   <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_SetNamedExpression_System_String_System_String_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.SetNamedExpression(System.String,System.String)">SetNamedExpression(String, String)</h4>
@@ -1151,19 +1203,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_SetParameter_System_String_System_Double_System_Object_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.SetParameter(System.String%2CSystem.Double%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_SetParameter_System_String_System_Double_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.SetParameter(System.String%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L169">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L162">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Evaluator_SetParameter_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.SetParameter*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_SetParameter_System_String_System_Double_System_Object_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.SetParameter(System.String,System.Double,System.Object)">SetParameter(String, Double, Object)</h4>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_SetParameter_System_String_System_Double_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.SetParameter(System.String,System.Double)">SetParameter(String, Double)</h4>
   <div class="markdown level1 summary"><p>Sets the parameter.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetParameter(string parameterName, double value, object context = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public void SetParameter(string id, double value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1177,7 +1229,7 @@
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">parameterName</span></td>
+        <td><span class="parametername">id</span></td>
         <td><p>A name of parameter.</p>
 </td>
       </tr>
@@ -1187,28 +1239,23 @@
         <td><p>A value of parameter.</p>
 </td>
       </tr>
-      <tr>
-        <td><span class="xref">System.Object</span></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_SetParameter_System_String_System_String_System_Object_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.SetParameter(System.String%2CSystem.String%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_SetParameter_System_String_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.SetParameter(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L186">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L179">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Evaluator_SetParameter_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.SetParameter*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_SetParameter_System_String_System_String_System_Object_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.SetParameter(System.String,System.String,System.Object)">SetParameter(String, String, Object)</h4>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_SetParameter_System_String_System_String_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.SetParameter(System.String,System.String)">SetParameter(String, String)</h4>
   <div class="markdown level1 summary"><p>Sets the parameter.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetParameter(string parameterName, string expressionString, object context = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public void SetParameter(string id, string expression)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1222,60 +1269,21 @@
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">parameterName</span></td>
+        <td><span class="parametername">id</span></td>
         <td><p>A name of parameter.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">expressionString</span></td>
+        <td><span class="parametername">expression</span></td>
         <td><p>An expression of parameter.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Object</span></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator_SetParameters_System_Collections_Generic_Dictionary_System_String_System_String__.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator.SetParameters(System.Collections.Generic.Dictionary%7BSystem.String%2CSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L147">View Source</a>
-  </span>
-  <a id="SpiceSharpParser_Common_Evaluation_Evaluator_SetParameters_" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.SetParameters*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Evaluator_SetParameters_System_Collections_Generic_Dictionary_System_String_System_String__" data-uid="SpiceSharpParser.Common.Evaluation.Evaluator.SetParameters(System.Collections.Generic.Dictionary{System.String,System.String})">SetParameters(Dictionary&lt;String, String&gt;)</h4>
-  <div class="markdown level1 summary"><p>Sets parameters.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetParameters(Dictionary&lt;string, string&gt; parameters)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;</td>
-        <td><span class="parametername">parameters</span></td>
-        <td><p>Parameters to set.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="SpiceSharpParser.Common.IEvaluator.html">IEvaluator</a>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.IEvaluator.html">IEvaluator</a>
   </div>
 </article>
           </div>
@@ -1285,10 +1293,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Evaluator.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Evaluator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L9" class="contribution-link">View Source</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/Evaluation/Evaluator.cs/#L11" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

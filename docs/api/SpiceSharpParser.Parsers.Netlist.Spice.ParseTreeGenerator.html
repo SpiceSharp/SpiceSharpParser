@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ParseTreeGenerator
    ">
-    <meta name="generator" content="docfx 2.37.0.0">
+    <meta name="generator" content="docfx 2.39.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -74,7 +74,7 @@
   <h1 id="SpiceSharpParser_Parsers_Netlist_Spice_ParseTreeGenerator" data-uid="SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeGenerator" class="text-break">Class ParseTreeGenerator
   </h1>
   <div class="markdown level0 summary"><p>A parser tree generator for Spice netlist based on grammar from SpiceGrammar.txt.
-It's a manualy written LL(*) parser.</p>
+It's a hand written LL(*) parser.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -116,19 +116,19 @@ It's a manualy written LL(*) parser.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Parsers_Netlist_Spice_ParseTreeGenerator__ctor_System_Boolean_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeGenerator.%23ctor(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Parsers_Netlist_Spice_ParseTreeGenerator__ctor_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeGenerator.%23ctor(System.Boolean%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Parsers/Netlist/Spice/ParseTreeGenerator.cs/#L19">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Parsers/Netlist/Spice/Internals/ParseTreeGenerator.cs/#L20">View Source</a>
   </span>
   <a id="SpiceSharpParser_Parsers_Netlist_Spice_ParseTreeGenerator__ctor_" data-uid="SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeGenerator.#ctor*"></a>
-  <h4 id="SpiceSharpParser_Parsers_Netlist_Spice_ParseTreeGenerator__ctor_System_Boolean_" data-uid="SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeGenerator.#ctor(System.Boolean)">ParseTreeGenerator(Boolean)</h4>
+  <h4 id="SpiceSharpParser_Parsers_Netlist_Spice_ParseTreeGenerator__ctor_System_Boolean_System_Boolean_" data-uid="SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeGenerator.#ctor(System.Boolean,System.Boolean)">ParseTreeGenerator(Boolean, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeGenerator.html">ParseTreeGenerator</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ParseTreeGenerator(bool isNewLineRequiredAtTheEnd = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public ParseTreeGenerator(bool isNewLineRequiredAtTheEnd, bool isDotStatementNameCaseSensitive)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -143,40 +143,14 @@ It's a manualy written LL(*) parser.</p>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">isNewLineRequiredAtTheEnd</span></td>
-        <td><p>Is NEWLINE required at the end?</p>
+        <td><p>Is NEWLINE required at the end.</p>
 </td>
       </tr>
-    </tbody>
-  </table>
-  <h3 id="properties">Properties
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Parsers_Netlist_Spice_ParseTreeGenerator_IsNewLineRequiredAtTheEnd.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeGenerator.IsNewLineRequiredAtTheEnd%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Parsers/Netlist/Spice/ParseTreeGenerator.cs/#L46">View Source</a>
-  </span>
-  <a id="SpiceSharpParser_Parsers_Netlist_Spice_ParseTreeGenerator_IsNewLineRequiredAtTheEnd_" data-uid="SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeGenerator.IsNewLineRequiredAtTheEnd*"></a>
-  <h4 id="SpiceSharpParser_Parsers_Netlist_Spice_ParseTreeGenerator_IsNewLineRequiredAtTheEnd" data-uid="SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeGenerator.IsNewLineRequiredAtTheEnd">IsNewLineRequiredAtTheEnd</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected bool IsNewLineRequiredAtTheEnd { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td></td>
+        <td><span class="parametername">isDotStatementNameCaseSensitive</span></td>
+        <td><p>Are dot statements case-sensitive.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -184,10 +158,10 @@ It's a manualy written LL(*) parser.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Parsers_Netlist_Spice_ParseTreeGenerator_GetParseTree_SpiceSharpParser_Lexers_Netlist_Spice_SpiceToken___System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeGenerator.GetParseTree(SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken%5B%5D%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Parsers_Netlist_Spice_ParseTreeGenerator_GetParseTree_SpiceSharpParser_Lexers_Netlist_Spice_SpiceToken___System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeGenerator.GetParseTree(SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken%5B%5D%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Parsers/Netlist/Spice/ParseTreeGenerator.cs/#L56">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Parsers/Netlist/Spice/Internals/ParseTreeGenerator.cs/#L60">View Source</a>
   </span>
   <a id="SpiceSharpParser_Parsers_Netlist_Spice_ParseTreeGenerator_GetParseTree_" data-uid="SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeGenerator.GetParseTree*"></a>
   <h4 id="SpiceSharpParser_Parsers_Netlist_Spice_ParseTreeGenerator_GetParseTree_SpiceSharpParser_Lexers_Netlist_Spice_SpiceToken___System_String_" data-uid="SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeGenerator.GetParseTree(SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken[],System.String)">GetParseTree(SpiceToken[], String)</h4>
@@ -246,10 +220,10 @@ It's a manualy written LL(*) parser.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Parsers_Netlist_Spice_ParseTreeGenerator.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeGenerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Parsers_Netlist_Spice_ParseTreeGenerator.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeGenerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Parsers/Netlist/Spice/ParseTreeGenerator.cs/#L11" class="contribution-link">View Source</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Parsers/Netlist/Spice/Internals/ParseTreeGenerator.cs/#L11" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

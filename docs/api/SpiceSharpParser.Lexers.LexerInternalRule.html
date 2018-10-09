@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class LexerInternalRule
    ">
-    <meta name="generator" content="docfx 2.37.0.0">
+    <meta name="generator" content="docfx 2.39.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -73,7 +73,7 @@
   
   <h1 id="SpiceSharpParser_Lexers_LexerInternalRule" data-uid="SpiceSharpParser.Lexers.LexerInternalRule" class="text-break">Class LexerInternalRule
   </h1>
-  <div class="markdown level0 summary"><p>Internal rule of lexer. It is use for creating common regular expression to use with LexerTokeRules</p>
+  <div class="markdown level0 summary"><p>Internal rule of lexer. It is use for creating common regular expression to use with LexerTokeRules.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -85,10 +85,10 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="SpiceSharpParser.Lexers.LexerRule.html#SpiceSharpParser_Lexers_LexerRule_Name">LexerRule.Name</a>
+      <a class="xref" href="SpiceSharpParser.Lexers.LexerRule.html#SpiceSharpParser_Lexers_LexerRule_IgnoreCase">LexerRule.IgnoreCase</a>
     </div>
     <div>
-      <a class="xref" href="SpiceSharpParser.Lexers.LexerRule.html#SpiceSharpParser_Lexers_LexerRule_IgnoreCase">LexerRule.IgnoreCase</a>
+      <a class="xref" href="SpiceSharpParser.Lexers.LexerRule.html#SpiceSharpParser_Lexers_LexerRule_Name">LexerRule.Name</a>
     </div>
     <div>
       <a class="xref" href="SpiceSharpParser.Lexers.LexerRule.html#SpiceSharpParser_Lexers_LexerRule_RegularExpressionPattern">LexerRule.RegularExpressionPattern</a>
@@ -128,19 +128,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerInternalRule__ctor_System_String_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerInternalRule.%23ctor(System.String%2CSystem.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerInternalRule__ctor_System_String_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerInternalRule.%23ctor(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexers/LexerInternalRule.cs/#L14">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerInternalRule.cs/#L13">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerInternalRule__ctor_" data-uid="SpiceSharpParser.Lexers.LexerInternalRule.#ctor*"></a>
-  <h4 id="SpiceSharpParser_Lexers_LexerInternalRule__ctor_System_String_System_String_System_Boolean_" data-uid="SpiceSharpParser.Lexers.LexerInternalRule.#ctor(System.String,System.String,System.Boolean)">LexerInternalRule(String, String, Boolean)</h4>
+  <h4 id="SpiceSharpParser_Lexers_LexerInternalRule__ctor_System_String_System_String_" data-uid="SpiceSharpParser.Lexers.LexerInternalRule.#ctor(System.String,System.String)">LexerInternalRule(String, String)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="SpiceSharpParser.Lexers.LexerInternalRule.html">LexerInternalRule</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public LexerInternalRule(string ruleName, string regularExpression, bool ignoreCase)</code></pre>
+    <pre><code class="lang-csharp hljs">public LexerInternalRule(string ruleName, string regularExpression)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -155,19 +155,13 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">ruleName</span></td>
-        <td><p>Name of the rule</p>
+        <td><p>Name of the rule.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">regularExpression</span></td>
-        <td><p>Regular expression</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">ignoreCase</span></td>
-        <td><p>Ignore case</p>
+        <td><p>Regular expression.</p>
 </td>
       </tr>
     </tbody>
@@ -176,14 +170,14 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerInternalRule_Clone.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerInternalRule.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerInternalRule_Clone.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerInternalRule.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexers/LexerInternalRule.cs/#L25">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerInternalRule.cs/#L24">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerInternalRule_Clone_" data-uid="SpiceSharpParser.Lexers.LexerInternalRule.Clone*"></a>
   <h4 id="SpiceSharpParser_Lexers_LexerInternalRule_Clone" data-uid="SpiceSharpParser.Lexers.LexerInternalRule.Clone">Clone()</h4>
-  <div class="markdown level1 summary"><p>Clones the current instance</p>
+  <div class="markdown level1 summary"><p>Clones the current instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -201,7 +195,7 @@
     <tbody>
       <tr>
         <td><a class="xref" href="SpiceSharpParser.Lexers.LexerRule.html">LexerRule</a></td>
-        <td><p>A new instance of <a class="xref" href="SpiceSharpParser.Lexers.LexerInternalRule.html">LexerInternalRule</a></p>
+        <td><p>A new instance of <a class="xref" href="SpiceSharpParser.Lexers.LexerInternalRule.html">LexerInternalRule</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -216,10 +210,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerInternalRule.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerInternalRule%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerInternalRule.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerInternalRule%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/SpiceSharp/SpiceSharp-Parser/blob/master/src/SpiceSharpParser/Lexers/LexerInternalRule.cs/#L6" class="contribution-link">View Source</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerInternalRule.cs/#L6" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
