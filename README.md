@@ -1,6 +1,11 @@
 # <img src="https://spicesharp.github.io/SpiceSharp/api/images/logo_full.svg" width="45px" /> Spice#/SpiceSharpParser
 SpiceSharpParser is a .NET library that enables to simulate electronics circuits defined by Spice netlists.
 
+## Installation
+
+SpiceSharpParser is available as NuGet Package 
+[<img src="https://img.shields.io/nuget/vpre/SpiceSharp-Parser.svg">]( https://www.nuget.org/packages/SpiceSharp-Parser)
+
 ## Quickstart
 
 Parsing a netlist and executing a simulation is relatively straightforward. For example:
@@ -35,13 +40,6 @@ RLC, Switches, Voltage and current sources, BJT, Diodes, Mosfets
 |:---|----------------:|
 |**Windows**|[![Build status](https://ci.appveyor.com/api/projects/status/d8tpj2hm3hcullmw/branch/master?svg=true)](https://ci.appveyor.com/project/marcin-golebiowski/spicesharpparser/branch/master)|
 |**Linux**|[![Build status](https://travis-ci.org/SpiceSharp/SpiceSharpParser.svg?branch=master)](https://travis-ci.org/SpiceSharp/SpiceSharpParser?branch=master)|
-
-
-## Installation
-
-SpiceSharpParser is available as NuGet Package 
-[<img src="https://img.shields.io/nuget/vpre/SpiceSharp-Parser.svg">]( https://www.nuget.org/packages/SpiceSharp-Parser)
-
 
 ## Documentation
 Documentation for API on SpiceSharpParser is available at <https://spicesharp.github.io/SpiceSharpParser/api/index.html>.
