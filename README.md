@@ -21,14 +21,6 @@ var spiceSharpModel = parseResult.SpiceSharpModel;
 var simulation = spiceSharpModel.Simulations.Single();
 simulation.Run(spiceSharpModel.Circuit);            
 ```
-## Features
-### Parsing dot statments
-.GLOBAL, .LET, .NODESET, .PARAM (with user functions), .OPTIONS, .SAVE, .PLOT, .IC, .TRAN, .AC, .OP, .NOISE, .DC, .SUBCKT, .INCLUDE
-.APPENDMODEL, .TEMP, .LIB,  .IF/.ELSE/.ENDIF, .ST, .FUNC, .STEP, * .PRINT, .MC
-### Parsing components:
-RLC, Switches, Voltage and current sources, BJT, Diodes, Mosfets
-
-### [Supported Spice grammar](https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Parsers/Netlist/Spice/SpiceGrammarBNF.txt)
 
 ## Build status
 
