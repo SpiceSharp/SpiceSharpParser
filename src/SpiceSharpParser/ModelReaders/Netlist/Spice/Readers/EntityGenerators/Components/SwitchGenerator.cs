@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using SpiceSharp;
-using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
@@ -12,29 +11,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class SwitchGenerator : ComponentGenerator
     {
-        public override SpiceSharp.Components.Component Generate(Identifier componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
-        {
-            switch (type)
-            {
-                case "s": return GenerateVoltageSwitch(componentIdentifier.ToString(), parameters, context);
-                case "w": return GenerateCurrentSwitch(componentIdentifier.ToString(), parameters, context);
-            }
-
-            return null;
-        }
-
         /// <summary>
         /// Gets generated types.
         /// </summary>
         /// <returns>
         /// Generated types.
         /// </returns>
-        public override IEnumerable<string> GeneratedTypes
+        public override IEnumerable<string> GeneratedTypes => new List<string> { "s", "w" };
+
+        public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
-            get
+            switch (type.ToLower())
             {
-                return new List<string> { "s", "w" };
+                case "s": return GenerateVoltageSwitch(componentIdentifier, parameters, context);
+                case "w": return GenerateCurrentSwitch(componentIdentifier, parameters, context);
             }
+
+            return null;
         }
 
         /// <summary>
@@ -113,7 +106,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             // Get the controlling voltage source
             if (parameters[2] is WordParameter || parameters[2] is IdentifierParameter)
             {
-                csw.ControllingName = new StringIdentifier(parameters.GetString(2));
+                csw.ControllingName = context.ComponentNameGenerator.Generate(parameters.GetString(2));
             }
             else
             {

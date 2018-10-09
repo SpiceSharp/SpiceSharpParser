@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
@@ -14,9 +16,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Initializes a new instance of the <see cref="StochasticModelsRegistry"/> class.
         /// </summary>
         /// <param name="modelNamesGenerators">The enumerable of model name generators.</param>
-        public StochasticModelsRegistry(IEnumerable<IObjectNameGenerator> modelNamesGenerators)
+        public StochasticModelsRegistry(IEnumerable<IObjectNameGenerator> modelNamesGenerators, bool isModelNameCaseSensitive)
         {
             ModelNamesGenerators = modelNamesGenerators ?? throw new ArgumentNullException(nameof(modelNamesGenerators));
+
+            AllModels = new Dictionary<string, Entity>(StringComparerProvider.Get(isModelNameCaseSensitive));
         }
 
         /// <summary>
@@ -42,7 +46,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets or sets the list of all models in the registry.
         /// </summary>
-        protected List<Entity> AllModels { get; set; } = new List<Entity>();
+        protected Dictionary<string, Entity> AllModels { get; set; }
 
         /// <summary>
         /// Gets the object model name generators.
@@ -106,7 +110,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         {
             if (ModelsGenerators.ContainsKey(model))
             {
-                var modelForComponent = ModelsGenerators[model](model.Name + "_" + component.Name);
+                string modelId = string.Format("{0}#{1}", model.Name, component.Name);
+                var modelForComponent = ModelsGenerators[model](modelId);
 
                 if (!StochasticModels.ContainsKey(model))
                 {
@@ -120,7 +125,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return model;
         }
 
-       
         /// <summary>
         /// Gets the stochastic models.
         /// </summary>
@@ -154,8 +158,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         /// <param name="model">A model to register.</param>
         public void RegisterModelInstance(SpiceSharp.Components.Model model)
-        { 
-            AllModels.Add(model);
+        {
+            AllModels[model.Name] = model;
         }
 
         /// <summary>
@@ -187,13 +191,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             setModelAction((T)ProvideStochasticModel(entity, model));
         }
 
-        public T FindModel<T>(string modelName) where T: SpiceSharp.Components.Model
+        public T FindModel<T>(string modelName)
+            where T : SpiceSharp.Components.Model
         {
             foreach (var generator in ModelNamesGenerators)
             {
                 var modelNameToSearch = generator.Generate(modelName);
-                var model = AllModels.SingleOrDefault(p => p.Name.ToString() == modelNameToSearch);
-                if (model != null)
+
+                if (AllModels.TryGetValue(modelNameToSearch, out var model))
                 {
                     return (T)model;
                 }

@@ -11,14 +11,14 @@ namespace SpiceSharpParser.Lexers
     public class LexerGrammarBuilder<TLexerState>
         where TLexerState : LexerState
     {
-        private List<LexerRule> rules = new List<LexerRule>();
+        private List<LexerRule> _rules = new List<LexerRule>();
 
         /// <summary>
         /// Clears the builder.
         /// </summary>
         public void Clear()
         {
-            rules.Clear();
+            _rules.Clear();
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace SpiceSharpParser.Lexers
         /// </param>
         public void AddRule(LexerRule rule)
         {
-            rules.Add(rule);
+            _rules.Add(rule);
         }
 
         /// <summary>
@@ -42,13 +42,13 @@ namespace SpiceSharpParser.Lexers
         {
             var tokenRules = new List<LexerTokenRule<TLexerState>>();
 
-            foreach (var lexerTokenRule in rules.Where(
+            foreach (var lexerTokenRule in _rules.Where(
                 rule => rule.GetType().GetTypeInfo().IsGenericType
                 && rule.GetType().GetGenericTypeDefinition() == typeof(LexerTokenRule<>)))
             {
                 var lexerTokenRuleCloned = lexerTokenRule.Clone() as LexerTokenRule<TLexerState>;
 
-                foreach (var privateTokenRule in rules.Where(rule => rule is LexerInternalRule))
+                foreach (var privateTokenRule in _rules.Where(rule => rule is LexerInternalRule))
                 {
                     lexerTokenRuleCloned.RegularExpressionPattern = lexerTokenRuleCloned.RegularExpressionPattern.Replace($"<{privateTokenRule.Name}>", privateTokenRule.RegularExpressionPattern);
                 }

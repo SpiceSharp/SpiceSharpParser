@@ -16,14 +16,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <param name="simulation">Simulation</param>
         /// <param name="node">Positive node</param>
         /// <param name="reference">Negative reference node</param>
-        public VoltageImaginaryExport(string name, Simulation simulation, Identifier node, Identifier reference = null)
+        public VoltageImaginaryExport(string name, Simulation simulation, string node, string reference = null)
             : base(simulation)
         {
             Name = name ?? throw new System.ArgumentNullException(nameof(name));
             Node = node ?? throw new System.ArgumentNullException(nameof(node));
             Reference = reference;
 
-            ExportImpl = new ComplexVoltageExport(simulation, node, reference);
+            ExportImpl = new ComplexVoltageExport((FrequencySimulation)simulation, node, reference);
         }
 
         /// <summary>
@@ -39,12 +39,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <summary>
         /// Gets the main node
         /// </summary>
-        public Identifier Node { get; }
+        public string Node { get; }
 
         /// <summary>
         /// Gets the reference node
         /// </summary>
-        public Identifier Reference { get; }
+        public string Reference { get; }
 
         /// <summary>
         /// Gets the complex voltage export that provide voltage imaginary value

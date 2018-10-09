@@ -9,10 +9,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
     public class GlobalControl : BaseControl
     {
         /// <summary>
-        /// Reads <see cref="Control"/> statement and modifies the context
+        /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modify</param>
+        /// <param name="statement">A statement to process.</param>
+        /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
             foreach (var param in statement.Parameters)

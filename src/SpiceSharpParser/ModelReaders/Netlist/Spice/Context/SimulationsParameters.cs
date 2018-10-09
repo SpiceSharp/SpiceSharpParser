@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
+    using System.Collections.Concurrent;
+
     public class SimulationEventArgs: EventArgs
     {
         public BaseSimulation Simulation { get; set; }
@@ -17,6 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         protected Dictionary<Simulation, Dictionary<Entity, Dictionary<string, List<EventHandler<LoadStateEventArgs>>>>> BeforeTemperature = new Dictionary<Simulation, Dictionary<Entity, Dictionary<string, List<EventHandler<LoadStateEventArgs>>>>>();
         protected Dictionary<Simulation, Dictionary<Entity, Dictionary<string, int>>> BeforeLoadsOrder = new Dictionary<Simulation, Dictionary<Entity, Dictionary<string, int>>>();
         protected Dictionary<Simulation, Dictionary<Entity, Dictionary<string, int>>> BeforeTemperatureOrder = new Dictionary<Simulation, Dictionary<Entity, Dictionary<string, int>>>();
+        protected ConcurrentDictionary<string, Parameter<double>> SimulationEntityParametersCache = new ConcurrentDictionary<string, Parameter<double>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SimulationsParameters"/> class.
@@ -36,37 +39,42 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             SimulationCreated?.Invoke(this, new SimulationEventArgs() { Simulation = simulation });
         }
 
-        public void SetICVoltage(string nodeName, string voltageExpression)
+        public void SetICVoltage(string nodeId, string voltageExpression)
         {
             SimulationCreated += (object sender, SimulationEventArgs args) =>
             {
                 var value = Evaluators.EvaluateDouble(voltageExpression, args.Simulation);
-                args.Simulation.Nodes.InitialConditions[nodeName] = value;
+
+                if (args.Simulation is TimeSimulation ts)
+                {
+                    ts.Configurations.Get<TimeConfiguration>().InitialConditions[nodeId] = value;
+                }
             };
         }
 
-        public void SetNodeSetVoltage(string nodeName, string expression)
+        public void SetNodeSetVoltage(string nodeId, string expression)
         {
             SimulationCreated += (object sender, SimulationEventArgs args) =>
             {
-               args.Simulation.Nodes.NodeSets[nodeName] = Evaluators.EvaluateDouble(expression, args.Simulation);
+                var value = Evaluators.EvaluateDouble(expression, args.Simulation);
+                args.Simulation.Configurations.Get<BaseConfiguration>().Nodesets[nodeId] = value;
             };
         }
 
-        public void SetParameter(Entity @object, string paramName, string expression, int order, bool onload = true)
+        public void SetParameter(Entity @object, string paramName, string expression, int order, bool onload = true, IEqualityComparer<string> comparer = null)
         {
             SimulationCreated += (object sender, SimulationEventArgs args) =>
             {
                 if (onload)
                 {
-                    UpdateParameterBeforeLoad(paramName, @object, expression, args.Simulation, order);
+                    UpdateParameterBeforeLoad(paramName, @object, expression, args.Simulation, order, comparer);
                 }
 
-                UpdateParameterBeforeTemperature(paramName, @object, expression, args.Simulation, order);
+                UpdateParameterBeforeTemperature(paramName, @object, expression, args.Simulation, order, comparer);
             };
         }
 
-        public void SetParameter(Entity @object, string paramName, string expression, BaseSimulation simulation, int order, bool onload = true)
+        public void SetParameter(Entity @object, string paramName, string expression, BaseSimulation simulation, int order, bool onload = true, IEqualityComparer<string> comparer = null)
         {
             if (simulation == null)
             {
@@ -75,35 +83,26 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             if (onload)
             {
-                UpdateParameterBeforeLoad(paramName, @object, expression, simulation, order);
+                UpdateParameterBeforeLoad(paramName, @object, expression, simulation, order, comparer);
             }
 
-            UpdateParameterBeforeTemperature(paramName, @object, expression, simulation, order);
+            UpdateParameterBeforeTemperature(paramName, @object, expression, simulation, order, comparer);
         }
 
-        public void SetParameter(Entity @object, string paramName, double value, int order)
-        {
-            SimulationCreated += (object sender, SimulationEventArgs args) =>
-            {
-                UpdateParameterBeforeLoad(paramName, @object, value, args.Simulation, order);
-                UpdateParameterBeforeTemperature(paramName, @object, value, args.Simulation, order);
-            };
-        }
-
-        public void SetParameter(Entity @object, string paramName, double value, BaseSimulation simulation, int order)
+        public void SetParameter(Entity @object, string paramName, double value, BaseSimulation simulation, int order, IEqualityComparer<string> comparer = null)
         {
             if (simulation == null)
             {
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            UpdateParameterBeforeLoad(paramName, @object, value, simulation, order);
-            UpdateParameterBeforeTemperature(paramName, @object, value, simulation, order);
+            UpdateParameterBeforeLoad(paramName, @object, value, simulation, order, comparer);
+            UpdateParameterBeforeTemperature(paramName, @object, value, simulation, order, comparer);
         }
 
-        private void UpdateParameterBeforeTemperature(string paramName, Entity @object, string expression, BaseSimulation simulation, int order)
+        private void UpdateParameterBeforeTemperature(string paramName, Entity @object, string expression, BaseSimulation simulation, int order, IEqualityComparer<string> comparer)
         {
-            InitBeforeTempueratureDictionaries(paramName, @object, simulation);
+            InitBeforeTemperatureDictionaries(paramName, @object, simulation, comparer);
 
             if (BeforeTemperatureOrder[simulation][@object][paramName] > order)
             {
@@ -116,15 +115,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 BeforeTemperature[simulation][@object][paramName].Clear();
             }
 
-            EventHandler<LoadStateEventArgs> handler = CreateUpdateHandler(paramName, @object, expression, simulation);
+            EventHandler<LoadStateEventArgs> handler = CreateUpdateHandler(paramName, @object, expression, simulation, comparer);
             BeforeTemperatureOrder[simulation][@object][paramName] = order;
             BeforeTemperature[simulation][@object][paramName].Add(handler);
             simulation.BeforeTemperature += handler;
         }
 
-        private void UpdateParameterBeforeTemperature(string paramName, Entity @object, double value, BaseSimulation simulation, int order)
+        private void UpdateParameterBeforeTemperature(string paramName, Entity @object, double value, BaseSimulation simulation, int order, IEqualityComparer<string> comparer)
         {
-            InitBeforeTempueratureDictionaries(paramName, @object, simulation);
+            InitBeforeTemperatureDictionaries(paramName, @object, simulation, comparer);
             if (BeforeTemperatureOrder[simulation][@object][paramName] > order)
             {
                 return;
@@ -138,14 +137,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             BeforeTemperatureOrder[simulation][@object][paramName] = order;
 
-            EventHandler<LoadStateEventArgs> handler = CreateUpdateHandler(paramName, @object, value, simulation);
+            EventHandler<LoadStateEventArgs> handler = CreateUpdateHandler(paramName, @object, value, simulation, comparer);
             BeforeTemperature[simulation][@object][paramName].Add(handler);
             simulation.BeforeTemperature += handler;
         }
 
-        private void UpdateParameterBeforeLoad(string paramName, Entity @object, string expression, BaseSimulation simulation, int order)
+        private void UpdateParameterBeforeLoad(string paramName, Entity @object, string expression, BaseSimulation simulation, int order, IEqualityComparer<string> comparer)
         {
-            InitBeforeLoadDictionaries(paramName, @object, simulation);
+            InitBeforeLoadDictionaries(paramName, @object, simulation, comparer);
 
             if (BeforeLoadsOrder[simulation][@object][paramName] > order)
             {
@@ -159,14 +158,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
 
             BeforeLoadsOrder[simulation][@object][paramName] = order;
-            EventHandler<LoadStateEventArgs> handler = CreateUpdateHandler(paramName, @object, expression, simulation);
+            EventHandler<LoadStateEventArgs> handler = CreateUpdateHandler(paramName, @object, expression, simulation, comparer);
             BeforeLoads[simulation][@object][paramName].Add(handler);
             simulation.BeforeLoad += handler;
         }
 
-        private void UpdateParameterBeforeLoad(string paramName, Entity @object, double value, BaseSimulation simulation, int order)
+        private void UpdateParameterBeforeLoad(string paramName, Entity @object, double value, BaseSimulation simulation, int order, IEqualityComparer<string> comparer)
         {
-            InitBeforeLoadDictionaries(paramName, @object, simulation);
+            InitBeforeLoadDictionaries(paramName, @object, simulation, comparer);
 
             if (BeforeLoadsOrder[simulation][@object][paramName] > order)
             {
@@ -181,12 +180,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             BeforeLoadsOrder[simulation][@object][paramName] = order;
 
-            EventHandler<LoadStateEventArgs> handler = CreateUpdateHandler(paramName, @object, value, simulation);
+            EventHandler<LoadStateEventArgs> handler = CreateUpdateHandler(paramName, @object, value, simulation, comparer);
             BeforeLoads[simulation][@object][paramName].Add(handler);
             simulation.BeforeLoad += handler;
         }
 
-        private void InitBeforeLoadDictionaries(string paramName, Entity @object, BaseSimulation simulation)
+        private void InitBeforeLoadDictionaries(string paramName, Entity @object, BaseSimulation simulation, IEqualityComparer<string> comparer)
         {
             if (!BeforeLoads.ContainsKey(simulation))
             {
@@ -195,7 +194,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             if (!BeforeLoads[simulation].ContainsKey(@object))
             {
-                BeforeLoads[simulation][@object] = new Dictionary<string, List<EventHandler<LoadStateEventArgs>>>();
+                BeforeLoads[simulation][@object] = new Dictionary<string, List<EventHandler<LoadStateEventArgs>>>(comparer);
             }
 
             if (!BeforeLoads[simulation][@object].ContainsKey(paramName))
@@ -210,7 +209,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             if (!BeforeLoadsOrder[simulation].ContainsKey(@object))
             {
-                BeforeLoadsOrder[simulation][@object] = new Dictionary<string, int>();
+                BeforeLoadsOrder[simulation][@object] = new Dictionary<string, int>(comparer);
             }
 
             if (!BeforeLoadsOrder[simulation][@object].ContainsKey(paramName))
@@ -219,7 +218,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        private void InitBeforeTempueratureDictionaries(string paramName, Entity @object, BaseSimulation simulation)
+        private void InitBeforeTemperatureDictionaries(string paramName, Entity @object, BaseSimulation simulation, IEqualityComparer<string> comparer)
         {
             if (!BeforeTemperature.ContainsKey(simulation))
             {
@@ -228,7 +227,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             if (!BeforeTemperature[simulation].ContainsKey(@object))
             {
-                BeforeTemperature[simulation][@object] = new Dictionary<string, List<EventHandler<LoadStateEventArgs>>>();
+                BeforeTemperature[simulation][@object] = new Dictionary<string, List<EventHandler<LoadStateEventArgs>>>(comparer);
             }
 
             if (!BeforeTemperature[simulation][@object].ContainsKey(paramName))
@@ -243,7 +242,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             if (!BeforeTemperatureOrder[simulation].ContainsKey(@object))
             {
-                BeforeTemperatureOrder[simulation][@object] = new Dictionary<string, int>();
+                BeforeTemperatureOrder[simulation][@object] = new Dictionary<string, int>(comparer);
             }
 
             if (!BeforeTemperatureOrder[simulation][@object].ContainsKey(paramName))
@@ -252,25 +251,33 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        private SpiceSharp.Parameter<double> GetEntitySimulationParameter(string paramName, Entity @object, BaseSimulation simulation)
+        private Parameter<double> GetEntitySimulationParameter(string paramName, Entity @object, BaseSimulation simulation, IEqualityComparer<string> comparer)
         {
-            return simulation.EntityParameters[@object.Name].GetParameter<double>(paramName.ToLower());
+            string comparerSubKey = comparer != null ? comparer.GetType().ToString() : "null";
+            string key = $"{simulation.Name}_{@object.Name}_{paramName}_{comparerSubKey}";
+
+            if (!SimulationEntityParametersCache.ContainsKey(key))
+            {
+                SimulationEntityParametersCache[key] = simulation.EntityParameters[@object.Name].GetParameter<double>(paramName, comparer);
+            }
+
+            return SimulationEntityParametersCache[key];
         }
 
-        private EventHandler<LoadStateEventArgs> CreateUpdateHandler(string paramName, Entity @object, double value, BaseSimulation simulation)
+        private EventHandler<LoadStateEventArgs> CreateUpdateHandler(string paramName, Entity @object, double value, BaseSimulation simulation, IEqualityComparer<string> comparer)
         {
             EventHandler<LoadStateEventArgs> handler = (object sender, LoadStateEventArgs args) =>
             {
-                //TODO: remove this hack
+                //TODO: remove this hack please
                 if (simulation is DC dc)
                 {
-                    if (dc.Sweeps[0].Parameter.ToString() == @object.Name.ToString())
+                    if (dc.Sweeps[0].Parameter.ToLower() == @object.Name.ToLower())
                     {
                         return;
                     }
                 }
 
-                var parameter = GetEntitySimulationParameter(paramName, @object, simulation);
+                var parameter = GetEntitySimulationParameter(paramName, @object, simulation, comparer);
                 if (parameter == null)
                 {
                     throw new Exception("Parameter " + paramName + " not found in: " + @object.Name);
@@ -280,26 +287,26 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return handler;
         }
 
-        private EventHandler<LoadStateEventArgs> CreateUpdateHandler(string paramName, Entity @object, string expression, BaseSimulation simulation)
+        private EventHandler<LoadStateEventArgs> CreateUpdateHandler(string paramName, Entity @object, string expression, BaseSimulation simulation, IEqualityComparer<string> comparer)
         {
             EventHandler<LoadStateEventArgs> handler = (object sender, LoadStateEventArgs args) =>
             {
-                //TODO: remove this hack
+                //TODO: remove this hack please
                 if (simulation is DC dc)
                 {
-                    if (dc.Sweeps[0].Parameter.ToString() == @object.Name.ToString())
+                    if (dc.Sweeps[0].Parameter.ToLower() == @object.Name.ToLower())
                     {
                         return;
                     }
                 }
 
-                var parameter = GetEntitySimulationParameter(paramName, @object, simulation);
+                var parameter = GetEntitySimulationParameter(paramName, @object, simulation, comparer);
                 if (parameter == null)
                 {
                     throw new Exception("Parameter " + paramName + " not found in: " + @object.Name);
                 }
 
-                var evaluator = Evaluators.GetSimulationEntityEvaluator(simulation, @object.Name.ToString());
+                var evaluator = Evaluators.GetSimulationEntityEvaluator(simulation, @object.Name);
                 var value = evaluator.EvaluateDouble(expression);
                 parameter.Value = value;
             };

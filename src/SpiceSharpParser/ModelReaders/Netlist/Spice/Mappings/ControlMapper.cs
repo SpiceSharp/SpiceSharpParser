@@ -1,7 +1,6 @@
-﻿using System;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Registries
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
 {
     /// <summary>
     /// Mapper for elements of <see cref="BaseControl"/> class.

@@ -1,7 +1,7 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
@@ -23,7 +23,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         public IMapper<WaveformGenerator> Mapper { get; }
 
         /// <summary>
-        /// Gemerates wavefrom from bracket parameter.
+        /// Generates a wavefrom from bracket parameter.
         /// </summary>
         /// <param name="cp">A bracket parameter.</param>
         /// <param name="context">A reading context.</param>
@@ -33,12 +33,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         public Waveform Generate(BracketParameter cp, IReadingContext context)
         {
             string type = cp.Name.ToLower();
-            if (!Mapper.Contains(type))
+            if (!Mapper.Contains(type, context.CaseSensitivity.IsFunctionNameCaseSensitive))
             {
                 throw new System.Exception("Unsupported waveform");
             }
 
-            return Mapper.Get(type).Generate(cp, context);
+            return Mapper.Get(type, context.CaseSensitivity.IsFunctionNameCaseSensitive).Generate(cp, context);
         }
     }
 }

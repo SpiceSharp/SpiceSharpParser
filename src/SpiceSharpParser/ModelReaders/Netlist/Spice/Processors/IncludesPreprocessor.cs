@@ -2,9 +2,11 @@
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.FileSystem;
+using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Parsers.Netlist.Spice;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
@@ -17,13 +19,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// Initializes a new instance of the <see cref="IncludesPreprocessor"/> class.
         /// </summary>
         /// <param name="fileReader">File reader</param>
-        public IncludesPreprocessor(IFileReader fileReader, ISpiceNetlistParser spiceNetlistParser, Func<string> initialDirectoryPathProvider, SpiceNetlistReaderSettings readerSettings)
+        public IncludesPreprocessor(IFileReader fileReader, ISpiceTokenProvider tokenProvider, ISingleSpiceNetlistParser spiceNetlistParser, Func<string> initialDirectoryPathProvider, SpiceNetlistReaderSettings readerSettings, SpiceLexerSettings lexerSettings)
         {
             ReaderSettings = readerSettings;
+            TokenProvider = tokenProvider;
             SpiceNetlistParser = spiceNetlistParser;
             FileReader = fileReader;
             InitialDirectoryPathProvider = initialDirectoryPathProvider;
+            LexerSettings = lexerSettings;
         }
+
+        /// <summary>
+        /// Gets the lexer settings.
+        /// </summary>
+        public SpiceLexerSettings LexerSettings { get; set; }
 
         /// <summary>
         /// Gets the initial directory path.
@@ -42,9 +51,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         public IFileReader FileReader { get; }
 
         /// <summary>
+        /// Gets the token provider.
+        /// </summary>
+        public ISpiceTokenProvider TokenProvider { get; }
+
+        /// <summary>
         /// Gets the SPICE netlist parser.
         /// </summary>
-        public ISpiceNetlistParser SpiceNetlistParser { get; }
+        public ISingleSpiceNetlistParser SpiceNetlistParser { get; }
 
         protected Func<string> InitialDirectoryPathProvider { get; }
 
@@ -113,15 +127,26 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             string includeContent = FileReader.GetFileContent(includeFullPath);
             if (includeContent != null)
             {
-                // parse include
-                SpiceNetlist includeModel = SpiceNetlistParser.Parse(
-                    includeContent,
-                    new SpiceNetlistParserSettings(ReaderSettings.CaseSettings) { HasTitle = false, IsEndRequired = false, IsNewlineRequired = false });
+                var lexerSettings = new SpiceLexerSettings()
+                {
+                    HasTitle = false,
+                    IsDotStatementNameCaseSensitive = LexerSettings.IsDotStatementNameCaseSensitive,
+                };
+
+                var tokens = TokenProvider.GetTokens(includeContent, lexerSettings);
+
+                SpiceNetlistParser.Settings = new SingleSpiceNetlistParserSettings(lexerSettings)
+                {
+                    IsNewlineRequired = false,
+                    IsEndRequired = false,
+                };
+
+                SpiceNetlist includeModel = SpiceNetlistParser.Parse(tokens);
 
                 // process includes of include netlist
-                var savedDirectoryPath = InitialDirectoryPath;
                 includeModel.Statements = Process(includeModel.Statements, Path.GetDirectoryName(includeFullPath));
-                // repelace statement by the content of the include
+                
+                // replace statement by the content of the include
                 statements.Replace(include, includeModel.Statements);
             }
             else

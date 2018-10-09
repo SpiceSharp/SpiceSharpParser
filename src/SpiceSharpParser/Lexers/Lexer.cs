@@ -71,8 +71,8 @@ namespace SpiceSharpParser.Lexers
 
                 if (FindBestTokenRule(textToLex, state, out bestTokenRule, out bestMatch))
                 {
-                    var tokenActionResult = bestTokenRule.ReturnAction(state, bestMatch.Value);
-                    if (tokenActionResult == LexerRuleReturnState.ReturnToken)
+                    var tokenActionResult = bestTokenRule.ReturnDecisionProvider(state, bestMatch.Value);
+                    if (tokenActionResult == LexerRuleReturnDecision.ReturnToken)
                     {
                         yield return new Token(bestTokenRule.TokenType, bestMatch.Value);
                         state.PreviousReturnedTokenType = bestTokenRule.TokenType;

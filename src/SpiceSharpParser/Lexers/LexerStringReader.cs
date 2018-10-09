@@ -7,24 +7,22 @@ namespace SpiceSharpParser.Lexers
     /// </summary>
     public class LexerStringReader
     {
-        private readonly string str = null;
-        private readonly char? nextLineContinuationCharacter;
-        private readonly char? currentLineContinuationCharacter;
-        private char[] strCharacters = null;
-        private int currentIndex = 0;
+        private readonly char? _nextLineContinuationCharacter;
+        private readonly char? _currentLineContinuationCharacter;
+        private readonly char[] strCharacters = null;
+        private int _currentIndex = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LexerStringReader"/> class.
         /// </summary>
-        /// <param name="str">A string to read</param>
+        /// <param name="string">A string to read</param>
         /// <param name="nextLineContinuationCharacter">A line continuation character (in the next line).</param>
         /// <param name="currentLineContinuationCharacter">A line continuation character (in the current line).</param>
-        public LexerStringReader(string str, char? nextLineContinuationCharacter, char? currentLineContinuationCharacter)
+        public LexerStringReader(string @string, char? nextLineContinuationCharacter, char? currentLineContinuationCharacter)
         {
-            this.str = str;
-            this.nextLineContinuationCharacter = nextLineContinuationCharacter;
-            this.currentLineContinuationCharacter = currentLineContinuationCharacter;
-            this.strCharacters = str.ToCharArray();
+            _nextLineContinuationCharacter = nextLineContinuationCharacter;
+            _currentLineContinuationCharacter = currentLineContinuationCharacter;
+            strCharacters = @string.ToCharArray();
         }
 
         /// <summary>
@@ -33,30 +31,30 @@ namespace SpiceSharpParser.Lexers
         /// <returns>A text line</returns>
         public string ReadLine()
         {
-            var start = currentIndex;
+            var start = _currentIndex;
 
-            if (currentIndex > (strCharacters.Length - 1))
+            if (_currentIndex > (strCharacters.Length - 1))
             {
                 return string.Empty;
             }
 
-            while (currentIndex < (strCharacters.Length - 1)
-                && strCharacters[currentIndex] != '\n'
-                && strCharacters[currentIndex] != '\r')
+            while (_currentIndex < (strCharacters.Length - 1)
+                && strCharacters[_currentIndex] != '\n'
+                && strCharacters[_currentIndex] != '\r')
             {
-                currentIndex++;
+                _currentIndex++;
             }
 
-            if (currentIndex < (strCharacters.Length - 1))
+            if (_currentIndex < (strCharacters.Length - 1))
             {
-                if (strCharacters[currentIndex] == '\r' && strCharacters[currentIndex + 1] == '\n')
+                if (strCharacters[_currentIndex] == '\r' && strCharacters[_currentIndex + 1] == '\n')
                 {
-                    currentIndex++;
+                    _currentIndex++;
                 }
             }
 
-            var line = new string(strCharacters, start, currentIndex - start + 1);
-            currentIndex++;
+            var line = new string(strCharacters, start, _currentIndex - start + 1);
+            _currentIndex++;
 
             return line;
         }
@@ -68,10 +66,10 @@ namespace SpiceSharpParser.Lexers
         /// <returns>A text line.</returns>
         public string PeekNextLine(out int nextLineIndex)
         {
-            var storedCurrentIndex = currentIndex;
+            var storedCurrentIndex = _currentIndex;
             var line = ReadLine();
-            nextLineIndex = currentIndex;
-            currentIndex = storedCurrentIndex;
+            nextLineIndex = _currentIndex;
+            _currentIndex = storedCurrentIndex;
             return line;
         }
 
@@ -87,17 +85,16 @@ namespace SpiceSharpParser.Lexers
 
             while (true)
             {
-                int nextCurrentIndex;
-                string nextLine = PeekNextLine(out nextCurrentIndex);
+                string nextLine = PeekNextLine(out int nextCurrentIndex);
                 if (nextLine != string.Empty
-                    && (nextLine[0] == nextLineContinuationCharacter))
+                    && (nextLine[0] == _nextLineContinuationCharacter))
                 {
-                    currentIndex = nextCurrentIndex;
+                    _currentIndex = nextCurrentIndex;
                     result += nextLine;
                 }
-                else if (currentLineContinuationCharacter.HasValue && GetLastCharacter(result, out var position) == currentLineContinuationCharacter)
+                else if (_currentLineContinuationCharacter.HasValue && GetLastCharacter(result, out var position) == _currentLineContinuationCharacter)
                 {
-                    currentIndex = nextCurrentIndex;
+                    _currentIndex = nextCurrentIndex;
                     result += nextLine;
                 }
                 else

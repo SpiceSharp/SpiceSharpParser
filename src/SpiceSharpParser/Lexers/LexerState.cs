@@ -1,7 +1,7 @@
 ﻿namespace SpiceSharpParser.Lexers
 {
     /// <summary>
-    /// A base class for lexer state clasess. It contains a type of previous token.
+    /// A base class for lexer state classes. It contains a type of previous token.
     /// </summary>
     public class LexerState
     {

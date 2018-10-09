@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.Parsers.Netlist
 {
@@ -12,7 +13,6 @@ namespace SpiceSharpParser.Parsers.Netlist
         /// </summary>
         /// <param name="name">A name of the non-terminal node.</param>
         public ParseTreeNonTerminalNode(string name)
-            : base()
         {
             Children = new List<ParseTreeNode>();
             Name = name;
@@ -26,13 +26,9 @@ namespace SpiceSharpParser.Parsers.Netlist
         public ParseTreeNonTerminalNode(ParseTreeNode parent, string name)
             : base(parent)
         {
-            if (parent == null)
-            {
-                throw new System.ArgumentNullException(nameof(parent));
-            }
 
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             Children = new List<ParseTreeNode>();
-            Name = name;
         }
 
         /// <summary>

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots
 {
@@ -15,6 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots
         /// <param name="xUnit">Unit of x values.</param>
         /// <param name="xMin">Min value of x values.</param>
         /// <param name="xMax">Max value of x values.</param>
+        /// <param name="binWidth">Width of one bin.</param>
         public HistogramPlot(string name, string xUnit, double xMin, double xMax, double binWidth)
         {
             BinWidth = binWidth;

@@ -27,7 +27,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// </returns>
         public IEnumerable<Statement> Order(Statements statements)
         {
-            return statements.OrderBy((Statement s) => GetOrder(s));
+            return statements.OrderBy(GetOrder);
         }
 
         protected virtual int GetOrder(Statement statement)

@@ -14,14 +14,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// Reads a statement (typed) and modifies the context.
         /// </summary>
         /// <param name="statement">A statement to process.</param>
-        /// <param name="context">A context to modifify.</param>
+        /// <param name="context">A context to modify.</param>
         public abstract void Read(TStatement statement, IReadingContext context);
 
         /// <summary>
         /// Reads a statement and modifies the context.
         /// </summary>
         /// <param name="statement">A statement to process.</param>
-        /// <param name="context">A context to modifify.</param>
+        /// <param name="context">A context to modify.</param>
         public void Read(Statement statement, IReadingContext context)
         {
             this.Read((TStatement)statement, context);

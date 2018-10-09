@@ -1,9 +1,8 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Registries;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {

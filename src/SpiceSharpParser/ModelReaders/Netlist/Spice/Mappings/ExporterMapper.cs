@@ -1,6 +1,6 @@
 ﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Registries
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
 {
     /// <summary>
     /// Registry of <see cref="Exporter"/>

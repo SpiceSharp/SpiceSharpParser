@@ -1,4 +1,6 @@
-﻿namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+﻿using SpiceSharp;
+
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     /// <summary>
     /// Interface for all object name generators

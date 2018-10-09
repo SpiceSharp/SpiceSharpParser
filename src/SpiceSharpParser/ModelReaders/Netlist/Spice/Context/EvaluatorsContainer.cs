@@ -1,28 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using SpiceSharp;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public class EvaluatorsContainer : IEvaluatorsContainer
     {
+        private readonly IFunctionFactory _functionFactory;
         protected Dictionary<Simulation, IEvaluator> Evaluators = new Dictionary<Simulation, IEvaluator>();
 
-        public EvaluatorsContainer(IEvaluator sourceEvaluator)
+        public EvaluatorsContainer(IEvaluator sourceEvaluator, IFunctionFactory functionFactory)
         {
+            _functionFactory = functionFactory;
             SourceEvaluator = sourceEvaluator ?? throw new ArgumentNullException(nameof(sourceEvaluator));
         }
 
         protected IEvaluator SourceEvaluator { get; }
 
-        public void AddCustomFunction(string name, List<string> args, string body)
+        public void AddFunction(string name, List<string> args, string body)
         {
-            SourceEvaluator.AddCustomFunction(name, args, body);
+            SourceEvaluator.Functions.Add(name, _functionFactory.Create(name, args, body));
 
             foreach (var evaluator in Evaluators.Values)
             {
-                evaluator.AddCustomFunction(name, args, body);
+                evaluator.Functions.Add(name, _functionFactory.Create(name, args, body));
             }
         }
 
@@ -81,7 +85,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public IEvaluatorsContainer CreateChildContainer(string containerName)
         {
-            return new EvaluatorsContainer(SourceEvaluator.CreateChildEvaluator(containerName, null));
+            return new EvaluatorsContainer(SourceEvaluator.CreateChildEvaluator(containerName, null), _functionFactory);
         }
 
         public IEnumerable<string> GetExpressionNames()

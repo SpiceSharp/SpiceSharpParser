@@ -15,6 +15,7 @@ namespace SpiceSharpParser.Lexers
         /// </summary>
         /// <param name="ruleName">A name of lexer rule</param>
         /// <param name="regularExpressionPattern">A regular expression</param>
+        /// <param name="ignoreCase">Case is ignored.</param>
         public LexerRule(string ruleName, string regularExpressionPattern, bool ignoreCase)
         {
             RegularExpressionPattern = regularExpressionPattern;
@@ -37,10 +38,7 @@ namespace SpiceSharpParser.Lexers
         /// </summary>
         public string RegularExpressionPattern
         {
-            get
-            {
-                return regularExpressionPattern;
-            }
+            get => regularExpressionPattern;
 
             set
             {

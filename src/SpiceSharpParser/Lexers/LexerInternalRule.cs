@@ -23,7 +23,7 @@
         /// </returns>
         public override LexerRule Clone()
         {
-            return new LexerInternalRule(this.Name, this.RegularExpressionPattern);
+            return new LexerInternalRule(Name, RegularExpressionPattern);
         }
     }
 }

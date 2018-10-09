@@ -34,15 +34,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 case "dec":
                 case "list":
                 case "lin":
-                    RegisterParametr(statement.Parameters.Skip(1), context);
+                    RegisterParameter(statement.Parameters.Skip(1), context);
                     break;
                 default:
-                    RegisterParametr(statement.Parameters, context);
+                    RegisterParameter(statement.Parameters, context);
                     break;
             }
         }
 
-        private void RegisterParametr(ParameterCollection parameters, IReadingContext context)
+        private void RegisterParameter(ParameterCollection parameters, IReadingContext context)
         {
             var variableParameter = parameters[0];
             context.Evaluators.SetParameter(variableParameter.Image, 0);

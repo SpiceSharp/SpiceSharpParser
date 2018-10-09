@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
         public MosfetModelGenerator()
         {
             // Default MOS levels
-            Levels.Add(1, (Identifier name, string type, string version) =>
+            Levels.Add(1, (string name, string type, string version) =>
             {
                 var m = new Mosfet1Model(name);
                 switch (type)
@@ -26,7 +26,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
                 return m;
             });
 
-            Levels.Add(2, (Identifier name, string type, string version) =>
+            Levels.Add(2, (string name, string type, string version) =>
             {
                 var m = new Mosfet2Model(name);
                 switch (type)
@@ -38,7 +38,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
                 return m;
             });
 
-            Levels.Add(3, (Identifier name, string type, string version) =>
+            Levels.Add(3, (string name, string type, string version) =>
             {
                 var m = new Mosfet3Model(name);
                 switch (type)
@@ -52,26 +52,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
         }
 
         /// <summary>
-        /// Gets available model generators indexed by their LEVEL.
-        /// The parameters passed are name, type (nmos or pmos) and the version.
-        /// </summary>
-        protected Dictionary<int, Func<Identifier, string, string, SpiceSharp.Components.Model>> Levels { get; } = new Dictionary<int, Func<Identifier, string, string, SpiceSharp.Components.Model>>();
-
-        /// <summary>
         /// Gets generated Spice types by generator.
         /// </summary>
         /// <returns>
         /// Generated Spice types.
         /// </returns>
-        public override IEnumerable<string> GeneratedTypes
-        {
-            get
-            {
-                return new List<string>() { "nmos", "pmos" };
-            }
-        }
+        public override IEnumerable<string> GeneratedTypes => new List<string>() { "nmos", "pmos" };
 
-        public override SpiceSharp.Components.Model Generate(string name, string type, ParameterCollection parameters, IReadingContext context)
+        /// <summary>
+        /// Gets available model generators indexed by their LEVEL.
+        /// The parameters passed are name, type (nmos or pmos) and the version.
+        /// </summary>
+        protected Dictionary<int, Func<string, string, string, SpiceSharp.Components.Model>> Levels { get; } = new Dictionary<int, Func<string, string, string, SpiceSharp.Components.Model>>();
+
+        public override SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context)
         {
             var clonedParameters = (ParameterCollection)parameters.Clone();
             switch (clonedParameters.Count)
@@ -119,7 +113,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             SpiceSharp.Components.Model model = null;
             if (Levels.ContainsKey(level))
             {
-                model = Levels[level].Invoke(name, type, version);
+                model = Levels[level].Invoke(id, type, version);
             }
             else
             {

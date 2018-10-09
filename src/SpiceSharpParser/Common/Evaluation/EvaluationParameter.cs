@@ -1,13 +1,13 @@
 ﻿using SpiceSharp;
 
-namespace SpiceSharpParser.Common
+namespace SpiceSharpParser.Common.Evaluation
 {
     /// <summary>
     /// An parameter that triggers re-evaluation when changed.
     /// </summary>
     public class EvaluationParameter : Parameter<double>
     {
-        private double rawValue;
+        private double _rawValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EvaluationParameter"/> class.
@@ -25,15 +25,12 @@ namespace SpiceSharpParser.Common
         /// </summary>
         public override double Value
         {
-            get
-            {
-                return rawValue;
-            }
+            get => _rawValue;
 
             set
             {
+                _rawValue = value;
                 Evaluator.SetParameter(ParameterName, value);
-                rawValue = value;
             }
         }
 

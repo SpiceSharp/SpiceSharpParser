@@ -18,14 +18,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                     if (c.Name.ToLower() == "st")
                     {
                         var cloned = (Control)c.Clone();
-                        cloned.Name = "st_r";
+                        cloned.Name = "ST_R";
                         statements.Add(cloned);
                     }
 
                     if (c.Name.ToLower() == "step")
                     {
                         var cloned = (Control)c.Clone();
-                        cloned.Name = "step_r";
+                        cloned.Name = "STEP_R";
                         statements.Add(cloned);
                     }
                 }

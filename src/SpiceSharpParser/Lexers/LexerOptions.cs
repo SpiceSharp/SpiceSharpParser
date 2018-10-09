@@ -9,7 +9,8 @@
         /// Initializes a new instance of the <see cref="LexerOptions"/> class.
         /// </summary>
         /// <param name="multipleLineTokens">Allows multiline tokens.</param>
-        /// <param name="nextLineContinuationCharacter">Line continuation character.</param>
+        /// <param name="nextLineContinuationCharacter">Line continuation character (next line).</param>
+        /// <param name="currentLineContinuationCharacter">Line continuation character (current line).</param>
         public LexerOptions(bool multipleLineTokens, char? nextLineContinuationCharacter, char? currentLineContinuationCharacter)
         {
             MultipleLineTokens = multipleLineTokens;
@@ -28,7 +29,7 @@
         public bool MultipleLineTokens { get; } = false;
 
         /// <summary>
-        /// Gets the character that makes next line to be part of current line (character is at first posion on second line).
+        /// Gets the character that makes next line to be part of current line (character is at first position on second line).
         /// </summary>
         /// <remarks>
         /// In Spice netlist this is '+' character.
@@ -36,7 +37,7 @@
         public char? NextLineContinuationCharacter { get; }
 
         /// <summary>
-        /// Gets the character that makes next line to be part of current line ((character is at last posion on current line).
+        /// Gets the character that makes next line to be part of current line ((character is at last position on current line).
         /// </summary>
         /// <remarks>
         /// For example: '\' character.

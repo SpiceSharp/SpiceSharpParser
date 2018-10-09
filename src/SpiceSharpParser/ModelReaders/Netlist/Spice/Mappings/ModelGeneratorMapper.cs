@@ -1,7 +1,6 @@
 ﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Registries
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
 {
     /// <summary>
     /// Mapper for elements of <see cref="IModelGenerator"/> class.

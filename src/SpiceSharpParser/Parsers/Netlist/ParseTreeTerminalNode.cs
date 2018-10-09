@@ -11,7 +11,7 @@ namespace SpiceSharpParser.Parsers.Netlist
         /// Initializes a new instance of the <see cref="ParseTreeTerminalNode"/> class.
         /// </summary>
         /// <param name="token">A token for the terminal node.</param>
-        /// <param name="parent">A parent of the teminal node.</param>
+        /// <param name="parent">A parent of the terminal node.</param>
         public ParseTreeTerminalNode(SpiceToken token, ParseTreeNonTerminalNode parent)
             : base(parent)
         {
@@ -32,7 +32,7 @@ namespace SpiceSharpParser.Parsers.Netlist
         /// Returns a string representation of the parse tree node.
         /// </summary>
         /// <returns>
-        /// A string represenation of the terminal node.
+        /// A string representation of the terminal node.
         /// </returns>
         public override string ToString()
         {

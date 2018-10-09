@@ -9,6 +9,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         public string Name { get; set; }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             return "Unknown parameter: " + Name;

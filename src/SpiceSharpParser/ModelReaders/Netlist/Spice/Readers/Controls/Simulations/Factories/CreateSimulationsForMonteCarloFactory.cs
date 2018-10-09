@@ -46,7 +46,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var simulations = AllTemperaturesAndSweeps.CreateSimulations(statement, context, simulationWithStochasticModels);
                     AttachMonteCarloDataGathering(context, simulations);
                     result.AddRange(simulations);
-
                 }
             }
 
@@ -63,20 +62,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
         protected static void AttachMonteCarloDataGatheringForSimulation(IReadingContext context, BaseSimulation simulation)
         {
-            Export export = null;
-
-            simulation.BeforeExecute += (object sender, BeforeExecuteEventArgs args) =>
+            simulation.BeforeSetup += (sender, args) =>
             {
-                export = context.Result.Exports.SingleOrDefault(e => e.Simulation == simulation && e.Name.ToLower() == context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable.ToLower());
-            };
+                Export export = context.Result.Exports.FirstOrDefault(e => e.Simulation == simulation && e.Name == context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable);
 
-            simulation.ExportSimulationData += (object sender, ExportDataEventArgs args) =>
-            {
-                if (export != null)
-                {
-                    var value = export.Extract();
-                    context.Result.MonteCarlo.Collect(simulation, value);
-                }
+                simulation.ExportSimulationData += (exportSender, exportArgs) =>
+                    {
+                        if (export != null)
+                        {
+                            var value = export.Extract();
+                            context.Result.MonteCarlo.Collect(simulation, value);
+                        }
+                    };
             };
         }
     }
