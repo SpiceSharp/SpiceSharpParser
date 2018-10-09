@@ -1,8 +1,10 @@
 # <img src="https://spicesharp.github.io/SpiceSharp/api/images/logo_full.svg" width="45px" /> Spice#/SpiceSharpParser
-SpiceSharpParser is a .NET library that enables to simulate electronics circuits defined by Spice netlists.
+SpiceSharpParser is a .NET library that allows to simulate circuits defined by Spice netlists.
 
-## Documentation
-Documentation for API on SpiceSharpParser is available at <https://spicesharp.github.io/SpiceSharpParser/api/index.html>.
+## Installation
+
+SpiceSharpParser is available as NuGet Package 
+[<img src="https://img.shields.io/nuget/vpre/SpiceSharp-Parser.svg">]( https://www.nuget.org/packages/SpiceSharp-Parser)
 
 ## Quickstart
 
@@ -24,11 +26,13 @@ var spiceSharpModel = parseResult.SpiceSharpModel;
 var simulation = spiceSharpModel.Simulations.Single();
 simulation.Run(spiceSharpModel.Circuit);            
 ```
+## Features
+### Parsing dot statements
+.GLOBAL, .LET, .NODESET, .PARAM (with user functions), .OPTIONS, .SAVE, .PLOT, .IC, .TRAN, .AC, .OP, .NOISE, .DC, .SUBCKT, .INCLUDE
+.APPENDMODEL, .TEMP, .LIB,  .IF/.ELSE/.ENDIF, .ST, .FUNC, .STEP, .PRINT, .MC
 
-## Installation
-
-SpiceSharpParser is available as NuGet Package 
-[<img src="https://img.shields.io/nuget/vpre/SpiceSharp-Parser.svg">]( https://www.nuget.org/packages/SpiceSharp-Parser)
+### Parsing components
+RLC, Switches, Voltage and current sources, BJT, Diodes, Mosfets
 
 ## Build status
 
@@ -36,6 +40,9 @@ SpiceSharpParser is available as NuGet Package
 |:---|----------------:|
 |**Windows**|[![Build status](https://ci.appveyor.com/api/projects/status/d8tpj2hm3hcullmw/branch/master?svg=true)](https://ci.appveyor.com/project/marcin-golebiowski/spicesharpparser/branch/master)|
 |**Linux**|[![Build status](https://travis-ci.org/SpiceSharp/SpiceSharpParser.svg?branch=master)](https://travis-ci.org/SpiceSharp/SpiceSharpParser?branch=master)|
+
+## Documentation
+Documentation for API on SpiceSharpParser is available at <https://spicesharp.github.io/SpiceSharpParser/api/index.html>.
 
 ## License
 SpiceSharpParser is under MIT License
