@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints;
+using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
     /// <summary>
-    /// A result of reading a spice netlist model.
+    /// A result of reading a SPICE netlist model.
     /// </summary>
     public class SpiceNetlistReaderResult
     {
@@ -19,7 +21,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
         /// <param name="title">The title of the netlist.</param>
         public SpiceNetlistReaderResult(Circuit circuit, string title)
         {
-            Circuit = circuit;
+            Circuit = circuit ?? throw new System.ArgumentNullException(nameof(circuit));
             Title = title;
         }
 
@@ -54,13 +56,28 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
         public List<Export> Exports { get; } = new List<Export>();
 
         /// <summary>
-        /// Gets the list of generated plots.
+        /// Gets the list of generated X-Y plots.
         /// </summary>
-        public List<Plot> Plots { get; } = new List<Plot>();
+        public List<XyPlot> XyPlots { get; } = new List<XyPlot>();
+
+        /// <summary>
+        /// Gets the Monte Carlo Analysis results.
+        /// </summary>
+        public MonteCarloResult MonteCarloResult { get; } = new MonteCarloResult();
 
         /// <summary>
         /// Gets the list of generated prints.
         /// </summary>
         public List<Print> Prints { get; } = new List<Print>();
+
+        /// <summary>
+        /// Gets or sets the evaluators for simulation.
+        /// </summary>
+        public IDictionary<Simulation, IEvaluator> Evaluators { get; set; }
+
+        /// <summary>
+        /// Gets or sets the used random seed.
+        /// </summary>
+        public int? Seed { get; set; }
     }
 }

@@ -1,10 +1,10 @@
-﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
     /// <summary>
-    /// Reades all <see cref="SubCircuit"/> from spice netlist object model.
+    /// Reads all <see cref="SubCircuit"/> from SPICE netlist object model.
     /// </summary>
     public class SubcircuitDefinitionReader : StatementReader<SubCircuit>, ISubcircuitDefinitionReader
     {
@@ -16,22 +16,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
         }
 
         /// <summary>
-        /// Returns whether reader can process specific statement.
+        /// Reads a subcircuit statement.
         /// </summary>
         /// <param name="statement">A statement to process.</param>
-        /// <returns>
-        /// True if the reader can process given statement.
-        /// </returns>
-        public override bool CanRead(Statement statement)
-        {
-            return statement is SubCircuit;
-        }
-
-        /// <summary>
-        /// Reades a subcircuit statement.
-        /// </summary>
-        /// <param name="statement">A statement to process.</param>
-        /// <param name="context">A processing context.</param>
+        /// <param name="context">A reading context.</param>
         public override void Read(SubCircuit statement, IReadingContext context)
         {
             context.AvailableSubcircuits.Add(statement);

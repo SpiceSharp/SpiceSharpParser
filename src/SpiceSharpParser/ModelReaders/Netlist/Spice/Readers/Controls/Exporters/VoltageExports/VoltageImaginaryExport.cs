@@ -1,8 +1,8 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharp;
+﻿using SpiceSharp;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports
 {
     /// <summary>
     /// Imaginary part of a complex voltage export.
@@ -12,22 +12,18 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
         /// <summary>
         /// Initializes a new instance of the <see cref="VoltageImaginaryExport"/> class.
         /// </summary>
+        /// <param name="name">Name of export.</param>
         /// <param name="simulation">Simulation</param>
         /// <param name="node">Positive node</param>
         /// <param name="reference">Negative reference node</param>
-        public VoltageImaginaryExport(Simulation simulation, Identifier node, Identifier reference = null, string nodePath = null, string referencePath = null)
+        public VoltageImaginaryExport(string name, Simulation simulation, string node, string reference = null)
             : base(simulation)
         {
-            if (simulation == null)
-            {
-                throw new System.ArgumentNullException(nameof(simulation));
-            }
-
-            Name = "vi(" + nodePath.ToString() + (referencePath == null ? string.Empty : ", " + referencePath.ToString()) + ")";
+            Name = name ?? throw new System.ArgumentNullException(nameof(name));
             Node = node ?? throw new System.ArgumentNullException(nameof(node));
             Reference = reference;
 
-            ExportImpl = new ComplexVoltageExport(simulation, node, reference);
+            ExportImpl = new ComplexVoltageExport((FrequencySimulation)simulation, node, reference);
         }
 
         /// <summary>
@@ -43,12 +39,12 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
         /// <summary>
         /// Gets the main node
         /// </summary>
-        public Identifier Node { get; }
+        public string Node { get; }
 
         /// <summary>
         /// Gets the reference node
         /// </summary>
-        public Identifier Reference { get; }
+        public string Reference { get; }
 
         /// <summary>
         /// Gets the complex voltage export that provide voltage imaginary value
@@ -69,6 +65,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
                 {
                     throw new GeneralReaderException($"Voltage imaginary export {Name} is invalid");
                 }
+
                 return double.NaN;
             }
 

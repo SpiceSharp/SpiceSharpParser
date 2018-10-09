@@ -1,27 +1,31 @@
-﻿using System;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Extensions;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
+﻿using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharp.Circuits;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Models
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
 {
-    public abstract class ModelGenerator : EntityGenerator
+    public abstract class ModelGenerator : IModelGenerator
     {
-        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public abstract IEnumerable<string> GeneratedTypes { get; }
+
+        public abstract SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context);
+
+        protected void SetParameters(IReadingContext context, Entity entity, ParameterCollection parameters, bool onload = true)
         {
-            var model = GenerateModel(id.ToString(), type);
-            if (model == null)
+            foreach (Parameter parameter in parameters)
             {
-                throw new GeneralReaderException("Couldn't generate model");
+                if (parameter is AssignmentParameter ap)
+                {
+                    context.SetParameter(entity, ap.Name, ap.Value, onload);
+                }
+                else
+                {
+                    context.Result.AddWarning("Unsupported parameter: " + parameter.Image);
+                }
             }
-
-            context.SetParameters(model, parameters);
-            return model;
         }
-
-        internal abstract Entity GenerateModel(string name, string type);
     }
 }

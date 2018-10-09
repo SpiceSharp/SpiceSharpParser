@@ -1,22 +1,20 @@
 ﻿using System.Linq;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
-    /// Reades .FUNC <see cref="Control"/> from spice netlist object model.
+    /// Reads .FUNC <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class FuncControl : BaseControl
     {
-        public override string SpiceName => "func";
-
         /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context
+        /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modify</param>
+        /// <param name="statement">A statement to process.</param>
+        /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
             if (statement.Parameters == null)
@@ -35,18 +33,18 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                         throw new System.Exception("User function needs to be a function");
                     }
 
-                    context.Evaluator.DefineCustomFunction(assigmentParameter.Name, assigmentParameter.Arguments, assigmentParameter.Value);
-                    break;
+                    context.Evaluators.AddFunction(assigmentParameter.Name, assigmentParameter.Arguments, assigmentParameter.Value);
                 }
                 else
                 {
                     if (param is Models.Netlist.Spice.Objects.Parameters.BracketParameter bracketParameter)
                     {
-                        context.Evaluator.DefineCustomFunction(
+                        context.Evaluators.AddFunction(
                             bracketParameter.Name,
                             bracketParameter.Parameters.ToList().Select(p => p.Image).ToList(), // TODO: improve it please
                             statement.Parameters[i + 1].Image);
-                        break;
+
+                        i++;
                     }
                     else
                     {

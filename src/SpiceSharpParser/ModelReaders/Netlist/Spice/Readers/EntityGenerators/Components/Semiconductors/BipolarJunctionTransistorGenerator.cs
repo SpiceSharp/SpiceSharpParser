@@ -1,20 +1,27 @@
 ﻿using System.Collections.Generic;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp;
-using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceSharp.Components.BipolarBehaviors;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
 {
-    public class BipolarJunctionTransistorGenerator : EntityGenerator
+    public class BipolarJunctionTransistorGenerator : IComponentGenerator
     {
-        public override Entity Generate(Identifier name, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        /// <summary>
+        /// Gets generated types.
+        /// </summary>
+        /// <returns>
+        /// Generated types.
+        /// </returns>
+        public IEnumerable<string> GeneratedTypes => new List<string>() { "Q" };
+
+        public SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
-            BipolarJunctionTransistor bjt = new BipolarJunctionTransistor(name);
+            BipolarJunctionTransistor bjt = new BipolarJunctionTransistor(componentIdentifier);
 
             // If the component is of the format QXXX NC NB NE MNAME off we will insert NE again before the model name
             if (parameters.Count == 5 && parameters[4] is WordParameter w && w.Image == "off")
@@ -32,16 +39,14 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
 
             if (parameters.Count < 5)
             {
-                throw new System.Exception();
+                throw new WrongParametersCountException();
             }
 
-            var model = context.FindModel<BipolarJunctionTransistorModel>(parameters.GetString(4));
-            if (model == null)
-            {
-                throw new ModelNotFoundException($"Could not find model {parameters.GetString(4)} for BJT {name}");
-            }
-
-            bjt.SetModel(model);
+            context.ModelsRegistry.SetModel<BipolarJunctionTransistorModel>(
+                bjt, 
+                parameters.GetString(4),
+                $"Could not find model {parameters.GetString(4)} for BJT {originalName}",
+                (BipolarJunctionTransistorModel model) => bjt.SetModel(model));
 
             for (int i = 5; i < parameters.Count; i++)
             {
@@ -60,7 +65,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                     }
                     else
                     {
-                        //TODO: Fix this please it's broken ...
+                        // TODO: Fix this please it's broken ...
                         BaseParameters bp = bjt.ParameterSets.Get<BaseParameters>();
                         if (!bp.Area.Given)
                         {
@@ -78,23 +83,12 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                 {
                     if (asg.Name.ToLower() == "ic")
                     {
-                        bjt.SetParameter("ic", context.ParseDouble(asg.Value));
+                        context.SetParameter(bjt, "ic", asg.Value);
                     }
                 }
             }
 
             return bjt;
-        }
-
-        /// <summary>
-        /// Gets the generated types
-        /// </summary>
-        /// <returns>
-        /// A list of generated types
-        /// </returns>
-        public override IEnumerable<string> GetGeneratedSpiceTypes()
-        {
-            return new List<string>() { "q" };
         }
     }
 }

@@ -1,56 +1,46 @@
-﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
     /// <summary>
-    /// Reades all supported <see cref="Control"/> from spice netlist object model.
+    /// Reads all supported <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class ControlReader : StatementReader<Control>, IControlReader
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ControlReader"/> class.
         /// </summary>
-        /// <param name="registry">Th registry</param>
-        public ControlReader(IControlRegistry registry)
+        /// <param name="mapper">The base control mapper.</param>
+        public ControlReader(IMapper<BaseControl> mapper)
         {
-            Registry = registry;
+            Mapper = mapper ?? throw new System.ArgumentNullException(nameof(mapper));
         }
 
         /// <summary>
-        /// Gets the registry
+        /// Gets the base control mapper.
         /// </summary>
-        public IControlRegistry Registry { get; }
+        public IMapper<BaseControl> Mapper { get; }
 
         /// <summary>
-        /// Returns whether reader can process specific statement.
+        /// Reads a control statement and modifies the context.
         /// </summary>
         /// <param name="statement">A statement to process.</param>
-        /// <returns>
-        /// True if the reader can process given statement.
-        /// </returns>
-        public override bool CanRead(Statement statement)
-        {
-            return statement is Control;
-        }
-
-        /// <summary>
-        /// Reades a control statement and modifies the context
-        /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modifify</param>
+        /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
-            string type = statement.Name.ToLower();
+            string type = statement.Name;
 
-            if (!Registry.Supports(type))
+            if (!Mapper.Contains(type, context.CaseSensitivity.IsDotStatementNameCaseSensitive))
             {
                 context.Result.AddWarning("Unsupported control: " + statement.Name + " at " + statement.LineNumber + " line");
             }
             else
             {
-                Registry.Get(type).Read(statement, context);
+                var mapper = Mapper.Get(type, context.CaseSensitivity.IsDotStatementNameCaseSensitive);
+                mapper.Read(statement, context);
             }
         }
     }

@@ -1,135 +1,144 @@
 ﻿using System.Collections.Generic;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators;
+using SpiceSharp;
+using SpiceSharp.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharp;
-using SpiceSharp.Circuits;
-using SpiceSharp.Components;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {
     /// <summary>
     /// Voltage sources generator
     /// </summary>
-    public class VoltageSourceGenerator : EntityGenerator
+    public class VoltageSourceGenerator : ComponentGenerator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="VoltageSourceGenerator"/> class.
         /// </summary>
-        /// <param name="waveFormGenerator">Waveform reader</param>
-        public VoltageSourceGenerator(IWaveformReader waveFormGenerator)
+        public VoltageSourceGenerator()
         {
-            WaveFormGenerator = waveFormGenerator ?? throw new System.ArgumentNullException(nameof(waveFormGenerator));
         }
 
         /// <summary>
-        /// Gets the waveform generator
+        /// Gets generated types.
         /// </summary>
-        public IWaveformReader WaveFormGenerator { get; }
-
-        /// <summary>
-        /// Generates new voltage source
-        /// </summary>
-        /// <param name="id">The identifier of new voltage source</param>
-        /// <param name="originalName">The name of voltage source</param>
-        /// <param name="type">A type of voltage source</param>
-        /// <param name="parameters">Parameters for voltage source</param>
-        /// <param name="context">Reading context</param>
         /// <returns>
-        /// A new instance of voltage source
+        /// Generated types.
         /// </returns>
-        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public override IEnumerable<string> GeneratedTypes => new List<string>() { "V", "H", "E" };
+
+        public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
-            switch (type)
+            switch (type.ToLower())
             {
-                case "v": return GenerateVoltageSource(id.ToString(), parameters, context);
-                case "h": return GenerateCurrentControlledVoltageSource(id.ToString(), parameters, context);
-                case "e": return GenerateVoltageControlledVoltageSource(id.ToString(), parameters, context);
+                case "v": return GenerateVoltageSource(componentIdentifier, parameters, context);
+                case "h": return GenerateCurrentControlledVoltageSource(componentIdentifier, parameters, context);
+                case "e": return GenerateVoltageControlledVoltageSource(componentIdentifier, parameters, context);
             }
 
             return null;
         }
 
         /// <summary>
-        /// Gets generated Spice types by generator
+        /// Generates new voltage controlled voltage source: EName.
         /// </summary>
+        /// <param name="name">The name of voltage source to generate.</param>
+        /// <param name="parameters">The parameters for voltage source.</param>
+        /// <param name="context">The reading context.</param>
         /// <returns>
-        /// Generated Spice Types
+        /// A new instance of voltage controlled voltage source.
         /// </returns>
-        public override IEnumerable<string> GetGeneratedSpiceTypes()
+        protected SpiceSharp.Components.Component GenerateVoltageControlledVoltageSource(string name, ParameterCollection parameters, IReadingContext context)
         {
-            return new List<string>() { "v", "h", "e" };
+            if (parameters.Count == 5)
+            {
+                var vcvs = new VoltageControlledVoltageSource(name);
+                context.CreateNodes(vcvs, parameters);
+                context.SetParameter(vcvs, "gain", parameters.GetString(4));
+                return vcvs;
+            }
+            else
+            {
+                if (parameters.Count == 3)
+                {
+                    if (!(parameters[2] is AssignmentParameter assignmentParameter) || assignmentParameter.Name.ToLower() != "value")
+                    {
+                        throw new WrongParametersCountException(name, "voltage controlled voltage source expects that third parameter is assigment parameter");
+                    }
+
+                    var vcvs = new VoltageSource(name);
+                    context.CreateNodes(vcvs, parameters);
+                    context.SetParameter(vcvs, "dc", assignmentParameter.Value);
+
+                    return vcvs;
+                }
+                else
+                {
+                     throw new WrongParametersCountException(name, "voltage controlled voltage source expects 3 or 5 parameters");
+                }
+            }
         }
 
         /// <summary>
-        /// Generates new voltage controlled voltage source
+        /// Generates new current controlled voltage source HName.
         /// </summary>
-        /// <param name="name">The name of voltage source to generate</param>
-        /// <param name="parameters">The paramters for voltage source</param>
-        /// <param name="context">The processing context</param>
+        /// <param name="name">The name of voltage source to generate.</param>
+        /// <param name="parameters">The parameters for voltage source.</param>
+        /// <param name="context">The reading context.</param>
         /// <returns>
-        /// A new instance of voltage controlled voltage source
+        /// A new instance of current controlled voltage source.
         /// </returns>
-        protected Entity GenerateVoltageControlledVoltageSource(string name, ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateCurrentControlledVoltageSource(string name,  ParameterCollection parameters, IReadingContext context)
         {
-            if (parameters.Count != 5)
+            if (parameters.Count == 3)
             {
-                throw new WrongParametersCountException(name, "Voltage controlled voltage source expects 5 parameters");
+                if (!(parameters[2] is AssignmentParameter assignmentParameter) || assignmentParameter.Name.ToLower() != "value")
+                {
+                    throw new WrongParametersCountException(name, "voltage controlled voltage source expects that third parameter is assignment parameter");
+                }
+
+                var vcvs = new VoltageSource(name);
+                context.CreateNodes(vcvs, parameters);
+                context.SetParameter(vcvs, "dc", assignmentParameter.Value);
+
+                return vcvs;
             }
+            else
+            {
+                switch (parameters.Count)
+                {
+                    case 2: throw new WrongParametersCountException(name, "Voltage source expected");
+                    case 3: throw new WrongParametersCountException(name, "Gain expected");
+                    case 4: break;
+                    default:
+                        throw new WrongParametersCountException(name, "Current controlled voltage source expects 4 parameters");
+                }
 
-            var vcvs = new VoltageControlledVoltageSource(name);
-            context.CreateNodes(vcvs, parameters);
-            context.SetParameter(vcvs, "gain", parameters.GetString(4));
+                if (!(parameters[3] is SingleParameter))
+                {
+                    throw new WrongParameterTypeException(name, "Name of controlling voltage source expected");
+                }
 
-            return vcvs;
+                var ccvs = new CurrentControlledVoltageSource(name);
+                context.CreateNodes(ccvs, parameters);
+
+                ccvs.ControllingName = parameters.GetString(2);
+                context.SetParameter(ccvs, "gain", parameters.GetString(3));
+                return ccvs;
+            }
         }
 
         /// <summary>
-        /// Generates new current controlled voltage source
+        /// Generates new voltage source.
         /// </summary>
-        /// <param name="name">The name of voltage source to generate</param>
-        /// <param name="parameters">The paramters for voltage source</param>
-        /// <param name="context">The processing context</param>
+        /// <param name="name">The name of voltage source to generate.</param>
+        /// <param name="parameters">The parameters for voltage source.</param>
+        /// <param name="context">The reading context.</param>
         /// <returns>
-        /// A new instance of current controlled voltage source
+        /// A new instance of voltage source.
         /// </returns>
-        protected Entity GenerateCurrentControlledVoltageSource(string name,  ParameterCollection parameters, IReadingContext context)
-        {
-            switch (parameters.Count)
-            {
-                case 2: throw new WrongParametersCountException(name, "Voltage source expected");
-                case 3: throw new WrongParametersCountException(name, "Gain expected");
-                case 4: break;
-                default:
-                    throw new WrongParametersCountException(name, "Current controlled voltage source expects 4 parameters");
-            }
-
-            if (!(parameters[3] is SingleParameter))
-            {
-                throw new WrongParameterTypeException(name,  "Name of controlling voltage source expected");
-            }
-
-            var ccvs = new CurrentControlledVoltageSource(name);
-            context.CreateNodes(ccvs, parameters);
-
-            ccvs.ControllingName = parameters.GetString(2);
-            context.SetParameter(ccvs, "gain", parameters.GetString(3));
-            return ccvs;
-        }
-
-        /// <summary>
-        /// Generates new voltage source
-        /// </summary>
-        /// <param name="name">The name of voltage source to generate</param>
-        /// <param name="parameters">The paramters for voltage source</param>
-        /// <param name="context">The processing context</param>
-        /// <returns>
-        /// A new instance of voltage source
-        /// </returns>
-        protected Entity GenerateVoltageSource(string name, ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateVoltageSource(string name, ParameterCollection parameters, IReadingContext context)
         {
             var vsrc = new VoltageSource(name);
             context.CreateNodes(vsrc, parameters);
@@ -180,7 +189,14 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
                 }
                 else if (parameters[i] is BracketParameter cp)
                 {
-                    context.SetParameter(vsrc, "waveform", WaveFormGenerator.Generate(cp, context));
+                    vsrc.SetParameter("waveform", context.WaveformReader.Generate(cp, context));
+                }
+                else if (parameters[i] is AssignmentParameter ap)
+                {
+                    if (ap.Name.ToLower() == "value")
+                    {
+                        context.SetParameter(vsrc, "dc", ap.Value);
+                    }
                 }
                 else
                 {

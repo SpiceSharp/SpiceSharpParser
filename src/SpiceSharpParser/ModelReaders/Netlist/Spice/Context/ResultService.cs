@@ -2,19 +2,20 @@
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public class ResultService : IResultService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ResultService"/> class.
         /// </summary>
-        /// <param name="result">A spice model reader result.</param>
+        /// <param name="result">A SPICE model reader result.</param>
         public ResultService(SpiceNetlistReaderResult result)
         {
             Result = result ?? throw new System.ArgumentNullException(nameof(result));
@@ -31,9 +32,24 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         public IEnumerable<Simulation> Simulations => Result.Simulations;
 
         /// <summary>
+        /// Gets all exports.
+        /// </summary>
+        public IEnumerable<Export> Exports => Result.Exports;
+
+        /// <summary>
         /// Gets the circuit.
         /// </summary>
         public Circuit Circuit => Result.Circuit;
+
+        /// <summary>
+        /// Gets the Monte Carlo result.
+        /// </summary>
+        public MonteCarloResult MonteCarlo => Result.MonteCarloResult;
+
+        /// <summary>
+        /// Gets or sets used random seed.
+        /// </summary>
+        public int? Seed { get => Result.Seed; set => Result.Seed = value; }
 
         /// <summary>
         /// Gets the result where things are added.
@@ -71,9 +87,9 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         /// Adds plot to netlist.
         /// </summary>
         /// <param name="plot">Plot to add.</param>
-        public void AddPlot(Plot plot)
+        public void AddPlot(XyPlot plot)
         {
-            Result.Plots.Add(plot);
+            Result.XyPlots.Add(plot);
         }
 
         /// <summary>
@@ -104,29 +120,16 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Context
         }
 
         /// <summary>
-        /// Sets the initial voltage.
+        /// Finds the object in the result.
         /// </summary>
-        /// <param name="nodeName">The node name.</param>
-        /// <param name="initialVoltage">The initial voltage.</param>
-        public void SetInitialVoltageCondition(string nodeName, double initialVoltage)
-        {
-            foreach (var simulation in Simulations)
-            {
-                simulation.Nodes.InitialConditions[nodeName] = initialVoltage;
-            }
-        }
-
-        /// <summary>
-        /// Finds the object.
-        /// </summary>
-        /// <param name="objectName">The object name.</param>
+        /// <param name="objectId">The object id.</param>
         /// <param name="entity">The found entity.</param>
         /// <returns>
         /// True if found.
         /// </returns>
-        public bool FindObject(string objectName, out Entity entity)
+        public bool FindObject(string objectId, out Entity entity)
         {
-            return Result.Circuit.Objects.TryGetEntity(objectName, out entity);
+            return Result.Circuit.Objects.TryGetEntity(objectId, out entity);
         }
     }
 }

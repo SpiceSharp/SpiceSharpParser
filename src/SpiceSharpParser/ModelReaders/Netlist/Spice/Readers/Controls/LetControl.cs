@@ -1,20 +1,17 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.Common;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
-    /// Reades .LET <see cref="Control"/> from spice netlist object model.
+    /// Reads .LET <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class LetControl : BaseControl
     {
-        public override string SpiceName => "let";
-
         /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context
+        /// Reads <see cref="Control"/> statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
@@ -38,9 +35,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
             }
 
             string expression = statement.Parameters.GetString(1);
-            var parameters = context.Evaluator.GetParametersFromExpression(expression);
-
-            context.Evaluator.AddNamedActionExpression(expressionName, new ActionExpression(expression, (newVal) => { }), parameters);
+            context.Evaluators.SetNamedExpression(expressionName, expression);
         }
     }
 }

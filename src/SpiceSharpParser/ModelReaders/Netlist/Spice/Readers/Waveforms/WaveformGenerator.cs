@@ -1,22 +1,16 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Common;
+﻿using SpiceSharp.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharp.Components;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Waveforms
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 {
     /// <summary>
     /// Generates a waveform
     /// </summary>
-    public abstract class WaveformGenerator : ISpiceObjectReader
+    public abstract class WaveformGenerator
     {
         /// <summary>
-        /// Gets the type name of generated waveform
-        /// </summary>
-        public abstract string SpiceName { get; }
-
-        /// <summary>
-        /// Generats a new waveform
+        /// Generates a new waveform
         /// </summary>
         /// <param name="bracketParameter">A parameter for waveform</param>
         /// <param name="context">A context</param>

@@ -1,35 +1,30 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Plots;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Registries;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
-    /// Reades .PLOT <see cref="Control"/> from spice netlist object model.
-    /// It supports DC, AC, TRAN type of .PLOT
+    /// Reads .PLOT <see cref="Control"/> from SPICE netlist object model.
+    /// It supports DC, AC, TRAN type of .PLOT.
     /// </summary>
     public class PlotControl : ExportControl
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotControl"/> class.
         /// </summary>
-        /// <param name="registry">The exporter registry</param>
-        public PlotControl(IExporterRegistry registry)
-            : base(registry)
+        /// <param name="mapper">The exporter mapper.</param>
+        public PlotControl(IMapper<Exporter> mapper)
+            : base(mapper)
         {
         }
-
-        /// <summary>
-        /// Gets the type of genereator.
-        /// </summary>
-        public override string SpiceName => "plot";
 
         /// <summary>
         /// Gets the supported plot types.
@@ -37,10 +32,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
         protected ICollection<string> SupportedPlotTypes { get; } = new List<string>() { "dc", "ac", "tran" };
 
         /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context
+        /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modify</param>
+        /// <param name="statement">A statement to process.</param>
+        /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
             if (context == null)
@@ -81,7 +76,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
 
         private void CreatePlot(Control statement, IReadingContext context, Simulation simulationToPlot, string xUnit)
         {
-            var plot = new Plot(simulationToPlot.Name.ToString());
+            var plot = new XyPlot(simulationToPlot.Name.ToString());
             List<Export> exports = GenerateExports(statement.Parameters.Skip(1), simulationToPlot, context);
 
             for (var i = 0; i < exports.Count; i++)
@@ -89,7 +84,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
                 plot.Series.Add(new Series(exports[i].Name) { XUnit = xUnit, YUnit = exports[i].QuantityUnit });
             }
 
-            simulationToPlot.OnExportSimulationData += (object sender, ExportDataEventArgs e) =>
+            simulationToPlot.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
                 double x = 0;
 
@@ -130,16 +125,23 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
             {
                 if (parameter is BracketParameter || parameter is ReferenceParameter)
                 {
-                    result.Add(GenerateExport(parameter, simulationToPlot, context.NodeNameGenerator, context.ObjectNameGenerator));
+                    result.Add(GenerateExport(parameter, simulationToPlot, context.NodeNameGenerator, context.ComponentNameGenerator, context.ModelNameGenerator, context.Result, context.CaseSensitivity));
                 }
                 else
                 {
                     string expressionName = parameter.Image;
-                    var expressionNames = context.Evaluator.GetExpressionNames();
+                    var evaluator = context.Evaluators.GetSimulationEvaluator(simulationToPlot);
+                    var expressionNames = evaluator.GetExpressionNames();
 
                     if (expressionNames.Contains(expressionName))
                     {
-                        result.Add(new ExpressionExport(simulationToPlot.Name.ToString(), expressionName, context.Evaluator.GetExpression(expressionName), context.Evaluator, simulationToPlot));
+                        result.Add(
+                            new ExpressionExport(
+                                simulationToPlot.Name.ToString(),
+                                expressionName,
+                                evaluator.GetExpression(expressionName),
+                                evaluator,
+                                simulationToPlot));
                     }
                 }
             }

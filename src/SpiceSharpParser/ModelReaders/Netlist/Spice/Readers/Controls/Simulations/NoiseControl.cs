@@ -1,21 +1,19 @@
 ﻿using SpiceSharp;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
     /// <summary>
-    /// Reades .NOISE <see cref="Control"/> from spice netlist object model.
+    /// Reads .NOISE <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class NoiseControl : SimulationControl
     {
-        public override string SpiceName => "noise";
-
         /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context
+        /// Reads <see cref="Control"/> statement and modifies the context
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
@@ -31,7 +29,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
             // Check parameter count
             switch (statement.Parameters.Count)
             {
-                case 0: throw new WrongParametersCountException("Output expected for .NOISE");
+                case 0: throw new WrongParametersCountException("SpiceSharpModel expected for .NOISE");
                 case 1: throw new WrongParametersCountException("Source expected");
                 case 2: throw new WrongParametersCountException("Step type expected");
                 case 3: throw new WrongParametersCountException("Number of points expected");
@@ -71,15 +69,15 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
                         case 1:
                             if (bracket.Parameters[0] is VectorParameter v && v.Elements.Count == 2)
                             {
-                                var output = new StringIdentifier(v.Elements[0].Image);
-                                var reference = new StringIdentifier(v.Elements[1].Image);
-                                var input = new StringIdentifier(statement.Parameters[2].Image);
+                                var output = v.Elements[0].Image;
+                                var reference = v.Elements[1].Image;
+                                var input = statement.Parameters[2].Image;
                                 noise = new Noise(name, output, reference, input, sweep);
                             }
                             else if (bracket.Parameters[0] is SingleParameter s)
                             {
-                                var output = new StringIdentifier(s.Image);
-                                var input = new StringIdentifier(statement.Parameters[1].Image);
+                                var output = s.Image;
+                                var input = statement.Parameters[1].Image;
                                 noise = new Noise(name, output, input, sweep);
                             }
 

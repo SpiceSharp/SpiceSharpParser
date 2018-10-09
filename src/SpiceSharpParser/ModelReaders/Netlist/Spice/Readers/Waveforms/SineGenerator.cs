@@ -1,24 +1,22 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
+﻿using SpiceSharp.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharp.Components;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Waveforms
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 {
     /// <summary>
     /// Generator for sinusoidal waveform
     /// </summary>
     public class SineGenerator : WaveformGenerator
     {
-        public override string SpiceName => "sine";
-
         /// <summary>
-        /// Generats a new sinusoidal waveform
+        /// Generates a new sinusoidal waveform.
         /// </summary>
-        /// <param name="bracketParameter">A parameter for waveform</param>
-        /// <param name="context">A context</param>
+        /// <param name="bracketParameter">A parameter for waveform.</param>
+        /// <param name="context">A context.</param>
         /// <returns>
-        /// A new waveform
+        /// A new waveform.
         /// </returns>
         public override Waveform Generate(BracketParameter bracketParameter, IReadingContext context)
         {

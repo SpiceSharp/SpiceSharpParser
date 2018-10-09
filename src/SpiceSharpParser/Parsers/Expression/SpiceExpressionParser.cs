@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
-using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Parsers.Netlist.Spice;
 
 namespace SpiceSharpParser.Parsers.Expression
 {
     /// <summary>
     /// @author: Sven Boulanger
     /// @author: Marcin Gołębiowski (custom functions, lazy evaluation)
-    /// A very light-weight and fast expression parser made for parsing Spice expressions
+    /// A very light-weight and fast expression parser made for parsing SPICE expressions
     /// It is based on Dijkstra's Shunting Yard algorithm. It is very fast for parsing expressions only once.
     /// The parser is also not very expressive for errors, so only use it for relatively simple expressions.
     /// <list type="bullet">
@@ -21,15 +22,6 @@ namespace SpiceSharpParser.Parsers.Expression
     ///     <item><description>Modulo ('%')</description></item>
     ///     <item><description>Logical ('&amp;&amp;', '||', '!')</description></item>
     ///     <item><description>Relational ('==', '!=', '&lt;', '&gt;', '&lt;=', '&gt;=')</description></item>
-    /// </list>
-    /// <list type="bullet">
-    ///     <listheader><description>Supported functions</description></listheader>
-    ///     <item><description>Minimum and maximum ('min(a,b)', 'max(a,b)')</description></item>
-    ///     <item><description>Square root ('sqrt(a)')</description></item>
-    ///     <item><description>Absolute value ('abs(a)')</description></item>
-    ///     <item><description>Exponent and logarithms ('exp(a)', 'log(a)', 'log10(a)')</description></item>
-    ///     <item><description>Powers ('pow(a, b)')</description></item>
-    ///     <item><description>Trigonometry ('sin(a)', 'cos(a)', 'tan(a)', 'asin(a)', 'acos(a)', 'atan(a)', 'sinh(a)', 'cosh(a)', 'tanh(a)', 'atan2(a, b)')</description></item>
     /// </list>
     /// </summary>
     public class SpiceExpressionParser : IExpressionParser
@@ -74,7 +66,6 @@ namespace SpiceSharpParser.Parsers.Expression
         private const byte IdGreaterOrEqual = 17;
         private const byte IdLeftBracket = 18;
         private const byte IdFunction = 19;
-        private const byte IdUserFunction = 20;
 
         /// <summary>
         /// Operators.
@@ -103,84 +94,47 @@ namespace SpiceSharpParser.Parsers.Expression
         /// Private variables.
         /// </summary>
         private readonly Stack<Func<double>> outputStack = new Stack<Func<double>>();
-        private readonly Stack<object> virtualParamtersStack = new Stack<object>();
+        private readonly Stack<object> virtualParametersStack = new Stack<object>();
         private readonly Stack<Operator> operatorStack = new Stack<Operator>();
         private readonly StringBuilder sb = new StringBuilder();
-        private int index;
         private string input;
         private bool infixPostfix;
         private int count;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpiceExpressionParser"/> class.
+        /// </summary>
+        /// <param name="isNegationAssociative">Specifies whether negation is associative.</param>
         public SpiceExpressionParser(bool isNegationAssociative = false)
         {
             OperatorNegative.LeftAssociative = isNegationAssociative;
         }
 
         /// <summary>
-        /// Gets or sets the parameters.
-        /// </summary>
-        public Dictionary<string, LazyExpression> Parameters { get; protected set; } = new Dictionary<string, LazyExpression>();
-
-        /// <summary>
-        /// Gets or sets custom functions.
-        /// </summary>
-        public Dictionary<string, CustomFunction> CustomFunctions { get; protected set; } = new Dictionary<string, CustomFunction>();
-
-        /// <summary>
-        /// Gets all built-in constants.
-        /// </summary>
-        private Dictionary<string, double> BuiltInConstants { get; } = new Dictionary<string, double>()
-        {
-            { "PI", Math.PI },
-            { "pi", Math.PI },
-            { "e", Math.E },
-            { "E", Math.E },
-            { "false", 0.0 },
-            { "true", 1.0 },
-            { "yes", 1.0 },
-            { "no", 0.0 },
-            { "kelvin", -273.15 },
-            { "echarge", 1.60219e-19 },
-            { "c", 299792500 },
-            { "boltz", 1.38062e-23 },
-            { "NaN", double.NaN },
-        };
-
-        /// <summary>
-        /// Gets all built-in functions (only trigonometric functions)
-        /// </summary>
-        private Dictionary<string, BuiltInFunctionOperator> BuiltInFunctions { get; } = new Dictionary<string, BuiltInFunctionOperator>
-        {
-            { "cos", new BuiltInFunctionOperator(stack => Math.Cos(stack.Pop()())) },
-            { "sin", new BuiltInFunctionOperator(stack => Math.Sin(stack.Pop()())) },
-            { "tan", new BuiltInFunctionOperator(stack => Math.Tan(stack.Pop()())) },
-            { "cosh", new BuiltInFunctionOperator(stack => Math.Cosh(stack.Pop()())) },
-            { "sinh", new BuiltInFunctionOperator(stack => Math.Sinh(stack.Pop()())) },
-            { "tanh", new BuiltInFunctionOperator(stack => Math.Tanh(stack.Pop()())) },
-            { "acos", new BuiltInFunctionOperator(stack => Math.Acos(stack.Pop()())) },
-            { "asin", new BuiltInFunctionOperator(stack => Math.Asin(stack.Pop()())) },
-            { "atan", new BuiltInFunctionOperator(stack => Math.Atan(stack.Pop()())) },
-            { "atan2",
-                new BuiltInFunctionOperator(
-                    stack => {
-                        var b = stack.Pop()();
-                        var a = stack.Pop()();
-                        return Math.Atan2(a, b);
-                    })
-            }
-        };
-
-        /// <summary>
         /// Parses an expression.
         /// </summary>
-        /// <param name="expression">The expression</param>
+        /// <param name="expression">The expression.</param>
+        /// <param name="context">The expression context.</param>
+        /// <param name="validateParameters">Specifies whether parameter validation is on.</param>
         /// <returns>Returns the result of parse.</returns>
-        public ExpressionParseResult Parse(string expression, object context = null, IEvaluator evaluator = null)
+        public ExpressionParseResult Parse(string expression, ExpressionParserContext context, bool validateParameters = true)
         {
+
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             var foundParameters = new Collection<string>();
+            var foundFunctions = new Collection<string>();
 
             // Initialize for parsing the expression
-            index = 0;
+            int index = 0;
             input = expression ?? throw new ArgumentNullException(nameof(expression));
             infixPostfix = false;
             outputStack.Clear();
@@ -211,24 +165,25 @@ namespace SpiceSharpParser.Parsers.Expression
                     infixPostfix = false;
                     switch (c)
                     {
-                        case '+': PushOperator(OperatorAdd, context); break;
-                        case '-': PushOperator(OperatorSubtract, context); break;
+                        case '+': PushOperator(expression, OperatorAdd); break;
+                        case '-': PushOperator(expression, OperatorSubtract); break;
                         case '*':
                             if ((index + 1 < count) && input[index + 1] == '*')
                             {
+                                PushOperator(expression, CreateOperatorForFunction("**", index, context));
                                 index++;
-                                PushOperator(CreateOperatorForCustomFunction("**", evaluator), context);
                                 break;
                             }
-                            PushOperator(OperatorMultiply, context);
+
+                            PushOperator(expression, OperatorMultiply);
                             break;
-                        case '/': PushOperator(OperatorDivide, context); break;
-                        case '%': PushOperator(OperatorModulo, context); break;
+                        case '/': PushOperator(expression, OperatorDivide); break;
+                        case '%': PushOperator(expression, OperatorModulo); break;
                         case '=':
                             index++;
                             if (index < count && input[index] == '=')
                             {
-                                PushOperator(OperatorEquals, context);
+                                PushOperator(expression, OperatorEquals);
                             }
                             else
                             {
@@ -240,7 +195,7 @@ namespace SpiceSharpParser.Parsers.Expression
                             index++;
                             if (index < count && input[index] == '=')
                             {
-                                PushOperator(OperatorInequals, context);
+                                PushOperator(expression, OperatorInequals);
                             }
                             else
                             {
@@ -248,7 +203,7 @@ namespace SpiceSharpParser.Parsers.Expression
                             }
 
                             break;
-                        case '?': PushOperator(OperatorOpenConditional, context); break;
+                        case '?': PushOperator(expression, OperatorOpenConditional); break;
                         case ':':
                             // Evaluate to an open conditional
                             while (operatorStack.Count > 0)
@@ -258,7 +213,7 @@ namespace SpiceSharpParser.Parsers.Expression
                                     break;
                                 }
 
-                                EvaluateOperator(operatorStack.Pop(), context);
+                                EvaluateOperator(expression, operatorStack.Pop());
                             }
 
                             var x = operatorStack.Pop();
@@ -268,7 +223,7 @@ namespace SpiceSharpParser.Parsers.Expression
                             index++;
                             if (index < count && input[index] == '|')
                             {
-                                PushOperator(OperatorConditionalOr, context);
+                                PushOperator(expression, OperatorConditionalOr);
                             }
                             else
                             {
@@ -280,7 +235,7 @@ namespace SpiceSharpParser.Parsers.Expression
                             index++;
                             if (index < count && input[index] == '&')
                             {
-                                PushOperator(OperatorConditionalAnd, context);
+                                PushOperator(expression, OperatorConditionalAnd);
                             }
                             else
                             {
@@ -295,35 +250,37 @@ namespace SpiceSharpParser.Parsers.Expression
                             {
                                 index++;
                             }
+
                             int endIndex = index;
                             if (index != count)
                             {
-                                virtualParamtersStack
+                                virtualParametersStack
                                     .Push(input.Substring(startIndex + 1, endIndex - startIndex - 1));
                                 index++;
                             }
+
                             break;
                         case '<':
                             if (index + 1 < count && input[index + 1] == '=')
                             {
-                                PushOperator(OperatorLessOrEqual, context);
+                                PushOperator(expression, OperatorLessOrEqual);
                                 index++;
                             }
                             else
                             {
-                                PushOperator(OperatorLess, context);
+                                PushOperator(expression, OperatorLess);
                             }
 
                             break;
                         case '>':
                             if (index + 1 < count && input[index + 1] == '=')
                             {
-                                PushOperator(OperatorGreaterOrEqual,context);
+                                PushOperator(expression, OperatorGreaterOrEqual);
                                 index++;
                             }
                             else
                             {
-                                PushOperator(OperatorGreater, context);
+                                PushOperator(expression, OperatorGreater);
                             }
 
                             break;
@@ -342,20 +299,12 @@ namespace SpiceSharpParser.Parsers.Expression
 
                                 if (operatorStack.Peek().Id == IdFunction)
                                 {
-                                    BuiltInFunctionOperator op = (BuiltInFunctionOperator)operatorStack.Pop();
-                                    var res = op.Function(outputStack);
-                                    outputStack.Push(() => res);
+                                    FunctionOperator op2 = (FunctionOperator)operatorStack.Pop();
+                                    EvaluateFunction(expression, op2, index);
                                     break;
                                 }
 
-                                if (operatorStack.Peek().Id == IdUserFunction)
-                                {
-                                    CustomFunctionOperator op2 = (CustomFunctionOperator)operatorStack.Pop();
-                                    EvaluateCustomFunction(op2, context);
-                                    break;
-                                }
-
-                                EvaluateOperator(operatorStack.Pop(), context);
+                                EvaluateOperator(expression, operatorStack.Pop());
                             }
 
                             infixPostfix = true;
@@ -364,7 +313,7 @@ namespace SpiceSharpParser.Parsers.Expression
                         case '[':
                             break;
                         case ']':
-                            EvaluateCustomFunction((CustomFunctionOperator)operatorStack.Pop(), context);
+                            EvaluateFunction(expression, (FunctionOperator)operatorStack.Pop(), index);
                             infixPostfix = true;
                             break;
                         case ',':
@@ -376,12 +325,7 @@ namespace SpiceSharpParser.Parsers.Expression
                                     break;
                                 }
 
-                                if (operatorStack.Peek().Id == IdUserFunction)
-                                {
-                                    break;
-                                }
-
-                                EvaluateOperator(operatorStack.Pop(), context);
+                                EvaluateOperator(expression, operatorStack.Pop());
                             }
 
                             break;
@@ -399,7 +343,6 @@ namespace SpiceSharpParser.Parsers.Expression
                     {
                         index++;
 
-                        int startIndex = index;
                         int tmpIndex = index;
                         while (tmpIndex < count && input[tmpIndex] != '[')
                         {
@@ -408,32 +351,43 @@ namespace SpiceSharpParser.Parsers.Expression
 
                         if (tmpIndex != count)
                         {
-                            if (CustomFunctions.ContainsKey("@"))
+                            if (context.Functions.ContainsKey("@"))
                             {
-                                operatorStack.Push(CreateOperatorForCustomFunction("@",  evaluator));
+                                operatorStack.Push(CreateOperatorForFunction("@", index, context));
                             }
                             else
                             {
-                                throw new Exception("Unknown function: @");
+                                throw new FunctionNotFoundException("@");
                             }
+
                             infixPostfix = false;
                         }
                     }
                     else if (c == '.' || (c >= '0' && c <= '9'))
                     {
                         if (operatorStack.Count > 0
-                            && operatorStack.Peek().Id == IdUserFunction
-                            && ((CustomFunctionOperator)operatorStack.Peek()).VirtualParameters)
+                            && operatorStack.FirstOrDefault(o => o.Id == IdFunction) != null)
                         {
-                            virtualParamtersStack.Push(ParseDouble().ToString());
+                            if (operatorStack.Peek() is FunctionOperator fo && fo.VirtualParameters)
+                            {
+                                int startIndex = index;
+                                ParseDouble(expression, ref index);
+                                virtualParametersStack.Push(expression.Substring(startIndex, index - startIndex));
+                            }
+                            else
+                            {
+                                var parseResult = ParseDouble(expression, ref index, false);
+                                outputStack.Push(() => parseResult);
+                            }
                         }
                         else
                         {
-                            var parseResult = ParseDouble();
+                            var parseResult = ParseDouble(expression, ref index, true);
                             outputStack.Push(() => parseResult);
                         }
                         infixPostfix = true;
                     }
+
                     // Parse a parameter or a function
                     else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
                     {
@@ -456,60 +410,53 @@ namespace SpiceSharpParser.Parsers.Expression
                                 break;
                             }
                         }
+
                         if (index < count && input[index] == '(')
                         {
                             index++;
+                            var functionName = sb.ToString();
 
-                            // "cos(10)+sin(-1)*max(tanh(1),sinh(1))"
-                            // Benchmark switch statements on function name: 1,000,000 -> 2400ms
-                            // Benchmark switch on first character + if/else function name: 1,000,000 -> 2200ms
-                            // Benchmark using Dictionary<>: 1,000,000 -> 2200ms -- I chose this option
-                            if (BuiltInFunctions.TryGetValue(sb.ToString(), out var function))
+                            if (context.Functions.ContainsKey(functionName))
                             {
-                                operatorStack.Push(function);
+                                foundFunctions.Add(functionName);
+                                operatorStack.Push(CreateOperatorForFunction(functionName, index, context));
                             }
                             else
                             {
-                                if (CustomFunctions.ContainsKey(sb.ToString()))
+                                throw new FunctionNotFoundException(functionName);
+                            }
+                        }
+                        else if (context.Parameters != null)
+                        {
+                            string parameterName = sb.ToString();
+
+                            if (operatorStack.Count > 0
+                                && operatorStack.Peek().Id == IdFunction
+                                && ((FunctionOperator)operatorStack.Peek()).VirtualParameters)
+                            {
+                                if (context.Parameters.TryGetValue(parameterName, out var parameter))
                                 {
-                                    operatorStack.Push(CreateOperatorForCustomFunction(sb.ToString(), evaluator));
+                                    foundParameters.Add(parameterName);
+                                }
+
+                                virtualParametersStack.Push(parameterName);
+                            }
+                            else if (context.Parameters.TryGetValue(parameterName, out var parameter))
+                            {
+                                foundParameters.Add(parameterName);
+                                outputStack.Push(() => parameter.Evaluate());
+                            }
+                            else
+                            {
+                                if (validateParameters)
+                                {
+                                    throw new UnknownParameterException() { Name = parameterName };
                                 }
                                 else
                                 {
-                                    throw new Exception("Unknown function: " + sb.ToString());
+                                    foundParameters.Add(parameterName);
+                                    outputStack.Push(() => double.NaN);
                                 }
-                            }
-                        }
-                        else if (Parameters != null)
-                        {
-                            string id = sb.ToString();
-
-                            if (operatorStack.Count > 0
-                                && operatorStack.Peek().Id == IdUserFunction
-                                && ((CustomFunctionOperator)operatorStack.Peek()).VirtualParameters)
-                            {
-                                if (Parameters.TryGetValue(id, out var parameter))
-                                {
-                                    foundParameters.Add(id);
-                                }
-
-                                virtualParamtersStack.Push(id);
-                            }
-                            else if (BuiltInConstants.TryGetValue(id, out var @const))
-                            {
-                                outputStack.Push(() => @const);
-                            }
-                            else if (Parameters.TryGetValue(id, out var lazyParameter))
-                            {
-                                foundParameters.Add(id);
-                                outputStack.Push(() =>
-                                {
-                                    return lazyParameter.GetValue(context);
-                                });
-                            }
-                            else
-                            {
-                                throw new Exception("Unknown parameter");
                             }
 
                             infixPostfix = true;
@@ -531,19 +478,11 @@ namespace SpiceSharpParser.Parsers.Expression
 
                             if (operatorStack.Peek().Id == IdFunction)
                             {
-                                BuiltInFunctionOperator op = (BuiltInFunctionOperator)operatorStack.Pop();
-                                var res = op.Function(outputStack);
-                                outputStack.Push(() => res);
+                                EvaluateFunction(expression, (FunctionOperator)operatorStack.Pop(), index);
                                 break;
                             }
 
-                            if (operatorStack.Peek().Id == IdUserFunction)
-                            {
-                                EvaluateCustomFunction((CustomFunctionOperator)operatorStack.Pop(), context);
-                                break;
-                            }
-
-                            EvaluateOperator(operatorStack.Pop(), context);
+                            EvaluateOperator(expression, operatorStack.Pop());
                         }
 
                         infixPostfix = true;
@@ -557,24 +496,25 @@ namespace SpiceSharpParser.Parsers.Expression
                         {
                             index++;
                         }
+
                         int endIndex = index;
                         if (index != count)
                         {
-                            virtualParamtersStack
-                                .Push(input.Substring(startIndex + 1, endIndex - startIndex - 1));
+                            virtualParametersStack.Push(input.Substring(startIndex + 1, endIndex - startIndex - 1));
                             index++;
                             infixPostfix = true;
                         }
                     }
+
                     // Prefix operators
                     else
                     {
                         switch (c)
                         {
-                            case '+': PushOperator(OperatorPositive, context); break;
-                            case '-': PushOperator(OperatorNegative, context); break;
-                            case '!': PushOperator(OperatorNot, context); break;
-                            case '(': PushOperator(OperatorLeftBracket, context); break;
+                            case '+': PushOperator(expression, OperatorPositive); break;
+                            case '-': PushOperator(expression, OperatorNegative); break;
+                            case '!': PushOperator(expression, OperatorNot); break;
+                            case '(': PushOperator(expression, OperatorLeftBracket); break;
                             default:
                                 throw new Exception("Unrecognized unary operator");
                         }
@@ -587,7 +527,7 @@ namespace SpiceSharpParser.Parsers.Expression
             // Evaluate all that is left on the stack
             while (operatorStack.Count > 0)
             {
-                EvaluateOperator(operatorStack.Pop(), context);
+                EvaluateOperator(expression, operatorStack.Pop());
             }
 
             if (outputStack.Count > 1)
@@ -595,25 +535,31 @@ namespace SpiceSharpParser.Parsers.Expression
                 throw new Exception("Invalid expression");
             }
 
-            return new ExpressionParseResult() { Value = outputStack.Pop(), FoundParameters = foundParameters };
+            return new ExpressionParseResult()
+            {
+                Value = outputStack.Pop(),
+                FoundFunctions = foundFunctions,
+                FoundParameters = foundParameters,
+            };
         }
 
-        private CustomFunctionOperator CreateOperatorForCustomFunction(string functionName, IEvaluator evaluator)
+        private FunctionOperator CreateOperatorForFunction(string functionName, int startIndex, ExpressionParserContext context)
         {
-            if (!CustomFunctions.ContainsKey(functionName))
+            if (!context.Functions.ContainsKey(functionName))
             {
-                throw new Exception("Unknown function:" + functionName);
+                throw new FunctionNotFoundException(functionName);
             }
 
-            var customFunction = CustomFunctions[functionName];
-            var cfo = new CustomFunctionOperator();
+            var customFunction = context.Functions[functionName];
+            var cfo = new FunctionOperator();
+            cfo.StartIndex = startIndex;
             cfo.VirtualParameters = customFunction.VirtualParameters;
             cfo.ArgumentsCount = customFunction.ArgumentsCount;
             cfo.ArgumentsStackCount = outputStack.Count;
             cfo.Precedence = customFunction.Infix ? PrecedenceMultiplicative : cfo.Precedence;
-            cfo.LeftAssociative = customFunction.Infix ? true : cfo.LeftAssociative;
+            cfo.LeftAssociative = customFunction.Infix || cfo.LeftAssociative;
 
-            cfo.Function = (arguments, contextObj) =>
+            cfo.Function = (image, arguments) =>
             {
                 var values = new List<object>();
                 foreach (var arg in arguments)
@@ -621,37 +567,49 @@ namespace SpiceSharpParser.Parsers.Expression
                     values.Add(arg());
                 }
 
-                var result = customFunction.Logic(values.ToArray(), contextObj, evaluator);
-                return double.Parse(result.ToString()); //TODO: spice expression at the moment evalute only to double ...
+                var result = customFunction.Logic(image, values.ToArray(), context.Evaluator);
+                return Convert.ToDouble(result);
             };
             return cfo;
         }
 
-        private void EvaluateCustomFunction(CustomFunctionOperator op, object context)
+        private void EvaluateFunction(string expression, FunctionOperator op, int? endIndex = null)
         {
             if (op.VirtualParameters)
             {
-                var argCount = op.ArgumentsCount != -1 ? op.ArgumentsCount : virtualParamtersStack.Count;
-                var args = PopAndReturnElements(virtualParamtersStack, argCount);
+                var argCount = op.ArgumentsCount != -1 ? op.ArgumentsCount : virtualParametersStack.Count;
+                var args = PopAndReturnElements(virtualParametersStack, argCount);
 
                 outputStack.Push(() =>
                 {
-                    return op.Function(args, context);
+                    if (endIndex != null)
+                    {
+                        return op.Function(expression.Substring(op.StartIndex, endIndex.Value - op.StartIndex + 1), args);
+                    }
+                    return op.Function(null, args);
                 });
             }
             else
             {
                 var argCount = op.ArgumentsCount != -1 ? op.ArgumentsCount : outputStack.Count - op.ArgumentsStackCount;
                 var args = PopAndReturnElements(outputStack, argCount);
-                outputStack.Push(() => op.Function(args, context));
+
+                if (endIndex != null)
+                {
+                    outputStack.Push(() => op.Function(expression.Substring(op.StartIndex, endIndex.Value - op.StartIndex + 1), args));
+                }
+                else
+                {
+                    outputStack.Push(() => op.Function(null, args));
+                }
             }
         }
 
         /// <summary>
         /// Evaluate operators with precedence.
         /// </summary>
-        /// <param name="op">Operator</param>
-        private void PushOperator(Operator op, object context)
+        /// <param name="op">Operator.</param>
+        private void PushOperator(string expression, Operator op)
         {
             while (operatorStack.Count > 0)
             {
@@ -662,17 +620,17 @@ namespace SpiceSharpParser.Parsers.Expression
                     break;
                 }
 
-                EvaluateOperator(operatorStack.Pop(), context);
+                EvaluateOperator(expression, operatorStack.Pop());
             }
 
             operatorStack.Push(op);
         }
 
         /// <summary>
-        /// Evaluate an operator
+        /// Evaluate an operator.
         /// </summary>
-        /// <param name="op">Operator</param>
-        private void EvaluateOperator(Operator op, object context)
+        /// <param name="op">Operator.</param>
+        private void EvaluateOperator(string expression, Operator op)
         {
             Func<double> a, b, c;
             double res;
@@ -756,17 +714,14 @@ namespace SpiceSharpParser.Parsers.Expression
                     {
                         outputStack.Push(() => c());
                     }
+
                     break;
                 case IdOpenConditional:
                     throw new Exception("Unmatched conditional");
-                case IdFunction:
-                    res = ((BuiltInFunctionOperator)op).Function(outputStack);
-                    outputStack.Push(() => res);
-                    break;
                 case IdLeftBracket:
                     break;
-                case IdUserFunction:
-                    EvaluateCustomFunction((CustomFunctionOperator)op, context);
+                case IdFunction:
+                    EvaluateFunction(expression, (FunctionOperator)op, null);
                     break;
                 default:
                     throw new Exception("Unrecognized operator");
@@ -774,161 +729,28 @@ namespace SpiceSharpParser.Parsers.Expression
         }
 
         /// <summary>
-        /// Parse a double value at the current position
+        /// Parse a double value.
         /// </summary>
-        /// <returns>Parse result</returns>
-        private double ParseDouble()
+        /// <returns>Parse result.</returns>
+        private double ParseDouble(string expression, ref int index, bool commaAsDecimalSeparator = false)
         {
             // Read integer part
             double value = 0.0;
-            while (index < count && (input[index] >= '0' && input[index] <= '9'))
-            {
-                value = (value * 10.0) + (input[index++] - '0');
-            }
+            int expressionIndex = index;
+            int expressionLength = expression.Length;
 
-            // Read decimal part
-            if (index < count
-                && (input[index] == '.'  || input[index] == ',' && operatorStack.Count == 0))
-            {
-                index++;
-                double mult = 1.0;
-                while (index < count && (input[index] >= '0' && input[index] <= '9'))
-                {
-                    value = (value * 10.0) + (input[index++] - '0');
-                    mult = mult * 10.0;
-                }
-
-                value /= mult;
-            }
-
-            if (index < count)
-            {
-                // Scientific notation
-                if (input[index] == 'e' || input[index] == 'E')
-                {
-                    index++;
-                    var exponent = 0;
-                    var neg = false;
-                    if (index < count && (input[index] == '+' || input[index] == '-'))
-                    {
-                        if (input[index] == '-')
-                        {
-                            neg = true;
-                        }
-
-                        index++;
-                    }
-
-                    // Get the exponent
-                    while (index < count && (input[index] >= '0' && input[index] <= '9'))
-                    {
-                        exponent = (exponent * 10) + (input[index++] - '0');
-                    }
-
-                    // Integer exponentation
-                    var mult = 1.0;
-                    var b = 10.0;
-                    while (exponent != 0)
-                    {
-                        if ((exponent & 0x01) == 0x01)
-                        {
-                            mult *= b;
-                        }
-
-                        b *= b;
-                        exponent >>= 1;
-                    }
-
-                    if (neg)
-                    {
-                        value /= mult;
-                    }
-                    else
-                    {
-                        value *= mult;
-                    }
-                }
-                else
-                {
-                    // Spice modifiers
-                    switch (input[index])
-                    {
-                        case 't':
-                        case 'T': value *= 1.0e12; index++; break;
-                        case 'g':
-                        case 'G': value *= 1.0e9; index++; break;
-                        case 'x':
-                        case 'X': value *= 1.0e6; index++; break;
-                        case 'k':
-                        case 'K': value *= 1.0e3; index++; break;
-                        case 'u':
-                        case 'μ':
-                        case 'U': value /= 1.0e6; index++; break;
-                        case 'n':
-                        case 'N': value /= 1.0e9; index++; break;
-                        case 'p':
-                        case 'P': value /= 1.0e12; index++; break;
-                        case 'f':
-                        case 'F': value /= 1.0e15; index++; break;
-                        case 'm':
-                        case 'M':
-                            if (index + 2 < count &&
-                                (input[index + 1] == 'e' || input[index + 1] == 'E') &&
-                                (input[index + 2] == 'g' || input[index + 2] == 'G'))
-                            {
-                                value *= 1.0e6;
-                                index += 3;
-                            }
-                            else if (index + 2 < count &&
-                                (input[index + 1] == 'i' || input[index + 1] == 'I') &&
-                                (input[index + 2] == 'l' || input[index + 2] == 'L'))
-                            {
-                                value *= 25.4e-6;
-                                index += 3;
-                            }
-                            else
-                            {
-                                value /= 1.0e3;
-                                index++;
-                            }
-
-                            break;
-                    }
-                }
-
-                // Any trailing letters are ignored
-                while (index < count && ((input[index] >= 'a' && input[index] <= 'z') || (input[index] >= 'A' && input[index] <= 'Z')))
-                {
-                    index++;
-                }
-            }
-
-            return value;
-        }
-
-        /// <summary>
-        /// Parse a double value 
-        /// </summary>
-        /// <returns>Parse result</returns>
-        private double ParseDouble(string expression, bool commaAsDecimalSeparator = false)
-        {
-            // Read integer part
-            double value = 0.0;
-            int expressionIndex = 0;
-            int expressionCount = expression.Length;
-
-            while (expressionIndex < expressionCount && (expression[expressionIndex] >= '0' && expression[expressionIndex] <= '9'))
+            while (expressionIndex < expressionLength && (expression[expressionIndex] >= '0' && expression[expressionIndex] <= '9'))
             {
                 value = (value * 10.0) + (expression[expressionIndex++] - '0');
             }
 
             // Read decimal part
-            if (expressionIndex < expressionCount
-                && (expression[expressionIndex] == '.' || expression[expressionIndex] == ',' && commaAsDecimalSeparator))
+            if (expressionIndex < expressionLength
+                && (expression[expressionIndex] == '.' || (expression[expressionIndex] == ',' && commaAsDecimalSeparator)))
             {
                 expressionIndex++;
                 double mult = 1.0;
-                while (expressionIndex < expressionCount && (expression[expressionIndex] >= '0' && expression[expressionIndex] <= '9'))
+                while (expressionIndex < expressionLength && (expression[expressionIndex] >= '0' && expression[expressionIndex] <= '9'))
                 {
                     value = (value * 10.0) + (expression[expressionIndex++] - '0');
                     mult = mult * 10.0;
@@ -937,7 +759,7 @@ namespace SpiceSharpParser.Parsers.Expression
                 value /= mult;
             }
 
-            if (expressionIndex < expressionCount)
+            if (expressionIndex < expressionLength)
             {
                 // Scientific notation
                 if (expression[expressionIndex] == 'e' || expression[expressionIndex] == 'E')
@@ -945,7 +767,7 @@ namespace SpiceSharpParser.Parsers.Expression
                     expressionIndex++;
                     var exponent = 0;
                     var neg = false;
-                    if (expressionIndex < expressionCount && (expression[expressionIndex] == '+' || expression[expressionIndex] == '-'))
+                    if (expressionIndex < expressionLength && (expression[expressionIndex] == '+' || expression[expressionIndex] == '-'))
                     {
                         if (expression[expressionIndex] == '-')
                         {
@@ -956,7 +778,7 @@ namespace SpiceSharpParser.Parsers.Expression
                     }
 
                     // Get the exponent
-                    while (expressionIndex < expressionCount && (expression[expressionIndex] >= '0' && expression[expressionIndex] <= '9'))
+                    while (expressionIndex < expressionLength && (expression[expressionIndex] >= '0' && expression[expressionIndex] <= '9'))
                     {
                         exponent = (exponent * 10) + (expression[expressionIndex++] - '0');
                     }
@@ -1008,14 +830,14 @@ namespace SpiceSharpParser.Parsers.Expression
                         case 'F': value /= 1.0e15; expressionIndex++; break;
                         case 'm':
                         case 'M':
-                            if (expressionIndex + 2 < expressionCount &&
+                            if (expressionIndex + 2 < expressionLength &&
                                 (expression[expressionIndex + 1] == 'e' || expression[expressionIndex + 1] == 'E') &&
                                 (expression[expressionIndex + 2] == 'g' || expression[expressionIndex + 2] == 'G'))
                             {
                                 value *= 1.0e6;
                                 expressionIndex += 3;
                             }
-                            else if (expressionIndex + 2 < expressionCount &&
+                            else if (expressionIndex + 2 < expressionLength &&
                                 (expression[expressionIndex + 1] == 'i' || expression[expressionIndex + 1] == 'I') &&
                                 (expression[expressionIndex + 2] == 'l' || expression[expressionIndex + 2] == 'L'))
                             {
@@ -1033,12 +855,13 @@ namespace SpiceSharpParser.Parsers.Expression
                 }
 
                 // Any trailing letters are ignored
-                while (expressionIndex < expressionCount && ((expression[expressionIndex] >= 'a' && expression[expressionIndex] <= 'z') || (expression[expressionIndex] >= 'A' && expression[expressionIndex] <= 'Z')))
+                while (expressionIndex < expressionLength && ((expression[expressionIndex] >= 'a' && expression[expressionIndex] <= 'z') || (expression[expressionIndex] >= 'A' && expression[expressionIndex] <= 'Z')))
                 {
                     expressionIndex++;
                 }
             }
 
+            index = expressionIndex;
             return value;
         }
 
@@ -1103,49 +926,30 @@ namespace SpiceSharpParser.Parsers.Expression
         }
 
         /// <summary>
-        /// Built-in function operator.
-        /// </summary>
-        private class BuiltInFunctionOperator : Operator
-        {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="BuiltInFunctionOperator"/> class.
-            /// </summary>
-            /// <param name="func">The function</param>
-            public BuiltInFunctionOperator(Func<Stack<Func<double>>, double> func)
-                : base(IdFunction, byte.MaxValue, false)
-            {
-                Function = func ?? throw new ArgumentNullException(nameof(func));
-            }
-
-            /// <summary>
-            /// Gets the function evaluation.
-            /// </summary>
-            public Func<Stack<Func<double>>, double> Function { get; }
-        }
-
-        /// <summary>
         /// User function operator.
         /// </summary>
-        private class CustomFunctionOperator : Operator
+        private class FunctionOperator : Operator
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="CustomFunctionOperator"/> class.
+            /// Initializes a new instance of the <see cref="FunctionOperator"/> class.
             /// </summary>
-            public CustomFunctionOperator()
-                : base(IdUserFunction, byte.MaxValue, false)
+            public FunctionOperator()
+                : base(IdFunction, byte.MaxValue, false)
             {
             }
 
             /// <summary>
             /// Gets or sets the function evaluation.
             /// </summary>
-            public Func<Func<object>[], object, double> Function { get; set; }
+            public Func<string, Func<object>[], double> Function { get; set; }
 
             public bool VirtualParameters { get; set; }
 
             public int ArgumentsCount { get; set; }
 
             public int ArgumentsStackCount { get; set; }
+
+            public int StartIndex { get; internal set; }
         }
     }
 }

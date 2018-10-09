@@ -1,12 +1,16 @@
 ﻿using SpiceSharp;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.Models.Netlist.Spice;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
     /// <summary>
-    /// Translates a spice model to Spice#.
+    /// Translates a SPICE model to SpiceSharp model.
     /// </summary>
     public class SpiceNetlistReader
     {
@@ -32,26 +36,70 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice
         /// </returns>
         public SpiceNetlistReaderResult Read(SpiceNetlist netlist)
         {
-            // Create result netlist
-            var result = new SpiceNetlistReaderResult(new Circuit(), netlist.Title);
+            if (netlist == null)
+            {
+                throw new System.ArgumentNullException(nameof(netlist));
+            }
 
-            // Create processing context
+            // Get result netlist
+            var result = new SpiceNetlistReaderResult(
+                new Circuit(StringComparerProvider.Get(Settings.CaseSensitivity.IsEntityNameCaseSensitive)),
+                netlist.Title);
+
+            // Get reading context
             var resultService = new ResultService(result);
-            var nodeNameGenerator = new MainCircuitNodeNameGenerator(new string[] { "0" });
-            var objectNameGenerator = new ObjectNameGenerator(string.Empty);
-            var mainEvaluator = new SpiceEvaluator(Settings.EvaluatorMode, Settings.Context.Exporters, nodeNameGenerator, objectNameGenerator);
+            var nodeNameGenerator = new MainCircuitNodeNameGenerator(new string[] { "0" }, Settings.CaseSensitivity.IsNodeNameCaseSensitive);
+            var componentNameGenerator = new ObjectNameGenerator(string.Empty);
+            var modelNameGenerator = new ObjectNameGenerator(string.Empty);
+
+            SpiceEvaluator readingEvaluator = CreateReadingEvaluator(nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService);
+            var evaluatorsContainer = new EvaluatorsContainer(readingEvaluator, new FunctionFactory());
+            var simulationParameters = new SimulationsParameters(evaluatorsContainer);
+
+            var statementsReader = new SpiceStatementsReader(Settings.Mappings.Controls, Settings.Mappings.Models, Settings.Mappings.Components);
+            var waveformReader = new WaveformReader(Settings.Mappings.Waveforms);
 
             var readingContext = new ReadingContext(
-                string.Empty,
-                mainEvaluator,
+                "Netlist reading context",
+                simulationParameters,
+                evaluatorsContainer,
                 resultService,
                 nodeNameGenerator,
-                objectNameGenerator);
+                componentNameGenerator,
+                modelNameGenerator,
+                statementsReader,
+                waveformReader,
+                Settings.CaseSensitivity);
 
             // Read statements form input netlist using created context
-            Settings.Context.Read(netlist.Statements, readingContext);
+            readingContext.Read(netlist.Statements, Settings.Orderer);
+
+            // Return and update evaluators info.
+            result.Seed = result.Seed ?? Settings.Seed;
+
+            result.Evaluators = evaluatorsContainer.GetEvaluators();
 
             return result;
+        }
+
+        private SpiceEvaluator CreateReadingEvaluator(MainCircuitNodeNameGenerator nodeNameGenerator, ObjectNameGenerator componentNameGenerator, ObjectNameGenerator modelNameGenerator, IResultService result)
+        {
+            var readingEvaluator = new SpiceEvaluator(
+                            "Netlist reading evaluator",
+                            null,
+                            Settings.EvaluatorMode,
+                            Settings.Seed,
+                            new ExpressionRegistry(Settings.CaseSensitivity.IsParameterNameCaseSensitive, Settings.CaseSensitivity.IsLetExpressionNameCaseSensitive),
+                            Settings.CaseSensitivity.IsFunctionNameCaseSensitive,
+                            Settings.CaseSensitivity.IsParameterNameCaseSensitive);
+
+            var exportFunctions = ExportFunctions.Create(Settings.Mappings.Exporters, nodeNameGenerator, componentNameGenerator, modelNameGenerator, result, Settings.CaseSensitivity);
+            foreach (var exportFunction in exportFunctions)
+            {
+                readingEvaluator.Functions.Add(exportFunction.Key, exportFunction.Value);
+            }
+
+            return readingEvaluator;
         }
     }
 }

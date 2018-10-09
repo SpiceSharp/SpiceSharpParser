@@ -1,7 +1,7 @@
 ﻿namespace SpiceSharpParser.Lexers.Netlist.Spice
 {
     /// <summary>
-    /// Types of terminals in spice grammar
+    /// Types of terminals in SPICE grammar.
     /// </summary>
     public enum SpiceTokenType
     {
@@ -9,6 +9,11 @@
         /// End of file token
         /// </summary>
         EOF = -1,
+
+        /// <summary>
+        /// Start token (hidden)
+        /// </summary>
+        START = 0,
 
         /// <summary>
         /// * character token
@@ -175,5 +180,9 @@
         /// </summary>
         EXPRESSION_SINGLE_QUOTES = 33,
 
+        /// <summary>
+        /// percent token
+        /// </summary>
+        PERCENT = 34,
     }
 }

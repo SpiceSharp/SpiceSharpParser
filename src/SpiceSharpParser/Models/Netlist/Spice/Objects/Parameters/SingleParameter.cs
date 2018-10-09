@@ -13,7 +13,7 @@
         }
 
         /// <summary>
-        /// Gets the string represenation of the parameter.
+        /// Gets the string representation of the parameter.
         /// </summary>
         public override string Image => this.rawString;
     }

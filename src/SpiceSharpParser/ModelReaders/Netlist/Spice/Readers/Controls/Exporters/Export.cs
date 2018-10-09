@@ -1,38 +1,26 @@
 ﻿using SpiceSharp.Simulations;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporters
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
     /// <summary>
     /// Describes a quantity that can be exported using simulated data.
     /// </summary>
     public abstract class Export
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Export"/> class.
-        /// </summary>
-        /// <param name="simulation">Simulation</param>
         public Export(Simulation simulation)
         {
-            Simulation = simulation;
-
-            simulation.InitializeSimulationExport += (obj, e) =>
-            {
-                ExceptionsEnabled = true; //TODO: Cleanup
-            };
+            Simulation = simulation ?? throw new System.ArgumentNullException(nameof(simulation));
         }
 
+        public Simulation Simulation { get; }
+
         /// <summary>
-        /// Gets the type name
+        /// Gets the type name.
         /// </summary>
         public abstract string TypeName { get; }
 
         /// <summary>
-        /// Gets or sets the simulation
-        /// </summary>
-        public Simulation Simulation { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the name
+        /// Gets or sets the name.
         /// </summary>
         public string Name { get; protected set; }
 
@@ -43,17 +31,17 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
 
         /// <summary>
         /// Gets or sets the type of simulation that the export should act on
-        /// eg. "tran", "dc", etc. Default is null (any simulation/optional)
+        /// eg. "tran", "dc", etc. Default is null (any simulation/optional).
         /// </summary>
         public string SimulationType { get; set; } = null;
 
         /// <summary>
         /// Gets or sets a value indicating whether exceptions are enabled.
         /// </summary>
-        protected bool ExceptionsEnabled { get; set; }
+        protected bool ExceptionsEnabled { get; set; } = true;
 
         /// <summary>
-        /// Extract the quantity from simulated data
+        /// Extract the quantity from simulated data.
         /// </summary>
         /// <returns>
         /// A quantity
@@ -61,10 +49,10 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Exporter
         public abstract double Extract();
 
         /// <summary>
-        /// Override string representation
+        /// Override string representation.
         /// </summary>
         /// <returns>
-        /// A string represenation of export
+        /// A string represenation of export.
         /// </returns>
         public override string ToString()
         {

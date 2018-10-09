@@ -1,18 +1,17 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulations
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
     /// <summary>
-    /// Reades .OP <see cref="Control"/> from spice netlist object model.
+    /// Reads .OP <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class OPControl : SimulationControl
     {
-        public override string SpiceName => "op";
-
         /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context.
+        /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
@@ -24,7 +23,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Simulati
         private OP CreateOperatingPointSimulation(string name, Control statement, IReadingContext context)
         {
             var op = new OP(name);
-            SetBaseConfiguration(op.BaseConfiguration, context);
+            ConfigureCommonSettings(op, context);
             context.Result.AddSimulation(op);
 
             return op;

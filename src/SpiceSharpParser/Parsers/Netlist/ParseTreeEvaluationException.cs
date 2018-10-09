@@ -3,7 +3,7 @@
 namespace SpiceSharpParser.Parsers.Netlist
 {
     /// <summary>
-    /// Exception during evaluation of a parse tree
+    /// Exception during evaluation of a parse tree.
     /// </summary>
     public class ParseTreeEvaluationException : Exception
     {

@@ -1,23 +1,18 @@
-﻿using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
-    /// Reades .GLOBAL <see cref="Control"/> from spice netlist object model.
+    /// Reads .GLOBAL <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class GlobalControl : BaseControl
     {
         /// <summary>
-        /// Gets name of Spice element
+        /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
-        public override string SpiceName => "global";
-
-        /// <summary>
-        /// Reades <see cref="Control"/> statement and modifies the context
-        /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modify</param>
+        /// <param name="statement">A statement to process.</param>
+        /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
             foreach (var param in statement.Parameters)

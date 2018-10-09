@@ -11,6 +11,7 @@
           ]
         }
       ],
+	  "properties": { "TargetFramework": "net45"},
       "dest": "api",
       "disableGitFeatures": false
     }

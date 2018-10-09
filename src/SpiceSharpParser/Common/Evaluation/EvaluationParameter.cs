@@ -1,11 +1,13 @@
-﻿namespace SpiceSharpParser.Common
+﻿using SpiceSharp;
+
+namespace SpiceSharpParser.Common.Evaluation
 {
     /// <summary>
     /// An parameter that triggers re-evaluation when changed.
     /// </summary>
-    public class EvaluationParameter : SpiceSharp.Parameter
+    public class EvaluationParameter : Parameter<double>
     {
-        private double rawValue;
+        private double _rawValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EvaluationParameter"/> class.
@@ -15,22 +17,20 @@
         public EvaluationParameter(IEvaluator evaluator, string parameterName)
         {
             ParameterName = parameterName ?? throw new System.ArgumentNullException(nameof(parameterName));
-            Evaluator = evaluator ?? throw new System.ArgumentNullException(nameof(evaluator));        }
+            Evaluator = evaluator ?? throw new System.ArgumentNullException(nameof(evaluator));
+        }
 
         /// <summary>
         /// Gets or sets the value of parameter.
         /// </summary>
         public override double Value
         {
-            get
-            {
-                return rawValue;
-            }
+            get => _rawValue;
 
             set
             {
+                _rawValue = value;
                 Evaluator.SetParameter(ParameterName, value);
-                rawValue = value;
             }
         }
 
@@ -50,7 +50,7 @@
         /// <returns>
         /// A clone of parameter.
         /// </returns>
-        public override SpiceSharp.Parameter Clone()
+        public override BaseParameter Clone()
         {
             return new EvaluationParameter(Evaluator, ParameterName);
         }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints
 {
     /// <summary>
     /// Represents a printed data that has columns and rows.

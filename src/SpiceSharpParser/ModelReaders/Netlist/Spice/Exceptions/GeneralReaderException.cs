@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
 {
     /// <summary>
     /// General reader exception

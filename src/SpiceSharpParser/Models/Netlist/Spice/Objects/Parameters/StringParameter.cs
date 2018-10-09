@@ -1,7 +1,7 @@
 ﻿namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
 {
     /// <summary>
-    /// A string parameter
+    /// A string parameter.
     /// </summary>
     public class StringParameter : SingleParameter
     {
@@ -11,9 +11,9 @@
         }
 
         /// <summary>
-        /// Closes the object.
+        /// Clones the object.
         /// </summary>
-        /// <returns>A clone of the object</returns>
+        /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
             return new StringParameter(this.Image);

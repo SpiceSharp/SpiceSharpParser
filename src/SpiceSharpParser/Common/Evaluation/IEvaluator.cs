@@ -1,97 +1,50 @@
 ﻿using System.Collections.Generic;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Evaluation;
 
-namespace SpiceSharpParser.Common
+namespace SpiceSharpParser.Common.Evaluation
 {
     /// <summary>
-    /// An interface for all evaluators
+    /// An interface for all evaluators.
     /// </summary>
     public interface IEvaluator
     {
         /// <summary>
-        /// Gets the custom functions.
+        /// Gets or sets the evaluator name.
         /// </summary>
-        Dictionary<string, CustomFunction> CustomFunctions { get; }
+        string Name { get; set; }
 
         /// <summary>
-        /// Adds double expression to registry that will be updated when value of parameter change.
+        /// Gets the parameters.
         /// </summary>
-        /// <param name="expression">An expression to add.</param>
-        /// <param name="parameters">Parameters of expression.</param>
-        void AddActionExpression(ActionExpression expression, IEnumerable<string> parameters);
+        Dictionary<string, Expression> Parameters { get;  }
 
         /// <summary>
-        /// Adds let expression to registry.
+        /// Gets custom functions.
         /// </summary>
-        /// <param name="expressionName">An expression name.</param>
-        /// <param name="expression">An expression value.</param>
-        /// <param name="parameters">Parameters of expression.</param>
-        void AddNamedActionExpression(string expressionName, ActionExpression expression, IEnumerable<string> parameters);
+        Dictionary<string, Function> Functions { get;  }
 
         /// <summary>
-        /// Evaluates a specific string to double.
+        /// Gets the children evaluators.
+        /// </summary>
+        List<IEvaluator> Children { get; }
+
+        /// <summary>
+        /// Gets or sets the random seed.
+        /// </summary>
+        int? Seed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the context of the evaluator.
+        /// </summary>
+        object Context { get; set; }
+
+        /// <summary>
+        /// Evaluates a specific expression to double.
         /// </summary>
         /// <param name="expression">An expression to evaluate.</param>
-        /// <param name="context">Context of expression.</param>
         /// <returns>
         /// A double value.
         /// </returns>
-        double EvaluateDouble(string expression, object context = null);
-
-        /// <summary>
-        /// Sets the parameter value and updates the values expressions.
-        /// </summary>
-        /// <param name="parameterName">A name of parameter.</param>
-        /// <param name="value">A value of parameter.</param>
-        void SetParameter(string parameterName, double value);
-
-        /// <summary>
-        /// Sets the parameter value and updates the values expressions
-        /// </summary>
-        /// <param name="parameterName">A name of parameter</param>
-        /// <param name="expression">A parameter expression </param>
-        void SetParameter(string parameterName, string expression);
-
-        /// <summary>
-        /// Sets the parameters values and updates the values expressions.
-        /// </summary>
-        /// <param name="parameters">A dictionary of parameter values.</param>
-        void SetParameters(Dictionary<string, string> parameters);
-
-        /// <summary>
-        /// Returns a value indicating whether there is a parameter in evaluator with given name.
-        /// </summary>
-        /// <param name="parameterName">A parameter name.</param>
-        /// <returns>
-        /// True if there is parameter.
-        /// </returns>
-        bool HasParameter(string parameterName);
-
-        /// <summary>
-        /// Gets the value of parameter.
-        /// </summary>
-        /// <param name="parameterName">A parameter name</param>
-        /// <returns>
-        /// A value of parameter.
-        /// </returns>
-        double GetParameterValue(string parameterName, object context);
-
-        /// <summary>
-        /// Gets the expression.
-        /// </summary>
-        /// <param name="expressionName">A expression name.</param>
-        /// <returns>
-        /// An expression.
-        /// </returns>
-        string GetExpression(string expressionName);
-
-        /// <summary>
-        /// Gets the names of parameters.
-        /// </summary>
-        /// <returns>
-        /// The names of paramaters.
-        /// </returns>
-        IEnumerable<string> GetParameterNames();
+        double EvaluateDouble(string expression);
 
         /// <summary>
         /// Gets the names of expressions.
@@ -102,26 +55,27 @@ namespace SpiceSharpParser.Common
         IEnumerable<string> GetExpressionNames();
 
         /// <summary>
-        /// Gets the variables in expression.
+        /// Gets the value of parameter.
         /// </summary>
-        /// <param name="expression">The expression to check.</param>
+        /// <param name="parameterName">A parameter name.</param>
         /// <returns>
-        /// A list of variables from expression.
+        /// A value of parameter.
         /// </returns>
-        IEnumerable<string> GetParametersFromExpression(string expression);
+        double GetParameterValue(string parameterName);
 
         /// <summary>
-        /// Invalidate parameters.
+        /// Sets a parameter.
         /// </summary>
-        void InvalidateParameters();
+        /// <param name="id">Parameter name.</param>
+        /// <param name="expression">Parameter expression.</param>
+        void SetParameter(string id, string expression);
 
         /// <summary>
-        /// Returns names of all parameters.
+        /// Sets a parameter.
         /// </summary>
-        /// <returns>
-        /// True if there is parameter.
-        /// </returns>
-        IEnumerable<string> GetParameters();
+        /// <param name="id">Parameter name.</param>
+        /// <param name="value">Parameter expression.</param>
+        void SetParameter(string id, double value);
 
         /// <summary>
         /// Creates a child evaluator.
@@ -129,14 +83,54 @@ namespace SpiceSharpParser.Common
         /// <returns>
         /// A child evaluator.
         /// </returns>
-        IEvaluator CreateChildEvaluator();
+        IEvaluator CreateChildEvaluator(string name, object context);
 
         /// <summary>
-        /// Defines a custom function.
+        /// Sets a named expression.
         /// </summary>
-        /// <param name="name">Name of custom function</param>
-        /// <param name="arguments">Arguments names of custom function</param>
-        /// <param name="functionBody">Body of custom function</param>
-        void DefineCustomFunction(string name, List<string> arguments, string functionBody);
+        /// <param name="expressionName">Name of expression.</param>
+        /// <param name="expression">Expression.</param>
+        void SetNamedExpression(string expressionName, string expression);
+
+        /// <summary>
+        /// Gets the expression.
+        /// </summary>
+        string GetExpression(string expressionName);
+
+        /// <summary>
+        /// Finds a child evaluator with given name.
+        /// </summary>
+        /// <param name="name">Name of evaluator to find</param>
+        /// <returns>
+        /// A reference to evaluator.
+        /// </returns>
+        IEvaluator FindChildEvaluator(string name);
+
+        /// <summary>
+        /// Clones the evaluator.
+        /// </summary>
+        /// <param name="deep">Specifies whether cloning is deep.</param>
+        /// <returns>
+        /// A clone of evaluator.
+        /// </returns>
+        IEvaluator Clone(bool deep);
+
+        /// <summary>
+        /// Gets found functions from expression.
+        /// </summary>
+        /// <param name="expression">Expression.</param>
+        /// <returns>
+        /// A collection of names of functions found in expression.
+        /// </returns>
+        ICollection<string> GetFunctionsFromExpression(string expression);
+
+        /// <summary>
+        /// Gets a value indicating whether expression is constant expression.
+        /// </summary>
+        /// <param name="expression">Expression.</param>
+        /// <returns>
+        /// A value indicating whether expression is constant expression.
+        /// </returns>
+        bool IsConstantExpression(string expression);
     }
 }

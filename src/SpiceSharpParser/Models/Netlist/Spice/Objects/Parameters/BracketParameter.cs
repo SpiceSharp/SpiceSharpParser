@@ -3,22 +3,22 @@
 namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
 {
     /// <summary>
-    /// A bracket parameter
+    /// A bracket parameter.
     /// </summary>
     public class BracketParameter : Parameter
     {
         /// <summary>
-        /// Gets or sets the name of the bracket parameter
+        /// Gets or sets the name of the bracket parameter.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the parameters inside the bracket
+        /// Gets or sets the parameters inside the bracket.
         /// </summary>
         public ParameterCollection Parameters { get; set; }
 
         /// <summary>
-        /// Gets the string represenation of the bracket parameter
+        /// Gets the string represenation of the bracket parameter.
         /// </summary>
         public override string Image
         {
@@ -48,9 +48,9 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         }
 
         /// <summary>
-        /// Closes the object.
+        /// Clones the object.
         /// </summary>
-        /// <returns>A clone of the object</returns>
+        /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
             return new BracketParameter()

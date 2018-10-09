@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.Controls.Prints
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints
 {
     /// <summary>
     /// Represent print row.

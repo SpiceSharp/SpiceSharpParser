@@ -1,69 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators;
+using SpiceSharp;
+using SpiceSharp.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharp;
-using SpiceSharp.Circuits;
-using SpiceSharp.Components;
 
-namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.Components
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
 {
-    public class SwitchGenerator : EntityGenerator
+    public class SwitchGenerator : ComponentGenerator
     {
-        public override Entity Generate(Identifier id, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        /// <summary>
+        /// Gets generated types.
+        /// </summary>
+        /// <returns>
+        /// Generated types.
+        /// </returns>
+        public override IEnumerable<string> GeneratedTypes => new List<string> { "s", "w" };
+
+        public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
-            switch (type)
+            switch (type.ToLower())
             {
-                case "s": return GenerateVoltageSwitch(id.ToString(), parameters, context);
-                case "w": return GenerateCurrentSwitch(id.ToString(), parameters, context);
+                case "s": return GenerateVoltageSwitch(componentIdentifier, parameters, context);
+                case "w": return GenerateCurrentSwitch(componentIdentifier, parameters, context);
             }
 
             return null;
         }
 
         /// <summary>
-        /// Gets generated Spice types by generator
+        /// Generates a voltage switch.
         /// </summary>
+        /// <param name="name">Name of voltage switch to generate.</param>
+        /// <param name="parameters">Parameters for voltage switch.</param>
+        /// <param name="context">Reading context.</param>
         /// <returns>
-        /// Generated Spice types
+        /// A new voltage switch.
         /// </returns>
-        public override IEnumerable<string> GetGeneratedSpiceTypes()
+        protected SpiceSharp.Components.Component GenerateVoltageSwitch(string name, ParameterCollection parameters, IReadingContext context)
         {
-            return new List<string> { "s", "w" };
-        }
-
-        /// <summary>
-        /// Generates a voltage switch
-        /// </summary>
-        /// <param name="name">Name of voltage switch to generate</param>
-        /// <param name="parameters">Parameters for voltage switch</param>
-        /// <param name="context">Reading context</param>
-        /// <returns>
-        /// A new voltage switch
-        /// </returns>
-        protected Entity GenerateVoltageSwitch(string name, ParameterCollection parameters, IReadingContext context)
-        {
-            VoltageSwitch vsw = new VoltageSwitch(name);
-            context.CreateNodes(vsw, parameters);
-
             // Read the model
             if (parameters.Count < 5)
             {
-                throw new WrongParametersCountException("Model expected");
+                throw new WrongParametersCountException("Wrong parameter count for voltage switch");
             }
 
-            var model = context.FindModel<VoltageSwitchModel>(parameters.GetString(4));
-            if (model != null)
-            {
-                vsw.SetModel(model);
-            }
-            else
-            {
-                throw new ModelNotFoundException($"Could not find model {parameters.GetString(2)} for voltage switch {name}");
-            }
+            VoltageSwitch vsw = new VoltageSwitch(name);
+            context.CreateNodes(vsw, parameters);
+
+            context.ModelsRegistry.SetModel<VoltageSwitchModel>(
+              vsw,
+              parameters.GetString(4),
+              $"Could not find model {parameters.GetString(4)} for voltage switch {name}",
+              (VoltageSwitchModel model) => vsw.SetModel(model));
 
             // Optional ON or OFF
             if (parameters.Count == 6)
@@ -89,15 +80,15 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
         }
 
         /// <summary>
-        /// Generates a current switch
+        /// Generates a current switch.
         /// </summary>
-        /// <param name="name">Name of current switch</param>
-        /// <param name="parameters">Parameters of current switch</param>
-        /// <param name="context">Reading context</param>
+        /// <param name="name">Name of current switch.</param>
+        /// <param name="parameters">Parameters of current switch.</param>
+        /// <param name="context">Reading context.</param>
         /// <returns>
-        /// A new instance of current switch
+        /// A new instance of current switch.
         /// </returns>
-        protected Entity GenerateCurrentSwitch(string name, ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateCurrentSwitch(string name, ParameterCollection parameters, IReadingContext context)
         {
             CurrentSwitch csw = new CurrentSwitch(name);
             switch (parameters.Count)
@@ -115,7 +106,7 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             // Get the controlling voltage source
             if (parameters[2] is WordParameter || parameters[2] is IdentifierParameter)
             {
-                csw.ControllingName = new StringIdentifier(parameters.GetString(2));
+                csw.ControllingName = context.ComponentNameGenerator.Generate(parameters.GetString(2));
             }
             else
             {
@@ -123,15 +114,11 @@ namespace SpiceSharpParser.ModelsReaders.Netlist.Spice.Readers.EntityGenerators.
             }
 
             // Get the model
-            var model = context.FindModel<CurrentSwitchModel>(parameters.GetString(3));
-            if (model != null)
-            {
-                csw.SetModel(model);
-            }
-            else
-            {
-                throw new ModelNotFoundException($"Could not find model {parameters.GetString(2)} for current switch {name}");
-            }
+            context.ModelsRegistry.SetModel<CurrentSwitchModel>(
+               csw,
+               parameters.GetString(3),
+               $"Could not find model {parameters.GetString(3)} for current switch {name}",
+               (CurrentSwitchModel model) => csw.SetModel(model));
 
             // Optional on or off
             if (parameters.Count > 4)
