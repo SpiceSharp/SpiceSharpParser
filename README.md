@@ -75,6 +75,54 @@ simulation.Run(spiceSharpModel.Circuit);
 |V (Independent Voltage Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/V)||
 |X (Subcircuit)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/X)||
 
+### Expression function
+|  Function name  |  Documentation | Status  |
+|:------------|--------------- |--------:|
+|cos      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/cos)||           
+|sin         |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/sin)||
+|tan     |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/tan)||
+|cosh       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/cosh)||
+|sinh     |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/sinh)||
+|tanh        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/tanh)||
+|acos        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/acos)||
+|asin         |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/asin)||
+|atan        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/atan)||
+|atan2          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/atan2)||
+|def          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/def)||
+|lazy       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/lazy)||
+|if          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/if)||
+|@      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/@)||
+|gauss     |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/gauss)||
+|random |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/random)||
+|flat        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/flat)||
+|table         |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/table)||
+|pow          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/pow)||
+|pwr        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/pwr)||
+|pwrs       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/pwrs)||
+|sqrt          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/sqrt)||
+|**        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/**)||
+|min       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/min)||
+|max          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/max)||
+|limit          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/limit)||
+|ln          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/ln)||
+|log          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/log)||
+|log10          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/log10)||
+|cbrt          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/cbrt)||
+|buf          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/buf)||
+|ceil          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/ceil)||
+|abs          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/abs)||
+|floor          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/floor)||
+|hypot          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/hypot)||
+|int          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/int)||
+|inv          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/inv)||
+|exp          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/exp)||
+|db          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/db)||
+|round          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/round)||
+|u          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/u)||
+|uramp          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/uramp)||
+|sgn          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/sgn)||
+
+
 ## Build status
 
 |    | Status |
@@ -83,8 +131,8 @@ simulation.Run(spiceSharpModel.Circuit);
 |**Linux**|[![Build status](https://travis-ci.org/SpiceSharp/SpiceSharpParser.svg?branch=master)](https://travis-ci.org/SpiceSharp/SpiceSharpParser?branch=master)|
 
 ## Documentation
-### API documentation is available at <https://spicesharp.github.io/SpiceSharpParser/api/index.html>.
-### Wiki is available at <https://github.com/SpiceSharp/SpiceSharpParser/wiki>
+* API documentation is available at <https://spicesharp.github.io/SpiceSharpParser/api/index.html>.
+* Wiki is available at <https://github.com/SpiceSharp/SpiceSharpParser/wiki>
 
 ## License
 SpiceSharpParser is under MIT License
