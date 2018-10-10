@@ -61,7 +61,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
                 if (Max.ContainsKey(simulation))
                 {
-                    Max[simulation] = Math.Max(Min[simulation], result);
+                    Max[simulation] = Math.Max(Max[simulation], result);
                 }
                 else
                 {
