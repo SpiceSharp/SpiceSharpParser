@@ -27,12 +27,53 @@ var simulation = spiceSharpModel.Simulations.Single();
 simulation.Run(spiceSharpModel.Circuit);            
 ```
 ## Features
-### Parsing dot statements
-.GLOBAL, .LET, .NODESET, .PARAM (with user functions), .OPTIONS, .SAVE, .PLOT, .IC, .TRAN, .AC, .OP, .NOISE, .DC, .SUBCKT, .INCLUDE
-.APPENDMODEL, .TEMP, .LIB,  .IF/.ELSE/.ENDIF, .ST, .FUNC, .STEP, .PRINT, .MC
+### Dot statements
+|  Statement  |  Documentation | Status  |
+|:------------|--------------- |--------:|
+|.GLOBAL      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.GLOBAL)||           
+|.LET         |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.LET)||
+|.NODESET     |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.NODESET)||
+|.PARAM       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.PARAM)||
+|.OPTIONS     |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.OPTIONS)||
+|.SAVE        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.SAVE)||
+|.PLOT        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.PLOT)||
+|.IC          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.IC)||
+|.TRAN        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.TRAN)||
+|.AC          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.AC)||
+|.OP          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.OP)||
+|.NOISE       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.NOISE)||
+|.DC          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.DC)||
+|.SUBCKT      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.SUBCKT)||
+|.INCLUDE     |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.INCLUDE)||
+|.APPENDMODEL |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.APPENDMODEL)||
+|.TEMP        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.TEMP)||
+|.LIB         |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.LIB)||
+|.IF          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.IF)||
+|.ELSE        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.ELSE)||
+|.ENDIF       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.ENDIF)||
+|.ST          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.ST)||
+|.STEP        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.STEP)||
+|.PRINT       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.PRINT)||
+|.MC          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.MC)||
 
-### Parsing components
-RLC, Switches, Voltage and current sources, BJT, Diodes, Mosfets
+### Device statements
+| Device Statement  |  Documentation | Status  |
+|:------------|-------|----------------:|
+|C (Capacitor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/C)||
+|D (Diode)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/D)||
+|E (Voltage-Controlled Current Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/E)||
+|F (Voltage-Controlled Current Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/F)||
+|G (Voltage-Controlled Current Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/G)||
+|H (Current-Controlled Voltage Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/H)||
+|I (Independent Current Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/I)||
+|K (Bipolar Junction Transistor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/K)||
+|L (Inductor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/L)||
+|M (Mosfet)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/M)||
+|Q (Bipolar Junction Transistor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/Q)||
+|R (Resistor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/R)||
+|S (Independent Voltage Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/S)||
+|V (Independent Voltage Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/V)||
+|X (Subcircuit)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/X)||
 
 ## Build status
 
@@ -42,7 +83,8 @@ RLC, Switches, Voltage and current sources, BJT, Diodes, Mosfets
 |**Linux**|[![Build status](https://travis-ci.org/SpiceSharp/SpiceSharpParser.svg?branch=master)](https://travis-ci.org/SpiceSharp/SpiceSharpParser?branch=master)|
 
 ## Documentation
-Documentation for API on SpiceSharpParser is available at <https://spicesharp.github.io/SpiceSharpParser/api/index.html>.
+### API documentation is available at <https://spicesharp.github.io/SpiceSharpParser/api/index.html>.
+### Wiki is available at <https://github.com/SpiceSharp/SpiceSharpParser/wiki>
 
 ## License
 SpiceSharpParser is under MIT License
