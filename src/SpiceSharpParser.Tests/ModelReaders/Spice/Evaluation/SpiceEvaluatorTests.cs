@@ -118,13 +118,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         }
 
         [Fact]
-        public void EvaluateWithComa()
-        {
-            Evaluator v = new SpiceEvaluator();
-            Assert.Equal(1.99666833293656, v.EvaluateDouble("1,99666833293656"));
-        }
-
-        [Fact]
         public void PowerInfix()
         {
             // arrange
