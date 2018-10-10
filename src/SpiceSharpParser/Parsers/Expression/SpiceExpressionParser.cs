@@ -594,7 +594,7 @@ namespace SpiceSharpParser.Parsers.Expression
 
         private object[] Evaluate(Func<ExpressionEvaluationContext, object>[] args, ExpressionEvaluationContext evalContext)
         {
-            var values = new List<object>();
+            var values = new List<object>(args.Length);
             foreach (var arg in args)
             {
                 values.Add(arg(evalContext));
