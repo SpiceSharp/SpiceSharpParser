@@ -128,7 +128,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     // Add current export for component
                     result.Add(
                         Mapper
-                        .Get("I", true)
+                        .GetValue("I", true)
                         .CreateExport(
                             "I(" + @params.ToString() + ")", "i",
                             @params,
@@ -148,7 +148,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                 result.Add(
                     Mapper
-                    .Get("V", true)
+                    .GetValue("V", true)
                     .CreateExport(
                         "V(" + @params + ")",
                         "v",

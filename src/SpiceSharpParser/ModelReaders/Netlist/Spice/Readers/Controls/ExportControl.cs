@@ -33,25 +33,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 string type = bp.Name;
 
-                if (Mapper.Contains(type, caseSettings.IsFunctionNameCaseSensitive))
+                if (Mapper.TryGetValue(type, caseSettings.IsFunctionNameCaseSensitive, out var mapper))
                 {
-                    return Mapper
-                        .Get(type, caseSettings.IsFunctionNameCaseSensitive)
-                        .CreateExport(parameter.Image, type, bp.Parameters, simulation, nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService, caseSettings);
+                    return mapper.CreateExport(parameter.Image, type, bp.Parameters, simulation, nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService, caseSettings);
                 }
             }
 
             if (parameter is ReferenceParameter rp)
             {
                 string type = "@";
+                var parameters = new ParameterCollection();
+                parameters.Add(new WordParameter(rp.Name));
+                parameters.Add(new WordParameter(rp.Argument));
 
-                if (Mapper.Contains(type, true))
+                if (Mapper.TryGetValue(type, true, out var exporter))
                 {
-                    var parameters = new ParameterCollection();
-                    parameters.Add(new WordParameter(rp.Name));
-                    parameters.Add(new WordParameter(rp.Argument));
-
-                    return Mapper.Get(type, true).CreateExport(parameter.Image, type, parameters, simulation, nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService, caseSettings);
+                    return exporter.CreateExport(parameter.Image, type, parameters, simulation, nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService, caseSettings);
                 }
             }
 

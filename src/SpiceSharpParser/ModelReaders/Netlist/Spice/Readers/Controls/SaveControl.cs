@@ -263,7 +263,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         // Add current export for component
                         context.Result.AddExport(
                             Mapper
-                            .Get("I", true)
+                            .GetValue("I", true)
                             .CreateExport(
                                 "I(" + entity.Name + ")",
                                 "i",
@@ -284,7 +284,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                     context.Result.AddExport(
                         Mapper
-                        .Get("V", true)
+                        .GetValue("V", true)
                         .CreateExport(
                             "V(" + node + ")",
                             "v",
