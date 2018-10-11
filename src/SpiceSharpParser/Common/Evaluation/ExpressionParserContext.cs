@@ -18,8 +18,5 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Gets custom functions.
         /// </summary>
         public Dictionary<string, Function> Functions { get; set; }
-
-
-        public IEvaluator Evaluator { get; set; }
     }
 }

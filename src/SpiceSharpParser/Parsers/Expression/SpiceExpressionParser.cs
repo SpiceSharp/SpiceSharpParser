@@ -10,7 +10,7 @@ namespace SpiceSharpParser.Parsers.Expression
 {
     /// <summary>
     /// @author: Sven Boulanger
-    /// @author: Marcin Gołębiowski (custom functions, lazy evaluation)
+    /// @author: Marcin Gołębiowski (functions, lazy evaluation, one-time parsing)
     /// A very light-weight and fast expression parser made for parsing SPICE expressions
     /// It is based on Dijkstra's Shunting Yard algorithm. It is very fast for parsing expressions only once.
     /// The parser is also not very expressive for errors, so only use it for relatively simple expressions.
@@ -532,18 +532,18 @@ namespace SpiceSharpParser.Parsers.Expression
                 throw new FunctionNotFoundException(functionName);
             }
 
-            var customFunction = context.Functions[functionName];
+            var function = context.Functions[functionName];
             var cfo = new FunctionOperator();
             cfo.StartIndex = startIndex;
-            cfo.VirtualParameters = customFunction.VirtualParameters;
-            cfo.ArgumentsCount = customFunction.ArgumentsCount;
+            cfo.VirtualParameters = function.VirtualParameters;
+            cfo.ArgumentsCount = function.ArgumentsCount;
             cfo.ArgumentsStackCount = outputStack.Count;
-            cfo.Precedence = customFunction.Infix ? PrecedenceMultiplicative : cfo.Precedence;
-            cfo.LeftAssociative = customFunction.Infix || cfo.LeftAssociative;
+            cfo.Precedence = function.Infix ? PrecedenceMultiplicative : cfo.Precedence;
+            cfo.LeftAssociative = function.Infix || cfo.LeftAssociative;
             cfo.Name = functionName;
-            cfo.Logic = (image, arguments) =>
+            cfo.Logic = (image, arguments, evaluator) =>
             {
-                var result = customFunction.Logic(image, arguments, context.Evaluator);
+                var result = function.Logic(image, arguments, evaluator);
                 return Convert.ToDouble(result);
             };
             return cfo;
@@ -560,9 +560,12 @@ namespace SpiceSharpParser.Parsers.Expression
                 {
                     if (endIndex != null)
                     {
-                        return op.Logic(op.Name + expression.Substring(op.StartIndex - 1, endIndex.Value - op.StartIndex + 2), args);
+                        return op.Logic(
+                            op.Name + expression.Substring(op.StartIndex - 1, endIndex.Value - op.StartIndex + 2), 
+                            args,
+                            evalContext.Evaluator);
                     }
-                    return op.Logic(null, args);
+                    return op.Logic(null, args, evalContext.Evaluator);
                 });
             }
             else
@@ -577,8 +580,10 @@ namespace SpiceSharpParser.Parsers.Expression
                             var evaluatedArgs = Evaluate(args, evalContext);
 
                             return op.Logic(
-                                op.Name + expression.Substring(op.StartIndex - 1, endIndex.Value - op.StartIndex + 2),
-                                    evaluatedArgs);
+                                op.Name 
+                                + expression.Substring(op.StartIndex - 1, endIndex.Value - op.StartIndex + 2),
+                                evaluatedArgs,
+                                evalContext.Evaluator);
                         });
                 }
                 else
@@ -586,7 +591,7 @@ namespace SpiceSharpParser.Parsers.Expression
                     outputStack.Push((evalContext) =>
                         {
                             var evaluatedArgs = Evaluate(args, evalContext);
-                            return op.Logic(null, evaluatedArgs);
+                            return op.Logic(null, evaluatedArgs, evalContext.Evaluator);
                         });
                 }
             }
@@ -668,19 +673,23 @@ namespace SpiceSharpParser.Parsers.Expression
                 case IdEquals:
                     a = outputStack.Pop();
                     b = outputStack.Pop();
-                    outputStack.Push((context) => (a(context).Equals(b(context)) ? 1.0 : 0.0)); break;
+                    outputStack.Push((context) => (a(context).Equals(b(context)) ? 1.0 : 0.0));
+                    break;
                 case IdInequals:
                     a = outputStack.Pop();
                     b = outputStack.Pop();
-                    outputStack.Push((context) => (!a(context).Equals(b(context)) ? 1.0 : 0.0)); break;
+                    outputStack.Push((context) => (!a(context).Equals(b(context)) ? 1.0 : 0.0));
+                    break;
                 case IdConditionalAnd:
                     b = outputStack.Pop();
                     a = outputStack.Pop();
-                    outputStack.Push((context) => (!a(context).Equals(0.0) && !b(context).Equals(0.0) ? 1.0 : 0.0)); break;
+                    outputStack.Push((context) => (!a(context).Equals(0.0) && !b(context).Equals(0.0) ? 1.0 : 0.0));
+                    break;
                 case IdConditionalOr:
                     b = outputStack.Pop();
                     a = outputStack.Pop();
-                    outputStack.Push((context) => (!a(context).Equals(0.0) || !b(context).Equals(0.0) ? 1.0 : 0.0)); break;
+                    outputStack.Push((context) => (!a(context).Equals(0.0) || !b(context).Equals(0.0) ? 1.0 : 0.0));
+                    break;
                 case IdLess:
                     b = outputStack.Pop();
                     a = outputStack.Pop();
@@ -699,7 +708,8 @@ namespace SpiceSharpParser.Parsers.Expression
                 case IdGreaterOrEqual:
                     b = outputStack.Pop();
                     a = outputStack.Pop();
-                    outputStack.Push((context) => (a(context) >= b(context) ? 1.0 : 0.0)); break;
+                    outputStack.Push((context) => (a(context) >= b(context) ? 1.0 : 0.0));
+                    break;
                 case IdClosedConditional:
                     c = outputStack.Pop();
                     b = outputStack.Pop();
@@ -936,7 +946,7 @@ namespace SpiceSharpParser.Parsers.Expression
             /// <summary>
             /// Gets or sets the function logic.
             /// </summary>
-            public Func<string, object[], double> Logic { get; set; }
+            public Func<string, object[], IEvaluator, double> Logic { get; set; }
 
             public bool VirtualParameters { get; set; }
 
@@ -945,7 +955,6 @@ namespace SpiceSharpParser.Parsers.Expression
             public int ArgumentsStackCount { get; set; }
 
             public int StartIndex { get; internal set; }
-
         }
     }
 }

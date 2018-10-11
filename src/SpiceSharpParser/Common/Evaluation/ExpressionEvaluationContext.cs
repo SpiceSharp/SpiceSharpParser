@@ -18,5 +18,8 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Gets the parameters.
         /// </summary>
         public Dictionary<string, Expression> Parameters { get; set; }
+
+
+        public IEvaluator Evaluator { get; set; }
     }
 }

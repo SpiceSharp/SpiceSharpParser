@@ -98,22 +98,22 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public double EvaluateDouble(string expression)
         {
-            if (Parameters.ContainsKey(expression))
+            if (Parameters.TryGetValue(expression, out var parameter))
             {
-                return Parameters[expression].Evaluate();
+                return parameter.Evaluate();
             }
 
             if (!ParseResults.TryGetValue(expression, out var parseResult))
             {
                 parseResult = ExpressionParser.Parse(
                     expression,
-                    new ExpressionParserContext(IsFunctionNameCaseSensitive) { Functions = Functions, Evaluator = this });
+                    new ExpressionParserContext(IsFunctionNameCaseSensitive) { Functions = Functions });
 
                 ParseResults[expression] = parseResult;
             }
 
             return parseResult.Value(
-                new ExpressionEvaluationContext(IsParameterNameCaseSensitive) { Parameters = Parameters });
+                new ExpressionEvaluationContext(IsParameterNameCaseSensitive) { Parameters = Parameters, Evaluator = this });
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public ICollection<string> GetParametersFromExpression(string expression)
         {
-            var result = ExpressionParser.Parse(expression, new ExpressionParserContext() { Functions = Functions, Evaluator = this });
+            var result = ExpressionParser.Parse(expression, new ExpressionParserContext() { Functions = Functions});
             return result.FoundParameters;
         }
 
@@ -148,7 +148,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <returns></returns>
         public ICollection<string> GetFunctionsFromExpression(string expression)
         {
-            var result = ExpressionParser.Parse(expression, new ExpressionParserContext() { Functions = Functions, Evaluator = this });
+            var result = ExpressionParser.Parse(expression, new ExpressionParserContext() { Functions = Functions });
             return result.FoundFunctions;
         }
 
@@ -161,7 +161,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public bool IsConstantExpression(string expression)
         {
-            var result = ExpressionParser.Parse(expression, new ExpressionParserContext() { Functions = Functions, Evaluator = this });
+            var result = ExpressionParser.Parse(expression, new ExpressionParserContext() { Functions = Functions });
             return result.FoundFunctions.Count == 0 && result.FoundParameters.Count == 0;
         }
 
