@@ -30,39 +30,39 @@ simulation.Run(spiceSharpModel.Circuit);
 ### Dot statements
 |  Statement  |  Documentation | Status  |
 |:------------|--------------- |--------:|
-|.GLOBAL      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.GLOBAL)||           
-|.LET         |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.LET)||
-|.NODESET     |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.NODESET)||
-|.PARAM       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.PARAM)||
-|.OPTIONS     |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.OPTIONS)||
-|.SAVE        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.SAVE)||
-|.PLOT        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.PLOT)||
-|.IC          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.IC)||
-|.TRAN        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.TRAN)||
 |.AC          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.AC)||
-|.OP          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.OP)||
-|.NOISE       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.NOISE)||
-|.DC          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.DC)||
-|.SUBCKT      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.SUBCKT)||
-|.INCLUDE     |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.INCLUDE)||
 |.APPENDMODEL |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.APPENDMODEL)||
-|.TEMP        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.TEMP)||
-|.LIB         |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.LIB)||
-|.IF          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.IF)||
+|.DC          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.DC)||
 |.ELSE        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.ELSE)||
 |.ENDIF       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.ENDIF)||
+|.GLOBAL      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.GLOBAL)||           
+|.IC          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.IC)||
+|.IF          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.IF)||
+|.INCLUDE     |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.INCLUDE)||
+|.LET         |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.LET)||
+|.LIB         |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.LIB)||
+|.MC          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.MC)||
+|.NODESET     |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.NODESET)||
+|.NOISE       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.NOISE)||
+|.OP          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.OP)||
+|.OPTIONS     |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.OPTIONS)||
+|.PARAM       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.PARAM)||
+|.PLOT        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.PLOT)||
+|.PRINT       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.PRINT)||
+|.TRAN        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.TRAN)||
+|.SAVE        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.SAVE)||
 |.ST          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.ST)||
 |.STEP        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.STEP)||
-|.PRINT       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.PRINT)||
-|.MC          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.MC)||
+|.SUBCKT      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.SUBCKT)||
+|.TEMP        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.TEMP)||
 
 ### Device statements
 | Device Statement  |  Documentation | Status  |
 |:------------|-------|----------------:|
 |C (Capacitor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/C)||
 |D (Diode)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/D)||
-|E (Voltage-Controlled Current Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/E)||
-|F (Voltage-Controlled Current Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/F)||
+|E (Voltage-Controlled Voltage Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/E)||
+|F (Current-Controlled Current Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/F)||
 |G (Voltage-Controlled Current Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/G)||
 |H (Current-Controlled Voltage Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/H)||
 |I (Independent Current Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/I)||
@@ -71,8 +71,9 @@ simulation.Run(spiceSharpModel.Circuit);
 |M (Mosfet)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/M)||
 |Q (Bipolar Junction Transistor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/Q)||
 |R (Resistor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/R)||
-|S (Independent Voltage Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/S)||
+|S (Voltage Switch)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/S)||
 |V (Independent Voltage Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/V)||
+|W (Current Switch)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/W)||
 |X (Subcircuit)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/X)||
 
 ### Expression function
