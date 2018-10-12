@@ -14,6 +14,8 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
+    using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
+
     /// <summary>
     /// Reads .SAVE <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
@@ -23,8 +25,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// Initializes a new instance of the <see cref="SaveControl"/> class.
         /// </summary>
         /// <param name="mapper">The exporter mapper.</param>
-        public SaveControl(IMapper<Exporter> mapper)
-            : base(mapper)
+        public SaveControl(IMapper<Exporter> mapper, IExportFactory factory)
+            : base(mapper, factory)
         {
         }
 
@@ -303,15 +305,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             foreach (var simulation in Filter(context.Result.Simulations, simulationType))
             {
-                context.Result.AddExport(
-                    GenerateExport(
-                        parameter,
-                        simulation,
-                        context.NodeNameGenerator,
-                        context.ComponentNameGenerator,
-                        context.ModelNameGenerator,
-                        context.Result,
-                        context.CaseSensitivity));
+                context.Result.AddExport(GenerateExport(parameter, context, simulation));
             }
         }
 

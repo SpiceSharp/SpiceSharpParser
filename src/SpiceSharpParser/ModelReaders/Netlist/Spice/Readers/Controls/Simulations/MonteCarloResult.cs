@@ -32,9 +32,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         public Dictionary<Simulation, double> Min { get; protected set; } = new Dictionary<Simulation, double>();
 
         /// <summary>
-        /// Gets or sets the variable name.
+        /// Gets or sets the output variable name.
         /// </summary>
-        public string VariableName { get; set; }
+        public string OutputVariable { get; set; }
 
         /// <summary>
         /// Gets or sets the function name.
@@ -101,19 +101,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 values.Add(Math.Abs(Max[simulation] - Min[simulation]));
             }
 
-            return CreatePlot("YMAX - " + VariableName, bins, values);
+            return CreatePlot("YMAX - " + this.OutputVariable, bins, values);
         }
 
         protected HistogramPlot GetMaxPlot(int bins)
         {
             var values = Max.Values.ToList();
-            return CreatePlot("MAX - " + VariableName, bins, values);
+            return CreatePlot("MAX - " + this.OutputVariable, bins, values);
         }
 
         protected HistogramPlot GetMinPlot(int bins)
         {
             var values = Min.Values.ToList();
-            return CreatePlot("MIN - " + VariableName, bins, values);
+            return CreatePlot("MIN - " + this.OutputVariable, bins, values);
         }
 
         protected HistogramPlot CreatePlot(string title, int bins, List<double> values)
@@ -127,7 +127,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 binWidth = 0;
             }
 
-            var plot = new HistogramPlot(title, VariableName, min, max, binWidth);
+            var plot = new HistogramPlot(title, this.OutputVariable, min, max, binWidth);
 
             for (var i = 1; i <= bins; i++)
             {

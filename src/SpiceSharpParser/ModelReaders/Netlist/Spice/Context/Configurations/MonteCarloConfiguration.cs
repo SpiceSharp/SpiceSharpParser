@@ -1,5 +1,7 @@
 ﻿namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
+    using SpiceSharpParser.Models.Netlist.Spice.Objects;
+
     public class MonteCarloConfiguration
     {
         public bool Enabled { get; set; } = false;
@@ -8,11 +10,9 @@
 
         public string SimulationType { get; set; }
 
-        public string OutputVariable { get; set; }
+        public Parameter OutputVariable { get; set; }
 
         public string Function { get; set; }
-
-        public int? Bins { get; set; }
 
         public int? RandomSeed { get; set; }
     }

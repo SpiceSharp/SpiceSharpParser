@@ -6,11 +6,20 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
+    using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
+    using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+
     /// <summary>
     /// Reads .AC <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class ACControl : SimulationControl
     {
+        public ACControl(IMapper<Exporter> mapper)
+            : base(mapper)
+        {
+
+        }
+
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context
         /// </summary>

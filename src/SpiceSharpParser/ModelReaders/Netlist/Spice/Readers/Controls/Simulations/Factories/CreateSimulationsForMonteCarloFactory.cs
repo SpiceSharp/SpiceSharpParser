@@ -8,23 +8,39 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
 {
+    using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
+    using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
+
     public class CreateSimulationsForMonteCarloFactory : ICreateSimulationsForMonteCarloFactory
     {
-        public CreateSimulationsForMonteCarloFactory(ICreateSimulationsForAllTemperaturesFactory allTemperatures, ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory allTemperaturesAndSweeps)
+        public CreateSimulationsForMonteCarloFactory(
+            ICreateSimulationsForAllTemperaturesFactory allTemperatures, 
+            ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory allTemperaturesAndSweeps,
+            IExportFactory exportFactory,
+            IMapper<Exporter> mapperExporter)
         {
             AllTemperaturesAndSweeps = allTemperaturesAndSweeps;
+            ExportFactory = exportFactory;
             AllTemperatures = allTemperatures;
+            MapperExporter = mapperExporter;
         }
+
+        public IMapper<Exporter> MapperExporter { get; set; }
 
         public ICreateSimulationsForAllTemperaturesFactory AllTemperatures { get; }
 
         public ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory AllTemperaturesAndSweeps { get; }
 
+        public IExportFactory ExportFactory { get; }
+
+
+
         public List<BaseSimulation> Create(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> simulationWithStochasticModels)
         {
             context.Result.MonteCarlo.Enabled = true;
             context.Result.MonteCarlo.RandomSeed = context.Result.SimulationConfiguration.Seed;
-            context.Result.MonteCarlo.VariableName = context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable;
+            context.Result.MonteCarlo.OutputVariable =
+                context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable.Image;
             context.Result.MonteCarlo.Function = context.Result.SimulationConfiguration.MonteCarloConfiguration.Function;
 
             var result = new List<BaseSimulation>();
@@ -52,7 +68,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             return result;
         }
 
-        protected static void AttachMonteCarloDataGathering(IReadingContext context, IEnumerable<BaseSimulation> simulations)
+        protected void AttachMonteCarloDataGathering(IReadingContext context, IEnumerable<BaseSimulation> simulations)
         {
             foreach (var simulation in simulations)
             {
@@ -60,11 +76,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             }
         }
 
-        protected static void AttachMonteCarloDataGatheringForSimulation(IReadingContext context, BaseSimulation simulation)
+        protected void AttachMonteCarloDataGatheringForSimulation(IReadingContext context, BaseSimulation simulation)
         {
+            var exportParam = context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable;
+
             simulation.BeforeSetup += (sender, args) =>
             {
-                Export export = context.Result.Exports.FirstOrDefault(e => e.Simulation == simulation && e.Name == context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable);
+                Export export = context.Result.Exports.FirstOrDefault(e => e.Simulation == simulation && e.Name == exportParam.Image);
+
+                if (export == null)
+                {
+                    export = ExportFactory.Create(exportParam, context, simulation, MapperExporter);
+                }
 
                 simulation.ExportSimulationData += (exportSender, exportArgs) =>
                     {
