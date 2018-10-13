@@ -253,15 +253,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         private Parameter<double> GetEntitySimulationParameter(string paramName, Entity @object, BaseSimulation simulation, IEqualityComparer<string> comparer)
         {
-            string comparerSubKey = comparer != null ? comparer.GetType().ToString() : "null";
-            string key = $"{simulation.Name}_{@object.Name}_{paramName}_{comparerSubKey}";
+            string key = $"{simulation.Name}_{@object.Name}_{paramName}_{(comparer != null ? comparer.ToString() : "null")}";
 
-            if (!SimulationEntityParametersCache.ContainsKey(key))
+            if (!SimulationEntityParametersCache.TryGetValue(key, out var result))
             {
-                SimulationEntityParametersCache[key] = simulation.EntityParameters[@object.Name].GetParameter<double>(paramName, comparer);
+                result = simulation.EntityParameters[@object.Name].GetParameter<double>(paramName, comparer);
+                SimulationEntityParametersCache[key] = result;
             }
 
-            return SimulationEntityParametersCache[key];
+            return result;
         }
 
         private EventHandler<LoadStateEventArgs> CreateUpdateHandler(string paramName, Entity @object, double value, BaseSimulation simulation, IEqualityComparer<string> comparer)

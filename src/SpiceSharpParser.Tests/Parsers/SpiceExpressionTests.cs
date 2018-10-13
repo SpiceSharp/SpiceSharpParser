@@ -25,7 +25,7 @@ namespace SpiceSharpParser.Tests.Parsers
                     {
                         ArgumentsCount = -1,
                         VirtualParameters = true,
-                        Logic = (image, args, evaluator) =>
+                        ObjectArgsLogic = (image, args, evaluator) =>
                         {
                             if (args.Length == 2)
                             {
@@ -65,7 +65,7 @@ namespace SpiceSharpParser.Tests.Parsers
                     "random",
                     new Function
                     {
-                        Logic = (image, args, evaluator) =>
+                        ObjectArgsLogic = (image, args, evaluator) =>
                         {
                             randomVal = rand.Next() * 1000;
                             return randomVal;
@@ -199,7 +199,7 @@ namespace SpiceSharpParser.Tests.Parsers
                 {
                     ArgumentsCount = 2,
                     VirtualParameters = true,
-                    Logic = (image, args, evaluator) =>
+                    ObjectArgsLogic = (image, args, evaluator) =>
                     {
                         if (args[0].ToString() == "obj1" && args[1].ToString() == "param")
                         {

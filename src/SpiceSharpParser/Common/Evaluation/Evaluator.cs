@@ -137,19 +137,35 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public ICollection<string> GetParametersFromExpression(string expression)
         {
-            var result = ExpressionParser.Parse(expression, new ExpressionParserContext() { Functions = Functions});
-            return result.FoundParameters;
+            if (!ParseResults.TryGetValue(expression, out var parseResult))
+            {
+                parseResult = ExpressionParser.Parse(
+                    expression,
+                    new ExpressionParserContext(IsFunctionNameCaseSensitive) { Functions = Functions });
+                ParseResults[expression] = parseResult;
+            }
+
+            return parseResult.FoundParameters;
         }
 
         /// <summary>
-        /// 
+        /// Gets the functions from expression.
         /// </summary>
-        /// <param name="expression"></param>
-        /// <returns></returns>
+        /// <param name="expression">The expression to check.</param>
+        /// <returns>
+        /// Parameters from expression.
+        /// </returns>
         public ICollection<string> GetFunctionsFromExpression(string expression)
         {
-            var result = ExpressionParser.Parse(expression, new ExpressionParserContext() { Functions = Functions });
-            return result.FoundFunctions;
+            if (!ParseResults.TryGetValue(expression, out var parseResult))
+            {
+                parseResult = ExpressionParser.Parse(
+                    expression,
+                    new ExpressionParserContext(IsFunctionNameCaseSensitive) { Functions = Functions });
+                ParseResults[expression] = parseResult;
+            }
+
+            return parseResult.FoundFunctions;
         }
 
         /// <summary>
@@ -269,7 +285,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="parameters">Parameters to use.</param>
         /// <param name="functions">Functions to use.</param>
         /// <param name="children">Child evaluator to use.</param>
-        public void Initialize(Dictionary<string, Expression> parameters, Dictionary<string, Function> functions, List<IEvaluator> children)
+        public void Initialize(Dictionary<string, Expression> parameters, Dictionary<string, Function> functions, List<IEvaluator> children, Dictionary<string, ExpressionParseResult> parsedResults)
         {
             foreach (var parameterName in parameters.Keys)
             {
@@ -290,6 +306,7 @@ namespace SpiceSharpParser.Common.Evaluation
             }
 
             Registry.Invalidate(this);
+            ParseResults = parsedResults;
         }
 
         /// <summary>

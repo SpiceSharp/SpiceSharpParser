@@ -155,10 +155,10 @@ namespace SpiceSharpParser.IntegrationTests
                 ".PARAM R={abs(gauss(10))*1000}",
                 ".LET power {V(1)*I(R1)}",
                 ".SAVE power",
-                ".MC 10000 OP power MAX",
+                ".MC 1000 OP power MAX",
                 ".END");
 
-            Assert.Equal(10000, result.Simulations.Count);
+            Assert.Equal(1000, result.Simulations.Count);
             Assert.True(result.MonteCarloResult.Enabled);
             RunSimulations(result);
             var mcResult = result.MonteCarloResult;
