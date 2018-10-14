@@ -17,9 +17,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         public bool Enabled { get; set; }
 
         /// <summary>
-        /// Gets or sets the random seed for monte carlo simulations evaluators.
+        /// Gets or sets the random seed for Monte Carlo simulations evaluators.
         /// </summary>
-        public int? RandomSeed { get; set; }
+        public int? Seed { get; set; }
 
         /// <summary>
         /// Gets or sets the dictionary of max values.

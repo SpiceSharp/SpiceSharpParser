@@ -1,21 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpiceSharp;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
+    using System.Collections.Concurrent;
+    using System.Linq;
+
     public class EvaluatorsContainer : IEvaluatorsContainer
     {
         private readonly IFunctionFactory _functionFactory;
-        protected Dictionary<Simulation, IEvaluator> Evaluators = new Dictionary<Simulation, IEvaluator>();
+
+        private int SeedToUse;
+
+        protected ConcurrentDictionary<Simulation, IEvaluator> Evaluators = new ConcurrentDictionary<Simulation, IEvaluator>();
 
         public EvaluatorsContainer(IEvaluator sourceEvaluator, IFunctionFactory functionFactory)
         {
             _functionFactory = functionFactory;
             SourceEvaluator = sourceEvaluator ?? throw new ArgumentNullException(nameof(sourceEvaluator));
+
+            if (SourceEvaluator.Seed.HasValue)
+            {
+                SeedToUse = SourceEvaluator.Seed.Value;
+            }
         }
 
         protected IEvaluator SourceEvaluator { get; }
@@ -108,10 +117,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             if (!Evaluators.ContainsKey(simulation))
             {
                 var simulationEvaluator = SourceEvaluator.Clone(true);
-                simulationEvaluator.Name = simulation.Name.ToString();
+                simulationEvaluator.Name = simulation.Name;
                 simulationEvaluator.Context = simulation;
-                simulationEvaluator.Seed = SourceEvaluator.Seed;
-
                 Evaluators[simulation] = simulationEvaluator;
             }
 
@@ -121,7 +128,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public IEvaluator GetSimulationEntityEvaluator(Simulation simulation, string entityName)
         {
             var dotIndex = entityName.LastIndexOf('.');
-            var simulationEvaluator = this.GetSimulationEvaluator(simulation);
+            var simulationEvaluator = GetSimulationEvaluator(simulation);
 
             if (dotIndex == -1)
             {
@@ -132,13 +139,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return simulationEvaluator.FindChildEvaluator(subcircuitName);
         }
 
-        public void SetSeed(int seed)
+        public void UpdateSeed(int? seed)
         {
-            SourceEvaluator.Seed = seed;
-
-            foreach (var evaluator in Evaluators.Values)
+            if (seed.HasValue)
             {
-                evaluator.Seed = ++seed;
+                SeedToUse = seed.Value;
+                SourceEvaluator.Seed = SeedToUse++;
+
+                foreach (var evaluator in Evaluators.Values.OrderBy( e => e.Name))
+                {
+                    evaluator.Seed = SeedToUse++;
+                }
             }
         }
     }

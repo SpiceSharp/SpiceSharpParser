@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using SpiceSharp;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
@@ -32,6 +30,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         void SetParameters(Dictionary<string, string> subcircuitParameters);
 
-        void SetSeed(int seed);
+        void UpdateSeed(int? seed);
     }
 }

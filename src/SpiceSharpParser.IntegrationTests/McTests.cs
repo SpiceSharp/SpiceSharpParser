@@ -184,7 +184,7 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.Equal(100, result.Simulations.Count);
             Assert.True(result.MonteCarloResult.Enabled);
             RunSimulations(result);
-            Assert.Equal(90, result.MonteCarloResult.RandomSeed);
+            Assert.Equal(90, result.MonteCarloResult.Seed);
             Assert.Equal(90, result.Seed);
         }
 

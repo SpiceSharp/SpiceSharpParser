@@ -14,6 +14,6 @@
 
         public string Function { get; set; }
 
-        public int? RandomSeed { get; set; }
+        public int? Seed { get; set; }
     }
 }

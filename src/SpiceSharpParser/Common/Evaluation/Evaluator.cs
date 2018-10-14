@@ -10,6 +10,8 @@ namespace SpiceSharpParser.Common.Evaluation
     /// </summary>
     public abstract class Evaluator : IEvaluator
     {
+        private int? _seed;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Evaluator"/> class.
         /// </summary>
@@ -67,7 +69,22 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Gets or sets the random seed for the evaluator.
         /// </summary>
-        public int? Seed { get; set; }
+        public int? Seed
+        {
+            get
+            {
+                return _seed;
+            }
+            set
+            {
+                _seed = value;
+
+                foreach (var child in Children)
+                {
+                    child.Seed = value;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets the context of the evaluator.

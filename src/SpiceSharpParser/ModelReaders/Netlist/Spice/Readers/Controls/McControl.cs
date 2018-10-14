@@ -30,10 +30,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 if (a.Name.ToLower() == "seed")
                 {
-                    // TODO: refactor it please
-                    context.Result.SimulationConfiguration.Seed = int.Parse(a.Value);
-                    context.Result.Seed = context.Result.SimulationConfiguration.Seed.Value;
-                    context.Result.SimulationConfiguration.MonteCarloConfiguration.RandomSeed = context.Result.SimulationConfiguration.Seed;
+                    int seed = int.Parse(a.Value);
+                    context.Result.SimulationConfiguration.MonteCarloConfiguration.Seed = seed;
                 }
             }
         }
