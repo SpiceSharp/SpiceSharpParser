@@ -21,6 +21,8 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.5|AnyCPU'">
     <DocumentationFile>C:\Users\marcin\Documents\SpiceSharpParser_private\src\SpiceSharpParser\SpiceSharpParser.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
