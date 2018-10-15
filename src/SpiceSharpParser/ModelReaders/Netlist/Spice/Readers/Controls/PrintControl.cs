@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
@@ -14,6 +13,8 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
+    using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
+
     /// <summary>
     /// Reads .PRINT <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
@@ -23,8 +24,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// Initializes a new instance of the <see cref="PrintControl"/> class.
         /// </summary>
         /// <param name="mapper">The exporter mapper</param>
-        public PrintControl(IMapper<Exporter> mapper)
-            : base(mapper)
+        public PrintControl(IMapper<Exporter> mapper, IExportFactory exportFactory)
+            : base(mapper, exportFactory)
         {
         }
 
@@ -128,7 +129,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     // Add current export for component
                     result.Add(
                         Mapper
-                        .Get("I", true)
+                        .GetValue("I", true)
                         .CreateExport(
                             "I(" + @params.ToString() + ")", "i",
                             @params,
@@ -148,7 +149,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                 result.Add(
                     Mapper
-                    .Get("V", true)
+                    .GetValue("V", true)
                     .CreateExport(
                         "V(" + @params + ")",
                         "v",
@@ -245,7 +246,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 if (parameter is BracketParameter || parameter is ReferenceParameter)
                 {
-                    result.Add(GenerateExport(parameter, simulation, context.NodeNameGenerator, context.ComponentNameGenerator, context.ModelNameGenerator, context.Result, context.CaseSensitivity));
+                    result.Add(GenerateExport(parameter, context, simulation));
                 }
                 else
                 {

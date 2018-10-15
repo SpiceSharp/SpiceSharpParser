@@ -2,14 +2,22 @@
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
+  
     /// <summary>
     /// Reads .OP <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class OPControl : SimulationControl
     {
+        public OPControl(IMapper<Exporter> mapper)
+            : base(mapper)
+        {
+        }
+
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>

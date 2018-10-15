@@ -11,7 +11,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Gets or sets value function.
         /// </summary>
-        public Func<double> Value { get; set; }
+        public Func<ExpressionEvaluationContext, double> Value { get; set; }
 
         /// <summary>
         /// Gets or sets found parameters in expression.

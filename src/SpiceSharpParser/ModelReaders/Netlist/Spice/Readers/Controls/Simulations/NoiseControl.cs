@@ -4,14 +4,22 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
+   
     /// <summary>
     /// Reads .NOISE <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class NoiseControl : SimulationControl
     {
+        public NoiseControl(IMapper<Exporter> mapper)
+            : base(mapper)
+        {
+        }
+
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context
         /// </summary>

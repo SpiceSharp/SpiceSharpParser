@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.ObjectArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -46,7 +46,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.ObjectArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -73,7 +73,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 3;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic =  (image, args, evaluator) =>
             {
                 if (args.Length != 3)
                 {

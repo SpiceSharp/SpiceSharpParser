@@ -72,7 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         public override IEvaluator Clone(bool deep)
         {
             var clone = new SpiceEvaluator(Name, Context, Mode, Seed, Registry.Clone(), IsFunctionNameCaseSensitive, IsParameterNameCaseSensitive);
-            clone.Initialize(Parameters, Functions, deep ? Children : new System.Collections.Generic.List<IEvaluator>());
+            clone.Initialize(Parameters, Functions, deep ? Children : new System.Collections.Generic.List<IEvaluator>(), ParseResults);
             return clone;
         }
 

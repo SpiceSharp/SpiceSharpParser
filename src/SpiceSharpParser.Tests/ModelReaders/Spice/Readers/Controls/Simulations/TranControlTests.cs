@@ -11,6 +11,8 @@ using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 {
+    using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
+
     public class TranControlTests
     {
         [Fact]
@@ -42,7 +44,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             readingContext.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
 
             // act
-            var tranControl = new TransientControl();
+            var tranControl = new TransientControl(new ExporterMapper());
             tranControl.Read(control, readingContext);
 
             // assert
@@ -82,7 +84,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             readingContext.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
 
             // act
-            var tranControl = new TransientControl();
+            var tranControl = new TransientControl(new ExporterMapper());
             tranControl.Read(control, readingContext);
 
             // assert

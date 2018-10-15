@@ -48,12 +48,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                 {
                     var type = b.Name;
 
-                    if (!Mapper.Contains(type, context.CaseSensitivity.IsEntityNameCaseSensitive))
+                    if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsEntityNameCaseSensitive, out var generator))
                     {
                         throw new GeneralReaderException("Unsupported model type: " + type);
                     }
-
-                    var generator = Mapper.Get(type, context.CaseSensitivity.IsModelTypeCaseSensitive);
 
                     var model = ModelsGenerator.GenerateModel(
                         generator,
@@ -73,12 +71,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                 {
                     var type = single.Image;
 
-                    if (!Mapper.Contains(type, context.CaseSensitivity.IsModelTypeCaseSensitive))
+                    if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsModelTypeCaseSensitive, out var generator))
                     {
                         throw new GeneralReaderException("Unsupported model type: " + type);
                     }
-
-                    var generator = Mapper.Get(type, context.CaseSensitivity.IsModelTypeCaseSensitive);
 
                     var model = ModelsGenerator.GenerateModel(
                         generator,
