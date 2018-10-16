@@ -131,7 +131,7 @@ simulation.Run(spiceSharpModel.Circuit);
 |**Windows**|[![Build status](https://ci.appveyor.com/api/projects/status/d8tpj2hm3hcullmw/branch/master?svg=true)](https://ci.appveyor.com/project/marcin-golebiowski/spicesharpparser/branch/master)|
 |**Linux**|[![Build status](https://travis-ci.org/SpiceSharp/SpiceSharpParser.svg?branch=master)](https://travis-ci.org/SpiceSharp/SpiceSharpParser?branch=master)|
 
-[![codecov](https://codecov.io/gh/marcin-golebiowski/SpiceSharpParser/branch/master/graph/badge.svg)](https://codecov.io/gh/marcin-golebiowski/SpiceSharpParser)
+[![codecov](https://codecov.io/gh/SpiceSharp/SpiceSharpParser/branch/master/graph/badge.svg)](https://codecov.io/gh/SpiceSharp/SpiceSharpParser)
 
 ## Documentation
 * API documentation is available at <https://spicesharp.github.io/SpiceSharpParser/api/index.html>.
