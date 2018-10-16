@@ -42,6 +42,12 @@ simulation.ExportSimulationData += (sender, args) => Console.WriteLine(export.Ex
 simulation.Run(spiceSharpModel.Circuit);    
 
 ```
+
+## Documentation
+* API documentation is available at <https://spicesharp.github.io/SpiceSharpParser/api/index.html>.
+* Wiki is available at <https://github.com/SpiceSharp/SpiceSharpParser/wiki>
+
+
 ## Features
 ### Dot statements
 |  Statement  |  Documentation | Status  |
@@ -138,11 +144,6 @@ simulation.Run(spiceSharpModel.Circuit);
 |u          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/u)||
 |sgn          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/sgn)||
 |uramp          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/uramp)||
-
-
-## Documentation
-* API documentation is available at <https://spicesharp.github.io/SpiceSharpParser/api/index.html>.
-* Wiki is available at <https://github.com/SpiceSharp/SpiceSharpParser/wiki>
 
 ## License
 SpiceSharpParser is under MIT License
