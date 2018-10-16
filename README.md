@@ -120,8 +120,8 @@ simulation.Run(spiceSharpModel.Circuit);
 |db          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/db)||
 |round          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/round)||
 |u          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/u)||
-|uramp          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/uramp)||
 |sgn          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/sgn)||
+|uramp          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/uramp)||
 
 
 ## Build status
