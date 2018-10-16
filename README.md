@@ -37,7 +37,10 @@ var parser = new SpiceParser();
 var parseResult = parser.ParseNetlist(netlist);
 var spiceSharpModel = parseResult.SpiceSharpModel;
 var simulation = spiceSharpModel.Simulations.Single();
-simulation.Run(spiceSharpModel.Circuit);            
+var export = spiceSharpModel.Exports.Find(e => e.Name == "i(V1)");
+simulation.ExportSimulationData += (sender, args) => Console.WriteLine(export.Extract());
+simulation.Run(spiceSharpModel.Circuit);    
+
 ```
 ## Features
 ### Dot statements
