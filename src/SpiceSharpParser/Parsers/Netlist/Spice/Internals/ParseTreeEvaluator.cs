@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -42,12 +43,59 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             evaluators.Add(Symbols.ParameterBracket, (ParseTreeNodeEvaluationValues nt) => CreateBracketParameter(nt));
             evaluators.Add(Symbols.ParameterBracketContent, (ParseTreeNodeEvaluationValues nt) => CreateBracketParameterContent(nt));
             evaluators.Add(Symbols.ParameterEqual, (ParseTreeNodeEvaluationValues nt) => CreateAssigmentParameter(nt));
+            evaluators.Add(Symbols.ExpressionEqual, (ParseTreeNodeEvaluationValues nt) => CreateExpressionEqualParameter(nt));
+            evaluators.Add(Symbols.Point, (ParseTreeNodeEvaluationValues nt) => CreatPointParameter(nt));
+            evaluators.Add(Symbols.PointValue, (ParseTreeNodeEvaluationValues nt) => CreatePointValue(nt));
+            evaluators.Add(Symbols.Points, (ParseTreeNodeEvaluationValues nt) => CreatPoints(nt));
+            evaluators.Add(Symbols.PointsContinue, (ParseTreeNodeEvaluationValues nt) => CreatPointsContinue(nt));
             evaluators.Add(Symbols.ParameterEqualSingle, (ParseTreeNodeEvaluationValues nt) => CreateAssigmentSimpleParameter(nt));
             evaluators.Add(Symbols.ParameterSingle, (ParseTreeNodeEvaluationValues nt) => CreateParameterSingle(nt));
             evaluators.Add(Symbols.Subckt, (ParseTreeNodeEvaluationValues nt) => CreateSubCircuit(nt));
             evaluators.Add(Symbols.SubcktEnding, (ParseTreeNodeEvaluationValues nt) => null);
             evaluators.Add(Symbols.CommentLine, (ParseTreeNodeEvaluationValues nt) => CreateComment(nt));
             evaluators.Add(Symbols.NewLine, (ParseTreeNodeEvaluationValues nt) => null);
+        }
+
+        private SpiceObject CreatePointValue(ParseTreeNodeEvaluationValues nt)
+        {
+            return (nt[0] as ParseTreeNonTerminalEvaluationValue).SpiceObject;
+        }
+        
+        private SpiceObject CreatPointParameter(ParseTreeNodeEvaluationValues nt)
+        {
+            return new PointParameter() { X = nt.GetSpiceObject<SingleParameter>(1), Y = nt.GetSpiceObject<SingleParameter>(3) };
+        }
+
+        private SpiceObject CreatPoints(ParseTreeNodeEvaluationValues values)
+        {
+            var points = new Points();
+
+            if (values.Count == 2)
+            {
+                points.Values.Add(values.GetSpiceObject<PointParameter>(0));
+                points.Values.AddRange(values.GetSpiceObject<Points>(1).Values);
+            }
+
+            if (values.Count == 4)
+            {
+                points.Values.Add(values.GetSpiceObject<PointParameter>(1));
+                points.Values.AddRange(values.GetSpiceObject<Points>(2).Values);
+            }
+            return points;
+        }
+
+
+        private SpiceObject CreatPointsContinue(ParseTreeNodeEvaluationValues values)
+        {
+            var points = new Points();
+
+            if (values.Count == 2)
+            {
+                points.Values.Add(values.GetSpiceObject<PointParameter>(0));
+                points.Values.AddRange(values.GetSpiceObject<Points>(1).Values);
+            }
+
+            return points;
         }
 
         /// <summary>
@@ -76,7 +124,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
                     if (!evaluators.ContainsKey(nt.Name))
                     {
-                        throw new ParseTreeEvaluationException("Unsupported evaluation of parse tree node");
+                        throw new ParseTreeEvaluationException("Unsupported evaluation of parse tree node: " + nt.Name);
                     }
 
                     var treeNodeResult = evaluators[nt.Name](items);
@@ -190,6 +238,11 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 if (values.TryToGetSpiceObject(0, out AssignmentParameter ap))
                 {
                     return ap;
+                }
+
+                if (values.TryToGetSpiceObject(0, out ExpressionEqualParameter eep))
+                {
+                    return eep;
                 }
             }
 
@@ -570,6 +623,37 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             else
             {
                 throw new ParseTreeEvaluationException("Error during translating parse tree to Spice Object Model");
+            }
+        }
+
+        /// <summary>
+        /// Returns new instance of <see cref="ExpressionEqualParameter"/>
+        /// from the values of children nodes of <see cref="Symbols.ExpressionEqual"/> parse tree node.
+        /// </summary>
+        /// <returns>
+        /// A instance of <see cref="ExpressionEqualParameter"/>.
+        /// </returns>
+        private SpiceObject CreateExpressionEqualParameter(ParseTreeNodeEvaluationValues values)
+        {
+            if (values.Count == 2)
+            {
+                return new ExpressionEqualParameter()
+                {
+                    Expression = values.GetLexem(0),
+                    Points = values.GetSpiceObject<Points>(1)
+                };
+            }
+            else if (values.Count == 3)
+            {
+                return new ExpressionEqualParameter()
+                {
+                    Expression = values.GetLexem(0),
+                    Points = values.GetSpiceObject<Points>(2)
+                };
+            }
+            else
+            {
+                throw new ParseTreeEvaluationException("Error during translating assigment parameter to Spice Object Model");
             }
         }
 
