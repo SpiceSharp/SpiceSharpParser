@@ -11,6 +11,8 @@ using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
 {
+    using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
+
     public class WaveformReaderTests
     {
         [Fact]
@@ -21,9 +23,15 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
             waveFormGenerator.Generate(Arg.Any<BracketParameter>(), Arg.Any<IReadingContext>()).Returns(new Sine());
 
             var waveFormRegistry = Substitute.For<IMapper<WaveformGenerator>>();
-            waveFormRegistry.Contains("func", false).Returns(true);
-            waveFormRegistry.Get(Arg.Any<string>(), Arg.Any<bool>()).Returns(waveFormGenerator);
-
+            waveFormRegistry.ContainsKey("func", false).Returns(true);
+            waveFormRegistry.GetValue(Arg.Any<string>(), Arg.Any<bool>()).Returns(waveFormGenerator);
+            WaveformGenerator value;
+            waveFormRegistry.TryGetValue("func", false, out value).Returns(
+                x =>
+                    {
+                        x[2] = waveFormGenerator;
+                        return true;
+                    });
             var bracketParameter = new Models.Netlist.Spice.Objects.Parameters.BracketParameter();
             bracketParameter.Name = "FUNc";
             var readingContext = Substitute.For<IReadingContext>();
@@ -45,8 +53,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
             waveFormGenerator.Generate(Arg.Any<BracketParameter>(), Arg.Any<IReadingContext>()).Returns(new Sine());
 
             var waveFormRegistry = Substitute.For<IMapper<WaveformGenerator>>();
-            waveFormRegistry.Contains("func", true).Returns(true);
-            waveFormRegistry.Get(Arg.Any<string>(), Arg.Any<bool>()).Returns(waveFormGenerator);
+            waveFormRegistry.ContainsKey("func", true).Returns(true);
+            waveFormRegistry.GetValue(Arg.Any<string>(), Arg.Any<bool>()).Returns(waveFormGenerator);
 
             var bracketParameter = new BracketParameter();
             bracketParameter.Name = "func2";

@@ -33,14 +33,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         {
             string type = statement.Name;
 
-            if (!Mapper.Contains(type, context.CaseSensitivity.IsDotStatementNameCaseSensitive))
+            if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsDotStatementNameCaseSensitive, out var controlReader))
             {
                 context.Result.AddWarning("Unsupported control: " + statement.Name + " at " + statement.LineNumber + " line");
             }
             else
             {
-                var mapper = Mapper.Get(type, context.CaseSensitivity.IsDotStatementNameCaseSensitive);
-                mapper.Read(statement, context);
+                controlReader.Read(statement, context);
             }
         }
     }

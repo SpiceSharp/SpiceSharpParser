@@ -21,7 +21,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets the evaluators.
         /// </summary>
-        IEvaluatorsContainer Evaluators { get; }
+        ISimulationEvaluatorsContainer Evaluators { get; }
 
         /// <summary>
         /// Gets the parent of the context.

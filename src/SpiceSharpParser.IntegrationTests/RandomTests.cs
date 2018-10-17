@@ -35,7 +35,7 @@ namespace SpiceSharpParser.IntegrationTests
             var resultsSeed2223 = new List<double>();
             var resultsSeed2224 = new List<double>();
 
-            int n = 5;
+            int n = 2;
 
             for (var i = 0; i < n; i++)
             {

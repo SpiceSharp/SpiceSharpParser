@@ -8,6 +8,10 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
+    using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
+    using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
+    using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+
     /// <summary>
     /// Base for all control simulation readers.
     /// </summary>
@@ -16,11 +20,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <summary>
         /// Initializes a new instance of the <see cref="SimulationControl"/> class.
         /// </summary>
-        public SimulationControl()
+        public SimulationControl(IMapper<Exporter> exporterMapper)
         {
             CreateSimulationsForAllTemperaturesFactory = new CreateSimulationsForAllTemperaturesFactory();
             CreateSimulationsForAllParameterSweepsAndTemperaturesFactory = new CreateSimulationsForAllParameterSweepsAndTemperaturesFactory(CreateSimulationsForAllTemperaturesFactory);
-            CreateSimulationsForMonteCarloFactory = new CreateSimulationsForMonteCarloFactory(CreateSimulationsForAllTemperaturesFactory, CreateSimulationsForAllParameterSweepsAndTemperaturesFactory);
+            CreateSimulationsForMonteCarloFactory = new CreateSimulationsForMonteCarloFactory(
+                CreateSimulationsForAllTemperaturesFactory,
+                CreateSimulationsForAllParameterSweepsAndTemperaturesFactory,
+                new ExportFactory(),
+                exporterMapper);
         }
 
         public ICreateSimulationsForAllTemperaturesFactory CreateSimulationsForAllTemperaturesFactory { get; private set; }

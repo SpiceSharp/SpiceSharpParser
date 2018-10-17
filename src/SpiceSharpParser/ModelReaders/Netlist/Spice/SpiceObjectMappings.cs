@@ -11,6 +11,8 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
+    using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
+
     public class SpiceObjectMappings : ISpiceObjectMappings
     {
         public SpiceObjectMappings()
@@ -49,15 +51,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Controls.Map("ST", new StControl());
             Controls.Map("STEP", new StepControl());
             Controls.Map("MC", new McControl());
-            Controls.Map("TRAN", new TransientControl());
-            Controls.Map("AC", new ACControl());
-            Controls.Map("DC", new DCControl());
-            Controls.Map("OP", new OPControl());
-            Controls.Map("NOISE", new NoiseControl());
+            Controls.Map("TRAN", new TransientControl(Exporters));
+            Controls.Map("AC", new ACControl(Exporters));
+            Controls.Map("DC", new DCControl(Exporters));
+            Controls.Map("OP", new OPControl(Exporters));
+            Controls.Map("NOISE", new NoiseControl(Exporters));
             Controls.Map("LET", new LetControl());
-            Controls.Map("SAVE", new SaveControl(Exporters));
-            Controls.Map("PLOT", new PlotControl(Exporters));
-            Controls.Map("PRINT", new PrintControl(Exporters));
+            Controls.Map("SAVE", new SaveControl(Exporters, new ExportFactory()));
+            Controls.Map("PLOT", new PlotControl(Exporters, new ExportFactory()));
+            Controls.Map("PRINT", new PrintControl(Exporters, new ExportFactory()));
             Controls.Map("IC", new ICControl());
             Controls.Map("NODESET", new NodeSetControl());
 

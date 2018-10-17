@@ -17,17 +17,13 @@
     <Description>Netlist parser for SpiceSharp</Description>
     <PackageReleaseNotes>Refer to the GitHub release for release notes</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.5|AnyCPU'">
     <DocumentationFile>C:\Users\marcin\Documents\SpiceSharpParser_private\src\SpiceSharpParser\SpiceSharpParser.xml</DocumentationFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Common\Extensions\**" />
-    <EmbeddedResource Remove="Common\Extensions\**" />
-    <None Remove="Common\Extensions\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="SpiceSharp" Version="2.5.0" />

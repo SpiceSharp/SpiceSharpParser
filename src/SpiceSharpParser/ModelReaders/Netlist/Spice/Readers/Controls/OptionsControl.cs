@@ -59,8 +59,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             break;
                         case "seed":
                             context.Result.SimulationConfiguration.Seed = int.Parse(value);
-                            context.Result.Seed = context.Result.SimulationConfiguration.Seed.Value;
-                            context.Evaluators.SetSeed(context.Result.Seed.Value);
                             break;
                         default:
                             context.Result.AddWarning("Unsupported option: " + name);

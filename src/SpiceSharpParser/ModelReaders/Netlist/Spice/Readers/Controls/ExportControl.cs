@@ -1,10 +1,9 @@
 ﻿using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -14,9 +13,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// Initializes a new instance of the <see cref="ExportControl"/> class.
         /// </summary>
         /// <param name="mapper">The exporter mapper.</param>
-        public ExportControl(IMapper<Exporter> mapper)
+        public ExportControl(IMapper<Exporter> mapper, IExportFactory exportFactory)
         {
             Mapper = mapper ?? throw new System.ArgumentNullException(nameof(mapper));
+            ExportFactory = exportFactory ?? throw new System.ArgumentNullException(nameof(exportFactory));
         }
 
         /// <summary>
@@ -25,37 +25,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         protected IMapper<Exporter> Mapper { get; }
 
         /// <summary>
+        /// Gets the export factory.
+        /// </summary>
+        protected IExportFactory ExportFactory { get; }
+
+        /// <summary>
         /// Generates a new export.
         /// </summary>
-        protected Export GenerateExport(Parameter parameter, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator componentNameGenerator, IObjectNameGenerator modelNameGenerator, IResultService resultService, SpiceNetlistCaseSensitivitySettings caseSettings)
+        protected Export GenerateExport(Parameter parameter, IReadingContext context, Simulation simulation)
         {
-            if (parameter is BracketParameter bp)
-            {
-                string type = bp.Name;
-
-                if (Mapper.Contains(type, caseSettings.IsFunctionNameCaseSensitive))
-                {
-                    return Mapper
-                        .Get(type, caseSettings.IsFunctionNameCaseSensitive)
-                        .CreateExport(parameter.Image, type, bp.Parameters, simulation, nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService, caseSettings);
-                }
-            }
-
-            if (parameter is ReferenceParameter rp)
-            {
-                string type = "@";
-
-                if (Mapper.Contains(type, true))
-                {
-                    var parameters = new ParameterCollection();
-                    parameters.Add(new WordParameter(rp.Name));
-                    parameters.Add(new WordParameter(rp.Argument));
-
-                    return Mapper.Get(type, true).CreateExport(parameter.Image, type, parameters, simulation, nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService, caseSettings);
-                }
-            }
-
-            throw new System.Exception("Unsupported export: " + parameter.Image);
+            return ExportFactory.Create(parameter, context, simulation, Mapper);
         }
     }
 }

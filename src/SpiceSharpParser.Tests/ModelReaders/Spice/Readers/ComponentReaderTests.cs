@@ -29,8 +29,16 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
                Arg.Any<IReadingContext>()).Returns(x => new Resistor((string)x[0]));
 
             var mapper = Substitute.For<IMapper<IComponentGenerator>>();
-            mapper.Contains("R", false).Returns(true);
-            mapper.Get("R", false).Returns(generator);
+            mapper.ContainsKey("R", false).Returns(true);
+            mapper.GetValue("R", false).Returns(generator);
+
+            IComponentGenerator value;
+            mapper.TryGetValue("R", false, out value).Returns(
+                x =>
+                    {
+                        x[2] = generator;
+                        return true;
+                    });
 
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }, true));

@@ -26,7 +26,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="evaluators">Evaluators.</param>
-        public void Read(Control statement, IEvaluatorsContainer evaluators, SpiceNetlistCaseSensitivitySettings caseSettings)
+        public void Read(Control statement, ISimulationEvaluatorsContainer evaluators, SpiceNetlistCaseSensitivitySettings caseSettings)
         {
             if (statement.Parameters == null)
             {

@@ -18,7 +18,16 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
         public void Generate()
         {
             var mapper = Substitute.For<IMapper<IModelGenerator>>();
-            mapper.Contains("NPN", false).Returns(true);
+            mapper.ContainsKey("NPN", false).Returns(true);
+
+            IModelGenerator value;
+            mapper.TryGetValue("NPN", false, out value).Returns(
+                x =>
+                    {
+                        x[2] = null;
+                        return true;
+                    });
+
 
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }, true));

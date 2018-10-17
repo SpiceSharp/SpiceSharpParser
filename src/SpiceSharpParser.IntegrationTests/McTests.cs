@@ -5,6 +5,53 @@ namespace SpiceSharpParser.IntegrationTests
     public class McTests : BaseTests
     {
         [Fact]
+        public void McWithoutSaveLet()
+        {
+            var result = ParseNetlist(
+                "Monte Carlo Analysis - OP - POWER",
+                "V1 0 1 100",
+                "R1 1 0 {R}",
+                ".OP",
+                ".PARAM R={random()*1000}",
+                ".LET power {V(1)*I(R1)}",
+                ".MC 1000 OP power MAX",
+                ".END");
+
+            Assert.Equal(1000, result.Simulations.Count);
+            Assert.True(result.MonteCarloResult.Enabled);
+            RunSimulations(result);
+
+            var mcResult = result.MonteCarloResult;
+            var histPlot = mcResult.GetPlot(10);
+
+            Assert.Equal(10, histPlot.Bins.Count);
+            Assert.Equal("power", histPlot.XUnit);
+        }
+
+        [Fact]
+        public void McWithoutSaveVoltage()
+        {
+            var result = ParseNetlist(
+                "Monte Carlo Analysis - OP - POWER",
+                "V1 0 1 100",
+                "R1 1 0 {R}",
+                ".OP",
+                ".PARAM R={random()*1000}",
+                ".MC 1000 OP V(1) MAX",
+                ".END");
+
+            Assert.Equal(1000, result.Simulations.Count);
+            Assert.True(result.MonteCarloResult.Enabled);
+            RunSimulations(result);
+
+            var mcResult = result.MonteCarloResult;
+            var histPlot = mcResult.GetPlot(10);
+
+            Assert.Equal(1, histPlot.Bins.Count);
+            Assert.Equal("V(1)", histPlot.XUnit);
+        }
+
+        [Fact]
         public void McOp()
         {
             var result = ParseNetlist(
@@ -108,10 +155,10 @@ namespace SpiceSharpParser.IntegrationTests
                 ".PARAM R={abs(gauss(10))*1000}",
                 ".LET power {V(1)*I(R1)}",
                 ".SAVE power",
-                ".MC 10000 OP power MAX",
+                ".MC 1000 OP power MAX",
                 ".END");
 
-            Assert.Equal(10000, result.Simulations.Count);
+            Assert.Equal(1000, result.Simulations.Count);
             Assert.True(result.MonteCarloResult.Enabled);
             RunSimulations(result);
             var mcResult = result.MonteCarloResult;
@@ -137,7 +184,7 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.Equal(100, result.Simulations.Count);
             Assert.True(result.MonteCarloResult.Enabled);
             RunSimulations(result);
-            Assert.Equal(90, result.MonteCarloResult.RandomSeed);
+            Assert.Equal(90, result.MonteCarloResult.Seed);
             Assert.Equal(90, result.Seed);
         }
 

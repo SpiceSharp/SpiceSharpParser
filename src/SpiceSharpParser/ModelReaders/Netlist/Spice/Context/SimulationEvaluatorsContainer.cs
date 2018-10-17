@@ -1,21 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpiceSharp;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
-    public class EvaluatorsContainer : IEvaluatorsContainer
+    using System.Collections.Concurrent;
+    using System.Linq;
+
+    public class SimulationEvaluatorsContainer : ISimulationEvaluatorsContainer
     {
         private readonly IFunctionFactory _functionFactory;
-        protected Dictionary<Simulation, IEvaluator> Evaluators = new Dictionary<Simulation, IEvaluator>();
 
-        public EvaluatorsContainer(IEvaluator sourceEvaluator, IFunctionFactory functionFactory)
+        private int SeedToUse;
+
+        protected ConcurrentDictionary<Simulation, IEvaluator> Evaluators = new ConcurrentDictionary<Simulation, IEvaluator>();
+
+        public SimulationEvaluatorsContainer(IEvaluator sourceEvaluator, IFunctionFactory functionFactory)
         {
             _functionFactory = functionFactory;
             SourceEvaluator = sourceEvaluator ?? throw new ArgumentNullException(nameof(sourceEvaluator));
+
+            if (SourceEvaluator.Seed.HasValue)
+            {
+                SeedToUse = SourceEvaluator.Seed.Value;
+            }
         }
 
         protected IEvaluator SourceEvaluator { get; }
@@ -73,6 +82,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return SourceEvaluator.EvaluateDouble(expression);
         }
 
+        public bool IsConstantExpression(string expression)
+        {
+            return SourceEvaluator.IsConstantExpression(expression);
+        }
+
         public double EvaluateDouble(string expression, Simulation simulation)
         {
             if (simulation == null)
@@ -83,9 +97,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return GetSimulationEvaluator(simulation).EvaluateDouble(expression);
         }
 
-        public IEvaluatorsContainer CreateChildContainer(string containerName)
+        public ISimulationEvaluatorsContainer CreateChildContainer(string containerName)
         {
-            return new EvaluatorsContainer(SourceEvaluator.CreateChildEvaluator(containerName, null), _functionFactory);
+            return new SimulationEvaluatorsContainer(SourceEvaluator.CreateChildEvaluator(containerName, null), _functionFactory);
         }
 
         public IEnumerable<string> GetExpressionNames()
@@ -105,23 +119,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            if (!Evaluators.ContainsKey(simulation))
+            if (!Evaluators.TryGetValue(simulation, out var evaluator))
             {
-                var simulationEvaluator = SourceEvaluator.Clone(true);
-                simulationEvaluator.Name = simulation.Name.ToString();
-                simulationEvaluator.Context = simulation;
-                simulationEvaluator.Seed = SourceEvaluator.Seed;
-
-                Evaluators[simulation] = simulationEvaluator;
+                evaluator = SourceEvaluator.Clone(true);
+                evaluator.Name = simulation.Name;
+                evaluator.Context = simulation;
+                Evaluators[simulation] = evaluator;
             }
 
-            return Evaluators[simulation];
+            return evaluator;
         }
 
         public IEvaluator GetSimulationEntityEvaluator(Simulation simulation, string entityName)
         {
             var dotIndex = entityName.LastIndexOf('.');
-            var simulationEvaluator = this.GetSimulationEvaluator(simulation);
+            var simulationEvaluator = GetSimulationEvaluator(simulation);
 
             if (dotIndex == -1)
             {
@@ -132,13 +144,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return simulationEvaluator.FindChildEvaluator(subcircuitName);
         }
 
-        public void SetSeed(int seed)
+        public void UpdateSeed(int? seed)
         {
-            SourceEvaluator.Seed = seed;
-
-            foreach (var evaluator in Evaluators.Values)
+            if (seed.HasValue)
             {
-                evaluator.Seed = ++seed;
+                SeedToUse = seed.Value;
+                SourceEvaluator.Seed = SeedToUse++;
+
+                foreach (var evaluator in Evaluators.Values.OrderBy( e => e.Name))
+                {
+                    evaluator.Seed = SeedToUse++;
+                }
             }
         }
     }

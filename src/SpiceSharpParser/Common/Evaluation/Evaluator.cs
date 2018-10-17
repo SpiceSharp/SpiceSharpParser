@@ -5,11 +5,15 @@ using SpiceSharpParser.Common.Evaluation.Functions;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
+    using System.Linq;
+
     /// <summary>
     /// Abstract evaluator.
     /// </summary>
     public abstract class Evaluator : IEvaluator
     {
+        private int? _seed;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Evaluator"/> class.
         /// </summary>
@@ -60,14 +64,27 @@ namespace SpiceSharpParser.Common.Evaluation
         public bool IsParameterNameCaseSensitive { get; }
 
         /// <summary>
-        /// Gets the children evaluators.
+        /// Gets the children simulationEvaluators.
         /// </summary>
         public List<IEvaluator> Children { get; } = new List<IEvaluator>();
 
         /// <summary>
         /// Gets or sets the random seed for the evaluator.
         /// </summary>
-        public int? Seed { get; set; }
+        public int? Seed
+        {
+            get => _seed;
+
+            set
+            {
+                _seed = value;
+
+                foreach (var child in Children)
+                {
+                    child.Seed = value;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets the context of the evaluator.
@@ -85,6 +102,11 @@ namespace SpiceSharpParser.Common.Evaluation
         protected IExpressionParser ExpressionParser { get; private set; }
 
         /// <summary>
+        /// Gets or sets the dictionary of parse results.
+        /// </summary>
+        protected Dictionary<string, ExpressionParseResult> ParseResults { get; set; } = new Dictionary<string, ExpressionParseResult>();
+
+        /// <summary>
         /// Evaluates a specific expression to double.
         /// </summary>
         /// <param name="expression">An expression to evaluate.</param>
@@ -93,16 +115,35 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public double EvaluateDouble(string expression)
         {
-            if (Parameters.ContainsKey(expression))
+            if (Parameters.TryGetValue(expression, out var parameter))
             {
-                return Parameters[expression].Evaluate();
+                return parameter.Evaluate();
             }
 
-            var parseResult = ExpressionParser.Parse(
-                expression,
-                new ExpressionParserContext() {Functions = Functions, Parameters = Parameters, Evaluator = this});
+            if (!ParseResults.TryGetValue(expression, out var parseResult))
+            {
+                parseResult = GetParseResult(expression);
+                ParseResults[expression] = parseResult;
+            }
 
-            return parseResult.Value();
+            return parseResult.Value(
+                new ExpressionEvaluationContext(IsParameterNameCaseSensitive)
+                    {
+                        Parameters = Parameters,
+                        Evaluator = this
+                    });
+        }
+
+        public ExpressionParseResult GetParseResult(string expression)
+        {
+            if (!ParseResults.TryGetValue(expression, out var parseResult))
+            {
+                parseResult = ExpressionParser.Parse(
+                    expression,
+                    new ExpressionParserContext(this.IsFunctionNameCaseSensitive) { Functions = this.Functions });
+                ParseResults[expression] = parseResult;
+            }
+            return parseResult;
         }
 
         /// <summary>
@@ -126,19 +167,35 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public ICollection<string> GetParametersFromExpression(string expression)
         {
-            var result = ExpressionParser.Parse(expression, new ExpressionParserContext() { Functions = Functions, Parameters = Parameters, Evaluator = this }, false);
-            return result.FoundParameters;
+            if (!ParseResults.TryGetValue(expression, out var parseResult))
+            {
+                parseResult = ExpressionParser.Parse(
+                    expression,
+                    new ExpressionParserContext(IsFunctionNameCaseSensitive) { Functions = Functions });
+                ParseResults[expression] = parseResult;
+            }
+
+            return parseResult.FoundParameters;
         }
 
         /// <summary>
-        /// 
+        /// Gets the functions from expression.
         /// </summary>
-        /// <param name="expression"></param>
-        /// <returns></returns>
+        /// <param name="expression">The expression to check.</param>
+        /// <returns>
+        /// Parameters from expression.
+        /// </returns>
         public ICollection<string> GetFunctionsFromExpression(string expression)
         {
-            var result = ExpressionParser.Parse(expression, new ExpressionParserContext() { Functions = Functions, Parameters = Parameters, Evaluator = this }, false);
-            return result.FoundFunctions;
+            if (!ParseResults.TryGetValue(expression, out var parseResult))
+            {
+                parseResult = ExpressionParser.Parse(
+                    expression,
+                    new ExpressionParserContext(IsFunctionNameCaseSensitive) { Functions = Functions });
+                ParseResults[expression] = parseResult;
+            }
+
+            return parseResult.FoundFunctions;
         }
 
         /// <summary>
@@ -150,7 +207,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public bool IsConstantExpression(string expression)
         {
-            var result = ExpressionParser.Parse(expression, new ExpressionParserContext() { Functions = Functions, Parameters = Parameters, Evaluator = this }, false);
+            var result = ExpressionParser.Parse(expression, new ExpressionParserContext() { Functions = Functions });
             return result.FoundFunctions.Count == 0 && result.FoundParameters.Count == 0;
         }
 
@@ -258,13 +315,18 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="parameters">Parameters to use.</param>
         /// <param name="functions">Functions to use.</param>
         /// <param name="children">Child evaluator to use.</param>
-        public void Initialize(Dictionary<string, Expression> parameters, Dictionary<string, Function> functions, List<IEvaluator> children)
+        public void Initialize(
+            Dictionary<string, Expression> parameters, 
+            Dictionary<string, Function> functions,
+            List<IEvaluator> children, 
+            Dictionary<string, ExpressionParseResult> parsedResults)
         {
             foreach (var parameterName in parameters.Keys)
             {
-                Parameters[parameterName] = parameters[parameterName].Clone();
-                Parameters[parameterName].Evaluator = this;
-                Parameters[parameterName].Invalidate();
+                var parameter = parameters[parameterName].Clone();
+                parameter.Evaluator = this;
+                parameter.Invalidate();
+                Parameters[parameterName] = parameter;
             }
 
             foreach (var customFunction in functions.Keys)
@@ -279,6 +341,7 @@ namespace SpiceSharpParser.Common.Evaluation
             }
 
             Registry.Invalidate(this);
+            ParseResults = parsedResults;
         }
 
         /// <summary>
@@ -358,4 +421,4 @@ namespace SpiceSharpParser.Common.Evaluation
             Functions.Add("tanh", MathFunctions.CreateTanh());
         }
     }
-}
+}     
