@@ -142,8 +142,8 @@ simulation.Run(spiceSharpModel.Circuit);
 |exp          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/exp)|
 |db          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/db)|
 |round          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/round)|
-|u          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/u)|
 |sgn          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/sgn)|
+|u          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/u)|
 |uramp          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/uramp)|
 
 ## License
