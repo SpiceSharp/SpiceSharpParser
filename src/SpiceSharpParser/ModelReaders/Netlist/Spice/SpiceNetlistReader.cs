@@ -53,7 +53,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             var modelNameGenerator = new ObjectNameGenerator(string.Empty);
 
             IEvaluator readingEvaluator = CreateReadingEvaluator(nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService);
-            IEvaluatorsContainer evaluatorsContainer = new EvaluatorsContainer(readingEvaluator, new FunctionFactory());
+            ISimulationEvaluatorsContainer evaluatorsContainer = new SimulationEvaluatorsContainer(readingEvaluator, new FunctionFactory());
             ISimulationsParameters simulationParameters = new SimulationsParameters(evaluatorsContainer);
 
             ISpiceStatementsReader statementsReader = new SpiceStatementsReader(Settings.Mappings.Controls, Settings.Mappings.Models, Settings.Mappings.Components);
@@ -82,7 +82,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
         private void UpdateSeed(
             IReadingContext readingContext,
-            IEvaluatorsContainer evaluatorsContainer,
+            ISimulationEvaluatorsContainer evaluatorsContainer,
             SpiceNetlistReaderResult result)
         {
             int? seed = readingContext.Result.SimulationConfiguration.MonteCarloConfiguration.Seed

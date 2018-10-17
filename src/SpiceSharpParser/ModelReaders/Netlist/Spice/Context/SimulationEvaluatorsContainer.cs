@@ -8,7 +8,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
     using System.Collections.Concurrent;
     using System.Linq;
 
-    public class EvaluatorsContainer : IEvaluatorsContainer
+    public class SimulationEvaluatorsContainer : ISimulationEvaluatorsContainer
     {
         private readonly IFunctionFactory _functionFactory;
 
@@ -16,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         protected ConcurrentDictionary<Simulation, IEvaluator> Evaluators = new ConcurrentDictionary<Simulation, IEvaluator>();
 
-        public EvaluatorsContainer(IEvaluator sourceEvaluator, IFunctionFactory functionFactory)
+        public SimulationEvaluatorsContainer(IEvaluator sourceEvaluator, IFunctionFactory functionFactory)
         {
             _functionFactory = functionFactory;
             SourceEvaluator = sourceEvaluator ?? throw new ArgumentNullException(nameof(sourceEvaluator));
@@ -82,6 +82,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return SourceEvaluator.EvaluateDouble(expression);
         }
 
+        public bool IsConstantExpression(string expression)
+        {
+            return SourceEvaluator.IsConstantExpression(expression);
+        }
+
         public double EvaluateDouble(string expression, Simulation simulation)
         {
             if (simulation == null)
@@ -92,9 +97,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return GetSimulationEvaluator(simulation).EvaluateDouble(expression);
         }
 
-        public IEvaluatorsContainer CreateChildContainer(string containerName)
+        public ISimulationEvaluatorsContainer CreateChildContainer(string containerName)
         {
-            return new EvaluatorsContainer(SourceEvaluator.CreateChildEvaluator(containerName, null), _functionFactory);
+            return new SimulationEvaluatorsContainer(SourceEvaluator.CreateChildEvaluator(containerName, null), _functionFactory);
         }
 
         public IEnumerable<string> GetExpressionNames()
@@ -114,15 +119,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            if (!Evaluators.ContainsKey(simulation))
+            if (!Evaluators.TryGetValue(simulation, out var evaluator))
             {
-                var simulationEvaluator = SourceEvaluator.Clone(true);
-                simulationEvaluator.Name = simulation.Name;
-                simulationEvaluator.Context = simulation;
-                Evaluators[simulation] = simulationEvaluator;
+                evaluator = SourceEvaluator.Clone(true);
+                evaluator.Name = simulation.Name;
+                evaluator.Context = simulation;
+                Evaluators[simulation] = evaluator;
             }
 
-            return Evaluators[simulation];
+            return evaluator;
         }
 
         public IEvaluator GetSimulationEntityEvaluator(Simulation simulation, string entityName)

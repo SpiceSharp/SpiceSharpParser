@@ -5,6 +5,8 @@ using SpiceSharpParser.Common.Evaluation.Functions;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
+    using System.Linq;
+
     /// <summary>
     /// Abstract evaluator.
     /// </summary>
@@ -62,7 +64,7 @@ namespace SpiceSharpParser.Common.Evaluation
         public bool IsParameterNameCaseSensitive { get; }
 
         /// <summary>
-        /// Gets the children evaluators.
+        /// Gets the children simulationEvaluators.
         /// </summary>
         public List<IEvaluator> Children { get; } = new List<IEvaluator>();
 
@@ -71,10 +73,8 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         public int? Seed
         {
-            get
-            {
-                return _seed;
-            }
+            get => _seed;
+
             set
             {
                 _seed = value;
@@ -122,15 +122,28 @@ namespace SpiceSharpParser.Common.Evaluation
 
             if (!ParseResults.TryGetValue(expression, out var parseResult))
             {
-                parseResult = ExpressionParser.Parse(
-                    expression,
-                    new ExpressionParserContext(IsFunctionNameCaseSensitive) { Functions = Functions });
-
+                parseResult = GetParseResult(expression);
                 ParseResults[expression] = parseResult;
             }
 
             return parseResult.Value(
-                new ExpressionEvaluationContext(IsParameterNameCaseSensitive) { Parameters = Parameters, Evaluator = this });
+                new ExpressionEvaluationContext(IsParameterNameCaseSensitive)
+                    {
+                        Parameters = Parameters,
+                        Evaluator = this
+                    });
+        }
+
+        public ExpressionParseResult GetParseResult(string expression)
+        {
+            if (!ParseResults.TryGetValue(expression, out var parseResult))
+            {
+                parseResult = ExpressionParser.Parse(
+                    expression,
+                    new ExpressionParserContext(this.IsFunctionNameCaseSensitive) { Functions = this.Functions });
+                ParseResults[expression] = parseResult;
+            }
+            return parseResult;
         }
 
         /// <summary>
@@ -302,13 +315,18 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="parameters">Parameters to use.</param>
         /// <param name="functions">Functions to use.</param>
         /// <param name="children">Child evaluator to use.</param>
-        public void Initialize(Dictionary<string, Expression> parameters, Dictionary<string, Function> functions, List<IEvaluator> children, Dictionary<string, ExpressionParseResult> parsedResults)
+        public void Initialize(
+            Dictionary<string, Expression> parameters, 
+            Dictionary<string, Function> functions,
+            List<IEvaluator> children, 
+            Dictionary<string, ExpressionParseResult> parsedResults)
         {
             foreach (var parameterName in parameters.Keys)
             {
-                Parameters[parameterName] = parameters[parameterName].Clone();
-                Parameters[parameterName].Evaluator = this;
-                Parameters[parameterName].Invalidate();
+                var parameter = parameters[parameterName].Clone();
+                parameter.Evaluator = this;
+                parameter.Invalidate();
+                Parameters[parameterName] = parameter;
             }
 
             foreach (var customFunction in functions.Keys)
@@ -403,4 +421,4 @@ namespace SpiceSharpParser.Common.Evaluation
             Functions.Add("tanh", MathFunctions.CreateTanh());
         }
     }
-}
+}     

@@ -125,7 +125,7 @@ namespace SpiceSharpParser
             SpiceNetlist preprocessedNetListModel = (SpiceNetlist)originalNetlistModel.Clone();
             SpiceEvaluator preprocessorEvaluator = CreatePreprocessorEvaluator();
 
-            EvaluatorsContainer evaluators = new EvaluatorsContainer(preprocessorEvaluator, new FunctionFactory());
+            ISimulationEvaluatorsContainer evaluators = new SimulationEvaluatorsContainer(preprocessorEvaluator, new FunctionFactory());
 
             foreach (var preprocessor in Preprocessors)
             {
