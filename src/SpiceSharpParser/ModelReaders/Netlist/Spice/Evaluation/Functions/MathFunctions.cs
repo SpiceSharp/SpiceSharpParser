@@ -20,7 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.VirtualParameters = false;
             function.ArgumentsCount = 2;
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 double x = (double)args[0];
                 double y = (double)args[1];
@@ -69,7 +69,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.VirtualParameters = false;
             function.ArgumentsCount = 2;
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 double x = (double)args[0];
                 double y = (double)args[1];
@@ -104,7 +104,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.VirtualParameters = false;
             function.ArgumentsCount = 2;
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 double x = (double)args[0];
                 double y = (double)args[1];
@@ -129,7 +129,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.VirtualParameters = false;
             function.ArgumentsCount = 1;
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 double x = (double)args[0];
 
@@ -185,7 +185,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.VirtualParameters = false;
             function.ArgumentsCount = 2;
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 double x = (double)args[0];
                 double y = (double)args[1];
@@ -245,7 +245,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = -1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length == 0)
                 {
@@ -282,7 +282,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = -1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length == 0)
                 {
@@ -319,7 +319,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 3;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 3)
                 {
@@ -360,7 +360,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -388,7 +388,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -422,7 +422,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -456,7 +456,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -485,7 +485,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -514,7 +514,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -542,7 +542,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -570,7 +570,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -598,7 +598,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 2;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 2)
                 {
@@ -628,7 +628,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -656,7 +656,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -685,7 +685,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -713,7 +713,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -747,7 +747,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -775,7 +775,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -803,7 +803,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {
@@ -831,7 +831,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.Logic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 if (args.Length != 1)
                 {

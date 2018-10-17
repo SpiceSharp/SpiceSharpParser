@@ -29,7 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
         public int Count => Elements.Keys.Count;
 
         /// <summary>
-        /// Gets the mapping type to element.
+        /// Gets the mapping key to element.
         /// </summary>
         protected Dictionary<string, TElement> Elements { get; }
 
@@ -46,7 +46,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
         /// <summary>
         /// Binds the element to the mapper.
         /// </summary>
-        /// <param name="element">Element to add</param>
+        /// <param name="keys">Keys.</param>
+        /// <param name="element">Element.</param>
         public virtual void Map(string[] keys, TElement element)
         {
             foreach (var key in keys)
@@ -65,7 +66,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
         /// <returns>
         /// A value indicating whether the mapper has a element with given <paramref name="key"/>.
         /// </returns>
-        public bool Contains(string key, bool caseSensitive)
+        public bool ContainsKey(string key, bool caseSensitive)
         {
             if (caseSensitive)
             {
@@ -76,25 +77,51 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
         }
 
         /// <summary>
-        /// Gets the element for given type.
+        /// Gets the element for given key.
         /// </summary>
-        /// <param name="type">A type of element.</param>
-        /// <param name="caseSensitive">Is type name case-sensitive.</param>
+        /// <param name="key">A key of element.</param>
+        /// <param name="caseSensitive">Is key name case-sensitive.</param>
         /// <returns>
         /// A reference to the element.
         /// </returns>
-        public TElement Get(string type, bool caseSensitive)
+        public TElement GetValue(string key, bool caseSensitive)
         {
             if (caseSensitive)
             {
-                return Elements[type];
+                return Elements[key];
             }
 
             return
                 Elements
-                    .First(e => e.Key.Equals(type, StringComparison.CurrentCultureIgnoreCase)).Value;
+                    .First(e => e.Key.Equals(key, StringComparison.CurrentCultureIgnoreCase)).Value;
         }
 
+        /// <summary>
+        /// Gets the element for given key.
+        /// </summary>
+        /// <param name="key">A key of element.</param>
+        /// <param name="caseSensitive">Is key name case-sensitive.</param>
+        /// <param name="value">A value of element.</param>
+        /// <returns>
+        /// A reference to the element.
+        /// </returns>
+        public bool TryGetValue(string key, bool caseSensitive, out TElement value)
+        {
+            if (caseSensitive)
+            {
+                return Elements.TryGetValue(key, out value);
+            }
+
+            value = Elements.FirstOrDefault(e => e.Key.Equals(key, StringComparison.CurrentCultureIgnoreCase)).Value;
+            return value != null;
+        }
+
+        /// <summary>
+        /// The get enumerator.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="IEnumerator"/>.
+        /// </returns>
         public IEnumerator<KeyValuePair<string, TElement>> GetEnumerator()
         {
             foreach (KeyValuePair<string, TElement> element in Elements)
@@ -103,6 +130,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
             }
         }
 
+        /// <summary>
+        /// The get enumerator.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="IEnumerator"/>.
+        /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             foreach (KeyValuePair<string, TElement> element in Elements)

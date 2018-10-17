@@ -42,7 +42,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = new ReadingContext(
                 string.Empty,
                 Substitute.For<ISimulationsParameters>(),
-                new EvaluatorsContainer(evaluator, new FunctionFactory()),
+                new SimulationEvaluatorsContainer(evaluator, new FunctionFactory()),
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }, true),
                 new ObjectNameGenerator(string.Empty),
@@ -82,7 +82,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = new ReadingContext(
                 string.Empty,
                 Substitute.For<ISimulationsParameters>(),
-                new EvaluatorsContainer(evaluator, new FunctionFactory()),
+                new SimulationEvaluatorsContainer(evaluator, new FunctionFactory()),
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }, true),
                 new ObjectNameGenerator(string.Empty),

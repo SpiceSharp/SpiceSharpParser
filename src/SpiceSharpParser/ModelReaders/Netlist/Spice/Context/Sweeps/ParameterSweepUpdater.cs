@@ -84,7 +84,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 context
                     .SimulationsParameters
-                    .SetParameter(@entity, "dc", paramToSet.Value.ToString(CultureInfo.InvariantCulture), simulation, int.MaxValue);
+                    .SetParameter(@entity, "dc", paramToSet.Value, simulation, int.MaxValue);
             }
         }
     }

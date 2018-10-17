@@ -24,7 +24,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <summary>
         /// Gets or sets the evaluator.
         /// </summary>
-        public IEvaluatorsContainer Evaluators { get; set; }
+        public ISimulationEvaluatorsContainer Evaluators { get; set; }
 
         /// <summary>
         /// Gets or sets the evaluator.

@@ -5,7 +5,7 @@ namespace SpiceSharpParser.Common.Evaluation
 {
     public interface IEvaluatorConsumer
     {
-        IEvaluatorsContainer Evaluators { set; }
+        ISimulationEvaluatorsContainer Evaluators { set; }
 
         SpiceNetlistCaseSensitivitySettings CaseSettings { set; }
     }

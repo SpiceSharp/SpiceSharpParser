@@ -4,14 +4,23 @@ using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
+    
     /// <summary>
     /// Reads .DC <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
     public class DCControl : SimulationControl
     {
+        public DCControl(IMapper<Exporter> mapper)
+            : base(mapper)
+        {
+
+        }
+
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>

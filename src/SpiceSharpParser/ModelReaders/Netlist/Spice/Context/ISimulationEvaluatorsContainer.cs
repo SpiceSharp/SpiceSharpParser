@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
-using SpiceSharp;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
-    public interface IEvaluatorsContainer
+    public interface ISimulationEvaluatorsContainer
     {
-        IEvaluatorsContainer CreateChildContainer(string containerName);
+        ISimulationEvaluatorsContainer CreateChildContainer(string containerName);
 
         IEnumerable<string> GetExpressionNames();
 
@@ -32,6 +30,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         void SetParameters(Dictionary<string, string> subcircuitParameters);
 
-        void SetSeed(int seed);
+        void UpdateSeed(int? seed);
+
+        bool IsConstantExpression(string expression);
     }
 }

@@ -52,14 +52,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             var componentNameGenerator = new ObjectNameGenerator(string.Empty);
             var modelNameGenerator = new ObjectNameGenerator(string.Empty);
 
-            SpiceEvaluator readingEvaluator = CreateReadingEvaluator(nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService);
-            var evaluatorsContainer = new EvaluatorsContainer(readingEvaluator, new FunctionFactory());
-            var simulationParameters = new SimulationsParameters(evaluatorsContainer);
+            IEvaluator readingEvaluator = CreateReadingEvaluator(nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService);
+            ISimulationEvaluatorsContainer evaluatorsContainer = new SimulationEvaluatorsContainer(readingEvaluator, new FunctionFactory());
+            ISimulationsParameters simulationParameters = new SimulationsParameters(evaluatorsContainer);
 
-            var statementsReader = new SpiceStatementsReader(Settings.Mappings.Controls, Settings.Mappings.Models, Settings.Mappings.Components);
-            var waveformReader = new WaveformReader(Settings.Mappings.Waveforms);
+            ISpiceStatementsReader statementsReader = new SpiceStatementsReader(Settings.Mappings.Controls, Settings.Mappings.Models, Settings.Mappings.Components);
+            IWaveformReader waveformReader = new WaveformReader(Settings.Mappings.Waveforms);
 
-            var readingContext = new ReadingContext(
+            IReadingContext readingContext = new ReadingContext(
                 "Netlist reading context",
                 simulationParameters,
                 evaluatorsContainer,
@@ -74,12 +74,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             // Read statements form input netlist using created context
             readingContext.Read(netlist.Statements, Settings.Orderer);
 
-            // Return and update evaluators info.
-            result.Seed = result.Seed ?? Settings.Seed;
-
+            UpdateSeed(readingContext, evaluatorsContainer, result);
             result.Evaluators = evaluatorsContainer.GetEvaluators();
 
             return result;
+        }
+
+        private void UpdateSeed(
+            IReadingContext readingContext,
+            ISimulationEvaluatorsContainer evaluatorsContainer,
+            SpiceNetlistReaderResult result)
+        {
+            int? seed = readingContext.Result.SimulationConfiguration.MonteCarloConfiguration.Seed
+                        ?? readingContext.Result.SimulationConfiguration.Seed ?? this.Settings.Seed;
+
+            evaluatorsContainer.UpdateSeed(seed);
+            result.Seed = seed;
         }
 
         private SpiceEvaluator CreateReadingEvaluator(MainCircuitNodeNameGenerator nodeNameGenerator, ObjectNameGenerator componentNameGenerator, ObjectNameGenerator modelNameGenerator, IResultService result)

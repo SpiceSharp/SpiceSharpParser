@@ -11,6 +11,8 @@ using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 {
+    using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
+
     public class DCControlTests
     {
         [Fact]
@@ -35,13 +37,12 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             resultService.SimulationConfiguration.Returns(new SimulationConfiguration());
             resultService.Simulations.Returns(simulations);
             resultService.When(x => x.AddSimulation(Arg.Any<DC>())).Do(x => { simulations.Add((DC)x[0]); });
-            
 
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.Result.Returns(resultService);
             readingContext.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
             // act
-            var dcControl = new DCControl();
+            var dcControl = new DCControl(new ExporterMapper());
             dcControl.Read(control, readingContext);
 
             // assert

@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CEDE104D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharpParser.CodeAnalysis", "SpiceSharpParser.CodeAnalysis\SpiceSharpParser.CodeAnalysis.csproj", "{690C3742-17AD-46F6-A73D-CAE33C780523}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiceSharpParser.PerformanceTests", "SpiceSharpParser.PerformanceTests\SpiceSharpParser.PerformanceTests.csproj", "{2F7A7389-F1C2-4824-9594-5E102CFACC88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,12 @@ Global
 		{690C3742-17AD-46F6-A73D-CAE33C780523}.ERRORS|Any CPU.Build.0 = Release|Any CPU
 		{690C3742-17AD-46F6-A73D-CAE33C780523}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{690C3742-17AD-46F6-A73D-CAE33C780523}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F7A7389-F1C2-4824-9594-5E102CFACC88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F7A7389-F1C2-4824-9594-5E102CFACC88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F7A7389-F1C2-4824-9594-5E102CFACC88}.ERRORS|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F7A7389-F1C2-4824-9594-5E102CFACC88}.ERRORS|Any CPU.Build.0 = Debug|Any CPU
+		{2F7A7389-F1C2-4824-9594-5E102CFACC88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F7A7389-F1C2-4824-9594-5E102CFACC88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,6 +62,7 @@ Global
 		{94394567-BC35-43EE-92CB-31AC780305FE} = {CEDE104D-B6B3-433F-A8B3-C06086A4DD4E}
 		{57920E91-873B-4E66-B0EC-4CAC45007AA9} = {CEDE104D-B6B3-433F-A8B3-C06086A4DD4E}
 		{690C3742-17AD-46F6-A73D-CAE33C780523} = {A98DF2D4-CFE4-44F3-AD5C-21D6A0648EFD}
+		{2F7A7389-F1C2-4824-9594-5E102CFACC88} = {CEDE104D-B6B3-433F-A8B3-C06086A4DD4E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F5DF7359-A6BE-4DB6-9200-CEFBAEBAD75E}

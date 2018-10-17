@@ -11,6 +11,8 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
+    using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
+
     /// <summary>
     /// Reads .PLOT <see cref="Control"/> from SPICE netlist object model.
     /// It supports DC, AC, TRAN type of .PLOT.
@@ -21,8 +23,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// Initializes a new instance of the <see cref="PlotControl"/> class.
         /// </summary>
         /// <param name="mapper">The exporter mapper.</param>
-        public PlotControl(IMapper<Exporter> mapper)
-            : base(mapper)
+        public PlotControl(IMapper<Exporter> mapper, IExportFactory exportFactory)
+            : base(mapper, exportFactory)
         {
         }
 
@@ -125,7 +127,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 if (parameter is BracketParameter || parameter is ReferenceParameter)
                 {
-                    result.Add(GenerateExport(parameter, simulationToPlot, context.NodeNameGenerator, context.ComponentNameGenerator, context.ModelNameGenerator, context.Result, context.CaseSensitivity));
+                    result.Add(GenerateExport(parameter, context, simulationToPlot));
                 }
                 else
                 {

@@ -35,12 +35,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
             string componentName = statement.Name;
             string componentType = componentName[0].ToString();
 
-            if (!Mapper.Contains(componentType, context.CaseSensitivity.IsEntityNameCaseSensitive))
+            if (!Mapper.TryGetValue(componentType, context.CaseSensitivity.IsEntityNameCaseSensitive, out var generator))
             {
                 throw new System.Exception("Unsupported component type");
             }
-
-            var generator = Mapper.Get(componentType, context.CaseSensitivity.IsEntityNameCaseSensitive);
 
             Entity entity = generator.Generate(
                 context.ComponentNameGenerator.Generate(componentName),

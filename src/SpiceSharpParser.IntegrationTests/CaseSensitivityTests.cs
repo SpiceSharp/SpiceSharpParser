@@ -547,9 +547,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".DC V1 -1 1 10e-3",
                 ".SAVE i(V1)",
                 ".END");
-
-            var parseResult = parser.ParseNetlist(text);
-            Assert.Throws<Exception>(() => RunDCSimulation(parseResult.SpiceSharpModel, "i(V1)"));
+            Assert.Throws<Exception>(() => parser.ParseNetlist(text));
         }
     }
 }

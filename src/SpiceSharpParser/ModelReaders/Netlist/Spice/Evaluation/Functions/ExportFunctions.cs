@@ -65,7 +65,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.Name = "Exporter: " + exportType;
             function.ArgumentsCount = -1;
 
-            function.Logic = (image, args, evaluator) =>
+            function.ObjectArgsLogic = (image, args, evaluator) =>
             {
                 if (evaluator.Context == null || !(evaluator.Context is Simulation))
                 {
@@ -125,7 +125,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.Name = "Exporter: @";
             function.ArgumentsCount = 2;
 
-            function.Logic = (image, args, evaluator) =>
+            function.ObjectArgsLogic = (image, args, evaluator) =>
             {
                 string exporterKey = string.Format("{0}_{1}_{2}",
                     evaluator.Context != null ? ((Simulation) evaluator.Context).Name : "no_simulation", exportType,
