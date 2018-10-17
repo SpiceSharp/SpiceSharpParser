@@ -103,6 +103,7 @@ simulation.Run(spiceSharpModel.Circuit);
 |  Function name  |  Documentation  |
 |:------------|---------------------:|
 |@      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/@)|
+|**        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/**)|
 |cos      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/cos)|        
 |sin         |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/sin)|
 |tan     |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/tan)|
@@ -124,7 +125,6 @@ simulation.Run(spiceSharpModel.Circuit);
 |pwr        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/pwr)|
 |pwrs       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/pwrs)|
 |sqrt          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/sqrt)|
-|**        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/**)|
 |min       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/min)|
 |max          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/max)|
 |limit          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/limit)|
