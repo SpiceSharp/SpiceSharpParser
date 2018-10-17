@@ -26,7 +26,7 @@ namespace SpiceSharpParser.PerformanceTests
         [Fact]
         public void ExpressionParse()
         {
-            var expressionParser = new SpiceExpressionParser();
+            var expressionParser = new SpiceExpressionParserOld();
             var result = expressionParser.Parse("1 + 1 + 1 + 1 + 1 + 1 + 1", new ExpressionParserContext(false));
 
             double sum = 0;

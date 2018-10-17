@@ -1,5 +1,4 @@
 using SpiceSharp.Simulations;
-using System;
 using System.Threading.Tasks;
 using Xunit;
 
