@@ -75,7 +75,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                     throw new WrongParametersCountException(name, "voltage controlled voltage source expects 3 or 5 parameters");
+                    if (parameters.Count == 4)
+                    {
+                        if (parameters[3] is ExpressionEqualParameter eep && parameters[2].Image.ToLower() == "table")
+                        {
+                            var vcvs = new VoltageSource(name);
+                            context.CreateNodes(vcvs, parameters);
+
+                            var tableParameter = name + "_table_variable";
+                            context.Evaluators.SetParameter(tableParameter, eep.Expression);
+
+                            string expression = TableHelper.CreateTableExpression(tableParameter, eep);
+                            context.SetParameter(vcvs, "dc", expression);
+
+                            return vcvs;
+                        }
+                    }
+                    throw new WrongParametersCountException(name, "voltage controlled voltage source expects 3, 4 or 5 parameters");
                 }
             }
         }

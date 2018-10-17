@@ -639,7 +639,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             {
                 return new ExpressionEqualParameter()
                 {
-                    Expression = values.GetLexem(0),
+                    Expression = values.GetLexem(0).Trim('{', '}'),
                     Points = values.GetSpiceObject<Points>(1)
                 };
             }
@@ -647,7 +647,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             {
                 return new ExpressionEqualParameter()
                 {
-                    Expression = values.GetLexem(0),
+                    Expression = values.GetLexem(0).Trim('{', '}'),
                     Points = values.GetSpiceObject<Points>(2)
                 };
             }

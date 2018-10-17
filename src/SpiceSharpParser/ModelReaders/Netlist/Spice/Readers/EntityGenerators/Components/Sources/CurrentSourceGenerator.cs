@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SpiceSharp;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
@@ -115,6 +114,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
+                    if (parameters.Count == 4)
+                    {
+                        if (parameters[3] is ExpressionEqualParameter eep && parameters[2].Image.ToLower() == "table")
+                        {
+                            var vcvs = new CurrentSource(name);
+                            context.CreateNodes(vcvs, parameters);
+
+                            var tableParameter = name + "_table_variable";
+                            context.Evaluators.SetParameter(tableParameter, eep.Expression);
+
+                            string expression = TableHelper.CreateTableExpression(tableParameter, eep);
+                            context.SetParameter(vcvs, "dc", expression);
+
+                            return vcvs;
+                        }
+                    }
+
                     throw new WrongParametersCountException(name, "voltage controlled current source expects 3 or 5 parameters");
                 }
             }
