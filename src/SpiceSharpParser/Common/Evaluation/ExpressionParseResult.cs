@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
     /// <summary>
-    /// SpiceSharpModel of parsing expression.
+    /// Expression parse result.
     /// </summary>
     public class ExpressionParseResult
     {
@@ -22,5 +23,10 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Gets or sets found functions in expression.
         /// </summary>
         public Collection<string> FoundFunctions { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the expression is constant.
+        /// </summary>
+        public bool IsConstantExpression => !FoundFunctions.Any() && !FoundParameters.Any();
     }
 }

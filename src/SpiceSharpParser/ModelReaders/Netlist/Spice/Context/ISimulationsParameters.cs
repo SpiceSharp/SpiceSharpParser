@@ -14,6 +14,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         void SetParameter(Entity entity, string paramName, string expression, int order, bool onload = true, IEqualityComparer<string> comparer = null);
 
+        void SetParameter(Entity entity, string paramName, double value, int order, bool onload = true, IEqualityComparer<string> comparer = null);
+
         void SetParameter(Entity entity, string paramName, string expression, BaseSimulation simulation, int order, bool onload = true, IEqualityComparer<string> comparer = null);
 
         void SetParameter(Entity entity, string paramName, double value, BaseSimulation simulation, int order, IEqualityComparer<string> comparer = null);

@@ -29,7 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public ReadingContext(
             string contextName,
             ISimulationsParameters parameters,
-            IEvaluatorsContainer evaluators,
+            ISimulationEvaluatorsContainer evaluators,
             IResultService resultService,
             INodeNameGenerator nodeNameGenerator,
             IObjectNameGenerator componentNameGenerator,
@@ -76,9 +76,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         }
 
         /// <summary>
-        /// Gets the evaluators for the context.
+        /// Gets the simulationEvaluators for the context.
         /// </summary>
-        public IEvaluatorsContainer Evaluators { get; }
+        public ISimulationEvaluatorsContainer Evaluators { get; }
 
         /// <summary>
         /// Gets simulation parameters.
@@ -200,8 +200,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public void SetParameter(Entity entity, string parameterName, string expression, bool onload = true)
         {
             IEqualityComparer<string> comparer = StringComparerProvider.Get(CaseSensitivity.IsEntityParameterNameCaseSensitive);
-            entity.SetParameter(parameterName, Evaluators.EvaluateDouble(expression), comparer);
-            SimulationsParameters.SetParameter(entity, parameterName, expression, 0, onload, comparer);
+
+            var value = Evaluators.EvaluateDouble(expression);
+            if (!entity.SetParameter(parameterName, value, comparer))
+            {
+                throw new Exception($"Uknown parameter {parameterName} for entity {entity.Name}");
+            }
+
+            if (!Evaluators.IsConstantExpression(expression))
+            {
+                SimulationsParameters.SetParameter(entity, parameterName, expression, 0, onload, comparer);
+            }           
         }
     }
 }

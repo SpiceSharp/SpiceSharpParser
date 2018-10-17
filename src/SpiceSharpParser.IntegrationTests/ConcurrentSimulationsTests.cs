@@ -22,7 +22,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".STEP X 1 10 1",
                 ".END");
 
-            Parallel.ForEach<Simulation>(netlist.Simulations, new ParallelOptions() { MaxDegreeOfParallelism = 8 }, simulation => simulation.Run(netlist.Circuit));
+            Parallel.ForEach<Simulation>(netlist.Simulations, new ParallelOptions() { MaxDegreeOfParallelism = 1 }, simulation => simulation.Run(netlist.Circuit));
         }
 
         [Fact]

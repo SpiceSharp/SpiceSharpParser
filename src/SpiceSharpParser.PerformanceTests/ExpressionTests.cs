@@ -2,6 +2,10 @@ using Xunit;
 
 namespace SpiceSharpParser.PerformanceTests
 {
+    using SpiceSharpParser.Common.Evaluation;
+    using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
+    using SpiceSharpParser.Parsers.Expression;
+
     public class ExpressionTests : BaseTests
     {
         [Fact]
@@ -17,6 +21,32 @@ namespace SpiceSharpParser.PerformanceTests
                 ".END");
 
             RunDCSimulation(netlist, "i(V1)");
+        }
+
+        [Fact]
+        public void ExpressionParse()
+        {
+            var expressionParser = new SpiceExpressionParser();
+            var result = expressionParser.Parse("1 + 1 + 1 + 1 + 1 + 1 + 1", new ExpressionParserContext(false));
+
+            double sum = 0;
+            int n = 2000000;
+            for (var i = 0; i < n; i++)
+            {
+                sum += result.Value(new ExpressionEvaluationContext(false));
+            }
+        }
+
+        [Fact]
+        public void EvaluateDouble()
+        {
+            var expressionParser = new SpiceEvaluator();
+            double sum = 0;
+            int n = 2000000;
+            for (var i = 0; i < n; i++)
+            {
+                sum += expressionParser.EvaluateDouble("1 + 1 + 1 + 1 + 1 + 1 + 1");
+            }
         }
     }
 }

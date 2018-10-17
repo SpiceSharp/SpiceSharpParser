@@ -24,15 +24,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Initializes a new instance of the <see cref="SimulationsParameters"/> class.
         /// </summary>
-        /// <param name="evaluators">Simulation evaluators.</param>
-        public SimulationsParameters(IEvaluatorsContainer evaluators)
+        /// <param name="evaluators">Simulation simulationEvaluators.</param>
+        public SimulationsParameters(ISimulationEvaluatorsContainer evaluators)
         {
             Evaluators = evaluators;
         }
 
         protected EventHandler<SimulationEventArgs> SimulationCreated { get; set; }
 
-        protected IEvaluatorsContainer Evaluators { get; }
+        protected ISimulationEvaluatorsContainer Evaluators { get; }
 
         public void Prepare(BaseSimulation simulation)
         {
@@ -74,6 +74,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             };
         }
 
+
+        public void SetParameter(Entity @object, string paramName, double value, int order, bool onload = true, IEqualityComparer<string> comparer = null)
+        {
+            SimulationCreated += (object sender, SimulationEventArgs args) =>
+                {
+                    if (onload)
+                    {
+                        UpdateParameterBeforeLoad(paramName, @object, value, args.Simulation, order, comparer);
+                    }
+
+                    UpdateParameterBeforeTemperature(paramName, @object, value, args.Simulation, order, comparer);
+                };
+        }
+
         public void SetParameter(Entity @object, string paramName, string expression, BaseSimulation simulation, int order, bool onload = true, IEqualityComparer<string> comparer = null)
         {
             if (simulation == null)
@@ -96,7 +110,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            UpdateParameterBeforeLoad(paramName, @object, value, simulation, order, comparer);
             UpdateParameterBeforeTemperature(paramName, @object, value, simulation, order, comparer);
         }
 
