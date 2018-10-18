@@ -137,5 +137,59 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.NotNull(netlist);
             EqualsWithTol(18.0722891566265, export);
         }
+
+        [Fact]
+        public void ModelFormatWithTC1TC2ZeroValues()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 myresistor L=10u W=2u",
+                ".MODEL myresistor R RSH=0.1 TC1=0 TC2=0",
+                ".SAVE I(R1)",
+                ".OP",
+                ".OPTIONS TEMP=10",
+                ".END");
+
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.NotNull(netlist);
+            EqualsWithTol(300, export);
+        }
+
+        [Fact]
+        public void ModelFormatWithTC2NonZeroValue()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 myresistor L=10u W=2u",
+                ".MODEL myresistor R RSH=0.1 TC1=0.0 TC2=0.1",
+                ".SAVE I(R1)",
+                ".OP",
+                ".OPTIONS TEMP=10",
+                ".END");
+
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.NotNull(netlist);
+            EqualsWithTol(10.0334448160535, export);
+        }
+
+        [Fact]
+        public void ModelFormatWithTC1TC2NonZeroValues()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 myresistor L=10u W=2u",
+                ".MODEL myresistor R RSH=0.1 TC1=0.01 TC2=0.1",
+                ".SAVE I(R1)",
+                ".OP",
+                ".OPTIONS TEMP=10",
+                ".END");
+
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.NotNull(netlist);
+            EqualsWithTol(10.0908173562059, export);
+        }
     }
 }
