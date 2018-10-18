@@ -5,7 +5,7 @@ namespace SpiceSharpParser.IntegrationTests
     public class TableTest : BaseTests
     {
         [Fact]
-        public void ParsingFirstFormatTest()
+        public void ParsingFirstFormat()
         {
             var netlist = ParseNetlist(
                 "TABLE circuit",
@@ -23,7 +23,7 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
-        public void ParsingSecondFormatTest()
+        public void ParsingSecondFormat()
         {
             var netlist = ParseNetlist(
                 "TABLE circuit",
@@ -40,7 +40,24 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
-        public void ParsingAdvancedFormatTest()
+        public void ParsingThirdFormat()
+        {
+            var netlist = ParseNetlist(
+                "TABLE circuit",
+                "V1 1 0 1.5m",
+                "R1 1 0 10",
+                "E12 2 1 TABLE {V(1,0)} ((0,1) (1m,2) (2m,3))",
+                "R2 2 0 10",
+                ".SAVE V(2,1)",
+                ".OP",
+                ".END");
+            var export = RunOpSimulation(netlist, "V(2,1)");
+            Assert.NotNull(netlist);
+            Assert.Equal(2.5, export);
+        }
+
+        [Fact]
+        public void ParsingAdvancedExpression()
         {
             var netlist = ParseNetlist(
                 "TABLE circuit",
