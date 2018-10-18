@@ -235,47 +235,12 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
               ignoreCase: !_options.IsDotStatementNameCaseSensitive));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
-               (int)SpiceTokenType.VALUE,
-               "A value with comma separator",
-               @"([+-]?((<DIGIT>)+(,(<DIGIT>)*)?|\.(<DIGIT>)+)(e(\+|-)?(<DIGIT>)+)?[tgmkunpf]?(<LETTER>)*)",
-               null,
-               (SpiceLexerState state, string lexem) =>
-               {
-                   if (state.PreviousReturnedTokenType == (int)SpiceTokenType.EQUAL
-                    || state.PreviousReturnedTokenType == (int)SpiceTokenType.VALUE)
-                   {
-                       return LexerRuleUseDecision.Use;
-                   }
-
-                   return LexerRuleUseDecision.Next;
-               },
-               ignoreCase: true));
-
-            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.VALUE,
                 "A value with dot separator",
                 @"([+-]?((<DIGIT>)+(\.(<DIGIT>)*)?|\.(<DIGIT>)+)(e(\+|-)?(<DIGIT>)+)?[tgmkunpf]?(<LETTER>)*)",
                 null,
                 (SpiceLexerState state, string lexem) => LexerRuleUseDecision.Use,
                 ignoreCase: true));
-
-            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
-              (int)SpiceTokenType.PERCENT,
-              "A percent value with comma separator",
-              @"([+-]?((<DIGIT>)+(,(<DIGIT>)*)?|\.(<DIGIT>)+)(e(\+|-)?(<DIGIT>)+)?[tgmkunpf]?(<LETTER>)*)%",
-              null,
-              (SpiceLexerState state, string lexem) =>
-              {
-                  if (state.PreviousReturnedTokenType == (int)SpiceTokenType.EQUAL
-                   || state.PreviousReturnedTokenType == (int)SpiceTokenType.VALUE
-                   || state.PreviousReturnedTokenType == (int)SpiceTokenType.START)
-                  {
-                      return LexerRuleUseDecision.Use;
-                  }
-
-                  return LexerRuleUseDecision.Next;
-              },
-              ignoreCase: true));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.PERCENT,

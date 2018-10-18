@@ -1,4 +1,5 @@
-﻿using SpiceSharp;
+﻿using System.Linq;
+using SpiceSharp;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
@@ -7,7 +8,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
-{
+{   
     /// <summary>
     /// Generator for resistors, capacitors, inductors and mutual inductance
     /// </summary>
@@ -174,9 +175,34 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var res = new Resistor(name);
             context.CreateNodes(res, parameters);
 
-            if (parameters.Count == 3)
+            if (parameters.Count == 3 || parameters.Count == 4 && parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "tc"))
             {
+                var model = context.ModelsRegistry.FindModel<ResistorModel>(parameters.GetString(2));
+                if (model != null)
+                {
+                    throw new GeneralReaderException("l needs to be specified");
+                }
+
                 context.SetParameter(res, "resistance", parameters.GetString(2), false);
+
+                if (parameters.Count == 4)
+                {
+                    model = new ResistorModel(res.Name + "_default_model");
+
+                    var assignmentParameter = parameters[3] as AssignmentParameter;
+                    if (assignmentParameter.Values.Count == 2)
+                    {
+                        context.SetParameter(model, "tc1", assignmentParameter.Values[0]);
+                        context.SetParameter(model, "tc2", assignmentParameter.Values[1]);
+                    }
+                    else
+                    {
+                        context.SetParameter(model, "tc1", assignmentParameter.Value);
+                    }
+
+                    context.ModelsRegistry.RegisterModelInstance(model);
+                    res.SetModel(model);
+                }
             }
             else
             {
@@ -191,22 +217,34 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     $"Could not find model {parameters.GetString(2)} for resistor {name}",
                     (ResistorModel model) => res.SetModel(model));
 
-                foreach (var equal in parameters.Skip(3))
+                bool resistanceSpecified = false;
+                foreach (var parameter in parameters.Skip(3))
                 {
-                    if (equal is AssignmentParameter ap)
+                    if (parameter is AssignmentParameter ap)
                     {
                         context.SetParameter(res, ap.Name, ap.Value);
                     }
                     else
                     {
-                        throw new WrongParameterException("Only assignment parameters for semiconductor resistor are valid");
+                        if (parameter is SingleParameter sp && parameters.Count == 4)
+                        {
+                            resistanceSpecified = true;
+                            context.SetParameter(res, "resistance", sp.Image, false);
+                        }
+                        else
+                        {
+                            throw new WrongParameterException("Only single parameter with resistance or assignment parameters for semiconductor resistor are valid");
+                        }
                     }
                 }
 
-                var lengthParameter = res.ParameterSets.GetParameter<double>("l") as GivenParameter<double>;
-                if (lengthParameter == null || !lengthParameter.Given)
+                if (!resistanceSpecified)
                 {
-                    throw new GeneralReaderException("l needs to be specified");
+                    var lengthParameter = res.ParameterSets.GetParameter<double>("l") as GivenParameter<double>;
+                    if (lengthParameter == null || !lengthParameter.Given)
+                    {
+                        throw new GeneralReaderException("l needs to be specified");
+                    }
                 }
             }
 

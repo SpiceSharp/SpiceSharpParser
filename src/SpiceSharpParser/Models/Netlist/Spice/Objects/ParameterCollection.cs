@@ -137,7 +137,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
                     {
                         if (val is AssignmentParameter a2 && a2.Name == a.Name)
                         {
-                            a2.Value = a.Value;
+                            a2.Values = a.Values;
                             found = true;
                         }
                     }

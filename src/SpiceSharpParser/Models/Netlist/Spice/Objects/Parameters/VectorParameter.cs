@@ -15,7 +15,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         public List<SingleParameter> Elements { get; set; } = new List<SingleParameter>();
 
         /// <summary>
-        /// Gets the string represenation of the vector.
+        /// Gets the string representation of the vector.
         /// </summary>
         public override string Image
         {

@@ -116,7 +116,14 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                         }
                         else
                         {
-                            throw new ParseException(string.Format("Unexpected token: '{0}' of type: {1}. Expected token type: {2} line={3}", tokens[currentTokenIndex].Lexem, tokens[currentTokenIndex].SpiceTokenType, tn.Token.SpiceTokenType, tokens[currentTokenIndex].LineNumber), tokens[currentTokenIndex].LineNumber);
+                            throw new ParseException(
+                                string.Format(
+                                    "Unexpected token: '{0}' of type: {1}. Expected token type: {2} line={3}", 
+                                    tokens[currentTokenIndex].Lexem,
+                                    tokens[currentTokenIndex].SpiceTokenType,
+                                    tn.Token.SpiceTokenType,
+                                    tokens[currentTokenIndex].LineNumber),
+                                    tokens[currentTokenIndex].LineNumber);
                         }
                     }
                 }
@@ -594,7 +601,11 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// <param name="current">A reference to the non-terminal node.</param>
         /// <param name="tokens">A reference to the array of tokens.</param>
         /// <param name="currentTokenIndex">A index of the current token.</param>
-        private void ReadVectorContinue(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadVectorContinue(
+            Stack<ParseTreeNode> stack,
+            ParseTreeNonTerminalNode current,
+            SpiceToken[] tokens,
+            int currentTokenIndex)
         {
             if (currentTokenIndex > tokens.Length - 1)
             {
@@ -603,11 +614,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
             var currentToken = tokens[currentTokenIndex];
 
-            if (currentToken.Is(SpiceTokenType.DELIMITER) && currentToken.Lexem == ")")
-            {
-                // follow
-            }
-            else
+            if (currentToken.Is(SpiceTokenType.COMMA))
             {
                 PushProductionExpression(
                     stack,
@@ -768,7 +775,19 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             {
                 if (nextToken.Is(SpiceTokenType.EQUAL))
                 {
-                    stack.Push(CreateNonTerminalNode(Symbols.ParameterEqualSingle, currentNode));
+                    if (((currentTokenIndex + 3) < tokens.Length)
+                        && (tokens[currentTokenIndex + 3].Is(SpiceTokenType.COMMA)))
+                    {
+                        PushProductionExpression(
+                            stack,
+                            CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
+                            CreateTerminalNode(nextToken.SpiceTokenType, currentNode),
+                            CreateNonTerminalNode(Symbols.Vector, currentNode));
+                    }
+                    else
+                    {
+                        stack.Push(CreateNonTerminalNode(Symbols.ParameterEqualSingle, currentNode));
+                    }
                 }
                 else if (nextToken.Is(SpiceTokenType.DELIMITER) && nextToken.Equal("(", true))
                 {
