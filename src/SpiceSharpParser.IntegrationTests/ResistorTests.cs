@@ -191,6 +191,23 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
+        public void ModelFormatWithTC2NonZeroValueWithTempParameter()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 myresistor L=10u W=2u Temp=10",
+                ".MODEL myresistor R RSH=0.1 TC1=0.0 TC2=0.1",
+                ".SAVE I(R1)",
+                ".OP",
+                ".END");
+
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.NotNull(netlist);
+            EqualsWithTol(10.0334448160535, export);
+        }
+
+        [Fact]
         public void ModelFormatWithTC1TC2NonZeroValues()
         {
             var netlist = ParseNetlist(
