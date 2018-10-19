@@ -1,12 +1,12 @@
 ﻿namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 {
     /// <summary>
-    /// A base class for all paramters.
+    /// A base class for all parameters.
     /// </summary>
     public abstract class Parameter : SpiceObject
     {
         /// <summary>
-        /// Gets the text representation of the paramter.
+        /// Gets the text representation of the parameter.
         /// </summary>
         public abstract string Image
         {

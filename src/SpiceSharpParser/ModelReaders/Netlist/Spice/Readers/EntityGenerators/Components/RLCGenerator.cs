@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using SpiceSharp;
+﻿using System;
+using System.Linq;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
@@ -8,7 +8,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
-{   
+{
     /// <summary>
     /// Generator for resistors, capacitors, inductors and mutual inductance
     /// </summary>
@@ -167,6 +167,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <param name="name">Name of resistor to generate.</param>
         /// <param name="parameters">Parameters and pins for resistor.</param>
         /// <param name="context">Reading context.</param>
+        /// <exception cref="GeneralReaderException">When there is wrong syntax.</exception>
         /// <returns>
         /// A new instance of resistor.
         /// </returns>
@@ -175,50 +176,116 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var res = new Resistor(name);
             context.CreateNodes(res, parameters);
 
-            if (parameters.Count == 3 || parameters.Count == 4 && parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "tc"))
+            if (parameters.Count == 3) 
             {
-                var model = context.ModelsRegistry.FindModel<ResistorModel>(parameters.GetString(2));
-                if (model != null)
+                // RName Node1 Node2 something
+                var something = parameters[2];
+                
+                // Check if something is a model name
+                if ((something is WordParameter || something is IdentifierParameter)  
+                    && context.ModelsRegistry.FindModel<ResistorModel>(parameters.GetString(2)) != null)
                 {
-                    throw new GeneralReaderException("l needs to be specified");
+                    // RName Node1 Node2 modelName 
+                    throw new GeneralReaderException("L parameter needs to be specified");
+                }
+                
+                // Check if something can be resistance
+                if ((something is WordParameter || something is IdentifierParameter || something is ValueParameter 
+                    || something is ExpressionParameter) == false)
+                {
+                    throw new GeneralReaderException("Third parameter needs to represent resistance of resistor");
                 }
 
-                context.SetParameter(res, "resistance", parameters.GetString(2), false);
-
-                if (parameters.Count == 4)
-                {
-                    model = new ResistorModel(res.Name + "_default_model");
-
-                    var assignmentParameter = parameters[3] as AssignmentParameter;
-                    if (assignmentParameter.Values.Count == 2)
-                    {
-                        context.SetParameter(model, "tc1", assignmentParameter.Values[0]);
-                        context.SetParameter(model, "tc2", assignmentParameter.Values[1]);
-                    }
-                    else
-                    {
-                        context.SetParameter(model, "tc1", assignmentParameter.Value);
-                    }
-
-                    context.ModelsRegistry.RegisterModelInstance(model);
-                    res.SetModel(model);
-                }
+                // Set resistance
+                context.SetParameter(res, "resistance", something.Image, false);
             }
             else
             {
-                if (parameters[2] is SingleParameter == false)
+                var resistorParameters = new List<Parameter>(parameters.Skip(Resistor.ResistorPinCount).ToArray());
+
+                // RName Node1 Node2 something param1 ...
+                var something = resistorParameters[0];
+
+                // Check if something is a model name
+                bool hasModelSyntax = (something is WordParameter || something is IdentifierParameter)
+                                      && context.ModelsRegistry.FindModel<ResistorModel>(something.Image) != null;
+                bool hasTcParameter = parameters.Any(
+                    p => p is AssignmentParameter ap && ap.Name.Equals(
+                             "tc",
+                             context.CaseSensitivity.IsEntityParameterNameCaseSensitive
+                                 ? StringComparison.CurrentCulture
+                                 : StringComparison.CurrentCultureIgnoreCase));
+
+                AssignmentParameter tcParameter = null;
+
+                if (hasTcParameter)
                 {
-                    throw new WrongParameterTypeException(name, "Semiconductor resistor requires a valid model name");
+                    tcParameter = (AssignmentParameter)parameters.Single(
+                        p => p is AssignmentParameter ap && ap.Name.Equals(
+                                 "tc",
+                                 context.CaseSensitivity.IsEntityParameterNameCaseSensitive
+                                     ? StringComparison.CurrentCulture
+                                     : StringComparison.CurrentCultureIgnoreCase));
+                    resistorParameters.Remove(tcParameter);
                 }
 
-                context.ModelsRegistry.SetModel<ResistorModel>(
-                    res,
-                    parameters.GetString(2),
-                    $"Could not find model {parameters.GetString(2)} for resistor {name}",
-                    (ResistorModel model) => res.SetModel(model));
+                if (hasModelSyntax)
+                {
+                    var modelName = resistorParameters[0].Image;
 
-                bool resistanceSpecified = false;
-                foreach (var parameter in parameters.Skip(3))
+                    // Ignore tc parameter on resistor ...
+                    context.ModelsRegistry.SetModel<ResistorModel>(
+                        res,
+                        modelName,
+                        $"Could not find model {modelName} for resistor {name}",
+                        (ResistorModel model) => res.SetModel(model));
+
+                    resistorParameters.RemoveAt(0);
+
+                    if (resistorParameters.Count > 0 && (resistorParameters[0] is WordParameter
+                                                         || resistorParameters[0] is IdentifierParameter
+                                                         || resistorParameters[0] is ValueParameter
+                                                         || resistorParameters[0] is ExpressionParameter))
+                    {
+                        context.SetParameter(res, "resistance", resistorParameters[0].Image, false);
+                        resistorParameters.RemoveAt(0);
+                    }
+                }
+                else
+                {
+                    if (hasTcParameter)
+                    {
+                        var model = new ResistorModel(res.Name + "_default_model");
+                        if (tcParameter.Values.Count == 2)
+                        {
+                            context.SetParameter(model, "tc1", tcParameter.Values[0]);
+                            context.SetParameter(model, "tc2", tcParameter.Values[1]);
+                        }
+                        else
+                        {
+                            context.SetParameter(model, "tc1", tcParameter.Value);
+                        }
+
+                        context.ModelsRegistry.RegisterModelInstance(model);
+                        res.SetModel(model);
+                    }
+
+                    // Check if something can be resistance
+                    var resistanceParameter = resistorParameters[0];
+
+                    if ((resistanceParameter is WordParameter 
+                         || resistanceParameter is IdentifierParameter 
+                         || resistanceParameter is ValueParameter
+                         || resistanceParameter is ExpressionParameter) == false)
+                    {
+                        throw new GeneralReaderException("Invalid value for resistance");
+                    }
+
+                    context.SetParameter(res, "resistance", resistanceParameter.Image, false);
+                    resistorParameters.RemoveAt(0);
+                }
+
+                foreach (var parameter in resistorParameters)
                 {
                     if (parameter is AssignmentParameter ap)
                     {
@@ -226,28 +293,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                     else
                     {
-                        if (parameter is SingleParameter sp && parameters.Count == 4)
-                        {
-                            resistanceSpecified = true;
-                            context.SetParameter(res, "resistance", sp.Image, false);
-                        }
-                        else
-                        {
-                            throw new WrongParameterException("Only single parameter with resistance or assignment parameters for semiconductor resistor are valid");
-                        }
-                    }
-                }
-
-                if (!resistanceSpecified)
-                {
-                    var lengthParameter = res.ParameterSets.GetParameter<double>("l") as GivenParameter<double>;
-                    if (lengthParameter == null || !lengthParameter.Given)
-                    {
-                        throw new GeneralReaderException("l needs to be specified");
+                        throw new GeneralReaderException("Invalid parameter for resistor: " + parameter.Image);
                     }
                 }
             }
-
             return res;
         }
     }

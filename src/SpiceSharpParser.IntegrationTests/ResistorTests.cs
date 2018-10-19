@@ -1,9 +1,8 @@
 using Xunit;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
 namespace SpiceSharpParser.IntegrationTests
 {
-    using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
-
     public class ResistorTests : BaseTests
     {
         [Fact]
@@ -14,6 +13,23 @@ namespace SpiceSharpParser.IntegrationTests
                 "V1 1 0 150",
                 "R1 1 0 10",
                 ".SAVE I(R1)",
+                ".OP",
+                ".END");
+
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.NotNull(netlist);
+            Assert.Equal(15, export);
+        }
+
+        [Fact]
+        public void SimplestFormatWithParameterWithoutExpression()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 a",
+                ".SAVE I(R1)",
+                ".PARAM a = 10",
                 ".OP",
                 ".END");
 
@@ -181,6 +197,42 @@ namespace SpiceSharpParser.IntegrationTests
                 "Resistor circuit",
                 "V1 1 0 150",
                 "R1 1 0 myresistor L=10u W=2u",
+                ".MODEL myresistor R RSH=0.1 TC1=0.01 TC2=0.1",
+                ".SAVE I(R1)",
+                ".OP",
+                ".OPTIONS TEMP=10",
+                ".END");
+
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.NotNull(netlist);
+            EqualsWithTol(10.0908173562059, export);
+        }
+
+        [Fact]
+        public void ModelFormatWithTC1TC2NonZeroValuesAndTC1TC2OnResistor()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 myresistor L=10u W=2u tc=0.2, 0.3",
+                ".MODEL myresistor R RSH=0.1 TC1=0.01 TC2=0.1",
+                ".SAVE I(R1)",
+                ".OP",
+                ".OPTIONS TEMP=10",
+                ".END");
+
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.NotNull(netlist);
+            EqualsWithTol(10.0908173562059, export);
+        }
+
+        [Fact]
+        public void ModelFormatWithTC1TC2NonZeroValuesAndTC1OnResistor()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 myresistor L=10u W=2u tc=.1",
                 ".MODEL myresistor R RSH=0.1 TC1=0.01 TC2=0.1",
                 ".SAVE I(R1)",
                 ".OP",
