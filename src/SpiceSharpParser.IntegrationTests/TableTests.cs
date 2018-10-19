@@ -2,7 +2,7 @@ using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests
 {
-    public class TableTest : BaseTests
+    public class TableTests : BaseTests
     {
         [Fact]
         public void ParsingFirstFormat()

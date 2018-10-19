@@ -10,6 +10,10 @@ using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Components
 {
+    using NSubstitute.ReturnsExtensions;
+
+    using SpiceSharpParser.ModelReaders.Netlist.Spice;
+
     public class RLCGeneratorTests
     {
         [Fact]
@@ -37,6 +41,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             var context = Substitute.For<IReadingContext>();
             context.When(a => a.SetParameter(Arg.Any<Entity>(), "L", "12", true)).Do(x => ((Entity)x[0]).SetParameter("l", 12));
             context.ModelsRegistry.FindModel<ResistorModel>(Arg.Any<string>()).Returns(new ResistorModel("test"));
+            context.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
+
             var parameters = new ParameterCollection
             {
                 new ValueParameter("1"),

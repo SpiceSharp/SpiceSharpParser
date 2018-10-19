@@ -617,7 +617,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 var assigmentParameter = new AssignmentParameter();
                 assigmentParameter.Name = values.GetLexem(0);
                 var singleParameter = values.GetSpiceObject<SingleParameter>(2);
-                assigmentParameter.Value = singleParameter.Image;
+                assigmentParameter.Values = new List<string>() { singleParameter.Image };
                 return assigmentParameter;
             }
             else
@@ -694,18 +694,24 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     }
 
                     var valueParameter = values.GetSpiceObject<SingleParameter>(5);
-                    assigmentParameter.Value = valueParameter.Image;
+                    assigmentParameter.Values = new List<string>() { valueParameter.Image };
                     return assigmentParameter;
                 }
                 else if (values.Count == 5)
                 {
                     assigmentParameter.HasFunctionSyntax = true;
                     var valueParameter = values.GetSpiceObject<SingleParameter>(4);
-                    assigmentParameter.Value = valueParameter.Image;
+                    assigmentParameter.Values = new List<string>() { valueParameter.Image };
+                    return assigmentParameter;
+                }
+                else if (values.Count == 3)
+                {
+                    var valueParameter = values.GetSpiceObject<VectorParameter>(2);
+                    assigmentParameter.Values = valueParameter.Elements.Select(e => e.Image).ToList();
                     return assigmentParameter;
                 }
 
-                throw new ParseTreeEvaluationException("Error during translating assigment parameter to Spice Object Model");
+                throw new ParseTreeEvaluationException("Error during translating assignment parameter to Spice Object Model");
             }
         }
 
