@@ -571,8 +571,12 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         private void ReadPointValue(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
+
             if (currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
-                || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES))
+                || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES)
+                || currentToken.Is(SpiceTokenType.VALUE)
+                || currentToken.Is(SpiceTokenType.WORD)
+                || currentToken.Is(SpiceTokenType.IDENTIFIER))
             {
                 PushProductionExpression(
                     stack,
@@ -580,16 +584,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             }
             else
             {
-                if (currentToken.Is(SpiceTokenType.VALUE))
-                {
-                    PushProductionExpression(
-                        stack,
-                        CreateNonTerminalNode(Symbols.ParameterSingle, current));
-                }
-                else
-                {
-                    throw new Exception("Unsupported point value type");
-                }
+                throw new Exception("Unsupported point value type");
             }
         }
 
@@ -698,7 +693,9 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 || currentToken.Is(SpiceTokenType.REFERENCE)
                 || currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
                 || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES)
-                || currentToken.Is(SpiceTokenType.PERCENT))
+                || currentToken.Is(SpiceTokenType.PERCENT)
+                || currentToken.Is(SpiceTokenType.DELIMITER) 
+                    && currentToken.Lexem == "(")
             {
                 PushProductionExpression(
                     stack,
@@ -890,6 +887,14 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 {
                     throw new ParseException("Error during parsing a parameter. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
                 }
+            }
+
+            if (currentToken.Is(SpiceTokenType.DELIMITER) && currentToken.Lexem == "(")
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateNonTerminalNode(Symbols.Point, currentNode));
+                return;
             }
 
             var nextToken = tokens[currentTokenIndex + 1];

@@ -2,7 +2,7 @@ using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests
 {
-    public class PolyTests : BaseTests
+    public class PolyExpressionTests : BaseTests
     {
         [Fact]
         public void ExpressionOneVariableSimpleSum()
