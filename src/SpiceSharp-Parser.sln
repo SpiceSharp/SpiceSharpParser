@@ -15,7 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CEDE104D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharpParser.CodeAnalysis", "SpiceSharpParser.CodeAnalysis\SpiceSharpParser.CodeAnalysis.csproj", "{690C3742-17AD-46F6-A73D-CAE33C780523}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiceSharpParser.PerformanceTests", "SpiceSharpParser.PerformanceTests\SpiceSharpParser.PerformanceTests.csproj", "{2F7A7389-F1C2-4824-9594-5E102CFACC88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharpParser.PerformanceTests", "SpiceSharpParser.PerformanceTests\SpiceSharpParser.PerformanceTests.csproj", "{2F7A7389-F1C2-4824-9594-5E102CFACC88}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharp", "..\..\SpiceSharp\SpiceSharp\SpiceSharp.csproj", "{BB5D75EA-4AF0-494E-B89A-6316AA7D877F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,6 +56,12 @@ Global
 		{2F7A7389-F1C2-4824-9594-5E102CFACC88}.ERRORS|Any CPU.Build.0 = Debug|Any CPU
 		{2F7A7389-F1C2-4824-9594-5E102CFACC88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F7A7389-F1C2-4824-9594-5E102CFACC88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB5D75EA-4AF0-494E-B89A-6316AA7D877F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB5D75EA-4AF0-494E-B89A-6316AA7D877F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB5D75EA-4AF0-494E-B89A-6316AA7D877F}.ERRORS|Any CPU.ActiveCfg = Release|Any CPU
+		{BB5D75EA-4AF0-494E-B89A-6316AA7D877F}.ERRORS|Any CPU.Build.0 = Release|Any CPU
+		{BB5D75EA-4AF0-494E-B89A-6316AA7D877F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB5D75EA-4AF0-494E-B89A-6316AA7D877F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
