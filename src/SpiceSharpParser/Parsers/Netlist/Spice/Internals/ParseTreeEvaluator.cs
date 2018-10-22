@@ -46,6 +46,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             evaluators.Add(Symbols.ExpressionEqual, (ParseTreeNodeEvaluationValues nt) => CreateExpressionEqualParameter(nt));
             evaluators.Add(Symbols.Point, (ParseTreeNodeEvaluationValues nt) => CreatPointParameter(nt));
             evaluators.Add(Symbols.PointValue, (ParseTreeNodeEvaluationValues nt) => CreatePointValue(nt));
+            evaluators.Add(Symbols.PointValues, (ParseTreeNodeEvaluationValues nt) => CreatePointValues(nt));
             evaluators.Add(Symbols.Points, (ParseTreeNodeEvaluationValues nt) => CreatPoints(nt));
             evaluators.Add(Symbols.PointsContinue, (ParseTreeNodeEvaluationValues nt) => CreatPointsContinue(nt));
             evaluators.Add(Symbols.ParameterEqualSingle, (ParseTreeNodeEvaluationValues nt) => CreateAssigmentSimpleParameter(nt));
@@ -56,14 +57,30 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             evaluators.Add(Symbols.NewLine, (ParseTreeNodeEvaluationValues nt) => null);
         }
 
+        private SpiceObject CreatePointValues(ParseTreeNodeEvaluationValues values)
+        {
+            var pointValues = new PointValues();
+            if (values.Count == 3)
+            {
+                pointValues.Items.Add(values.GetSpiceObject<SingleParameter>(0));
+                pointValues.Items.AddRange(values.GetSpiceObject<PointValues>(2).Items);
+            }
+            else
+            {
+                pointValues.Items.Add(values.GetSpiceObject<SingleParameter>(0));
+            }
+
+            return pointValues;
+        }
+
         private SpiceObject CreatePointValue(ParseTreeNodeEvaluationValues nt)
         {
             return (nt[0] as ParseTreeNonTerminalEvaluationValue).SpiceObject;
         }
-        
+
         private SpiceObject CreatPointParameter(ParseTreeNodeEvaluationValues nt)
         {
-            return new PointParameter() { X = nt.GetSpiceObject<SingleParameter>(1), Y = nt.GetSpiceObject<SingleParameter>(3) };
+            return new PointParameter() { Values = nt.GetSpiceObject<PointValues>(1), };
         }
 
         private SpiceObject CreatPoints(ParseTreeNodeEvaluationValues values)
@@ -81,9 +98,9 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 points.Values.Add(values.GetSpiceObject<PointParameter>(1));
                 points.Values.AddRange(values.GetSpiceObject<Points>(2).Values);
             }
+
             return points;
         }
-
 
         private SpiceObject CreatPointsContinue(ParseTreeNodeEvaluationValues values)
         {

@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+﻿using System.Linq;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 {
@@ -10,18 +11,16 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// <summary>
         /// Gets or sets the elements of the point.
         /// </summary>
-        public SingleParameter X { get; set; }
-
-        public SingleParameter Y { get; set; } 
+        public PointValues Values { get; set; }
 
         /// <summary>
-        /// Gets the string represenation of the point.
+        /// Gets the string representation of the point.
         /// </summary>
         public override string Image
         {
             get
             {
-                return string.Format("({0},{1})", X.Image, Y.Image);
+                return string.Format("({0})", string.Join(",", Values.Items.Select( v => v.Image).ToArray()));
             }
         }
 

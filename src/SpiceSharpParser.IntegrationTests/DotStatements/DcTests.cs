@@ -1,10 +1,9 @@
-using SpiceSharp.Simulations;
 using System;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests
 {
-    public class DCSimulationTests : BaseTests
+    public class DCTests : BaseTests
     {
         [Fact]
         public void DCCurrentSweep()

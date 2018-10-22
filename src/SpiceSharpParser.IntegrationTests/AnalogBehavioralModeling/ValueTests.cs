@@ -18,9 +18,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             Assert.NotNull(netlist);
-
             double export = RunOpSimulation(netlist, "V(2,0)");
-
             Assert.Equal(4, export);
         }
 
@@ -38,9 +36,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             Assert.NotNull(netlist);
-
             double export = RunOpSimulation(netlist, "V(2,0)");
-
             Assert.Equal(18, export);
         }
 
@@ -57,9 +53,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             Assert.NotNull(netlist);
-
             double export = RunOpSimulation(netlist, "V(2,0)");
-
             Assert.Equal(double.PositiveInfinity, export);
         }
         
@@ -76,9 +70,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             Assert.NotNull(netlist);
-
             double export = RunOpSimulation(netlist, "V(2,0)");
-
             Assert.Equal(4, export);
         }
 
@@ -96,9 +88,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             Assert.NotNull(netlist);
-
             double export = RunOpSimulation(netlist, "V(2,0)");
-
             Assert.Equal(18, export);
         }
 
@@ -115,9 +105,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             Assert.NotNull(netlist);
-
             double export = RunOpSimulation(netlist, "V(2,0)");
-
             Assert.Equal(double.PositiveInfinity, export);
         }
 
@@ -134,9 +122,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             Assert.NotNull(netlist);
-
             double export = RunOpSimulation(netlist, "V(2,0)");
-
             Assert.Equal(4, export);
         }
 
@@ -154,9 +140,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             Assert.NotNull(netlist);
-
             double export = RunOpSimulation(netlist, "V(2,0)");
-
             Assert.Equal(18, export);
         }
 
@@ -173,9 +157,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             Assert.NotNull(netlist);
-
             double export = RunOpSimulation(netlist, "V(2,0)");
-
             Assert.Equal(double.PositiveInfinity, export);
         }
 
@@ -192,9 +174,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             Assert.NotNull(netlist);
-
             double export = RunOpSimulation(netlist, "V(2,0)");
-
             Assert.Equal(4, export);
         }
 
@@ -212,9 +192,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             Assert.NotNull(netlist);
-
             double export = RunOpSimulation(netlist, "V(2,0)");
-
             Assert.Equal(18, export);
         }
 
@@ -231,9 +209,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             Assert.NotNull(netlist);
-
             double export = RunOpSimulation(netlist, "V(2,0)");
-
             Assert.Equal(double.PositiveInfinity, export);
         }
 
@@ -323,9 +299,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             Assert.NotNull(netlist);
-
             double export = RunOpSimulation(netlist, "I(GSource)");
-
             Assert.Equal(4, export);
         }
 
@@ -343,9 +317,7 @@ namespace SpiceSharpParser.IntegrationTests
                 ".END");
 
             Assert.NotNull(netlist);
-
             double export = RunOpSimulation(netlist, "I(FSource)");
-
             Assert.Equal(4, export);
         }
     }
