@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CEDE104D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharpParser.CodeAnalysis", "SpiceSharpParser.CodeAnalysis\SpiceSharpParser.CodeAnalysis.csproj", "{690C3742-17AD-46F6-A73D-CAE33C780523}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiceSharpParser.PerformanceTests", "SpiceSharpParser.PerformanceTests\SpiceSharpParser.PerformanceTests.csproj", "{2F7A7389-F1C2-4824-9594-5E102CFACC88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharpParser.PerformanceTests", "SpiceSharpParser.PerformanceTests\SpiceSharpParser.PerformanceTests.csproj", "{2F7A7389-F1C2-4824-9594-5E102CFACC88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

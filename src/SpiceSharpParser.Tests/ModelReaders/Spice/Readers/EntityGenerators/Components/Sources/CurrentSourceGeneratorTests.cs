@@ -298,7 +298,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         }
 
         [Fact]
-        public void GeneratCCVS()
+        public void GeneratVCCS()
         {
             var generator = new CurrentSourceGenerator();
 

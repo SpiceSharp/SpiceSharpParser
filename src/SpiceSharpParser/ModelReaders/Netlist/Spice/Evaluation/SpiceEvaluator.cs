@@ -116,6 +116,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             Functions.Add("table", TableFunction.Create());
             Functions.Add("u", MathFunctions.CreateU());
             Functions.Add("uramp", MathFunctions.CreateURamp());
+            Functions.Add("poly", PolyFunction.Create());
         }
 
         private void CreateSpiceParameters()

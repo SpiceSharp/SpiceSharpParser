@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests
     public class ConcurrentSimulationsTests : BaseTests
     {
         [Fact]
-        public void OP()
+        public void OPSweep()
         {
             var netlist = ParseNetlist(
                 "ConcurrentSimulations - Diode circuit",

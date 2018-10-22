@@ -244,6 +244,11 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 {
                     return eep;
                 }
+
+                if (values.TryToGetSpiceObject(0, out PointParameter pp))
+                {
+                    return pp;
+                }
             }
 
             throw new ParseTreeEvaluationException("Error during translating parse tree to Spice Object Model");
