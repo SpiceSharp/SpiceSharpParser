@@ -31,6 +31,7 @@
         public const string PointsContinue = "POINTS-CONTINUE";
         public const string Point = "POINT";
         public const string PointValue = "POINT-VALUE";
+        public const string PointValues = "POINT-VALUES";
         public const string ExpressionEqual = "EXPRESSION-EQUAL";
     }
 }

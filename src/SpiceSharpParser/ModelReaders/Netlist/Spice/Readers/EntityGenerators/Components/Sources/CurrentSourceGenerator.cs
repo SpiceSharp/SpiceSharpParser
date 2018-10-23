@@ -163,12 +163,39 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 return cs;
             }
 
+            if (parameters.Count == 3
+                && parameters[0] is PointParameter pp1
+                && pp1.Values.Count() == 2
+                && parameters[1] is PointParameter pp2
+                && pp2.Values.Count() == 2)
+            {
+                var vccs = new VoltageControlledCurrentSource(name);
+                var vccsNodes = new ParameterCollection();
+                vccsNodes.Add(pp1.Values.Items[0]);
+                vccsNodes.Add(pp1.Values.Items[1]);
+                vccsNodes.Add(pp2.Values.Items[0]);
+                vccsNodes.Add(pp2.Values.Items[1]);
+                context.CreateNodes(vccs, vccsNodes);
+                context.SetParameter(vccs, "gain", parameters.GetString(2));
+                return vccs;
+            }
+
             if (parameters.Count == 5)
             {
                 var vccs = new VoltageControlledCurrentSource(name);
                 context.CreateNodes(vccs, parameters);
-                context.SetParameter(vccs, "gain", parameters.GetString(4));
-                return vccs;
+
+                if (parameters[4] is SingleParameter sp)
+                {
+                    context.SetParameter(vccs, "gain", sp.Image);
+                    return vccs;
+                }
+                if (parameters[4] is PointParameter pp
+                   && pp.Values.Items.Count == 1)
+                {
+                    context.SetParameter(vccs, "gain", pp.Values.Items[0].Image);
+                    return vccs;
+                }
             }
 
             throw new WrongParametersCountException(name, "invalid syntax for voltage controlled current source");

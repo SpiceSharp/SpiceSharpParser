@@ -10,7 +10,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         public static string CreateTableExpression(string tableParameter, ExpressionEqualParameter eep)
         {
             var expression =
-                $"table({tableParameter},{string.Join(",", eep.Points.Values.Select(v => v.X.Image + "," + v.Y.Image).ToArray())})";
+                $"table({tableParameter},{string.Join(",", eep.Points.Values.Select(v => string.Join(", ", v.Values.Select(a => a.Image).ToArray())).ToArray())})";
             return expression;
         }
 
@@ -24,7 +24,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 var variablesString = string.Join(
                     ",",
-                    variables.Select(v => $"v({((PointParameter)v).X.Image},{((PointParameter)v).Y.Image})"));
+                    variables.Select(v => $"v({((PointParameter)v).Values.Items[0].Image},{((PointParameter)v).Values.Items[1].Image})"));
 
                 var coefficients = polyArguments.Skip(dimension);
                 return CreatePolyExpression(dimension, coefficients, variablesString);

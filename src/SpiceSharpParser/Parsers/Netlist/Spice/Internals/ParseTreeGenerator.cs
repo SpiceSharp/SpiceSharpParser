@@ -48,6 +48,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             parsers.Add(Symbols.Points, ReadPoints);
             parsers.Add(Symbols.PointsContinue, ReadPointsContinue);
             parsers.Add(Symbols.Point, ReadPoint);
+            parsers.Add(Symbols.PointValues, ReadPointValues);
             parsers.Add(Symbols.PointValue, ReadPointValue);
         }
 
@@ -554,10 +555,39 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             PushProductionExpression(
                 stack,
                 CreateTerminalNode(SpiceTokenType.DELIMITER, current, "("),
-                CreateNonTerminalNode(Symbols.PointValue, current),
-                CreateTerminalNode(SpiceTokenType.COMMA, current, ","),
-                CreateNonTerminalNode(Symbols.PointValue, current),
+                CreateNonTerminalNode(Symbols.PointValues, current),
                 CreateTerminalNode(SpiceTokenType.DELIMITER, current, ")"));
+        }
+
+        /// <summary>
+        /// Reads <see cref="Symbols.PointValues"/> non-terminal node
+        /// Pushes tree nodes to the stack based on the grammar.
+        /// </summary>
+        /// <param name="stack">A stack where the production is pushed</param>
+        /// <param name="current">A reference to the non-terminal node</param>
+        /// <param name="tokens">A reference to the array of tokens</param>
+        /// <param name="currentTokenIndex">A index of the current token</param>
+        private void ReadPointValues(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        {
+            var nextToken = tokens[currentTokenIndex + 1];
+
+            if (nextToken.Is(SpiceTokenType.DELIMITER) && nextToken.Lexem == ")")
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateNonTerminalNode(Symbols.PointValue, current));
+            }
+            else
+            {
+                if (nextToken.Is(SpiceTokenType.COMMA))
+                {
+                    PushProductionExpression(
+                        stack,
+                        CreateNonTerminalNode(Symbols.PointValue, current),
+                        CreateTerminalNode(SpiceTokenType.COMMA, current, ","),
+                        CreateNonTerminalNode(Symbols.PointValues, current));
+                }
+            }
         }
 
         /// <summary>
