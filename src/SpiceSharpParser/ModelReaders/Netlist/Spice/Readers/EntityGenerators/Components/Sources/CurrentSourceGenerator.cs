@@ -190,12 +190,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     context.SetParameter(vccs, "gain", sp.Image);
                     return vccs;
                 }
-                if (parameters[4] is PointParameter pp
-                   && pp.Values.Items.Count == 1)
-                {
-                    context.SetParameter(vccs, "gain", pp.Values.Items[0].Image);
-                    return vccs;
-                }
             }
 
             throw new WrongParametersCountException(name, "invalid syntax for voltage controlled current source");
