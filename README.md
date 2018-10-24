@@ -34,9 +34,12 @@ var netlist = string.Join(Environment.NewLine,
                 ".SAVE i(V1)",
                 ".END");
 
+\\ Parsing part - SpiceSharpParser
 var parser = new SpiceParser();
 var parseResult = parser.ParseNetlist(netlist);
 var spiceSharpModel = parseResult.SpiceSharpModel;
+
+\\ Simulation part - SpiceSharp
 var simulation = spiceSharpModel.Simulations.Single();
 var export = spiceSharpModel.Exports.Find(e => e.Name == "i(V1)");
 simulation.ExportSimulationData += (sender, args) => Console.WriteLine(export.Extract());
@@ -44,13 +47,8 @@ simulation.Run(spiceSharpModel.Circuit);
 
 ```
 
-## Documentation
-* API documentation is available at <https://spicesharp.github.io/SpiceSharpParser/api/index.html>.
-* Wiki is available at <https://github.com/SpiceSharp/SpiceSharpParser/wiki>
-
-
 ## Features
-### Dot statements
+### Supported dot statements:
 |  Statement  |  Documentation   |
 |:------------|-----------------------:|
 |.AC          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.AC)|
@@ -79,7 +77,7 @@ simulation.Run(spiceSharpModel.Circuit);
 |.SUBCKT      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.SUBCKT)|
 |.TEMP        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.TEMP)|
 
-### Device statements
+### Supported device statements:
 | Device Statement  |  Documentation   |
 |:------------|-----------------------:|
 |C (Capacitor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/C)|
@@ -99,7 +97,7 @@ simulation.Run(spiceSharpModel.Circuit);
 |W (Current Switch)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/W)|
 |X (Subcircuit)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/X)|
 
-### Expression function
+### Supproted functions in expressions:
 |  Function name  |  Documentation  |
 |:------------|---------------------:|
 |@      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/@)|
@@ -145,6 +143,11 @@ simulation.Run(spiceSharpModel.Circuit);
 |tanh        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/tanh)|
 |u          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/u)|
 |uramp          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/uramp)|
+
+
+## Documentation
+* API documentation is available at <https://spicesharp.github.io/SpiceSharpParser/api/index.html>.
+* Wiki is available at <https://github.com/SpiceSharp/SpiceSharpParser/wiki>
 
 ## License
 SpiceSharpParser is under MIT License
