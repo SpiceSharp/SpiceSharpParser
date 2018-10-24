@@ -426,7 +426,7 @@ namespace SpiceSharpParser.Parsers.Expression
                                 {
                                     if (!evalContext.Parameters.ContainsKey(parameterName))
                                     {
-                                        throw new UnknownParameterException();
+                                        throw new UnknownParameterException() { Name = parameterName };
                                     }
                                     return evalContext.Parameters[parameterName].Evaluate();
                                 });
