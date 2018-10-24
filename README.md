@@ -46,9 +46,19 @@ simulation.ExportSimulationData += (sender, args) => Console.WriteLine(export.Ex
 simulation.Run(spiceSharpModel.Circuit);    
 
 ```
+## Compatibility
+### PSpice
+SpiceSharpParser is able to parse some of PSpice netlists. 
+At the moment due to lack of implementation of LAPLACE and FREQ (part of analog behavioral modeling) and a few other features parsing can fail.
 
-## Features
-### Supported dot statements:
+
+## Capabilities
+### Analog Behavioral Modeling supported:
+* POLY(n)
+* TABLE 
+* VALUE
+
+### Dot statements supported:
 |  Statement  |  Documentation   |
 |:------------|-----------------------:|
 |.AC          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.AC)|
@@ -77,7 +87,7 @@ simulation.Run(spiceSharpModel.Circuit);
 |.SUBCKT      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.SUBCKT)|
 |.TEMP        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.TEMP)|
 
-### Supported device statements:
+### Device statements supported:
 | Device Statement  |  Documentation   |
 |:------------|-----------------------:|
 |C (Capacitor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/C)|
@@ -97,7 +107,7 @@ simulation.Run(spiceSharpModel.Circuit);
 |W (Current Switch)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/W)|
 |X (Subcircuit)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/X)|
 
-### Supproted functions in expressions:
+### Functions in expressions supported:
 |  Function name  |  Documentation  |
 |:------------|---------------------:|
 |@      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/@)|
