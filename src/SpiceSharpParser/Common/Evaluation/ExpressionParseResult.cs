@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Expression parse result.
     /// </summary>
@@ -17,12 +18,12 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Gets or sets found parameters in expression.
         /// </summary>
-        public Collection<string> FoundParameters { get; set; }
+        public HashSet<string> FoundParameters { get; set; }
 
         /// <summary>
         /// Gets or sets found functions in expression.
         /// </summary>
-        public Collection<string> FoundFunctions { get; set; }
+        public HashSet<string> FoundFunctions { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the expression is constant.

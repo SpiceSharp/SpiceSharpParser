@@ -114,8 +114,8 @@ namespace SpiceSharpParser.Parsers.Expression
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var foundParameters = new Collection<string>();
-            var foundFunctions = new Collection<string>();
+            var foundParameters = new HashSet<string>();
+            var foundFunctions = new HashSet<string>();
 
             // Initialize for parsing the expression
             int index = 0;
@@ -426,7 +426,7 @@ namespace SpiceSharpParser.Parsers.Expression
                                 {
                                     if (!evalContext.Parameters.ContainsKey(parameterName))
                                     {
-                                        throw new UnknownParameterException();
+                                        throw new UnknownParameterException() { Name = parameterName };
                                     }
                                     return evalContext.Parameters[parameterName].Evaluate();
                                 });

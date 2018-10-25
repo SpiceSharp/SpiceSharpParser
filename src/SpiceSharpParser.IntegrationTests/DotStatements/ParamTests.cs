@@ -26,6 +26,25 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         [Fact]
+        public void ParamVoltage()
+        {
+            var netlist = ParseNetlist(
+                "PARAM voltage test",
+                "V0 1  0 10.0",
+                "V1 IN 0 {X}",
+                "R1 IN OUT 10e3",
+                "C1 OUT 0 10e-6",
+                ".OP",
+                ".SAVE V(OUT)",
+                ".PARAM X = { V(1) }",
+                ".END");
+
+            double[] export = RunOpSimulation(netlist, new string[] { "V(OUT)" });
+
+            Assert.Equal(10, export[0]);
+        }
+
+        [Fact]
         public void ParamFunctionManyArguments()
         {
             var netlist = ParseNetlist(
@@ -62,7 +81,7 @@ namespace SpiceSharpParser.IntegrationTests
             Assert.Equal(10.0 / 17.0, export[1]);
         }
 
-        [Fact]
+        //[Fact]
         public void ParamFunctionFunctionFactRecursiveFunction()
         {
             var netlist = ParseNetlist(

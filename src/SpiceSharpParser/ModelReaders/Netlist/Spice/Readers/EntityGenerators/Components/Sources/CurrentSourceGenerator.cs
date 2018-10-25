@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using SpiceSharp;
+using System.Linq;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
@@ -9,7 +9,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {
     /// <summary>
-    /// Current sources generator
+    /// Current sources generator.
     /// </summary>
     public class CurrentSourceGenerator : ComponentGenerator
     {
@@ -43,89 +43,164 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <summary>
         /// Generates a new current controlled current source: FName
         /// </summary>
-        /// <param originalName="name">Name of generated current controlled current source</param>
-        /// <param originalName="parameters">Parameters for current source</param>
-        /// <param originalName="context">Reading context</param>
+        /// <param name="name">Name of generated current controlled current source</param>
+        /// <param name="parameters">Parameters for current source</param>
+        /// <param name="context">Reading context</param>
         /// <returns>
         /// A new instance of current controlled current source
         /// </returns>
         protected SpiceSharp.Components.Component GenerateCurrentControlledCurrentSource(string name,  ParameterCollection parameters, IReadingContext context)
         {
+            if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value")
+               && parameters.Count == 3)
+            {
+                var valueParameter = (AssignmentParameter)parameters.Single(
+                    p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
+
+                var cs = new CurrentSource(name);
+                context.CreateNodes(cs, parameters);
+                context.SetParameter(cs, "dc", valueParameter.Value);
+                return cs;
+            }
+
+            if (parameters.Any(p => p is BracketParameter bp && bp.Name.ToLower() == "poly"))
+            {
+                var polyParameter = (BracketParameter)parameters.Single(
+                    p => p is BracketParameter bp && bp.Name.ToLower() == "poly");
+
+                if (polyParameter.Parameters.Count != 1)
+                {
+                    throw new WrongParametersCountException(name, "poly expects one argument => dimension");
+                }
+
+                var dimension = (int)context.Evaluators.EvaluateDouble(polyParameter.Parameters[0].Image);
+                var expression = ExpressionGenerator.CreatePolyCurrentExpression(dimension, parameters.Skip(3));
+
+                var cs = new CurrentSource(name);
+                context.CreateNodes(cs, parameters);
+                context.SetParameter(cs, "dc", expression);
+                return cs;
+            }
+
+            if (parameters.Any(p => p is ExpressionEqualParameter) && parameters.Any(p => p.Image.ToLower() == "table"))
+            {
+                var formulaParameter = (ExpressionEqualParameter)parameters.Single(p => p is ExpressionEqualParameter);
+                var cs = new CurrentSource(name);
+                context.CreateNodes(cs, parameters);
+
+                var tableParameter = name + "_table_variable";
+                context.Evaluators.SetParameter(tableParameter, formulaParameter.Expression);
+                string expression = ExpressionGenerator.CreateTableExpression(tableParameter, formulaParameter);
+                context.SetParameter(cs, "dc", expression);
+                return cs;
+            }
+
             if (parameters.Count == 4)
             {
-                CurrentControlledCurrentSource cccs = new CurrentControlledCurrentSource(name);
+                var cccs = new CurrentControlledCurrentSource(name);
                 context.CreateNodes(cccs, parameters);
-                cccs.ControllingName = context.ComponentNameGenerator.Generate(parameters.GetString(2));
+                cccs.ControllingName = parameters.GetString(2);
                 context.SetParameter(cccs, "gain", parameters.GetString(3));
+
                 return cccs;
             }
-            else
-            {
-                if (parameters.Count == 3)
-                {
-                    if (!(parameters[2] is AssignmentParameter assignmentParameter) || assignmentParameter.Name.ToLower() != "value")
-                    {
-                        throw new WrongParametersCountException(name, "current controlled current source expects that third parameter is assignment parameter");
-                    }
 
-                    var cs = new CurrentSource(name);
-                    context.CreateNodes(cs, parameters);
-                    context.SetParameter(cs, "dc", assignmentParameter.Value);
-                    return cs;
-                }
-                else
-                {
-                    throw new WrongParametersCountException(name, "current controlled current source expects 3 or 4 parameters");
-                }
-            }
+            throw new WrongParametersCountException(name, "invalid syntax for current controlled current source");
         }
 
         /// <summary>
         /// Generates a new voltage controlled current source: GName
         /// </summary>
-        /// <param originalName="name">Name of generated voltage controlled current source</param>
-        /// <param originalName="parameters">Parameters for current source</param>
-        /// <param originalName="context">Reading context</param>
+        /// <param name="name">Name of generated voltage controlled current source</param>
+        /// <param name="parameters">Parameters for current source</param>
+        /// <param name="context">Reading context</param>
         /// <returns>
         /// A new instance of voltage controlled current source
         /// </returns>
         protected SpiceSharp.Components.Component GenerateVoltageControlledCurrentSource(string name, ParameterCollection parameters, IReadingContext context)
         {
-            if (parameters.Count == 5)
+            if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value")
+               && parameters.Count == 3)
             {
-                VoltageControlledCurrentSource vccs = new VoltageControlledCurrentSource(name);
-                context.CreateNodes(vccs, parameters);
-                context.SetParameter(vccs, "gain", parameters.GetString(4));
+                var valueParameter = (AssignmentParameter)parameters.Single(
+                    p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
 
+                var cs = new CurrentSource(name);
+                context.CreateNodes(cs, parameters);
+                context.SetParameter(cs, "dc", valueParameter.Value);
+                return cs;
+            }
+
+            if (parameters.Any(p => p is BracketParameter bp && bp.Name.ToLower() == "poly"))
+            {
+                var polyParameter = (BracketParameter)parameters.Single(
+                    p => p is BracketParameter bp && bp.Name.ToLower() == "poly");
+
+                if (polyParameter.Parameters.Count != 1)
+                {
+                    throw new WrongParametersCountException(name, "poly expects one argument => dimension");
+                }
+
+                var dimension = (int)context.Evaluators.EvaluateDouble(polyParameter.Parameters[0].Image);
+                var expression = ExpressionGenerator.CreatePolyVoltageExpression(dimension, parameters.Skip(3));
+
+                var cs = new CurrentSource(name);
+                context.CreateNodes(cs, parameters);
+                context.SetParameter(cs, "dc", expression);
+                return cs;
+            }
+
+            if (parameters.Any(p => p is ExpressionEqualParameter) && parameters.Any(p => p.Image.ToLower() == "table"))
+            {
+                var formulaParameter = (ExpressionEqualParameter)parameters.Single(p => p is ExpressionEqualParameter);
+                var cs = new CurrentSource(name);
+                context.CreateNodes(cs, parameters);
+
+                var tableParameter = name + "_table_variable";
+                context.Evaluators.SetParameter(tableParameter, formulaParameter.Expression);
+                string expression = ExpressionGenerator.CreateTableExpression(tableParameter, formulaParameter);
+                context.SetParameter(cs, "dc", expression);
+                return cs;
+            }
+
+            if (parameters.Count == 3
+                && parameters[0] is PointParameter pp1
+                && pp1.Values.Count() == 2
+                && parameters[1] is PointParameter pp2
+                && pp2.Values.Count() == 2)
+            {
+                var vccs = new VoltageControlledCurrentSource(name);
+                var vccsNodes = new ParameterCollection();
+                vccsNodes.Add(pp1.Values.Items[0]);
+                vccsNodes.Add(pp1.Values.Items[1]);
+                vccsNodes.Add(pp2.Values.Items[0]);
+                vccsNodes.Add(pp2.Values.Items[1]);
+                context.CreateNodes(vccs, vccsNodes);
+                context.SetParameter(vccs, "gain", parameters.GetString(2));
                 return vccs;
             }
-            else
-            {
-                if (parameters.Count == 3)
-                {
-                    if (!(parameters[2] is AssignmentParameter assignmentParameter) || assignmentParameter.Name.ToLower() != "value")
-                    {
-                        throw new WrongParametersCountException(name, "voltage controlled current source expects that third parameter is assignment parameter");
-                    }
 
-                    var cs = new CurrentSource(name);
-                    context.CreateNodes(cs, parameters);
-                    context.SetParameter(cs, "dc", assignmentParameter.Value);
-                    return cs;
-                }
-                else
+            if (parameters.Count == 5)
+            {
+                var vccs = new VoltageControlledCurrentSource(name);
+                context.CreateNodes(vccs, parameters);
+
+                if (parameters[4] is SingleParameter sp)
                 {
-                    throw new WrongParametersCountException(name, "voltage controlled current source expects 3 or 5 parameters");
+                    context.SetParameter(vccs, "gain", sp.Image);
+                    return vccs;
                 }
             }
+
+            throw new WrongParametersCountException(name, "invalid syntax for voltage controlled current source");
         }
 
         /// <summary>
         /// Generates a new current source.
         /// </summary>
-        /// <param originalName="name">Name of generated current source.</param>
-        /// <param originalName="parameters">Parameters for current source.</param>
-        /// <param originalName="context">Reading context.</param>
+        /// <param name="name">Name of generated current source.</param>
+        /// <param name="parameters">Parameters for current source.</param>
+        /// <param name="context">Reading context.</param>
         /// <returns>
         /// A new instance of current source.
         /// </returns>

@@ -3,32 +3,52 @@
 namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
 {
     /// <summary>
-    /// An assigment parameter.
+    /// An assignment parameter.
     /// </summary>
     public class AssignmentParameter : Parameter
     {
         /// <summary>
-        /// Gets or sets the name of the assigment parameter.
+        /// Gets or sets the name of the assignment parameter.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the arguments of the assigment parameters.
+        /// Gets or sets the arguments of the assignment parameters.
         /// </summary>
         public List<string> Arguments { get; set; } = new List<string>();
 
         /// <summary>
-        /// Gets or sets a value indicating whether the assigment parameter has "()" function syntax.
+        /// Gets or sets a value indicating whether the assignment parameter has "()" function syntax.
         /// </summary>
         public bool HasFunctionSyntax { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of assigment parameter.
+        /// Gets or sets the values of assignment parameter.
         /// </summary>
-        public string Value { get; set; }
+        public List<string> Values { get; set; } = new List<string>();
 
         /// <summary>
-        /// Gets the string represenation of the parameter.
+        /// Gets or sets the value of assignment parameter.
+        /// </summary>
+        public string Value
+        {
+            get
+            {
+                return Values[0];
+            }
+
+            set
+            {
+                if (Values.Count == 0)
+                {
+                    Values.Insert(0, "0");
+                }
+                Values[0] = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the string representation of the parameter.
         /// </summary>
         public override string Image
         {
@@ -42,10 +62,10 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
                 {
                     if (HasFunctionSyntax)
                     {
-                        return Name + "() = " + Value;
+                        return Name + "() = " + Values;
                     }
 
-                    return Name + "=" + Value;
+                    return Name + "=" + string.Join(",", Values.ToArray());
                 }
             }
         }
@@ -59,7 +79,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
             return new AssignmentParameter()
             {
                 Arguments = new List<string>(this.Arguments.ToArray()),
-                Value = this.Value,
+                Values = this.Values,
                 Name = this.Name,
             };
         }

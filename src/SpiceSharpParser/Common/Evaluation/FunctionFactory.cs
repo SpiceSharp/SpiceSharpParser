@@ -39,6 +39,8 @@ namespace SpiceSharpParser.Common.Evaluation
             userFunction.DoubleArgsLogic = (image, args, evaluator) =>
             {
                 var childEvaluator = evaluator.CreateChildEvaluator(evaluator.Name + "_" + name, evaluator.Context);
+                childEvaluator.Registry.RemoveExpression(functionBodyExpression);
+
                 for (var i = 0; i < arguments.Count; i++)
                 {
                     childEvaluator.SetParameter(arguments[i], args[i]);

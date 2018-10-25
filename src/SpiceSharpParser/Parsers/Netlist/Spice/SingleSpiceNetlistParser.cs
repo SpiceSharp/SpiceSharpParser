@@ -12,7 +12,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
-        /// Gets the parser settings.
+        /// Gets or sets the parser settings.
         /// </summary>
         public SingleSpiceNetlistParserSettings Settings { get; set; }
 

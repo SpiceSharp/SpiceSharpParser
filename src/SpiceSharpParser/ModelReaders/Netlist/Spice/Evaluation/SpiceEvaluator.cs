@@ -96,7 +96,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             Functions.Add("gauss", RandomFunctions.CreateGauss());
             Functions.Add("hypot", MathFunctions.CreateHypot());
             Functions.Add("if", ControlFunctions.CreateIf());
-            Functions.Add("lazy", ControlFunctions.CreateLazy());
+            //Functions.Add("lazy", ControlFunctions.CreateLazy());
             Functions.Add("int", MathFunctions.CreateInt());
             Functions.Add("inv", MathFunctions.CreateInv());
             Functions.Add("ln", MathFunctions.CreateLn());
@@ -116,12 +116,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             Functions.Add("table", TableFunction.Create());
             Functions.Add("u", MathFunctions.CreateU());
             Functions.Add("uramp", MathFunctions.CreateURamp());
+            Functions.Add("poly", PolyFunction.Create());
         }
 
         private void CreateSpiceParameters()
         {
             Parameters.Add("TEMP", new ConstantExpression(Circuit.ReferenceTemperature - Circuit.CelsiusKelvin));
             Parameters.Add("TIME", new ConstantExpression(0));
+            Parameters.Add("FREQ", new ConstantExpression(0));
             Parameters.Add("PI", new ConstantExpression(Math.PI));
             Parameters.Add("E", new ConstantExpression(Math.E));
             Parameters.Add("false", new ConstantExpression(0));

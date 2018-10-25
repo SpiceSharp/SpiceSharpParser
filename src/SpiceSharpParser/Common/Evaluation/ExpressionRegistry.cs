@@ -313,5 +313,23 @@ namespace SpiceSharpParser.Common.Evaluation
                 expression.Invalidate();
             }
         }
+
+        public void RemoveExpression(string expression)
+        {
+            var expr = UnnamedExpressions.FirstOrDefault(a => a.String == expression);
+
+            if (expr != null)
+            {
+                UnnamedExpressions.Remove(expr);
+            }
+
+            foreach (var ped in ParametersExpressionsDependencies)
+            {
+                if (ped.Value.Contains(expr))
+                {
+                    ped.Value.Remove(expr);
+                }
+            }
+        }
     }
 }

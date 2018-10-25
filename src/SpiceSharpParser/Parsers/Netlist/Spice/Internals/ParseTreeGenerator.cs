@@ -43,6 +43,13 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             parsers.Add(Symbols.Vector, ReadVector);
             parsers.Add(Symbols.VectorContinue, ReadVectorContinue);
             parsers.Add(Symbols.NewLine, ReadNewLine);
+
+            parsers.Add(Symbols.ExpressionEqual, ReadExpressionEqual);
+            parsers.Add(Symbols.Points, ReadPoints);
+            parsers.Add(Symbols.PointsContinue, ReadPointsContinue);
+            parsers.Add(Symbols.Point, ReadPoint);
+            parsers.Add(Symbols.PointValues, ReadPointValues);
+            parsers.Add(Symbols.PointValue, ReadPointValue);
         }
 
         private bool IsNewLineRequiredAtTheEnd { get; }
@@ -110,7 +117,14 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                         }
                         else
                         {
-                            throw new ParseException(string.Format("Unexpected token: '{0}' of type: {1}. Expected token type: {2} line={3}", tokens[currentTokenIndex].Lexem, tokens[currentTokenIndex].SpiceTokenType, tn.Token.SpiceTokenType, tokens[currentTokenIndex].LineNumber), tokens[currentTokenIndex].LineNumber);
+                            throw new ParseException(
+                                string.Format(
+                                    "Unexpected token: '{0}' of type: {1}. Expected token type: {2} line={3}", 
+                                    tokens[currentTokenIndex].Lexem,
+                                    tokens[currentTokenIndex].SpiceTokenType,
+                                    tn.Token.SpiceTokenType,
+                                    tokens[currentTokenIndex].LineNumber),
+                                    tokens[currentTokenIndex].LineNumber);
                         }
                     }
                 }
@@ -472,6 +486,139 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
+        /// Reads <see cref="Symbols.PointsContinue"/> non-terminal node
+        /// Pushes tree nodes to the stack based on the grammar.
+        /// </summary>
+        /// <param name="stack">A stack where the production is pushed</param>
+        /// <param name="current">A reference to the non-terminal node</param>
+        /// <param name="tokens">A reference to the array of tokens</param>
+        /// <param name="currentTokenIndex">A index of the current token</param>
+        private void ReadPointsContinue(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        {
+            var currentToken = tokens[currentTokenIndex];
+            var nextToken = tokens[currentTokenIndex + 1];
+
+            if (currentToken.Is(SpiceTokenType.DELIMITER) && currentToken.Lexem == "(") // simplification
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateNonTerminalNode(Symbols.Point, current),
+                    CreateNonTerminalNode(Symbols.PointsContinue, current));
+            }
+        }
+
+        /// <summary>
+        /// Reads <see cref="Symbols.Points"/> non-terminal node
+        /// Pushes tree nodes to the stack based on the grammar.
+        /// </summary>
+        /// <param name="stack">A stack where the production is pushed</param>
+        /// <param name="current">A reference to the non-terminal node</param>
+        /// <param name="tokens">A reference to the array of tokens</param>
+        /// <param name="currentTokenIndex">A index of the current token</param>
+        private void ReadPoints(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        {
+            var currentToken = tokens[currentTokenIndex];
+            var nextToken = tokens[currentTokenIndex + 1];
+
+            if (currentToken.Is(SpiceTokenType.DELIMITER) && currentToken.Lexem == "("
+                && nextToken.Is(SpiceTokenType.DELIMITER) && nextToken.Lexem == "(")
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(SpiceTokenType.DELIMITER, current, "("),
+                    CreateNonTerminalNode(Symbols.Point, current),
+                    CreateNonTerminalNode(Symbols.PointsContinue, current),
+                    CreateTerminalNode(SpiceTokenType.DELIMITER, current, ")"));
+            }
+            else
+            {
+                if (currentToken.Is(SpiceTokenType.DELIMITER) && currentToken.Lexem == "(")
+                {
+                    PushProductionExpression(
+                       stack,
+                       CreateNonTerminalNode(Symbols.Point, current),
+                       CreateNonTerminalNode(Symbols.PointsContinue, current));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads <see cref="Symbols.Point"/> non-terminal node
+        /// Pushes tree nodes to the stack based on the grammar.
+        /// </summary>
+        /// <param name="stack">A stack where the production is pushed</param>
+        /// <param name="current">A reference to the non-terminal node</param>
+        /// <param name="tokens">A reference to the array of tokens</param>
+        /// <param name="currentTokenIndex">A index of the current token</param>
+        private void ReadPoint(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        {
+            PushProductionExpression(
+                stack,
+                CreateTerminalNode(SpiceTokenType.DELIMITER, current, "("),
+                CreateNonTerminalNode(Symbols.PointValues, current),
+                CreateTerminalNode(SpiceTokenType.DELIMITER, current, ")"));
+        }
+
+        /// <summary>
+        /// Reads <see cref="Symbols.PointValues"/> non-terminal node
+        /// Pushes tree nodes to the stack based on the grammar.
+        /// </summary>
+        /// <param name="stack">A stack where the production is pushed</param>
+        /// <param name="current">A reference to the non-terminal node</param>
+        /// <param name="tokens">A reference to the array of tokens</param>
+        /// <param name="currentTokenIndex">A index of the current token</param>
+        private void ReadPointValues(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        {
+            var nextToken = tokens[currentTokenIndex + 1];
+
+            if (nextToken.Is(SpiceTokenType.DELIMITER) && nextToken.Lexem == ")")
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateNonTerminalNode(Symbols.PointValue, current));
+            }
+            else
+            {
+                if (nextToken.Is(SpiceTokenType.COMMA))
+                {
+                    PushProductionExpression(
+                        stack,
+                        CreateNonTerminalNode(Symbols.PointValue, current),
+                        CreateTerminalNode(SpiceTokenType.COMMA, current, ","),
+                        CreateNonTerminalNode(Symbols.PointValues, current));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads <see cref="Symbols.PointValue"/> non-terminal node
+        /// Pushes tree nodes to the stack based on the grammar.
+        /// </summary>
+        /// <param name="stack">A stack where the production is pushed</param>
+        /// <param name="current">A reference to the non-terminal node</param>
+        /// <param name="tokens">A reference to the array of tokens</param>
+        /// <param name="currentTokenIndex">A index of the current token</param>
+        private void ReadPointValue(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        {
+            var currentToken = tokens[currentTokenIndex];
+
+            if (currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
+                || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES)
+                || currentToken.Is(SpiceTokenType.VALUE)
+                || currentToken.Is(SpiceTokenType.WORD)
+                || currentToken.Is(SpiceTokenType.IDENTIFIER))
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateNonTerminalNode(Symbols.ParameterSingle, current));
+            }
+            else
+            {
+                throw new Exception("Unsupported point value type");
+            }
+        }
+
+        /// <summary>
         /// Reads <see cref="Symbols.VectorContinue"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
@@ -479,7 +626,11 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// <param name="current">A reference to the non-terminal node.</param>
         /// <param name="tokens">A reference to the array of tokens.</param>
         /// <param name="currentTokenIndex">A index of the current token.</param>
-        private void ReadVectorContinue(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        private void ReadVectorContinue(
+            Stack<ParseTreeNode> stack,
+            ParseTreeNonTerminalNode current,
+            SpiceToken[] tokens,
+            int currentTokenIndex)
         {
             if (currentTokenIndex > tokens.Length - 1)
             {
@@ -488,11 +639,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
             var currentToken = tokens[currentTokenIndex];
 
-            if (currentToken.Is(SpiceTokenType.DELIMITER) && currentToken.Lexem == ")")
-            {
-                // follow
-            }
-            else
+            if (currentToken.Is(SpiceTokenType.COMMA))
             {
                 PushProductionExpression(
                     stack,
@@ -576,7 +723,9 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 || currentToken.Is(SpiceTokenType.REFERENCE)
                 || currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
                 || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES)
-                || currentToken.Is(SpiceTokenType.PERCENT))
+                || currentToken.Is(SpiceTokenType.PERCENT)
+                || currentToken.Is(SpiceTokenType.DELIMITER) 
+                    && currentToken.Lexem == "(")
             {
                 PushProductionExpression(
                     stack,
@@ -606,6 +755,35 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             }
         }
 
+        private void ReadExpressionEqual(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
+        {
+            var currentToken = tokens[currentTokenIndex];
+            var nextToken = tokens[currentTokenIndex + 1];
+
+            if (currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET) || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES))
+            {
+                if (nextToken.Is(SpiceTokenType.EQUAL))
+                {
+                    PushProductionExpression(
+                            stack,
+                            CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
+                            CreateTerminalNode(SpiceTokenType.EQUAL, currentNode, "="),
+                            CreateNonTerminalNode(Symbols.Points, currentNode));
+                }
+                else
+                {
+                    PushProductionExpression(
+                           stack,
+                           CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
+                           CreateNonTerminalNode(Symbols.Points, currentNode));
+                }
+            }
+            else
+            {
+                throw new Exception("Expression equal should start with expression");
+            }
+        }
+
         /// <summary>
         /// Reads <see cref="Symbols.ParameterEqual"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
@@ -624,7 +802,19 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             {
                 if (nextToken.Is(SpiceTokenType.EQUAL))
                 {
-                    stack.Push(CreateNonTerminalNode(Symbols.ParameterEqualSingle, currentNode));
+                    if (((currentTokenIndex + 3) < tokens.Length)
+                        && (tokens[currentTokenIndex + 3].Is(SpiceTokenType.COMMA)))
+                    {
+                        PushProductionExpression(
+                            stack,
+                            CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
+                            CreateTerminalNode(nextToken.SpiceTokenType, currentNode),
+                            CreateNonTerminalNode(Symbols.Vector, currentNode));
+                    }
+                    else
+                    {
+                        stack.Push(CreateNonTerminalNode(Symbols.ParameterEqualSingle, currentNode));
+                    }
                 }
                 else if (nextToken.Is(SpiceTokenType.DELIMITER) && nextToken.Equal("(", true))
                 {
@@ -729,6 +919,14 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 }
             }
 
+            if (currentToken.Is(SpiceTokenType.DELIMITER) && currentToken.Lexem == "(")
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateNonTerminalNode(Symbols.Point, currentNode));
+                return;
+            }
+
             var nextToken = tokens[currentTokenIndex + 1];
 
             if (nextToken.Is(SpiceTokenType.COMMA))
@@ -778,9 +976,37 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                         || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES)
                         || currentToken.Is(SpiceTokenType.PERCENT))
                     {
-                        PushProductionExpression(
-                            stack,
-                            CreateNonTerminalNode(Symbols.ParameterSingle, currentNode));
+
+                        if (currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
+                            || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES))
+                        {
+                            if (nextToken.Is(SpiceTokenType.EQUAL))
+                            {
+                                PushProductionExpression(
+                                    stack,
+                                    CreateNonTerminalNode(Symbols.ExpressionEqual, currentNode));
+                            }
+                            else
+                            if (nextToken.Is(SpiceTokenType.DELIMITER) && nextToken.Lexem == "(")
+                            {
+                                PushProductionExpression(
+                                    stack,
+                                    CreateNonTerminalNode(Symbols.ExpressionEqual, currentNode));
+                            }
+                            else
+                            {
+                                PushProductionExpression(
+                                    stack,
+                                    CreateNonTerminalNode(Symbols.ParameterSingle, currentNode));
+                            }
+                        }
+                        else
+                        {
+
+                            PushProductionExpression(
+                                stack,
+                                CreateNonTerminalNode(Symbols.ParameterSingle, currentNode));
+                        }
                     }
                     else
                     {

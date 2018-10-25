@@ -6,8 +6,8 @@
     public class Symbols
     {
         public const string Netlist = "NETLIST";
-        public const string NetlistWithoutTitle = "NETLIST_WITHOUT_TITLE";
-        public const string NetlistEnding = "NETLIST_ENDING";
+        public const string NetlistWithoutTitle = "NETLIST-WITHOUT-TITLE";
+        public const string NetlistEnding = "NETLIST-ENDING";
         public const string Statements = "STATEMENTS";
         public const string Statement = "STATEMENT";
         public const string Component = "COMPONENT";
@@ -21,10 +21,17 @@
         public const string ParameterSingle = "PARAMETER-SINGLE";
         public const string Vector = "VECTOR";
         public const string VectorContinue = "VECTOR-CONTINUE";
-        public const string ParameterEqual = "PARAMETER_EQUAL";
-        public const string ParameterEqualSingle = "PARAMETER_EQUAL_SINGLE";
-        public const string ParameterBracket = "PARAMETER_BRACKET";
-        public const string ParameterBracketContent = "PARAMETER_BRACKET_CONTENT";
+        public const string ParameterEqual = "PARAMETER-EQUAL";
+        public const string ParameterEqualSingle = "PARAMETER-EQUAL-SINGLE";
+        public const string ParameterBracket = "PARAMETER-BRACKET";
+        public const string ParameterBracketContent = "PARAMETER-BRACKET-CONTENT";
         public const string NewLine = "NEW-LINE";
+
+        public const string Points = "POINTS";
+        public const string PointsContinue = "POINTS-CONTINUE";
+        public const string Point = "POINT";
+        public const string PointValue = "POINT-VALUE";
+        public const string PointValues = "POINT-VALUES";
+        public const string ExpressionEqual = "EXPRESSION-EQUAL";
     }
 }
