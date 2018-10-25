@@ -94,7 +94,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Gets the expression registry.
         /// </summary>
-        protected ExpressionRegistry Registry { get; }
+        public ExpressionRegistry Registry { get; }
 
         /// <summary>
         /// Gets the expression parser.
@@ -123,6 +123,7 @@ namespace SpiceSharpParser.Common.Evaluation
             if (!ParseResults.TryGetValue(expression, out var parseResult))
             {
                 parseResult = GetParseResult(expression);
+                Registry.Add(new Expression(expression, this), parseResult.FoundParameters);
                 ParseResults[expression] = parseResult;
             }
 
@@ -214,35 +215,35 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Sets the parameter.
         /// </summary>
-        /// <param name="id">A name of parameter.</param>
+        /// <param name="parameterName">A name of parameter.</param>
         /// <param name="value">A value of parameter.</param>
-        public void SetParameter(string id, double value)
+        public void SetParameter(string parameterName, double value)
         {
-            Parameters[id] = new ConstantExpression(value);
+            Parameters[parameterName] = new ConstantExpression(value);
 
-            RefreshForParameter(id);
+            RefreshForParameter(parameterName);
 
             foreach (var child in Children)
             {
-                child.SetParameter(id, value);
+                child.SetParameter(parameterName, value);
             }
         }
 
         /// <summary>
         /// Sets the parameter.
         /// </summary>
-        /// <param name="id">A name of parameter.</param>
+        /// <param name="parameterName">A name of parameter.</param>
         /// <param name="expression">An expression of parameter.</param>
-        public void SetParameter(string id, string expression)
+        public void SetParameter(string parameterName, string expression)
         {
-            Parameters[id] = new CachedExpression(expression, this);
+            Parameters[parameterName] = new CachedExpression(expression, this);
 
-            Registry.UpdateParameterDependencies(id, GetParametersFromExpression(expression));
-            RefreshForParameter(id);
+            Registry.UpdateParameterDependencies(parameterName, GetParametersFromExpression(expression));
+            RefreshForParameter(parameterName);
 
             foreach (var child in Children)
             {
-                child.SetParameter(id, expression);
+                child.SetParameter(parameterName, expression);
             }
         }
 

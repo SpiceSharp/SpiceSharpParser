@@ -12,6 +12,9 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         string Name { get; set; }
 
+
+        ExpressionRegistry Registry { get; }
+
         /// <summary>
         /// Gets the parameters.
         /// </summary>
@@ -66,16 +69,16 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Sets a parameter.
         /// </summary>
-        /// <param name="id">Parameter name.</param>
+        /// <param name="parameterName">Parameter name.</param>
         /// <param name="expression">Parameter expression.</param>
-        void SetParameter(string id, string expression);
+        void SetParameter(string parameterName, string expression);
 
         /// <summary>
         /// Sets a parameter.
         /// </summary>
-        /// <param name="id">Parameter name.</param>
+        /// <param name="parameterName">Parameter name.</param>
         /// <param name="value">Parameter expression.</param>
-        void SetParameter(string id, double value);
+        void SetParameter(string parameterName, double value);
 
         /// <summary>
         /// Creates a child evaluator.
