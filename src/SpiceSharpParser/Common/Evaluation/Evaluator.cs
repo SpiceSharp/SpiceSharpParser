@@ -94,7 +94,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Gets the expression registry.
         /// </summary>
-        protected ExpressionRegistry Registry { get; }
+        public ExpressionRegistry Registry { get; }
 
         /// <summary>
         /// Gets the expression parser.

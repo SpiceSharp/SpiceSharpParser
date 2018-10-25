@@ -96,7 +96,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             Functions.Add("gauss", RandomFunctions.CreateGauss());
             Functions.Add("hypot", MathFunctions.CreateHypot());
             Functions.Add("if", ControlFunctions.CreateIf());
-            Functions.Add("lazy", ControlFunctions.CreateLazy());
+            //Functions.Add("lazy", ControlFunctions.CreateLazy());
             Functions.Add("int", MathFunctions.CreateInt());
             Functions.Add("inv", MathFunctions.CreateInv());
             Functions.Add("ln", MathFunctions.CreateLn());

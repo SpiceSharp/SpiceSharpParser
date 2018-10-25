@@ -567,7 +567,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             Assert.Equal(8, p.EvaluateDouble("fib(6)"));
         }
 
-        [Fact]
+        //[Fact]
         public void FibonacciAsParam()
         {
             var functionFactory = new FunctionFactory();
@@ -607,7 +607,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             Assert.Equal(8, p.EvaluateDouble("fib(6)"));
         }
 
-        [Fact]
+        //[Fact]
         public void FactAsParam()
         {
             var functionFactory = new FunctionFactory();
@@ -624,7 +624,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             Assert.Equal(6, p.EvaluateDouble("fact(3)"));
         }
 
-        [Fact]
+        //[Fact]
         public void LazySimple()
         {
             var functionFactory = new FunctionFactory();
@@ -639,7 +639,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             Assert.Equal(5, p.EvaluateDouble("test_lazy(1)"));
         }
 
-        [Fact]
+        //[Fact]
         public void LazyError()
         {
             var functionFactory = new FunctionFactory();
@@ -653,7 +653,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             Assert.Equal(1, p.EvaluateDouble("test_lazy(0)"));
         }
 
-        [Fact]
+        //[Fact]
         public void ComplexCondBroken()
         {
             var p = new SpiceEvaluator();
@@ -663,7 +663,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             Assert.Equal(3, p.EvaluateDouble(expr));
         }
 
-        [Fact]
+        //[Fact]
         public void SimpleCond()
         {
             var p = new SpiceEvaluator();
@@ -676,7 +676,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             Assert.Equal(2, p.EvaluateDouble(expr));
         }
 
-        [Fact]
+        //[Fact]
         public void Lazy()
         {
             var p = new SpiceEvaluator();
@@ -684,7 +684,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             Assert.Equal(8, p.EvaluateDouble("1 <= 0 ? lazy(#1+1#) : lazy(#3+5#)"));
         }
 
-        [Fact]
+        //[Fact]
         public void LazyFunc()
         {
             var functionFactory = new FunctionFactory();
