@@ -25,14 +25,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceEvaluator"/> class.
         /// </summary>
-        public SpiceEvaluator(string name, object context, SpiceEvaluatorMode mode, int? seed, ExpressionRegistry registry, bool isFunctionNameCaseSensitive, bool isParameterNameCaseSensitive)
-            : this(name, context, new SpiceExpressionParser(mode == SpiceEvaluatorMode.LtSpice), mode, seed, registry, isFunctionNameCaseSensitive, isParameterNameCaseSensitive)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SpiceEvaluator"/> class.
-        /// </summary>
         public SpiceEvaluator(string name, object context, IExpressionParser expressionParser, SpiceEvaluatorMode mode, int? seed, ExpressionRegistry registry, bool isFunctionNameCaseSensitive, bool isParameterNameCaseSensitive)
             : base(name, context, expressionParser, seed, registry, isFunctionNameCaseSensitive, isParameterNameCaseSensitive)
         {
@@ -71,12 +63,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         /// </returns>
         public override IEvaluator Clone(bool deep)
         {
-            var clone = new SpiceEvaluator(Name, Context, Mode, Seed, Registry.Clone(), IsFunctionNameCaseSensitive, IsParameterNameCaseSensitive);
+            var clone = new SpiceEvaluator(Name, Context, ExpressionParser, Mode, Seed, Registry.Clone(), IsFunctionNameCaseSensitive, IsParameterNameCaseSensitive);
             clone.Initialize(
-                Parameters, 
+                Parameters,
                 Functions,
-                deep ? Children : new System.Collections.Generic.List<IEvaluator>(), 
-                ParseResults);
+                deep ? Children : new System.Collections.Generic.List<IEvaluator>());
             return clone;
         }
 

@@ -9,6 +9,8 @@ using SpiceSharpParser.Models.Netlist.Spice;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
+    using SpiceSharpParser.Parsers.Expression;
+
     /// <summary>
     /// Translates a SPICE model to SpiceSharp model.
     /// </summary>
@@ -97,6 +99,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             var readingEvaluator = new SpiceEvaluator(
                             "Netlist reading evaluator",
                             null,
+                            new ExpressionParserWithCache(new SpiceExpressionParser(Settings.EvaluatorMode == SpiceEvaluatorMode.LtSpice)), 
                             Settings.EvaluatorMode,
                             Settings.Seed,
                             new ExpressionRegistry(Settings.CaseSensitivity.IsParameterNameCaseSensitive, Settings.CaseSensitivity.IsLetExpressionNameCaseSensitive),

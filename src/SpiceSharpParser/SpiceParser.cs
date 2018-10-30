@@ -13,6 +13,8 @@ using SpiceSharpParser.Parsers.Netlist.Spice;
 
 namespace SpiceSharpParser
 {
+    using SpiceSharpParser.Parsers.Expression;
+
     /// <summary>
     /// The SPICE netlist parser.
     /// </summary>
@@ -155,6 +157,7 @@ namespace SpiceSharpParser
             SpiceEvaluator preprocessorEvaluator = new SpiceEvaluator(
                             "Preprocessors evaluator",
                             null,
+                            new SpiceExpressionParser(Settings.Reading.EvaluatorMode == SpiceEvaluatorMode.LtSpice),
                             Settings.Reading.EvaluatorMode,
                             Settings.Reading.Seed,
                             new ExpressionRegistry(
