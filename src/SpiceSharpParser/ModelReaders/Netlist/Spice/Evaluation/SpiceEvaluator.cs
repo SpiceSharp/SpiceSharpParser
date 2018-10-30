@@ -31,6 +31,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             Mode = mode;
             CreateSpiceParameters();
             CreateSpiceFunctions();
+
+            Registry.Parameters = Parameters;
         }
 
         /// <summary>

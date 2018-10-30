@@ -9,9 +9,8 @@ namespace SpiceSharpParser.Common.Evaluation.Expressions
         /// </summary>
         /// <param name="name">A name of expression.</param>
         /// <param name="expression">An expression.</param>
-        /// <param name="evaluator">Evaluator.</param>
-        public NamedExpression(string name, string expression, IEvaluator evaluator)
-            : base(expression, evaluator)
+        public NamedExpression(string name, string expression)
+            : base(expression)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
         }
@@ -29,7 +28,7 @@ namespace SpiceSharpParser.Common.Evaluation.Expressions
         /// </returns>
         public override Expression Clone()
         {
-            var result = new NamedExpression(Name, String, Evaluator);
+            var result = new NamedExpression(Name, String);
             return result;
         }
     }

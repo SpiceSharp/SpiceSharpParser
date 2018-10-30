@@ -110,7 +110,7 @@ namespace SpiceSharpParser.Common.Evaluation
         {
             if (Parameters.TryGetValue(expression, out var parameter))
             {
-                return parameter.Evaluate();
+                return parameter.Evaluate(this);
             }
 
             var parseResult = ExpressionParser.Parse(expression, new ExpressionParserContext(IsFunctionNameCaseSensitive) { Functions = Functions });
@@ -127,7 +127,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public double GetParameterValue(string id)
         {
-            return Parameters[id].Evaluate();
+            return Parameters[id].Evaluate(this);
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="expression">An expression of parameter.</param>
         public void SetParameter(string parameterName, string expression)
         {
-            Parameters[parameterName] = new CachedExpression(expression, this);
+            Parameters[parameterName] = new CachedExpression(expression);
 
             Registry.UpdateParameterDependencies(parameterName, GetParametersFromExpression(expression));
             RefreshForParameter(parameterName);
@@ -224,7 +224,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public double GetExpressionValue(string expressionName)
         {
-            return Registry.GetExpression(expressionName).Evaluate();
+            return Registry.GetExpression(expressionName).Evaluate(this);
         }
 
         /// <summary>
@@ -235,7 +235,7 @@ namespace SpiceSharpParser.Common.Evaluation
         public void SetNamedExpression(string expressionName, string expression)
         {
             var parameters = GetParametersFromExpression(expression);
-            Registry.Add(new NamedExpression(expressionName, expression, this), parameters);
+            Registry.Add(new NamedExpression(expressionName, expression), parameters);
         }
 
         /// <summary>
@@ -281,7 +281,6 @@ namespace SpiceSharpParser.Common.Evaluation
             foreach (var parameterName in parameters.Keys)
             {
                 var parameter = parameters[parameterName].Clone();
-                parameter.Evaluator = this;
                 parameter.Invalidate();
                 Parameters[parameterName] = parameter;
             }
@@ -297,7 +296,7 @@ namespace SpiceSharpParser.Common.Evaluation
                 Children.Add(child.Clone(true));
             }
 
-            Registry.Invalidate(this);
+            Registry.Invalidate();
         }
 
         /// <summary>
@@ -306,14 +305,8 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="parameterName">Parameter name.</param>
         public void RefreshForParameter(string parameterName)
         {
-            Registry.RefreshDependentParameters(parameterName, parameterToRefresh =>
-            {
-                if (parameterToRefresh != parameterName)
-                {
-                    Parameters[parameterToRefresh].Invalidate();
-                    Parameters[parameterToRefresh].Evaluate();
-                }
-            });
+            Registry.InvalidateDependentParameters(parameterName);
+            Registry.InvalidateExpressions(parameterName);
         }
 
         /// <summary>
@@ -341,26 +334,6 @@ namespace SpiceSharpParser.Common.Evaluation
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Adds evaluator action.
-        /// </summary>
-        /// <param name="actionName">Action name.</param>
-        /// <param name="expressionString">Expression.</param>
-        /// <param name="expressionAction">Expression action.</param>
-        public void AddAction(string actionName, string expressionString, Action<double> expressionAction)
-        {
-            if (expressionAction == null)
-            {
-                throw new ArgumentNullException(nameof(expressionAction));
-            }
-
-            var namedExpression = new NamedExpression(actionName, expressionString, this);
-            namedExpression.Evaluated += (sender, args) => { expressionAction(args.NewValue); };
-
-            var parameters = GetParametersFromExpression(expressionString);
-            Registry.Add(namedExpression, parameters);
         }
 
         private void CreateCommonFunctions()

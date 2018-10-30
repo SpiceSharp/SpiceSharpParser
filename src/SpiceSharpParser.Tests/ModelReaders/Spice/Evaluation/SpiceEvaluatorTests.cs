@@ -26,25 +26,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         }
 
         [Fact]
-        public void AddActionExpression()
-        {
-            // arrange
-            var v = new SpiceEvaluator();
-            v.SetParameter("xyz", 13.0);
-
-            double expressionValue = 0;
-
-            // act
-            v.AddAction("noname", "xyz + 1", (newValue) => { expressionValue = newValue; });
-            v.SetParameter("xyz", 14);
-
-            var val = v.GetParameterValue("xyz");
-
-            // assert
-            Assert.Equal(15, expressionValue);
-        }
-
-        [Fact]
         public void EvaluateFailsWhenThereCurrlyBraces()
         {
             Evaluator v = new SpiceEvaluator();

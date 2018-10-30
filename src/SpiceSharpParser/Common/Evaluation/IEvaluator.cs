@@ -12,7 +12,6 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         string Name { get; set; }
 
-
         ExpressionRegistry Registry { get; }
 
         /// <summary>

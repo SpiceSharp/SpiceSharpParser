@@ -428,7 +428,7 @@ namespace SpiceSharpParser.Parsers.Expression
                                     {
                                         throw new UnknownParameterException() { Name = parameterName };
                                     }
-                                    return evalContext.Parameters[parameterName].Evaluate();
+                                    return evalContext.Parameters[parameterName].Evaluate(evalContext.Evaluator);
                                 });
                             }
                             infixPostfix = true;

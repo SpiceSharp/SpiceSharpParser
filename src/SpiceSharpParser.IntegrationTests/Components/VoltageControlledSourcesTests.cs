@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace SpiceSharpParser.IntegrationTests.Components
+namespace SpiceSharpParser.IntegrationTests
 {
     public class VoltageControlledSourcesTests : BaseTests
     {

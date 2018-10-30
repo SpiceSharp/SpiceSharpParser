@@ -46,8 +46,8 @@ namespace SpiceSharpParser.Common.Evaluation
                     childEvaluator.SetParameter(arguments[i], args[i]);
                 }
 
-                var expression = new Expression(functionBodyExpression, childEvaluator);
-                var result = expression.Evaluate();
+                var expression = new Expression(functionBodyExpression);
+                var result = expression.Evaluate(childEvaluator);
 
                 return result;
             };

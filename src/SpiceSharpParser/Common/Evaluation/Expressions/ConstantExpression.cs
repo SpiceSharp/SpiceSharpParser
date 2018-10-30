@@ -5,8 +5,9 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="ConstantExpression"/> class.
         /// </summary>
+        /// <param name="value">Value.</param>
         public ConstantExpression(double value)
-            : base(string.Empty, null)
+            : base(string.Empty)
         {
             CurrentValue = value;
         }
@@ -27,7 +28,7 @@
         {
         }
 
-        public override double Evaluate()
+        public override double Evaluate(IEvaluator evaluator)
         {
             return CurrentValue;
         }
