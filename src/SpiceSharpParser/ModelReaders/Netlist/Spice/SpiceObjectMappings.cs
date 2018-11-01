@@ -38,6 +38,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Models.Map(new string[] { "NPN", "PNP" }, new BipolarModelGenerator());
             Models.Map(new string[] { "SW", "CS" }, new SwitchModelGenerator());
             Models.Map(new string[] { "PMOS", "NMOS" }, new MosfetModelGenerator());
+            Models.Map(new string[] { "NJF", "PJF" }, new JFETModelGenerator());
 
             // Register controls
             Controls.Map("ST_R", new StRegisterControl());
@@ -72,6 +73,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Components.Map("D", new DiodeGenerator());
             Components.Map("M", new MosfetGenerator());
             Components.Map("X", new SubCircuitGenerator());
+            Components.Map("J", new JFETGenerator());
         }
 
         /// <summary>
