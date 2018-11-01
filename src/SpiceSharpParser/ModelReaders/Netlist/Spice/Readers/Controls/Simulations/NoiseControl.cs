@@ -50,9 +50,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             }
 
             string type = statement.Parameters.GetString(2);
-            var numberSteps = context.ParseDouble(statement.Parameters.GetString(3));
-            var start = context.ParseDouble(statement.Parameters.GetString(4));
-            var stop = context.ParseDouble(statement.Parameters.GetString(5));
+            var numberSteps = context.EvaluateDouble(statement.Parameters.GetString(3));
+            var start = context.EvaluateDouble(statement.Parameters.GetString(4));
+            var stop = context.EvaluateDouble(statement.Parameters.GetString(5));
 
             Sweep<double> sweep;
 

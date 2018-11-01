@@ -424,11 +424,11 @@ namespace SpiceSharpParser.Parsers.Expression
                                 foundParameters.Add(parameterName);
                                 outputStack.Push((evalContext) =>
                                 {
-                                    if (!evalContext.Parameters.ContainsKey(parameterName))
+                                    if (!evalContext.ExpressionContext.Parameters.ContainsKey(parameterName))
                                     {
                                         throw new UnknownParameterException() { Name = parameterName };
                                     }
-                                    return evalContext.Parameters[parameterName].Evaluate(evalContext.Evaluator);
+                                    return evalContext.ExpressionContext.Parameters[parameterName].Evaluate(evalContext.Evaluator, evalContext.ExpressionContext);
                                 });
                             }
                             infixPostfix = true;
@@ -557,9 +557,10 @@ namespace SpiceSharpParser.Parsers.Expression
                         return op.ObjectArgsLogic(
                             op.Name + expression.Substring(op.StartIndex - 1, endIndex.Value - op.StartIndex + 2),
                             args,
-                            evalContext.Evaluator);
+                            evalContext.Evaluator,
+                            evalContext.ExpressionContext);
                     }
-                    return op.ObjectArgsLogic(null, args, evalContext.Evaluator);
+                    return op.ObjectArgsLogic(null, args, evalContext.Evaluator, evalContext.ExpressionContext);
                 });
             }
             else
@@ -577,7 +578,8 @@ namespace SpiceSharpParser.Parsers.Expression
                             op.Name
                             + expression.Substring(op.StartIndex - 1, endIndex.Value - op.StartIndex + 2),
                             evaluatedArgs,
-                            evalContext.Evaluator);
+                            evalContext.Evaluator,
+                            evalContext.ExpressionContext);
                     });
                 }
                 else
@@ -585,7 +587,7 @@ namespace SpiceSharpParser.Parsers.Expression
                     outputStack.Push((evalContext) =>
                     {
                         var evaluatedArgs = Evaluate(args, evalContext);
-                        return op.DoubleArgsLogic(null, evaluatedArgs, evalContext.Evaluator);
+                        return op.DoubleArgsLogic(null, evaluatedArgs, evalContext.Evaluator, evalContext.ExpressionContext);
                     });
                 }
             }
@@ -940,9 +942,9 @@ namespace SpiceSharpParser.Parsers.Expression
             /// <summary>
             /// Gets or sets the function logic.
             /// </summary>
-            public Func<string, double[], IEvaluator, double> DoubleArgsLogic { get; set; }
+            public Func<string, double[], IEvaluator, ExpressionContext, double> DoubleArgsLogic { get; set; }
 
-            public Func<string, object[], IEvaluator, double> ObjectArgsLogic { get; set; }
+            public Func<string, object[], IEvaluator, ExpressionContext, double> ObjectArgsLogic { get; set; }
 
             public bool VirtualParameters { get; set; }
 

@@ -20,6 +20,7 @@ namespace SpiceSharpParser.Common.Evaluation
             ParametersExpressionsDependencies = new Dictionary<string, List<Expression>>(StringComparerProvider.Get(isParameterNameCaseSensitive));
             ParametersDependencies = new Dictionary<string, HashSet<string>>(StringComparerProvider.Get(isParameterNameCaseSensitive));
             UnnamedExpressions = new List<Expression>();
+            Parameters = new Dictionary<string, Expression>(StringComparerProvider.Get(isParameterNameCaseSensitive));
         }
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Gets or sets the dictionary of parameters.
         /// </summary>
-        public Dictionary<string, Expression> Parameters { get; set; }
+        public Dictionary<string, Expression> Parameters { get; }
 
         /// <summary>
         /// Gets the dictionary of named expressions.
@@ -217,12 +218,12 @@ namespace SpiceSharpParser.Common.Evaluation
                 throw new ArgumentNullException(nameof(parameterName));
             }
 
-            Parameters[parameterName].Invalidate();
-
             if (ParametersDependencies.ContainsKey(parameterName))
             {
                 foreach (var parameter in ParametersDependencies[parameterName])
                 {
+                    Parameters[parameter].Invalidate();
+
                     InvalidateDependentParameters(parameter);
                 }
             }
@@ -265,7 +266,11 @@ namespace SpiceSharpParser.Common.Evaluation
         public ExpressionRegistry Clone()
         {
             var result = new ExpressionRegistry(IsParameterNameCaseSensitive, IsExpressionNameCaseSensitive);
-            result.Parameters = Parameters;
+
+            foreach (var parameter in Parameters)
+            {
+                result.Parameters[parameter.Key] = parameter.Value.Clone();
+            }
 
             foreach (var dep in ParametersDependencies)
             {

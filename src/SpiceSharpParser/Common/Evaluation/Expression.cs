@@ -38,9 +38,9 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <returns>
         /// The value of the expression.
         /// </returns>
-        public virtual double Evaluate(IEvaluator evaluator)
+        public virtual double Evaluate(IEvaluator evaluator, ExpressionContext context)
         {
-            var newValue = evaluator.EvaluateDouble(String);
+            var newValue = evaluator.EvaluateValueExpression(String, context);
             CurrentValue = newValue;
             OnEvaluated(newValue);
             return newValue;

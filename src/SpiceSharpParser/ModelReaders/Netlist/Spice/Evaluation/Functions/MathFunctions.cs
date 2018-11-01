@@ -13,21 +13,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// <returns>
         /// A new instance of pow function.
         /// </returns>
-        public static Function CreatePow(SpiceEvaluatorMode mode)
+        public static Function CreatePow(SpiceExpressionMode mode)
         {
             Function function = new Function();
             function.Name = "pow";
             function.VirtualParameters = false;
             function.ArgumentsCount = 2;
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 double x = (double)args[0];
                 double y = (double)args[1];
 
                 switch (mode)
                 {
-                    case SpiceEvaluatorMode.LtSpice:
+                    case SpiceExpressionMode.LtSpice:
                         if (x < 0)
                         {
                             var realResult = Complex.Pow(new Complex(x, 0), new Complex(y, 0)).Real;
@@ -41,10 +41,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 
                         return Math.Pow(x, y);
 
-                    case SpiceEvaluatorMode.SmartSpice:
+                    case SpiceExpressionMode.SmartSpice:
                         return Math.Pow(Math.Abs(x), (int)y);
 
-                    case SpiceEvaluatorMode.HSpice:
+                    case SpiceExpressionMode.HSpice:
                         return Math.Pow(x, (int)y);
 
                     default:
@@ -62,25 +62,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// <returns>
         /// A new instance of pwr function.
         /// </returns>
-        public static Function CreatePwr(SpiceEvaluatorMode mode)
+        public static Function CreatePwr(SpiceExpressionMode mode)
         {
             Function function = new Function();
             function.Name = "pwr";
             function.VirtualParameters = false;
             function.ArgumentsCount = 2;
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 double x = (double)args[0];
                 double y = (double)args[1];
 
                 switch (mode)
                 {
-                    case SpiceEvaluatorMode.LtSpice:
+                    case SpiceExpressionMode.LtSpice:
                         return Math.Pow(Math.Abs(x), y);
 
-                    case SpiceEvaluatorMode.HSpice:
-                    case SpiceEvaluatorMode.SmartSpice:
+                    case SpiceExpressionMode.HSpice:
+                    case SpiceExpressionMode.SmartSpice:
                         return Math.Sign(x) * Math.Pow(Math.Abs(x), y);
 
                     default:
@@ -104,7 +104,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.VirtualParameters = false;
             function.ArgumentsCount = 2;
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 double x = (double)args[0];
                 double y = (double)args[1];
@@ -122,20 +122,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// <returns>
         /// A new instance of pow function.
         /// </returns>
-        public static Function CreateSqrt(SpiceEvaluatorMode mode)
+        public static Function CreateSqrt(SpiceExpressionMode mode)
         {
             Function function = new Function();
             function.Name = "sqrt";
             function.VirtualParameters = false;
             function.ArgumentsCount = 1;
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 double x = (double)args[0];
 
                 switch (mode)
                 {
-                    case SpiceEvaluatorMode.LtSpice:
+                    case SpiceExpressionMode.LtSpice:
                         if (x < 0)
                         {
                             var realResult = Complex.Pow(new Complex(x, 0), new Complex(0.5, 0)).Real;
@@ -149,10 +149,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 
                         return Math.Sqrt(x);
 
-                    case SpiceEvaluatorMode.SmartSpice:
+                    case SpiceExpressionMode.SmartSpice:
                         return Math.Sqrt(Math.Abs(x));
 
-                    case SpiceEvaluatorMode.HSpice:
+                    case SpiceExpressionMode.HSpice:
                         if (x < 0)
                         {
                             return -Math.Sqrt(Math.Abs(x));
@@ -177,7 +177,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// <returns>
         /// A new instance of ** function.
         /// </returns>
-        public static Function CreatePowInfix(SpiceEvaluatorMode mode)
+        public static Function CreatePowInfix(SpiceExpressionMode mode)
         {
             Function function = new Function();
             function.Name = "**";
@@ -185,14 +185,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.VirtualParameters = false;
             function.ArgumentsCount = 2;
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 double x = (double)args[0];
                 double y = (double)args[1];
 
                 switch (mode)
                 {
-                    case SpiceEvaluatorMode.LtSpice:
+                    case SpiceExpressionMode.LtSpice:
                         if (x < 0)
                         {
                             var realResult = Complex.Pow(new Complex(x, 0), new Complex(y, 0)).Real;
@@ -206,10 +206,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 
                         return Math.Pow(x, y);
 
-                    case SpiceEvaluatorMode.SmartSpice:
+                    case SpiceExpressionMode.SmartSpice:
                         throw new Exception("** is unknown function");
 
-                    case SpiceEvaluatorMode.HSpice:
+                    case SpiceExpressionMode.HSpice:
                         if (x < 0)
                         {
                             return Math.Pow(x, (int)y);
@@ -245,7 +245,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = -1;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length == 0)
                 {
@@ -282,7 +282,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = -1;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length == 0)
                 {
@@ -319,7 +319,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 3;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 3)
                 {
@@ -360,7 +360,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 1)
                 {
@@ -380,7 +380,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// <returns>
         /// A new instance of log function.
         /// </returns>
-        public static Function CreateLog(SpiceEvaluatorMode mode)
+        public static Function CreateLog(SpiceExpressionMode mode)
         {
             Function function = new Function();
             function.Name = "log";
@@ -388,7 +388,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 1)
                 {
@@ -397,7 +397,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 
                 double x = (double)args[0];
 
-                if (mode == SpiceEvaluatorMode.HSpice)
+                if (mode == SpiceExpressionMode.HSpice)
                 {
                     return Math.Sign(x) * Math.Log(Math.Abs(x));
                 }
@@ -414,7 +414,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// <returns>
         /// A new instance of log10 function.
         /// </returns>
-        public static Function CreateLog10(SpiceEvaluatorMode mode)
+        public static Function CreateLog10(SpiceExpressionMode mode)
         {
             Function function = new Function();
             function.Name = "log10";
@@ -422,7 +422,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 1)
                 {
@@ -431,7 +431,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 
                 double x = (double)args[0];
 
-                if (mode == SpiceEvaluatorMode.HSpice)
+                if (mode == SpiceExpressionMode.HSpice)
                 {
                     return Math.Sign(x) * Math.Log10(Math.Abs(x));
                 }
@@ -456,7 +456,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 1)
                 {
@@ -485,7 +485,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 1)
                 {
@@ -514,7 +514,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 1)
                 {
@@ -542,7 +542,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 1)
                 {
@@ -570,7 +570,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 1)
                 {
@@ -598,7 +598,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 2;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 2)
                 {
@@ -628,7 +628,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 1)
                 {
@@ -656,7 +656,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 1)
                 {
@@ -685,7 +685,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 1)
                 {
@@ -705,7 +705,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// <returns>
         /// A new instance of db function.
         /// </returns>
-        public static Function CreateDb(SpiceEvaluatorMode mode)
+        public static Function CreateDb(SpiceExpressionMode mode)
         {
             Function function = new Function();
             function.Name = "db";
@@ -713,7 +713,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 1)
                 {
@@ -722,7 +722,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 
                 double x = (double)args[0];
 
-                if (mode == SpiceEvaluatorMode.SmartSpice)
+                if (mode == SpiceExpressionMode.SmartSpice)
                 {
                     return 20.0 * Math.Log10(Math.Abs(x));
                 }
@@ -747,7 +747,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 1)
                 {
@@ -775,7 +775,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 1)
                 {
@@ -803,7 +803,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 1)
                 {
@@ -831,7 +831,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 1)
                 {

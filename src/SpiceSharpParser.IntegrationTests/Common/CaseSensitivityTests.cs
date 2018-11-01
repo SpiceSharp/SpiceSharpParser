@@ -375,7 +375,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
-            parser.Settings.Reading.CaseSensitivity.IsLetExpressionNameCaseSensitive = false;
+            parser.Settings.Reading.CaseSensitivity.IsExpressionNameCaseSensitive = false;
 
             var text = string.Join(Environment.NewLine,
                 "CaseSensitivity - Diode circuit",
@@ -401,7 +401,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
-            parser.Settings.Reading.CaseSensitivity.IsLetExpressionNameCaseSensitive = true;
+            parser.Settings.Reading.CaseSensitivity.IsExpressionNameCaseSensitive = true;
 
             var text = string.Join(Environment.NewLine,
                 "CaseSensitivity - Diode circuit",

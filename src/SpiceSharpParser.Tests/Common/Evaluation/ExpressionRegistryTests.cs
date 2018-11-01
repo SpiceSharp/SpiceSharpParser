@@ -13,7 +13,7 @@ namespace SpiceSharpParser.Tests.Common.Evaluation
         {
             var registry = new ExpressionRegistry(false, false);
             var evaluator = Substitute.For<IEvaluator>();
-            evaluator.EvaluateDouble(Arg.Any<string>()).Returns(1);
+            evaluator.EvaluateValueExpression(Arg.Any<string>(), Arg.Any<ExpressionContext>()).Returns(1);
 
             registry.Add(new NamedExpression("test", "1"), new System.Collections.Generic.List<string>());
 

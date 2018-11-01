@@ -23,11 +23,11 @@
         /// <returns>
         /// The value of the expression.
         /// </returns>
-        public override double Evaluate(IEvaluator evaluator)
+        public override double Evaluate(IEvaluator evaluator, ExpressionContext context)
         {
             if (!IsEvaluated)
             {
-                CurrentValue = evaluator.EvaluateDouble(String);
+                CurrentValue = evaluator.EvaluateValueExpression(String, context);
                 IsEvaluated = true;
             }
 

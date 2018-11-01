@@ -127,14 +127,36 @@ namespace SpiceSharpParser
             SpiceNetlist preprocessedNetListModel = (SpiceNetlist)originalNetlistModel.Clone();
             SpiceEvaluator preprocessorEvaluator = CreatePreprocessorEvaluator();
 
-            ISimulationEvaluatorsContainer evaluators = new SimulationEvaluatorsContainer(preprocessorEvaluator, new FunctionFactory());
+            var exportFunctions = ExportFunctions.Create(
+                Settings.Reading.Mappings.Exporters,
+                new MainCircuitNodeNameGenerator(new string[] { "0" }, Settings.Reading.CaseSensitivity.IsNodeNameCaseSensitive),
+                new ObjectNameGenerator(string.Empty),
+                new ObjectNameGenerator(string.Empty),
+                null,
+                Settings.Reading.CaseSensitivity);
+
+            ExpressionContext preprocessorContext = new SpiceExpressionContext(
+                string.Empty,
+                Settings.Reading.EvaluatorMode,
+                Settings.Reading.CaseSensitivity.IsParameterNameCaseSensitive,
+                Settings.Reading.CaseSensitivity.IsFunctionNameCaseSensitive,
+                Settings.Reading.CaseSensitivity.IsExpressionNameCaseSensitive);
+
+            foreach (var exportFunction in exportFunctions)
+            {
+                preprocessorContext.Functions.Add(exportFunction.Key, exportFunction.Value);
+            }
+            
+            var parser = new SpiceExpressionParser(Settings.Reading.EvaluatorMode == SpiceExpressionMode.LtSpice);
 
             foreach (var preprocessor in Preprocessors)
             {
                 if (preprocessor is IEvaluatorConsumer consumer)
                 {
-                    consumer.Evaluators = evaluators;
+                    consumer.Evaluator = preprocessorEvaluator;
+                    consumer.ExpressionContext = preprocessorContext;
                     consumer.CaseSettings = Settings.Reading?.CaseSensitivity;
+                    consumer.ExpressionParser = parser;
                 }
 
                 preprocessedNetListModel.Statements = preprocessor.Process(preprocessedNetListModel.Statements);
@@ -155,30 +177,12 @@ namespace SpiceSharpParser
         private SpiceEvaluator CreatePreprocessorEvaluator()
         {
             SpiceEvaluator preprocessorEvaluator = new SpiceEvaluator(
-                            "Preprocessors evaluator",
-                            null,
-                            new SpiceExpressionParser(Settings.Reading.EvaluatorMode == SpiceEvaluatorMode.LtSpice),
-                            Settings.Reading.EvaluatorMode,
-                            Settings.Reading.Seed,
-                            new ExpressionRegistry(
-                                Settings.Reading.CaseSensitivity.IsParameterNameCaseSensitive, 
-                                Settings.Reading.CaseSensitivity.IsParameterNameCaseSensitive),
-                            Settings.Reading.CaseSensitivity.IsFunctionNameCaseSensitive,
-                            Settings.Reading.CaseSensitivity.IsParameterNameCaseSensitive);
+                "Preprocessors evaluator",
+                new SpiceExpressionParser(Settings.Reading.EvaluatorMode == SpiceExpressionMode.LtSpice),
+                Settings.Reading.CaseSensitivity.IsParameterNameCaseSensitive,
+                Settings.Reading.CaseSensitivity.IsFunctionNameCaseSensitive);
 
-            var exportFunctions = ExportFunctions.Create(
-                Settings.Reading.Mappings.Exporters,
-                new MainCircuitNodeNameGenerator(new string[] { "0" }, Settings.Reading.CaseSensitivity.IsNodeNameCaseSensitive),
-                new ObjectNameGenerator(string.Empty),
-                new ObjectNameGenerator(string.Empty),
-                null,
-                Settings.Reading.CaseSensitivity);
-
-            foreach (var exportFunction in exportFunctions)
-            {
-                preprocessorEvaluator.Functions.Add(exportFunction.Key, exportFunction.Value);
-            }
-
+           
             return preprocessorEvaluator;
         }
     }

@@ -59,16 +59,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
             if (exportParameter is SingleParameter s)
             {
                 string expressionName = s.Image;
-                var expressionNames = context.Evaluators.GetExpressionNames();
+                var expressionNames = context.ReadingExpressionContext.GetExpressionNames();
 
                 if (expressionNames.Contains(expressionName))
                 {
-                    var evaluator = context.Evaluators.GetSimulationEvaluator(simulation);
+                    var evaluator = context.SimulutionEvaluators.GetEvaluator(simulation);
                     var export = new ExpressionExport(
                         simulation.Name,
                         expressionName,
-                        evaluator.GetExpression(expressionName),
+                        context.ReadingExpressionContext.GetExpression(expressionName),
                         evaluator,
+                        context.SimulationExpressionContexts,
                         simulation);
 
                     return export;

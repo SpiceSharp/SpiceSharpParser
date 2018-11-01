@@ -215,8 +215,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             export.Simulation.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
-                var firstParameterSweepValue = context.Evaluators.GetSimulationEvaluator(export.Simulation).GetParameterValue(firstParameterSweep.Parameter.Image);
-                series.Points.Add(new Point() { X = firstParameterSweepValue, Y = export.Extract() });
+                var expressionContext = context.SimulationExpressionContexts.GetContext(export.Simulation);
+                var firstParameterSweepParameter = expressionContext.Parameters[firstParameterSweep.Parameter.Image];
+                var evaluator = context.SimulutionEvaluators.GetEvaluator(export.Simulation);
+                var value = firstParameterSweepParameter.Evaluate(evaluator, context.SimulationExpressionContexts.GetContext(export.Simulation));
+
+                series.Points.Add(new Point() { X = value, Y = export.Extract() });
             };
         }
 
@@ -312,19 +316,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         private void AddLetExport(IReadingContext context, Type simulationType, SingleParameter s)
         {
             string expressionName = s.Image;
-            var expressionNames = context.Evaluators.GetExpressionNames();
+            var expressionNames = context.ReadingExpressionContext.GetExpressionNames();
 
             if (expressionNames.Contains(expressionName))
             {
                 var simulations = Filter(context.Result.Simulations, simulationType);
                 foreach (var simulation in simulations)
                 {
-                    var evaluator = context.Evaluators.GetSimulationEvaluator(simulation);
+                    var evaluator = context.SimulutionEvaluators.GetEvaluator(simulation);
                     var export = new ExpressionExport(
                             simulation.Name,
                             expressionName,
-                            evaluator.GetExpression(expressionName),
+                            context.ReadingExpressionContext.GetExpression(expressionName),
                             evaluator,
+                            context.SimulationExpressionContexts,
                             simulation);
 
                     context.Result.AddExport(export);

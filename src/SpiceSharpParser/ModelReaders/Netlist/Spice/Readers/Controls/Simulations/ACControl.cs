@@ -43,9 +43,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             AC ac;
 
             string type = statement.Parameters.GetString(0).ToLower();
-            var numberSteps = context.ParseDouble(statement.Parameters.GetString(1));
-            var start = context.ParseDouble(statement.Parameters.GetString(2));
-            var stop = context.ParseDouble(statement.Parameters.GetString(3));
+            var numberSteps = context.EvaluateDouble(statement.Parameters.GetString(1));
+            var start = context.EvaluateDouble(statement.Parameters.GetString(2));
+            var stop = context.EvaluateDouble(statement.Parameters.GetString(3));
 
             switch (type)
             {
@@ -64,7 +64,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     if (ac.ComplexState != null)
                     {
                         var freq = ac.ComplexState.Laplace.Imaginary / (2.0 * Math.PI);
-                        context.Evaluators.SetParameter("FREQ", freq);
+                        context.SimulationExpressionContexts.GetContext(ac).SetParameter("FREQ", freq);
                     }
                 };
 

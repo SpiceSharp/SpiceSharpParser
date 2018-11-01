@@ -40,9 +40,9 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.Result.Returns(resultService);
-            readingContext.ParseDouble(Arg.Any<string>()).Returns(x => double.Parse((string)x[0]));
+            readingContext.EvaluateDouble(Arg.Any<string>()).Returns(x => double.Parse((string)x[0]));
             readingContext.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
-
+            readingContext.SimulationsParameters.Returns(new SimulationsParameters(Substitute.For<ISimulationEvaluators>()));
             // act
             var tranControl = new TransientControl(new ExporterMapper());
             tranControl.Read(control, readingContext);
@@ -80,8 +80,9 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.Result.Returns(resultService);
-            readingContext.ParseDouble(Arg.Any<string>()).Returns(x => double.Parse((string)x[0]));
+            readingContext.EvaluateDouble(Arg.Any<string>()).Returns(x => double.Parse((string)x[0]));
             readingContext.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
+            readingContext.SimulationsParameters.Returns(new SimulationsParameters(Substitute.For<ISimulationEvaluators>()));
 
             // act
             var tranControl = new TransientControl(new ExporterMapper());

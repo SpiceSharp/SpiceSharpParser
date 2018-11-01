@@ -251,12 +251,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 else
                 {
                     string expressionName = parameter.Image;
-                    var evaluator = context.Evaluators.GetSimulationEvaluator(simulation);
-                    var expressionNames = evaluator.GetExpressionNames();
+                    var evaluator = context.SimulutionEvaluators.GetEvaluator(simulation);
+                    var expressionNames = context.ReadingExpressionContext.GetExpressionNames();
 
                     if (expressionNames.Contains(expressionName))
                     {
-                        var export = new ExpressionExport(simulation.Name.ToString(), expressionName, evaluator.GetExpression(expressionName), evaluator, simulation);
+                        var export = new ExpressionExport(
+                            simulation.Name, 
+                            expressionName,
+                            context.ReadingExpressionContext.GetExpression(expressionName), 
+                            evaluator, 
+                            context.SimulationExpressionContexts,
+                            simulation);
+
                         export.Extract();
                         result.Add(export);
                     }

@@ -25,57 +25,67 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Initializes a new instance of the <see cref="SimulationsParameters"/> class.
         /// </summary>
         /// <param name="evaluators">Simulation simulationEvaluators.</param>
-        public SimulationsParameters(ISimulationEvaluatorsContainer evaluators)
+        public SimulationsParameters(ISimulationEvaluators evaluators)
         {
             Evaluators = evaluators;
         }
 
         protected EventHandler<SimulationEventArgs> SimulationCreated { get; set; }
 
-        protected ISimulationEvaluatorsContainer Evaluators { get; }
+        protected ISimulationEvaluators Evaluators { get; }
 
         public void Prepare(BaseSimulation simulation)
         {
             SimulationCreated?.Invoke(this, new SimulationEventArgs() { Simulation = simulation });
         }
 
-        public void SetICVoltage(string nodeId, string voltageExpression)
+        public void SetICVoltage(SimulationExpressionContexts contexts, string nodeId, string voltageExpression)
         {
             SimulationCreated += (object sender, SimulationEventArgs args) =>
-            {
-                var value = Evaluators.EvaluateDouble(voltageExpression, args.Simulation);
-
-                if (args.Simulation is TimeSimulation ts)
                 {
-                    ts.Configurations.Get<TimeConfiguration>().InitialConditions[nodeId] = value;
-                }
-            };
+                    args.Simulation.BeforeSetup += (object sender2,  EventArgs args2) =>
+                        {
+                            var simEval = Evaluators.GetEvaluator(args.Simulation);
+                            var context = contexts.GetContext(args.Simulation);
+                            var value = simEval.EvaluateValueExpression(voltageExpression, context);
+
+                            if (args.Simulation is TimeSimulation ts)
+                            {
+                                ts.Configurations.Get<TimeConfiguration>().InitialConditions[nodeId] = value;
+                            }
+                        };
+                };
         }
 
-        public void SetNodeSetVoltage(string nodeId, string expression)
+        public void SetNodeSetVoltage(SimulationExpressionContexts contexts, string nodeId, string expression)
         {
             SimulationCreated += (object sender, SimulationEventArgs args) =>
-            {
-                var value = Evaluators.EvaluateDouble(expression, args.Simulation);
-                args.Simulation.Configurations.Get<BaseConfiguration>().Nodesets[nodeId] = value;
-            };
+                {
+                    args.Simulation.BeforeTemperature += (object sender2, LoadStateEventArgs args2) =>
+                        {
+                            var simEval = Evaluators.GetEvaluator(args.Simulation);
+                            var context = contexts.GetContext(args.Simulation);
+                            var value = simEval.EvaluateValueExpression(expression, context);
+
+                            args.Simulation.Configurations.Get<BaseConfiguration>().Nodesets[nodeId] = value;
+                        };
+                };
         }
 
-        public void SetParameter(Entity @object, string paramName, string expression, int order, bool onload = true, IEqualityComparer<string> comparer = null)
+        public void SetParameter(SimulationExpressionContexts contexts, Entity @object, string paramName, string expression, int order, bool onload = true, IEqualityComparer<string> comparer = null)
         {
             SimulationCreated += (object sender, SimulationEventArgs args) =>
             {
                 if (onload)
                 {
-                    UpdateParameterBeforeLoad(paramName, @object, expression, args.Simulation, order, comparer);
+                    UpdateParameterBeforeLoad(contexts, paramName, @object, expression, args.Simulation, order, comparer);
                 }
 
-                UpdateParameterBeforeTemperature(paramName, @object, expression, args.Simulation, order, comparer);
+                UpdateParameterBeforeTemperature(contexts, paramName, @object, expression, args.Simulation, order, comparer);
             };
         }
 
-
-        public void SetParameter(Entity @object, string paramName, double value, int order, bool onload = true, IEqualityComparer<string> comparer = null)
+        public void SetParameter(SimulationExpressionContexts contexts, Entity @object, string paramName, double value, int order, bool onload = true, IEqualityComparer<string> comparer = null)
         {
             SimulationCreated += (object sender, SimulationEventArgs args) =>
                 {
@@ -88,7 +98,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 };
         }
 
-        public void SetParameter(Entity @object, string paramName, string expression, BaseSimulation simulation, int order, bool onload = true, IEqualityComparer<string> comparer = null)
+        public void SetParameter(SimulationExpressionContexts contexts, Entity @object, string paramName, string expression, BaseSimulation simulation, int order, bool onload = true, IEqualityComparer<string> comparer = null)
         {
             if (simulation == null)
             {
@@ -97,13 +107,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             if (onload)
             {
-                UpdateParameterBeforeLoad(paramName, @object, expression, simulation, order, comparer);
+                UpdateParameterBeforeLoad(contexts, paramName, @object, expression, simulation, order, comparer);
             }
 
-            UpdateParameterBeforeTemperature(paramName, @object, expression, simulation, order, comparer);
+            UpdateParameterBeforeTemperature(contexts, paramName, @object, expression, simulation, order, comparer);
         }
 
-        public void SetParameter(Entity @object, string paramName, double value, BaseSimulation simulation, int order, IEqualityComparer<string> comparer = null)
+        public void SetParameter(SimulationExpressionContexts contexts, Entity @object, string paramName, double value, BaseSimulation simulation, int order, IEqualityComparer<string> comparer = null)
         {
             if (simulation == null)
             {
@@ -113,7 +123,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             UpdateParameterBeforeTemperature(paramName, @object, value, simulation, order, comparer);
         }
 
-        private void UpdateParameterBeforeTemperature(string paramName, Entity @object, string expression, BaseSimulation simulation, int order, IEqualityComparer<string> comparer)
+        private void UpdateParameterBeforeTemperature(SimulationExpressionContexts contexts, string paramName, Entity @object, string expression, BaseSimulation simulation, int order, IEqualityComparer<string> comparer)
         {
             InitBeforeTemperatureDictionaries(paramName, @object, simulation, comparer);
 
@@ -128,7 +138,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 BeforeTemperature[simulation][@object][paramName].Clear();
             }
 
-            EventHandler<LoadStateEventArgs> handler = CreateUpdateHandler(paramName, @object, expression, simulation, comparer);
+            EventHandler<LoadStateEventArgs> handler = CreateUpdateHandler(contexts, paramName, @object, expression, simulation, comparer);
             BeforeTemperatureOrder[simulation][@object][paramName] = order;
             BeforeTemperature[simulation][@object][paramName].Add(handler);
             simulation.BeforeTemperature += handler;
@@ -155,7 +165,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             simulation.BeforeTemperature += handler;
         }
 
-        private void UpdateParameterBeforeLoad(string paramName, Entity @object, string expression, BaseSimulation simulation, int order, IEqualityComparer<string> comparer)
+        private void UpdateParameterBeforeLoad(SimulationExpressionContexts contexts, string paramName, Entity @object, string expression, BaseSimulation simulation, int order, IEqualityComparer<string> comparer)
         {
             InitBeforeLoadDictionaries(paramName, @object, simulation, comparer);
 
@@ -171,7 +181,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
 
             BeforeLoadsOrder[simulation][@object][paramName] = order;
-            EventHandler<LoadStateEventArgs> handler = CreateUpdateHandler(paramName, @object, expression, simulation, comparer);
+            EventHandler<LoadStateEventArgs> handler = CreateUpdateHandler(contexts, paramName, @object, expression, simulation, comparer);
             BeforeLoads[simulation][@object][paramName].Add(handler);
             simulation.BeforeLoad += handler;
         }
@@ -300,7 +310,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return handler;
         }
 
-        private EventHandler<LoadStateEventArgs> CreateUpdateHandler(string paramName, Entity @object, string expression, BaseSimulation simulation, IEqualityComparer<string> comparer)
+        private EventHandler<LoadStateEventArgs> CreateUpdateHandler(SimulationExpressionContexts contexts, string paramName, Entity @object, string expression, BaseSimulation simulation, IEqualityComparer<string> comparer)
         {
             EventHandler<LoadStateEventArgs> handler = (object sender, LoadStateEventArgs args) =>
             {
@@ -319,8 +329,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                     throw new Exception("Parameter " + paramName + " not found in: " + @object.Name);
                 }
 
-                var evaluator = Evaluators.GetSimulationEntityEvaluator(simulation, @object.Name);
-                var value = evaluator.EvaluateDouble(expression);
+                var simEval = Evaluators.GetEvaluator(simulation);
+
+                var contextName = string.Empty;
+                var dotIndex = @object.Name.LastIndexOf('.');
+                if (dotIndex >= 0)
+                {
+                    contextName = @object.Name.Substring(0, dotIndex);
+                }
+
+                var context = contexts.GetContext(simulation).Find(contextName);
+                var value = simEval.EvaluateValueExpression(expression, context);
                 parameter.Value = value;
             };
             return handler;

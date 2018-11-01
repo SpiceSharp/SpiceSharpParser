@@ -28,7 +28,7 @@
         {
         }
 
-        public override double Evaluate(IEvaluator evaluator)
+        public override double Evaluate(IEvaluator evaluator, ExpressionContext context)
         {
             return CurrentValue;
         }

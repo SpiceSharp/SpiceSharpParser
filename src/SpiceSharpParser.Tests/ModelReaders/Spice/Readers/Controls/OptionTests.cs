@@ -7,6 +7,8 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharp;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Parsers.Expression;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 {
@@ -35,21 +37,25 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             };
 
             var evaluator = Substitute.For<IEvaluator>();
-            evaluator.EvaluateDouble("12.2").Returns(12.2);
-            evaluator.EvaluateDouble("12.3").Returns(12.3);
+            evaluator.EvaluateValueExpression("12.2", Arg.Any<ExpressionContext>()).Returns(12.2);
+            evaluator.EvaluateValueExpression("12.3", Arg.Any<ExpressionContext>()).Returns(12.3);
 
             var resultService = new ResultService(new SpiceNetlistReaderResult(new Circuit(), "title"));
             var readingContext = new ReadingContext(
-                string.Empty,
-                Substitute.For<ISimulationsParameters>(),
-                new SimulationEvaluatorsContainer(evaluator, new FunctionFactory()),
-                resultService,
-                new MainCircuitNodeNameGenerator(new string[] { }, true),
-                new ObjectNameGenerator(string.Empty),
-                new ObjectNameGenerator(string.Empty),
-                null,
-                null,
-                new SpiceNetlistCaseSensitivitySettings());
+              string.Empty,
+              new SpiceExpressionParser(),
+              new SimulationsParameters(null),
+              new SimulationEvaluators(evaluator, new FunctionFactory()),
+              new SimulationExpressionContexts(null),
+              resultService,
+              new MainCircuitNodeNameGenerator(new string[] { }, true),
+              new ObjectNameGenerator(string.Empty),
+              new ObjectNameGenerator(string.Empty),
+              null,
+              null,
+              new SpiceEvaluator(),
+              new ExpressionContext(),
+              new SpiceNetlistCaseSensitivitySettings());
 
             // act
             var optionControl = new OptionsControl();
@@ -80,16 +86,20 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var evaluator = Substitute.For<IEvaluator>();
             var resultService = new ResultService(new SpiceNetlistReaderResult(new Circuit(), "title"));
             var readingContext = new ReadingContext(
-                string.Empty,
-                Substitute.For<ISimulationsParameters>(),
-                new SimulationEvaluatorsContainer(evaluator, new FunctionFactory()),
-                resultService,
-                new MainCircuitNodeNameGenerator(new string[] { }, true),
-                new ObjectNameGenerator(string.Empty),
-                new ObjectNameGenerator(string.Empty),
-                null,
-                null,
-                new SpiceNetlistCaseSensitivitySettings());
+              string.Empty,
+              new SpiceExpressionParser(),
+              new SimulationsParameters(null),
+              new SimulationEvaluators(evaluator, new FunctionFactory()),
+              new SimulationExpressionContexts(null),
+              resultService,
+              new MainCircuitNodeNameGenerator(new string[] { }, true),
+              new ObjectNameGenerator(string.Empty),
+              new ObjectNameGenerator(string.Empty),
+              null,
+              null,
+              null,
+              null,
+              new SpiceNetlistCaseSensitivitySettings());
 
             // act
             var optionControl = new OptionsControl();

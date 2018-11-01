@@ -41,6 +41,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.Result.Returns(resultService);
             readingContext.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
+            readingContext.SimulationsParameters.Returns(new SimulationsParameters(Substitute.For<ISimulationEvaluators>()));
             // act
             var dcControl = new DCControl(new ExporterMapper());
             dcControl.Read(control, readingContext);

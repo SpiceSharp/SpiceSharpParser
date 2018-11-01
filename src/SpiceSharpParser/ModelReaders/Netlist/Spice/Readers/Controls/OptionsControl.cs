@@ -27,26 +27,26 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     switch (name)
                     {
                         case "abstol":
-                            context.Result.SimulationConfiguration.AbsoluteTolerance = context.ParseDouble(value); break;
+                            context.Result.SimulationConfiguration.AbsoluteTolerance = context.EvaluateDouble(value); break;
                         case "reltol":
-                            context.Result.SimulationConfiguration.RelTolerance = context.ParseDouble(value); break;
+                            context.Result.SimulationConfiguration.RelTolerance = context.EvaluateDouble(value); break;
                         case "gmin":
-                            context.Result.SimulationConfiguration.Gmin = context.ParseDouble(value); break;
+                            context.Result.SimulationConfiguration.Gmin = context.EvaluateDouble(value); break;
                         case "itl1":
-                            context.Result.SimulationConfiguration.DCMaxIterations = (int)context.ParseDouble(value); break;
+                            context.Result.SimulationConfiguration.DCMaxIterations = (int)context.EvaluateDouble(value); break;
                         case "itl2":
-                            context.Result.SimulationConfiguration.SweepMaxIterations = (int)context.ParseDouble(value); break;
+                            context.Result.SimulationConfiguration.SweepMaxIterations = (int)context.EvaluateDouble(value); break;
                         case "itl4":
-                            context.Result.SimulationConfiguration.TranMaxIterations = (int)context.ParseDouble(value); break;
+                            context.Result.SimulationConfiguration.TranMaxIterations = (int)context.EvaluateDouble(value); break;
                         case "itl5":
                             // TODO: ????
                             break;
                         case "temp":
-                            double temp = context.ParseDouble(value) + Circuit.CelsiusKelvin;
+                            double temp = context.EvaluateDouble(value) + Circuit.CelsiusKelvin;
                             context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions = temp;
                             context.Result.SimulationConfiguration.TemperaturesInKelvins.Add(temp); break;
                         case "tnom":
-                            context.Result.SimulationConfiguration.NominalTemperatureInKelvins = context.ParseDouble(value) + Circuit.CelsiusKelvin; break;
+                            context.Result.SimulationConfiguration.NominalTemperatureInKelvins = context.EvaluateDouble(value) + Circuit.CelsiusKelvin; break;
                         case "method":
                             switch (value.ToLower())
                             {
