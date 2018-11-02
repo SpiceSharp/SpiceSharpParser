@@ -8,6 +8,8 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {
+    using SpiceSharpParser.Common.Evaluation;
+
     /// <summary>
     /// Current sources generator.
     /// </summary>
@@ -73,7 +75,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     throw new WrongParametersCountException(name, "poly expects one argument => dimension");
                 }
 
-                var dimension = (int)context.Evaluators.EvaluateDouble(polyParameter.Parameters[0].Image);
+                var dimension = (int)context.EvaluateDouble(polyParameter.Parameters[0].Image);
                 var expression = ExpressionGenerator.CreatePolyCurrentExpression(dimension, parameters.Skip(3));
 
                 var cs = new CurrentSource(name);
@@ -89,7 +91,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.CreateNodes(cs, parameters);
 
                 var tableParameter = name + "_table_variable";
-                context.Evaluators.SetParameter(tableParameter, formulaParameter.Expression);
+                context.SetParameter(tableParameter, formulaParameter.Expression);
+
                 string expression = ExpressionGenerator.CreateTableExpression(tableParameter, formulaParameter);
                 context.SetParameter(cs, "dc", expression);
                 return cs;
@@ -141,7 +144,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     throw new WrongParametersCountException(name, "poly expects one argument => dimension");
                 }
 
-                var dimension = (int)context.Evaluators.EvaluateDouble(polyParameter.Parameters[0].Image);
+                var dimension = (int)context.EvaluateDouble(polyParameter.Parameters[0].Image);
                 var expression = ExpressionGenerator.CreatePolyVoltageExpression(dimension, parameters.Skip(3));
 
                 var cs = new CurrentSource(name);
@@ -157,7 +160,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.CreateNodes(cs, parameters);
 
                 var tableParameter = name + "_table_variable";
-                context.Evaluators.SetParameter(tableParameter, formulaParameter.Expression);
+                context.SetParameter(tableParameter, formulaParameter.Expression);
                 string expression = ExpressionGenerator.CreateTableExpression(tableParameter, formulaParameter);
                 context.SetParameter(cs, "dc", expression);
                 return cs;

@@ -125,7 +125,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
         private void RegisterParameter(Parameter variableParameter, IReadingContext context)
         {
-            context.Evaluators.SetParameter(variableParameter.Image, 0);
+            context.SetParameter(variableParameter.Image, 0);
         }
     }
 }

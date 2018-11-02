@@ -21,10 +21,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         {
         }
 
-        /// <summary>
-        /// Gets or sets the evaluator.
-        /// </summary>
-        public ISimulationEvaluatorsContainer Evaluators { get; set; }
+        public IExpressionParser ExpressionParser { get; set; }
+
+        public ExpressionContext ExpressionContext { get; set; }
+
+        public IEvaluator Evaluator { get; set; }
 
         /// <summary>
         /// Gets or sets the evaluator.
@@ -33,7 +34,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
         public Statements Process(Statements statements)
         {
-            if (Evaluators == null)
+            if (Evaluator == null)
             {
                 throw new InvalidOperationException("No evaluator");
             }
@@ -41,7 +42,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             ParamControl paramControl = new ParamControl();
             foreach (Control param in statements.Where(statement => statement is Control c && c.Name.ToLower() == "param"))
             {
-                paramControl.Read(param, Evaluators, CaseSettings);
+                paramControl.Read(param, ExpressionParser, ExpressionContext, CaseSettings);
             }
 
             return ReadIfs(statements);
@@ -126,7 +127,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                 elseIfControl = result[elseIfControlIndex] as Control;
             }
 
-            if (Evaluators.EvaluateDouble(ifCondition.Image) >= 1.0)
+            if (Evaluator.EvaluateValueExpression(ifCondition.Image, ExpressionContext) >= 1.0)
             {
                 if (elseIfControl != null)
                 {

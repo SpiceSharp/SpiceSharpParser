@@ -156,9 +156,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 Parameter = variableParameter,
                 Sweep = new DecadeSweep(
-                    context.ParseDouble(parameters[0].Image),
-                    context.ParseDouble(parameters[1].Image),
-                    (int)context.ParseDouble(parameters[2].Image)),
+                    context.EvaluateDouble(parameters[0].Image),
+                    context.EvaluateDouble(parameters[1].Image),
+                    (int)context.EvaluateDouble(parameters[2].Image)),
             };
 
             context.Result.SimulationConfiguration.ParameterSweeps.Add(pSweep);
@@ -170,9 +170,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 Parameter = variableParameter,
                 Sweep = new OctaveSweep(
-                    context.ParseDouble(parameters[0].Image),
-                    context.ParseDouble(parameters[1].Image),
-                    (int)context.ParseDouble(parameters[2].Image)),
+                    context.EvaluateDouble(parameters[0].Image),
+                    context.EvaluateDouble(parameters[1].Image),
+                    (int)context.EvaluateDouble(parameters[2].Image)),
             };
 
             context.Result.SimulationConfiguration.ParameterSweeps.Add(pSweep);
@@ -189,7 +189,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     throw new WrongParameterTypeException();
                 }
 
-                values.Add(context.ParseDouble(parameter.Image));
+                values.Add(context.EvaluateDouble(parameter.Image));
             }
 
             context.Result.SimulationConfiguration.ParameterSweeps.Add(
@@ -206,9 +206,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 Parameter = variableParameter,
                 Sweep = new LinearSweep(
-                    context.ParseDouble(parameters[0].Image),
-                    context.ParseDouble(parameters[1].Image),
-                    context.ParseDouble(parameters[2].Image)),
+                    context.EvaluateDouble(parameters[0].Image),
+                    context.EvaluateDouble(parameters[1].Image),
+                    context.EvaluateDouble(parameters[2].Image)),
             };
 
             context.Result.SimulationConfiguration.ParameterSweeps.Add(pSweep);

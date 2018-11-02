@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace SpiceSharpParser.IntegrationTests
+namespace SpiceSharpParser.IntegrationTests.Common
 {
     public class ValueFormatTests : BaseTests
     {

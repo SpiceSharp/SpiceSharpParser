@@ -54,8 +54,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         public bool IsParameterNameCaseSensitive { get; set; } = false;
 
         /// <summary>
-        /// Gets or sets a value indicating whether let names are case-sensitive.
+        /// Gets or sets a value indicating whether expression names are case-sensitive.
         /// </summary>
-        public bool IsLetExpressionNameCaseSensitive { get; set; } = false;
+        public bool IsExpressionNameCaseSensitive { get; set; } = false;
     }
 }

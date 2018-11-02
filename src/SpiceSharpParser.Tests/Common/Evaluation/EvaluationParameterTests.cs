@@ -9,12 +9,10 @@ namespace SpiceSharpParser.Tests.Common.Evaluation
         [Fact]
         public void SetCallsSetParameter()
         {
-            var evaluator = Substitute.For<IEvaluator>();
-
-            var parameter = new EvaluationParameter(evaluator, "a");
+            var c = Substitute.For<ExpressionContext>();
+            var parameter = new EvaluationParameter(c, "a");
             parameter.Value = 12;
-
-            evaluator.Received().SetParameter("a", 12);
+            c.Received().SetParameter("a", 12);
         }
     }
 }

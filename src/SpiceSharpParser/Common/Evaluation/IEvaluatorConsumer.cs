@@ -5,8 +5,12 @@ namespace SpiceSharpParser.Common.Evaluation
 {
     public interface IEvaluatorConsumer
     {
-        ISimulationEvaluatorsContainer Evaluators { set; }
+        IEvaluator Evaluator { get; set; }
+
+        ExpressionContext ExpressionContext { get; set; }
 
         SpiceNetlistCaseSensitivitySettings CaseSettings { set; }
+
+        IExpressionParser ExpressionParser { set; }
     }
 }

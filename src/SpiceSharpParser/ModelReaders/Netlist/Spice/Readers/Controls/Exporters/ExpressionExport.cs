@@ -5,6 +5,8 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
+    using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+
     /// <summary>
     /// Describes a quantity that can be exported using data from expression.
     /// </summary>
@@ -13,11 +15,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpressionExport"/> class.
         /// </summary>
-        /// <param name="name">Name of export</param>
-        /// <param name="expressionName">Name of expression</param>
-        /// <param name="expression">Expression</param>
-        /// <param name="evaluator">Evaluator</param>
-        public ExpressionExport(string name, string expressionName, string expression, IEvaluator evaluator, Simulation simulation)
+        /// <param name="name">Name of export.</param>
+        /// <param name="expressionName">Name of expression.</param>
+        /// <param name="expression">Expression.</param>
+        /// <param name="evaluator">Evaluator.</param>
+        public ExpressionExport(string name, string expressionName, string expression, IEvaluator evaluator, SimulationExpressionContexts contexts, Simulation simulation)
             : base(simulation)
         {
             Name = name;
@@ -25,7 +27,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             Evaluator = evaluator;
             Expression = expression;
             Name = ExpressionName;
-
+            ExpressionContexts = contexts;
         }
 
         /// <summary>
@@ -34,9 +36,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         public string ExpressionName { get; }
 
         /// <summary>
-        /// Gets or sets the evalutor.
+        /// Gets or sets the evaluator.
         /// </summary>
         public IEvaluator Evaluator { get; set; }
+
+        /// <summary>
+        /// Gets or sets the expression context.
+        /// </summary>
+        public SimulationExpressionContexts ExpressionContexts { get; set; }
 
         /// <summary>
         /// Gets the expression.
@@ -61,7 +68,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// </returns>
         public override double Extract()
         {
-            return Evaluator.EvaluateDouble(Expression);
+            return Evaluator.EvaluateValueExpression(Expression, ExpressionContexts.GetContext(Simulation));
         }
     }
 }

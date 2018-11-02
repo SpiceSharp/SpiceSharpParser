@@ -6,18 +6,8 @@
         /// Initializes a new instance of the <see cref="CachedExpression"/> class.
         /// </summary>
         /// <param name="expression">Expression string.</param>
-        /// <param name="evaluator">Evaluator.</param>
-        public CachedExpression(string expression, IEvaluator evaluator)
-            : base(expression, evaluator)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CachedExpression"/> class.
-        /// </summary>
-        /// <param name="evaluator">Evaluator.</param>
-        public CachedExpression(IEvaluator evaluator)
-            : this(string.Empty, evaluator)
+        public CachedExpression(string expression)
+            : base(expression)
         {
         }
 
@@ -29,14 +19,15 @@
         /// <summary>
         /// Evaluates the expression.
         /// </summary>
+        /// <param name="evaluator">Evaluator.</param>
         /// <returns>
         /// The value of the expression.
         /// </returns>
-        public override double Evaluate()
+        public override double Evaluate(IEvaluator evaluator, ExpressionContext context)
         {
             if (!IsEvaluated)
             {
-                CurrentValue = Evaluator.EvaluateDouble(String);
+                CurrentValue = evaluator.EvaluateValueExpression(String, context);
                 IsEvaluated = true;
             }
 

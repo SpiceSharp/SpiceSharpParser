@@ -33,19 +33,19 @@ namespace SpiceSharpParser.PerformanceTests
             int n = 2000000;
             for (var i = 0; i < n; i++)
             {
-                sum += result.Value(new ExpressionEvaluationContext(false));
+                sum += result.Value(new ExpressionEvaluationContext());
             }
         }
 
         [Fact]
         public void EvaluateDouble()
         {
-            var expressionParser = new SpiceEvaluator();
+            var expressionParser = new SpiceEvaluator(string.Empty, new SpiceExpressionParser(false), false, false);
             double sum = 0;
             int n = 2000000;
             for (var i = 0; i < n; i++)
             {
-                sum += expressionParser.EvaluateDouble("1 + 1 + 1 + 1 + 1 + 1 + 1");
+                sum += expressionParser.EvaluateValueExpression("1 + 1 + 1 + 1 + 1 + 1 + 1", new ExpressionContext(string.Empty, false, false, false));
             }
         }
     }

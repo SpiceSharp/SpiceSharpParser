@@ -3,6 +3,7 @@ using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -11,7 +12,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets the context name.
         /// </summary>
-        string ContextName { get; }
+        string Name { get; }
+
+        SimulationExpressionContexts SimulationExpressionContexts { get; }
+
+        ExpressionContext ReadingExpressionContext { get; }
 
         /// <summary>
         /// Gets the simulation parameters.
@@ -19,9 +24,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         ISimulationsParameters SimulationsParameters { get; }
 
         /// <summary>
-        /// Gets the evaluators.
+        /// Gets the simulation evaluators.
         /// </summary>
-        ISimulationEvaluatorsContainer Evaluators { get; }
+        ISimulationEvaluators SimulutionEvaluators { get; }
+
+        /// <summary>
+        /// Gets the reading evaluator.
+        /// </summary>
+        IEvaluator ReadingEvaluator { get; }
 
         /// <summary>
         /// Gets the parent of the context.
@@ -78,6 +88,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         SpiceNetlistCaseSensitivitySettings CaseSensitivity { get; set; }
 
+        IExpressionParser ExpressionParser { get; }
+
         /// <summary>
         /// Parses an expression to double.
         /// </summary>
@@ -85,7 +97,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// A value of expression.
         /// </returns>
-        double ParseDouble(string expression);
+        double EvaluateDouble(string expression);
+
+        void SetParameter(string pName, double time);
 
         /// <summary>
         /// Sets parameter of entity to value of expression.
@@ -116,5 +130,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="statements">Statements.</param>
         /// <param name="orderer">Orderer of statements.</param>
         void Read(Statements statements, ISpiceStatementsOrderer orderer);
+
+        void SetParameter(string pName, string expression);
+
+        void AddFunction(string functionName, List<string> arguments, string body);
+
+        void SetNamedExpression(string expressionName, string expression);
     }
 }

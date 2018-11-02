@@ -20,11 +20,23 @@ namespace SpiceSharpParser.Common.Evaluation
             ParametersExpressionsDependencies = new Dictionary<string, List<Expression>>(StringComparerProvider.Get(isParameterNameCaseSensitive));
             ParametersDependencies = new Dictionary<string, HashSet<string>>(StringComparerProvider.Get(isParameterNameCaseSensitive));
             UnnamedExpressions = new List<Expression>();
+            Parameters = new Dictionary<string, Expression>(StringComparerProvider.Get(isParameterNameCaseSensitive));
         }
 
+        /// <summary>
+        /// Gets a value indicating whether parameter names are case sensitive.
+        /// </summary>
         public bool IsParameterNameCaseSensitive { get; }
 
+        /// <summary>
+        /// Gets a value indicating whether expression names are case sensitive.
+        /// </summary>
         public bool IsExpressionNameCaseSensitive { get; }
+
+        /// <summary>
+        /// Gets or sets the dictionary of parameters.
+        /// </summary>
+        public Dictionary<string, Expression> Parameters { get; }
 
         /// <summary>
         /// Gets the dictionary of named expressions.
@@ -199,8 +211,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Refreshes the expressions in the registry that depends on the given parameter.
         /// </summary>
         /// <param name="parameterName">Parameter name.</param>
-        /// <param name="parameterEval">Evaluation function.</param>
-        public void RefreshDependentParameters(string parameterName, Action<string> parameterEval)
+        public void InvalidateDependentParameters(string parameterName)
         {
             if (parameterName == null)
             {
@@ -211,8 +222,29 @@ namespace SpiceSharpParser.Common.Evaluation
             {
                 foreach (var parameter in ParametersDependencies[parameterName])
                 {
-                    parameterEval?.Invoke(parameter);
-                    RefreshDependentParameters(parameter, parameterEval);
+                    Parameters[parameter].Invalidate();
+
+                    InvalidateDependentParameters(parameter);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Refreshes the expressions in the registry that depends on the given parameter.
+        /// </summary>
+        /// <param name="parameterName">Parameter name.</param>
+        public void InvalidateExpressions(string parameterName)
+        {
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
+            if (ParametersDependencies.ContainsKey(parameterName))
+            {
+                foreach (var parameter in ParametersDependencies[parameterName])
+                {
+                    InvalidateExpressions(parameter);
                 }
             }
 
@@ -221,7 +253,6 @@ namespace SpiceSharpParser.Common.Evaluation
                 foreach (var expression in ParametersExpressionsDependencies[parameterName])
                 {
                     expression.Invalidate();
-                    expression.Evaluate();
                 }
             }
         }
@@ -235,6 +266,11 @@ namespace SpiceSharpParser.Common.Evaluation
         public ExpressionRegistry Clone()
         {
             var result = new ExpressionRegistry(IsParameterNameCaseSensitive, IsExpressionNameCaseSensitive);
+
+            foreach (var parameter in Parameters)
+            {
+                result.Parameters[parameter.Key] = parameter.Value.Clone();
+            }
 
             foreach (var dep in ParametersDependencies)
             {
@@ -290,45 +326,24 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Invalidates the registry.
         /// </summary>
-        public void Invalidate(IEvaluator newEvaluator)
+        public void Invalidate()
         {
             foreach (var exprDep in ParametersExpressionsDependencies)
             {
                 foreach (var expr in exprDep.Value)
                 {
-                    expr.Evaluator = newEvaluator;
                     expr.Invalidate();
                 }
             }
 
             foreach (var expression in NamedExpressions.Values)
             {
-                expression.Evaluator = newEvaluator;
                 expression.Invalidate();
             }
 
             foreach (var expression in UnnamedExpressions)
             {
-                expression.Evaluator = newEvaluator;
                 expression.Invalidate();
-            }
-        }
-
-        public void RemoveExpression(string expression)
-        {
-            var expr = UnnamedExpressions.FirstOrDefault(a => a.String == expression);
-
-            if (expr != null)
-            {
-                UnnamedExpressions.Remove(expr);
-            }
-
-            foreach (var ped in ParametersExpressionsDependencies)
-            {
-                if (ped.Value.Contains(expr))
-                {
-                    ped.Value.Remove(expr);
-                }
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 {
-    public enum SpiceEvaluatorMode
+    public enum SpiceExpressionMode
     {
         Spice3f5 = 0,
         SmartSpice = 1,

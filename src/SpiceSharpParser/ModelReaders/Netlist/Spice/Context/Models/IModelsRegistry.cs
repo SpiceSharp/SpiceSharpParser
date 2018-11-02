@@ -1,6 +1,6 @@
-﻿using SpiceSharp.Circuits;
+﻿using System;
+using SpiceSharp.Circuits;
 using SpiceSharp.Components;
-using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {

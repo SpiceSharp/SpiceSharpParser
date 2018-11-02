@@ -71,7 +71,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Waveforms
             };
 
             var readingContext = Substitute.For<IReadingContext>();
-            readingContext.ParseDouble(Arg.Any<string>()).Returns(x => double.Parse((string)x[0]));
+            readingContext.EvaluateDouble(Arg.Any<string>()).Returns(x => double.Parse((string)x[0]));
 
             // act
             var generator = new SineGenerator();
@@ -102,7 +102,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Waveforms
             };
 
             var readingContext = Substitute.For<IReadingContext>();
-            readingContext.ParseDouble(Arg.Any<string>()).Returns(x => double.Parse((string)x[0]));
+            readingContext.EvaluateDouble(Arg.Any<string>()).Returns(x => double.Parse((string)x[0]));
 
             // act
             var generator = new SineGenerator();
@@ -135,7 +135,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Waveforms
             };
 
             var readingContext = Substitute.For<IReadingContext>();
-            readingContext.ParseDouble(Arg.Any<string>()).Returns(x => double.Parse((string)x[0]));
+            readingContext.EvaluateDouble(Arg.Any<string>()).Returns(x => double.Parse((string)x[0]));
 
             // act
             var generator = new SineGenerator();

@@ -17,7 +17,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
             function.VirtualParameters = false;
             function.ArgumentsCount = 1;
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 double d = args[0];
 
@@ -40,7 +40,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
             function.VirtualParameters = false;
             function.ArgumentsCount = 1;
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 double d = args[0];
 
@@ -63,7 +63,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
             function.VirtualParameters = false;
             function.ArgumentsCount = 1;
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 double a = args[0];
                 return Math.Tan(a);
@@ -85,7 +85,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
             function.VirtualParameters = false;
             function.ArgumentsCount = 1;
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 double a = args[0];
                 return Math.Cosh(a);
@@ -107,7 +107,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
             function.VirtualParameters = false;
             function.ArgumentsCount = 1;
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 double a = args[0];
                 return Math.Sinh(a);
@@ -129,7 +129,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
             function.VirtualParameters = false;
             function.ArgumentsCount = 1;
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 double a = args[0];
                 return Math.Tanh(a);
@@ -151,7 +151,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
             function.VirtualParameters = false;
             function.ArgumentsCount = 1;
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 double a = args[0];
                 return Math.Acos(a);
@@ -173,7 +173,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
             function.VirtualParameters = false;
             function.ArgumentsCount = 1;
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 double a = args[0];
                 return Math.Asin(a);
@@ -195,7 +195,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
             function.VirtualParameters = false;
             function.ArgumentsCount = 1;
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 double a = args[0];
                 return Math.Atan(a);
@@ -217,7 +217,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
             function.VirtualParameters = false;
             function.ArgumentsCount = 1;
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 double y = args[0];
                 double x = args[1];

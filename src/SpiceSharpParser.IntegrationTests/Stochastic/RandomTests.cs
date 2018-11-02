@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using Xunit;
 
-namespace SpiceSharpParser.IntegrationTests
+namespace SpiceSharpParser.IntegrationTests.Stochastic
 {
     public class RandomTests : BaseTests
     {

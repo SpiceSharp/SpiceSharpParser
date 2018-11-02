@@ -1,24 +1,13 @@
-﻿using System.Collections.Generic;
-
-namespace SpiceSharpParser.Common.Evaluation
+﻿namespace SpiceSharpParser.Common.Evaluation
 {
     public class ExpressionEvaluationContext
     {
         public ExpressionEvaluationContext()
-            : this(false)
         {
+            ExpressionContext = new ExpressionContext();
         }
 
-        public ExpressionEvaluationContext(bool caseSensitiveParameters)
-        {
-            Parameters = new Dictionary<string, Expression>(StringComparerProvider.Get(caseSensitiveParameters));
-        }
-
-        /// <summary>
-        /// Gets the parameters.
-        /// </summary>
-        public Dictionary<string, Expression> Parameters { get; set; }
-
+        public ExpressionContext ExpressionContext { get; set; }
 
         public IEvaluator Evaluator { get; set; }
     }

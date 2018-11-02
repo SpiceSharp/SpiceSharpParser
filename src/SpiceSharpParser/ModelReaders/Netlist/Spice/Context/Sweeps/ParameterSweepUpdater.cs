@@ -8,6 +8,8 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
+    using System;
+
     public class ParameterSweepUpdater : IParameterSweepUpdater
     {
         /// <summary>
@@ -16,7 +18,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="simulation">Simulation to set.</param>
         /// <param name="context">Reading context.</param>
         /// <param name="parameterValues">Parameter values.</param>
-        public void Update(BaseSimulation simulation, IReadingContext context, List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues)
+        public void Update(
+            BaseSimulation simulation,
+            IReadingContext context,
+            List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues)
+        {
+            UpdateSweep(simulation, context, parameterValues);
+        }
+
+        protected void UpdateSweep(BaseSimulation simulation, IReadingContext context, List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues)
         {
             foreach (var paramToSet in parameterValues)
             {
@@ -48,7 +58,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             string paramName = rp.Argument;
             if (context.Result.FindObject(objectName, out Entity @object))
             {
-                context.SimulationsParameters.SetParameter(@object, paramName, paramToSet.Value, simulation, int.MaxValue, StringComparerProvider.Get(context.CaseSensitivity.IsEntityParameterNameCaseSensitive));
+                context.SimulationsParameters.SetParameter(context.SimulationExpressionContexts, @object, paramName, paramToSet.Value, simulation, int.MaxValue, StringComparerProvider.Get(context.CaseSensitivity.IsEntityParameterNameCaseSensitive));
             }
         }
 
@@ -61,6 +71,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 context
                     .SimulationsParameters
                     .SetParameter(
+                        context.SimulationExpressionContexts,
                         model,
                         paramName,
                         paramToSet.Value,
@@ -72,10 +83,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         protected void SetSimulationParameter(BaseSimulation simulation, IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet)
         {
-            context
-                .Evaluators
-                .GetSimulationEvaluator(simulation)
-                .SetParameter(paramToSet.Key.Image, paramToSet.Value);
+            simulation.BeforeSetup += (object sender, EventArgs args) =>
+            {
+                    context.SimulationExpressionContexts.GetContext(simulation).SetParameter(
+                        paramToSet.Key.Image,
+                        paramToSet.Value);
+            };
         }
 
         protected void SetIndependentSource(Entity @entity, BaseSimulation simulation, IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet)
@@ -84,7 +97,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 context
                     .SimulationsParameters
-                    .SetParameter(@entity, "dc", paramToSet.Value, simulation, int.MaxValue);
+                    .SetParameter(context.SimulationExpressionContexts, @entity, "dc", paramToSet.Value, simulation, int.MaxValue);
             }
         }
     }

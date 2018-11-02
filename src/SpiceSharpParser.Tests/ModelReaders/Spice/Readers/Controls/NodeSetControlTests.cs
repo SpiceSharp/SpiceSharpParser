@@ -43,14 +43,15 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.CaseSensitivity = new SpiceNetlistCaseSensitivitySettings();
-
+            readingContext.SimulationsParameters.Returns(Substitute.For<ISimulationsParameters>());
+            readingContext.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }, false));
             // act
             var nodeSetControl = new NodeSetControl();
             nodeSetControl.Read(control, readingContext);
 
             // assert
-            readingContext.Received().SimulationsParameters.SetNodeSetVoltage("input", "12");
-            readingContext.Received().SimulationsParameters.SetNodeSetVoltage("x", "13");
+            readingContext.SimulationsParameters.Received().SetNodeSetVoltage(Arg.Any<SimulationExpressionContexts>(), "input", "12");
+            readingContext.SimulationsParameters.Received().SetNodeSetVoltage(Arg.Any<SimulationExpressionContexts>(), "x", "13");
         }
     }
 }
