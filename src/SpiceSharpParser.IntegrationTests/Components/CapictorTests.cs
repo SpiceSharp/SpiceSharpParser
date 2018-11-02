@@ -2,7 +2,7 @@ using SpiceSharp.Simulations;
 using System;
 using Xunit;
 
-namespace SpiceSharpParser.IntegrationTests
+namespace SpiceSharpParser.IntegrationTests.Components
 {
     public class CapacitorTests : BaseTests
     {

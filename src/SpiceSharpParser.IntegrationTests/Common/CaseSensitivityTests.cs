@@ -4,7 +4,7 @@ using SpiceSharpParser.Parsers.Netlist.Spice;
 using System;
 using Xunit;
 
-namespace SpiceSharpParser.IntegrationTests
+namespace SpiceSharpParser.IntegrationTests.Common
 {
     public class CaseSensitivityTests : BaseTests
     {

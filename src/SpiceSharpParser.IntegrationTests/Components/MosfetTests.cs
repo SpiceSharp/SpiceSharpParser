@@ -2,7 +2,7 @@ using SpiceSharp;
 using SpiceSharp.Components;
 using Xunit;
 
-namespace SpiceSharpParser.IntegrationTests
+namespace SpiceSharpParser.IntegrationTests.Components
 {
     public class MosfetTests : BaseTests
     {

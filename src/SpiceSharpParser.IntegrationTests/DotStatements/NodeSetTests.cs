@@ -1,7 +1,7 @@
 using SpiceSharp.Simulations;
 using Xunit;
 
-namespace SpiceSharpParser.IntegrationTests
+namespace SpiceSharpParser.IntegrationTests.DotStatements
 {
     public class NodeSetTests : BaseTests
     {
