@@ -6,7 +6,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
     {
         public SpiceNetlistReaderSettings(SpiceNetlistCaseSensitivitySettings caseSensitivitySettings)
         {
-            EvaluatorMode = SpiceEvaluatorMode.Spice3f5;
+            EvaluatorMode = SpiceExpressionMode.Spice3f5;
             Mappings = new SpiceObjectMappings();
             Orderer = new SpiceStatementsOrderer();
             CaseSensitivity = caseSensitivitySettings;
@@ -15,7 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <summary>
         /// Gets or sets the evaluator mode.
         /// </summary>
-        public SpiceEvaluatorMode EvaluatorMode { get; set; }
+        public SpiceExpressionMode EvaluatorMode { get; set; }
 
         /// <summary>
         /// Gets or sets the evaluator random seed.

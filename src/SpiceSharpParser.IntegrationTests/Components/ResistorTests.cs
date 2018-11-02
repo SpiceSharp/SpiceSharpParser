@@ -1,7 +1,7 @@
 using Xunit;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
-namespace SpiceSharpParser.IntegrationTests
+namespace SpiceSharpParser.IntegrationTests.Components
 {
     public class ResistorTests : BaseTests
     {

@@ -65,14 +65,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.Name = "Exporter: " + exportType;
             function.ArgumentsCount = -1;
 
-            function.ObjectArgsLogic = (image, args, evaluator) =>
+            function.ObjectArgsLogic =(image, args, evaluator, context) =>
             {
-                if (evaluator.Context == null || !(evaluator.Context is Simulation))
+                if (context.Data == null || !(context.Data is Simulation))
                 {
                     return double.NaN;
                 }
 
-                string exporterKey = string.Format("{0}_{1}_{2}", ((Simulation)evaluator.Context).Name, exportType, string.Join(",", args));
+                string exporterKey = string.Format("{0}_{1}_{2}", ((Simulation)context.Data).Name, exportType, string.Join(",", args));
 
                 if (!exporters.ContainsKey(exporterKey))
                 {
@@ -88,7 +88,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                         image,
                         exportType,
                         parameters,
-                        (Simulation)evaluator.Context,
+                        (Simulation)context.Data,
                         nodeNameGenerator,
                         componentNameGenerator,
                         modelNameGenerator,
@@ -125,10 +125,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.Name = "Exporter: @";
             function.ArgumentsCount = 2;
 
-            function.ObjectArgsLogic = (image, args, evaluator) =>
+            function.ObjectArgsLogic =(image, args, evaluator, context) =>
             {
                 string exporterKey = string.Format("{0}_{1}_{2}",
-                    evaluator.Context != null ? ((Simulation) evaluator.Context).Name : "no_simulation", exportType,
+                    context.Data != null ? ((Simulation)context.Data).Name : "no_simulation", exportType,
                     string.Join(",", args));
 
                 if (!exporters.ContainsKey(exporterKey))
@@ -141,7 +141,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                         image,
                         exportType,
                         parameters,
-                        evaluator.Context != null ? (Simulation) evaluator.Context : null,
+                        context.Data != null ? (Simulation)context.Data : null,
                         nodeNameGenerator,
                         componentNameGenerator,
                         modelNameGenerator,

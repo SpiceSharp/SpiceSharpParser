@@ -19,41 +19,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 1;
             function.ReturnType = typeof(double);
 
-            function.ObjectArgsLogic = (image, args, evaluator) =>
+            function.ObjectArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 1)
                 {
                     throw new ArgumentException("def() function expects one argument");
                 }
 
-                return evaluator.Parameters.ContainsKey(args[0].ToString()) ? 1 : 0;
-            };
-
-            return function;
-        }
-
-        /// <summary>
-        /// Get a lazy() function.
-        /// </summary>
-        /// <returns>
-        /// A new instance of lazy  function.
-        /// </returns>
-        public static Function CreateLazy()
-        {
-            Function function = new Function();
-            function.Name = "lazy";
-            function.VirtualParameters = true;
-            function.ArgumentsCount = 1;
-            function.ReturnType = typeof(double);
-
-            function.ObjectArgsLogic = (image, args, evaluator) =>
-            {
-                if (args.Length != 1)
-                {
-                    throw new ArgumentException("lazy() function expects one argument");
-                }
-
-                return evaluator.CreateChildEvaluator(evaluator.Name + "_lazy", evaluator.Context).EvaluateDouble(args[0].ToString());
+                return context.Parameters.ContainsKey(args[0].ToString()) ? 1 : 0;
             };
 
             return function;
@@ -73,7 +46,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 3;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic =  (image, args, evaluator) =>
+            function.DoubleArgsLogic =  (image, args, evaluator, context) =>
             {
                 if (args.Length != 3)
                 {

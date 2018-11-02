@@ -2,7 +2,7 @@ using SpiceSharp.Simulations;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace SpiceSharpParser.IntegrationTests
+namespace SpiceSharpParser.IntegrationTests.MultiThreading
 {
     public class ConcurrentSimulationsTests : BaseTests
     {

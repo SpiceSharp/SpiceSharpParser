@@ -20,7 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.VirtualParameters = false;
             function.ArgumentsCount = -1;
 
-            function.DoubleArgsLogic = (image, args, evaluator) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
                 {
                     var dimension = (int)args[0];
                     List<double> variables = new List<double>();

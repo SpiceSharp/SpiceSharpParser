@@ -6,6 +6,8 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
+    using SpiceSharpParser.Common.Evaluation;
+
     /// <summary>
     /// Reads .PARAM <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
@@ -18,15 +20,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
-            Read(statement, context.Evaluators, context.CaseSensitivity);
+            Read(statement, context.ExpressionParser, context.ReadingExpressionContext, context.CaseSensitivity);
         }
 
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
         /// <param name="statement">A statement to process.</param>
-        /// <param name="evaluators">Evaluators.</param>
-        public void Read(Control statement, ISimulationEvaluatorsContainer evaluators, SpiceNetlistCaseSensitivitySettings caseSettings)
+        public void Read(Control statement, IExpressionParser expressionParser,  ExpressionContext expressionContext, SpiceNetlistCaseSensitivitySettings caseSettings)
         {
             if (statement.Parameters == null)
             {
@@ -41,14 +42,27 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     {
                         string parameterName = assignmentParameter.Name;
                         string parameterExpression = assignmentParameter.Value;
-                        evaluators.SetParameter(parameterName, parameterExpression);
+
+                        expressionContext.SetParameter(
+                            parameterName,
+                            parameterExpression,
+                            expressionParser.Parse(
+                                parameterExpression,
+                                new ExpressionParserContext(caseSettings.IsFunctionNameCaseSensitive)
+                                    {
+                                        Functions = expressionContext.Functions
+                                    }).FoundParameters);
                     }
                     else
                     {
-                        evaluators.AddFunction(
+                        FunctionFactory factory = new FunctionFactory();
+
+                        expressionContext.Functions.Add(
                             assignmentParameter.Name,
-                            assignmentParameter.Arguments, 
-                            assignmentParameter.Value);
+                            factory.Create(
+                                assignmentParameter.Name,
+                                assignmentParameter.Arguments,
+                                assignmentParameter.Value));
                     }
                 }
                 else

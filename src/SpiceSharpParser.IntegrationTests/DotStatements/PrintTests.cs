@@ -1,7 +1,7 @@
 using Xunit;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
 
-namespace SpiceSharpParser.IntegrationTests
+namespace SpiceSharpParser.IntegrationTests.DotStatements
 {
     public class PrintTests : BaseTests
     {

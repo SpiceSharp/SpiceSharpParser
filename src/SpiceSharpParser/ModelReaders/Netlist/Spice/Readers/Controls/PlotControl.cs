@@ -78,7 +78,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
         private void CreatePlot(Control statement, IReadingContext context, Simulation simulationToPlot, string xUnit)
         {
-            var plot = new XyPlot(simulationToPlot.Name.ToString());
+            var plot = new XyPlot(simulationToPlot.Name);
             List<Export> exports = GenerateExports(statement.Parameters.Skip(1), simulationToPlot, context);
 
             for (var i = 0; i < exports.Count; i++)
@@ -132,17 +132,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 else
                 {
                     string expressionName = parameter.Image;
-                    var evaluator = context.Evaluators.GetSimulationEvaluator(simulationToPlot);
-                    var expressionNames = evaluator.GetExpressionNames();
+                    var evaluator = context.SimulutionEvaluators.GetEvaluator(simulationToPlot);
+                    var expressionNames = context.ReadingExpressionContext.GetExpressionNames();
 
                     if (expressionNames.Contains(expressionName))
                     {
                         result.Add(
                             new ExpressionExport(
-                                simulationToPlot.Name.ToString(),
+                                simulationToPlot.Name,
                                 expressionName,
-                                evaluator.GetExpression(expressionName),
+                                context.ReadingExpressionContext.GetExpression(expressionName),
                                 evaluator,
+                                context.SimulationExpressionContexts,
                                 simulationToPlot));
                     }
                 }

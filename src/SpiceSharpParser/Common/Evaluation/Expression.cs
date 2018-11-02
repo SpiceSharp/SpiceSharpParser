@@ -2,11 +2,6 @@
 
 namespace SpiceSharpParser.Common.Evaluation
 {
-    public class EvaluatedArgs : EventArgs
-    {
-        public double NewValue { get; set; }
-    }
-
     /// <summary>
     /// An evaluator expression.
     /// </summary>
@@ -16,10 +11,8 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Initializes a new instance of the <see cref="Evaluation.Expression"/> class.
         /// </summary>
         /// <param name="expression">Expression.</param>
-        /// <param name="evaluator">Evaluator.</param>
-        public Expression(string expression, IEvaluator evaluator)
+        public Expression(string expression)
         {
-            Evaluator = evaluator;
             String = expression ?? throw new ArgumentNullException(nameof(expression));
         }
 
@@ -27,11 +20,6 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Thrown when expression is evaluated.
         /// </summary>
         public event EventHandler<EvaluatedArgs> Evaluated;
-
-        /// <summary>
-        /// Gets or sets evaluator for expression.
-        /// </summary>
-        public IEvaluator Evaluator { get; set; }
 
         /// <summary>
         /// Gets the expression string.
@@ -46,12 +34,13 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Evaluates the expression.
         /// </summary>
+        /// <param name="evaluator">Evaluator.</param>
         /// <returns>
         /// The value of the expression.
         /// </returns>
-        public virtual double Evaluate()
+        public virtual double Evaluate(IEvaluator evaluator, ExpressionContext context)
         {
-            var newValue = Evaluator.EvaluateDouble(String);
+            var newValue = evaluator.EvaluateValueExpression(String, context);
             CurrentValue = newValue;
             OnEvaluated(newValue);
             return newValue;
@@ -72,7 +61,7 @@ namespace SpiceSharpParser.Common.Evaluation
 
         public virtual Expression Clone()
         {
-            var result = new Expression(String, Evaluator);
+            var result = new Expression(String);
             result.CurrentValue = double.NaN;
             return result;
         }

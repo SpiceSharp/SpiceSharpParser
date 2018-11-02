@@ -36,21 +36,19 @@ namespace SpiceSharpParser.Common.Evaluation
             userFunction.VirtualParameters = false;
             userFunction.ArgumentsCount = arguments.Count;
 
-            userFunction.DoubleArgsLogic = (image, args, evaluator) =>
-            {
-                var childEvaluator = evaluator.CreateChildEvaluator(evaluator.Name + "_" + name, evaluator.Context);
-                childEvaluator.Registry.RemoveExpression(functionBodyExpression);
-
-                for (var i = 0; i < arguments.Count; i++)
+            userFunction.DoubleArgsLogic = (image, args, evaluator, context) =>
                 {
-                    childEvaluator.SetParameter(arguments[i], args[i]);
-                }
+                    var childContext = context.CreateChildContext(string.Empty, false);
+                    for (var i = 0; i < arguments.Count; i++)
+                    {
+                        childContext.SetParameter(arguments[i], args[i]);
+                    }
 
-                var expression = new Expression(functionBodyExpression, childEvaluator);
-                var result = expression.Evaluate();
+                    var expression = new Expression(functionBodyExpression);
+                    var result = expression.Evaluate(evaluator, childContext);
 
-                return result;
-            };
+                    return result;
+                };
 
             return userFunction;
         }

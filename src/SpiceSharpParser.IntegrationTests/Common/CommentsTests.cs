@@ -2,7 +2,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System.Linq;
 using Xunit;
 
-namespace SpiceSharpParser.IntegrationTests
+namespace SpiceSharpParser.IntegrationTests.Common
 {
     public class CommentsTests : BaseTests
     {

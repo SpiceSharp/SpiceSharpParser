@@ -2,7 +2,7 @@ using SpiceSharp.Simulations;
 using System.IO;
 using Xunit;
 
-namespace SpiceSharpParser.IntegrationTests
+namespace SpiceSharpParser.IntegrationTests.DotStatements
 {
     public class IncludeTests : BaseTests
     {
