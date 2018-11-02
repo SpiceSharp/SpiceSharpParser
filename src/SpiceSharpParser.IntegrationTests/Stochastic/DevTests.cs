@@ -27,7 +27,7 @@ namespace SpiceSharpParser.IntegrationTests
             }
         }
 
-        //[Fact]
+        [Fact]
         public void DevMultipleComponentsSameModelMosfet()
         {
             var netlist = ParseNetlist(
