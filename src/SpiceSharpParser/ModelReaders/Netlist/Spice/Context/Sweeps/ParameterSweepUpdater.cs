@@ -23,11 +23,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             IReadingContext context,
             List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues)
         {
-            //TODO BeforeLoad
             UpdateSweep(simulation, context, parameterValues);
         }
 
-        private void UpdateSweep(BaseSimulation simulation, IReadingContext context, List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues)
+        protected void UpdateSweep(BaseSimulation simulation, IReadingContext context, List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues)
         {
             foreach (var paramToSet in parameterValues)
             {

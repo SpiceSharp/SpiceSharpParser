@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common.Evaluation;
+using System.Threading;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
-    using System.Collections.Concurrent;
-
-    using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
-
     public class SimulationEvaluators : ISimulationEvaluators
     {
-        protected ConcurrentDictionary<Simulation, IEvaluator> Evaluators = new ConcurrentDictionary<Simulation, IEvaluator>();
+        protected Dictionary<Simulation, IEvaluator> evaluators = new Dictionary<Simulation, IEvaluator>();
+        private ReaderWriterLockSlim cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
 
-        public SimulationEvaluators(IEvaluator sourceEvaluator, IFunctionFactory functionFactory)
+        public SimulationEvaluators(IEvaluator sourceEvaluator)
         {
             SourceEvaluator = sourceEvaluator ?? throw new ArgumentNullException(nameof(sourceEvaluator));
         }
@@ -27,19 +26,38 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            if (!Evaluators.TryGetValue(simulation, out var evaluator))
+            cacheLock.EnterUpgradeableReadLock();
+            try
             {
-                evaluator = new SpiceEvaluator(
-                    simulation.Name,
-                    SourceEvaluator.ExpressionParser,
-                    SourceEvaluator.IsParameterNameCaseSensitive, 
-                    SourceEvaluator.IsFunctionNameCaseSensitive);
+                if (!evaluators.TryGetValue(simulation, out var evaluator))
+                {
+                    cacheLock.EnterWriteLock();
+                    try
+                    {
+                        evaluator = new SpiceEvaluator(
+                            simulation.Name,
+                            SourceEvaluator.ExpressionParser,
+                            SourceEvaluator.IsParameterNameCaseSensitive,
+                            SourceEvaluator.IsFunctionNameCaseSensitive);
 
-                evaluator.Name = simulation.Name;
-                Evaluators[simulation] = evaluator;
+                        evaluators[simulation] = evaluator;
+
+                        return evaluator;
+                    }
+                    finally
+                    {
+                        cacheLock.ExitWriteLock();
+                    }
+                }
+                else
+                {
+                    return evaluator;
+                }
             }
-
-            return evaluator;
+            finally
+            {
+                cacheLock.ExitUpgradeableReadLock();
+            }
         }
     }
 }

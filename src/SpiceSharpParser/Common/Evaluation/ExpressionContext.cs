@@ -12,7 +12,7 @@ namespace SpiceSharpParser.Common.Evaluation
         private readonly bool isExpressionNameCaseSensitive;
         private int? _seed;
 
-        public ExpressionContext() 
+        public ExpressionContext()
             : this(string.Empty, false, false, false)
         {
         }
@@ -75,7 +75,7 @@ namespace SpiceSharpParser.Common.Evaluation
         public ExpressionRegistry Registry { get; set; }
 
         /// <summary>
-        /// Gets the children simulationEvaluators.
+        /// Gets or sets the children simulationEvaluators.
         /// </summary>
         public List<ExpressionContext> Children { get; set; }
 

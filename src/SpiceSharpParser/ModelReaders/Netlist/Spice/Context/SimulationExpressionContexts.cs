@@ -9,26 +9,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
     {
         public SimulationExpressionContexts(ExpressionContext sourceContext)
         {
-            this.SourceContext = sourceContext;
-        }
-
-        public int? Seed
-        {
-            set
-            {
-                this.SourceContext.Seed = value;
-
-                foreach (var context in this.Contexts.Values)
-                {
-                    context.Seed = value;
-                }
-            }
+            SourceContext = sourceContext;
         }
 
         protected ExpressionContext SourceContext { get; }
 
-        protected ConcurrentDictionary<Simulation, ExpressionContext> Contexts = new ConcurrentDictionary<Simulation, ExpressionContext>();
+        protected ConcurrentDictionary<Simulation, ExpressionContext> Contexts { get; } = new ConcurrentDictionary<Simulation, ExpressionContext>();
 
+        /// <summary>
+        /// Gets the expression context for simulation.
+        /// </summary>
+        /// <param name="simulation">A simulation.</param>
+        /// <returns>
+        /// Expression context.
+        /// </returns>
         public ExpressionContext GetContext(Simulation simulation)
         {
             if (simulation == null)
@@ -38,7 +32,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             if (!this.Contexts.TryGetValue(simulation, out var context))
             {
-                context = this.SourceContext.Clone();
+                context = SourceContext.Clone();
                 context.Data = simulation;
                 Contexts[simulation] = context;
             }

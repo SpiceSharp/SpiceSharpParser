@@ -4,15 +4,11 @@ using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
-    using SpiceSharp.Simulations;
-
-    using SpiceSharpParser.Common.Evaluation;
-
-    using Expression = System.Linq.Expressions.Expression;
-
     /// <summary>
     /// Reading context.
     /// </summary>
@@ -234,7 +230,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                     expression,
                     new ExpressionParserContext(CaseSensitivity.IsFunctionNameCaseSensitive)
                         {
-                            Functions = this.ReadingExpressionContext.Functions
+                            Functions = this.ReadingExpressionContext.Functions,
                         }).FoundParameters);
         }
 
@@ -260,11 +256,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             IEqualityComparer<string> comparer = StringComparerProvider.Get(CaseSensitivity.IsEntityParameterNameCaseSensitive);
 
             double value = ReadingEvaluator.EvaluateValueExpression(expression, this.ReadingExpressionContext);
-
-            if (double.IsNaN(value))
-            {
-                value = 0;
-            }
 
             if (!entity.SetParameter(parameterName, value, comparer))
             {

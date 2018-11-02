@@ -57,7 +57,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             IEvaluator readingEvaluator = CreateReadingEvaluator(nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService);
 
 
-            ISimulationEvaluators simulationEvaluators = new SimulationEvaluators(readingEvaluator, new FunctionFactory());
+            ISimulationEvaluators simulationEvaluators = new SimulationEvaluators(readingEvaluator);
             SimulationsParameters simulationParameters = new SimulationsParameters(simulationEvaluators);
 
             ISpiceStatementsReader statementsReader = new SpiceStatementsReader(Settings.Mappings.Controls, Settings.Mappings.Models, Settings.Mappings.Components);
