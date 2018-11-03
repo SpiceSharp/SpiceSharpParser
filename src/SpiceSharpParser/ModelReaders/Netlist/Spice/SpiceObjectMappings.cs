@@ -26,6 +26,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
             // Register waveform generators
             Waveforms.Map("SINE", new SineGenerator());
+            Waveforms.Map("SIN", new SineGenerator());
             Waveforms.Map("PULSE", new PulseGenerator());
 
             // Register exporters

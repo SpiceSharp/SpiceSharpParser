@@ -223,7 +223,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else if (i == 2 && parameters[i] is SingleParameter vp && parameters[i].Image.ToLower() != "dc" && parameters[i].Image.ToLower() != "ac")
                 {
-                    context.SetParameter(isrc, "dc", parameters.GetString(i));
+                    if (parameters[i] is WordParameter && context.WaveformReader.Supports(parameters[i].Image, context))
+                    {
+                        isrc.SetParameter("waveform", context.WaveformReader.Generate(parameters[i].Image, parameters.Skip(i + 1), context));
+                        return isrc;
+                    }
+                    else
+                    {
+                        context.SetParameter(isrc, "dc", parameters.GetString(i));
+                    }
                 }
                 else if (parameters[i] is SingleParameter s2 && s2.Image.ToLower() == "ac")
                 {
@@ -258,7 +266,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else if (parameters[i] is BracketParameter cp)
                 {
-                    isrc.SetParameter("waveform", context.WaveformReader.Generate(cp, context));
+                    isrc.SetParameter("waveform", context.WaveformReader.Generate(cp.Name, cp.Parameters, context));
                 }
                 else if (parameters[i] is AssignmentParameter ap && ap.Name.ToLower() == "value")
                 {
