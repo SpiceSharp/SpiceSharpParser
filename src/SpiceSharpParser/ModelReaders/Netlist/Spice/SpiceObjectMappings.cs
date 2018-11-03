@@ -12,6 +12,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
     using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
+    using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Distributed;
 
     public class SpiceObjectMappings : ISpiceObjectMappings
     {
@@ -74,6 +75,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Components.Map("M", new MosfetGenerator());
             Components.Map("X", new SubCircuitGenerator());
             Components.Map("J", new JFETGenerator());
+            Components.Map("T", new LosslessTransmissionLineGenerator());
         }
 
         /// <summary>
