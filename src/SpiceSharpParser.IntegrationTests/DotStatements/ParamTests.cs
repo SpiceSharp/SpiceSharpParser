@@ -100,6 +100,30 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         }
 
         [Fact]
+        public void ParamInSubckt()
+        {
+            var netlist = ParseNetlist(
+               "Subcircuit with PARAM",
+               "V1 IN 0 4.0",
+               "X1 IN OUT twoResistorsInSeries R1=1 R2=2",
+               "RX OUT 0 1",
+               ".SUBCKT twoResistorsInSeries input output params: R1=10 R2=100",
+               "R2 input output {RES}",
+               ".PARAM RES = {R1 + R2}",
+               ".ENDS twoResistorsInSeries",
+               ".OP",
+               ".SAVE V(OUT)",
+               ".END");
+
+            double export = RunOpSimulation(netlist, "V(OUT)");
+
+            // Get references
+            double[] references = { 1.0 };
+
+            EqualsWithTol(new double[] { export }, references);
+        }
+
+        [Fact]
         public void ParamFunctionFactRecursiveFunctionCleanSyntax()
         {
             var netlist = ParseNetlist(
