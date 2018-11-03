@@ -77,6 +77,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Components.Map("X", new SubCircuitGenerator());
             Components.Map("J", new JFETGenerator());
             Components.Map("T", new LosslessTransmissionLineGenerator());
+            Components.Map("BVD", new VoltageDelayGenerator());
         }
 
         /// <summary>
