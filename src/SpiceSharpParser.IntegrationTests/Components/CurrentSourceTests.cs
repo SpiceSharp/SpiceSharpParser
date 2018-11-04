@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
 {
     public class CurrentSourceTests : BaseTests
     {
-        //[Fact]
+        [Fact]
         public void PulseWithoutBracket()
         {
             var netlist = ParseNetlist(
@@ -22,7 +22,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             Assert.NotNull(netlist);
         }
 
-        //[Fact]
+        [Fact]
         public void PulseWithBracket()
         {
             var netlist = ParseNetlist(
