@@ -105,7 +105,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="expression">An expression of parameter.</param>
         public void SetParameter(string parameterName, string expression, ICollection<string> expressionParameters)
         {
-            var parameter = new CachedExpression(expression);
+            var parameter = new Expression(expression);
             Parameters[parameterName] = parameter;
             Registry.Parameters[parameterName] = parameter;
 
