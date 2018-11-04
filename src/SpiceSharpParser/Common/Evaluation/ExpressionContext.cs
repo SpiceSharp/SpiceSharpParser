@@ -161,20 +161,6 @@ namespace SpiceSharpParser.Common.Evaluation
             return Registry.GetExpression(expressionName)?.String;
         }
 
-        private void CreateCommonFunctions()
-        {
-            Functions.Add("acos", MathFunctions.CreateACos());
-            Functions.Add("asin", MathFunctions.CreateASin());
-            Functions.Add("atan", MathFunctions.CreateATan());
-            Functions.Add("atan2", MathFunctions.CreateATan2());
-            Functions.Add("cos", MathFunctions.CreateCos());
-            Functions.Add("cosh", MathFunctions.CreateCosh());
-            Functions.Add("sin", MathFunctions.CreateSin());
-            Functions.Add("sinh", MathFunctions.CreateSinh());
-            Functions.Add("tan", MathFunctions.CreateTan());
-            Functions.Add("tanh", MathFunctions.CreateTanh());
-        }
-
         public virtual ExpressionContext CreateChildContext(string name, bool addToChildren)
         {
             var child = new ExpressionContext(name, isParameterNameCaseSensitive, isFunctionNameCaseSensitive, isExpressionNameCaseSensitive);
@@ -244,6 +230,20 @@ namespace SpiceSharpParser.Common.Evaluation
             }
 
             return null;
+        }
+
+        protected void CreateCommonFunctions()
+        {
+            Functions.Add("acos", MathFunctions.CreateACos());
+            Functions.Add("asin", MathFunctions.CreateASin());
+            Functions.Add("atan", MathFunctions.CreateATan());
+            Functions.Add("atan2", MathFunctions.CreateATan2());
+            Functions.Add("cos", MathFunctions.CreateCos());
+            Functions.Add("cosh", MathFunctions.CreateCosh());
+            Functions.Add("sin", MathFunctions.CreateSin());
+            Functions.Add("sinh", MathFunctions.CreateSinh());
+            Functions.Add("tan", MathFunctions.CreateTan());
+            Functions.Add("tanh", MathFunctions.CreateTanh());
         }
     }
 }

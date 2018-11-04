@@ -7,10 +7,6 @@ namespace SpiceSharpParser.Common.Evaluation
     /// </summary>
     public abstract class Evaluator : IEvaluator
     {
-        public bool IsParameterNameCaseSensitive { get; }
-
-        public bool IsFunctionNameCaseSensitive { get; }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Evaluator"/> class.
         /// </summary>
@@ -18,9 +14,9 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="parser">Expression parser.</param>
         public Evaluator(string name, IExpressionParser parser, bool isParameterNameCaseSensitive, bool isFunctionNameCaseSensitive)
         {
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             IsParameterNameCaseSensitive = isParameterNameCaseSensitive;
             IsFunctionNameCaseSensitive = isFunctionNameCaseSensitive;
-            Name = name ?? throw new ArgumentNullException(nameof(name));
             ExpressionParser = parser ?? throw new ArgumentNullException(nameof(parser));
         }
 
@@ -28,6 +24,10 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Gets or sets the name of the evaluator.
         /// </summary>
         public string Name { get; set; }
+
+        public bool IsParameterNameCaseSensitive { get; }
+
+        public bool IsFunctionNameCaseSensitive { get; }
 
         /// <summary>
         /// Gets the expression parser.
@@ -77,4 +77,4 @@ namespace SpiceSharpParser.Common.Evaluation
             return context.Parameters[id].Evaluate(this, context);
         }
     }
-}     
+}

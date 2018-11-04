@@ -21,7 +21,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets the simulation parameters.
         /// </summary>
-        ISimulationsParameters SimulationsParameters { get; }
+        ISimulationPreparations SimulationPreparations { get; }
 
         /// <summary>
         /// Gets the simulation evaluators.

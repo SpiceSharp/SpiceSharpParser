@@ -44,7 +44,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = new ReadingContext(
               string.Empty,
               new SpiceExpressionParser(),
-              new SimulationsParameters(null),
+              new SimulationPreparations(null, null),
               new SimulationEvaluators(evaluator),
               new SimulationExpressionContexts(null),
               resultService,
@@ -88,7 +88,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = new ReadingContext(
               string.Empty,
               new SpiceExpressionParser(),
-              new SimulationsParameters(null),
+              new SimulationPreparations(null, null),
               new SimulationEvaluators(evaluator),
               new SimulationExpressionContexts(null),
               resultService,
