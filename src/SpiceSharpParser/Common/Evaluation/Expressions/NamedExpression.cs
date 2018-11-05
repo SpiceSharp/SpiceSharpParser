@@ -28,7 +28,7 @@ namespace SpiceSharpParser.Common.Evaluation.Expressions
         /// </returns>
         public override Expression Clone()
         {
-            var result = new NamedExpression(Name, String);
+            var result = new NamedExpression(Name, ValueExpression);
             return result;
         }
     }

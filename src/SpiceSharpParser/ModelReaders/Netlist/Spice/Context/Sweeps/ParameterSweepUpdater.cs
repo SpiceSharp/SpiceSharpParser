@@ -58,7 +58,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             string paramName = rp.Argument;
             if (context.Result.FindObject(objectName, out Entity @object))
             {
-                context.SimulationsParameters.SetParameter(context.SimulationExpressionContexts, @object, paramName, paramToSet.Value, simulation, int.MaxValue, StringComparerProvider.Get(context.CaseSensitivity.IsEntityParameterNameCaseSensitive));
+                context.SimulationPreparations.SetParameter(@object, simulation, paramName, paramToSet.Value, true, false);
             }
         }
 
@@ -69,15 +69,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             if (context.Result.FindObject(modelName, out Entity @model))
             {
                 context
-                    .SimulationsParameters
+                    .SimulationPreparations
                     .SetParameter(
-                        context.SimulationExpressionContexts,
                         model,
+                        simulation,
                         paramName,
                         paramToSet.Value,
-                        simulation,
-                        int.MaxValue,
-                        StringComparerProvider.Get(context.CaseSensitivity.IsEntityParameterNameCaseSensitive));
+                        true,
+                        false);
             }
         }
 
@@ -96,8 +95,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             if (@entity is CurrentSource || @entity is VoltageSource)
             {
                 context
-                    .SimulationsParameters
-                    .SetParameter(context.SimulationExpressionContexts, @entity, "dc", paramToSet.Value, simulation, int.MaxValue);
+                    .SimulationPreparations
+                    .SetParameter(@entity, simulation, "dc", paramToSet.Value, true, false);
             }
         }
     }

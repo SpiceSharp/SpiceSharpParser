@@ -11,6 +11,7 @@ using System;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using Xunit;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
 {
@@ -29,16 +30,10 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
                Arg.Any<IReadingContext>()).Returns(x => new Resistor((string)x[0]));
 
             var mapper = Substitute.For<IMapper<IComponentGenerator>>();
-            mapper.ContainsKey("R", false).Returns(true);
-            mapper.GetValue("R", false).Returns(generator);
 
-            IComponentGenerator value;
-            mapper.TryGetValue("R", false, out value).Returns(
-                x =>
-                    {
-                        x[2] = generator;
-                        return true;
-                    });
+            Dictionary<string, IComponentGenerator> dict = new Dictionary<string, IComponentGenerator>();
+            dict["R"] = generator;
+            mapper.GetEnumerator().Returns(dict.GetEnumerator());
 
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }, true));

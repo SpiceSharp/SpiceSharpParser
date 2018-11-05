@@ -55,7 +55,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
                     foreach (var simulation in simulations)
                     {
-                        context.SimulationsParameters.Prepare(simulation);
+                        context.SimulationPreparations.Prepare(simulation);
                     }
                 }
                 else
@@ -63,7 +63,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var simulations = CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(statement, context, createSimulation);
                     foreach (var simulation in simulations)
                     {
-                        context.SimulationsParameters.Prepare(simulation);
+                        context.SimulationPreparations.Prepare(simulation);
                     }
                 }
             }
@@ -73,7 +73,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
                 foreach (var simulation in simulations)
                 {
-                    context.SimulationsParameters.Prepare(simulation);
+                    context.SimulationPreparations.Prepare(simulation);
                 }
             }
         }

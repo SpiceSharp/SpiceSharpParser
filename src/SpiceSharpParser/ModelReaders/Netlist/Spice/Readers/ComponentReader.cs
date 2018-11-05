@@ -33,12 +33,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         public override void Read(Component statement, IReadingContext context)
         {
             string componentName = statement.Name;
-            string componentType = componentName[0].ToString();
 
-            if (!Mapper.TryGetValue(componentType, context.CaseSensitivity.IsEntityNameCaseSensitive, out var generator))
-            {
-                throw new System.Exception("Unsupported component type");
-            }
+            string componentType;
+            IComponentGenerator generator = GetComponentGenerator(context, componentName, out componentType);
 
             Entity entity = generator.Generate(
                 context.ComponentNameGenerator.Generate(componentName),
@@ -51,6 +48,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
             {
                 context.Result.AddEntity(entity);
             }
+        }
+
+        private IComponentGenerator GetComponentGenerator(IReadingContext context, string componentName, out string componentType)
+        {
+            foreach (var map in Mapper)
+            {
+                if (componentName.StartsWith(map.Key, context.CaseSensitivity.IsEntityNameCaseSensitive ? System.StringComparison.CurrentCulture : System.StringComparison.CurrentCultureIgnoreCase))
+                {
+                    componentType = map.Key;
+                    return map.Value;
+                }
+            }
+
+            throw new System.Exception("Unsupported component type");
         }
     }
 }

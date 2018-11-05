@@ -1,7 +1,7 @@
 using SpiceSharpParser.Parsers.Netlist;
 using Xunit;
 
-namespace SpiceSharpParser.IntegrationTests.Common
+namespace SpiceSharpParser.IntegrationTests.Components
 {
     public class SubcircuitTests : BaseTests
     {

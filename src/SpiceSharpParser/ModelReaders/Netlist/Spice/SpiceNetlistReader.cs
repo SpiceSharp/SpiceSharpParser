@@ -55,16 +55,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             var modelNameGenerator = new ObjectNameGenerator(string.Empty);
 
             IEvaluator readingEvaluator = CreateReadingEvaluator(nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService);
-
-
             ISimulationEvaluators simulationEvaluators = new SimulationEvaluators(readingEvaluator);
-            SimulationsParameters simulationParameters = new SimulationsParameters(simulationEvaluators);
-
-            ISpiceStatementsReader statementsReader = new SpiceStatementsReader(Settings.Mappings.Controls, Settings.Mappings.Models, Settings.Mappings.Components);
-            IWaveformReader waveformReader = new WaveformReader(Settings.Mappings.Waveforms);
-
-            IExpressionParser parser = new ExpressionParserWithCache(new SpiceExpressionParser(Settings.EvaluatorMode == SpiceExpressionMode.LtSpice));
-
 
             var readingExpressionContext = CreateExpressionContext(
                 nodeNameGenerator,
@@ -74,10 +65,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
             var simulationContexts = new SimulationExpressionContexts(readingExpressionContext);
 
+            SimulationPreparations simulationPreparations = new SimulationPreparations(
+               new EntityUpdates(Settings.CaseSensitivity.IsParameterNameCaseSensitive, simulationEvaluators, simulationContexts),
+               new SimulationsUpdates(simulationEvaluators, simulationContexts));
+
+
+            ISpiceStatementsReader statementsReader = new SpiceStatementsReader(Settings.Mappings.Controls, Settings.Mappings.Models, Settings.Mappings.Components);
+            IWaveformReader waveformReader = new WaveformReader(Settings.Mappings.Waveforms);
+            IExpressionParser parser = new ExpressionParserWithCache(new SpiceExpressionParser(Settings.EvaluatorMode == SpiceExpressionMode.LtSpice));
+
             IReadingContext readingContext = new ReadingContext(
                 "Netlist reading context",
                 parser,
-                simulationParameters,
+                simulationPreparations,
                 simulationEvaluators,
                 simulationContexts,
                 resultService,

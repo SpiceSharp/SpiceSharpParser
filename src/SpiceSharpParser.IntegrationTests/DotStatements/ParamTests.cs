@@ -81,22 +81,28 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(10.0 / 17.0, export[1]);
         }
 
-        //[Fact]
-        public void ParamFunctionFunctionFactRecursiveFunction()
+        [Fact]
+        public void ParamInSubckt()
         {
             var netlist = ParseNetlist(
-                "PARAM recurisve custom function test",
-                "V1 OUT 0 60.0",
-                "R1 OUT 0 {fact(3)}",
-                ".OP",
-                ".SAVE V(OUT) @R1[i]",
-                ".PARAM fact(x) = {x == 0 ? 1: x * lazy(#fact(x -1)#)}",
-                ".END");
+               "Subcircuit with PARAM",
+               "V1 IN 0 4.0",
+               "X1 IN OUT twoResistorsInSeries R1=1 R2=2",
+               "RX OUT 0 1",
+               ".SUBCKT twoResistorsInSeries input output params: R1=10 R2=100",
+               "R2 input output {RES}",
+               ".PARAM RES = {R1 + R2}",
+               ".ENDS twoResistorsInSeries",
+               ".OP",
+               ".SAVE V(OUT)",
+               ".END");
 
-            double[] export = RunOpSimulation(netlist, new string[] { "V(OUT)", "@R1[i]" });
+            double export = RunOpSimulation(netlist, "V(OUT)");
 
-            Assert.Equal(60.0, export[0]);
-            Assert.Equal(60.0 / 6, export[1]);
+            // Get references
+            double[] references = { 1.0 };
+
+            EqualsWithTol(new double[] { export }, references);
         }
 
         [Fact]

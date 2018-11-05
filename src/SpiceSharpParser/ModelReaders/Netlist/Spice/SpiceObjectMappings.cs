@@ -12,6 +12,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
     using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
+    using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Distributed;
 
     public class SpiceObjectMappings : ISpiceObjectMappings
     {
@@ -25,6 +26,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
             // Register waveform generators
             Waveforms.Map("SINE", new SineGenerator());
+            Waveforms.Map("SIN", new SineGenerator());
             Waveforms.Map("PULSE", new PulseGenerator());
 
             // Register exporters
@@ -44,6 +46,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Controls.Map("ST_R", new StRegisterControl());
             Controls.Map("STEP_R", new StepRegisterControl());
             Controls.Map("PARAM", new ParamControl());
+            Controls.Map("SPARAM", new SParamControl());
             Controls.Map("FUNC", new FuncControl());
             Controls.Map("GLOBAL", new GlobalControl());
             Controls.Map("CONNECT", new ConnectControl());
@@ -74,6 +77,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Components.Map("M", new MosfetGenerator());
             Components.Map("X", new SubCircuitGenerator());
             Components.Map("J", new JFETGenerator());
+            Components.Map("T", new LosslessTransmissionLineGenerator());
+            Components.Map("BVDelay", new VoltageDelayGenerator());
         }
 
         /// <summary>

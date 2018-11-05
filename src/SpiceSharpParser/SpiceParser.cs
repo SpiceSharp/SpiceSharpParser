@@ -13,6 +13,7 @@ using SpiceSharpParser.Parsers.Netlist.Spice;
 
 namespace SpiceSharpParser
 {
+    using SpiceSharpParser.Common.Processors;
     using SpiceSharpParser.Parsers.Expression;
 
     /// <summary>
@@ -146,7 +147,7 @@ namespace SpiceSharpParser
             {
                 preprocessorContext.Functions.Add(exportFunction.Key, exportFunction.Value);
             }
-            
+
             var parser = new SpiceExpressionParser(Settings.Reading.EvaluatorMode == SpiceExpressionMode.LtSpice);
 
             foreach (var preprocessor in Preprocessors)
@@ -182,7 +183,6 @@ namespace SpiceSharpParser
                 Settings.Reading.CaseSensitivity.IsParameterNameCaseSensitive,
                 Settings.Reading.CaseSensitivity.IsFunctionNameCaseSensitive);
 
-           
             return preprocessorEvaluator;
         }
     }

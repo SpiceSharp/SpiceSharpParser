@@ -18,7 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Initializes a new instance of the <see cref="ReadingContext"/> class.
         /// </summary>
         /// <param name="contextName">Name of the context.</param>
-        /// <param name="parameters">Parameters.</param>
+        /// <param name="preparations">Parameters.</param>
         /// <param name="evaluators">Evaluator for the context.</param>
         /// <param name="resultService">SpiceSharpModel service for the context.</param>
         /// <param name="nodeNameGenerator">Name generator for the nodes.</param>
@@ -33,7 +33,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public ReadingContext(
             string contextName,
             IExpressionParser parser,
-            ISimulationsParameters parameters,
+            ISimulationPreparations preparations,
             ISimulationEvaluators evaluators,
             SimulationExpressionContexts contexts,
             IResultService resultService,
@@ -68,7 +68,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             Children = new List<IReadingContext>();
 
-            SimulationsParameters = parameters;
+            SimulationPreparations = preparations;
             SimulutionEvaluators = evaluators;
 
             var generators = new List<IObjectNameGenerator>();
@@ -112,7 +112,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets simulation parameters.
         /// </summary>
-        public ISimulationsParameters SimulationsParameters { get; }
+        public ISimulationPreparations SimulationPreparations { get; }
 
         /// <summary>
         /// Gets available subcircuits in context.
@@ -169,7 +169,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public void SetICVoltage(string nodeName, string expression)
         {
             var nodeId = NodeNameGenerator.Generate(nodeName);
-            SimulationsParameters.SetICVoltage(this.SimulationExpressionContexts, nodeId, expression);
+            SimulationPreparations.SetICVoltage(nodeId, expression);
         }
 
         /// <summary>
@@ -271,7 +271,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             if (parseResult.IsConstantExpression == false)
             {
-                SimulationsParameters.SetParameter(this.SimulationExpressionContexts, entity, parameterName, expression, 0, onload, comparer);
+                SimulationPreparations.SetParameter(entity, parameterName, expression, true, onload);
             }
         }
     }
