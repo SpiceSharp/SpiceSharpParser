@@ -228,7 +228,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else if (i == 2 && parameters[i] is SingleParameter vp && parameters[i].Image.ToLower() != "dc" && parameters[i].Image.ToLower() != "ac")
                 {
-                    context.SetParameter(vsrc, "dc", parameters.GetString(i));
+                    if (parameters[i] is WordParameter && context.WaveformReader.Supports(parameters[i].Image, context))
+                    {
+                        vsrc.SetParameter("waveform", context.WaveformReader.Generate(parameters[i].Image, parameters.Skip(i + 1), context));
+                        return vsrc;
+                    }
+                    else
+                    {
+                        context.SetParameter(vsrc, "dc", parameters.GetString(i));
+                    }
                 }
                 else if (parameters[i] is SingleParameter s2 && s2.Image.ToLower() == "ac")
                 {
@@ -263,7 +271,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else if (parameters[i] is BracketParameter cp)
                 {
-                    vsrc.SetParameter("waveform", context.WaveformReader.Generate(cp, context));
+                    vsrc.SetParameter("waveform", context.WaveformReader.Generate(cp.Name, cp.Parameters, context));
                 }
                 else if (parameters[i] is AssignmentParameter ap)
                 {
@@ -271,10 +279,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     {
                         context.SetParameter(vsrc, "dc", ap.Value);
                     }
+                    else
+                    {
+                        throw new WrongParameterException("Wrong parameter at the position " + i + " for voltage source: " + parameters[i].Image);
+                    }
                 }
                 else
                 {
-                    if (parameters[i].Image.ToLower() != "dc")
+                    if (parameters[i] is WordParameter && context.WaveformReader.Supports(parameters[i].Image, context))
+                    {
+                        vsrc.SetParameter("waveform", context.WaveformReader.Generate(parameters[i].Image, parameters.Skip(i + 1), context));
+                        return vsrc;
+                    }
+                    else if (parameters[i].Image.ToLower() != "dc")
                     {
                         throw new WrongParameterException("Wrong parameter at the position " + (i + 1) + " for voltage source: " + parameters[i].Image);
                     }

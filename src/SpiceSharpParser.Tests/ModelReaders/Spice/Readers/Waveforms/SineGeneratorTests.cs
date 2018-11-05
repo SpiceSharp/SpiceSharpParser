@@ -12,7 +12,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Waveforms
     public class SineGeneratorTests
     {
         [Fact]
-        public void GenerateWhenThereAre6Parameters()
+        public void GenerateWhenThereAre7Parameters()
         {
             // prepare
             var bracketParameter = new BracketParameter()
@@ -26,6 +26,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Waveforms
                     new ValueParameter("12"),
                     new ValueParameter("12"),
                     new ValueParameter("12"),
+                    new ValueParameter("30"),
                 }
             };
 
@@ -33,7 +34,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Waveforms
 
             // act
             var generator = new SineGenerator();
-            Assert.Throws<WrongParametersCountException>(() => generator.Generate(bracketParameter, readingContext));
+            Assert.Throws<WrongParametersCountException>(() => generator.Generate(bracketParameter.Parameters, readingContext));
         }
 
         [Fact]
@@ -52,7 +53,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Waveforms
 
             // act
             var generator = new SineGenerator();
-            Assert.Throws<WrongParametersCountException>(() => generator.Generate(bracketParameter, readingContext));
+            Assert.Throws<WrongParametersCountException>(() => generator.Generate(bracketParameter.Parameters, readingContext));
         }
 
         [Fact]
@@ -75,7 +76,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Waveforms
 
             // act
             var generator = new SineGenerator();
-            var wave = generator.Generate(bracketParameter, readingContext);
+            var wave = generator.Generate(bracketParameter.Parameters, readingContext);
 
             // assert
             Assert.NotNull(wave);
@@ -106,7 +107,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Waveforms
 
             // act
             var generator = new SineGenerator();
-            var wave = generator.Generate(bracketParameter, readingContext);
+            var wave = generator.Generate(bracketParameter.Parameters, readingContext);
 
             // assert
             Assert.NotNull(wave);
@@ -139,7 +140,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Waveforms
 
             // act
             var generator = new SineGenerator();
-            var wave = generator.Generate(bracketParameter, readingContext);
+            var wave = generator.Generate(bracketParameter.Parameters, readingContext);
 
             // assert
             Assert.NotNull(wave);

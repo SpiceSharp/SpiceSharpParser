@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace SpiceSharpParser.Common.Evaluation
@@ -6,9 +7,27 @@ namespace SpiceSharpParser.Common.Evaluation
     /// <summary>
     /// Provider of random number generator.
     /// </summary>
-    public static class Randomizer
+    public class Randomizer
     {
         private static int _tickCount = Environment.TickCount;
+        private Dictionary<int, Random> _randomGenerators = new Dictionary<int, Random>();
+        private ReaderWriterLockSlim _cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+
+        /// <summary>
+        /// Clears the randomizer.
+        /// </summary>
+        public void Clear()
+        {
+            _cacheLock.EnterWriteLock();
+            try
+            {
+                _randomGenerators.Clear();
+            }
+            finally
+            {
+                _cacheLock.ExitWriteLock();
+            }
+        }
 
         /// <summary>
         /// Provides a random number generator.
@@ -17,11 +36,37 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <returns>
         /// A new instance of a random number generator.
         /// </returns>
-        public static Random GetRandom(int? randomSeed)
+        public Random GetRandom(int? randomSeed)
         {
             if (randomSeed.HasValue)
             {
-                return new Random(randomSeed.Value);
+                _cacheLock.EnterUpgradeableReadLock();
+                try
+                {
+                    if (!_randomGenerators.ContainsKey(randomSeed.Value))
+                    {
+                        _cacheLock.EnterWriteLock();
+                        try
+                        {
+                            var randomGenerator = new Random(randomSeed.Value);
+                            _randomGenerators[randomSeed.Value] = randomGenerator;
+
+                            return randomGenerator;
+                        }
+                        finally
+                        {
+                            _cacheLock.ExitWriteLock();
+                        }
+                    }
+                    else
+                    {
+                        return _randomGenerators[randomSeed.Value];
+                    }
+                }
+                finally
+                {
+                    _cacheLock.ExitUpgradeableReadLock();
+                }
             }
             else
             {

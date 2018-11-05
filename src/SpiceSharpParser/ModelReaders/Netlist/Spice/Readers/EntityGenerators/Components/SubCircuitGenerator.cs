@@ -201,7 +201,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return new ReadingContext(
                 subcircuitName,
                 context.ExpressionParser,
-                context.SimulationsParameters,
+                context.SimulationPreparations,
                 context.SimulutionEvaluators,
                 context.SimulationExpressionContexts,
                 context.Result,

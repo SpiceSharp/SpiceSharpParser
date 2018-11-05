@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common.Evaluation;
 
@@ -7,14 +8,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public class SimulationExpressionContexts
     {
+        private ReaderWriterLockSlim cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+
         public SimulationExpressionContexts(ExpressionContext sourceContext)
         {
             SourceContext = sourceContext;
+            Contexts = new Dictionary<Simulation, ExpressionContext>();
         }
 
         protected ExpressionContext SourceContext { get; }
 
-        protected ConcurrentDictionary<Simulation, ExpressionContext> Contexts { get; } = new ConcurrentDictionary<Simulation, ExpressionContext>();
+        protected Dictionary<Simulation, ExpressionContext> Contexts { get; }
 
         /// <summary>
         /// Gets the expression context for simulation.
@@ -30,14 +34,34 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            if (!this.Contexts.TryGetValue(simulation, out var context))
+            cacheLock.EnterUpgradeableReadLock();
+            try
             {
-                context = SourceContext.Clone();
-                context.Data = simulation;
-                Contexts[simulation] = context;
+                if (!Contexts.TryGetValue(simulation, out var context))
+                {
+                    cacheLock.EnterWriteLock();
+                    try
+                    {
+                        context = SourceContext.Clone();
+                        context.Data = simulation;
+                        context.Seed = SourceContext.Seed + Contexts.Count; //TODO: better hack
+                        Contexts[simulation] = context;
+                        return context;
+                    }
+                    finally
+                    {
+                        cacheLock.ExitWriteLock();
+                    }
+                }
+                else
+                {
+                    return context;
+                }
             }
-
-            return context;
+            finally
+            {
+                cacheLock.ExitUpgradeableReadLock();
+            }
         }
     }
 }

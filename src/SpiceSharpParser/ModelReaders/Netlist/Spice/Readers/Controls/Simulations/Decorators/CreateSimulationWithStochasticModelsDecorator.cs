@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
@@ -12,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 {
     public class CreateSimulationWithStochasticModelsDecorator
     {
-        private static readonly Dictionary<Entity, Dictionary<string, double>> LotValues = new Dictionary<Entity, Dictionary<string, double>>();
+        private static readonly ConcurrentDictionary<Entity, Dictionary<string, double>> LotValues = new ConcurrentDictionary<Entity, Dictionary<string, double>>();
 
         public static Func<string, Control, IReadingContext, BaseSimulation> Decorate(IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
         {
@@ -71,7 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var currentValue = currentValueParameter.Value;
                     var percentValue = evaluator.EvaluateValueExpression(parameterPercent.Image, expressionContext);
                     double newValue = GetValueForLotParameter(expressionContext, baseModel, parameterName, currentValue, percentValue, comparer);
-                    context.SimulationsParameters.SetParameter(context.SimulationExpressionContexts, componentModel, parameterName, newValue, sim, 1, comparer);
+                    context.SimulationPreparations.SetParameter(componentModel, sim, parameterName, newValue, true, false);
                 }
             }
         }
@@ -95,14 +96,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var percentValue = evaluator.EvaluateValueExpression(parameterPercent.Image, expressionContext);
 
                     double newValue = GetValueForDevParameter(expressionContext, currentValue, percentValue);
-                    context.SimulationsParameters.SetParameter(context.SimulationExpressionContexts, componentModel, asgparamName, newValue, sim, 1, comparer);
+                    context.SimulationPreparations.SetParameter(componentModel, sim, asgparamName, newValue, true, false);
                 }
             }
         }
 
         private static double GetValueForDevParameter(ExpressionContext expressionContext, double currentValue, double percentValue)
         {
-            var random = Randomizer.GetRandom(expressionContext.Seed);
+            var random = expressionContext.Randomizer.GetRandom(expressionContext.Seed);
 
             double newValue = 0;
             if (random.Next() % 2 == 0)
@@ -124,7 +125,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 return LotValues[baseModel][parameterName];
             }
 
-            var random = Randomizer.GetRandom(expressionContext.Seed);
+            var random = expressionContext.Randomizer.GetRandom(expressionContext.Seed);
 
             double newValue = 0;
             if (random.Next() % 2 == 0)

@@ -12,6 +12,7 @@ using Xunit;
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
 {
     using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
+    using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
     public class WaveformReaderTests
     {
@@ -20,7 +21,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
         {
             // arrange
             var waveFormGenerator = Substitute.For<WaveformGenerator>();
-            waveFormGenerator.Generate(Arg.Any<BracketParameter>(), Arg.Any<IReadingContext>()).Returns(new Sine());
+            waveFormGenerator.Generate(Arg.Any<ParameterCollection>(), Arg.Any<IReadingContext>()).Returns(new Sine());
 
             var waveFormRegistry = Substitute.For<IMapper<WaveformGenerator>>();
             waveFormRegistry.ContainsKey("func", false).Returns(true);
@@ -32,14 +33,12 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
                         x[2] = waveFormGenerator;
                         return true;
                     });
-            var bracketParameter = new Models.Netlist.Spice.Objects.Parameters.BracketParameter();
-            bracketParameter.Name = "FUNc";
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
 
             // act
             WaveformReader waveformReader = new WaveformReader(waveFormRegistry);
-            var waveForm = waveformReader.Generate(bracketParameter, readingContext);
+            var waveForm = waveformReader.Generate("func", new ParameterCollection(), readingContext);
 
             // assert
             Assert.IsType<Sine>(waveForm);
@@ -50,20 +49,18 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
         {
             // arrange
             var waveFormGenerator = Substitute.For<WaveformGenerator>();
-            waveFormGenerator.Generate(Arg.Any<BracketParameter>(), Arg.Any<IReadingContext>()).Returns(new Sine());
+            waveFormGenerator.Generate(Arg.Any<ParameterCollection>(), Arg.Any<IReadingContext>()).Returns(new Sine());
 
             var waveFormRegistry = Substitute.For<IMapper<WaveformGenerator>>();
             waveFormRegistry.ContainsKey("func", true).Returns(true);
             waveFormRegistry.GetValue(Arg.Any<string>(), Arg.Any<bool>()).Returns(waveFormGenerator);
 
-            var bracketParameter = new BracketParameter();
-            bracketParameter.Name = "func2";
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
 
             // act + assert
             WaveformReader waveformReader = new WaveformReader(waveFormRegistry);
-            Assert.Throws<Exception>(() => waveformReader.Generate(bracketParameter, readingContext));
+            Assert.Throws<Exception>(() => waveformReader.Generate("func2", new ParameterCollection(), readingContext));
         }
     }
 }

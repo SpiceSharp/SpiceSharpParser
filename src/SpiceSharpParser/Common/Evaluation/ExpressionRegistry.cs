@@ -34,9 +34,9 @@ namespace SpiceSharpParser.Common.Evaluation
         public bool IsExpressionNameCaseSensitive { get; }
 
         /// <summary>
-        /// Gets or sets the dictionary of parameters.
+        /// Gets the dictionary of parameters.
         /// </summary>
-        public Dictionary<string, Expression> Parameters { get; }
+        protected Dictionary<string, Expression> Parameters { get; }
 
         /// <summary>
         /// Gets the dictionary of named expressions.
@@ -110,6 +110,11 @@ namespace SpiceSharpParser.Common.Evaluation
             return NamedExpressions[expressionName];
         }
 
+        public void AddOrUpdate(string parameterName, Expression parameterExpression)
+        {
+            Parameters[parameterName] = parameterExpression;
+        }
+
         /// <summary>
         /// Adds an expression to registry.
         /// </summary>
@@ -181,7 +186,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         /// <param name="parameterName">Parameter name.</param>
         /// <param name="dependentParameters">Dependent parameters.</param>
-        public void UpdateParameterDependencies(string parameterName, ICollection<string> dependentParameters)
+        public void AddOrUpdateParameterDependencies(string parameterName, ICollection<string> dependentParameters)
         {
             if (parameterName == null)
             {
