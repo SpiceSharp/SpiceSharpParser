@@ -27,7 +27,7 @@
         {
             if (!IsEvaluated)
             {
-                CurrentValue = evaluator.EvaluateValueExpression(String, context);
+                CurrentValue = evaluator.EvaluateValueExpression(ValueExpression, context);
                 IsEvaluated = true;
             }
 
@@ -40,6 +40,17 @@
         public override void Invalidate()
         {
             IsEvaluated = false;
+        }
+
+        /// <summary>
+        /// Clones the cached expression.
+        /// </summary>
+        /// <returns>
+        /// A cloned cached expression.
+        /// </returns>
+        public override Expression Clone()
+        {
+            return new CachedExpression(ValueExpression) { CurrentValue = CurrentValue, IsEvaluated = true };
         }
     }
 }

@@ -61,7 +61,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public double EvaluateNamedExpression(string expressionName, ExpressionContext context)
         {
-            return context.Registry.GetExpression(expressionName).Evaluate(this, context);
+            return context.ExpressionRegistry.GetExpression(expressionName).Evaluate(this, context);
         }
 
         /// <summary>

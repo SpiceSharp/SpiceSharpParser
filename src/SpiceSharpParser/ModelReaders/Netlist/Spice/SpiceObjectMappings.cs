@@ -46,6 +46,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Controls.Map("ST_R", new StRegisterControl());
             Controls.Map("STEP_R", new StepRegisterControl());
             Controls.Map("PARAM", new ParamControl());
+            Controls.Map("SPARAM", new SParamControl());
             Controls.Map("FUNC", new FuncControl());
             Controls.Map("GLOBAL", new GlobalControl());
             Controls.Map("CONNECT", new ConnectControl());

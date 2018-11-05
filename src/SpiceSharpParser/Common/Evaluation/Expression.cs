@@ -13,7 +13,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="expression">Expression.</param>
         public Expression(string expression)
         {
-            String = expression ?? throw new ArgumentNullException(nameof(expression));
+            ValueExpression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Gets the expression string.
         /// </summary>
-        public string String { get; }
+        public string ValueExpression { get; }
 
         /// <summary>
         /// Gets or sets the current evaluation value.
@@ -40,7 +40,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public virtual double Evaluate(IEvaluator evaluator, ExpressionContext context)
         {
-            var newValue = evaluator.EvaluateValueExpression(String, context);
+            var newValue = evaluator.EvaluateValueExpression(ValueExpression, context);
             CurrentValue = newValue;
             OnEvaluated(newValue);
             return newValue;
@@ -59,9 +59,15 @@ namespace SpiceSharpParser.Common.Evaluation
             Evaluated?.Invoke(this, new EvaluatedArgs() { NewValue = newValue });
         }
 
+        /// <summary>
+        /// Clones the expression.
+        /// </summary>
+        /// <returns>
+        /// A cloned expression.
+        /// </returns>
         public virtual Expression Clone()
         {
-            var result = new Expression(String);
+            var result = new Expression(ValueExpression);
             result.CurrentValue = double.NaN;
             return result;
         }

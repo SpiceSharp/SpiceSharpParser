@@ -15,7 +15,7 @@ namespace SpiceSharpParser.Common.Evaluation
         }
 
         /// <summary>
-        /// Gets custom functions.
+        /// Gets or sets custom functions.
         /// </summary>
         public Dictionary<string, Function> Functions { get; set; }
     }

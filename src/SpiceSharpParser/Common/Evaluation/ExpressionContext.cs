@@ -26,9 +26,10 @@ namespace SpiceSharpParser.Common.Evaluation
             Parameters = new Dictionary<string, Expression>(StringComparerProvider.Get(isParameterNameCaseSensitive));
             Functions = new Dictionary<string, Function>(StringComparerProvider.Get(isFunctionNameCaseSensitive));
             Children = new List<ExpressionContext>();
-            Registry = new ExpressionRegistry(isParameterNameCaseSensitive, isExpressionNameCaseSensitive);
+            ExpressionRegistry = new ExpressionRegistry(isParameterNameCaseSensitive, isExpressionNameCaseSensitive);
 
             CreateCommonFunctions();
+            Randomizer = new Randomizer();
         }
 
         /// <summary>
@@ -54,6 +55,8 @@ namespace SpiceSharpParser.Common.Evaluation
             }
         }
 
+        public Randomizer Randomizer { get; set; }
+
         /// <summary>
         /// Gets or sets data of the context.
         /// </summary>
@@ -72,7 +75,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Gets or sets expression registry for the context.
         /// </summary>
-        public ExpressionRegistry Registry { get; set; }
+        public ExpressionRegistry ExpressionRegistry { get; set; }
 
         /// <summary>
         /// Gets or sets the children simulationEvaluators.
@@ -88,9 +91,10 @@ namespace SpiceSharpParser.Common.Evaluation
         {
             var parameter = new ConstantExpression(value);
             Parameters[parameterName] = parameter;
-            Registry.Parameters[parameterName] = parameter;
 
-            RefreshForParameter(parameterName);
+            ExpressionRegistry.AddOrUpdate(parameterName, parameter);
+            ExpressionRegistry.InvalidateDependentParameters(parameterName);
+            ExpressionRegistry.InvalidateExpressions(parameterName);
 
             foreach (var child in Children)
             {
@@ -105,27 +109,19 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="expression">An expression of parameter.</param>
         public void SetParameter(string parameterName, string expression, ICollection<string> expressionParameters)
         {
-            var parameter = new CachedExpression(expression);
-            Parameters[parameterName] = parameter;
-            Registry.Parameters[parameterName] = parameter;
-
-            Registry.UpdateParameterDependencies(parameterName, expressionParameters);
-            RefreshForParameter(parameterName);
-
-            foreach (var child in Children)
-            {
-                child.SetParameter(parameterName, expression, expressionParameters);
-            }
+            var parameter = new Expression(expression);
+            SetParameter(parameterName, expression, expressionParameters, parameter);
         }
 
         /// <summary>
-        /// Refreshes parameter.
+        /// Sets the cached parameter.
         /// </summary>
-        /// <param name="parameterName">Parameter name.</param>
-        public void RefreshForParameter(string parameterName)
+        /// <param name="parameterName">A name of parameter.</param>
+        /// <param name="expression">An expression of parameter.</param>
+        public void SetCachedParameter(string parameterName, string expression, ICollection<string> expressionParameters)
         {
-            Registry.InvalidateDependentParameters(parameterName);
-            Registry.InvalidateExpressions(parameterName);
+            var parameter = new CachedExpression(expression);
+            SetParameter(parameterName, expression, expressionParameters, parameter);
         }
 
         /// <summary>
@@ -136,7 +132,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public IEnumerable<string> GetExpressionNames()
         {
-            return Registry.GetExpressionNames();
+            return ExpressionRegistry.GetExpressionNames();
         }
 
         /// <summary>
@@ -146,7 +142,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="expression">Expression.</param>
         public void SetNamedExpression(string expressionName, string expression, ICollection<string> parameters)
         {
-            Registry.Add(new NamedExpression(expressionName, expression), parameters);
+            ExpressionRegistry.Add(new NamedExpression(expressionName, expression), parameters);
         }
 
         /// <summary>
@@ -158,9 +154,17 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public string GetExpression(string expressionName)
         {
-            return Registry.GetExpression(expressionName)?.String;
+            return ExpressionRegistry.GetExpression(expressionName)?.ValueExpression;
         }
 
+        /// <summary>
+        /// Creates a child context.
+        /// </summary>
+        /// <param name="name">Name of a context.</param>
+        /// <param name="addToChildren">Specifies whether context should be added to children.</param>
+        /// <returns>
+        /// A child context.
+        /// </returns>
         public virtual ExpressionContext CreateChildContext(string name, bool addToChildren)
         {
             var child = new ExpressionContext(name, isParameterNameCaseSensitive, isFunctionNameCaseSensitive, isExpressionNameCaseSensitive);
@@ -168,8 +172,9 @@ namespace SpiceSharpParser.Common.Evaluation
             child.Parameters = new Dictionary<string, Expression>(Parameters, StringComparerProvider.Get(isParameterNameCaseSensitive));
             child.Data = Data;
             child.Functions = new Dictionary<string, Function>(Functions, StringComparerProvider.Get(isFunctionNameCaseSensitive));
-            child.Registry = Registry.Clone();
+            child.ExpressionRegistry = ExpressionRegistry.Clone();
             child.Seed = Seed;
+            child.Randomizer = Randomizer;
 
             if (addToChildren)
             {
@@ -193,11 +198,18 @@ namespace SpiceSharpParser.Common.Evaluation
                 context.Parameters.Add(parameter.Key, parameter.Value.Clone());
             }
 
-            context.Registry = Registry.Clone();
+            context.ExpressionRegistry = ExpressionRegistry.Clone();
             context.Functions = new Dictionary<string, Function>(Functions, StringComparerProvider.Get(this.isFunctionNameCaseSensitive));
-            context.Children = new List<ExpressionContext>(Children);
+
+            context.Children = new List<ExpressionContext>();
+            foreach (var child in Children)
+            {
+                context.Children.Add(child.Clone());
+            }
+
             context.Seed = Seed;
             context.Data = Data;
+            context.Randomizer = new Randomizer();
 
             return context;
         }
@@ -244,6 +256,21 @@ namespace SpiceSharpParser.Common.Evaluation
             Functions.Add("sinh", MathFunctions.CreateSinh());
             Functions.Add("tan", MathFunctions.CreateTan());
             Functions.Add("tanh", MathFunctions.CreateTanh());
+        }
+
+        protected void SetParameter(string parameterName, string expression, ICollection<string> expressionParameters, Expression parameter)
+        {
+            Parameters[parameterName] = parameter;
+
+            ExpressionRegistry.AddOrUpdate(parameterName, parameter);
+            ExpressionRegistry.AddOrUpdateParameterDependencies(parameterName, expressionParameters);
+            ExpressionRegistry.InvalidateDependentParameters(parameterName);
+            ExpressionRegistry.InvalidateExpressions(parameterName);
+
+            foreach (var child in Children)
+            {
+                child.SetParameter(parameterName, expression, expressionParameters);
+            }
         }
     }
 }
