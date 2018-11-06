@@ -84,7 +84,7 @@
   <div classs="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.html">IProcessor</a></div>
-    <div><a class="xref" href="SpiceSharpParser.Common.Evaluation.IEvaluatorConsumer.html">IEvaluatorConsumer</a></div>
+    <div><a class="xref" href="SpiceSharpParser.Common.Processors.IEvaluatorConsumer.html">IEvaluatorConsumer</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -123,7 +123,7 @@
     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Processors_IfPreprocessor__ctor.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IfPreprocessor.cs/#L20">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IfPreprocessor.cs/#L19">View Source</a>
   </span>
   <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Processors_IfPreprocessor__ctor_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.#ctor*"></a>
   <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Processors_IfPreprocessor__ctor" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.#ctor">IfPreprocessor()</h4>
@@ -169,19 +169,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Processors_IfPreprocessor_Evaluators.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.Evaluators%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Processors_IfPreprocessor_Evaluator.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.Evaluator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IfPreprocessor.cs/#L27">View Source</a>
   </span>
-  <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Processors_IfPreprocessor_Evaluators_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.Evaluators*"></a>
-  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Processors_IfPreprocessor_Evaluators" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.Evaluators">Evaluators</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the evaluator.</p>
-</div>
+  <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Processors_IfPreprocessor_Evaluator_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.Evaluator*"></a>
+  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Processors_IfPreprocessor_Evaluator" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.Evaluator">Evaluator</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEvaluatorsContainer Evaluators { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IEvaluator Evaluator { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -193,7 +192,67 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IEvaluatorsContainer.html">IEvaluatorsContainer</a></td>
+        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.IEvaluator.html">IEvaluator</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Processors_IfPreprocessor_ExpressionContext.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.ExpressionContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IfPreprocessor.cs/#L25">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Processors_IfPreprocessor_ExpressionContext_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.ExpressionContext*"></a>
+  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Processors_IfPreprocessor_ExpressionContext" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.ExpressionContext">ExpressionContext</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ExpressionContext ExpressionContext { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.ExpressionContext.html">ExpressionContext</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Processors_IfPreprocessor_ExpressionParser.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.ExpressionParser%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IfPreprocessor.cs/#L23">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Processors_IfPreprocessor_ExpressionParser_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.ExpressionParser*"></a>
+  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Processors_IfPreprocessor_ExpressionParser" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.ExpressionParser">ExpressionParser</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IExpressionParser ExpressionParser { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.IExpressionParser.html">IExpressionParser</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -252,7 +311,7 @@
       <a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.html">IProcessor</a>
   </div>
   <div>
-      <a class="xref" href="SpiceSharpParser.Common.Evaluation.IEvaluatorConsumer.html">IEvaluatorConsumer</a>
+      <a class="xref" href="SpiceSharpParser.Common.Processors.IEvaluatorConsumer.html">IEvaluatorConsumer</a>
   </div>
 </article>
           </div>
@@ -265,7 +324,7 @@
                     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Processors_IfPreprocessor.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IfPreprocessor.cs/#L15" class="contribution-link">View Source</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IfPreprocessor.cs/#L14" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
