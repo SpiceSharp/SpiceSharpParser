@@ -73,13 +73,7 @@
   
   <h1 id="SpiceSharpParser_Parsers_Expression_SpiceExpressionParser" data-uid="SpiceSharpParser.Parsers.Expression.SpiceExpressionParser" class="text-break">Class SpiceExpressionParser
   </h1>
-  <div class="markdown level0 summary"><p>@author: Sven Boulanger
-@author: Marcin Gołębiowski (custom functions, lazy evaluation)
-A very light-weight and fast expression parser made for parsing SPICE expressions
-It is based on Dijkstra's Shunting Yard algorithm. It is very fast for parsing expressions only once.
-The parser is also not very expressive for errors, so only use it for relatively simple expressions.</p>
-<p><strong>Supported operators</strong></p><ul><li>Positive and negative (&apos;+&apos;, &apos;-&apos;)</li><li>Addition and subtraction (&apos;+&apos;, &apos;-&apos;)</li><li>Multiplication and division (&apos;*&apos;, &apos;/&apos;)</li><li>Modulo (&apos;%&apos;)</li><li>Logical (&apos;&amp;&amp;&apos;, &apos;||&apos;, &apos;!&apos;)</li><li>Relational (&apos;==&apos;, &apos;!=&apos;, &apos;&lt;&apos;, &apos;>&apos;, &apos;&lt;=&apos;, &apos;>=&apos;)</li></ul>
-</div>
+  <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -127,7 +121,7 @@ The parser is also not very expressive for errors, so only use it for relatively
     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Parsers_Expression_SpiceExpressionParser__ctor_System_Boolean_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Expression.SpiceExpressionParser.%23ctor(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Parsers/Expression/SpiceExpressionParser.cs/#L108">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Parsers/Expression/SpiceExpressionParser.cs/#L94">View Source</a>
   </span>
   <a id="SpiceSharpParser_Parsers_Expression_SpiceExpressionParser__ctor_" data-uid="SpiceSharpParser.Parsers.Expression.SpiceExpressionParser.#ctor*"></a>
   <h4 id="SpiceSharpParser_Parsers_Expression_SpiceExpressionParser__ctor_System_Boolean_" data-uid="SpiceSharpParser.Parsers.Expression.SpiceExpressionParser.#ctor(System.Boolean)">SpiceExpressionParser(Boolean)</h4>
@@ -160,19 +154,19 @@ The parser is also not very expressive for errors, so only use it for relatively
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Parsers_Expression_SpiceExpressionParser_Parse_System_String_SpiceSharpParser_Common_Evaluation_ExpressionParserContext_System_Boolean_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Expression.SpiceExpressionParser.Parse(System.String%2CSpiceSharpParser.Common.Evaluation.ExpressionParserContext%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Parsers_Expression_SpiceExpressionParser_Parse_System_String_SpiceSharpParser_Common_Evaluation_ExpressionParserContext_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Expression.SpiceExpressionParser.Parse(System.String%2CSpiceSharpParser.Common.Evaluation.ExpressionParserContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Parsers/Expression/SpiceExpressionParser.cs/#L120">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Parsers/Expression/SpiceExpressionParser.cs/#L105">View Source</a>
   </span>
   <a id="SpiceSharpParser_Parsers_Expression_SpiceExpressionParser_Parse_" data-uid="SpiceSharpParser.Parsers.Expression.SpiceExpressionParser.Parse*"></a>
-  <h4 id="SpiceSharpParser_Parsers_Expression_SpiceExpressionParser_Parse_System_String_SpiceSharpParser_Common_Evaluation_ExpressionParserContext_System_Boolean_" data-uid="SpiceSharpParser.Parsers.Expression.SpiceExpressionParser.Parse(System.String,SpiceSharpParser.Common.Evaluation.ExpressionParserContext,System.Boolean)">Parse(String, ExpressionParserContext, Boolean)</h4>
+  <h4 id="SpiceSharpParser_Parsers_Expression_SpiceExpressionParser_Parse_System_String_SpiceSharpParser_Common_Evaluation_ExpressionParserContext_" data-uid="SpiceSharpParser.Parsers.Expression.SpiceExpressionParser.Parse(System.String,SpiceSharpParser.Common.Evaluation.ExpressionParserContext)">Parse(String, ExpressionParserContext)</h4>
   <div class="markdown level1 summary"><p>Parses an expression.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ExpressionParseResult Parse(string expression, ExpressionParserContext context, bool validateParameters = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public ExpressionParseResult Parse(string expression, ExpressionParserContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -194,12 +188,6 @@ The parser is also not very expressive for errors, so only use it for relatively
         <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.ExpressionParserContext.html">ExpressionParserContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The expression context.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">validateParameters</span></td>
-        <td><p>Specifies whether parameter validation is on.</p>
 </td>
       </tr>
     </tbody>
@@ -235,7 +223,7 @@ The parser is also not very expressive for errors, so only use it for relatively
                     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Parsers_Expression_SpiceExpressionParser.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Expression.SpiceExpressionParser%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Parsers/Expression/SpiceExpressionParser.cs/#L27" class="contribution-link">View Source</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Parsers/Expression/SpiceExpressionParser.cs/#L13" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

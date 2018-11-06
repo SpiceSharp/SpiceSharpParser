@@ -128,19 +128,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport__ctor_System_String_System_String_System_String_SpiceSharpParser_Common_Evaluation_IEvaluator_SpiceSharp_Simulations_Simulation_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.%23ctor(System.String%2CSystem.String%2CSystem.String%2CSpiceSharpParser.Common.Evaluation.IEvaluator%2CSpiceSharp.Simulations.Simulation)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport__ctor_System_String_System_String_System_String_SpiceSharpParser_Common_Evaluation_IEvaluator_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_SimulationExpressionContexts_SpiceSharp_Simulations_Simulation_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.%23ctor(System.String%2CSystem.String%2CSystem.String%2CSpiceSharpParser.Common.Evaluation.IEvaluator%2CSpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationExpressionContexts%2CSpiceSharp.Simulations.Simulation)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/ExpressionExport.cs/#L20">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/ExpressionExport.cs/#L22">View Source</a>
   </span>
   <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport__ctor_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.#ctor*"></a>
-  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport__ctor_System_String_System_String_System_String_SpiceSharpParser_Common_Evaluation_IEvaluator_SpiceSharp_Simulations_Simulation_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.#ctor(System.String,System.String,System.String,SpiceSharpParser.Common.Evaluation.IEvaluator,SpiceSharp.Simulations.Simulation)">ExpressionExport(String, String, String, IEvaluator, Simulation)</h4>
+  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport__ctor_System_String_System_String_System_String_SpiceSharpParser_Common_Evaluation_IEvaluator_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_SimulationExpressionContexts_SpiceSharp_Simulations_Simulation_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.#ctor(System.String,System.String,System.String,SpiceSharpParser.Common.Evaluation.IEvaluator,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationExpressionContexts,SpiceSharp.Simulations.Simulation)">ExpressionExport(String, String, String, IEvaluator, SimulationExpressionContexts, Simulation)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.html">ExpressionExport</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ExpressionExport(string name, string expressionName, string expression, IEvaluator evaluator, Simulation simulation)</code></pre>
+    <pre><code class="lang-csharp hljs">public ExpressionExport(string name, string expressionName, string expression, IEvaluator evaluator, SimulationExpressionContexts contexts, Simulation simulation)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -155,26 +155,31 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td><p>Name of export</p>
+        <td><p>Name of export.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">expressionName</span></td>
-        <td><p>Name of expression</p>
+        <td><p>Name of expression.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">expression</span></td>
-        <td><p>Expression</p>
+        <td><p>Expression.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.IEvaluator.html">IEvaluator</a></td>
         <td><span class="parametername">evaluator</span></td>
-        <td><p>Evaluator</p>
+        <td><p>Evaluator.</p>
 </td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationExpressionContexts.html">SimulationExpressionContexts</a></td>
+        <td><span class="parametername">contexts</span></td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">SpiceSharp.Simulations.Simulation</span></td>
@@ -190,11 +195,11 @@
     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_Evaluator.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.Evaluator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/ExpressionExport.cs/#L39">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/ExpressionExport.cs/#L41">View Source</a>
   </span>
   <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_Evaluator_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.Evaluator*"></a>
   <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_Evaluator" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.Evaluator">Evaluator</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the evalutor.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the evaluator.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -221,7 +226,7 @@
     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_Expression.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.Expression%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/ExpressionExport.cs/#L44">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/ExpressionExport.cs/#L51">View Source</a>
   </span>
   <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_Expression_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.Expression*"></a>
   <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_Expression" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.Expression">Expression</h4>
@@ -249,10 +254,41 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_ExpressionContexts.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.ExpressionContexts%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/ExpressionExport.cs/#L46">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_ExpressionContexts_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.ExpressionContexts*"></a>
+  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_ExpressionContexts" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.ExpressionContexts">ExpressionContexts</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the expression context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SimulationExpressionContexts ExpressionContexts { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationExpressionContexts.html">SimulationExpressionContexts</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_ExpressionName.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.ExpressionName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/ExpressionExport.cs/#L34">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/ExpressionExport.cs/#L36">View Source</a>
   </span>
   <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_ExpressionName_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.ExpressionName*"></a>
   <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_ExpressionName" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.ExpressionName">ExpressionName</h4>
@@ -283,7 +319,7 @@
     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_QuantityUnit.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.QuantityUnit%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/ExpressionExport.cs/#L54">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/ExpressionExport.cs/#L61">View Source</a>
   </span>
   <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_QuantityUnit_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.QuantityUnit*"></a>
   <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_QuantityUnit" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.QuantityUnit">QuantityUnit</h4>
@@ -316,7 +352,7 @@
     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_TypeName.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.TypeName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/ExpressionExport.cs/#L49">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/ExpressionExport.cs/#L56">View Source</a>
   </span>
   <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_TypeName_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.TypeName*"></a>
   <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_TypeName" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.TypeName">TypeName</h4>
@@ -351,7 +387,7 @@
     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_Extract.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.Extract%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/ExpressionExport.cs/#L62">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/ExpressionExport.cs/#L69">View Source</a>
   </span>
   <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_Extract_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.Extract*"></a>
   <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport_Extract" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.Extract">Extract()</h4>
@@ -391,7 +427,7 @@
                     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Exporters_ExpressionExport.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/ExpressionExport.cs/#L11" class="contribution-link">View Source</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/ExpressionExport.cs/#L13" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
