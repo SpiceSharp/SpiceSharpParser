@@ -82,6 +82,7 @@ At the moment due to lack of implementation of LAPLACE and FREQ (part of analog 
 |.PRINT       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.PRINT)|
 |.TRAN        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.TRAN)|
 |.SAVE        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.SAVE)|
+|.SPARAM       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.SPARAM)|
 |.ST          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.ST)||
 |.STEP        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.STEP)|
 |.SUBCKT      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.SUBCKT)|
@@ -97,12 +98,14 @@ At the moment due to lack of implementation of LAPLACE and FREQ (part of analog 
 |G (Voltage-Controlled Current Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/G)|
 |H (Current-Controlled Voltage Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/H)|
 |I (Independent Current Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/I)|
+|J (JFET)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/J)|
 |K (Bipolar Junction Transistor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/K)|
 |L (Inductor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/L)|
 |M (Mosfet)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/M)|
 |Q (Bipolar Junction Transistor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/Q)|
 |R (Resistor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/R)|
 |S (Voltage Switch)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/S)|
+|T (Lossless Transmission Line)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/T)|
 |V (Independent Voltage Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/V)|
 |W (Current Switch)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/W)|
 |X (Subcircuit)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/X)|
