@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharp.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.ComponentModels;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -41,42 +42,63 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected SpiceSharp.Components.Component GenerateVoltageSwitch(string name, ParameterCollection parameters, IReadingContext context)
         {
-            // Read the model
             if (parameters.Count < 5)
             {
                 throw new WrongParametersCountException("Wrong parameter count for voltage switch");
             }
 
-            VoltageSwitch vsw = new VoltageSwitch(name);
-            context.CreateNodes(vsw, parameters);
+            string modelName = parameters.GetString(4);
 
-            context.ModelsRegistry.SetModel<VoltageSwitchModel>(
-              vsw,
-              parameters.GetString(4),
-              $"Could not find model {parameters.GetString(4)} for voltage switch {name}",
-              (VoltageSwitchModel model) => vsw.SetModel(model));
-
-            // Optional ON or OFF
-            if (parameters.Count == 6)
+            if (context.ModelsRegistry.FindModel<SpiceSharp.Components.Model>(modelName) is VSwitchModel s)
             {
-                switch (parameters.GetString(5).ToLower())
+                Resistor resistor = new Resistor(name);
+                context.CreateNodes(resistor, parameters.Take(2));
+                context.SimulationPreparations.ExecuteTemperatuteBehaviorBeforeLoad(resistor);
+
+                double rOn = s.ParameterSets.GetParameter<double>("ron");
+                double rOff = s.ParameterSets.GetParameter<double>("roff");
+                double vOn = s.ParameterSets.GetParameter<double>("von");
+                double vOff = s.ParameterSets.GetParameter<double>("voff");
+
+                string resExpression = $"table(v({parameters.GetString(2)}, {parameters.GetString(3)}), {vOff}, {rOff}, {vOn}, {rOn})";
+                context.SetParameter(resistor, "resistance", resExpression);
+
+                return resistor;
+            }
+            else
+            {
+                VoltageSwitch vsw = new VoltageSwitch(name);
+                context.CreateNodes(vsw, parameters);
+
+                context.ModelsRegistry.SetModel<VoltageSwitchModel>(
+                  vsw,
+                  parameters.GetString(4),
+                  $"Could not find model {parameters.GetString(4)} for voltage switch {name}",
+                  (VoltageSwitchModel model) => vsw.SetModel(model));
+
+                // Optional ON or OFF
+                if (parameters.Count == 6)
                 {
-                    case "on":
-                        vsw.ParameterSets.SetParameter("on");
-                        break;
-                    case "off":
-                        vsw.ParameterSets.SetParameter("off");
-                        break;
-                    default:
-                        throw new Exception("ON or OFF expected");
+                    switch (parameters.GetString(5).ToLower())
+                    {
+                        case "on":
+                            vsw.ParameterSets.SetParameter("on");
+                            break;
+                        case "off":
+                            vsw.ParameterSets.SetParameter("off");
+                            break;
+                        default:
+                            throw new Exception("ON or OFF expected");
+                    }
                 }
-            }
-            else if (parameters.Count > 6)
-            {
-                throw new WrongParametersCountException("Too many parameters for voltage switch");
-            }
+                else if (parameters.Count > 6)
+                {
+                    throw new WrongParametersCountException("Too many parameters for voltage switch");
+                }
 
-            return vsw;
+                return vsw;
+
+            }
         }
 
         /// <summary>
@@ -90,53 +112,70 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected SpiceSharp.Components.Component GenerateCurrentSwitch(string name, ParameterCollection parameters, IReadingContext context)
         {
-            CurrentSwitch csw = new CurrentSwitch(name);
-            switch (parameters.Count)
+            if (parameters.Count < 4)
             {
-                case 2: throw new WrongParametersCountException(name, "Voltage source expected");
-                case 3: throw new WrongParametersCountException(name, "Model expected");
-                case 4: break;
-                case 5: break;
-                default:
-                    throw new WrongParametersCountException(name, "Wrong parameter count for current switch");
+                throw new WrongParametersCountException("Wrong parameter count for current switch");
             }
 
-            context.CreateNodes(csw, parameters);
+            string modelName = parameters.GetString(3);
 
-            // Get the controlling voltage source
-            if (parameters[2] is WordParameter || parameters[2] is IdentifierParameter)
+            if (context.ModelsRegistry.FindModel<SpiceSharp.Components.Model>(modelName) is ISwitchModel s)
             {
-                csw.ControllingName = context.ComponentNameGenerator.Generate(parameters.GetString(2));
+                Resistor resistor = new Resistor(name);
+                context.CreateNodes(resistor, parameters.Take(2));
+                context.SimulationPreparations.ExecuteTemperatuteBehaviorBeforeLoad(resistor);
+
+                double rOn = s.ParameterSets.GetParameter<double>("ron");
+                double rOff = s.ParameterSets.GetParameter<double>("roff");
+                double iOn = s.ParameterSets.GetParameter<double>("ion");
+                double iOff = s.ParameterSets.GetParameter<double>("ioff");
+
+                string resExpression = $"table(i({parameters.GetString(2)}), {iOff}, {rOff}, {iOn}, {rOn})";
+                context.SetParameter(resistor, "resistance", resExpression);
+
+                return resistor;
             }
             else
             {
-                throw new WrongParameterTypeException("Voltage source name expected");
-            }
 
-            // Get the model
-            context.ModelsRegistry.SetModel<CurrentSwitchModel>(
-               csw,
-               parameters.GetString(3),
-               $"Could not find model {parameters.GetString(3)} for current switch {name}",
-               (CurrentSwitchModel model) => csw.SetModel(model));
+                CurrentSwitch csw = new CurrentSwitch(name);
+                context.CreateNodes(csw, parameters);
 
-            // Optional on or off
-            if (parameters.Count > 4)
-            {
-                switch (parameters.GetString(4).ToLower())
+                // Get the controlling voltage source
+                if (parameters[2] is WordParameter || parameters[2] is IdentifierParameter)
                 {
-                    case "on":
-                        csw.ParameterSets.SetParameter("on");
-                        break;
-                    case "off":
-                        csw.ParameterSets.SetParameter("off");
-                        break;
-                    default:
-                        throw new GeneralReaderException("ON or OFF expected");
+                    csw.ControllingName = context.ComponentNameGenerator.Generate(parameters.GetString(2));
                 }
-            }
+                else
+                {
+                    throw new WrongParameterTypeException("Voltage source name expected");
+                }
 
-            return csw;
+                // Get the model
+                context.ModelsRegistry.SetModel<CurrentSwitchModel>(
+                   csw,
+                   parameters.GetString(3),
+                   $"Could not find model {parameters.GetString(3)} for current switch {name}",
+                   (CurrentSwitchModel model) => csw.SetModel(model));
+
+                // Optional on or off
+                if (parameters.Count > 4)
+                {
+                    switch (parameters.GetString(4).ToLower())
+                    {
+                        case "on":
+                            csw.ParameterSets.SetParameter("on");
+                            break;
+                        case "off":
+                            csw.ParameterSets.SetParameter("off");
+                            break;
+                        default:
+                            throw new GeneralReaderException("ON or OFF expected");
+                    }
+                }
+
+                return csw;
+            }
         }
     }
 }

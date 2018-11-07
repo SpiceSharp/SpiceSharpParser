@@ -1,4 +1,5 @@
-﻿using SpiceSharp.Circuits;
+﻿using SpiceSharp.Behaviors;
+using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using System;
 using System.Collections.Generic;
@@ -48,6 +49,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 {
                     ts.Configurations.Get<TimeConfiguration>().InitialConditions[nodeId] = value;
                 }
+            });
+        }
+
+        public void ExecuteTemperatuteBehaviorBeforeLoad(Entity @object)
+        {
+            SimulationUpdates.AddBeforeLoad((simulation, evaluators, contexts) =>
+            {
+                BaseTemperatureBehavior tempBehavior = null;
+                var entityBehaviors = simulation.EntityBehaviors.GetBehaviorList<BaseTemperatureBehavior>();
+                for (var i = 0; i < entityBehaviors.Count; i++)
+                {
+                    if (entityBehaviors[i].Name == @object.Name)
+                    {
+                        tempBehavior = entityBehaviors[i];
+                    }
+                }
+                tempBehavior.Temperature(simulation);
             });
         }
 

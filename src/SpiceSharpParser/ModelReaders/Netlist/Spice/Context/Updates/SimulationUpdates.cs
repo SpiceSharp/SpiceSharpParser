@@ -1,5 +1,5 @@
-﻿using SpiceSharp.Simulations;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SpiceSharp.Simulations;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -9,6 +9,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         {
             ParameterUpdatesBeforeSetup = new List<SimulationUpdate>();
             ParameterUpdatesBeforeTemperature = new List<SimulationUpdate>();
+            ParameterUpdatesBeforeLoad = new List<SimulationUpdate>();
         }
 
         public Simulation Simulation { get; set; }
@@ -16,5 +17,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public List<SimulationUpdate> ParameterUpdatesBeforeSetup { get; protected set; }
 
         public List<SimulationUpdate> ParameterUpdatesBeforeTemperature { get; protected set; }
+
+        public List<SimulationUpdate> ParameterUpdatesBeforeLoad { get; protected set; }
     }
 }
