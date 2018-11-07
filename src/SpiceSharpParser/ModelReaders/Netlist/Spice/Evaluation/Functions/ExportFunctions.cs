@@ -69,7 +69,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             {
                 if (context.Data == null || !(context.Data is Simulation))
                 {
-                    return double.NaN;
+                    return 0.0;
                 }
 
                 string exporterKey = string.Format("{0}_{1}_{2}", ((Simulation)context.Data).Name, exportType, string.Join(",", args));

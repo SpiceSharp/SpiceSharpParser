@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
 {
@@ -173,14 +173,28 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected SpiceSharp.Components.Component GenerateRes(string name, ParameterCollection parameters, IReadingContext context)
         {
-            var res = new Resistor(name);
+            Resistor res = new Resistor(name);
+
+            var dynamicParameter = parameters.FirstOrDefault(p => p.Image == "dynamic");
+            if (dynamicParameter != null)
+            {
+                parameters.Remove(parameters.ToList().IndexOf(dynamicParameter));
+            }
+
+            bool isDynamic = dynamicParameter != null || context.Result?.SimulationConfiguration?.DynamicResistors == true;
+
+            if (isDynamic)
+            {
+                context.SimulationPreparations.ExecuteTemperatuteBehaviorBeforeLoad(res);
+            }
+
             context.CreateNodes(res, parameters);
 
             if (parameters.Count == 3) 
             {
                 // RName Node1 Node2 something
                 var something = parameters[2];
-                
+
                 // Check if something is a model name
                 if ((something is WordParameter || something is IdentifierParameter)  
                     && context.ModelsRegistry.FindModel<ResistorModel>(parameters.GetString(2)) != null)
@@ -188,7 +202,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     // RName Node1 Node2 modelName 
                     throw new GeneralReaderException("L parameter needs to be specified");
                 }
-                
+
                 // Check if something can be resistance
                 if ((something is WordParameter || something is IdentifierParameter || something is ValueParameter 
                     || something is ExpressionParameter) == false)
@@ -197,7 +211,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
 
                 // Set resistance
-                context.SetParameter(res, "resistance", something.Image, false);
+                context.SetParameter(res, "resistance", something.Image, isDynamic);
             }
             else
             {
@@ -281,7 +295,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         throw new GeneralReaderException("Invalid value for resistance");
                     }
 
-                    context.SetParameter(res, "resistance", resistanceParameter.Image, false);
+                    context.SetParameter(res, "resistance", resistanceParameter.Image, isDynamic);
                     resistorParameters.RemoveAt(0);
                 }
 

@@ -38,7 +38,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Models.Map(new string[] { "R", "L", "C", "K" }, new RLCModelGenerator());
             Models.Map("D", new DiodeModelGenerator());
             Models.Map(new string[] { "NPN", "PNP" }, new BipolarModelGenerator());
-            Models.Map(new string[] { "SW", "CS" }, new SwitchModelGenerator());
+            Models.Map(new string[] { "SW", "CS", "VSWITCH", "ISWITCH" }, new SwitchModelGenerator());
             Models.Map(new string[] { "PMOS", "NMOS" }, new MosfetModelGenerator());
             Models.Map(new string[] { "NJF", "PJF" }, new JFETModelGenerator());
 

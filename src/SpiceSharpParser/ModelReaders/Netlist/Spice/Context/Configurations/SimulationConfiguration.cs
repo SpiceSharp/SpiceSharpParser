@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.IntegrationMethods;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -52,5 +51,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Gets the Monte Carlo Analysis configuration.
         /// </summary>
         public MonteCarloConfiguration MonteCarloConfiguration { get; } = new MonteCarloConfiguration();
+
+        /// <summary>
+        /// Gets or sets a value indicating whether resistors are dynamic by default.
+        /// </summary>
+        public bool DynamicResistors { get; set; } = false;
     }
 }

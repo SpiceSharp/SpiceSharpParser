@@ -10,7 +10,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         {
             Contexts = contexts;
             Evaluators = evaluators;
-            SpecificUpdates = new ConcurrentDictionary<Simulation, SimulationUpdates>();
+            SpecificUpdates = new ConcurrentDictionary<BaseSimulation, SimulationUpdates>();
             CommonUpdates = new SimulationUpdates();
         }
 
@@ -18,7 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         protected SimulationExpressionContexts Contexts { get; set; }
 
-        protected ConcurrentDictionary<Simulation, SimulationUpdates> SpecificUpdates { get; set; }
+        protected ConcurrentDictionary<BaseSimulation, SimulationUpdates> SpecificUpdates { get; set; }
 
         protected SimulationUpdates CommonUpdates { get; set; }
 
@@ -36,6 +36,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             simulation.BeforeTemperature += (object sender, LoadStateEventArgs args) =>
             {
                 foreach (var pUpdate in CommonUpdates.ParameterUpdatesBeforeTemperature)
+                {
+                    pUpdate.Update(simulation, Evaluators, Contexts);
+                }
+            };
+
+            simulation.BeforeLoad += (object sender, LoadStateEventArgs args) =>
+            {
+                foreach (var pUpdate in CommonUpdates.ParameterUpdatesBeforeLoad)
                 {
                     pUpdate.Update(simulation, Evaluators, Contexts);
                 }
@@ -64,7 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        public void AddBeforeSetup(BaseSimulation simulation, Action<Simulation, ISimulationEvaluators, SimulationExpressionContexts> update)
+        public void AddBeforeSetup(BaseSimulation simulation, Action<BaseSimulation, ISimulationEvaluators, SimulationExpressionContexts> update)
         {
             if (SpecificUpdates.ContainsKey(simulation) == false)
             {
@@ -74,22 +82,27 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             SpecificUpdates[simulation].ParameterUpdatesBeforeSetup.Add(new SimulationUpdate() { Simulation = simulation, Update = update });
         }
 
-        public void AddBeforeSetup(Action<Simulation, ISimulationEvaluators, SimulationExpressionContexts> update)
-        {
-            CommonUpdates.ParameterUpdatesBeforeSetup.Add(new SimulationUpdate() { Simulation = null, Update = update });
-        }
-
-        public void AddBeforeTemperature(BaseSimulation simulation, Action<Simulation, ISimulationEvaluators, SimulationExpressionContexts> update)
+        public void AddBeforeTemperature(BaseSimulation simulation, Action<BaseSimulation, ISimulationEvaluators, SimulationExpressionContexts> update)
         {
             if (SpecificUpdates.ContainsKey(simulation) == false)
             {
                 SpecificUpdates[simulation] = new SimulationUpdates() { Simulation = simulation };
             }
 
-            SpecificUpdates[simulation].ParameterUpdatesBeforeTemperature.Add(new SimulationUpdate() { Simulation = simulation, Update = update });
+            SpecificUpdates[simulation].ParameterUpdatesBeforeSetup.Add(new SimulationUpdate() { Simulation = simulation, Update = update });
         }
 
-        public void AddBeforeTemperature(Action<Simulation, ISimulationEvaluators, SimulationExpressionContexts> update)
+        public void AddBeforeSetup(Action<BaseSimulation, ISimulationEvaluators, SimulationExpressionContexts> update)
+        {
+            CommonUpdates.ParameterUpdatesBeforeSetup.Add(new SimulationUpdate() { Simulation = null, Update = update });
+        }
+
+        public void AddBeforeLoad(Action<BaseSimulation, ISimulationEvaluators, SimulationExpressionContexts> update)
+        {
+            CommonUpdates.ParameterUpdatesBeforeLoad.Add(new SimulationUpdate() { Update = update });
+        }
+
+        public void AddBeforeTemperature(Action<BaseSimulation, ISimulationEvaluators, SimulationExpressionContexts> update)
         {
             CommonUpdates.ParameterUpdatesBeforeTemperature.Add(new SimulationUpdate() { Simulation = null, Update = update });
         }

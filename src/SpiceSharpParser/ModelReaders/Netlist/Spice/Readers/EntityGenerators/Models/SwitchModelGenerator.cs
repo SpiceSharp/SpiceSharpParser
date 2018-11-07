@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using SpiceSharp;
 using SpiceSharp.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.ComponentModels;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
@@ -8,7 +8,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 {
     public class SwitchModelGenerator : ModelGenerator
     {
-        public override IEnumerable<string> GeneratedTypes => new List<string>() { "sw", "csw" };
+        public override IEnumerable<string> GeneratedTypes => new List<string>() { "sw", "csw", "vswitch", "iswitch" };
 
         public override SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context)
         {
@@ -18,6 +18,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             {
                 case "sw": model = new VoltageSwitchModel(id); break;
                 case "csw": model = new CurrentSwitchModel(id); break;
+                case "vswitch": model = new VSwitchModel(id); break;
+                case "iswitch": model = new ISwitchModel(id); break;
             }
 
             if (model != null)
