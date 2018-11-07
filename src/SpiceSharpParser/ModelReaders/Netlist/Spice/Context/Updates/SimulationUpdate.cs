@@ -8,6 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
     {
         public Simulation Simulation { get; set; }
 
-        public Action<Simulation, ISimulationEvaluators, SimulationExpressionContexts> Update { get; set; }
+        public Action<BaseSimulation, ISimulationEvaluators, SimulationExpressionContexts> Update { get; set; }
     }
 }
