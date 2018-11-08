@@ -28,6 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Waveforms.Map("SINE", new SineGenerator());
             Waveforms.Map("SIN", new SineGenerator());
             Waveforms.Map("PULSE", new PulseGenerator());
+            Waveforms.Map("PWL", new PwlGenerator());
 
             // Register exporters
             Exporters.Map(new string[] { "V", "VI", "VR", "VM", "VDB", "VPH", "VP" }, new VoltageExporter());
