@@ -52,20 +52,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             });
         }
 
-        public void ExecuteTemperatuteBehaviorBeforeLoad(Entity @object)
+        public void ExecuteTemperatuteBehaviorBeforeLoad(Entity entity)
         {
             SimulationUpdates.AddBeforeLoad((simulation, evaluators, contexts) =>
             {
-                BaseTemperatureBehavior tempBehavior = null;
-                var entityBehaviors = simulation.EntityBehaviors.GetBehaviorList<BaseTemperatureBehavior>();
-                for (var i = 0; i < entityBehaviors.Count; i++)
+                var temperatureBehavior = simulation.EntityBehaviors[entity.Name].Get<BaseTemperatureBehavior>();
+                if (temperatureBehavior != null)
                 {
-                    if (entityBehaviors[i].Name == @object.Name)
-                    {
-                        tempBehavior = entityBehaviors[i];
-                    }
+                    temperatureBehavior.Temperature(simulation);
                 }
-                tempBehavior.Temperature(simulation);
+                else
+                {
+                    throw new InvalidOperationException($"No temperature behavior for {entity.Name}");
+                }
             });
         }
 
