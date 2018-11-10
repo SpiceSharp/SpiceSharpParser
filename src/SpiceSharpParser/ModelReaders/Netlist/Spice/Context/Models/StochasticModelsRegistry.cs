@@ -18,10 +18,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="modelNamesGenerators">The enumerable of model name generators.</param>
         public StochasticModelsRegistry(IEnumerable<IObjectNameGenerator> modelNamesGenerators, bool isModelNameCaseSensitive)
         {
+            IsModelNameCaseSensitive = isModelNameCaseSensitive;
             ModelNamesGenerators = modelNamesGenerators ?? throw new ArgumentNullException(nameof(modelNamesGenerators));
 
             AllModels = new Dictionary<string, Entity>(StringComparerProvider.Get(isModelNameCaseSensitive));
         }
+
+        public bool IsModelNameCaseSensitive { get; }
 
         /// <summary>
         /// Gets or sets the dictionary of stochastic models with dev parameters.
@@ -205,6 +208,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
 
             return null;
+        }
+
+        public IModelsRegistry CreateChildRegistry(List<IObjectNameGenerator> generators)
+        {
+            var result = new StochasticModelsRegistry(generators, IsModelNameCaseSensitive);
+
+            result.AllModels = new Dictionary<string, Entity>(AllModels, StringComparerProvider.Get(IsModelNameCaseSensitive));
+            result.ModelsWithDev = new Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, Parameter>>(ModelsWithDev);
+            result.ModelsWithLot = new Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, Parameter>>(ModelsWithLot);
+
+            return result;
         }
     }
 }

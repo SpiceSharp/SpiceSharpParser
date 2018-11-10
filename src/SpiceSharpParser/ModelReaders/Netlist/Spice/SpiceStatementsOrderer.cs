@@ -32,6 +32,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
         protected virtual int GetOrder(Statement statement)
         {
+            if (statement is SubCircuit)
+            {
+                return 1000;
+            }
+
             if (statement is Model)
             {
                 return 2000;
@@ -40,11 +45,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             if (statement is Component)
             {
                 return 3000;
-            }
-
-            if (statement is SubCircuit)
-            {
-                return 1000;
             }
 
             if (statement is Control c)
