@@ -217,6 +217,9 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
+            var nameGenerator = Substitute.For<IObjectNameGenerator>();
+            nameGenerator.Generate(Arg.Any<string>()).Returns("v1");
+            context.ComponentNameGenerator.Returns(nameGenerator);
             var entity = generator.Generate("x1.h1", "h1", "h", parameters, context);
 
             Assert.NotNull(entity);
