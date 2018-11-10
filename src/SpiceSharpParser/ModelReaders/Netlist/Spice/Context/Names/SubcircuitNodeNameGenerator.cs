@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
@@ -34,6 +35,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             PinInstanceNames = pinInstanceNames ?? throw new ArgumentNullException(nameof(pinInstanceNames));
 
             _pinMap = new Dictionary<string, string>(StringComparerProvider.Get(isNodeNameCaseSensitive));
+
+            if (SubCircuit.Pins.Count != PinInstanceNames.Count)
+            {
+                throw new GeneralReaderException("Subcircuit: " + subcircuitFullName + " has wrong number of nodes");
+            }
+
             for (var i = 0; i < SubCircuit.Pins.Count; i++)
             {
                 var pinIdentifier = SubCircuit.Pins[i];
