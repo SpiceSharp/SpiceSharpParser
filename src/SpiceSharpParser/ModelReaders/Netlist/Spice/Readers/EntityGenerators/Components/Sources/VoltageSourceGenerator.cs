@@ -194,7 +194,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var ccvs = new CurrentControlledVoltageSource(name);
                 context.CreateNodes(ccvs, parameters);
-                ccvs.ControllingName = parameters.GetString(2);
+                ccvs.ControllingName = context.ComponentNameGenerator.Generate(parameters.GetString(2));
                 context.SetParameter(ccvs, "gain", parameters.GetString(3));
 
                 return ccvs;
