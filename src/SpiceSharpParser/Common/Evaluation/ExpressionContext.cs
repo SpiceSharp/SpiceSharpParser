@@ -11,6 +11,7 @@ namespace SpiceSharpParser.Common.Evaluation
         private readonly bool isFunctionNameCaseSensitive;
         private readonly bool isExpressionNameCaseSensitive;
         private int? _seed;
+        private object _data;
 
         public ExpressionContext()
             : this(string.Empty, false, false, false)
@@ -55,12 +56,27 @@ namespace SpiceSharpParser.Common.Evaluation
             }
         }
 
-        public Randomizer Randomizer { get; set; }
+        public Randomizer Randomizer { get; set; }        
 
         /// <summary>
         /// Gets or sets data of the context.
         /// </summary>
-        public object Data { get; set; }
+        public object Data
+        {
+            get
+            {
+                return _data;
+            }
+            set
+            {
+                _data = value;
+
+                foreach (var child in Children)
+                {
+                    child.Data = value;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets the parameters.

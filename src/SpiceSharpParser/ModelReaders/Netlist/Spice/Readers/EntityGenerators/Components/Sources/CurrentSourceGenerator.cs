@@ -76,7 +76,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
 
                 var dimension = (int)context.EvaluateDouble(polyParameter.Parameters[0].Image);
-                var expression = ExpressionGenerator.CreatePolyCurrentExpression(dimension, parameters.Skip(3));
+                var expression = ExpressionGenerator.CreatePolyCurrentExpression(dimension, parameters.Skip(3), context.ComponentNameGenerator);
 
                 var cs = new CurrentSource(name);
                 context.CreateNodes(cs, parameters);
@@ -145,7 +145,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
 
                 var dimension = (int)context.EvaluateDouble(polyParameter.Parameters[0].Image);
-                var expression = ExpressionGenerator.CreatePolyVoltageExpression(dimension, parameters.Skip(3));
+                var expression = ExpressionGenerator.CreatePolyVoltageExpression(dimension, parameters.Skip(3), context.NodeNameGenerator);
 
                 var cs = new CurrentSource(name);
                 context.CreateNodes(cs, parameters);
