@@ -102,7 +102,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var cccs = new CurrentControlledCurrentSource(name);
                 context.CreateNodes(cccs, parameters);
-                cccs.ControllingName = parameters.GetString(2);
+                cccs.ControllingName = context.ComponentNameGenerator.Generate(parameters.GetString(2));
                 context.SetParameter(cccs, "gain", parameters.GetString(3));
 
                 return cccs;
