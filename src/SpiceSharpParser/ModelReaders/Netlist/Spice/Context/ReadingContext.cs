@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
@@ -44,7 +46,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             IEvaluator readingEvaluator,
             ExpressionContext readingExpressionContext,
             SpiceNetlistCaseSensitivitySettings caseSettings,
-            IReadingContext parent = null)
+            IReadingContext parent,
+            IMapper<Exporter> exporters)
         {
             Name = contextName ?? throw new ArgumentNullException(nameof(contextName));
             Result = resultService ?? throw new ArgumentNullException(nameof(resultService));
@@ -65,6 +68,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             AvailableSubcircuits = CreateAvailableSubcircuitsCollection();
             ModelsRegistry = CreateModelsRegistry();
+            Exporters = exporters;
         }
 
         /// <summary>
@@ -86,6 +90,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Gets the reading evaluator.
         /// </summary>
         public IEvaluator ReadingEvaluator { get; }
+
+        /// <summary>
+        /// Gets or sets exporter mapper.
+        /// </summary>
+        public IMapper<Exporter> Exporters { get; set; }
 
         /// <summary>
         /// Gets the expression parser.

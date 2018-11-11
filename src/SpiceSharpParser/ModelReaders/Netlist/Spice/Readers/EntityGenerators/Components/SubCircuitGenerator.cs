@@ -12,6 +12,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
 {
     using SpiceSharpParser.Common.Evaluation;
+    using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions;
 
     /// <summary>
     /// Generates subcircuits content.
@@ -198,6 +199,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var subcircuitComponentNameGenerator = context.ComponentNameGenerator.CreateChildGenerator(subcircuitName);
             var subcircuitModelNameGenerator = context.ModelNameGenerator.CreateChildGenerator(subcircuitName);
 
+            var exportFunctions = ExportFunctions.Create(
+                context.Exporters,
+                subcircuitNodeNameGenerator,
+                subcircuitComponentNameGenerator,
+                subcircuitModelNameGenerator,
+                context.Result,
+                context.CaseSensitivity);
+
+            foreach (var exportFunction in exportFunctions)
+            {
+                subCircuitExpressionContext.Functions[exportFunction.Key] = exportFunction.Value;
+            }
+
             return new ReadingContext(
                 subcircuitName,
                 context.ExpressionParser,
@@ -213,7 +227,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.ReadingEvaluator,
                 subCircuitExpressionContext,
                 context.CaseSensitivity,
-                context);
+                context,
+                context.Exporters);
         }
 
         /// <summary>

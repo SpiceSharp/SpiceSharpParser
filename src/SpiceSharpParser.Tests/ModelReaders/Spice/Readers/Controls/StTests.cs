@@ -52,7 +52,9 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                null,
                new SpiceEvaluator(),
                new ExpressionContext(),
-               new SpiceNetlistCaseSensitivitySettings());
+               new SpiceNetlistCaseSensitivitySettings(),
+               null,
+               null);
 
             // act
             var stControl = new StControl();
@@ -100,9 +102,11 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                new ObjectNameGenerator(string.Empty),
                null,
                null,
-              new SpiceEvaluator(),
+               new SpiceEvaluator(),
                new ExpressionContext(),
-               new SpiceNetlistCaseSensitivitySettings());
+               new SpiceNetlistCaseSensitivitySettings(),
+               null,
+               null);
 
             // act
             var stControl = new StControl();
@@ -152,7 +156,9 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                null,
                new SpiceEvaluator(),
                new ExpressionContext(),
-               new SpiceNetlistCaseSensitivitySettings());
+               new SpiceNetlistCaseSensitivitySettings(),
+               null,
+               null);
 
             // act
             var stControl = new StControl();
@@ -202,7 +208,9 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                null,
                new SpiceEvaluator(),
                new ExpressionContext(),
-               new SpiceNetlistCaseSensitivitySettings());
+               new SpiceNetlistCaseSensitivitySettings(),
+               null,
+               null);
 
             // act
             var stControl = new StControl();
@@ -251,7 +259,9 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 null,
                 new SpiceEvaluator(),
                 new ExpressionContext(),
-                new SpiceNetlistCaseSensitivitySettings());
+                new SpiceNetlistCaseSensitivitySettings(),
+                null,
+                null);
 
             // act
             var stControl = new StControl();

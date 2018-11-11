@@ -38,13 +38,15 @@
             cacheLock.EnterUpgradeableReadLock();
             try
             {
-                if (!_parseResults.ContainsKey(expression))
+                string key = context.Name + "_" + expression;
+
+                if (!_parseResults.ContainsKey(key))
                 {
                     cacheLock.EnterWriteLock();
                     try
                     {
                         var parseResult = _parser.Parse(expression, context);
-                        _parseResults[expression] = parseResult;
+                        _parseResults[key] = parseResult;
 
                         return parseResult;
                     }
@@ -55,7 +57,7 @@
                 }
                 else
                 {
-                    return _parseResults[expression];
+                    return _parseResults[key];
                 }
             }
             finally
