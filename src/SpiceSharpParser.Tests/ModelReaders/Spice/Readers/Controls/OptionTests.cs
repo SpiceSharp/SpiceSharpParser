@@ -55,7 +55,9 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
               null,
               new SpiceEvaluator(),
               new ExpressionContext(),
-              new SpiceNetlistCaseSensitivitySettings());
+              new SpiceNetlistCaseSensitivitySettings(),
+              null,
+              null);
 
             // act
             var optionControl = new OptionsControl();
@@ -99,7 +101,9 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
               null,
               null,
               null,
-              new SpiceNetlistCaseSensitivitySettings());
+              new SpiceNetlistCaseSensitivitySettings(),
+              null,
+              null);
 
             // act
             var optionControl = new OptionsControl();
