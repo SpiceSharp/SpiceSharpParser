@@ -18,5 +18,10 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Gets or sets custom functions.
         /// </summary>
         public Dictionary<string, Function> Functions { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of parser context.
+        /// </summary>
+        public string Name { get; set; }
     }
 }
