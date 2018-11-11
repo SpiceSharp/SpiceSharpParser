@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -15,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return expression;
         }
 
-        public static string CreatePolyVoltageExpression(int dimension, ParameterCollection polyArguments, INodeNameGenerator nodeNameGenerator)
+        public static string CreatePolyVoltageExpression(int dimension, ParameterCollection polyArguments)
         {
             bool pointFormat = polyArguments.Any(p => p is PointParameter);
 
@@ -25,7 +24,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 var variablesString = string.Join(
                     ",",
-                    variables.Select(v => $"v({nodeNameGenerator.Generate(((PointParameter)v).Values.Items[0].Image)},{nodeNameGenerator.Generate(((PointParameter)v).Values.Items[1].Image)})"));
+                    variables.Select(v => $"v({((PointParameter)v).Values.Items[0].Image},{((PointParameter)v).Values.Items[1].Image})"));
 
                 var coefficients = polyArguments.Skip(dimension);
                 return CreatePolyExpression(dimension, coefficients, variablesString);
@@ -37,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var voltages = new List<string>();
                 for (var i = 0; i < dimension; i++)
                 {
-                    string voltage = $"v({nodeNameGenerator.Generate(variables[2 * i].Image)},{nodeNameGenerator.Generate(variables[2 * i + 1].Image)})";
+                    string voltage = $"v({variables[2 * i].Image},{variables[(2 * i) + 1].Image})";
                     voltages.Add(voltage);
                 }
 
@@ -48,13 +47,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
         }
 
-        public static string CreatePolyCurrentExpression(int dimension, ParameterCollection polyArguments, IObjectNameGenerator objectNameGenerator)
+        public static string CreatePolyCurrentExpression(int dimension, ParameterCollection polyArguments)
         {
             var variables = polyArguments.Take(dimension);
             var voltages = new List<string>();
             for (var i = 0; i < dimension; i++)
             {
-                string voltage = $"i({objectNameGenerator.Generate(variables[i].Image)})";
+                string voltage = $"i({variables[i].Image})";
                 voltages.Add(voltage);
             }
 

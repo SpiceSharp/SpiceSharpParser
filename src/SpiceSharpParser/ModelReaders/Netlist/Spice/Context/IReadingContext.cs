@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.Circuits;
-using SpiceSharpParser.Common;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -37,6 +38,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Gets the parent of the context.
         /// </summary>
         IReadingContext Parent { get;  }
+
+        /// <summary>
+        /// Gets exporter mapper.
+        /// </summary>
+        IMapper<Exporter> Exporters { get; }
 
         /// <summary>
         /// Gets the children of the reading context.
