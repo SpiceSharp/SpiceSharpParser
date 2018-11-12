@@ -110,52 +110,6 @@ At the moment due to lack of implementation of LAPLACE and FREQ (part of analog 
 |W (Current Switch)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/W)|
 |X (Subcircuit)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/X)|
 
-### Functions in expressions supported:
-|  Function name  |  Documentation  |
-|:------------|---------------------:|
-|@      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/@)|
-|**        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/**)|
-|abs          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/abs)|
-|acos        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/acos)|
-|asin         |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/asin)|
-|atan        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/atan)|
-|atan2          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/atan2)|
-|buf          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/buf)|
-|cbrt          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/cbrt)|
-|ceil          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/ceil)|
-|cos      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/cos)|    
-|cosh       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/cosh)|
-|db          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/db)|
-|def          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/def)|
-|exp          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/exp)|
-|flat        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/flat)|
-|floor          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/floor)|
-|gauss     |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/gauss)|
-|hypot          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/hypot)|
-|if          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/if)|
-|int          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/int)|
-|inv          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/inv)|
-|lazy       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/lazy)|    
-|limit          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/limit)|
-|ln          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/ln)|
-|log          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/log)|
-|log10          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/log10)|
-|max          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/max)|
-|min       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/min)|
-|pow          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/pow)|
-|pwr        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/pwr)|
-|pwrs       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/pwrs)|
-|random |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/random)|
-|round          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/round)|
-|sgn          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/sgn)|
-|sin         |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/sin)|
-|sinh     |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/sinh)|
-|sqrt          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/sqrt)|
-|table         |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/table)|
-|tan     |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/tan)|
-|tanh        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/tanh)|
-|u          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/u)|
-|uramp          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/uramp)|
 
 
 ## Documentation
