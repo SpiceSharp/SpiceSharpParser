@@ -9,16 +9,7 @@ SpiceSharpParser is a .NET library that allows to simulate circuits defined by S
 
 ## Installation
 
-SpiceSharpParser is available as [NuGet Package](https://www.nuget.org/packages/SpiceSharp-Parser) and can be installed:
-
-```
-Install-Package SpiceSharp-Parser
-```
-or 
-
-```
-dotnet add package SpiceSharp-Parser
-```
+SpiceSharpParser is available as [NuGet Package](https://www.nuget.org/packages/SpiceSharp-Parser).
 
 ## Quickstart
 
