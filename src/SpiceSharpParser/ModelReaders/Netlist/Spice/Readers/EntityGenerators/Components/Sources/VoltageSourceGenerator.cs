@@ -66,6 +66,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 return vs;
             }
 
+            if (parameters.Any(p => p is WordParameter bp && bp.Image.ToLower() == "poly"))
+            {
+                var dimension = 1;
+                var expression = ExpressionGenerator.CreatePolyVoltageExpression(dimension, parameters.Skip(3));
+
+                var vs = new VoltageSource(name);
+                context.CreateNodes(vs, parameters);
+                context.SetParameter(vs, "dc", expression);
+                return vs;
+            }
+
             if (parameters.Any(p => p is BracketParameter bp && bp.Name.ToLower() == "poly"))
             {
                 var polyParameter = (BracketParameter)parameters.Single(
@@ -154,6 +165,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var vs = new VoltageSource(name);
                 context.CreateNodes(vs, parameters);
                 context.SetParameter(vs, "dc", valueParameter.Value);
+                return vs;
+            }
+
+            if (parameters.Any(p => p is WordParameter bp && bp.Image.ToLower() == "poly"))
+            {
+                var dimension = 1;
+                var expression = ExpressionGenerator.CreatePolyCurrentExpression(dimension, parameters.Skip(3));
+
+                var vs = new VoltageSource(name);
+                context.CreateNodes(vs, parameters);
+                context.SetParameter(vs, "dc", expression);
                 return vs;
             }
 

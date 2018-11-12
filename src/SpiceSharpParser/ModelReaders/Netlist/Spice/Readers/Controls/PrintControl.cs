@@ -113,7 +113,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 if (entity is SpiceSharp.Components.Component c)
                 {
-                    string componentName = c.Name.ToString();
+                    string componentName = c.Name;
                     var @params = new ParameterCollection();
                     @params.Add(new WordParameter(componentName));
 
@@ -131,7 +131,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         Mapper
                         .GetValue("I", true)
                         .CreateExport(
-                            "I(" + @params.ToString() + ")", "i",
+                            "I(" + componentName + ")",
+                            "i",
                             @params,
                             simulation,
                             context.NodeNameGenerator,
@@ -145,13 +146,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             foreach (var node in nodes)
             {
                 var @params = new ParameterCollection();
-                @params.Add(new WordParameter(node.ToString()));
+                @params.Add(new WordParameter(node));
 
                 result.Add(
                     Mapper
                     .GetValue("V", true)
                     .CreateExport(
-                        "V(" + @params + ")",
+                        "V(" + node + ")",
                         "v",
                         @params,
                         simulation,

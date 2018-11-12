@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SpiceSharp;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -8,7 +7,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 {
     public class RLCModelGenerator : ModelGenerator
     {
-        public override IEnumerable<string> GeneratedTypes => new List<string>() { "r", "c" };
+        public override IEnumerable<string> GeneratedTypes => new List<string>() { "r", "c", "res" };
 
         public override SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context)
         {
@@ -16,8 +15,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 
             switch (type.ToLower())
             {
-                case "r": model = new ResistorModel(id); break;
-                case "c": model = new CapacitorModel(id); break;
+                case "res":
+                case "r":
+                    model = new ResistorModel(id);
+                    break;
+                case "c":
+                    model = new CapacitorModel(id);
+                    break;
             }
 
             if (model != null)
