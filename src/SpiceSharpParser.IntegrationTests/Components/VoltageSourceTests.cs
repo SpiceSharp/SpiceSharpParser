@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit;
+﻿using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Components
 {
     public class VoltageSourceTests : BaseTests
     {
         [Fact]
-        public void PulseWithoutBracket()
+        public void PulseWithoutBracket_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -18,12 +15,12 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".TRAN 1e-8 1e-5",
                 ".END");
 
-            var export = RunTransientSimulation(netlist, "V(1,0)");
             Assert.NotNull(netlist);
+            RunTransientSimulation(netlist, "V(1,0)");
         }
 
         [Fact]
-        public void PulseWithBracket()
+        public void PulseWithBracket_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -32,13 +29,12 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE V(1,0)",
                 ".TRAN 1e-8 1e-5",
                 ".END");
-
-            var export = RunTransientSimulation(netlist, "V(1,0)");
             Assert.NotNull(netlist);
+            RunTransientSimulation(netlist, "V(1,0)");
         }
 
         [Fact]
-        public void SineWithBracket()
+        public void SineWithBracket_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -48,12 +44,12 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".TRAN 1e-8 1e-5",
                 ".END");
 
-            var export = RunTransientSimulation(netlist, "V(1,0)");
             Assert.NotNull(netlist);
+            RunTransientSimulation(netlist, "V(1,0)");
         }
 
         [Fact]
-        public void SineWithoutBracket()
+        public void SineWithoutBracket_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -63,12 +59,12 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".TRAN 1e-8 1e-5",
                 ".END");
 
-            var export = RunTransientSimulation(netlist, "V(1,0)");
             Assert.NotNull(netlist);
+            RunTransientSimulation(netlist, "V(1,0)");
         }
 
         [Fact]
-        public void SinWithBracket()
+        public void SinWithBracket_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -78,12 +74,12 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".TRAN 1e-8 1e-5",
                 ".END");
 
-            var export = RunTransientSimulation(netlist, "V(1,0)");
             Assert.NotNull(netlist);
+            RunTransientSimulation(netlist, "V(1,0)");
         }
 
         [Fact]
-        public void SinWithoutBracket()
+        public void SinWithoutBracket_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -93,8 +89,38 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".TRAN 1e-8 1e-5",
                 ".END");
 
-            var export = RunTransientSimulation(netlist, "V(1,0)");
             Assert.NotNull(netlist);
+            RunTransientSimulation(netlist, "V(1,0)");
+        }
+
+        [Fact]
+        public void PwlWithBracket_NoException()
+        {
+            var netlist = ParseNetlist(
+                "Voltage source",
+                "V1 1 0 Pwl(0 1 1 2 2 3)",
+                "R1 1 0 10",
+                ".SAVE V(1,0)",
+                ".TRAN 1e-8 1e-5",
+                ".END");
+
+            Assert.NotNull(netlist);
+            RunTransientSimulation(netlist, "V(1,0)");
+        }
+
+        [Fact]
+        public void PwlWithoutBracket_NoException()
+        {
+            var netlist = ParseNetlist(
+                "Voltage source",
+                "V1 1 0 Pwl 0 1 1 2 2 3",
+                "R1 1 0 10",
+                ".SAVE V(1,0)",
+                ".TRAN 1e-8 1e-5",
+                ".END");
+
+            Assert.NotNull(netlist);
+            RunTransientSimulation(netlist, "V(1,0)");
         }
     }
 }

@@ -56,7 +56,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         {
             SimulationUpdates.AddBeforeLoad((simulation, evaluators, contexts) =>
             {
-                var temperatureBehavior = simulation.EntityBehaviors[entity.Name].Get<BaseTemperatureBehavior>();
+                var temperatureBehavior = simulation.EntityBehaviors[entity.Name].Get<ITemperatureBehavior>();
                 if (temperatureBehavior != null)
                 {
                     temperatureBehavior.Temperature(simulation);
