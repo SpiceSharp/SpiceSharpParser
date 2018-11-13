@@ -11,7 +11,7 @@
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets paramters of the model.
+        /// Gets or sets parameters of the model.
         /// </summary>
         public ParameterCollection Parameters { get; set; }
 

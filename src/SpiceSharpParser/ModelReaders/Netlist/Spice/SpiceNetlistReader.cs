@@ -19,6 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceNetlistReader"/> class.
         /// </summary>
+        /// <param name="settings">Netlist reader settings.</param>
         public SpiceNetlistReader(SpiceNetlistReaderSettings settings)
         {
             Settings = settings ?? throw new System.ArgumentNullException(nameof(settings));
@@ -54,7 +55,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             var componentNameGenerator = new ObjectNameGenerator(string.Empty);
             var modelNameGenerator = new ObjectNameGenerator(string.Empty);
 
-            IEvaluator readingEvaluator = CreateReadingEvaluator(nodeNameGenerator, componentNameGenerator, modelNameGenerator, resultService);
+            IEvaluator readingEvaluator = CreateReadingEvaluator();
             ISimulationEvaluators simulationEvaluators = new SimulationEvaluators(readingEvaluator);
 
             var readingExpressionContext = CreateExpressionContext(
@@ -68,7 +69,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             SimulationPreparations simulationPreparations = new SimulationPreparations(
                new EntityUpdates(Settings.CaseSensitivity.IsParameterNameCaseSensitive, simulationEvaluators, simulationContexts),
                new SimulationsUpdates(simulationEvaluators, simulationContexts));
-
 
             ISpiceStatementsReader statementsReader = new SpiceStatementsReader(Settings.Mappings.Controls, Settings.Mappings.Models, Settings.Mappings.Components);
             IWaveformReader waveformReader = new WaveformReader(Settings.Mappings.Waveforms);
@@ -138,7 +138,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             return rootContext;
         }
 
-        private SpiceEvaluator CreateReadingEvaluator(MainCircuitNodeNameGenerator nodeNameGenerator, ObjectNameGenerator componentNameGenerator, ObjectNameGenerator modelNameGenerator, IResultService result)
+        private SpiceEvaluator CreateReadingEvaluator()
         {
             var readingEvaluator = new SpiceEvaluator(
                 "Netlist reading evaluator",

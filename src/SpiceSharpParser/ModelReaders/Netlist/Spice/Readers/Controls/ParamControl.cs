@@ -1,9 +1,8 @@
-﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
+﻿using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
-    using SpiceSharpParser.Common.Evaluation;
-
     /// <summary>
     /// Reads .PARAM <see cref="Control"/> from SPICE netlist object model.
     /// </summary>

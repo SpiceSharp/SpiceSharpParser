@@ -1,11 +1,10 @@
+using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
+using SpiceSharpParser.Parsers.Expression;
 using Xunit;
 
 namespace SpiceSharpParser.PerformanceTests
 {
-    using SpiceSharpParser.Common.Evaluation;
-    using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
-    using SpiceSharpParser.Parsers.Expression;
-
     public class ExpressionTests : BaseTests
     {
         [Fact]

@@ -1,7 +1,5 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
@@ -12,7 +10,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
     public interface IWaveformReader
     {
         /// <summary>
-        /// Generates wavefrom from bracket parameter.
+        /// Generates waveform from bracket parameter.
         /// </summary>
         /// <param name="type">Type.</param>
         /// <param name="parameters">Parameters.</param>

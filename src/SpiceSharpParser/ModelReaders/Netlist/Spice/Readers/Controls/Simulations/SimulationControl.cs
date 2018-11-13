@@ -5,13 +5,12 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
-    using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
-    using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
-    using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
-
     /// <summary>
     /// Base for all control simulation readers.
     /// </summary>

@@ -1,6 +1,4 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters

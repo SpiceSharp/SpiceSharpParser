@@ -17,7 +17,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         public ACControl(IMapper<Exporter> mapper)
             : base(mapper)
         {
-
         }
 
         /// <summary>

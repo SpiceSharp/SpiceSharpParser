@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.Lexers.Netlist.Spice;
+﻿using System;
+using SpiceSharpParser.Lexers.Netlist.Spice;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
@@ -9,13 +10,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
     {
         private readonly SpiceLexerSettings _lexerSettings;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpiceNetlistCaseSensitivitySettings"/> class.
+        /// </summary>
         public SpiceNetlistCaseSensitivitySettings()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpiceNetlistCaseSensitivitySettings"/> class.
+        /// </summary>
+        /// <param name="lexerSettings">Lexer settings.</param>
         public SpiceNetlistCaseSensitivitySettings(SpiceLexerSettings lexerSettings)
         {
-            _lexerSettings = lexerSettings;
+            _lexerSettings = lexerSettings ?? throw new ArgumentNullException(nameof(lexerSettings));
         }
 
         /// <summary>

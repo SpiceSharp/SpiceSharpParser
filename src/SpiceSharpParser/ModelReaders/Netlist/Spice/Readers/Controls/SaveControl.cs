@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -14,8 +14,6 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
-    using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
-
     /// <summary>
     /// Reads .SAVE <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
@@ -140,7 +138,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             if (context.Result.SimulationConfiguration.ParameterSweeps.Count > 0)
             {
-                // 1. Find first parametr sweep (it will decide about X-axis scale)
+                // 1. Find first parameter sweep (it will decide about X-axis scale)
                 var firstParameterSweep = context.Result.SimulationConfiguration.ParameterSweeps[0];
 
                 // 2. Find all .OP exports
