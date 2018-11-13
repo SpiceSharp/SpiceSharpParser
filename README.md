@@ -25,12 +25,12 @@ var netlist = string.Join(Environment.NewLine,
                 ".SAVE i(V1)",
                 ".END");
 
-\\ Parsing part - SpiceSharpParser
+// Parsing part - SpiceSharpParser
 var parser = new SpiceParser();
 var parseResult = parser.ParseNetlist(netlist);
 var spiceSharpModel = parseResult.SpiceSharpModel;
 
-\\ Simulation part - SpiceSharp
+// Simulation part - SpiceSharp
 var simulation = spiceSharpModel.Simulations.Single();
 var export = spiceSharpModel.Exports.Find(e => e.Name == "i(V1)");
 simulation.ExportSimulationData += (sender, args) => Console.WriteLine(export.Extract());
