@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using SpiceSharp;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.ComponentModels;
@@ -60,7 +61,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 double vOn = s.ParameterSets.GetParameter<double>("von");
                 double vOff = s.ParameterSets.GetParameter<double>("voff");
 
-                string resExpression = $"table(v({parameters.GetString(2)}, {parameters.GetString(3)}), {vOff}, {rOff}, {vOn}, {rOn})";
+                string resExpression = $"table(v({parameters.GetString(2)}, {parameters.GetString(3)}), {vOff.ToString(CultureInfo.InvariantCulture)}, {rOff.ToString(CultureInfo.InvariantCulture)}, {vOn.ToString(CultureInfo.InvariantCulture)}, {rOn.ToString(CultureInfo.InvariantCulture)})";
                 context.SetParameter(resistor, "resistance", resExpression);
 
                 return resistor;
@@ -130,7 +131,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 double iOn = s.ParameterSets.GetParameter<double>("ion");
                 double iOff = s.ParameterSets.GetParameter<double>("ioff");
 
-                string resExpression = $"table(i({parameters.GetString(2)}), {iOff}, {rOff}, {iOn}, {rOn})";
+                string resExpression = $"table(i({parameters.GetString(2)}), {iOff.ToString(CultureInfo.InvariantCulture)}, {rOff.ToString(CultureInfo.InvariantCulture)}, {iOn.ToString(CultureInfo.InvariantCulture)}, {rOn.ToString(CultureInfo.InvariantCulture)})";
                 context.SetParameter(resistor, "resistance", resExpression);
 
                 return resistor;

@@ -65,14 +65,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.Name = "Exporter: " + exportType;
             function.ArgumentsCount = -1;
 
-            function.ObjectArgsLogic =(image, args, evaluator, context) =>
+            function.ObjectArgsLogic = (image, args, evaluator, context) =>
             {
                 if (context.Data == null || !(context.Data is Simulation))
                 {
                     return 0.0;
                 }
 
-                string exporterKey = string.Format("{0}_{1}_{2}", ((Simulation)context.Data).Name, exportType, string.Join(",", args));
+                string exporterKey = string.Format("{0}_{1}_{2}_{3}", ((Simulation)context.Data).Name, context.Name, exportType, string.Join(",", args));
 
                 if (!exporters.ContainsKey(exporterKey))
                 {
@@ -127,8 +127,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 
             function.ObjectArgsLogic =(image, args, evaluator, context) =>
             {
-                string exporterKey = string.Format("{0}_{1}_{2}",
-                    context.Data != null ? ((Simulation)context.Data).Name : "no_simulation", exportType,
+                string exporterKey = string.Format("{0}_{1}_{2}_{3}",
+                    context.Data != null ? ((Simulation)context.Data).Name : "no_simulation", 
+                    context.Name,
+                    exportType,
                     string.Join(",", args));
 
                 if (!exporters.ContainsKey(exporterKey))

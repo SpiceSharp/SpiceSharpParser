@@ -84,6 +84,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 return cs;
             }
 
+            if (parameters.Any(p => p is WordParameter bp && bp.Image.ToLower() == "poly"))
+            {
+                var dimension = 1;
+                var expression = ExpressionGenerator.CreatePolyCurrentExpression(dimension, parameters.Skip(3));
+
+                var cs = new CurrentSource(name);
+                context.CreateNodes(cs, parameters);
+                context.SetParameter(cs, "dc", expression);
+                return cs;
+            }
+
             if (parameters.Any(p => p is ExpressionEqualParameter) && parameters.Any(p => p.Image.ToLower() == "table"))
             {
                 var formulaParameter = (ExpressionEqualParameter)parameters.Single(p => p is ExpressionEqualParameter);
@@ -102,7 +113,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var cccs = new CurrentControlledCurrentSource(name);
                 context.CreateNodes(cccs, parameters);
-                cccs.ControllingName = parameters.GetString(2);
+                cccs.ControllingName = context.ComponentNameGenerator.Generate(parameters.GetString(2));
                 context.SetParameter(cccs, "gain", parameters.GetString(3));
 
                 return cccs;
@@ -145,6 +156,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
 
                 var dimension = (int)context.EvaluateDouble(polyParameter.Parameters[0].Image);
+                var expression = ExpressionGenerator.CreatePolyVoltageExpression(dimension, parameters.Skip(3));
+
+                var cs = new CurrentSource(name);
+                context.CreateNodes(cs, parameters);
+                context.SetParameter(cs, "dc", expression);
+                return cs;
+            }
+
+            if (parameters.Any(p => p is WordParameter bp && bp.Image.ToLower() == "poly"))
+            {
+                var dimension = 1;
                 var expression = ExpressionGenerator.CreatePolyVoltageExpression(dimension, parameters.Skip(3));
 
                 var cs = new CurrentSource(name);

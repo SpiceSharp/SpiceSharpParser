@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Exporters.Map("@", new PropertyExporter());
 
             // Register model generators
-            Models.Map(new string[] { "R", "L", "C", "K" }, new RLCModelGenerator());
+            Models.Map(new string[] { "R", "C", "RES" }, new RLCModelGenerator());
             Models.Map("D", new DiodeModelGenerator());
             Models.Map(new string[] { "NPN", "PNP" }, new BipolarModelGenerator());
             Models.Map(new string[] { "SW", "CS", "VSWITCH", "ISWITCH" }, new SwitchModelGenerator());

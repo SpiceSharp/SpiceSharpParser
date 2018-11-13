@@ -68,12 +68,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
         public override SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context)
         {
             var clonedParameters = (ParameterCollection)parameters.Clone();
-            switch (clonedParameters.Count)
-            {
-                case 0: throw new Exception("Model name and type expected");
-            }
 
-            int level = 0;
+            int level = 1;
             string version = null;
             int lindex = -1, vindex = -1;
             for (int i = 0; i < clonedParameters.Count; i++)

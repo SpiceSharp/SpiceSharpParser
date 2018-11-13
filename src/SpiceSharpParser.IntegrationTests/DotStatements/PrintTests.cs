@@ -97,6 +97,36 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(1, parseResult.Prints.Count);
             Assert.Equal("#1 OP", parseResult.Prints[0].Name);
             Assert.Equal(2, parseResult.Prints[0].ColumnNames.Count);
+            Assert.Equal("V(OUT)", parseResult.Prints[0].ColumnNames[0]);
+            Assert.Equal("I(V1)", parseResult.Prints[0].ColumnNames[1]);
+
+            Assert.Equal(1, parseResult.Prints[0].Rows.Count);
+        }
+
+        [Fact]
+        public void OpPrint()
+        {
+            var parseResult = ParseNetlist(
+                "PRINT - Lowpass RC circuit - The capacitor should act like an open circuit",
+                "V1 IN 0 10.0",
+                "R1 IN OUT 10e3",
+                "C1 OUT 0 10e-6",
+                ".OP",
+                ".PRINT",
+                ".END");
+            RunSimulations(parseResult);
+
+            Assert.Equal(1, parseResult.Prints.Count);
+            Assert.Equal("#1 OP", parseResult.Prints[0].Name);
+            Assert.Equal(6, parseResult.Prints[0].ColumnNames.Count);
+
+            Assert.Equal("I(V1)", parseResult.Prints[0].ColumnNames[0]);
+            Assert.Equal("I(R1)", parseResult.Prints[0].ColumnNames[1]);
+            Assert.Equal("I(C1)", parseResult.Prints[0].ColumnNames[2]);
+            Assert.Equal("V(IN)", parseResult.Prints[0].ColumnNames[3]);
+            Assert.Equal("V(0)", parseResult.Prints[0].ColumnNames[4]);
+            Assert.Equal("V(OUT)", parseResult.Prints[0].ColumnNames[5]);
+
             Assert.Equal(1, parseResult.Prints[0].Rows.Count);
         }
 

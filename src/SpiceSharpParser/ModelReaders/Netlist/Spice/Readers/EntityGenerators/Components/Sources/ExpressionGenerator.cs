@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var voltages = new List<string>();
                 for (var i = 0; i < dimension; i++)
                 {
-                    string voltage = $"v({variables[2 * i].Image},{variables[2 * i + 1].Image})";
+                    string voltage = $"v({variables[2 * i].Image},{variables[(2 * i) + 1].Image})";
                     voltages.Add(voltage);
                 }
 

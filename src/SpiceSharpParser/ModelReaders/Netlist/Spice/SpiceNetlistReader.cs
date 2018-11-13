@@ -88,7 +88,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 waveformReader,
                 readingEvaluator,
                 readingExpressionContext,
-                Settings.CaseSensitivity);
+                Settings.CaseSensitivity,
+                null,
+                Settings.Mappings.Exporters);
 
             // Read statements form input netlist using created context
             readingContext.Read(netlist.Statements, Settings.Orderer);

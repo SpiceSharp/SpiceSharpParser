@@ -48,7 +48,7 @@ namespace SpiceSharpParser.Common.Evaluation
                 return parameter.Evaluate(this, context);
             }
 
-            var parseResult = ExpressionParser.Parse(expression, new ExpressionParserContext(IsFunctionNameCaseSensitive) { Functions = context.Functions });
+            var parseResult = ExpressionParser.Parse(expression, new ExpressionParserContext(IsFunctionNameCaseSensitive) { Name = context.Name, Functions = context.Functions });
             return parseResult.Value(new ExpressionEvaluationContext() { ExpressionContext = context, Evaluator = this });
         }
 

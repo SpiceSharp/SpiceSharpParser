@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 
@@ -11,5 +12,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         T FindModel<T>(string modelName) where T : SpiceSharp.Components.Model;
 
         void RegisterModelInstance(Model model);
+
+        IModelsRegistry CreateChildRegistry(List<IObjectNameGenerator> generators);
     }
 }
