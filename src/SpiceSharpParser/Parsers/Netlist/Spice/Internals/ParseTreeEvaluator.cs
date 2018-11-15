@@ -37,6 +37,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             evaluators.Add(Symbols.Control, (ParseTreeNodeEvaluationValues nt) => CreateControl(nt));
             evaluators.Add(Symbols.Component, (ParseTreeNodeEvaluationValues nt) => CreateComponent(nt));
             evaluators.Add(Symbols.Parameters, (ParseTreeNodeEvaluationValues nt) => CreateParameters(nt));
+            evaluators.Add(Symbols.ParametersSeperator, (ParseTreeNodeEvaluationValues nt) => CreateParametersSeperator(nt));
             evaluators.Add(Symbols.Parameter, (ParseTreeNodeEvaluationValues nt) => CreateParameter(nt));
             evaluators.Add(Symbols.Vector, (ParseTreeNodeEvaluationValues nt) => CreateVector(nt));
             evaluators.Add(Symbols.VectorContinue, (ParseTreeNodeEvaluationValues nt) => CreateVectorContinue(nt));
@@ -322,12 +323,18 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         {
             var parameters = new ParameterCollection();
 
-            if (values.Count == 2)
+            if (values.Count == 3)
             {
                 parameters.Add(values.GetSpiceObject<Parameter>(0));
-                parameters.Merge(values.GetSpiceObject<ParameterCollection>(1));
+                parameters.Merge(values.GetSpiceObject<ParameterCollection>(2));
             }
 
+            return parameters;
+        }
+
+        private SpiceObject CreateParametersSeperator(ParseTreeNodeEvaluationValues values)
+        {
+            var parameters = new ParameterCollection();
             return parameters;
         }
 

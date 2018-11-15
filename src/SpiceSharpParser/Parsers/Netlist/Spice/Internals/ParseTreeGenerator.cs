@@ -10,7 +10,13 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
     /// </summary>
     public class ParseTreeGenerator
     {
-        private Dictionary<string, Action<Stack<ParseTreeNode>, ParseTreeNonTerminalNode, SpiceToken[], int>> parsers = new Dictionary<string, Action<Stack<ParseTreeNode>, ParseTreeNonTerminalNode, SpiceToken[], int>>();
+        delegate void Parser(
+            Stack<ParseTreeNode> stack,
+            ParseTreeNonTerminalNode currentNode,
+            SpiceToken[] tokens,
+            int currentTokenIndex);
+
+        private Dictionary<string, Parser> parsers = new Dictionary<string, Parser>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ParseTreeGenerator"/> class.
@@ -34,6 +40,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             parsers.Add(Symbols.Control, ReadControl);
             parsers.Add(Symbols.Model, ReadModel);
             parsers.Add(Symbols.Parameters, ReadParameters);
+            parsers.Add(Symbols.ParametersSeperator, ReadParametersSeparator);
             parsers.Add(Symbols.Parameter, ReadParameter);
             parsers.Add(Symbols.ParameterSingle, ReadParameterSingle);
             parsers.Add(Symbols.ParameterBracket, ReadParameterBracket);
@@ -698,6 +705,38 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         }
 
         /// <summary>
+        /// Reads <see cref="Symbols.ParametersSeperator"/> non-terminal node
+        /// Pushes tree nodes to the stack based on the grammar.
+        /// </summary>
+        /// <param name="stack">A stack where the production is pushed.</param>
+        /// <param name="current">A reference to the non-terminal node.</param>
+        /// <param name="tokens">A reference to the array of tokens.</param>
+        /// <param name="currentTokenIndex">A index of the current token.</param>
+        private void ReadParametersSeparator(
+            Stack<ParseTreeNode> stack,
+            ParseTreeNonTerminalNode current,
+            SpiceToken[] tokens,
+            int currentTokenIndex)
+        {
+            if (currentTokenIndex > tokens.Length - 1)
+            {
+                // empty
+                return;
+            }
+
+            var currentToken = tokens[currentTokenIndex];
+
+            if (currentToken.Is(SpiceTokenType.COMMA))
+            {
+                PushProductionExpression(stack, CreateTerminalNode(SpiceTokenType.COMMA, current));
+            }
+            else
+            {
+                // do nothing
+            }
+        }
+
+        /// <summary>
         /// Reads <see cref="Symbols.Parameters"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
@@ -724,13 +763,13 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 || currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
                 || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES)
                 || currentToken.Is(SpiceTokenType.PERCENT)
-                || currentToken.Is(SpiceTokenType.DELIMITER) 
-                    && currentToken.Lexem == "(")
+                || currentToken.Is(SpiceTokenType.DELIMITER) && currentToken.Lexem == "(")
             {
-                PushProductionExpression(
-                    stack,
-                    CreateNonTerminalNode(Symbols.Parameter, current),
-                    CreateNonTerminalNode(Symbols.Parameters, current));
+                    PushProductionExpression(
+                        stack,
+                        CreateNonTerminalNode(Symbols.Parameter, current),
+                        CreateNonTerminalNode(Symbols.ParametersSeperator, current),
+                        CreateNonTerminalNode(Symbols.Parameters, current));
             }
             else if (currentToken.Is(SpiceTokenType.EOF))
             {
@@ -803,7 +842,8 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 if (nextToken.Is(SpiceTokenType.EQUAL))
                 {
                     if (((currentTokenIndex + 3) < tokens.Length)
-                        && (tokens[currentTokenIndex + 3].Is(SpiceTokenType.COMMA)))
+                        && tokens[currentTokenIndex + 3].Is(SpiceTokenType.COMMA)
+                        && ((currentTokenIndex + 5) >= tokens.Length || !tokens[currentTokenIndex + 5].Is(SpiceTokenType.EQUAL)))
                     {
                         PushProductionExpression(
                             stack,

@@ -45,6 +45,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             subCircuitDefinition.Statements = ifPreprocessor.Process(subCircuitDefinition.Statements);
 
             ReadParamControl(subCircuitDefinition, subCircuitContext);
+            ReadFuncControl(subCircuitDefinition, subCircuitContext);
             ReadSubcircuits(subCircuitDefinition, subCircuitContext);
             CreateSubcircuitModels(subCircuitDefinition, subCircuitContext); // TODO: Share models someday between instances of subcircuits
             CreateSubcircuitComponents(subCircuitDefinition, subCircuitContext);
@@ -63,6 +64,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         private void ReadParamControl(SubCircuit subCircuitDefinition, IReadingContext subCircuitContext)
         {
             foreach (Statement statement in subCircuitDefinition.Statements.Where(s => s is Control && ((Control)s).Name.ToLower() == "param"))
+            {
+                subCircuitContext.StatementsReader.Read(statement, subCircuitContext);
+            }
+        }
+
+        /// <summary>
+        /// Read .FUNC statements.
+        /// </summary>
+        /// <param name="subCircuitDefinition">A subcircuit definition.</param>
+        /// <param name="subCircuitContext">A subcircuit reading context.</param>
+        private void ReadFuncControl(SubCircuit subCircuitDefinition, IReadingContext subCircuitContext)
+        {
+            foreach (Statement statement in subCircuitDefinition.Statements.Where(s => s is Control && ((Control)s).Name.ToLower() == "func"))
             {
                 subCircuitContext.StatementsReader.Read(statement, subCircuitContext);
             }
@@ -118,13 +132,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         private SubCircuit FindSubcircuitDefinition(ParameterCollection parameters, IReadingContext context)
         {
             // first step is to find subcircuit name in parameters, a=b parameters needs to be skipped
-            int assignmentParametersCount = 0;
-            while (parameters[parameters.Count - assignmentParametersCount - 1] is AssignmentParameter a)
+            int skipCount = 0;
+            while (parameters[parameters.Count - skipCount - 1] is AssignmentParameter a || parameters[parameters.Count - skipCount - 1].Image.ToLower() == "params:")
             {
-                assignmentParametersCount++;
+                skipCount++;
             }
 
-            string subCircuitDefinitionName = parameters.GetString(parameters.Count - assignmentParametersCount - 1);
+            string subCircuitDefinitionName = parameters.GetString(parameters.Count - skipCount - 1);
             var result = context.AvailableSubcircuits.ToList().Find(subCkt => subCkt.Name == subCircuitDefinitionName);
 
             if (result == null)
@@ -148,14 +162,26 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         private ReadingContext CreateSubcircuitContext(string subcircuitFullName, string subcircuitName, SubCircuit subCircuitDefiniton, ParameterCollection parameters, IReadingContext context)
         {
-            int assignmentParametersCount = 0;
+            int parameterParameters = 0;
 
             // setting evaluator
             var subCktParameters = new List<AssignmentParameter>();
-            while (parameters[parameters.Count - assignmentParametersCount - 1] is AssignmentParameter a)
+            while (true)
             {
-                subCktParameters.Add(a);
-                assignmentParametersCount++;
+                if (parameters[parameters.Count - parameterParameters - 1].Image.ToLower() == "params:")
+                {
+                    parameterParameters++;
+                }
+
+                if (!(parameters[parameters.Count - parameterParameters - 1] is AssignmentParameter a))
+                {
+                    break;
+                }
+                else
+                {
+                    subCktParameters.Add(a);
+                    parameterParameters++;
+                }
             }
 
             var subcircuitParameters = CreateSubcircuitParameters(
@@ -184,7 +210,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             // setting node name generator
             var pinInstanceIdentifiers = new List<string>();
-            for (var i = 0; i < parameters.Count - assignmentParametersCount - 1; i++)
+            for (var i = 0; i < parameters.Count - parameterParameters - 1; i++)
             {
                 var pinInstanceName = context.NodeNameGenerator.Generate(parameters.GetString(i));
 
