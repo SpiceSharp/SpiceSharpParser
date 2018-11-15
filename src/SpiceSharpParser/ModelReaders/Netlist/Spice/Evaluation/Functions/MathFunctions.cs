@@ -22,8 +22,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 
             function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
-                double x = (double)args[0];
-                double y = (double)args[1];
+                double x = args[0];
+                double y = args[1];
 
                 switch (mode)
                 {
@@ -71,8 +71,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 
             function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
-                double x = (double)args[0];
-                double y = (double)args[1];
+                double x = args[0];
+                double y = args[1];
 
                 switch (mode)
                 {
@@ -106,8 +106,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 
             function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
-                double x = (double)args[0];
-                double y = (double)args[1];
+                double x = args[0];
+                double y = args[1];
 
                 return Math.Sign(x) * Math.Pow(Math.Abs(x), y);
             };
@@ -131,7 +131,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 
             function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
-                double x = (double)args[0];
+                double x = args[0];
 
                 switch (mode)
                 {
@@ -187,8 +187,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 
             function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
-                double x = (double)args[0];
-                double y = (double)args[1];
+                double x = args[0];
+                double y = args[1];
 
                 switch (mode)
                 {
@@ -252,13 +252,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("Min() function expects arguments");
                 }
 
-                double min = (double)args[0];
+                double min = args[0];
 
                 for (var i = 1; i < args.Length; i++)
                 {
-                    if ((double)args[i] < min)
+                    if (args[i] < min)
                     {
-                        min = (double)args[i];
+                        min = args[i];
                     }
                 }
 
@@ -289,13 +289,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("Max() function expects arguments");
                 }
 
-                double max = (double)args[0];
+                double max = args[0];
 
                 for (var i = 1; i < args.Length; i++)
                 {
-                    if ((double)args[i] > max)
+                    if (args[i] > max)
                     {
-                        max = (double)args[i];
+                        max = args[i];
                     }
                 }
 
@@ -326,9 +326,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("limit() function expects 3 arguments");
                 }
 
-                double x = (double)args[0];
-                double xMin = (double)args[1];
-                double xMax = (double)args[2];
+                double x = args[0];
+                double xMin = args[1];
+                double xMax = args[2];
 
                 if (x < xMin)
                 {
@@ -367,7 +367,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("ln() function expects one argument");
                 }
 
-                double x = (double)args[0];
+                double x = args[0];
                 return Math.Log(x);
             };
 
@@ -395,7 +395,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("log() function expects one argument");
                 }
 
-                double x = (double)args[0];
+                double x = args[0];
 
                 if (mode == SpiceExpressionMode.HSpice)
                 {
@@ -429,7 +429,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("log10() function expects one argument");
                 }
 
-                double x = (double)args[0];
+                double x = args[0];
 
                 if (mode == SpiceExpressionMode.HSpice)
                 {
@@ -463,7 +463,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("cbrt() function expects one argument");
                 }
 
-                double x = (double)args[0];
+                double x = args[0];
 
                 return Math.Pow(x, 1.0 / 3.0);
             };
@@ -492,7 +492,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("cbrt() function expects one argument");
                 }
 
-                double x = (double)args[0];
+                double x = args[0];
 
                 return x > 0.5 ? 1 : 0;
             };
@@ -521,7 +521,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("ceil() function expects one argument");
                 }
 
-                double x = (double)args[0];
+                double x = args[0];
                 return Math.Ceiling(x);
             };
 
@@ -549,7 +549,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("abs() function expects one argument");
                 }
 
-                double x = (double)args[0];
+                double x = args[0];
                 return Math.Abs(x);
             };
 
@@ -577,7 +577,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("floor() function expects one argument");
                 }
 
-                double x = (double)args[0];
+                double x = args[0];
                 return Math.Floor(x);
             };
 
@@ -605,8 +605,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("hypot() function expects three arguments");
                 }
 
-                double x = (double)args[0];
-                double y = (double)args[1];
+                double x = args[0];
+                double y = args[1];
 
                 return Math.Sqrt((x * x) + (y * y));
             };
@@ -635,7 +635,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("int() function expects one argument");
                 }
 
-                double x = (double)args[0];
+                double x = args[0];
                 return (int)x;
             };
 
@@ -663,7 +663,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("inv() function expects one argument");
                 }
 
-                double x = (double)args[0];
+                double x = args[0];
 
                 return x > 0.5 ? 0 : 1;
             };
@@ -692,7 +692,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("exp() function expects one argument");
                 }
 
-                double x = (double)args[0];
+                double x = args[0];
                 return Math.Exp(x);
             };
 
@@ -720,7 +720,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("db() function expects one argument");
                 }
 
-                double x = (double)args[0];
+                double x = args[0];
 
                 if (mode == SpiceExpressionMode.SmartSpice)
                 {
@@ -754,7 +754,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("round() function expects one argument");
                 }
 
-                double x = (double)args[0];
+                double x = args[0];
                 return Math.Round(x);
             };
 
@@ -782,7 +782,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("u() function expects one argument");
                 }
 
-                double x = (double)args[0];
+                double x = args[0];
                 return x > 0 ? 1 : 0;
             };
 
@@ -810,7 +810,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("uramp() function expects one argument");
                 }
 
-                double x = (double)args[0];
+                double x = args[0];
                 return x > 0 ? x : 0;
             };
 
@@ -838,7 +838,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     throw new ArgumentException("sgn() function expects one argument");
                 }
 
-                double x = (double)args[0];
+                double x = args[0];
                 return Math.Sign(x);
             };
 

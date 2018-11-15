@@ -1,12 +1,9 @@
 ﻿using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
-    using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-
     /// <summary>
     /// Describes a quantity that can be exported using data from expression.
     /// </summary>

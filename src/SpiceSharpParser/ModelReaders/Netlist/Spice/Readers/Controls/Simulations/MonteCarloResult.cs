@@ -44,10 +44,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <summary>
         /// Collects the result and updates <see cref="Max"/>, <see cref="Min"/> dictionaries.
         /// </summary>
-        /// <param name="simulation">Simulation</param>
-        /// <param name="result">SpiceSharpModel.</param>
+        /// <param name="simulation">Simulation of the result.</param>
+        /// <param name="result">Result value.</param>
         public void Collect(Simulation simulation, double result)
         {
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
+
             lock (this)
             {
                 if (Min.ContainsKey(simulation))

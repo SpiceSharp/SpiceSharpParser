@@ -1,9 +1,11 @@
 ﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Distributed;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models;
@@ -11,9 +13,6 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
-    using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
-    using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Distributed;
-
     public class SpiceObjectMappings : ISpiceObjectMappings
     {
         public SpiceObjectMappings()
@@ -28,6 +27,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Waveforms.Map("SINE", new SineGenerator());
             Waveforms.Map("SIN", new SineGenerator());
             Waveforms.Map("PULSE", new PulseGenerator());
+            Waveforms.Map("PWL", new PwlGenerator());
 
             // Register exporters
             Exporters.Map(new string[] { "V", "VI", "VR", "VM", "VDB", "VPH", "VP" }, new VoltageExporter());

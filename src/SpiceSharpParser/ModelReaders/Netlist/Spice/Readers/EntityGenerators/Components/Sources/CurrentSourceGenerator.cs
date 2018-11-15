@@ -8,8 +8,6 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {
-    using SpiceSharpParser.Common.Evaluation;
-
     /// <summary>
     /// Current sources generator.
     /// </summary>
