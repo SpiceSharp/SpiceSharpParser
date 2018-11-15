@@ -44,7 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                 }
 
                 // Get point + 1 line parameters for each segment of line
-                LineParameters[] linesParameters = CreateLineParameters(points);
+                LineDefinition[] linesDefinition = CreateLineParameters(points);
 
                 int index = 0;
 
@@ -63,15 +63,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     return points[0].Item2;
                 }
 
-                return (linesParameters[index].A * parameterValue) + linesParameters[index].B;
+                return (linesDefinition[index].A * parameterValue) + linesDefinition[index].B;
             };
 
             return function;
         }
 
-        private static LineParameters[] CreateLineParameters(List<Tuple<double, double>> points)
+        private static LineDefinition[] CreateLineParameters(List<Tuple<double, double>> points)
         {
-            List<LineParameters> result = new List<LineParameters>();
+            List<LineDefinition> result = new List<LineDefinition>();
 
             for (var i = 0; i < points.Count - 1; i++)
             {
@@ -82,7 +82,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 
                 double a = (y2 - y1) / (x2 - x1);
 
-                result.Add(new LineParameters()
+                result.Add(new LineDefinition()
                 {
                     A = a,
                     B = y1 - (a * x1),
@@ -94,7 +94,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
     }
 
-    public class LineParameters
+    public class LineDefinition
     {
         public double A { get; set; }
 

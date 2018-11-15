@@ -1,4 +1,5 @@
-﻿using SpiceSharp.Components;
+﻿using System;
+using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -20,18 +21,27 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
         /// </returns>
         public override Waveform Generate(ParameterCollection parameters, IReadingContext context)
         {
-            var sine = new Sine();
+            if (parameters == null)
+            {
+                throw new ArgumentNullException(nameof(parameters));
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
 
             if (parameters.Count < 3 || parameters.Count > 6)
             {
-                throw new WrongParametersCountException("Wrong parameters count for sine. There must be 3,4 or 5 parameters");
+                throw new WrongParametersCountException(
+                    "Wrong parameters count for sine. There must be 3, 4, 5 or 6 parameters");
             }
-            else
-            {
-                sine.Offset.Value = context.EvaluateDouble(parameters.GetString(0));
-                sine.Amplitude.Value = context.EvaluateDouble(parameters.GetString(1));
-                sine.Frequency.Value = context.EvaluateDouble(parameters.GetString(2));
-            }
+
+            var sine = new Sine();
+
+            sine.Offset.Value = context.EvaluateDouble(parameters.GetString(0));
+            sine.Amplitude.Value = context.EvaluateDouble(parameters.GetString(1));
+            sine.Frequency.Value = context.EvaluateDouble(parameters.GetString(2));
 
             if (parameters.Count >= 4)
             {

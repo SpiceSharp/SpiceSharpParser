@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -39,9 +41,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 {
                     if (param is Models.Netlist.Spice.Objects.Parameters.BracketParameter bracketParameter)
                     {
+                        var arguments = new List<string>();
+
+                        if (bracketParameter.Parameters[0] is VectorParameter vp)
+                        {
+                            arguments.AddRange(vp.Elements.Select(element => element.Image));
+                        }
+                        else
+                        {
+                            if (bracketParameter.Parameters.Count != 0)
+                            {
+                                arguments.Add(bracketParameter.Parameters[0].Image);
+                            }
+                        }
+
                         context.AddFunction(
                             bracketParameter.Name,
-                            bracketParameter.Parameters.ToList().Select(p => p.Image).ToList(), // TODO: improve it please
+                            arguments,
                             statement.Parameters[i + 1].Image);
 
                         i++;

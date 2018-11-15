@@ -18,7 +18,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         public ParameterCollection Parameters { get; set; }
 
         /// <summary>
-        /// Gets the string represenation of the bracket parameter.
+        /// Gets the string representation of the bracket parameter.
         /// </summary>
         public override string Image
         {

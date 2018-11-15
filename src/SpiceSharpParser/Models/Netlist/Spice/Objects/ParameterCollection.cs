@@ -20,7 +20,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Gets the count of paramters in the collection.
+        /// Gets the count of parameters in the collection.
         /// </summary>
         public int Count
         {
@@ -31,7 +31,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Gets or sets the values of paramters.
+        /// Gets or sets the values of parameters.
         /// </summary>
         protected List<Parameter> Values { get; set; }
 
@@ -89,7 +89,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Inserts a parameter at the specifed index in the collection.
+        /// Inserts a parameter at the specified index in the collection.
         /// </summary>
         /// <param name="index">An index.</param>
         /// <param name="parameter">A parameter to insert.</param>
@@ -113,7 +113,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Set paramters from a collection to the current collection.
+        /// Set parameters from a collection to the current collection.
         /// </summary>
         /// <param name="collection">A collection to merge.</param>
         public void Set(ParameterCollection collection)
@@ -164,7 +164,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// <summary>
         /// Creates a clone of the current collection without first 'count' elements.
         /// </summary>
-        /// <param name="count">Number of paramaters to skip.</param>
+        /// <param name="count">Number of parameters to skip.</param>
         /// <returns>
         /// A new collection of parameters.
         /// </returns>
@@ -179,7 +179,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// <summary>
         /// Creates a clone of the current collection with first 'count' elements.
         /// </summary>
-        /// <param name="count">Number of paramaters to take.</param>
+        /// <param name="count">Number of parameters to take.</param>
         /// <returns>
         /// A new collection of parameters.
         /// </returns>
@@ -210,7 +210,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Creats a new clone of the collection.
+        /// Creates a new clone of the collection.
         /// </summary>
         /// <returns>
         /// A new collection of parameters.

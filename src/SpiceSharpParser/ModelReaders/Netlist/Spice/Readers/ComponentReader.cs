@@ -34,8 +34,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         {
             string componentName = statement.Name;
 
-            string componentType;
-            IComponentGenerator generator = GetComponentGenerator(context, componentName, out componentType);
+            IComponentGenerator generator = GetComponentGenerator(context, componentName, out string componentType);
 
             Entity entity = generator.Generate(
                 context.ComponentNameGenerator.Generate(componentName),

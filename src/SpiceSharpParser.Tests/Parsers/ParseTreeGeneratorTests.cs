@@ -413,7 +413,7 @@ namespace SpiceSharpParser.Tests.Parsers
             Assert.Equal(4, child.Children.Count);
             var parameters = (child.Children[2] as ParseTreeNonTerminalNode).Children[0] as ParseTreeNonTerminalNode;
             Assert.Equal(Symbols.Parameters, parameters.Name);
-            Assert.Equal(2, parameters.Children.Count);
+            Assert.Equal(3, parameters.Children.Count);
         }
     }
 }

@@ -1,15 +1,15 @@
 ﻿using System;
 using SpiceSharp.Components;
+using SpiceSharp.Components.Waveforms;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 {
     /// <summary>
-    /// Generator for pulse waveform.
+    /// Generator for PWL waveform.
     /// </summary>
-    public class PulseGenerator : WaveformGenerator
+    public class PwlGenerator : WaveformGenerator
     {
         /// <summary>
         /// Generates a new waveform.
@@ -31,21 +31,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (parameters.Count != 7)
+            if (parameters.Count % 2 != 0)
             {
-                throw new WrongParametersCountException("Wrong number of arguments for pulse");
+                throw new ArgumentException("PWL waveform expects even count of parameters");
             }
 
-            var w = new Pulse();
-            w.InitialValue.Value = context.EvaluateDouble(parameters.GetString(0));
-            w.PulsedValue.Value = context.EvaluateDouble(parameters.GetString(1));
-            w.Delay.Value = context.EvaluateDouble(parameters.GetString(2));
-            w.RiseTime.Value = context.EvaluateDouble(parameters.GetString(3));
-            w.FallTime.Value = context.EvaluateDouble(parameters.GetString(4));
-            w.PulseWidth.Value = context.EvaluateDouble(parameters.GetString(5));
-            w.Period.Value = context.EvaluateDouble(parameters.GetString(6));
+            double[] times = new double[parameters.Count / 2];
+            double[] voltages = new double[parameters.Count / 2];
 
-            return w;
+            for (var i = 0; i < parameters.Count / 2; i++)
+            {
+                times[i] = context.EvaluateDouble(parameters.GetString(2 * i));
+                voltages[i] = context.EvaluateDouble(parameters.GetString((2 * i) + 1));
+            }
+
+            var pwl = new Pwl(times, voltages);
+            return pwl;
         }
     }
 }

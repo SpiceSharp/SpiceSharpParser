@@ -65,7 +65,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         private static double ComputeSumElementValue(List<double> variables, double coefficient, int[] combination)
         {
             double result = 1.0;
-        
+
             for (int i = 0; i < combination.Length; i++)
             {
                 result *= variables[combination[i] - 1];

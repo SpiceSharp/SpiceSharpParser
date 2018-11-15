@@ -25,7 +25,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
         /// </summary>
         /// <param name="token">A token to check.</param>
         /// <param name="lexem">A given lexem.</param>
-        /// <param name="caseSensitive">Specified the comparision is case sensitive.</param>
+        /// <param name="caseSensitive">Is lexem case sensitive.</param>
         /// <returns>
         /// True if <paramref name="token"/> has specified lexem.
         /// </returns>

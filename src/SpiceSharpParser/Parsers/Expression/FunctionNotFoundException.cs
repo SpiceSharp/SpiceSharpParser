@@ -8,7 +8,8 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         {
         }
 
-        public FunctionNotFoundException(string message) : base(message)
+        public FunctionNotFoundException(string message) 
+            : base(message)
         {
         }
 
