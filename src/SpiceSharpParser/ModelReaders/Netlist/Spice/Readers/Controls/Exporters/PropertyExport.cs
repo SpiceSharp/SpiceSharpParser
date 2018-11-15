@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SpiceSharp;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 

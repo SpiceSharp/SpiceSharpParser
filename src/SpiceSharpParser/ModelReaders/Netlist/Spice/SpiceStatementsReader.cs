@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
@@ -57,7 +58,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             }
             else
             {
-                throw new Exception("There is no reader for the statement of type: " + statement.GetType());
+                throw new GeneralReaderException("There is no reader for the statement of type: " + statement.GetType());
             }
         }
     }

@@ -227,6 +227,16 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         }
 
         [Fact]
+        public void LineContinuationWithSpacesTest()
+        {
+            var tokensStr = "Example of title\nseq.part1\n     \t    +seq.part2\n  +seq.part3\n";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = true });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.Equal(7, tokens.Length);
+        }
+
+        [Fact]
         public void LineContinuationCurrentLineTest()
         {
             var tokensStr = "seq.part1\\\nseq.part2\n";

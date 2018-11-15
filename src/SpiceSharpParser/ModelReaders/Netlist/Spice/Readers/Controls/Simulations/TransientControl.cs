@@ -64,15 +64,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                         context.EvaluateDouble(clonedParameters[2].Image));
                     break;
                 case 4:
+                    tran = new Transient(
+                        name,
+                        context.EvaluateDouble(clonedParameters[0].Image),
+                        context.EvaluateDouble(clonedParameters[1].Image),
+                        context.EvaluateDouble(clonedParameters[3].Image));
+                    tran.Configurations.SetParameter("init", context.EvaluateDouble(clonedParameters[2].Image));
+
+                    break;
+                default:
                     throw new WrongParametersCountException(".tran control - Too many parameters for .tran");
             }
 
             ConfigureCommonSettings(tran, context);
             ConfigureTransientSettings(tran, context, useIc);
 
-            tran.ExportSimulationData += (object sender, ExportDataEventArgs e) => {
-                context.SimulationExpressionContexts.GetContext(tran).SetParameter("TIME", e.Time);
-            };
+            tran.ExportSimulationData += (sender, e) =>
+                {
+                    context.SimulationExpressionContexts.GetContext(tran).SetParameter("TIME", e.Time);
+                };
 
             context.Result.AddSimulation(tran);
 

@@ -7,6 +7,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
     /// </summary>
     public abstract class Export
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Export"/> class.
+        /// </summary>
+        /// <param name="simulation">
+        /// The simulation.
+        /// </param>
         public Export(Simulation simulation)
         {
             Simulation = simulation ?? throw new System.ArgumentNullException(nameof(simulation));
@@ -25,15 +31,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         public string Name { get; protected set; }
 
         /// <summary>
-        /// Gets the export unit
+        /// Gets the export unit.
         /// </summary>
         public abstract string QuantityUnit { get; }
-
-        /// <summary>
-        /// Gets or sets the type of simulation that the export should act on
-        /// eg. "tran", "dc", etc. Default is null (any simulation/optional).
-        /// </summary>
-        public string SimulationType { get; set; } = null;
 
         /// <summary>
         /// Gets or sets a value indicating whether exceptions are enabled.
@@ -44,7 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// Extract the quantity from simulated data.
         /// </summary>
         /// <returns>
-        /// A quantity
+        /// A quantity.
         /// </returns>
         public abstract double Extract();
 
@@ -52,7 +52,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// Override string representation.
         /// </summary>
         /// <returns>
-        /// A string represenation of export.
+        /// A string representation of export.
         /// </returns>
         public override string ToString()
         {

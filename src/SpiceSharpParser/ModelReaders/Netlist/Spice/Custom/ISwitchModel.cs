@@ -1,6 +1,6 @@
 ﻿using SpiceSharp.Components;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.ComponentModels
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
 {
     public class ISwitchModel : Model
     {

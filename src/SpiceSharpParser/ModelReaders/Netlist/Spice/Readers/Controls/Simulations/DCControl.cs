@@ -9,7 +9,6 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
-    
     /// <summary>
     /// Reads .DC <see cref="Control"/> from SPICE netlist object model.
     /// </summary>

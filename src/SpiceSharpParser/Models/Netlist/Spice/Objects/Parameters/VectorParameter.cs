@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
-namespace SpiceSharpParser.Models.Netlist.Spice.Objects
+namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
 {
     /// <summary>
     /// A vector parameter.

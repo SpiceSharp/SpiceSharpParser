@@ -244,6 +244,12 @@ namespace SpiceSharpParser.IntegrationTests
             }
         }
 
+        protected bool EqualsWithToWithoutAssert(double expected, double actual)
+        {
+            double tol = Math.Max(Math.Abs(actual), Math.Abs(expected)) * RelTol + AbsTol;
+            return Math.Abs(expected - actual) < tol;
+        }
+
         protected void EqualsWithTol(double expected, double actual)
         {
             double tol = Math.Max(Math.Abs(actual), Math.Abs(expected)) * RelTol + AbsTol;

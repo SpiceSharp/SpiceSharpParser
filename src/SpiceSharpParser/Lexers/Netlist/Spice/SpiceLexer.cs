@@ -53,7 +53,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.WHITESPACE,
                 "A whitespace characters that will be ignored",
-                "[ \t]*",
+                @"[\t 	]+",
                 (SpiceLexerState state, string lexem) => LexerRuleReturnDecision.IgnoreToken));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
@@ -169,7 +169,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.CONTINUE,
                 "A continuation token",
-                @"((\r\n\+|\n\+|\r\+|\\\r|\\\n|\\\r\n))",
+                @"((\r\n\s*\+|\n\s*\+|\r\s*\+|\\\r|\\\n|\\\r\n))",
                 (SpiceLexerState state, string lexem) =>
                 {
                     state.LineNumber++;

@@ -46,16 +46,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.ArgumentsCount = 3;
             function.ReturnType = typeof(double);
 
-            function.DoubleArgsLogic =  (image, args, evaluator, context) =>
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
             {
                 if (args.Length != 3)
                 {
                     throw new ArgumentException("if() function expects three arguments");
                 }
 
-                double x = (double)args[0];
-                double y = (double)args[1];
-                double z = (double)args[2];
+                double x = args[0];
+                double y = args[1];
+                double z = args[2];
 
                 if (x > 0.5)
                 {

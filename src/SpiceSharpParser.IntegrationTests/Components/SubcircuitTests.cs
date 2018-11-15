@@ -35,6 +35,35 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
+        public void SubcircuitParams()
+        {
+            var netlist = ParseNetlist(
+                "Subcircuit - SubcircuitEndingTest",
+                "V1 IN 0 4.0",
+                "X1 IN OUT twoResistorsInSeries PARAMS: R1=1 R2=2",
+                "RX OUT 0 1",
+                ".SUBCKT treeResistorsInSeries input output params: R1=10 R2=100 R3=1000",
+                "R1 input 1 {R1}",
+                "R2 1 2 {R2}",
+                "R3 2 output {R3}",
+                ".ENDS",
+                ".SUBCKT twoResistorsInSeries input output params: R1=10 R2=100",
+                "R1 input 1 {R1}",
+                "R2 1 output {R2}",
+                ".ENDS twoResistorsInSeries",
+                ".OP",
+                ".SAVE V(OUT)",
+                ".END");
+
+            double export = RunOpSimulation(netlist, "V(OUT)");
+
+            // Get references
+            double[] references = { 1.0 };
+
+            EqualsWithTol(new double[] { export }, references);
+        }
+
+        [Fact]
         public void SingleSubcircuitWithParams()
         {
             var netlist = ParseNetlist(

@@ -8,8 +8,6 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {
-    using SpiceSharpParser.Common.Evaluation;
-
     /// <summary>
     /// Current sources generator.
     /// </summary>
@@ -142,6 +140,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var cs = new CurrentSource(name);
                 context.CreateNodes(cs, parameters);
                 context.SetParameter(cs, "dc", valueParameter.Value);
+                return cs;
+            }
+
+            if (parameters.Any(p => p is WordParameter ap && ap.Image.ToLower() == "value") && parameters.Count == 4)
+            {
+                var valueParameter = parameters[3] as ExpressionParameter;
+
+                var cs = new CurrentSource(name);
+                context.CreateNodes(cs, parameters);
+                context.SetParameter(cs, "dc", valueParameter.Image);
                 return cs;
             }
 

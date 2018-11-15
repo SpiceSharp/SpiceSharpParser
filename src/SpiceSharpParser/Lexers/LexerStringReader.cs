@@ -87,7 +87,7 @@ namespace SpiceSharpParser.Lexers
             {
                 string nextLine = PeekNextLine(out int nextCurrentIndex);
                 if (nextLine != string.Empty
-                    && (nextLine[0] == _nextLineContinuationCharacter))
+                    && (nextLine.TrimStart(' ', '\t')[0] == _nextLineContinuationCharacter))
                 {
                     _currentIndex = nextCurrentIndex;
                     result += nextLine;

@@ -11,7 +11,7 @@
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the paramaters of control.
+        /// Gets or sets the parameters of control.
         /// </summary>
         public ParameterCollection Parameters { get; set; }
 

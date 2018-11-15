@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Collections.ObjectModel;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Parsers.Netlist.Spice;
 
 namespace SpiceSharpParser.Parsers.Expression
 {
-    
-
+    /// <summary>
+    /// @author: Sven Boulanger
+    /// @author: Marcin Gołębiowski (custom functions, lazy evaluation)
+    /// A very light-weight and fast expression parser made for parsing SPICE expressions
+    /// It is based on Dijkstra's Shunting Yard algorithm. It is very fast for parsing expressions only once.
+    /// The parser is also not very expressive for errors, so only use it for relatively simple expressions.
+    /// </summary>
     public class SpiceExpressionParser : IExpressionParser
     {
         /// <summary>
@@ -113,6 +117,10 @@ namespace SpiceSharpParser.Parsers.Expression
             {
                 throw new ArgumentNullException(nameof(context));
             }
+
+
+            // TODO: remove this hack please someday...
+            expression = expression.Replace("\r\n+", "");
 
             var foundParameters = new HashSet<string>();
             var foundFunctions = new HashSet<string>();

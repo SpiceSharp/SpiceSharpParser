@@ -1,7 +1,6 @@
 ﻿using System.Linq;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
-namespace SpiceSharpParser.Models.Netlist.Spice.Objects
+namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
 {
     /// <summary>
     /// A point parameter.
