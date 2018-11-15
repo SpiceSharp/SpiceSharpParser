@@ -1,7 +1,7 @@
 ﻿using SpiceSharp;
 using SpiceSharp.Attributes;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.ComponentModels
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
 {
     public class VSwitchModelBaseParameters : ParameterSet
     {
