@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/SpiceSharp/SpiceSharpParser/branch/master/graph/badge.svg)](https://codecov.io/gh/SpiceSharp/SpiceSharpParser)
 [![CodeFactor](https://www.codefactor.io/repository/github/spicesharp/spicesharpparser/badge)](https://www.codefactor.io/repository/github/spicesharp/spicesharpparser)
 
-SpiceSharpParser is a .NET library that allows to simulate circuits defined by Spice netlists.
+SpiceSharpParser is a .NET library that allows to parse Spice netlists and to simulate them using SpiceSharp.
 
 ## Installation
 
@@ -25,12 +25,12 @@ var netlist = string.Join(Environment.NewLine,
                 ".SAVE i(V1)",
                 ".END");
 
-\\ Parsing part - SpiceSharpParser
+// Parsing part - SpiceSharpParser
 var parser = new SpiceParser();
 var parseResult = parser.ParseNetlist(netlist);
 var spiceSharpModel = parseResult.SpiceSharpModel;
 
-\\ Simulation part - SpiceSharp
+// Simulation part - SpiceSharp
 var simulation = spiceSharpModel.Simulations.Single();
 var export = spiceSharpModel.Exports.Find(e => e.Name == "i(V1)");
 simulation.ExportSimulationData += (sender, args) => Console.WriteLine(export.Extract());
