@@ -11,7 +11,7 @@ namespace SpiceSharpParser.Tests.Parsers
     public class ParseTreeEvaluatorTests
     {
         [Fact]
-        public void EmptyComment()
+        public void When_EmptyComment_Expect_NoException()
         {
             // Arrange
             var tokens = new SpiceToken[]
@@ -35,7 +35,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void Vector()
+        public void When_Vector_Expect_Reference()
         {
             // Arrange
             var vectorTokens = new SpiceToken[]
@@ -58,7 +58,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void VectorLonger()
+        public void When_LongerVector_Expect_Reference()
         {
             // Arrange
             var vectorTokens = new SpiceToken[]
@@ -83,7 +83,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void BracketParameterWithVector()
+        public void When_BracketParameterWithVector_Expect_Reference()
         {
             // Arrange
             var vectorTokens = new SpiceToken[]
@@ -112,7 +112,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void BracketParameterWithSingleParameters()
+        public void When_BracketWithSingeParameters_Expect_Reference()
         {
             // Arrange
             var vectorTokens = new SpiceToken[]
@@ -141,7 +141,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void AssigmentParameterWithVector()
+        public void When_AssigmentParameterWithVector_Expect_Reference()
         {
             // Arrange
             var vectorTokens = new SpiceToken[]
@@ -171,7 +171,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void BracketParameterWithAssigments()
+        public void When_AssigmentParameterWithAssigmentParameters_Expect_Reference()
         {
             // Arrange
             var vectorTokens = new SpiceToken[]
@@ -203,7 +203,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void Component()
+        public void When_Component_Expect_Reference()
         {
             // Arrange
             var vectorTokens = new SpiceToken[]

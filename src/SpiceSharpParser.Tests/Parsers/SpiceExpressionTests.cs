@@ -13,7 +13,7 @@ namespace SpiceSharpParser.Tests.Parsers
     public class SpiceExpressionTests
     {
         [Fact]
-        public void ParseWithUserFunction()
+        public void When_ExpressionHasCustomFunctionWithArguments_Expect_Reference()
         {
             // arrange
             var parser = new SpiceExpressionParser(false);
@@ -53,7 +53,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void ParseWithUserFunctionNoArgument()
+        public void When_ExpressionHasCustomFunctionWithoutArguments_Expect_Reference()
         {
             // arrange
             var parser = new SpiceExpressionParser();
@@ -83,7 +83,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void ParseWithUnknownParameter()
+        public void When_ExpressionHasUnknownParameter_Expect_Exception()
         {
             // arrange
             var parser = new SpiceExpressionParser();
@@ -93,7 +93,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void ParseWitKnownParameter()
+        public void When_ExpressionHasKnownParameter_Expect_Reference()
         {
             // arrange
             var parser = new SpiceExpressionParser();
@@ -105,7 +105,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void ParseWithBuildinFunction()
+        public void When_ExpressionHasSinFunction_Expect_Reference()
         {
             // arrange
             var parser = new SpiceExpressionParser();
@@ -118,7 +118,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void ParseWithParameters()
+        public void When_ExpressionHasParameters_Expect_Reference()
         {
             // arrange
             var parser = new SpiceExpressionParser();
@@ -130,7 +130,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void ParseWithSpace()
+        public void When_ExpressionHasSpaces_Expect_Reference()
         {
             // arrange
             var parser = new SpiceExpressionParser();
@@ -140,11 +140,10 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void ParseWithConstants()
+        public void When_ExpressionHasConstants_Expect_Reference()
         {
             // arrange
             var parser = new SpiceExpressionParser();
-
 
             var context = new SpiceExpressionContext(SpiceExpressionMode.HSpice);
             context.SetParameter("PI", Math.PI);
@@ -156,7 +155,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void ParseMinus()
+        public void When_ExpressionHasMinusValue_Expect_Reference()
         {
             // arrange
             var parser = new SpiceExpressionParser();
@@ -166,7 +165,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void ParseConditional()
+        public void When_ExpressionHasConditional_Expect_Reference()
         {
             // arrange
             var parser = new SpiceExpressionParser();
@@ -180,7 +179,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void UnicodeU()
+        public void When_ExpressionHasUnicodeU_Expect_Reference()
         {
             // arrange
             var parser = new SpiceExpressionParser();
@@ -190,7 +189,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void ParseWithReference()
+        public void When_ExpressionHasMonkeyFunction_Expect_Reference()
         {
             // arrange
             var parser = new SpiceExpressionParser();
