@@ -2,6 +2,7 @@ using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Parsers.Netlist.Spice;
 using System;
+using SpiceSharpParser.Parsers.Netlist;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Common
@@ -20,7 +21,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
             var text = string.Join(Environment.NewLine,
                 "CaseSensitivity",
                 ".End");
-            Assert.Throws<Exception>(() => parser.ParseNetlist(text));
+            Assert.Throws<ParseException>(() => parser.ParseNetlist(text));
         }
 
         [Fact]

@@ -27,7 +27,7 @@
         public const string ParameterBracket = "PARAMETER-BRACKET";
         public const string ParameterBracketContent = "PARAMETER-BRACKET-CONTENT";
         public const string NewLine = "NEW-LINE";
-
+        public const string NewLines = "NEW-LINES";
         public const string Points = "POINTS";
         public const string PointsContinue = "POINTS-CONTINUE";
         public const string Point = "POINT";
