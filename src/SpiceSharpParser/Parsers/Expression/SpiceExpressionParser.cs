@@ -359,8 +359,24 @@ namespace SpiceSharpParser.Parsers.Expression
                             if (operatorStack.Peek() is FunctionOperator fo && fo.VirtualParameters)
                             {
                                 int startIndex = index;
-                                ParseDouble(expression, ref index);
-                                virtualParametersStack.Push(expression.Substring(startIndex, index - startIndex));
+
+                                while (index < expression.Length)
+                                {
+                                    if (expression[index] == ',')
+                                    {
+                                        break;
+                                    }
+
+                                    if (expression[index] == ')')
+                                    {
+                                        break;
+                                    }
+
+                                    index++;
+                                }
+
+                                var virtualParameter = expression.Substring(startIndex, index - startIndex);
+                                virtualParametersStack.Push(virtualParameter);
                             }
                             else
                             {
@@ -377,7 +393,7 @@ namespace SpiceSharpParser.Parsers.Expression
                     }
 
                     // Parse a parameter or a function
-                    else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+                    else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == '_') || (c == '.'))
                     {
                         sb.Clear();
                         sb.Append(input[index++]);
