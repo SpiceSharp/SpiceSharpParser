@@ -89,7 +89,26 @@ namespace SpiceSharpParser.Lexers
                 }
                 else
                 {
-                    throw new LexerException("Can't get next token from text: '" + textToLex + "'");
+                    bool matched = false;
+                    foreach (LexerDynamicRule dynamicRule in Grammar.DynamicRules)
+                    {
+                        bool ruleMatch = textToLex.StartsWith(dynamicRule.Prefix);
+                        if (ruleMatch)
+                        {
+                            var dynamicResult = dynamicRule.Action(textToLex);
+
+                            yield return new Token(dynamicRule.TokenType, dynamicResult);
+
+                            currentTokenIndex += dynamicResult.Length;
+                            UpdateTextToLex(ref textToLex, ref getNextTextToLex, dynamicResult.Length);
+                            matched = true;
+                        }
+                    }
+
+                    if (!matched)
+                    {
+                        throw new LexerException("Can't get next token from text: '" + textToLex + "'");
+                    }
                 }
             }
 
@@ -141,7 +160,7 @@ namespace SpiceSharpParser.Lexers
         {
             bestMatchTokenRule = null;
             bestMatch = null;
-            foreach (LexerTokenRule<TLexerState> tokenRule in Grammar.LexerRules)
+            foreach (LexerTokenRule<TLexerState> tokenRule in Grammar.RegexRules)
             {
                 Match tokenMatch = tokenRule.RegularExpression.Match(remainingText);
                 if (tokenMatch.Success && tokenMatch.Length > 0)

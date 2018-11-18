@@ -5,18 +5,18 @@ namespace SpiceSharpParser.Lexers
     /// <summary>
     /// Base class for token rules in <see cref="LexerGrammar{TLexerState}"/>.
     /// </summary>
-    public abstract class LexerRule
+    public abstract class LexerRegexRule
     {
         private Regex regex;
         private string regularExpressionPattern;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LexerRule"/> class.
+        /// Initializes a new instance of the <see cref="LexerRegexRule"/> class.
         /// </summary>
         /// <param name="ruleName">A name of lexer rule</param>
         /// <param name="regularExpressionPattern">A regular expression</param>
         /// <param name="ignoreCase">Case is ignored.</param>
-        public LexerRule(string ruleName, string regularExpressionPattern, bool ignoreCase)
+        public LexerRegexRule(string ruleName, string regularExpressionPattern, bool ignoreCase)
         {
             RegularExpressionPattern = regularExpressionPattern;
             Name = ruleName;
@@ -76,6 +76,6 @@ namespace SpiceSharpParser.Lexers
         /// <returns>
         /// Clone of the rule.
         /// </returns>
-        public abstract LexerRule Clone();
+        public abstract LexerRegexRule Clone();
     }
 }

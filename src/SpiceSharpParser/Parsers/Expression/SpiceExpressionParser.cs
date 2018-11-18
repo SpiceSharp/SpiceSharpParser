@@ -133,7 +133,7 @@ namespace SpiceSharpParser.Parsers.Expression
             while (index < count)
             {
                 // Skip spaces
-                while (index < count && input[index] == ' ')
+                while (index < count && (input[index] == ' ' || (input[index] == '{' || (input[index] == '}'))))
                 {
                     index++;
                 }
