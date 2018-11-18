@@ -6,6 +6,8 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
+using Component = SpiceSharp.Components.Component;
+
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {
     /// <summary>
@@ -60,6 +62,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var cs = new CurrentSource(name);
                 context.CreateNodes(cs, parameters);
                 context.SetParameter(cs, "dc", valueParameter.Value);
+                return cs;
+            }
+
+            if (parameters.Any(p => p is WordParameter ap && ap.Image.ToLower() == "value") 
+                && parameters.Count == 4)
+            {
+                var valueParameter = parameters[3] as ExpressionParameter;
+
+                var cs = new CurrentSource(name);
+                context.CreateNodes(cs, parameters);
+                context.SetParameter(cs, "dc", valueParameter.Image);
                 return cs;
             }
 
@@ -134,23 +147,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value")
                && parameters.Count == 3)
             {
-                var valueParameter = (AssignmentParameter)parameters.Single(
-                    p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
-
-                var cs = new CurrentSource(name);
-                context.CreateNodes(cs, parameters);
-                context.SetParameter(cs, "dc", valueParameter.Value);
-                return cs;
+                var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
+                return CreateCurrentSource(name, parameters, context, valueParameter.Value);
             }
 
             if (parameters.Any(p => p is WordParameter ap && ap.Image.ToLower() == "value") && parameters.Count == 4)
             {
-                var valueParameter = parameters[3] as ExpressionParameter;
-
-                var cs = new CurrentSource(name);
-                context.CreateNodes(cs, parameters);
-                context.SetParameter(cs, "dc", valueParameter.Image);
-                return cs;
+                var expressionParameter = parameters[3] as ExpressionParameter;
+                return CreateCurrentSource(name, parameters, context, expressionParameter.Image);
             }
 
             if (parameters.Any(p => p is BracketParameter bp && bp.Name.ToLower() == "poly"))
@@ -166,10 +170,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var dimension = (int)context.EvaluateDouble(polyParameter.Parameters[0].Image);
                 var expression = ExpressionGenerator.CreatePolyVoltageExpression(dimension, parameters.Skip(3));
 
-                var cs = new CurrentSource(name);
-                context.CreateNodes(cs, parameters);
-                context.SetParameter(cs, "dc", expression);
-                return cs;
+                return CreateCurrentSource(name, parameters, context, expression);
             }
 
             if (parameters.Any(p => p is WordParameter bp && bp.Image.ToLower() == "poly"))
@@ -177,37 +178,30 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var dimension = 1;
                 var expression = ExpressionGenerator.CreatePolyVoltageExpression(dimension, parameters.Skip(3));
 
-                var cs = new CurrentSource(name);
-                context.CreateNodes(cs, parameters);
-                context.SetParameter(cs, "dc", expression);
-                return cs;
+                return CreateCurrentSource(name, parameters, context, expression);
             }
 
             if (parameters.Any(p => p is ExpressionEqualParameter) && parameters.Any(p => p.Image.ToLower() == "table"))
             {
                 var formulaParameter = (ExpressionEqualParameter)parameters.Single(p => p is ExpressionEqualParameter);
-                var cs = new CurrentSource(name);
-                context.CreateNodes(cs, parameters);
-
                 var tableParameter = name + "_table_variable";
                 context.SetParameter(tableParameter, formulaParameter.Expression);
+
                 string expression = ExpressionGenerator.CreateTableExpression(tableParameter, formulaParameter);
-                context.SetParameter(cs, "dc", expression);
-                return cs;
+
+                return CreateCurrentSource(name, parameters, context, expression);
             }
 
-            if (parameters.Count == 3
-                && parameters[0] is PointParameter pp1
-                && pp1.Values.Count() == 2
-                && parameters[1] is PointParameter pp2
-                && pp2.Values.Count() == 2)
+            if (parameters.Count == 3 && parameters[0] is PointParameter pp1 && pp1.Values.Count() == 2
+                && parameters[1] is PointParameter pp2 && pp2.Values.Count() == 2)
             {
-                var vccs = new VoltageControlledCurrentSource(name);
                 var vccsNodes = new ParameterCollection();
                 vccsNodes.Add(pp1.Values.Items[0]);
                 vccsNodes.Add(pp1.Values.Items[1]);
                 vccsNodes.Add(pp2.Values.Items[0]);
                 vccsNodes.Add(pp2.Values.Items[1]);
+
+                var vccs = new VoltageControlledCurrentSource(name);
                 context.CreateNodes(vccs, vccsNodes);
                 context.SetParameter(vccs, "gain", parameters.GetString(2));
                 return vccs;
@@ -312,6 +306,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             return isrc;
+        }
+
+        protected static Component CreateCurrentSource(
+            string name,
+            ParameterCollection parameters,
+            IReadingContext context,
+            string valueExpression)
+        {
+            var cs = new CurrentSource(name);
+            context.CreateNodes(cs, parameters);
+            context.SetParameter(cs, "dc", valueExpression);
+            return cs;
         }
     }
 }

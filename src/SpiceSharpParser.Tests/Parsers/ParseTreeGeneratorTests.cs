@@ -8,7 +8,7 @@ namespace SpiceSharpParser.Tests.Parsers
     public class ParseTreeGeneratorTests
     {
         [Fact]
-        public void NetListWithEmptyComment()
+        public void When_NetlistHasEmptyComment_Expect_NoException()
         {
             var tokens = new SpiceToken[]
             {
@@ -26,7 +26,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void SimplestNetlist()
+        public void When_NetlistIsVerySimple_Expect_NoException()
         {
             var tokens = new SpiceToken[]
             {
@@ -42,7 +42,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void SimplestNetlistWithNewLineAfterEnd()
+        public void When_NetlistHasNewLineAfterEnd_Expect_NoException()
         {
             var tokens = new SpiceToken[]
             {
@@ -59,7 +59,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void ComponentStatement()
+        public void When_ComponentStatementIsParsed_Expect_NoException()
         {
             // Arrange
             var vectorTokens = new SpiceToken[]
@@ -76,7 +76,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void CommentStatement()
+        public void When_CommentStatementIsParsed_Expect_NoException()
         {
             // Arrange
             var vectorTokens = new SpiceToken[]
@@ -90,7 +90,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void SubcktStatement()
+        public void When_SubcktStatementIsParsed_Expect_NoException()
         {
             // Arrange
             var vectorTokens = new SpiceToken[]
@@ -110,7 +110,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void ModelStatement()
+        public void When_ModelStatementIsParsed_Expect_NoException()
         {
             // Arrange
             var vectorTokens = new SpiceToken[]
@@ -126,7 +126,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void ParameterEqualWithArgument()
+        public void When_ParameterEqualWithArgumentIsParsed_Expect_Reference()
         {
             var tokens = new SpiceToken[]
             {
@@ -148,7 +148,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void ParameterEqualWithTwoArguments()
+        public void When_ParameterEqualWithTwoArgumentsIsParsed_Expect_Reference()
         {
             var tokens = new SpiceToken[]
             {
@@ -171,7 +171,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void ParameterEqualWithFourArguments()
+        public void When_ParameterEqualWithFourArgumentsIsParsed_Expect_Reference()
         {
             var tokens = new SpiceToken[]
             {
@@ -198,7 +198,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void NetlistEndingWithoutNewline()
+        public void When_NetlistHasNoNewlineAfterEnd_Expect_NoException()
         {
             var tokens = new SpiceToken[]
             {
@@ -212,22 +212,21 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void NetlistEndingWithNewline()
+        public void When_NetlistHasNewlineAfterEnd_Expect_NoException()
         {
             var tokens = new SpiceToken[]
-            {
-                new SpiceToken(SpiceTokenType.END, ".end"),
-                new SpiceToken(SpiceTokenType.NEWLINE, "\n"),
-                new SpiceToken(SpiceTokenType.EOF, ""),
-            };
+                             {
+                                 new SpiceToken(SpiceTokenType.END, ".end"),
+                                 new SpiceToken(SpiceTokenType.NEWLINE, "\n"), new SpiceToken(SpiceTokenType.EOF, ""),
+                             };
 
             var parser = new ParseTreeGenerator(false, true);
             ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, Symbols.NetlistEnding);
             Assert.NotNull(root);
         }
-   
+
         [Fact]
-        public void ParameterEqualWithoutArguments()
+        public void When_ParameterEqualWithoutArgumentIsParsed_Expect_Reference()
         {
             var tokens = new SpiceToken[]
             {
@@ -249,7 +248,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void ParameterBracketBasic()
+        public void When_ParameterBracketIsParsed_Expect_Reference()
         {
             var vectorTokens = new SpiceToken[]
             {
@@ -269,7 +268,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void ParameterBracket()
+        public void When_ParameterBracketWithTwoArgumentsIsParsed_Expect_Reference()
         {
             var vectorTokens = new SpiceToken[]
             {
@@ -292,7 +291,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void ParameterBracketEqualSeqence()
+        public void When_ParameterBracketWithMultipleParameterEqualIsParsed_Expect_Reference()
         {
             var vectorTokens = new SpiceToken[]
             {
@@ -307,7 +306,6 @@ namespace SpiceSharpParser.Tests.Parsers
                 new SpiceToken(SpiceTokenType.DELIMITER, ")")
             };
 
-
             var parser = new ParseTreeGenerator(false, true);
             ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.Parameter);
 
@@ -318,7 +316,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void ParameterBracketEqualSeqenceAdvanced()
+        public void When_ParameterBracketWithMultipleParameterEqualEdgeCaseIsParsed_Expect_Reference()
         {
             var tokens = new SpiceToken[]
             {
@@ -354,7 +352,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void BraketParameterVector()
+        public void When_ParameterBracketVectorIsParsed_Expect_NoException()
         {
             var vectorTokens = new SpiceToken[]
             {
@@ -371,7 +369,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void BraketParameterVectorThreeElements()
+        public void When_ParameterBracketWithTreeValuesIsParsed_Expect_NoException()
         {
             var vectorTokens = new SpiceToken[]
             {
@@ -390,7 +388,7 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void BraketParameterMixed()
+        public void When_ParameterBracketWithMixedContentIsParsed_Expect_Reference()
         {
             var vectorTokens = new SpiceToken[]
             {
@@ -402,7 +400,6 @@ namespace SpiceSharpParser.Tests.Parsers
                 new SpiceToken(SpiceTokenType.VALUE, "0.75ns"),
                 new SpiceToken(SpiceTokenType.DELIMITER, ")")
             };
-
 
             var parser = new ParseTreeGenerator(false, true);
             ParseTreeNonTerminalNode root = parser.GetParseTree(vectorTokens, Symbols.Parameter);

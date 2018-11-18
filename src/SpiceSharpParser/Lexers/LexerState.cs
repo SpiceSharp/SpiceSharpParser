@@ -19,5 +19,10 @@
         /// Gets or sets a value indicating whether lexem is before a line break character.
         /// </summary>
         public bool BeforeLineBreak { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current line number.
+        /// </summary>
+        public int LineNumber { get; set; } = 1;
     }
 }

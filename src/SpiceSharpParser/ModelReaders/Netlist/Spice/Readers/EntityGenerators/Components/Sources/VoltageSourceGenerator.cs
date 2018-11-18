@@ -6,6 +6,8 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
+using Component = SpiceSharp.Components.Component;
+
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {
     /// <summary>
@@ -57,40 +59,26 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value")
                 && parameters.Count == 3)
             {
-                var valueParameter = (AssignmentParameter)parameters.Single(
-                    p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
-
-                var vs = new VoltageSource(name);
-                context.CreateNodes(vs, parameters);
-                context.SetParameter(vs, "dc", valueParameter.Value);
-                return vs;
+                var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
+                return CreateVoltageSource(name, parameters, context, valueParameter.Value);
             }
 
             if (parameters.Any(p => p is WordParameter ap && ap.Image.ToLower() == "value") && parameters.Count == 4)
             {
-                var valueParameter = parameters[3] as ExpressionParameter;
-
-                var vs = new VoltageSource(name);
-                context.CreateNodes(vs, parameters);
-                context.SetParameter(vs, "dc", valueParameter.Image);
-                return vs;
+                var expressionParameter = parameters[3] as ExpressionParameter;
+                return CreateVoltageSource(name, parameters, context, expressionParameter.Image);
             }
 
             if (parameters.Any(p => p is WordParameter bp && bp.Image.ToLower() == "poly"))
             {
                 var dimension = 1;
                 var expression = ExpressionGenerator.CreatePolyVoltageExpression(dimension, parameters.Skip(3));
-
-                var vs = new VoltageSource(name);
-                context.CreateNodes(vs, parameters);
-                context.SetParameter(vs, "dc", expression);
-                return vs;
+                return CreateVoltageSource(name, parameters, context, expression);
             }
 
             if (parameters.Any(p => p is BracketParameter bp && bp.Name.ToLower() == "poly"))
             {
-                var polyParameter = (BracketParameter)parameters.Single(
-                    p => p is BracketParameter bp && bp.Name.ToLower() == "poly");
+                var polyParameter = (BracketParameter)parameters.Single(p => p is BracketParameter bp && bp.Name.ToLower() == "poly");
 
                 if (polyParameter.Parameters.Count != 1)
                 {
@@ -100,24 +88,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var dimension = (int)context.EvaluateDouble(polyParameter.Parameters[0].Image);
                 var expression = ExpressionGenerator.CreatePolyVoltageExpression(dimension, parameters.Skip(3));
 
-                var vs = new VoltageSource(name);
-                context.CreateNodes(vs, parameters);
-                context.SetParameter(vs, "dc", expression);
-                return vs;
+                return CreateVoltageSource(name, parameters, context, expression);
             }
 
             if (parameters.Any(p => p is ExpressionEqualParameter eep) && parameters.Any(p => p.Image.ToLower() == "table"))
             {
                 var formulaParameter = (ExpressionEqualParameter)parameters.Single(p => p is ExpressionEqualParameter);
-
-                var vs = new VoltageSource(name);
-                context.CreateNodes(vs, parameters);
-
                 var tableParameter = name + "_table_variable";
                 context.SetParameter(tableParameter, formulaParameter.Expression);
                 string expression = ExpressionGenerator.CreateTableExpression(tableParameter, formulaParameter);
-                context.SetParameter(vs, "dc", expression);
-                return vs;
+
+                return CreateVoltageSource(name, parameters, context, expression);
             }
 
             if (parameters.Count == 3 
@@ -126,12 +107,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 && parameters[1] is PointParameter pp2
                 && pp2.Values.Count() == 2)
             {
-                var vcvs = new VoltageControlledVoltageSource(name);
                 var vcvsNodes = new ParameterCollection();
                 vcvsNodes.Add(pp1.Values.Items[0]);
                 vcvsNodes.Add(pp1.Values.Items[1]);
                 vcvsNodes.Add(pp2.Values.Items[0]);
                 vcvsNodes.Add(pp2.Values.Items[1]);
+
+                var vcvs = new VoltageControlledVoltageSource(name);
                 context.CreateNodes(vcvs, vcvsNodes);
                 context.SetParameter(vcvs, "gain", parameters.GetString(2));
                 return vcvs;
@@ -172,9 +154,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var valueParameter = (AssignmentParameter)parameters.Single(
                     p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
 
+                return CreateVoltageSource(name, parameters, context, valueParameter.Value);
+            }
+
+            if (parameters.Any(p => p is WordParameter ap && ap.Image.ToLower() == "value") && parameters.Count == 4)
+            {
+                var expressionParameter = parameters[3] as ExpressionParameter;
+
                 var vs = new VoltageSource(name);
                 context.CreateNodes(vs, parameters);
-                context.SetParameter(vs, "dc", valueParameter.Value);
+                context.SetParameter(vs, "dc", expressionParameter.Image);
                 return vs;
             }
 
@@ -234,7 +223,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             throw new WrongParametersCountException(name, "invalid syntax for current controlled voltage source");
         }
-
+        
         /// <summary>
         /// Generates new voltage source.
         /// </summary>
@@ -331,6 +320,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             return vsrc;
+        }
+
+        protected static Component CreateVoltageSource(
+            string name,
+            ParameterCollection parameters,
+            IReadingContext context,
+            string valueExpression)
+        {
+            var vs = new VoltageSource(name);
+            context.CreateNodes(vs, parameters);
+            context.SetParameter(vs, "dc", valueExpression);
+            return vs;
         }
     }
 }

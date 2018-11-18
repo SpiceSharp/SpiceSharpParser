@@ -56,11 +56,16 @@ namespace SpiceSharpParser.Lexers
                 Options.NextLineContinuationCharacter,
                 Options.CurrentLineContinuationCharacter);
 
+            int continuationLines = 0;
             while (currentTokenIndex < text.Length)
             {
                 if (getNextTextToLex)
                 {
-                    textToLex = GetTextToLex(strReader, currentTokenIndex);
+                    if (continuationLines != 0)
+                    {
+                        state.LineNumber += continuationLines;
+                    }
+                    textToLex = GetTextToLex(strReader, currentTokenIndex, out continuationLines);
                     getNextTextToLex = false;
                 }
 
@@ -84,7 +89,26 @@ namespace SpiceSharpParser.Lexers
                 }
                 else
                 {
-                    throw new LexerException("Can't get next token from text: '" + textToLex + "'");
+                    bool matched = false;
+                    foreach (LexerDynamicRule dynamicRule in Grammar.DynamicRules)
+                    {
+                        bool ruleMatch = textToLex.StartsWith(dynamicRule.Prefix);
+                        if (ruleMatch)
+                        {
+                            var dynamicResult = dynamicRule.Action(textToLex);
+
+                            yield return new Token(dynamicRule.TokenType, dynamicResult);
+
+                            currentTokenIndex += dynamicResult.Length;
+                            UpdateTextToLex(ref textToLex, ref getNextTextToLex, dynamicResult.Length);
+                            matched = true;
+                        }
+                    }
+
+                    if (!matched)
+                    {
+                        throw new LexerException("Can't get next token from text: '" + textToLex + "'");
+                    }
                 }
             }
 
@@ -108,15 +132,17 @@ namespace SpiceSharpParser.Lexers
         /// <summary>
         /// Gets a text from which the tokens will be generated.
         /// </summary>
-        private string GetTextToLex(LexerStringReader strReader, int currentTokenIndex)
+        private string GetTextToLex(LexerStringReader strReader, int currentTokenIndex, out int continuationLines)
         {
+            continuationLines = 0;
+
             if (Options.MultipleLineTokens == false)
             {
                 return strReader.ReadLine();
             }
             else if (Options.MultipleLineTokens)
             {
-                return strReader.ReadLineWithContinuation();
+                return strReader.ReadLineWithContinuation(out continuationLines);
             }
             else
             {
@@ -134,7 +160,7 @@ namespace SpiceSharpParser.Lexers
         {
             bestMatchTokenRule = null;
             bestMatch = null;
-            foreach (LexerTokenRule<TLexerState> tokenRule in Grammar.LexerRules)
+            foreach (LexerTokenRule<TLexerState> tokenRule in Grammar.RegexRules)
             {
                 Match tokenMatch = tokenRule.RegularExpression.Match(remainingText);
                 if (tokenMatch.Success && tokenMatch.Length > 0)

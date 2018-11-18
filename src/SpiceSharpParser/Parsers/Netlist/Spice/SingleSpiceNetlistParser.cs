@@ -30,7 +30,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 throw new ArgumentNullException(nameof(tokens));
             }
 
-            VerifyTokens(tokens, Settings.IsEndRequired);
+            VerifyTokens(tokens, Settings.IsEndRequired, Settings.IsNewlineRequired);
 
             ParseTreeNonTerminalNode parseTreeRoot = GetParseTree(
                 tokens,
@@ -74,17 +74,28 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             return translator.Evaluate(root) as SpiceNetlist;
         }
 
-        private void VerifyTokens(SpiceToken[] tokens, bool isEndRequired)
+        private void VerifyTokens(SpiceToken[] tokens, bool isEndRequired, bool isNewLineRequired)
         {
             if (isEndRequired)
             {
-                if ((tokens.Length >= 2
-                     && tokens[tokens.Length - 2].TokenType != (int)SpiceTokenType.END
-                     && tokens.Length >= 3
-                     && tokens[tokens.Length - 3].TokenType != (int)SpiceTokenType.END)
-                    || (tokens.Length == 1 && tokens[0].TokenType == (int)SpiceTokenType.EOF))
+                // skip EOF and newlines
+                int currentIndex = tokens.Length - 2;
+                while (tokens[currentIndex].SpiceTokenType == SpiceTokenType.NEWLINE)
                 {
-                    throw new Exception("No .END dot statement");
+                    currentIndex--;
+                }
+
+                if (tokens[currentIndex].SpiceTokenType != SpiceTokenType.END)
+                {
+                    throw new ParseException("No .END dot statement", tokens[currentIndex].LineNumber);
+                }
+            }
+
+            if (isNewLineRequired)
+            {
+                if (tokens[tokens.Length - 2].SpiceTokenType != SpiceTokenType.NEWLINE)
+                {
+                    throw new ParseException("No new line at the end of the netlist", tokens[tokens.Length - 2].LineNumber);
                 }
             }
         }

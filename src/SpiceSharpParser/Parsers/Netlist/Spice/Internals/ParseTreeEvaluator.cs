@@ -56,6 +56,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             evaluators.Add(Symbols.SubcktEnding, (ParseTreeNodeEvaluationValues nt) => null);
             evaluators.Add(Symbols.CommentLine, (ParseTreeNodeEvaluationValues nt) => CreateComment(nt));
             evaluators.Add(Symbols.NewLine, (ParseTreeNodeEvaluationValues nt) => null);
+            evaluators.Add(Symbols.NewLines, (ParseTreeNodeEvaluationValues nt) => null);
         }
 
         private SpiceObject CreatePointValues(ParseTreeNodeEvaluationValues values)
@@ -643,11 +644,11 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         {
             if (values.Count == 3)
             {
-                var assigmentParameter = new AssignmentParameter();
-                assigmentParameter.Name = values.GetLexem(0);
+                var assignmentParameter = new AssignmentParameter();
+                assignmentParameter.Name = values.GetLexem(0);
                 var singleParameter = values.GetSpiceObject<SingleParameter>(2);
-                assigmentParameter.Values = new List<string>() { singleParameter.Image };
-                return assigmentParameter;
+                assignmentParameter.Values = new List<string>() { singleParameter.Image };
+                return assignmentParameter;
             }
             else
             {
@@ -701,8 +702,8 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             }
             else
             {
-                var assigmentParameter = new AssignmentParameter();
-                assigmentParameter.Name = values.GetLexem(0);
+                var assignmentParameter = new AssignmentParameter();
+                assignmentParameter.Name = values.GetLexem(0);
 
                 if (values.Count == 6)
                 {
@@ -711,33 +712,33 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     {
                         foreach (SingleParameter parameter in vp.Elements)
                         {
-                            assigmentParameter.Arguments.Add(parameter.Image);
+                            assignmentParameter.Arguments.Add(parameter.Image);
                         }
 
-                        assigmentParameter.HasFunctionSyntax = true;
+                        assignmentParameter.HasFunctionSyntax = true;
                     }
                     else
                     {
-                        assigmentParameter.Arguments.Add(values.GetSpiceObject<SingleParameter>(2).Image);
-                        assigmentParameter.HasFunctionSyntax = true;
+                        assignmentParameter.Arguments.Add(values.GetSpiceObject<SingleParameter>(2).Image);
+                        assignmentParameter.HasFunctionSyntax = true;
                     }
 
                     var valueParameter = values.GetSpiceObject<SingleParameter>(5);
-                    assigmentParameter.Values = new List<string>() { valueParameter.Image };
-                    return assigmentParameter;
+                    assignmentParameter.Values = new List<string>() { valueParameter.Image };
+                    return assignmentParameter;
                 }
                 else if (values.Count == 5)
                 {
-                    assigmentParameter.HasFunctionSyntax = true;
+                    assignmentParameter.HasFunctionSyntax = true;
                     var valueParameter = values.GetSpiceObject<SingleParameter>(4);
-                    assigmentParameter.Values = new List<string>() { valueParameter.Image };
-                    return assigmentParameter;
+                    assignmentParameter.Values = new List<string>() { valueParameter.Image };
+                    return assignmentParameter;
                 }
                 else if (values.Count == 3)
                 {
                     var valueParameter = values.GetSpiceObject<VectorParameter>(2);
-                    assigmentParameter.Values = valueParameter.Elements.Select(e => e.Image).ToList();
-                    return assigmentParameter;
+                    assignmentParameter.Values = valueParameter.Elements.Select(e => e.Image).ToList();
+                    return assignmentParameter;
                 }
 
                 throw new ParseTreeEvaluationException("Error during translating assignment parameter to Spice Object Model");

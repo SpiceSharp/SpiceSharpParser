@@ -6,7 +6,7 @@ namespace SpiceSharpParser.Lexers
     /// The lexer token rule class. It defines how and when a token will be generated for given regulal expression pattern.
     /// </summary>
     /// <typeparam name="TLexerState">Type of lexer state</typeparam>
-    public class LexerTokenRule<TLexerState> : LexerRule
+    public class LexerTokenRule<TLexerState> : LexerRegexRule
         where TLexerState : LexerState
     {
         /// <summary>
@@ -66,7 +66,7 @@ namespace SpiceSharpParser.Lexers
         /// <returns>
         /// A clone of rule.
         /// </returns>
-        public override LexerRule Clone()
+        public override LexerRegexRule Clone()
         {
             return new LexerTokenRule<TLexerState>(
                 TokenType,

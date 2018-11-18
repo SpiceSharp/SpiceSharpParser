@@ -24,7 +24,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     var paramName = ap.Name.ToLower();
 
-                    if (paramName == "z0")
+                    if (paramName == "z0" || paramName == "zo")
                     {
                         context.SetParameter(losslessLine, "z0", ap.Value);
                     }

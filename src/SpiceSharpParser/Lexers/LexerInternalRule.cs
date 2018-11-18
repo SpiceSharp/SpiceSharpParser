@@ -3,7 +3,7 @@
     /// <summary>
     /// Internal rule of lexer. It is use for creating common regular expression to use with LexerTokeRules.
     /// </summary>
-    public class LexerInternalRule : LexerRule
+    public class LexerInternalRule : LexerRegexRule
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LexerInternalRule"/> class.
@@ -21,7 +21,7 @@
         /// <returns>
         /// A new instance of <see cref="LexerInternalRule"/>.
         /// </returns>
-        public override LexerRule Clone()
+        public override LexerRegexRule Clone()
         {
             return new LexerInternalRule(Name, RegularExpressionPattern);
         }

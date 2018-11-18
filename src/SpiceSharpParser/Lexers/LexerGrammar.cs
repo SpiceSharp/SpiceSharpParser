@@ -14,14 +14,20 @@ namespace SpiceSharpParser.Lexers
         /// Initializes a new instance of the <see cref="LexerGrammar{TLexerState}"/> class.
         /// </summary>
         /// <param name="lexerRules">A collection of lexer rules.</param>
-        public LexerGrammar(ICollection<LexerTokenRule<TLexerState>> lexerRules)
+        public LexerGrammar(ICollection<LexerTokenRule<TLexerState>> lexerRules, ICollection<LexerDynamicRule> dynamicRules)
         {
-            LexerRules = lexerRules ?? throw new ArgumentException(nameof(lexerRules));
+            RegexRules = lexerRules ?? throw new ArgumentException(nameof(lexerRules));
+            DynamicRules = dynamicRules ?? throw new ArgumentException(nameof(dynamicRules));
         }
 
         /// <summary>
-        /// Gets lexer token rules.
+        /// Gets lexer regex rules.
         /// </summary>
-        public ICollection<LexerTokenRule<TLexerState>> LexerRules { get; }
+        public ICollection<LexerTokenRule<TLexerState>> RegexRules { get; }
+
+        /// <summary>
+        /// Gets lexer dynamic rules.
+        /// </summary>
+        public ICollection<LexerDynamicRule> DynamicRules { get; private set; }
     }
 }

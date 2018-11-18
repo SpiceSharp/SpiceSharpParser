@@ -71,6 +71,17 @@ namespace SpiceSharpParser.IntegrationTests
             return parser.ParseNetlist(text).PreprocessedInputModel;
         }
 
+        public static SpiceNetlist ParseNetlistToModel(bool isEndRequired, bool isNewlineRequired, bool hasTitle, params string[] lines)
+        {
+            var text = string.Join(Environment.NewLine, lines);
+            var parser = new SpiceParser();
+            parser.Settings.Lexing.HasTitle = hasTitle;
+            parser.Settings.Parsing.IsEndRequired = isEndRequired;
+            parser.Settings.Parsing.IsNewlineRequired = isNewlineRequired;
+
+            return parser.ParseNetlist(text).PreprocessedInputModel;
+        }
+
         /// <summary>
         /// Runs simulations from <see cref="SpiceNetlistReaderResult.Simulations"/> collection.
         /// </summary>

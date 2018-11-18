@@ -118,10 +118,6 @@ namespace SpiceSharpParser.Parsers.Expression
                 throw new ArgumentNullException(nameof(context));
             }
 
-
-            // TODO: remove this hack please someday...
-            expression = expression.Replace("\r\n+", "");
-
             var foundParameters = new HashSet<string>();
             var foundFunctions = new HashSet<string>();
 
@@ -136,8 +132,8 @@ namespace SpiceSharpParser.Parsers.Expression
             // Parse the expression
             while (index < count)
             {
-                // Skip spaces
-                while (index < count && input[index] == ' ')
+                // Skip spaces and curly brackets 
+                while (index < count && (input[index] == ' ' || (input[index] == '{' || (input[index] == '}'))))
                 {
                     index++;
                 }
@@ -363,8 +359,24 @@ namespace SpiceSharpParser.Parsers.Expression
                             if (operatorStack.Peek() is FunctionOperator fo && fo.VirtualParameters)
                             {
                                 int startIndex = index;
-                                ParseDouble(expression, ref index);
-                                virtualParametersStack.Push(expression.Substring(startIndex, index - startIndex));
+
+                                while (index < expression.Length)
+                                {
+                                    if (expression[index] == ',')
+                                    {
+                                        break;
+                                    }
+
+                                    if (expression[index] == ')')
+                                    {
+                                        break;
+                                    }
+
+                                    index++;
+                                }
+
+                                var virtualParameter = expression.Substring(startIndex, index - startIndex);
+                                virtualParametersStack.Push(virtualParameter);
                             }
                             else
                             {
@@ -381,7 +393,7 @@ namespace SpiceSharpParser.Parsers.Expression
                     }
 
                     // Parse a parameter or a function
-                    else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+                    else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == '_') || (c == '.'))
                     {
                         sb.Clear();
                         sb.Append(input[index++]);
