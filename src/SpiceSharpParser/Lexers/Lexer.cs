@@ -56,11 +56,16 @@ namespace SpiceSharpParser.Lexers
                 Options.NextLineContinuationCharacter,
                 Options.CurrentLineContinuationCharacter);
 
+            int continuationLines = 0;
             while (currentTokenIndex < text.Length)
             {
                 if (getNextTextToLex)
                 {
-                    textToLex = GetTextToLex(strReader, currentTokenIndex);
+                    if (continuationLines != 0)
+                    {
+                        state.LineNumber += continuationLines;
+                    }
+                    textToLex = GetTextToLex(strReader, currentTokenIndex, out continuationLines);
                     getNextTextToLex = false;
                 }
 
@@ -108,15 +113,17 @@ namespace SpiceSharpParser.Lexers
         /// <summary>
         /// Gets a text from which the tokens will be generated.
         /// </summary>
-        private string GetTextToLex(LexerStringReader strReader, int currentTokenIndex)
+        private string GetTextToLex(LexerStringReader strReader, int currentTokenIndex, out int continuationLines)
         {
+            continuationLines = 0;
+
             if (Options.MultipleLineTokens == false)
             {
                 return strReader.ReadLine();
             }
             else if (Options.MultipleLineTokens)
             {
-                return strReader.ReadLineWithContinuation();
+                return strReader.ReadLineWithContinuation(out continuationLines);
             }
             else
             {

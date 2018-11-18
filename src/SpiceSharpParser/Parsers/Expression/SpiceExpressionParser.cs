@@ -118,10 +118,6 @@ namespace SpiceSharpParser.Parsers.Expression
                 throw new ArgumentNullException(nameof(context));
             }
 
-
-            // TODO: remove this hack please someday...
-            expression = expression.Replace("\r\n+", "");
-
             var foundParameters = new HashSet<string>();
             var foundFunctions = new HashSet<string>();
 

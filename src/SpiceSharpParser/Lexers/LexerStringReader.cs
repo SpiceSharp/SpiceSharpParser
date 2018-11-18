@@ -79,23 +79,26 @@ namespace SpiceSharpParser.Lexers
         /// <returns>
         /// A continuation line.
         /// </returns>
-        public string ReadLineWithContinuation()
+        public string ReadLineWithContinuation(out int continuationLines)
         {
             string result = ReadLine();
+            continuationLines = 0;
 
             while (true)
             {
                 string nextLine = PeekNextLine(out int nextCurrentIndex);
-                if (nextLine != string.Empty
-                    && (nextLine.TrimStart(' ', '\t')[0] == _nextLineContinuationCharacter))
+                if (nextLine != string.Empty && (nextLine.TrimStart(' ', '\t')[0] == _nextLineContinuationCharacter))
                 {
+                    continuationLines++;
                     _currentIndex = nextCurrentIndex;
-                    result += nextLine;
+                    result = result.TrimEnd('\r', '\n');
+                    result += $" {nextLine.Trim(' ', '\t').Substring(1)}"; // skip _nextLineContinuationCharacter
                 }
                 else if (_currentLineContinuationCharacter.HasValue && GetLastCharacter(result, out var position) == _currentLineContinuationCharacter)
                 {
                     _currentIndex = nextCurrentIndex;
-                    result += nextLine;
+                    result = result.Remove(position, 1).TrimEnd('\r', '\n');  // skip _currentLineContinuationCharacter
+                    result += $" {nextLine}";
                 }
                 else
                 {

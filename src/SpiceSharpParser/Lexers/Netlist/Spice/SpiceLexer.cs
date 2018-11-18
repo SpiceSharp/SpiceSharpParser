@@ -167,16 +167,6 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 }));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
-                (int)SpiceTokenType.CONTINUE,
-                "A continuation token",
-                @"((\r\n\s*\+|\n\s*\+|\r\s*\+|\\\r|\\\n|\\\r\n))",
-                (SpiceLexerState state, string lexem) =>
-                {
-                    state.LineNumber++;
-                    return LexerRuleReturnDecision.IgnoreToken;
-                }));
-
-            builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.ENDS,
                 ".ENDS keyword",
                 ".ENDS",
@@ -304,7 +294,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.EXPRESSION_BRACKET,
                 "A mathematical expression in brackets",
-                "{[^{}]*}",
+                "{[^{}\r\n]*}",
                 ignoreCase: true));
 
             builder.AddRule(
@@ -336,17 +326,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 "A word",
                 "(<LETTER>(<CHARACTER>|<SPECIAL>)*)",
                 null,
-                (SpiceLexerState state, string lexem) =>
-                {
-                    if (state.LexerOptions.CurrentLineContinuationCharacter.HasValue
-                        && lexem.EndsWith(state.LexerOptions.CurrentLineContinuationCharacter.Value.ToString(), System.StringComparison.Ordinal)
-                        && state.BeforeLineBreak)
-                    {
-                        return LexerRuleUseDecision.Next;
-                    }
-
-                    return LexerRuleUseDecision.Use;
-                },
+                (SpiceLexerState state, string lexem) => LexerRuleUseDecision.Use,
                 ignoreCase: true));
 
             builder.AddRule(
@@ -355,17 +335,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                     "An identifier",
                     "((<CHARACTER>|_|\\*)(<CHARACTER>|<SPECIAL>)*)",
                     null,
-                    (SpiceLexerState state, string lexem) =>
-                    {
-                        if (state.LexerOptions.CurrentLineContinuationCharacter.HasValue
-                            && lexem.EndsWith(state.LexerOptions.CurrentLineContinuationCharacter.Value.ToString(), System.StringComparison.Ordinal)
-                            && state.BeforeLineBreak)
-                        {
-                            return LexerRuleUseDecision.Next;
-                        }
-
-                        return LexerRuleUseDecision.Use;
-                    },
+                    (SpiceLexerState state, string lexem) => LexerRuleUseDecision.Use,
                     ignoreCase: true));
 
             builder.AddRule(new LexerTokenRule<SpiceLexerState>(
