@@ -111,11 +111,6 @@
         TITLE = 19,
 
         /// <summary>
-        /// continue token
-        /// </summary>
-        CONTINUE = 20,
-
-        /// <summary>
         /// = character
         /// </summary>
         EQUAL = 21,

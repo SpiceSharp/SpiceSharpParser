@@ -26,8 +26,6 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         public ParseTreeGenerator(bool isNewLineRequiredAtTheEnd, bool isDotStatementNameCaseSensitive)
         {
             IsDotStatementNameCaseSensitive = isDotStatementNameCaseSensitive;
-            IsNewLineRequiredAtTheEnd = isNewLineRequiredAtTheEnd;
-
             parsers.Add(Symbols.Netlist, ReadNetlist);
             parsers.Add(Symbols.NetlistWithoutTitle, ReadNetlistWithoutTitle);
             parsers.Add(Symbols.NetlistEnding, ReadNetlistEnding);
@@ -50,6 +48,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             parsers.Add(Symbols.Vector, ReadVector);
             parsers.Add(Symbols.VectorContinue, ReadVectorContinue);
             parsers.Add(Symbols.NewLine, ReadNewLine);
+            parsers.Add(Symbols.NewLines, ReadNewLines);
 
             parsers.Add(Symbols.ExpressionEqual, ReadExpressionEqual);
             parsers.Add(Symbols.Points, ReadPoints);
@@ -58,8 +57,6 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             parsers.Add(Symbols.PointValues, ReadPointValues);
             parsers.Add(Symbols.PointValue, ReadPointValue);
         }
-
-        private bool IsNewLineRequiredAtTheEnd { get; }
 
         private bool IsDotStatementNameCaseSensitive { get; }
 
@@ -116,23 +113,14 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     }
                     else
                     {
-                        if (tokens[currentTokenIndex].SpiceTokenType == SpiceTokenType.EOF
-                            && tn.Token.SpiceTokenType == SpiceTokenType.NEWLINE
-                            && (!IsNewLineRequiredAtTheEnd))
-                        {
-                            // do nothing
-                        }
-                        else
-                        {
-                            throw new ParseException(
-                                string.Format(
-                                    "Unexpected token: '{0}' of type: {1}. Expected token type: {2} line={3}", 
-                                    tokens[currentTokenIndex].Lexem,
-                                    tokens[currentTokenIndex].SpiceTokenType,
-                                    tn.Token.SpiceTokenType,
-                                    tokens[currentTokenIndex].LineNumber),
-                                    tokens[currentTokenIndex].LineNumber);
-                        }
+                        throw new ParseException(
+                            string.Format(
+                                "Unexpected token: '{0}' of type: {1}. Expected token type: {2} line={3}",
+                                tokens[currentTokenIndex].Lexem,
+                                tokens[currentTokenIndex].SpiceTokenType,
+                                tn.Token.SpiceTokenType,
+                                tokens[currentTokenIndex].LineNumber),
+                            tokens[currentTokenIndex].LineNumber);
                     }
                 }
             }
@@ -177,6 +165,37 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             else
             {
                 throw new ParseException("Error during parsing subcircuit. Expected .ENDS. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+            }
+        }
+        
+        /// <summary>
+        /// Reads <see cref="Symbols.NewLines"/> non-terminal node
+        /// Pushes tree nodes to the stack based on the grammar.
+        /// </summary>
+        /// <param name="stack">A stack where the production is pushed.</param>
+        /// <param name="currentNode">A reference to the current node.</param>
+        /// <param name="tokens">A reference to the array of tokens.</param>
+        /// <param name="currentTokenIndex">A index of the current token.</param>
+        private void ReadNewLines(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
+        {
+            var currentToken = tokens[currentTokenIndex];
+            if (currentToken.Is(SpiceTokenType.NEWLINE))
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(SpiceTokenType.NEWLINE, currentNode),
+                    CreateNonTerminalNode(Symbols.NewLines, currentNode));
+            }
+            else
+            {
+                if (currentToken.Is(SpiceTokenType.EOF))
+                {
+                    // follow
+                }
+                else
+                {
+                    throw new ParseException("Newline was expected. Other token was found.", currentToken.LineNumber);
+                }
             }
         }
 
@@ -238,7 +257,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             }
             else
             {
-                if (tokens[currentTokenIndex + 1].Is(SpiceTokenType.EOF) && !IsNewLineRequiredAtTheEnd)
+                if (tokens[currentTokenIndex + 1].Is(SpiceTokenType.EOF))
                 {
                     PushProductionExpression(
                      stack,
@@ -284,49 +303,32 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         private void ReadNetlistEnding(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
-
+            
             if (currentToken.Is(SpiceTokenType.END))
             {
-                if (IsNewLineRequiredAtTheEnd)
+                var nextToken = tokens[currentTokenIndex + 1];
+
+                if (nextToken.Is(SpiceTokenType.EOF))
                 {
                     PushProductionExpression(
                                 stack,
                                 CreateTerminalNode(SpiceTokenType.END, current),
-                                CreateTerminalNode(SpiceTokenType.NEWLINE, current),
                                 CreateTerminalNode(SpiceTokenType.EOF, current));
                 }
                 else
                 {
-                    if (currentTokenIndex + 1 < tokens.Length)
+                    if (nextToken.Is(SpiceTokenType.NEWLINE))
                     {
-                        if (tokens[currentTokenIndex + 1].Is(SpiceTokenType.NEWLINE))
-                        {
-                            PushProductionExpression(
-                                stack,
-                                CreateTerminalNode(SpiceTokenType.END, current),
-                                CreateTerminalNode(SpiceTokenType.NEWLINE, current),
-                                CreateTerminalNode(SpiceTokenType.EOF, current));
-                        }
-                        else
-                        {
-                            if (tokens[currentTokenIndex + 1].Is(SpiceTokenType.EOF))
-                            {
-                                PushProductionExpression(
-                                    stack,
-                                    CreateTerminalNode(SpiceTokenType.END, current),
-                                    CreateTerminalNode(SpiceTokenType.EOF, current));
-                            }
-                            else
-                            {
-                                throw new ParseException("Netlist ending - wrong ending", currentToken.LineNumber);
-                            }
-                        }
+                        PushProductionExpression(
+                            stack,
+                            CreateTerminalNode(SpiceTokenType.END, current),
+                            CreateTerminalNode(SpiceTokenType.NEWLINE, current),
+                            CreateNonTerminalNode(Symbols.NewLines, current),
+                            CreateTerminalNode(SpiceTokenType.EOF, current));
                     }
                     else
                     {
-                        PushProductionExpression(
-                           stack,
-                           CreateTerminalNode(SpiceTokenType.END, current));
+                        throw new ParseException("Netlist ending - wrong ending", currentToken.LineNumber);
                     }
                 }
             }
@@ -340,7 +342,18 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 }
                 else
                 {
-                    throw new ParseException("Netlist ending - wrong ending", currentToken.LineNumber);
+                    if (currentToken.Is(SpiceTokenType.NEWLINE))
+                    {
+                        PushProductionExpression(
+                            stack,
+                            CreateTerminalNode(SpiceTokenType.NEWLINE, current),
+                            CreateNonTerminalNode(Symbols.NewLines, current),
+                            CreateTerminalNode(SpiceTokenType.EOF, current));
+                    }
+                    else
+                    {
+                        throw new ParseException("Netlist ending - wrong ending", currentToken.LineNumber);
+                    }
                 }
             }
         }

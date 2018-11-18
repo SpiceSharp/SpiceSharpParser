@@ -5,7 +5,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
     public class TitleTests : BaseTests
     {
         [Fact]
-        public void TitleAndEnd()
+        public void When_NetlistTitleAndEnd_Expect_Reference()
         {
             var netlist = ParseNetlistToModel(
                 true,
@@ -17,7 +17,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         }
 
         [Fact]
-        public void EmptyTitle()
+        public void When_NetlistEmptyTitleAndEnd_Expect_Reference()
         {
             var netlist = ParseNetlistToModel(
                 true,
@@ -29,7 +29,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         }
 
         [Fact]
-        public void OnlyTitle()
+        public void When_NetlistOnlyTitle_Expect_Reference()
         {
             var netlist = ParseNetlistToModel(
                 false,
@@ -41,7 +41,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         }
 
         [Fact]
-        public void OnlyEnd()
+        public void When_NetlistOnlyEnd_Expect_Reference()
         {
             var netlist = ParseNetlistToModel(
                 true,
@@ -52,7 +52,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         }
 
         [Fact]
-        public void WithoutTitle()
+        public void When_NetlistWithoutTitle_Expect_Reference()
         {
             var netlist = ParseNetlistToModel(
                 true,
@@ -65,7 +65,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         }
 
         [Fact]
-        public void Nothing()
+        public void When_NetlistEmpty_Expect_Reference()
         {
             var netlist = ParseNetlistToModel(
                 false,
@@ -76,7 +76,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         }
 
         [Fact]
-        public void EmptyWithTitle()
+        public void When_NetlistEmptyTitleRequired_Expect_Reference()
         {
             var netlist = ParseNetlistToModel(
                 false,
@@ -87,7 +87,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         }
 
         [Fact]
-        public void OnlyTitleWithoutNewline()
+        public void When_NetlistOnlyTitleWithoutNewLine_Expect_Reference()
         {
             var netlist = ParseNetlistToModel(
                 false,

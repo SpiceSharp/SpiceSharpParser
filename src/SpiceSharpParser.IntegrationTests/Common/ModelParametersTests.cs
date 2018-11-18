@@ -2,16 +2,16 @@ using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Common
 {
-    public class ValueFormatTests : BaseTests
+    public class ModelParametersTests : BaseTests
     {
         [Fact]
-        public void Basic()
+        public void When_SeparatedWithWhiteSpace_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Value format - Diode circuit",
                 "D1 1 0 1N914",
                 "V1 1 0 0.0",
-                ".model 1N914 D(Is=2.52e-9 Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
+                ".model 1N914 D(Is=2.52e-9    Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
                 ".DC V1 -1 1.0 10e-3",
                 ".SAVE i(V1) v(1,0)",
                 ".END");
@@ -28,7 +28,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         }
 
         [Fact]
-        public void WithCommas()
+        public void When_SeparatedWithCommas_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Value format - Diode circuit",

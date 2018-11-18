@@ -28,14 +28,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         }
 
         [Fact]
-        public void EvaluateFailsWhenThereCurrlyBraces()
-        {
-            Evaluator v = new SpiceEvaluator();
-            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
-            Assert.Throws<Exception>(() => v.EvaluateValueExpression("{1}", c));
-        }
-
-        [Fact]
         public void EvaluateParameter()
         {
             Evaluator v = new SpiceEvaluator();

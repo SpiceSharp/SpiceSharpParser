@@ -146,6 +146,23 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         }
 
         [Fact]
+        public void CurrentControlledVoltageSourceValueParsingWithoutEqual()
+        {
+            var netlist = ParseNetlist(
+                "Value test circuit",
+                "R1 1 0 100",
+                "I1 1 0 2",
+                "HSource 2 0 VALUE { I(I1) + 2 }",
+                ".OP",
+                ".SAVE V(2,0)",
+                ".END");
+
+            Assert.NotNull(netlist);
+            double export = RunOpSimulation(netlist, "V(2,0)");
+            Assert.Equal(4, export);
+        }
+
+        [Fact]
         public void CurrentControlledVoltageSourceValueSimpleDependency()
         {
             var netlist = ParseNetlist(
@@ -390,6 +407,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             double export = RunOpSimulation(netlist, "I(GSource)");
             Assert.Equal(4, export);
         }
+
         [Fact]
         public void CurrentControlledCurrentSourceValueParsing()
         {
@@ -399,6 +417,24 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 "R2 1 0 200",
                 "I1 1 0 2",
                 "FSource 2 0 VALUE = { I(I1) + 2 }",
+                ".OP",
+                ".SAVE I(FSource)",
+                ".END");
+
+            Assert.NotNull(netlist);
+            double export = RunOpSimulation(netlist, "I(FSource)");
+            Assert.Equal(4, export);
+        }
+
+        [Fact]
+        public void CurrentControlledCurrentSourceValueParsingWithoutEqual()
+        {
+            var netlist = ParseNetlist(
+                "Value test circuit",
+                "R1 1 0 100",
+                "R2 1 0 200",
+                "I1 1 0 2",
+                "FSource 2 0 VALUE { I(I1) + 2 }",
                 ".OP",
                 ".SAVE I(FSource)",
                 ".END");

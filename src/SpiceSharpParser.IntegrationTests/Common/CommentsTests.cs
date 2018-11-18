@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
     public class CommentsTests : BaseTests
     {
         [Fact]
-        public void Comment()
+        public void When_CommentsMixed_Expect_Refrence()
         {
             var netlist = ParseNetlistToModel(
                 true,
@@ -28,7 +28,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
 
 
         [Fact]
-        public void StrangeNoException()
+        public void When_CommentsSubckt_Expect_NoException()
         {
             var netlist = ParseNetlistToModel(
                 true,
@@ -46,7 +46,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         }
 
         [Fact]
-        public void StrangeNoExceptionTest3()
+        public void When_CommentsOnly_Expect_NoException()
         {
             var netlist = ParseNetlistToModel(
                 false,

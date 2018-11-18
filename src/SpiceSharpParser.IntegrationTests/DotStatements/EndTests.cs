@@ -1,4 +1,7 @@
 using System;
+
+using SpiceSharpParser.Parsers.Netlist;
+
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.DotStatements
@@ -43,7 +46,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void NoEndingException()
         {
-            Assert.Throws<Exception>(() =>
+            Assert.Throws<ParseException>(() =>
                 ParseNetlistToModel(
                     true,
                     true,
