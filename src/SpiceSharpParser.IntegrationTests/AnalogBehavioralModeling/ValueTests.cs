@@ -320,8 +320,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             EqualsWithTol(exports, reference);
         }
 
-        //TODO: It's broken :(
-        //[Fact]
+        [Fact]
         public void TranComplexVoltage()
         {
             var netlist = ParseNetlist(
@@ -356,7 +355,6 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             double export = RunOpSimulation(netlist, "I(I2)");
             Assert.Equal(4, export);
         }
-
 
         [Fact]
         public void CurrentSourceParsing()

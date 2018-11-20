@@ -1,10 +1,13 @@
-﻿using SpiceSharp.Simulations;
+﻿using SpiceSharp.Behaviors;
+using SpiceSharp.Components;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Helpers;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
@@ -79,11 +82,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             ConfigureCommonSettings(tran, context);
             ConfigureTransientSettings(tran, context, useIc);
 
-            tran.ExportSimulationData += (sender, e) =>
-                {
-                    context.SimulationExpressionContexts.GetContext(tran).SetParameter("TIME", e.Time);
-                };
-
+            context.Result.AddEntity(new UpdateTimeParameterEntity(tran.Name, context));
             context.Result.AddSimulation(tran);
 
             return tran;
@@ -103,5 +102,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             tran.Configurations.Get<TimeConfiguration>().UseIc = useIc;
         }
+
     }
 }
