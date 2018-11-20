@@ -240,15 +240,14 @@ namespace SpiceSharpParser.IntegrationTests
             return list.ToArray();
         }
 
-        protected void EqualsWithTol(IEnumerable<Tuple<double, double>> exports, IEnumerable<Func<double, double>> references)
+        protected void EqualsWithTol(IEnumerable<Tuple<double, double>> exports, Func<double, double> reference)
         {
             using (var exportIt = exports.GetEnumerator())
-            using (var referencesIt = references.GetEnumerator())
             {
-                while (exportIt.MoveNext() && referencesIt.MoveNext())
+                while (exportIt.MoveNext())
                 {
                     double actual = exportIt.Current.Item2;
-                    double expected = referencesIt.Current(exportIt.Current.Item1);
+                    double expected = reference(exportIt.Current.Item1);
                     double tol = Math.Max(Math.Abs(actual), Math.Abs(expected)) * RelTol + AbsTol;
                     Assert.True(Math.Abs(expected - actual) < tol);
                 }

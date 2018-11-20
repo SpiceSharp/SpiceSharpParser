@@ -44,8 +44,8 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".END");
 
             var exports = RunTransientSimulation(netlist, "V(OUT)");
-            Func<double, double>[] references = { t => dcVoltage * (1.0 - Math.Exp(-t / tau)) };
-            EqualsWithTol(exports, references);
+            Func<double, double> reference = t => dcVoltage * (1.0 - Math.Exp(-t / tau));
+            EqualsWithTol(exports, reference);
         }
 
         [Fact]
@@ -68,8 +68,8 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".END");
 
             var exports = RunTransientSimulation(netlist, "V(OUT)");
-            Func<double, double>[] references = { t => dcVoltage * (1.0 - Math.Exp(-t / tau)) };
-            EqualsWithTol(exports, references);
+            Func<double, double> reference = t => dcVoltage * (1.0 - Math.Exp(-t / tau));
+            EqualsWithTol(exports, reference);
         }
 
         [Fact]
@@ -77,7 +77,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         {
             double dcVoltage = 10;
             double resistorResistance = 10e3; // 10000;
-            double capacitance = 1e-6; // 0.000001;
+            double capacitance = 1e-6 * ( 1 + 1.0* 3.0 + 3.0 * 3.0 * 2.1); // 0.000001;
             double tau = resistorResistance * capacitance;
 
             var netlist = ParseNetlist(
@@ -88,12 +88,12 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".IC V(OUT)=0.0",
                 ".TRAN 1e-8 10e-6",
                 ".SAVE V(OUT)",
-                ".OPTIONS TEMP=10",
+                ".OPTIONS TEMP = 30",
                 ".END");
 
             var exports = RunTransientSimulation(netlist, "V(OUT)");
-            Func<double, double>[] references = { t => dcVoltage * (1.0 - Math.Exp(-t / tau)) };
-            EqualsWithTol(exports, references);
+            Func<double, double> reference = t => dcVoltage * (1.0 - Math.Exp(-t / tau));
+            EqualsWithTol(exports, reference);
         }
     }
 }

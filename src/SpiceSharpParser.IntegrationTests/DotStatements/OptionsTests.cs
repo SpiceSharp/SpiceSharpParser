@@ -16,13 +16,13 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".DC V1 0 10 1e-3",
                 ".SAVE I(R1)",
                 ".OPTIONS dynamic-resistors",
-               ".END");
+                ".END");
 
             var exports = RunDCSimulation(netlist, "I(R1)");
 
             // Get references
-            Func<double, double>[] references = { sweep => 10.0 / Math.Max(1e-3, sweep) };
-            EqualsWithTol(exports, references);
+            Func<double, double> reference = sweep => 10.0 / Math.Max(1e-3, (sweep - 1e-3));
+            EqualsWithTol(exports, reference);
         }
     }
 }
