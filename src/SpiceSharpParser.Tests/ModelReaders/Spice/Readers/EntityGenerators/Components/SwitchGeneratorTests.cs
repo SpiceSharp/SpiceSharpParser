@@ -14,7 +14,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         [Fact]
         public void GenerateVoltageSwitch()
         {
-            var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IReadingContext>();
             context.ModelsRegistry.FindModel<VoltageSwitchModel>(Arg.Any<string>()).Returns(new VoltageSwitchModel("SModel"));
 
@@ -33,13 +32,12 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
 
             Assert.NotNull(@switch);
             Assert.IsType<VoltageSwitch>(@switch);
-            Assert.True(@switch.ParameterSets.Get<SpiceSharp.Components.VoltageSwitchBehaviors.BaseParameters>().ZeroState);
+            Assert.True(@switch.ParameterSets.Get<SpiceSharp.Components.SwitchBehaviors.BaseParameters>().ZeroState);
         }
 
         [Fact]
         public void GenerateVoltageSwitchOff()
         {
-            var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IReadingContext>();
             context.ModelsRegistry.FindModel<VoltageSwitchModel>(Arg.Any<string>()).Returns(new VoltageSwitchModel("SModel"));
 
@@ -58,13 +56,12 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
 
             Assert.NotNull(@switch);
             Assert.IsType<VoltageSwitch>(@switch);
-            Assert.False(@switch.ParameterSets.Get<SpiceSharp.Components.VoltageSwitchBehaviors.BaseParameters>().ZeroState);
+            Assert.False(@switch.ParameterSets.Get<SpiceSharp.Components.SwitchBehaviors.BaseParameters>().ZeroState);
         }
 
         [Fact]
         public void GenerateCurrentSwitch()
         {
-            var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IReadingContext>();
             context.ModelsRegistry.FindModel<CurrentSwitchModel>(Arg.Any<string>()).Returns(new CurrentSwitchModel("WModel"));
             context.ComponentNameGenerator.Generate(Arg.Any<string>()).Returns("V3");
@@ -83,13 +80,12 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
 
             Assert.NotNull(@switch);
             Assert.IsType<CurrentSwitch>(@switch);
-            Assert.True(@switch.ParameterSets.Get<SpiceSharp.Components.CurrentSwitchBehaviors.BaseParameters>().ZeroState);
+            Assert.True(@switch.ParameterSets.Get<SpiceSharp.Components.SwitchBehaviors.BaseParameters>().ZeroState);
         }
 
         [Fact]
         public void GenerateCurrentSwitchOff()
         {
-            var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IReadingContext>();
             context.ModelsRegistry.FindModel<CurrentSwitchModel>(Arg.Any<string>()).Returns(new CurrentSwitchModel("WModel"));
             context.ComponentNameGenerator.Generate(Arg.Any<string>()).Returns("V3");
@@ -108,7 +104,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
 
             Assert.NotNull(@switch);
             Assert.IsType<CurrentSwitch>(@switch);
-            Assert.False(@switch.ParameterSets.Get<SpiceSharp.Components.CurrentSwitchBehaviors.BaseParameters>().ZeroState);
+            Assert.False(@switch.ParameterSets.Get<SpiceSharp.Components.SwitchBehaviors.BaseParameters>().ZeroState);
         }
     }
 }

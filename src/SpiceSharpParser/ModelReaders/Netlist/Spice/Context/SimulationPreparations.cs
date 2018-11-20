@@ -1,9 +1,7 @@
-﻿using SpiceSharp.Behaviors;
+﻿using System;
+using SpiceSharp.Behaviors;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -56,8 +54,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         {
             SimulationUpdates.AddBeforeLoad((simulation, evaluators, contexts) =>
             {
-                var temperatureBehavior = simulation.EntityBehaviors[entity.Name].Get<BaseTemperatureBehavior>();
-                if (temperatureBehavior != null)
+                if (simulation.EntityBehaviors[entity.Name].TryGet<ITemperatureBehavior>(out var temperatureBehavior))
                 {
                     temperatureBehavior.Temperature(simulation);
                 }

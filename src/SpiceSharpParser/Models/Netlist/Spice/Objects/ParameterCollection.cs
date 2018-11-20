@@ -224,9 +224,18 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// Removes the parameter at the specified index.
         /// </summary>
         /// <param name="index">An index of parameter to remove.</param>
-        public void Remove(int index)
+        public void RemoveAt(int index)
         {
             this.Values.RemoveAt(index);
+        }
+
+        /// <summary>
+        /// Removes the parameter at the specified index.
+        /// </summary>
+        /// <param name="parameter">Parameter to remove.</param>
+        public void Remove(Parameter parameter)
+        {
+            this.Values.Remove(parameter);
         }
 
         public override string ToString()

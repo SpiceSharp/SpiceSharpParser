@@ -364,8 +364,8 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
 
             for (var i = 0; i < exports.Count; i++)
             {
-                Func<double, double>[] references = { t => i + dcVoltage * (1.0 - Math.Exp(-t / tau)) };
-                EqualsWithTol((IEnumerable<Tuple<double, double>>)exports[i], references);
+                Func<double, double> reference = t => i + dcVoltage * (1.0 - Math.Exp(-t / tau));
+                EqualsWithTol((IEnumerable<Tuple<double, double>>)exports[i], reference);
             }
         }
 
