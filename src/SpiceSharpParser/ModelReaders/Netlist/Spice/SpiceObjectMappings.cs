@@ -68,7 +68,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Controls.Map("NODESET", new NodeSetControl());
 
             // Register component generators
-            Components.Map(new string[] { "R", "L", "C", "K" }, new RLCGenerator());
+            Components.Map(new string[] { "R", "L", "C", "K" }, new RLCKGenerator());
             Components.Map(new string[] { "V", "H", "E" }, new VoltageSourceGenerator());
             Components.Map(new string[] { "I", "G", "F" }, new CurrentSourceGenerator());
             Components.Map(new string[] { "S", "W" }, new SwitchGenerator());

@@ -316,8 +316,8 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             var exports = RunDCSimulation(netlist, "V(out)");
 
             // Get references
-            Func<double, double>[] references = { sweep => sweep + 100 };
-            EqualsWithTol(exports, references);
+            Func<double, double> reference = sweep => sweep + 100;
+            EqualsWithTol(exports, reference);
         }
 
         [Fact]
@@ -335,8 +335,8 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             var exports = RunTransientSimulation(netlist, "V(out)");
 
             // Get references
-            Func<double, double>[] references = { time => (Math.Sin(time * 10e6) * 100) * (Math.Sin(time * 10e6) * 100) };
-            EqualsWithTol(exports, references);
+            Func<double, double> reference = time => (Math.Sin(time * 10e6) * 100) * (Math.Sin(time * 10e6) * 100);
+            EqualsWithTol(exports, reference);
         }
 
         [Fact]
@@ -355,7 +355,6 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             double export = RunOpSimulation(netlist, "I(I2)");
             Assert.Equal(4, export);
         }
-
 
         [Fact]
         public void CurrentSourceParsing()

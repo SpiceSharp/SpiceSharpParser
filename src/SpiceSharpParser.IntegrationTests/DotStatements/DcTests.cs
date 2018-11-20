@@ -19,8 +19,8 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             var exports = RunDCSimulation(netlist, "V(in)");
 
             // Get references
-            Func<double, double>[] references = { sweep => sweep * 10.0 };
-            EqualsWithTol(exports, references);
+            Func<double, double> reference = sweep => sweep * 10.0;
+            EqualsWithTol(exports, reference);
         }
 
         [Fact]
@@ -37,8 +37,8 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             var exports = RunDCSimulation(netlist, "V(in)");
 
             // Get references
-            Func<double, double>[] references = { sweep => sweep };
-            EqualsWithTol(exports, references);
+            Func<double, double> reference = sweep => sweep ;
+            EqualsWithTol(exports, reference);
         }
     }
 }

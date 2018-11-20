@@ -12,7 +12,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     /// <summary>
     /// Generator for resistors, capacitors, inductors and mutual inductance
     /// </summary>
-    public class RLCGenerator : ComponentGenerator
+    public class RLCKGenerator : ComponentGenerator
     {
         /// <summary>
         /// Gets generated types.
@@ -87,6 +87,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var capacitor = new Capacitor(name);
             context.CreateNodes(capacitor, parameters);
 
+            // Get TC Parameter
+            Parameter tcParameter = parameters.FirstOrDefault(
+                p => p is AssignmentParameter ap && ap.Name.Equals(
+                         "tc",
+                         context.CaseSensitivity.IsEntityParameterNameCaseSensitive
+                             ? StringComparison.CurrentCulture
+                             : StringComparison.CurrentCultureIgnoreCase));
+
+            if (tcParameter != null)
+            {
+                parameters.Remove(tcParameter);
+            }
+
+            bool modelBased = false;
+
             if (parameters.Count == 3)
             {
                 // CXXXXXXX N1 N2 VALUE
@@ -107,7 +122,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // CMOD 3 7 CMODEL L = 10u W = 1u
                 // CMOD 3 7 CMODEL L = 10u W = 1u IC=1
                 // CMOD 3 7 1.3 IC=1
-                bool modelBased = false;
+               
                 if (parameters[2] is ExpressionParameter || parameters[2] is ValueParameter)
                 {
                     context.SetParameter(capacitor, "capacitance", parameters.GetString(2));
@@ -132,6 +147,47 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     {
                         throw new GeneralReaderException("L needs to be specified");
                     }
+                }
+            }
+
+            if (tcParameter != null)
+            {
+                var tcParameterAssignment = tcParameter as AssignmentParameter;
+
+                if (tcParameterAssignment == null)
+                {
+                    throw new GeneralReaderException("TC needs to be assignment parameter");
+                }
+
+                if (modelBased)
+                {
+                    var model = context.ModelsRegistry.FindModel<CapacitorModel>(parameters.GetString(2));
+
+                    if (tcParameterAssignment.Values.Count == 2)
+                    {
+                        context.SetParameter(model, "tc1", tcParameterAssignment.Values[0]);
+                        context.SetParameter(model, "tc2", tcParameterAssignment.Values[1]);
+                    }
+                    else
+                    {
+                        context.SetParameter(model, "tc1", tcParameterAssignment.Value);
+                    }
+                }
+                else
+                {
+                    var model = new CapacitorModel(capacitor.Name + "_default_model");
+                    if (tcParameterAssignment.Values.Count == 2)
+                    {
+                        context.SetParameter(model, "tc1", tcParameterAssignment.Values[0]);
+                        context.SetParameter(model, "tc2", tcParameterAssignment.Values[1]);
+                    }
+                    else
+                    {
+                        context.SetParameter(model, "tc1", tcParameterAssignment.Value);
+                    }
+
+                    context.ModelsRegistry.RegisterModelInstance(model);
+                    capacitor.SetModel(model);
                 }
             }
 
@@ -178,7 +234,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var dynamicParameter = parameters.FirstOrDefault(p => p.Image == "dynamic");
             if (dynamicParameter != null)
             {
-                parameters.Remove(parameters.ToList().IndexOf(dynamicParameter));
+                parameters.Remove(dynamicParameter);
             }
 
             bool isDynamic = dynamicParameter != null || context.Result?.SimulationConfiguration?.DynamicResistors == true;

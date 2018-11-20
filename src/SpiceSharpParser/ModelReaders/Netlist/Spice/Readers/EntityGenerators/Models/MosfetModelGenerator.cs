@@ -97,12 +97,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 
             if (lindex >= 0)
             {
-                clonedParameters.Remove(lindex);
+                clonedParameters.RemoveAt(lindex);
             }
 
             if (vindex >= 0)
             {
-                clonedParameters.Remove(vindex < lindex ? vindex : vindex - 1);
+                clonedParameters.RemoveAt(vindex < lindex ? vindex : vindex - 1);
             }
 
             // Generate the model

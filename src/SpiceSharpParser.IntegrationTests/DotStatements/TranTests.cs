@@ -25,8 +25,8 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".END");
 
             var exports = RunTransientSimulation(netlist, "V(OUT)");
-            Func<double, double>[] references = { t => dcVoltage * (1.0 - Math.Exp(-t / tau)) };
-            EqualsWithTol(exports, references);
+            Func<double, double> reference =  t => dcVoltage * (1.0 - Math.Exp(-t / tau));
+            EqualsWithTol(exports, reference);
         }
 
         [Fact]
@@ -47,10 +47,10 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".END");
 
             var exports = RunTransientSimulation(netlist, "V(OUT)");
-            Func<double, double>[] references = { t => dcVoltage * (1.0 - Math.Exp(-t / tau)) };
+            Func<double, double> reference = t => dcVoltage * (1.0 - Math.Exp(-t / tau));
 
             Assert.False(exports.Any(export => export.Item1 < 0.5 * 1e-5), "There shouldn't be a export at that time");
-            EqualsWithTol(exports, references);
+            EqualsWithTol(exports, reference);
         }
     }
 }

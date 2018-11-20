@@ -38,7 +38,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 foreach (var entity in CommonUpdates.Keys)
                 {
                     var beforeLoads = CommonUpdates[entity].ParameterUpdatesBeforeLoad;
-                    var entityParameters = simulation.EntityParameters[entity.Name];
 
                     foreach (var entityUpdate in beforeLoads)
                     {
@@ -60,7 +59,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                     foreach (var entityPair in SimulationSpecificUpdates[simulation])
                     {
                         var beforeLoads = entityPair.Value.ParameterUpdatesBeforeLoad;
-                        var entityParameters = simulation.EntityParameters[entityPair.Key.Name];
 
                         foreach (var entityUpdate in beforeLoads)
                         {
@@ -84,7 +82,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 foreach (var entity in CommonUpdates.Keys)
                 {
                     var beforeLoads = CommonUpdates[entity].ParameterUpdatesBeforeTemperature;
-                    var entityParameters = simulation.EntityParameters[entity.Name];
 
                     foreach (var entityUpdate in beforeLoads)
                     {
@@ -106,7 +103,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                     foreach (var entityPair in SimulationSpecificUpdates[simulation])
                     {
                         var beforeLoads = entityPair.Value.ParameterUpdatesBeforeTemperature;
-                        var entityParameters = simulation.EntityParameters[entityPair.Key.Name];
 
                         foreach (var entityUpdate in beforeLoads)
                         {
