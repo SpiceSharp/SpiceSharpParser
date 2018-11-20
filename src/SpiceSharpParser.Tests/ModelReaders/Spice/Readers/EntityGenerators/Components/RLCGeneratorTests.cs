@@ -28,7 +28,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("1.2")
             };
 
-            var generator = new RLCGenerator();
+            var generator = new RLCKGenerator();
             var resistor = generator.Generate("r1", "R1", "r", parameters, context);
 
             Assert.NotNull(resistor);
@@ -51,7 +51,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new AssignmentParameter() { Name = "L", Value = "12" }
             };
 
-            var generator = new RLCGenerator();
+            var generator = new RLCKGenerator();
             var resistor = generator.Generate("r1", "R1", "r", parameters, context);
 
             Assert.NotNull(resistor);
@@ -71,7 +71,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("12.3")
             };
 
-            var generator = new RLCGenerator();
+            var generator = new RLCKGenerator();
             var mut = generator.Generate("kR1", "kR1", "k", parameters, context);
 
             Assert.NotNull(mut);
@@ -91,7 +91,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("4.3")
             };
 
-            var generator = new RLCGenerator();
+            var generator = new RLCKGenerator();
             var inductor = generator.Generate("lA3", "lA3", "l", parameters, context);
 
             Assert.NotNull(inductor);
@@ -112,7 +112,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("4.3")
             };
 
-            var generator = new RLCGenerator();
+            var generator = new RLCKGenerator();
             var cap = generator.Generate("cA3", "cA3", "c", parameters, context);
 
             Assert.NotNull(cap);
@@ -126,6 +126,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         {
             var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IReadingContext>();
+            context.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
             context.When(a => a.SetParameter(
                Arg.Any<Capacitor>(),
                Arg.Any<string>(),
@@ -144,7 +145,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new AssignmentParameter() { Name = "ic", Value = "13.3"}
             };
 
-            var generator = new RLCGenerator();
+            var generator = new RLCKGenerator();
             var cap = generator.Generate("cA3", "cA3", "c", parameters, context);
 
             Assert.NotNull(cap);
@@ -159,6 +160,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         {
             var evaluator = new SpiceEvaluator();
             var context = Substitute.For<IReadingContext>();
+            context.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
+
             context.When(a => a.SetParameter(
                Arg.Any<Capacitor>(),
                Arg.Any<string>(),
@@ -180,7 +183,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new AssignmentParameter() { Name = "Ic", Value = "12" }
             };
 
-            var generator = new RLCGenerator();
+            var generator = new RLCKGenerator();
             var cap = generator.Generate("cA3", "cA3", "c", parameters, context);
 
             Assert.NotNull(cap);

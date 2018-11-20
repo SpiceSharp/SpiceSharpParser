@@ -43,7 +43,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             if (lastParameter is WordParameter w && w.Image.ToLower() == "uic")
             {
                 useIc = true;
-                clonedParameters.Remove(clonedParameters.Count - 1);
+                clonedParameters.RemoveAt(clonedParameters.Count - 1);
             }
 
             Transient tran = null;
