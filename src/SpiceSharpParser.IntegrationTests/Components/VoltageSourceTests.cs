@@ -172,6 +172,23 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
+        public void Pwl_TwoPointsWithAc_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "Voltage source",
+                "V1 1 0 Pwl(0 0 1.0 2.0)",
+                "R1 1 0 10",
+                ".SAVE V(1,0)",
+                ".TRAN 0.1 1.5",
+                ".AC LIN 1000 1 1000",
+                ".END");
+
+            Assert.NotNull(netlist);
+            var exports = RunTransientSimulation(netlist, "V(1,0)");
+            Assert.True(exports.All(export => EqualsWithToWithoutAssert(export.Item2, (export.Item1 < 1.0 ? 2.0 * export.Item1 : 2.0))));
+        }
+
+        [Fact]
         public void Pwl_TwoPointsWithCommas_Expect_Reference()
         {
             var netlist = ParseNetlist(
@@ -201,6 +218,102 @@ namespace SpiceSharpParser.IntegrationTests.Components
             Assert.NotNull(netlist);
             var exports = RunTransientSimulation(netlist, "V(1,0)");
             Assert.True(exports.All(export => EqualsWithToWithoutAssert(export.Item2, (export.Item1 < 1.0 ? 1.0 + export.Item1 : 2.0))));
+        }
+
+        [Fact]
+        public void ACPlusSin_Expect_NoException()
+        {
+            var netlist = ParseNetlist(
+                "Voltage source",
+                "V1 1 0 AC 0",
+                "+SIN 0 10 1000 0 0 0",
+                "R1 1 0 10",
+                ".SAVE V(1,0)",
+                ".TRAN 0.1 1.5",
+                ".AC LIN 1000 1 1000",
+                ".END");
+
+            Assert.NotNull(netlist);
+        }
+
+        [Fact]
+        public void ACPlusSine_Expect_NoException()
+        {
+            var netlist = ParseNetlist(
+                "Voltage source",
+                "V1 1 0 AC 0",
+                "+SINE 0 10 1000 0 0 0",
+                "R1 1 0 10",
+                ".SAVE V(1,0)",
+                ".TRAN 0.1 1.5",
+                ".AC LIN 1000 1 1000",
+                ".END");
+
+            Assert.NotNull(netlist);
+        }
+
+        [Fact]
+        public void ACPlusPulse_Expect_NoException()
+        {
+            var netlist = ParseNetlist(
+                "Voltage source",
+                "V1 1 0 AC 0",
+                "+PULSE 0V 5V 3.61us 41ns 41ns 4.255us 3.51us",
+                "R1 1 0 10",
+                ".SAVE V(1,0)",
+                ".TRAN 0.1 1.5",
+                ".AC LIN 1000 1 1000",
+                ".END");
+
+            Assert.NotNull(netlist);
+        }
+
+        [Fact]
+        public void ACPlusPwl_Expect_NoException()
+        {
+            var netlist = ParseNetlist(
+                "Voltage source",
+                "V1 1 0 AC 0",
+                "+Pwl -1.0 0 1.0 2.0",
+                "R1 1 0 10",
+                ".SAVE V(1,0)",
+                ".TRAN 0.1 1.5",
+                ".AC LIN 1000 1 1000",
+                ".END");
+
+            Assert.NotNull(netlist);
+        }
+
+        [Fact]
+        public void DCAC_Expect_NoException()
+        {
+            var netlist = ParseNetlist(
+                "Voltage source",
+                "V1 1 0 DC 1 AC 0",
+                "+Pwl -1.0 0 1.0 2.0",
+                "R1 1 0 10",
+                ".SAVE V(1,0)",
+                ".TRAN 0.1 1.5",
+                ".AC LIN 1000 1 1000",
+                ".END");
+
+            Assert.NotNull(netlist);
+        }
+
+        [Fact]
+        public void DCWithoutDCKeywordAC_Expect_NoException()
+        {
+            var netlist = ParseNetlist(
+                "Voltage source",
+                "V1 1 0 5 AC 0",
+                "+Pwl -1.0 0 1.0 2.0",
+                "R1 1 0 10",
+                ".SAVE V(1,0)",
+                ".TRAN 0.1 1.5",
+                ".AC LIN 1000 1 1000",
+                ".END");
+
+            Assert.NotNull(netlist);
         }
     }
 }
