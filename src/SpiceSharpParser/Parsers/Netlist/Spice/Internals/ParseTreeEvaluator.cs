@@ -69,7 +69,15 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             }
             else
             {
-                pointValues.Items.Add(values.GetSpiceObject<SingleParameter>(0));
+                if (values.Count == 2)
+                {
+                    pointValues.Items.Add(values.GetSpiceObject<SingleParameter>(0));
+                    pointValues.Items.AddRange(values.GetSpiceObject<PointValues>(1).Items);
+                }
+                else
+                {
+                    pointValues.Items.Add(values.GetSpiceObject<SingleParameter>(0));
+                }
             }
 
             return pointValues;
@@ -77,7 +85,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
         private SpiceObject CreatePointValue(ParseTreeNodeEvaluationValues nt)
         {
-            return (nt[0] as ParseTreeNonTerminalEvaluationValue).SpiceObject;
+            return (nt[0] as ParseTreeNonTerminalEvaluationValue)?.SpiceObject;
         }
 
         private SpiceObject CreatPointParameter(ParseTreeNodeEvaluationValues nt)
@@ -124,10 +132,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// <returns>A netlist.</returns>
         public SpiceObject Evaluate(ParseTreeNode root)
         {
-            var travelsal = new ParseTreeTraversal();
+            var traversal = new ParseTreeTraversal();
 
             // Get tree nodes in post order
-            var treeNodes = travelsal.GetIterativePostOrder(root);
+            var treeNodes = traversal.GetIterativePostOrder(root);
 
             // Iterate over tree nodes
             foreach (var treeNode in treeNodes)

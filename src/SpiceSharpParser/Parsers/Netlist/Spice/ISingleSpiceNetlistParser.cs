@@ -9,6 +9,11 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
     public interface ISingleSpiceNetlistParser
     {
         /// <summary>
+        /// Gets or sets the parser settings.
+        /// </summary>
+        SingleSpiceNetlistParserSettings Settings { get; set; }
+
+        /// <summary>
         /// Parses a SPICE netlist and returns a SPICE netlist model.
         /// </summary>
         /// <param name="tokens">SPICE netlist tokens.</param>
@@ -16,10 +21,5 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// A SPICE netlist model.
         /// </returns>
         SpiceNetlist Parse(SpiceToken[] tokens);
-
-        /// <summary>
-        /// Gets the parser settings.
-        /// </summary>
-        SingleSpiceNetlistParserSettings Settings { get; set; }
     }
 }

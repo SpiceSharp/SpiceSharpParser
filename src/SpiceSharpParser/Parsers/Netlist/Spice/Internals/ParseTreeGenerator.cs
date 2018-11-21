@@ -607,6 +607,13 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                         CreateTerminalNode(SpiceTokenType.COMMA, current, ","),
                         CreateNonTerminalNode(Symbols.PointValues, current));
                 }
+                else
+                {
+                    PushProductionExpression(
+                        stack,
+                        CreateNonTerminalNode(Symbols.PointValue, current),
+                        CreateNonTerminalNode(Symbols.PointValues, current));
+                }
             }
         }
 
