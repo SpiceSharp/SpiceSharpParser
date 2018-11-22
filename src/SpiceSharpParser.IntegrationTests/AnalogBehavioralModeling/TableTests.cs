@@ -5,7 +5,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
     public class TableTests : BaseTests
     {
         [Fact]
-        public void ParsingFirstFormat()
+        public void When_ParsingFirstFormat_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "TABLE circuit",
@@ -23,7 +23,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         }
 
         [Fact]
-        public void ParsingSecondFormat()
+        public void When_ParsingSecondFormat_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "TABLE circuit",
@@ -40,7 +40,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         }
 
         [Fact]
-        public void ParsingThirdFormat()
+        public void When_ParsingThirdFormat_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "TABLE circuit",
@@ -57,7 +57,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         }
 
         [Fact]
-        public void ParsingFourthFormat()
+        public void When_ParsingFourthFormat_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "TABLE circuit",
@@ -74,7 +74,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         }
 
         [Fact]
-        public void ParsingAdvancedExpression()
+        public void When_ParsingAdvancedExpression_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "TABLE circuit",

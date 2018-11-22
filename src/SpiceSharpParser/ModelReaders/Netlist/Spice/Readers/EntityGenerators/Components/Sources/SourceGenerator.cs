@@ -20,28 +20,27 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 int acParameterIndex = parameters.IndexOf(acParameter);
 
-                if (acParameterIndex == parameters.Count - 1)
+                if (acParameterIndex != parameters.Count - 1)
                 {
-                    throw new WrongParameterTypeException(name, "Source AC magnitude is missing");
-                }
+                    var acParameterValue = parameters.GetValueString(acParameterIndex + 1);
+                    context.SetParameter(component, "acmag", acParameterValue);
 
-                var acParameterValue = parameters.GetValueString(acParameterIndex + 1);
-                context.SetParameter(component, "acmag", acParameterValue);
-
-                if (acParameterIndex + 1 != parameters.Count - 1)
-                {
-                    // Check first if next parameter is waveform
-                    var acPhaseCandidate = parameters[acParameterIndex + 2].Image;
-                    if (parameters[acParameterIndex + 2] is SingleParameter && !context.WaveformReader.Supports(acPhaseCandidate, context) && acPhaseCandidate.ToLower() != "dc")
+                    if (acParameterIndex + 1 != parameters.Count - 1)
                     {
-                        var acPhaseParameterValue = parameters.GetValueString(acParameterIndex + 2);
-                        context.SetParameter(component, "acphase", acPhaseParameterValue);
+                        // Check first if next parameter is waveform
+                        var acPhaseCandidate = parameters[acParameterIndex + 2].Image;
+                        if (parameters[acParameterIndex + 2] is SingleParameter
+                            && !context.WaveformReader.Supports(acPhaseCandidate, context)
+                            && acPhaseCandidate.ToLower() != "dc")
+                        {
+                            var acPhaseParameterValue = parameters.GetValueString(acParameterIndex + 2);
+                            context.SetParameter(component, "acphase", acPhaseParameterValue);
 
-                        parameters.RemoveAt(acParameterIndex + 2);
+                            parameters.RemoveAt(acParameterIndex + 2);
+                        }
                     }
+                    parameters.RemoveAt(acParameterIndex + 1);
                 }
-
-                parameters.RemoveAt(acParameterIndex + 1);
                 parameters.RemoveAt(acParameterIndex);
             }
 
@@ -50,21 +49,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             if (dcParameter != null)
             {
                 int dcParameterIndex = parameters.IndexOf(dcParameter);
-                if (dcParameterIndex == parameters.Count - 1)
+                if (dcParameterIndex != parameters.Count - 1)
                 {
-                    throw new WrongParameterTypeException(name, "DC magnitude is missing");
+                    var dcParameterValue = parameters.GetValueString(dcParameterIndex + 1);
+                    context.SetParameter(component, "dc", dcParameterValue);
+                    parameters.RemoveAt(dcParameterIndex + 1);
                 }
-
-                var dcParameterValue = parameters.GetValueString(dcParameterIndex + 1);
-                context.SetParameter(component, "dc", dcParameterValue);
-
-                parameters.RemoveAt(dcParameterIndex + 1);
                 parameters.RemoveAt(dcParameterIndex);
             }
             else
             {
-                if (parameters.Count > 0 && parameters[0] is SingleParameter sp
-                                         && !context.WaveformReader.Supports(sp.Image, context))
+                if (parameters.Count > 0 
+                    && parameters[0] is SingleParameter sp
+                    && !context.WaveformReader.Supports(sp.Image, context)
+                    && parameters[0].Image.ToLower() != "value")
                 {
                     context.SetParameter(component, "dc", sp.Image);
                     parameters.RemoveAt(0);
@@ -89,7 +87,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    if (firstParameter is WordParameter wp)
+                    if (firstParameter is WordParameter wp && wp.Image.ToLower() != "value")
                     {
                         if (context.WaveformReader.Supports(wp.Image, context))
                         {
@@ -103,12 +101,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
             }
 
-            //4. Value
+            //4. Value = { }, Value { } 
             if (parameters.Count > 0)
             {
                 if (parameters[0] is AssignmentParameter ap && ap.Name.ToLower() == "value")
                 {
                     context.SetParameter(component, "dc", ap.Value);
+                }
+
+                if (parameters.Count >= 2 
+                    && parameters[0].Image.ToLower() == "value"
+                    && parameters[1] is SingleParameter)
+                {
+                    context.SetParameter(component, "dc", parameters[1].Image);
                 }
             }
         }

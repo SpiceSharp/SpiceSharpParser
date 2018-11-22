@@ -221,6 +221,50 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
+        public void ACWithoutValue_Expect_NoException()
+        {
+            var netlist = ParseNetlist(
+                "Voltage source",
+                "V1 1 0 AC",
+                "R1 1 0 10",
+                ".SAVE V(1,0)",
+                ".TRAN 0.1 1.5",
+                ".AC LIN 1000 1 1000",
+                ".END");
+
+            Assert.NotNull(netlist);
+        }
+
+        [Fact]
+        public void ACWithDC_Expect_NoException()
+        {
+            var netlist = ParseNetlist(
+                "Voltage source",
+                "V1 1 0 AC 1 DC 2",
+                "R1 1 0 10",
+                ".SAVE V(1,0)",
+                ".TRAN 0.1 1.5",
+                ".AC LIN 1000 1 1000",
+                ".END");
+
+            Assert.NotNull(netlist);
+        }
+
+        [Fact]
+        public void DCWithoutValue_Expect_NoException()
+        {
+            var netlist = ParseNetlist(
+                "Voltage source",
+                "V1 1 0 DC",
+                "R1 1 0 10",
+                ".SAVE V(1,0)",
+                ".TRAN 0.1 1.5",
+                ".END");
+
+            Assert.NotNull(netlist);
+        }
+
+        [Fact]
         public void ACPlusSin_Expect_NoException()
         {
             var netlist = ParseNetlist(
@@ -285,27 +329,11 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void DCAC_Expect_NoException()
+        public void DCAndAC_Expect_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
                 "V1 1 0 DC 1 AC 0",
-                "+Pwl -1.0 0 1.0 2.0",
-                "R1 1 0 10",
-                ".SAVE V(1,0)",
-                ".TRAN 0.1 1.5",
-                ".AC LIN 1000 1 1000",
-                ".END");
-
-            Assert.NotNull(netlist);
-        }
-
-        [Fact]
-        public void DCWithoutDCKeywordAC_Expect_NoException()
-        {
-            var netlist = ParseNetlist(
-                "Voltage source",
-                "V1 1 0 5 AC 0",
                 "+Pwl -1.0 0 1.0 2.0",
                 "R1 1 0 10",
                 ".SAVE V(1,0)",

@@ -61,7 +61,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             context.Received().SetParameter(entity, "dc", "1.2", true);
         }
 
-        //[Fact]
+        [Fact]
         public void GenerateDCCurrentSourceWithoutCurrent()
         {
             var generator = new CurrentSourceGenerator();
