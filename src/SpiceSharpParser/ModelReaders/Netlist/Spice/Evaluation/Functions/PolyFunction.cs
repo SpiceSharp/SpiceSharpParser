@@ -27,7 +27,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 
                     if (args.Length < dimension + 1)
                     {
-                        throw new Exception("To less variables for poly");
+                        throw new Exception("Too less variables for poly");
                     }
 
                     for (var i = 1; i <= dimension; i++)

@@ -26,7 +26,6 @@ namespace SpiceSharpParser.Parsers.Netlist
         public ParseTreeNonTerminalNode(ParseTreeNode parent, string name)
             : base(parent)
         {
-
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Children = new List<ParseTreeNode>();
         }

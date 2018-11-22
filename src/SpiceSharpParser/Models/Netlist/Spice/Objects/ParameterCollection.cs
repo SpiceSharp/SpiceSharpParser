@@ -210,6 +210,53 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         }
 
         /// <summary>
+        /// Gets the value string from parameter in the collection.
+        /// Throws an exception if parameter is not a value type parameter.
+        /// </summary>
+        /// <param name="parameterIndex">An index of parameter.</param>
+        /// <returns>
+        /// A value from parameter.
+        /// </returns>
+        public string GetValueString(int parameterIndex)
+        {
+            var singleParameter = this[parameterIndex] as SingleParameter;
+
+            if (singleParameter == null 
+                || singleParameter is PercentParameter 
+                || singleParameter is ReferenceParameter 
+                || singleParameter is StringParameter)
+            {
+                throw new Exception("Parameter [" + parameterIndex + "] is not value type");
+            }
+
+            return singleParameter.Image;
+        }
+
+        /// <summary>
+        /// Gets the value string from parameter in the collection.
+        /// Throws an exception if parameter is not a value type parameter.
+        /// </summary>
+        /// <param name="parameterIndex">An index of parameter.</param>
+        /// <returns>
+        /// A value from parameter.
+        /// </returns>
+        public bool IsValueString(int parameterIndex)
+        {
+            var singleParameter = this[parameterIndex] as SingleParameter;
+
+            if (singleParameter == null
+                || singleParameter is PercentParameter
+                || singleParameter is ReferenceParameter
+                || singleParameter is StringParameter)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+
+        /// <summary>
         /// Creates a new clone of the collection.
         /// </summary>
         /// <returns>
@@ -241,6 +288,11 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         public override string ToString()
         {
             return string.Join(",", Values);
+        }
+
+        public int IndexOf(Parameter parameter)
+        {
+            return this.Values.IndexOf(parameter);
         }
     }
 }

@@ -184,7 +184,7 @@ namespace SpiceSharpParser.IntegrationTests
 
         public static Tuple<string, double>[] RunOpSimulation(SpiceNetlistReaderResult readerResult)
         {
-            var simulation = readerResult.Simulations.Single();
+            var simulation = readerResult.Simulations.First(s => s is OP);
             Tuple<string, double>[] result = new Tuple<string, double>[readerResult.Exports.Count];
 
             simulation.ExportSimulationData += (sender, e) => {
@@ -212,8 +212,8 @@ namespace SpiceSharpParser.IntegrationTests
         {
             var list = new List<Tuple<double,double>>();
 
-            var export = readerResult.Exports.Find(e => e.Name == nameOfExport);
-            var simulation = readerResult.Simulations.Single();
+            var export = readerResult.Exports.Find(e => e.Name == nameOfExport && e.Simulation is Transient);
+            var simulation = readerResult.Simulations.First(s => s is Transient);
             simulation.ExportSimulationData += (sender, e) => {
 
                 list.Add(new Tuple<double, double>(e.Time, export.Extract()));
@@ -228,8 +228,8 @@ namespace SpiceSharpParser.IntegrationTests
         {
             var list = new List<Tuple<double, double>>();
 
-            var export = readerResult.Exports.Find(e => e.Name == nameOfExport);
-            var simulation = readerResult.Simulations.Single();
+            var export = readerResult.Exports.Find(e => e.Name == nameOfExport && e.Simulation is DC);
+            var simulation = readerResult.Simulations.First(s => s is DC);
             simulation.ExportSimulationData += (sender, e) => {
 
                 list.Add(new Tuple<double, double>(e.SweepValue, export.Extract()));

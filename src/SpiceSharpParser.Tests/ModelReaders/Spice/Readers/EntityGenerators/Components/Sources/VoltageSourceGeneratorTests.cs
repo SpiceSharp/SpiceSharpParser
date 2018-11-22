@@ -171,8 +171,9 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<IReadingContext>();
-            var entity = generator.Generate("v1", "v1", "v", parameters, context);
+            context.WaveformReader.Supports("sine", context).Returns(true);
 
+            var entity = generator.Generate("v1", "v1", "v", parameters, context);
             Assert.NotNull(entity);
             Assert.IsType<VoltageSource>(entity);
 
