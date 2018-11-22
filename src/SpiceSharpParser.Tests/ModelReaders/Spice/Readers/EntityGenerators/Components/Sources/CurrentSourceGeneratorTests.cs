@@ -181,7 +181,9 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             context.StatementsReader = new SpiceStatementsReader(Substitute.For<IMapper<BaseControl>>(), Substitute.For<IMapper<IModelGenerator>>(), Substitute.For<IMapper<IComponentGenerator>>());
 
             context.WaveformReader = Substitute.For<IWaveformReader>();
+            context.WaveformReader.Supports("sine", context).Returns(true);
             context.WaveformReader.Generate(Arg.Any<string>(), Arg.Any<ParameterCollection>(), Arg.Any<IReadingContext>()).Returns(sine);
+
 
             var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
@@ -219,6 +221,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 Substitute.For<IMapper<IModelGenerator>>(),
                 Substitute.For<IMapper<IComponentGenerator>>());
             context.WaveformReader = Substitute.For<IWaveformReader>();
+            context.WaveformReader.Supports("sine", context).Returns(true);
+
             context.WaveformReader.Generate(Arg.Any<string>(), Arg.Any<ParameterCollection>(), Arg.Any<IReadingContext>()).Returns(sine);
 
             var entity = generator.Generate("i1", "i1", "i", parameters, context);
