@@ -74,6 +74,73 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         }
 
         [Fact]
+        public void When_ParsingFifthFormat_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "TABLE circuit",
+                "V1 1 0 1.5m",
+                "R1 1 0 10",
+                "E12 2 1 TABLE {V(1,0)} ((0 1) (1m,2))(2m,3))",
+                "R2 2 0 10",
+                ".SAVE V(2,1)",
+                ".OP",
+                ".END");
+            var export = RunOpSimulation(netlist, "V(2,1)");
+            Assert.NotNull(netlist);
+            Assert.Equal(2.5, export);
+        }
+
+        [Fact]
+        public void When_ParsingSixthFormat_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "TABLE circuit",
+                "V1 1 0 1.5m",
+                "R1 1 0 10",
+                "E12 2 1 TABLE {V(1,0)} ((0 1) (1m,2)((2m,3))",
+                "R2 2 0 10",
+                ".SAVE V(2,1)",
+                ".OP",
+                ".END");
+            var export = RunOpSimulation(netlist, "V(2,1)");
+            Assert.NotNull(netlist);
+            Assert.Equal(2.5, export);
+        }
+
+        [Fact]
+        public void When_ParsingSeventhFormat_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "TABLE circuit",
+                "V1 1 0 1.5m",
+                "R1 1 0 10",
+                "E12 2 1 TABLE {V(1,0)} ((0 1)) ((1m,2)(2m,3))",
+                "R2 2 0 10",
+                ".SAVE V(2,1)",
+                ".OP",
+                ".END");
+            var export = RunOpSimulation(netlist, "V(2,1)");
+            Assert.NotNull(netlist);
+            Assert.Equal(2.5, export);
+        }
+        [Fact]
+        public void When_ParsingEightFormat_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "TABLE circuit",
+                "V1 1 0 1.5m",
+                "R1 1 0 10",
+                "E12 2 1 TABLE {V(1,0)} ((0 1)) ((1m,2)) ((2m,3))",
+                "R2 2 0 10",
+                ".SAVE V(2,1)",
+                ".OP",
+                ".END");
+            var export = RunOpSimulation(netlist, "V(2,1)");
+            Assert.NotNull(netlist);
+            Assert.Equal(2.5, export);
+        }
+
+        [Fact]
         public void When_ParsingAdvancedExpression_Expect_Reference()
         {
             var netlist = ParseNetlist(

@@ -122,6 +122,18 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 points.Values.AddRange(values.GetSpiceObject<Points>(1).Values);
             }
 
+            if (values.Count == 3)
+            {
+                points.Values.Add(values.GetSpiceObject<PointParameter>(1));
+                points.Values.AddRange(values.GetSpiceObject<Points>(2).Values);
+            }
+
+            if (values.Count == 4)
+            {
+                points.Values.Add(values.GetSpiceObject<PointParameter>(2));
+                points.Values.AddRange(values.GetSpiceObject<Points>(3).Values);
+            }
+
             return points;
         }
 

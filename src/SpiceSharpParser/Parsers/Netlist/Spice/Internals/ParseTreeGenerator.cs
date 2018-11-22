@@ -518,12 +518,58 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
 
-            if (currentToken.Is(SpiceTokenType.DELIMITER) && currentToken.Lexem == "(") // simplification
+            if (currentToken.Is(SpiceTokenType.DELIMITER) && currentToken.Lexem == ")")
             {
-                PushProductionExpression(
-                    stack,
-                    CreateNonTerminalNode(Symbols.Point, current),
-                    CreateNonTerminalNode(Symbols.PointsContinue, current));
+                if (nextToken.Is(SpiceTokenType.DELIMITER) && nextToken.Lexem == "(")
+                {
+                    var nextNextToken = tokens[currentTokenIndex + 2];
+
+                    if (nextNextToken.Is(SpiceTokenType.DELIMITER) && nextToken.Lexem == "(")
+                    {
+                        PushProductionExpression(
+                            stack,
+                            CreateTerminalNode(SpiceTokenType.DELIMITER, current, ")"),
+                            CreateTerminalNode(SpiceTokenType.DELIMITER, current, "("),
+                            CreateNonTerminalNode(Symbols.Point, current),
+                            CreateNonTerminalNode(Symbols.PointsContinue, current));
+                    }
+                    else
+                    {
+                        PushProductionExpression(
+                            stack,
+                            CreateTerminalNode(SpiceTokenType.DELIMITER, current, ")"),
+                            CreateNonTerminalNode(Symbols.Point, current),
+                            CreateNonTerminalNode(Symbols.PointsContinue, current));
+                    }
+                }
+                else
+                {
+                    if (!nextToken.Is(SpiceTokenType.NEWLINE) && !nextToken.Is(SpiceTokenType.EOF))
+                    {
+                        throw new Exception("Points in broken format");
+                    }
+                }
+            }
+            else
+            {
+                if (currentToken.Is(SpiceTokenType.DELIMITER) && currentToken.Lexem == "(")
+                {
+                    if (nextToken.Is(SpiceTokenType.DELIMITER) && nextToken.Lexem == "(")
+                    {
+                        PushProductionExpression(
+                            stack,
+                            CreateTerminalNode(SpiceTokenType.DELIMITER, current, "("),
+                            CreateNonTerminalNode(Symbols.Point, current),
+                            CreateNonTerminalNode(Symbols.PointsContinue, current));
+                    }
+                    else
+                    {
+                        PushProductionExpression(
+                            stack,
+                            CreateNonTerminalNode(Symbols.Point, current),
+                            CreateNonTerminalNode(Symbols.PointsContinue, current));
+                    }
+                }
             }
         }
 
@@ -589,7 +635,8 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// <param name="currentTokenIndex">A index of the current token</param>
         private void ReadPointValues(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
-            var nextToken = tokens[currentTokenIndex + 1];
+            var currentToken = tokens[currentTokenIndex];
+            var nextToken = tokens[currentTokenIndex + 1];          
 
             if (nextToken.Is(SpiceTokenType.DELIMITER) && nextToken.Lexem == ")")
             {
@@ -641,7 +688,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             }
             else
             {
-                throw new Exception("Unsupported point value type");
+                throw new Exception("Unsupported point value");
             }
         }
 
