@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
@@ -210,6 +211,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="parameters">Parameters of component.</param>
         public void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters)
         {
+            if (parameters.Count < component.PinCount)
+            {
+                throw new WrongParametersCountException(
+                    "Too less parameters for: " + component.Name + " to create nodes");
+            }
+
             string[] nodes = new string[component.PinCount];
             for (var i = 0; i < component.PinCount; i++)
             {
