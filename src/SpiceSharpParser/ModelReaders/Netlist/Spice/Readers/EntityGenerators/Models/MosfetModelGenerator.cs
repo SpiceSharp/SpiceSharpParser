@@ -17,7 +17,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             Levels.Add(1, (string name, string type, string version) =>
             {
                 var m = new Mosfet1Model(name);
-                switch (type)
+                switch (type.ToLower())
                 {
                     case "nmos": m.SetParameter("nmos", true); break;
                     case "pmos": m.SetParameter("pmos", true); break;
@@ -29,7 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             Levels.Add(2, (string name, string type, string version) =>
             {
                 var m = new Mosfet2Model(name);
-                switch (type)
+                switch (type.ToLower())
                 {
                     case "nmos": m.SetParameter("nmos", true); break;
                     case "pmos": m.SetParameter("pmos", true); break;
@@ -41,7 +41,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             Levels.Add(3, (string name, string type, string version) =>
             {
                 var m = new Mosfet3Model(name);
-                switch (type)
+                switch (type.ToLower())
                 {
                     case "nmos": m.SetParameter("nmos", true); break;
                     case "pmos": m.SetParameter("pmos", true); break;
