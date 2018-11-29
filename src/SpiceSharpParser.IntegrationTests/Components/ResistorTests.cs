@@ -22,12 +22,78 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
+        public void NgSpiceFirstFormat()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 r=10",
+                ".SAVE I(R1)",
+                ".OP",
+                ".END");
+
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.NotNull(netlist);
+            Assert.Equal(15, export);
+        }
+
+        [Fact]
+        public void NgSpiceSecondFormat()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 resistance=10",
+                ".SAVE I(R1)",
+                ".OP",
+                ".END");
+
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.NotNull(netlist);
+            Assert.Equal(15, export);
+        }
+
+        [Fact]
         public void SimplestFormatWithParameterWithoutExpression()
         {
             var netlist = ParseNetlist(
                 "Resistor circuit",
                 "V1 1 0 150",
                 "R1 1 0 a",
+                ".SAVE I(R1)",
+                ".PARAM a = 10",
+                ".OP",
+                ".END");
+
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.NotNull(netlist);
+            Assert.Equal(15, export);
+        }
+
+        [Fact]
+        public void SimplestFormatWithParameterWithoutExpressionForNgSpiceFirstFormat()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 r=a",
+                ".SAVE I(R1)",
+                ".PARAM a = 10",
+                ".OP",
+                ".END");
+
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.NotNull(netlist);
+            Assert.Equal(15, export);
+        }
+
+        [Fact]
+        public void SimplestFormatWithParameterWithoutExpressionForNgSpiceSecondFormat()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 resistance=a",
                 ".SAVE I(R1)",
                 ".PARAM a = 10",
                 ".OP",

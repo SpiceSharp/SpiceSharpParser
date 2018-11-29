@@ -260,14 +260,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
 
                 // Check if something can be resistance
-                if ((something is WordParameter || something is IdentifierParameter || something is ValueParameter 
-                    || something is ExpressionParameter) == false)
+                if ((something is WordParameter
+                     || something is IdentifierParameter 
+                     || something is ValueParameter 
+                     || something is ExpressionParameter
+                     || something is AssignmentParameter ap && (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance")) == false)
                 {
                     throw new GeneralReaderException("Third parameter needs to represent resistance of resistor");
                 }
 
                 // Set resistance
-                context.SetParameter(res, "resistance", something.Image, isDynamic);
+                if (something is AssignmentParameter asp)
+                {
+                    context.SetParameter(res, "resistance", asp.Value, isDynamic);
+                }
+                else
+                {
+                    context.SetParameter(res, "resistance", something.Image, isDynamic);
+                }
             }
             else
             {
@@ -346,12 +356,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     if ((resistanceParameter is WordParameter 
                          || resistanceParameter is IdentifierParameter 
                          || resistanceParameter is ValueParameter
-                         || resistanceParameter is ExpressionParameter) == false)
+                         || resistanceParameter is ExpressionParameter
+                         || resistanceParameter is AssignmentParameter ap && (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance")) == false)
                     {
                         throw new GeneralReaderException("Invalid value for resistance");
                     }
 
-                    context.SetParameter(res, "resistance", resistanceParameter.Image, isDynamic);
+                    if (resistanceParameter is AssignmentParameter asp)
+                    {
+                        context.SetParameter(res, "resistance", asp.Value, isDynamic);
+                    }
+                    else
+                    {
+                        context.SetParameter(res, "resistance", resistanceParameter.Image, isDynamic);
+                    }
                     resistorParameters.RemoveAt(0);
                 }
 
