@@ -90,6 +90,25 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             double export = RunOpSimulation(netlist, "V(2,0)");
             Assert.Equal(7, export);
         }
+
+        [Fact]
+        public void VoltageControlledVoltageSourceThirdFormatSecondDimension()
+        {
+            var netlist = ParseNetlist(
+                "Poly(1) E test circuit - third format",
+                "R1 1 0 100",
+                "V1 1 0 2",
+                "V3 3 0 3",
+                "ESource 2 0 POLY(2) 1 0 3 0 (2, 1, 1)", // V(1) + V(3) + 2
+                ".OP",
+                ".SAVE V(2,0)",
+                ".END");
+
+            Assert.NotNull(netlist);
+            double export = RunOpSimulation(netlist, "V(2,0)");
+            Assert.Equal(7, export);
+        }
+
         [Fact]
         public void VoltageControlledCurrentSourceFormatWithoutDimension()
         {
@@ -132,6 +151,23 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 "R1 1 0 100",
                 "V1 2 0 2",
                 "GSource 1 0 POLY(1) (2,0) 2 1", // V(2) + 2
+                ".OP",
+                ".SAVE I(GSource)",
+                ".END");
+
+            Assert.NotNull(netlist);
+            double export = RunOpSimulation(netlist, "I(GSource)");
+            Assert.Equal(4, export);
+        }
+
+        [Fact]
+        public void VoltageControlledCurrentSourceThirdFormat()
+        {
+            var netlist = ParseNetlist(
+                "Poly(1) G test circuit",
+                "R1 1 0 100",
+                "V1 2 0 2",
+                "GSource 1 0 POLY(1) 2 0 (2, 1)", // V(2) + 2
                 ".OP",
                 ".SAVE I(GSource)",
                 ".END");

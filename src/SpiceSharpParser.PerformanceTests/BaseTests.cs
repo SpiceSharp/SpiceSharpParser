@@ -201,7 +201,7 @@ namespace SpiceSharpParser.PerformanceTests
         {
             var list = new List<Tuple<double,double>>();
 
-            var export = readerResult.Exports.Find(e => e.Name == nameOfExport); //TODO: Remove ToLower someday
+            var export = readerResult.Exports.Find(e => e.Name == nameOfExport); 
             var simulation = readerResult.Simulations.Single();
             simulation.ExportSimulationData += (sender, e) => {
 
@@ -217,7 +217,7 @@ namespace SpiceSharpParser.PerformanceTests
         {
             var list = new List<Tuple<double, double>>();
 
-            var export = readerResult.Exports.Find(e => e.Name == nameOfExport); //TODO: Remove ToLower someday
+            var export = readerResult.Exports.Find(e => e.Name == nameOfExport); 
             var simulation = readerResult.Simulations.Single();
             simulation.ExportSimulationData += (sender, e) => {
 
