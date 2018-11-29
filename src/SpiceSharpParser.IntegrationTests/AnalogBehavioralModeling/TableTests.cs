@@ -17,8 +17,8 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".OP",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "V(2,1)");
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "V(2,1)");
             Assert.Equal(2.5, export);
         }
 
@@ -34,8 +34,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(2,1)",
                 ".OP",
                 ".END");
-            var export = RunOpSimulation(netlist, "V(2,1)");
+
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "V(2,1)");
             Assert.Equal(2.5, export);
         }
 
@@ -51,8 +52,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(2,1)",
                 ".OP",
                 ".END");
-            var export = RunOpSimulation(netlist, "V(2,1)");
+
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "V(2,1)");
             Assert.Equal(2.5, export);
         }
 
@@ -68,8 +70,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(2,1)",
                 ".OP",
                 ".END");
-            var export = RunOpSimulation(netlist, "V(2,1)");
+
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "V(2,1)");
             Assert.Equal(2.5, export);
         }
 
@@ -85,8 +88,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(2,1)",
                 ".OP",
                 ".END");
-            var export = RunOpSimulation(netlist, "V(2,1)");
+
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "V(2,1)");
             Assert.Equal(2.5, export);
         }
 
@@ -102,8 +106,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(2,1)",
                 ".OP",
                 ".END");
-            var export = RunOpSimulation(netlist, "V(2,1)");
+
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "V(2,1)");
             Assert.Equal(2.5, export);
         }
 
@@ -119,8 +124,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(2,1)",
                 ".OP",
                 ".END");
-            var export = RunOpSimulation(netlist, "V(2,1)");
+
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "V(2,1)");
             Assert.Equal(2.5, export);
         }
         [Fact]
@@ -135,8 +141,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(2,1)",
                 ".OP",
                 ".END");
-            var export = RunOpSimulation(netlist, "V(2,1)");
+
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "V(2,1)");
             Assert.Equal(2.5, export);
         }
 
@@ -153,9 +160,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(3,2)",
                 ".OP",
                 ".END");
+
             Assert.NotNull(netlist);
             var export = RunOpSimulation(netlist, "V(3,2)");
-            Assert.NotNull(netlist);
             Assert.Equal(10, export);
         }
     }
