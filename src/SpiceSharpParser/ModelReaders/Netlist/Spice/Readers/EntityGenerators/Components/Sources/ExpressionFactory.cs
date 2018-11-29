@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -15,9 +16,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
         public static string CreatePolyVoltageExpression(int dimension, ParameterCollection polyArguments)
         {
-            bool pointFormat = polyArguments.Any(p => p is PointParameter);
+            if (polyArguments.Count == 0)
+            {
+                throw new WrongParametersCountException("Wrong parameter count for poly expression");
+            }
 
-            if (pointFormat)
+            bool voltagesAreSpecifiedAsPoints = polyArguments[0] is PointParameter;
+
+            if (voltagesAreSpecifiedAsPoints)
             {
                 var variables = polyArguments.Take(dimension);
                 var variablesString = string.Join(",", variables.Select(v => $"v({((PointParameter)v).Values.Items[0].Image},{((PointParameter)v).Values.Items[1].Image})"));
@@ -64,9 +70,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             ParameterCollection coefficients,
             string variablesString)
         {
-            var coefficientsString = string.Join(",", coefficients.Select(c => c.Image).ToArray());
-            var expression = $"poly({dimension}, {variablesString}, {coefficientsString})";
-            return expression;
+
+            if (coefficients.Count == 1 && coefficients[0] is PointParameter pp)
+            {
+                var coefficientsString = string.Join(",", pp.Values.Select(c => c.Image).ToArray());
+                var expression = $"poly({dimension}, {variablesString}, {coefficientsString})";
+                return expression;
+            }
+            else
+            {
+                var coefficientsString = string.Join(",", coefficients.Select(c => c.Image).ToArray());
+                var expression = $"poly({dimension}, {variablesString}, {coefficientsString})";
+                return expression;
+            }
         }
     }
 }
