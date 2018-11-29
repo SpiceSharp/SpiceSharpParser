@@ -54,6 +54,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                                 case "trapezoidal":
                                     context.Result.SimulationConfiguration.Method = new Trapezoidal();
                                     break;
+                                case "gear":
+                                    context.Result.SimulationConfiguration.Method = new Gear();
+                                    break;
+                                case "euler":
+                                    context.Result.SimulationConfiguration.Method = new FixedEuler();
+                                    break;
                             }
 
                             break;

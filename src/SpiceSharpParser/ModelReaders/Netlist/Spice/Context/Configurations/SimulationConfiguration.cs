@@ -17,7 +17,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public int? TranMaxIterations { get; set; }
 
-        public Trapezoidal Method { get; set; }
+        public IntegrationMethod Method { get; set; }
 
         public bool? KeepOpInfo { get; set; }
 
