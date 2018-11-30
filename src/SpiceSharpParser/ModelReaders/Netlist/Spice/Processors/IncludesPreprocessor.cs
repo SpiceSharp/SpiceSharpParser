@@ -145,7 +145,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
                 // process includes of include netlist
                 includeModel.Statements = Process(includeModel.Statements, Path.GetDirectoryName(includeFullPath));
-                
+
                 // replace statement by the content of the include
                 statements.Replace(include, includeModel.Statements);
             }

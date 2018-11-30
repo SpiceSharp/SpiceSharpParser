@@ -240,14 +240,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
         private void CreateExportsForAllVoltageAndCurrents(IReadingContext context)
         {
-            context.Result.Circuit.Objects.BuildOrderedComponentList(); // TODO: Verify with Sven
+            context.Result.Circuit.Entities.BuildOrderedComponentList(); // TODO: Verify with Sven
 
             // For all simulations add exports for current and voltages
             foreach (var simulation in context.Result.Simulations)
             {
                 var nodes = new List<string>();
 
-                foreach (Entity entity in context.Result.Circuit.Objects)
+                foreach (Entity entity in context.Result.Circuit.Entities)
                 {
                     if (entity is SpiceSharp.Components.Component c)
                     {

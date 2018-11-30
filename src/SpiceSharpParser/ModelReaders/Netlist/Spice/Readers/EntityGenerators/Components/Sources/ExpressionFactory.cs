@@ -70,7 +70,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             ParameterCollection coefficients,
             string variablesString)
         {
-
             if (coefficients.Count == 1 && coefficients[0] is PointParameter pp)
             {
                 var coefficientsString = string.Join(",", pp.Values.Select(c => c.Image).ToArray());

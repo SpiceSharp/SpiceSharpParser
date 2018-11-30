@@ -56,7 +56,7 @@ namespace SpiceSharpParser.Common.Evaluation
             }
         }
 
-        public Randomizer Randomizer { get; set; }        
+        public Randomizer Randomizer { get; set; }
 
         /// <summary>
         /// Gets or sets data of the context.
@@ -67,6 +67,7 @@ namespace SpiceSharpParser.Common.Evaluation
             {
                 return _data;
             }
+
             set
             {
                 _data = value;

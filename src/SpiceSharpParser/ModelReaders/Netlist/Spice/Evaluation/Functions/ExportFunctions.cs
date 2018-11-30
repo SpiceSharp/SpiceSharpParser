@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common.Evaluation;
@@ -10,16 +11,18 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 {
-    using System.Collections.Concurrent;
-
     public class ExportFunctions
     {
         /// <summary>
         /// Creates export functions.
         /// </summary>
-        public static IEnumerable<KeyValuePair<string, Function>> Create(IMapper<Exporter> exporterRegistry,
-            INodeNameGenerator nodeNameGenerator, IObjectNameGenerator componentNameGenerator,
-            IObjectNameGenerator modelNameGenerator, IResultService resultService, SpiceNetlistCaseSensitivitySettings caseSettings)
+        public static IEnumerable<KeyValuePair<string, Function>> Create(
+            IMapper<Exporter> exporterRegistry,
+            INodeNameGenerator nodeNameGenerator,
+            IObjectNameGenerator componentNameGenerator,
+            IObjectNameGenerator modelNameGenerator,
+            IResultService resultService,
+            SpiceNetlistCaseSensitivitySettings caseSettings)
         {
             if (exporterRegistry == null)
             {
@@ -35,13 +38,27 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 
                 if (exporter.Key == "@")
                 {
-                    spiceFunction = CreateAtExport(exporters, exporter.Value, exporter.Key, nodeNameGenerator,
-                        componentNameGenerator, modelNameGenerator, resultService, caseSettings);
+                    spiceFunction = CreateAtExport(
+                        exporters,
+                        exporter.Value,
+                        exporter.Key,
+                        nodeNameGenerator,
+                        componentNameGenerator,
+                        modelNameGenerator,
+                        resultService,
+                        caseSettings);
                 }
                 else
                 {
-                    spiceFunction = CreateOrdinaryExport(exporters, exporter.Value, exporter.Key, nodeNameGenerator,
-                        componentNameGenerator, modelNameGenerator, resultService, caseSettings);
+                    spiceFunction = CreateOrdinaryExport(
+                        exporters,
+                        exporter.Value,
+                        exporter.Key,
+                        nodeNameGenerator,
+                        componentNameGenerator,
+                        modelNameGenerator,
+                        resultService,
+                        caseSettings);
                 }
 
                 result.Add(new KeyValuePair<string, Function>(exporter.Key, spiceFunction));
@@ -55,8 +72,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             Exporter exporter,
             string exportType,
             INodeNameGenerator nodeNameGenerator,
-            IObjectNameGenerator componentNameGenerator, 
-            IObjectNameGenerator modelNameGenerator, 
+            IObjectNameGenerator componentNameGenerator,
+            IObjectNameGenerator modelNameGenerator,
             IResultService result,
             SpiceNetlistCaseSensitivitySettings caseSensitivity)
         {
@@ -125,10 +142,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
             function.Name = "Exporter: @";
             function.ArgumentsCount = 2;
 
-            function.ObjectArgsLogic =(image, args, evaluator, context) =>
+            function.ObjectArgsLogic = (image, args, evaluator, context) =>
             {
-                string exporterKey = string.Format("{0}_{1}_{2}_{3}",
-                    context.Data != null ? ((Simulation)context.Data).Name : "no_simulation", 
+                string exporterKey = string.Format(
+                    "{0}_{1}_{2}_{3}",
+                    context.Data != null ? ((Simulation)context.Data).Name : "no_simulation",
                     context.Name,
                     exportType,
                     string.Join(",", args));

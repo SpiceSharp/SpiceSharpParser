@@ -91,9 +91,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             Parameter tcParameter = parameters.FirstOrDefault(
                 p => p is AssignmentParameter ap && ap.Name.Equals(
                          "tc",
-                         context.CaseSensitivity.IsEntityParameterNameCaseSensitive
-                             ? StringComparison.CurrentCulture
-                             : StringComparison.CurrentCultureIgnoreCase));
+                         context.CaseSensitivity.IsEntityParameterNameCaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase));
 
             if (tcParameter != null)
             {
@@ -122,7 +120,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // CMOD 3 7 CMODEL L = 10u W = 1u
                 // CMOD 3 7 CMODEL L = 10u W = 1u IC=1
                 // CMOD 3 7 1.3 IC=1
-               
                 if (parameters[2] is ExpressionParameter || parameters[2] is ValueParameter)
                 {
                     context.SetParameter(capacitor, "capacitance", parameters.GetString(2));
@@ -246,25 +243,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             context.CreateNodes(res, parameters);
 
-            if (parameters.Count == 3) 
+            if (parameters.Count == 3)
             {
                 // RName Node1 Node2 something
                 var something = parameters[2];
 
                 // Check if something is a model name
-                if ((something is WordParameter || something is IdentifierParameter)  
+                if ((something is WordParameter || something is IdentifierParameter)
                     && context.ModelsRegistry.FindModel<ResistorModel>(parameters.GetString(2)) != null)
                 {
-                    // RName Node1 Node2 modelName 
+                    // RName Node1 Node2 modelName
                     throw new GeneralReaderException("L parameter needs to be specified");
                 }
 
                 // Check if something can be resistance
                 if ((something is WordParameter
-                     || something is IdentifierParameter 
-                     || something is ValueParameter 
+                     || something is IdentifierParameter
+                     || something is ValueParameter
                      || something is ExpressionParameter
-                     || something is AssignmentParameter ap && (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance")) == false)
+                     || (something is AssignmentParameter ap && (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))) == false)
                 {
                     throw new GeneralReaderException("Third parameter needs to represent resistance of resistor");
                 }
@@ -292,9 +289,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 bool hasTcParameter = parameters.Any(
                     p => p is AssignmentParameter ap && ap.Name.Equals(
                              "tc",
-                             context.CaseSensitivity.IsEntityParameterNameCaseSensitive
-                                 ? StringComparison.CurrentCulture
-                                 : StringComparison.CurrentCultureIgnoreCase));
+                             context.CaseSensitivity.IsEntityParameterNameCaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase));
 
                 AssignmentParameter tcParameter = null;
 
@@ -303,9 +298,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     tcParameter = (AssignmentParameter)parameters.Single(
                         p => p is AssignmentParameter ap && ap.Name.Equals(
                                  "tc",
-                                 context.CaseSensitivity.IsEntityParameterNameCaseSensitive
-                                     ? StringComparison.CurrentCulture
-                                     : StringComparison.CurrentCultureIgnoreCase));
+                                 context.CaseSensitivity.IsEntityParameterNameCaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase));
                     resistorParameters.Remove(tcParameter);
                 }
 
@@ -353,11 +346,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     // Check if something can be resistance
                     var resistanceParameter = resistorParameters[0];
 
-                    if ((resistanceParameter is WordParameter 
-                         || resistanceParameter is IdentifierParameter 
+                    if ((resistanceParameter is WordParameter
+                         || resistanceParameter is IdentifierParameter
                          || resistanceParameter is ValueParameter
                          || resistanceParameter is ExpressionParameter
-                         || resistanceParameter is AssignmentParameter ap && (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance")) == false)
+                         || (resistanceParameter is AssignmentParameter ap && (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))) == false)
                     {
                         throw new GeneralReaderException("Invalid value for resistance");
                     }
@@ -370,6 +363,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     {
                         context.SetParameter(res, "resistance", resistanceParameter.Image, isDynamic);
                     }
+
                     resistorParameters.RemoveAt(0);
                 }
 
@@ -385,6 +379,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                 }
             }
+
             return res;
         }
     }

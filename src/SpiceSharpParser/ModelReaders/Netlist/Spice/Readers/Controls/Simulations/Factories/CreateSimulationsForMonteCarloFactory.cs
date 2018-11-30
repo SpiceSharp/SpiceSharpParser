@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
     public class CreateSimulationsForMonteCarloFactory : ICreateSimulationsForMonteCarloFactory
     {
         public CreateSimulationsForMonteCarloFactory(
-            ICreateSimulationsForAllTemperaturesFactory allTemperatures, 
+            ICreateSimulationsForAllTemperaturesFactory allTemperatures,
             ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory allTemperaturesAndSweeps,
             IExportFactory exportFactory,
             IMapper<Exporter> mapperExporter)
@@ -32,8 +32,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         public ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory AllTemperaturesAndSweeps { get; }
 
         public IExportFactory ExportFactory { get; }
-
-
 
         public List<BaseSimulation> Create(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> simulationWithStochasticModels)
         {

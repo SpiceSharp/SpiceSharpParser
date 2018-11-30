@@ -19,7 +19,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         {
             get
             {
-                return string.Format("({0})", string.Join(",", Values.Items.Select( v => v.Image).ToArray()));
+                return string.Format("({0})", string.Join(",", Values.Items.Select(v => v.Image).ToArray()));
             }
         }
 

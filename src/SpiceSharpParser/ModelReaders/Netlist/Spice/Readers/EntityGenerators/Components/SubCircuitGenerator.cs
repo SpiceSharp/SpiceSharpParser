@@ -203,7 +203,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         {
                             Functions = context.ReadingExpressionContext.Functions,
                         }).FoundParameters;
-
             }
 
             subCircuitExpressionContext.SetParameters(subcircuitParameters, pp);

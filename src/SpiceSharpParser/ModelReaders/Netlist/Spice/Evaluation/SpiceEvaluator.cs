@@ -9,17 +9,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
     /// </summary>
     public class SpiceEvaluator : Evaluator
     {
-        public SpiceEvaluator() : this(string.Empty, new SpiceExpressionParser(false), false, false)
+        public SpiceEvaluator()
+            : this(string.Empty, new SpiceExpressionParser(false), false, false)
         {
         }
 
-        public SpiceEvaluator(bool isNegationAssociative) : this(string.Empty, new SpiceExpressionParser(isNegationAssociative), false, false)
+        public SpiceEvaluator(bool isNegationAssociative)
+            : this(string.Empty, new SpiceExpressionParser(isNegationAssociative), false, false)
         {
         }
 
         public SpiceEvaluator(
-            string name, 
-            IExpressionParser parser, 
+            string name,
+            IExpressionParser parser,
             bool isParameterNameCaseSensitive,
             bool isFunctionNameCaseSensitive)
             : base(name, parser, isParameterNameCaseSensitive, isFunctionNameCaseSensitive)

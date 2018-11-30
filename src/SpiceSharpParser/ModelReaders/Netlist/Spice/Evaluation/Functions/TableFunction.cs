@@ -88,16 +88,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                     B = y1 - (a * x1),
                 });
             }
+
             result.Insert(0, result[0]);
             result.Add(result[result.Count - 1]);
             return result.ToArray();
         }
-    }
 
-    public class LineDefinition
-    {
-        public double A { get; set; }
+        public class LineDefinition
+        {
+            public double A { get; set; }
 
-        public double B { get; set; }
+            public double B { get; set; }
+        }
     }
 }

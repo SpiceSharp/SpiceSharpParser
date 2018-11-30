@@ -168,7 +168,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Sets voltage initial condition for node.
         /// </summary>
         /// <param name="nodeName">Name of node.</param>
-        /// <param name="expression">Expression.</param>
+        /// <param name="expression">Expression string.</param>
         public void SetICVoltage(string nodeName, string expression)
         {
             var nodeId = NodeNameGenerator.Generate(nodeName);
@@ -201,7 +201,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="value">Parameter value.</param>
         public void SetParameter(string parameterName, double value)
         {
-            this.ReadingExpressionContext.SetParameter(parameterName, value);
+            ReadingExpressionContext.SetParameter(parameterName, value);
         }
 
         /// <summary>
@@ -238,32 +238,28 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public void SetParameter(string pName, string expression)
         {
-            this.ReadingExpressionContext.SetParameter(
+            ReadingExpressionContext.SetParameter(
                 pName,
                 expression,
-                ExpressionParser.Parse(
-                    expression,
-                    new ExpressionParserContext(CaseSensitivity.IsFunctionNameCaseSensitive)
-                        {
-                            Functions = this.ReadingExpressionContext.Functions,
-                        }).FoundParameters);
+                ExpressionParser.Parse(expression, new ExpressionParserContext(CaseSensitivity.IsFunctionNameCaseSensitive) { Functions = this.ReadingExpressionContext.Functions, }).FoundParameters);
         }
 
         public void AddFunction(string functionName, List<string> arguments, string body)
         {
             FunctionFactory factory = new FunctionFactory();
-            this.ReadingExpressionContext.Functions.Add(functionName, factory.Create(functionName, arguments, body));
+            ReadingExpressionContext.Functions.Add(functionName, factory.Create(functionName, arguments, body));
         }
 
         public void SetNamedExpression(string expressionName, string expression)
         {
-            this.ReadingExpressionContext.SetNamedExpression(expressionName, expression,
-                ExpressionParser.Parse(
-                    expression,
-                    new ExpressionParserContext(CaseSensitivity.IsFunctionNameCaseSensitive)
-                        {
-                            Functions = this.ReadingExpressionContext.Functions
-                        }).FoundParameters);
+            var foundParameters = ExpressionParser.Parse(
+                expression,
+                new ExpressionParserContext(CaseSensitivity.IsFunctionNameCaseSensitive)
+                    {
+                        Functions = this.ReadingExpressionContext.Functions,
+                    }).FoundParameters;
+
+            ReadingExpressionContext.SetNamedExpression(expressionName, expression, foundParameters);
         }
 
         public void SetParameter(Entity entity, string parameterName, string expression, bool onload = true)
@@ -281,7 +277,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 expression,
                 new ExpressionParserContext(CaseSensitivity.IsFunctionNameCaseSensitive)
                     {
-                        Functions = this.ReadingExpressionContext.Functions
+                        Functions = this.ReadingExpressionContext.Functions,
                     });
 
             if (parseResult.IsConstantExpression == false)

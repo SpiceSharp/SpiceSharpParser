@@ -1,6 +1,6 @@
 ﻿using System;
-using SpiceSharpParser.Common.Evaluation;
 using SpiceSharp;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions;
 
@@ -8,9 +8,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 {
     public class SpiceExpressionContext : ExpressionContext
     {
-        private readonly bool isParameterNameCaseSenstive;
-
-        public SpiceExpressionContext(SpiceExpressionMode mode) : this(string.Empty, mode, false, false, false)
+        public SpiceExpressionContext(SpiceExpressionMode mode)
+            : this(string.Empty, mode, false, false, false)
         {
         }
 
@@ -19,16 +18,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             SpiceExpressionMode mode,
             bool isParameterNameCaseSensitive,
             bool isFunctionNameCaseSensitive,
-            bool iExpressionNameCaseSensitive)
+            bool isExpressionNameCaseSensitive)
 
-        : base(name, isParameterNameCaseSensitive, isFunctionNameCaseSensitive, iExpressionNameCaseSensitive)
+        : base(name, isParameterNameCaseSensitive, isFunctionNameCaseSensitive, isExpressionNameCaseSensitive)
         {
             this.Mode = mode;
             this.CreateSpiceFunctions();
             this.CreateSpiceParameters();
         }
 
-        public SpiceExpressionMode Mode { get; } 
+        public SpiceExpressionMode Mode { get; }
 
         private void CreateSpiceFunctions()
         {
@@ -46,7 +45,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             Functions.Add("gauss", RandomFunctions.CreateGauss());
             Functions.Add("hypot", MathFunctions.CreateHypot());
             Functions.Add("if", ControlFunctions.CreateIf());
-            //Functions.Add("lazy", ControlFunctions.CreateLazy());
             Functions.Add("int", MathFunctions.CreateInt());
             Functions.Add("inv", MathFunctions.CreateInv());
             Functions.Add("ln", MathFunctions.CreateLn());

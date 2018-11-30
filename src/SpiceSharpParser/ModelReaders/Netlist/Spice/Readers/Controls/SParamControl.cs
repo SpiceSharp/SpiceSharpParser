@@ -3,7 +3,6 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
-
     /// <summary>
     /// Reads .SPARAM <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
@@ -11,15 +10,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
     {
         protected override void SetParameter(string parameterName, string parameterExpression, IExpressionParser expressionParser, ExpressionContext expressionContext, SpiceNetlistCaseSensitivitySettings caseSettings)
         {
-            expressionContext.SetCachedParameter(
-                            parameterName,
-                            parameterExpression,
-                            expressionParser.Parse(
-                                parameterExpression,
-                                new ExpressionParserContext(caseSettings.IsFunctionNameCaseSensitive)
-                                {
-                                    Functions = expressionContext.Functions
-                                }).FoundParameters);
+            var foundParameters = expressionParser.Parse(
+                parameterExpression,
+                new ExpressionParserContext(caseSettings.IsFunctionNameCaseSensitive)
+                    {
+                        Functions = expressionContext.Functions,
+                    }).FoundParameters;
+
+            expressionContext.SetCachedParameter(parameterName, parameterExpression, foundParameters);
         }
     }
 }

@@ -49,6 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                         }
                     };
                 }
+
                 return simulation;
             };
         }

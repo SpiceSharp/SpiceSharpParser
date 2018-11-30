@@ -105,11 +105,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         private List<Export> CreateExportsForAllVoltageAndCurrents(Simulation simulation, IReadingContext context)
         {
             var result = new List<Export>();
-            context.Result.Circuit.Objects.BuildOrderedComponentList(); // TODO: Verify with Sven
+            context.Result.Circuit.Entities.BuildOrderedComponentList(); // TODO: Verify with Sven
 
             var nodes = new List<string>();
 
-            foreach (Entity entity in context.Result.Circuit.Objects)
+            foreach (Entity entity in context.Result.Circuit.Entities)
             {
                 if (entity is SpiceSharp.Components.Component c)
                 {
@@ -258,10 +258,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     if (expressionNames.Contains(expressionName))
                     {
                         var export = new ExpressionExport(
-                            simulation.Name, 
+                            simulation.Name,
                             expressionName,
-                            context.ReadingExpressionContext.GetExpression(expressionName), 
-                            evaluator, 
+                            context.ReadingExpressionContext.GetExpression(expressionName),
+                            evaluator,
                             context.SimulationExpressionContexts,
                             simulation);
 

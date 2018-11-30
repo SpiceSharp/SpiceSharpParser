@@ -8,12 +8,13 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         {
         }
 
-        public FunctionNotFoundException(string message) 
+        public FunctionNotFoundException(string message)
             : base(message)
         {
         }
 
-        public FunctionNotFoundException(string message, Exception innerException) : base(message, innerException)
+        public FunctionNotFoundException(string message, Exception innerException)
+            : base(message, innerException)
         {
         }
     }

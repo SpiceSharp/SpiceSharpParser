@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {

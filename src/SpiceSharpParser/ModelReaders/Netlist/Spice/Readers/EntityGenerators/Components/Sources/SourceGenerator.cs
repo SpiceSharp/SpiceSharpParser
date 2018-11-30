@@ -39,12 +39,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             parameters.RemoveAt(acParameterIndex + 2);
                         }
                     }
+
                     parameters.RemoveAt(acParameterIndex + 1);
                 }
+
                 parameters.RemoveAt(acParameterIndex);
             }
 
-            //2. Set DC
+            // 2. Set DC
             var dcParameter = parameters.FirstOrDefault(p => p.Image.ToLower() == "dc");
             if (dcParameter != null)
             {
@@ -55,11 +57,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     context.SetParameter(component, "dc", dcParameterValue);
                     parameters.RemoveAt(dcParameterIndex + 1);
                 }
+
                 parameters.RemoveAt(dcParameterIndex);
             }
             else
             {
-                if (parameters.Count > 0 
+                if (parameters.Count > 0
                     && parameters[0] is SingleParameter sp
                     && !context.WaveformReader.Supports(sp.Image, context)
                     && parameters[0].Image.ToLower() != "value")
@@ -69,7 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
             }
 
-            //3. Set up waveform
+            // 3. Set up waveform
             if (parameters.Count > 0)
             {
                 var firstParameter = parameters[0];
@@ -101,7 +104,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
             }
 
-            //4. Value = { }, Value { } 
+            // 4. Value = { }, Value { }
             if (parameters.Count > 0)
             {
                 if (parameters[0] is AssignmentParameter ap && ap.Name.ToLower() == "value")
@@ -109,7 +112,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     context.SetParameter(component, "dc", ap.Value);
                 }
 
-                if (parameters.Count >= 2 
+                if (parameters.Count >= 2
                     && parameters[0].Image.ToLower() == "value"
                     && parameters[1] is SingleParameter)
                 {

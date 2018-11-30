@@ -42,7 +42,7 @@ namespace SpiceSharpParser
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceParser"/> class.
         /// </summary>
-        public SpiceParser() 
+        public SpiceParser()
             : this(new SpiceParserSettings())
         {
         }

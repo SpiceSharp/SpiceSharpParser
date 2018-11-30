@@ -11,13 +11,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class MosfetGenerator : ComponentGenerator
     {
-        protected class MosfetDetails
-        {
-            public SpiceSharp.Components.Component Mosfet { get; set; }
-
-            public Action<Model> SetModelAction { get; set; }
-        }
-
         public MosfetGenerator()
         {
             // MOS1
@@ -56,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </summary>
         protected Dictionary<Type, Func<string, MosfetDetails>> Mosfets { get; } = new Dictionary<Type, Func<string, MosfetDetails>>();
 
-        public  override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             // Errors
             switch (parameters.Count)
@@ -97,6 +90,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             context.CreateNodes(mosfet, parameters);
             SetParameters(context, mosfet, parameters.Skip(5), true);
             return mosfet;
+        }
+
+        protected class MosfetDetails
+        {
+            public SpiceSharp.Components.Component Mosfet { get; set; }
+
+            public Action<Model> SetModelAction { get; set; }
         }
     }
 }

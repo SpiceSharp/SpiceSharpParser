@@ -43,6 +43,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
                 {
                     Values.Insert(0, "0");
                 }
+
                 Values[0] = value;
             }
         }

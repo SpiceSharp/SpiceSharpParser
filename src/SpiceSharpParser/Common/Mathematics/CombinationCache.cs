@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.Common.Mathematics
 {
     public class CombinationCache
     {
-        private readonly static ConcurrentDictionary<string, List<int[]>> cache = new ConcurrentDictionary<string, List<int[]>>();
-        private readonly static CombinationGenerator generator = new CombinationGenerator();
+        private static readonly ConcurrentDictionary<string, List<int[]>> Cache = new ConcurrentDictionary<string, List<int[]>>();
+        private static readonly CombinationGenerator Generator = new CombinationGenerator();
 
         /// <summary>
         /// Gets combinations.
@@ -20,10 +20,10 @@ namespace SpiceSharpParser.Common.Mathematics
         {
             string key = count + "_" + n;
 
-            if (!cache.TryGetValue(key, out var combination))
+            if (!Cache.TryGetValue(key, out var combination))
             {
-                combination = generator.Generate(count, n);
-                cache[key] = combination;
+                combination = Generator.Generate(count, n);
+                Cache[key] = combination;
             }
 
             return combination;
