@@ -174,14 +174,40 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.SetParameter(entity, "dc", expression);
             }
 
-            if (parameters.Any(p => p is ExpressionEqualParameter) && parameters.Any(p => p.Image.ToLower() == "table"))
+            var tableParameter = parameters.FirstOrDefault(p => p.Image.ToLower() == "table");
+            if (tableParameter != null)
             {
-                var formulaParameter = (ExpressionEqualParameter)parameters.Single(p => p is ExpressionEqualParameter);
+                int tableParameterPosition = parameters.IndexOf(tableParameter);
+                if (tableParameterPosition == parameters.Count - 1)
+                {
+                    throw new WrongParametersCountException(name, "table expects expression parameter");
+                }
 
-                var tableParameter = name + "_table_variable";
-                context.SetParameter(tableParameter, formulaParameter.Expression);
-                string expression = ExpressionFactory.CreateTableExpression(tableParameter, formulaParameter);
-                context.SetParameter(entity, "dc", expression);
+                var nextParameter = parameters[tableParameterPosition + 1];
+
+                if (nextParameter is ExpressionEqualParameter eep)
+                {
+                    var tableParameterName = name + "_table_variable";
+                    context.SetParameter(tableParameterName, eep.Expression);
+                    string expression = ExpressionFactory.CreateTableExpression(tableParameterName, eep.Points);
+                    context.SetParameter(entity, "dc", expression);
+                }
+                else
+                {
+                    if (nextParameter is ExpressionParameter ep)
+                    {
+                        if (tableParameterPosition == parameters.Count - 2)
+                        {
+                            throw new WrongParametersCountException(name, "table expects points");
+                        }
+
+                        var tableParameterName = name + "_table_variable";
+                        context.SetParameter(tableParameterName, ep.Image);
+
+                        string expression = ExpressionFactory.CreateTableExpression(tableParameterName, parameters.Skip(tableParameterPosition));
+                        context.SetParameter(entity, "dc", expression);
+                    }
+                }
             }
         }
     }
