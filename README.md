@@ -90,7 +90,7 @@ At the moment due to lack of implementation of LAPLACE and FREQ (part of analog 
 |H (Current-Controlled Voltage Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/H)|
 |I (Independent Current Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/I)|
 |J (JFET)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/J)|
-|K (Bipolar Junction Transistor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/K)|
+|K (Mutual Inductance)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/K)|
 |L (Inductor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/L)|
 |M (Mosfet)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/M)|
 |Q (Bipolar Junction Transistor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/Q)|
