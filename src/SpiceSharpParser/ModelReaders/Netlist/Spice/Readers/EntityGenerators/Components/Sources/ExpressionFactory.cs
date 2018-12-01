@@ -14,21 +14,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return expression;
         }
 
-        public static string CreateTableExpression(string tableParameter, ParameterCollection parameters)
-        {
-            var points = new Points();
-            foreach (var parameter in parameters)
-            {
-                if (!(parameter is PointParameter))
-                {
-                    throw new WrongParameterTypeException("Wrong parameter type for table expression");
-                }
-                points.Values.Add(parameter as PointParameter);
-            }
-
-            return CreateTableExpression(tableParameter, points);
-        }
-
         public static string CreatePolyVoltageExpression(int dimension, ParameterCollection polyArguments)
         {
             if (polyArguments.Count == 0)

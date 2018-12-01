@@ -27,7 +27,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_MissingPoints_Expect_Exception()
         {
-            Assert.Throws<WrongParametersCountException>(
+            Assert.Throws<WrongParameterTypeException>(
                 () => ParseNetlist(
                     "TABLE circuit",
                     "V1 1 0 1.5m",

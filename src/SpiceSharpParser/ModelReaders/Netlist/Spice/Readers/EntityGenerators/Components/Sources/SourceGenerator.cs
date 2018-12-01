@@ -194,19 +194,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    if (nextParameter is ExpressionParameter ep)
-                    {
-                        if (tableParameterPosition == parameters.Count - 2)
-                        {
-                            throw new WrongParametersCountException(name, "table expects points");
-                        }
-
-                        var tableParameterName = name + "_table_variable";
-                        context.SetParameter(tableParameterName, ep.Image);
-
-                        string expression = ExpressionFactory.CreateTableExpression(tableParameterName, parameters.Skip(tableParameterPosition));
-                        context.SetParameter(entity, "dc", expression);
-                    }
+                    throw new WrongParameterTypeException(name, "table expects expression equal parameter");
                 }
             }
         }
