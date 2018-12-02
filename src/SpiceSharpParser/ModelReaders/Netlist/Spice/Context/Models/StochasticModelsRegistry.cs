@@ -182,7 +182,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return null;
         }
 
-        public void SetModel<T>(Entity entity, string modelName, string exceptionMessage, Action<T> setModelAction) where T : SpiceSharp.Components.Model
+        public void SetModel<T>(Entity entity, string modelName, string exceptionMessage, Action<T> setModelAction)
+            where T : SpiceSharp.Components.Model
         {
             var model = FindModel<T>(modelName);
 

@@ -185,7 +185,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             }
 
             // get lib content
-            string libContent = FileReader.GetFileContent(libFullPath);
+            string libContent = FileReader.ReadAll(libFullPath);
             if (libContent != null)
             {
                 var lexerSettings = new SpiceLexerSettings()

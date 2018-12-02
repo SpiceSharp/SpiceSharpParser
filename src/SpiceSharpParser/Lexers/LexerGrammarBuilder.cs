@@ -15,7 +15,6 @@ namespace SpiceSharpParser.Lexers
         private List<LexerRegexRule> _regexRules = new List<LexerRegexRule>();
         private List<LexerDynamicRule> _dynamicRules = new List<LexerDynamicRule>();
 
-
         /// <summary>
         /// Clears the builder.
         /// </summary>

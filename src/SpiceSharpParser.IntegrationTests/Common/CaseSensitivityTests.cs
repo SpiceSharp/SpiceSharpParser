@@ -1,8 +1,8 @@
+using System;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.Parsers.Netlist.Spice;
-using System;
 using SpiceSharpParser.Parsers.Netlist;
+using SpiceSharpParser.Parsers.Netlist.Spice;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Common
@@ -18,7 +18,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Lexing.IsDotStatementNameCaseSensitive = true;
             parser.Settings.Parsing.IsEndRequired = true;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity",
                 ".End");
             Assert.Throws<ParseException>(() => parser.ParseNetlist(text));
@@ -33,7 +34,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsFunctionNameCaseSensitive = false;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity",
                 "R1 0 1 {fUn(1)}",
                 "V1 0 1 10",
@@ -55,7 +57,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsFunctionNameCaseSensitive = true;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity",
                 "R1 0 1 {fUn(1)}",
                 "V1 0 1 10",
@@ -75,7 +78,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsFunctionNameCaseSensitive = false;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity",
                 "R1 0 1 {Cos(1)}",
                 "V1 0 1 10",
@@ -96,7 +100,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsFunctionNameCaseSensitive = true;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity",
                 "R1 0 1 {Cos(1)}",
                 "V1 0 1 10",
@@ -116,7 +121,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = false;
             parser.Settings.Parsing.IsNewlineRequired = false;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity",
                 ".End");
             parser.ParseNetlist(text);
@@ -132,7 +138,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = false;
             parser.Settings.Parsing.IsNewlineRequired = false;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity",
                 ".END");
             parser.ParseNetlist(text);
@@ -147,7 +154,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Lexing.IsDotStatementNameCaseSensitive = false;
             parser.Settings.Parsing.IsEndRequired = true;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity",
                 ".End");
 
@@ -163,7 +171,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsNodeNameCaseSensitive = false;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity",
                 "R1 0 out {cos(0)}",
                 "V1 0 OUT 10",
@@ -186,7 +195,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsNodeNameCaseSensitive = true;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity",
                 "R1 0 out {cos(0)}",
                 "V1 0 OUT 10",
@@ -207,7 +217,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsNodeNameCaseSensitive = false;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity - SUBCKT",
                 "V1 IN 0 4.0",
                 "X1 IN Out twoResistorsInSeries R1=1 R2=2",
@@ -238,7 +249,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsEntityNameCaseSensitive = false;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity",
                 "R1 0 out 1",
                 "V1 0 OUT 10",
@@ -261,7 +273,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsEntityNameCaseSensitive = true;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity",
                 "R1 0 out 1",
                 "V1 0 OUT 10",
@@ -282,7 +295,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsEntityNameCaseSensitive = false;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity - Diode circuit",
                 "D1 OUT 0 default",
                 "V1 OUT 0 1",
@@ -306,7 +320,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsParameterNameCaseSensitive = false;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity - Diode circuit",
                 "D1 OUT 0 default",
                 "V1 OUT 0 {PARAMETER}",
@@ -331,7 +346,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsParameterNameCaseSensitive = false;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity - Diode circuit",
                 "D1 OUT 0 default",
                 "V1 OUT 0 {fun(1)}",
@@ -356,7 +372,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsParameterNameCaseSensitive = true;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity - Diode circuit",
                 "D1 OUT 0 default",
                 "V1 OUT 0 {PARAMETER}",
@@ -378,7 +395,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsExpressionNameCaseSensitive = false;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity - Diode circuit",
                 "D1 OUT 0 default",
                 "V1 OUT 0 {PARAMETER}",
@@ -404,7 +422,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsExpressionNameCaseSensitive = true;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity - Diode circuit",
                 "D1 OUT 0 default",
                 "V1 OUT 0 {PARAMETER}",
@@ -427,7 +446,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsEntityParameterNameCaseSensitive = false;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity - Diode circuit",
                 "D1 OUT 0 1N914",
                 "V1 OUT 0 0",
@@ -457,7 +477,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsEntityParameterNameCaseSensitive = false;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity - Diode circuit",
                 "D1 OUT 0 1N914",
                 "V1 OUT 0 0",
@@ -488,7 +509,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsEntityParameterNameCaseSensitive = false;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity - Diode circuit",
                 "D1 OUT 0 1N914",
                 "V1 OUT 0 0",
@@ -518,7 +540,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsEntityParameterNameCaseSensitive = true;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity - Diode circuit",
                 "D1 OUT 0 1N914",
                 "V1 OUT 0 0",
@@ -540,7 +563,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.CaseSensitivity.IsEntityParameterNameCaseSensitive = true;
 
-            var text = string.Join(Environment.NewLine,
+            var text = string.Join(
+                Environment.NewLine,
                 "CaseSensitivity - Diode circuit",
                 "D1 OUT 0 1N914",
                 "V1 OUT 0 0",

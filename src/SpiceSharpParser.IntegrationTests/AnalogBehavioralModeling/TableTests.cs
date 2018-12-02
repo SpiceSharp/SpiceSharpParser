@@ -1,3 +1,5 @@
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
@@ -17,9 +19,24 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".OP",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "V(2,1)");
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "V(2,1)");
             Assert.Equal(2.5, export);
+        }
+
+        [Fact]
+        public void When_MissingPoints_Expect_Exception()
+        {
+            Assert.Throws<WrongParameterTypeException>(
+                () => ParseNetlist(
+                    "TABLE circuit",
+                    "V1 1 0 1.5m",
+                    "R1 1 0 10",
+                    "E12 2 1 TABLE {V(1,0)}",
+                    "R2 2 0 10",
+                    ".SAVE V(2,1)",
+                    ".OP",
+                    ".END"));
         }
 
         [Fact]
@@ -34,8 +51,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(2,1)",
                 ".OP",
                 ".END");
-            var export = RunOpSimulation(netlist, "V(2,1)");
+
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "V(2,1)");
             Assert.Equal(2.5, export);
         }
 
@@ -51,8 +69,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(2,1)",
                 ".OP",
                 ".END");
-            var export = RunOpSimulation(netlist, "V(2,1)");
+
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "V(2,1)");
             Assert.Equal(2.5, export);
         }
 
@@ -68,8 +87,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(2,1)",
                 ".OP",
                 ".END");
-            var export = RunOpSimulation(netlist, "V(2,1)");
+
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "V(2,1)");
             Assert.Equal(2.5, export);
         }
 
@@ -85,8 +105,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(2,1)",
                 ".OP",
                 ".END");
-            var export = RunOpSimulation(netlist, "V(2,1)");
+
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "V(2,1)");
             Assert.Equal(2.5, export);
         }
 
@@ -102,8 +123,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(2,1)",
                 ".OP",
                 ".END");
-            var export = RunOpSimulation(netlist, "V(2,1)");
+
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "V(2,1)");
             Assert.Equal(2.5, export);
         }
 
@@ -119,8 +141,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(2,1)",
                 ".OP",
                 ".END");
-            var export = RunOpSimulation(netlist, "V(2,1)");
+
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "V(2,1)");
             Assert.Equal(2.5, export);
         }
         [Fact]
@@ -135,8 +158,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(2,1)",
                 ".OP",
                 ".END");
-            var export = RunOpSimulation(netlist, "V(2,1)");
+
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "V(2,1)");
             Assert.Equal(2.5, export);
         }
 
@@ -153,9 +177,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(3,2)",
                 ".OP",
                 ".END");
+
             Assert.NotNull(netlist);
             var export = RunOpSimulation(netlist, "V(3,2)");
-            Assert.NotNull(netlist);
             Assert.Equal(10, export);
         }
     }

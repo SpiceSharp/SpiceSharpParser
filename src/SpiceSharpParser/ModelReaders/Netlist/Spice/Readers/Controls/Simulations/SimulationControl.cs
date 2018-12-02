@@ -2,12 +2,12 @@
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
@@ -35,6 +35,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         public ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory CreateSimulationsForAllParameterSweepsAndTemperaturesFactory { get; private set; }
 
         public ICreateSimulationsForMonteCarloFactory CreateSimulationsForMonteCarloFactory { get; }
+
+        protected static bool IsMonteCarloEnabledForSimulation(Control statement, IReadingContext context)
+        {
+            return context.Result.SimulationConfiguration.MonteCarloConfiguration.Enabled
+                   && statement.Name.ToLower() == context.Result.SimulationConfiguration.MonteCarloConfiguration.SimulationType.ToLower();
+        }
 
         /// <summary>
         /// Creates simulations.
@@ -77,12 +83,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             }
         }
 
-        protected static bool IsMonteCarloEnabledForSimulation(Control statement, IReadingContext context)
-        {
-            return context.Result.SimulationConfiguration.MonteCarloConfiguration.Enabled
-                && statement.Name.ToLower() == context.Result.SimulationConfiguration.MonteCarloConfiguration.SimulationType.ToLower();
-        }
-
         /// <summary>
         /// Sets the base parameters of a simulation.
         /// </summary>
@@ -114,7 +114,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             baseSimulation.Configurations.Add(
                 new CollectionConfiguration()
                 {
-                    VariableComparer = StringComparerProvider.Get(context.CaseSensitivity.IsNodeNameCaseSensitive)
+                    VariableComparer = StringComparerProvider.Get(context.CaseSensitivity.IsNodeNameCaseSensitive),
                 });
         }
     }

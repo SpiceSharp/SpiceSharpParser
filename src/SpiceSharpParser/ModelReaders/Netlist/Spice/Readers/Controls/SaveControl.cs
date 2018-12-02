@@ -215,7 +215,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 var expressionContext = context.SimulationExpressionContexts.GetContext(export.Simulation);
                 var firstParameterSweepParameter = expressionContext.Parameters[firstParameterSweep.Parameter.Image];
-                var evaluator = context.SimulutionEvaluators.GetEvaluator(export.Simulation);
+                var evaluator = context.SimulationEvaluators.GetEvaluator(export.Simulation);
                 var value = firstParameterSweepParameter.Evaluate(evaluator, context.SimulationExpressionContexts.GetContext(export.Simulation));
 
                 series.Points.Add(new Point() { X = value, Y = export.Extract() });
@@ -240,14 +240,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
         private void CreateExportsForAllVoltageAndCurrents(IReadingContext context)
         {
-            context.Result.Circuit.Objects.BuildOrderedComponentList(); // TODO: Verify with Sven
+            context.Result.Circuit.Entities.BuildOrderedComponentList(); // TODO: Verify with Sven
 
             // For all simulations add exports for current and voltages
             foreach (var simulation in context.Result.Simulations)
             {
                 var nodes = new List<string>();
 
-                foreach (Entity entity in context.Result.Circuit.Objects)
+                foreach (Entity entity in context.Result.Circuit.Entities)
                 {
                     if (entity is SpiceSharp.Components.Component c)
                     {
@@ -321,7 +321,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 var simulations = Filter(context.Result.Simulations, simulationType);
                 foreach (var simulation in simulations)
                 {
-                    var evaluator = context.SimulutionEvaluators.GetEvaluator(simulation);
+                    var evaluator = context.SimulationEvaluators.GetEvaluator(simulation);
                     var export = new ExpressionExport(
                             simulation.Name,
                             expressionName,

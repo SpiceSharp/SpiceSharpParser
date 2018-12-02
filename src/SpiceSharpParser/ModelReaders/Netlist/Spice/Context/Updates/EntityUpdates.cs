@@ -211,9 +211,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             if (beforeLoad)
             {
-                SimulationSpecificUpdates[simulation][entity].ParameterUpdatesBeforeLoad.Add(
-                    new EntityParameterDoubleValueUpdate() { ParameterName = parameterName, Value = value }
-                );
+                SimulationSpecificUpdates[simulation][entity].ParameterUpdatesBeforeLoad.Add(new EntityParameterDoubleValueUpdate() { ParameterName = parameterName, Value = value });
             }
 
             if (beforeTemperature)
@@ -230,6 +228,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 contextName = entity.Name.Substring(0, dotIndex);
             }
+
             var context = Contexts.GetContext(simulation).Find(contextName);
             return context;
         }

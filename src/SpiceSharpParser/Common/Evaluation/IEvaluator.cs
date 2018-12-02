@@ -14,12 +14,12 @@
 
         bool IsFunctionNameCaseSensitive { get; }
 
+        IExpressionParser ExpressionParser { get; }
+
         double EvaluateValueExpression(string expression, ExpressionContext context);
 
         double EvaluateNamedExpression(string expressionName, ExpressionContext context);
 
         double EvaluateParameter(string id, ExpressionContext context);
-
-        IExpressionParser ExpressionParser { get; }
     }
 }

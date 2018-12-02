@@ -221,9 +221,9 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         {
             var singleParameter = this[parameterIndex] as SingleParameter;
 
-            if (singleParameter == null 
-                || singleParameter is PercentParameter 
-                || singleParameter is ReferenceParameter 
+            if (singleParameter == null
+                || singleParameter is PercentParameter
+                || singleParameter is ReferenceParameter
                 || singleParameter is StringParameter)
             {
                 throw new Exception("Parameter [" + parameterIndex + "] is not value type");
@@ -254,7 +254,6 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 
             return true;
         }
-
 
         /// <summary>
         /// Creates a new clone of the collection.

@@ -47,6 +47,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 var pinInstanceIdentifier = PinInstanceNames[i];
                 _pinMap[pinIdentifier] = pinInstanceIdentifier;
             }
+
             IsNodeNameCaseSensitive = isNodeNameCaseSensitive;
             InitGlobals(globals);
         }

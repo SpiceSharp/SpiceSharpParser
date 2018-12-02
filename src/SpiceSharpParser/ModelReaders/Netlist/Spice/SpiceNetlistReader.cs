@@ -6,11 +6,10 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.Models.Netlist.Spice;
+using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
-    using SpiceSharpParser.Parsers.Expression;
-
     /// <summary>
     /// Translates a SPICE model to SpiceSharp model.
     /// </summary>
@@ -90,7 +89,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 readingExpressionContext,
                 Settings.CaseSensitivity,
                 null,
-                Settings.Mappings.Exporters);
+                Settings.Mappings.Exporters,
+                Settings.WorkingDirectory);
 
             // Read statements form input netlist using created context
             readingContext.Read(netlist.Statements, Settings.Orderer);

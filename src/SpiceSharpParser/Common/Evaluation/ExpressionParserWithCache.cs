@@ -5,17 +5,17 @@
 
     public class ExpressionParserWithCache : IExpressionParser
     {
-        private ReaderWriterLockSlim cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
-
         /// <summary>
         /// The expression parser for caching.
         /// </summary>
-        protected readonly IExpressionParser _parser;
+        private readonly IExpressionParser _parser;
 
         /// <summary>
         ///  The dictionary of parse results.
         /// </summary>
-        protected Dictionary<string, ExpressionParseResult> _parseResults;
+        private Dictionary<string, ExpressionParseResult> _parseResults;
+
+        private ReaderWriterLockSlim cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpressionParserWithCache"/> class.

@@ -30,9 +30,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <returns>
         /// A new export
         /// </returns>
-        public override Export CreateExport(string name, string type, ParameterCollection parameters,
-            Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator componentNameGenerator,
-            IObjectNameGenerator modelNameGenerator, IResultService result, SpiceNetlistCaseSensitivitySettings caseSettings)
+        public override Export CreateExport(
+            string name,
+            string type,
+            ParameterCollection parameters,
+            Simulation simulation,
+            INodeNameGenerator nodeNameGenerator,
+            IObjectNameGenerator componentNameGenerator,
+            IObjectNameGenerator modelNameGenerator,
+            IResultService result,
+            SpiceNetlistCaseSensitivitySettings caseSettings)
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
             {

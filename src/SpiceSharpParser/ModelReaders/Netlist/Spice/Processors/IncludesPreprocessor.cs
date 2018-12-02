@@ -124,7 +124,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             }
 
             // get include content
-            string includeContent = FileReader.GetFileContent(includeFullPath);
+            string includeContent = FileReader.ReadAll(includeFullPath);
             if (includeContent != null)
             {
                 var lexerSettings = new SpiceLexerSettings()
@@ -145,7 +145,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
                 // process includes of include netlist
                 includeModel.Statements = Process(includeModel.Statements, Path.GetDirectoryName(includeFullPath));
-                
+
                 // replace statement by the content of the include
                 statements.Replace(include, includeModel.Statements);
             }

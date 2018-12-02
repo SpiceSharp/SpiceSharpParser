@@ -5,16 +5,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
 {
     public class VSwitchModelBaseParameters : ParameterSet
     {
-        [ParameterName("ron"), ParameterInfo("Resistance when closed/on")]
+        [ParameterName("ron")]
+        [ParameterInfo("Resistance when closed/on")]
         public GivenParameter<double> OnResistance { get; } = new GivenParameter<double>(1.0);
 
-        [ParameterName("roff"), ParameterInfo("Resistance when off")]
+        [ParameterName("roff")]
+        [ParameterInfo("Resistance when off")]
         public GivenParameter<double> OffResistance { get; } = new GivenParameter<double>(1.0e12);
 
-        [ParameterName("von"), ParameterInfo("On voltage")]
+        [ParameterName("von")]
+        [ParameterInfo("On voltage")]
         public GivenParameter<double> OnVoltage { get; } = new GivenParameter<double>(1.0);
 
-        [ParameterName("voff"), ParameterInfo("Off voltage")]
+        [ParameterName("voff")]
+        [ParameterInfo("Off voltage")]
         public GivenParameter<double> OffVoltage { get; } = new GivenParameter<double>(0.0);
     }
 }

@@ -8,7 +8,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         public void When_NodeNameHasUnderline_Expect_NoException()
         {
             var netlist = ParseNetlist(
-                "Value format - Diode circuit",
+                "Diode circuit",
                 "D1 1_a 0 1N914",
                 "V1_a 1_a 0 0.0",
                 ".model 1N914 D(Is=2.52e-9    Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
@@ -17,6 +17,36 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var export = RunDCSimulation(netlist, "v(1_a,0)");
+        }
+
+        [Fact]
+        public void When_NodeNameHasPlusPrefix_Expect_NoException()
+        {
+            var netlist = ParseNetlist(
+                "Diode circuit",
+                "D1 +1_a 0 1N914",
+                "V1_a +1_a 0 0.0",
+                ".model 1N914 D(Is=2.52e-9    Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
+                ".DC V1_a -1 1.0 10e-3",
+                ".SAVE i(V1_a) v(+1_a,0)",
+                ".END");
+
+            var export = RunDCSimulation(netlist, "v(+1_a,0)");
+        }
+
+        [Fact]
+        public void When_NodeNameHasMinusPrefix_Expect_NoException()
+        {
+            var netlist = ParseNetlist(
+                "Diode circuit",
+                "D1 -1_a 0 1N914",
+                "V1_a -1_a 0 0.0",
+                ".model 1N914 D(Is=2.52e-9    Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
+                ".DC V1_a -1 1.0 10e-3",
+                ".SAVE i(V1_a) v(-1_a,0)",
+                ".END");
+
+            var export = RunDCSimulation(netlist, "v(-1_a,0)");
         }
     }
 }

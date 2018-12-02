@@ -35,7 +35,6 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             ParseTreeNonTerminalNode parseTreeRoot = GetParseTree(
                 tokens,
                 Settings.Lexer.HasTitle ? Symbols.Netlist : Symbols.NetlistWithoutTitle,
-                Settings.IsNewlineRequired,
                 Settings.Lexer.IsDotStatementNameCaseSensitive);
 
             return GetNetlistModelFromTree(parseTreeRoot);
@@ -46,18 +45,16 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// </summary>
         /// <param name="tokens">Array of tokens.</param>
         /// <param name="rootSymbol">Root symbol.</param>
-        /// <param name="isNewlineRequiredAtTheEnd">Specifies whether new line character is required at the last token.</param>
         /// <param name="isDotStatementNameCaseSensitive">Specifies whether case is ignored for dot statements.</param>
         /// <returns>
         /// A reference to the root of parse tree.
         /// </returns>
         private ParseTreeNonTerminalNode GetParseTree(
             SpiceToken[] tokens,
-            string rootSymbol, 
-            bool isNewlineRequiredAtTheEnd, 
+            string rootSymbol,
             bool isDotStatementNameCaseSensitive)
         {
-            var generator = new ParseTreeGenerator(isNewlineRequiredAtTheEnd, isDotStatementNameCaseSensitive);
+            var generator = new ParseTreeGenerator(isDotStatementNameCaseSensitive);
             return generator.GetParseTree(tokens, rootSymbol);
         }
 

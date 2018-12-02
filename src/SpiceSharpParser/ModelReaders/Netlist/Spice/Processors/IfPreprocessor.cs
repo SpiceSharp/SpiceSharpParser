@@ -47,6 +47,33 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             return ReadIfs(statements);
         }
 
+        private static int FindFirstMatched(Statements result, int startIndex, string controlToFind)
+        {
+            int ifCount = 0;
+
+            while (startIndex < result.Count)
+            {
+                if (result[startIndex] is Control c && c.Name.ToLower() == controlToFind && ifCount == 0)
+                {
+                    break;
+                }
+
+                if (result[startIndex] is Control c2 && c2.Name.ToLower() == "endif")
+                {
+                    ifCount--;
+                }
+
+                if (result[startIndex] is Control c3 && c3.Name.ToLower() == "if")
+                {
+                    ifCount++;
+                }
+
+                startIndex++;
+            }
+
+            return startIndex;
+        }
+
         private Statements ReadIfs(Statements statements)
         {
             // 1. Find first .IF
@@ -77,33 +104,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             result = ReadIfs(result);
 
             return result;
-        }
-
-        private static int FindFirstMatched(Statements result, int startIndex, string controlToFind)
-        {
-            int ifCount = 0;
-
-            while (startIndex < result.Count)
-            {
-                if (result[startIndex] is Control c && c.Name.ToLower() == controlToFind && ifCount == 0)
-                {
-                    break;
-                }
-
-                if (result[startIndex] is Control c2 && c2.Name.ToLower() == "endif")
-                {
-                    ifCount--;
-                }
-
-                if (result[startIndex] is Control c3 && c3.Name.ToLower() == "if")
-                {
-                    ifCount++;
-                }
-
-                startIndex++;
-            }
-
-            return startIndex;
         }
 
         private IEnumerable<Statement> ComputeIfResult(Statements result, int ifIndex, int endIfIndex)
@@ -164,5 +164,4 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             }
         }
     }
-
 }

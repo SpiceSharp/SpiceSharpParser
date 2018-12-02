@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common.Evaluation;
-using System.Threading;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public class SimulationEvaluators : ISimulationEvaluators
     {
-        protected Dictionary<Simulation, IEvaluator> evaluators = new Dictionary<Simulation, IEvaluator>();
+        private Dictionary<Simulation, IEvaluator> evaluators = new Dictionary<Simulation, IEvaluator>();
         private ReaderWriterLockSlim cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
 
         public SimulationEvaluators(IEvaluator sourceEvaluator)

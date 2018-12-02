@@ -203,7 +203,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         {
                             Functions = context.ReadingExpressionContext.Functions,
                         }).FoundParameters;
-
             }
 
             subCircuitExpressionContext.SetParameters(subcircuitParameters, pp);
@@ -240,7 +239,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 subcircuitName,
                 context.ExpressionParser,
                 context.SimulationPreparations,
-                context.SimulutionEvaluators,
+                context.SimulationEvaluators,
                 context.SimulationExpressionContexts,
                 context.Result,
                 subcircuitNodeNameGenerator,
@@ -252,7 +251,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 subCircuitExpressionContext,
                 context.CaseSensitivity,
                 context,
-                context.Exporters);
+                context.Exporters,
+                context.WorkingDirectory);
         }
 
         /// <summary>

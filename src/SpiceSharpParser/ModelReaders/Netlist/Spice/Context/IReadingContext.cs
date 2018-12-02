@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -27,7 +27,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets the simulation evaluators.
         /// </summary>
-        ISimulationEvaluators SimulutionEvaluators { get; }
+        ISimulationEvaluators SimulationEvaluators { get; }
 
         /// <summary>
         /// Gets the reading evaluator.
@@ -94,7 +94,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         SpiceNetlistCaseSensitivitySettings CaseSensitivity { get; set; }
 
+        /// <summary>
+        /// Gets the expression parser.
+        /// </summary>
         IExpressionParser ExpressionParser { get; }
+
+        /// <summary>
+        /// Gets or sets working directory.
+        /// </summary>
+        string WorkingDirectory { get; }
 
         /// <summary>
         /// Parses an expression to double.
@@ -105,16 +113,28 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </returns>
         double EvaluateDouble(string expression);
 
-        void SetParameter(string pName, double time);
+        /// <summary>
+        /// Sets a parameter.
+        /// </summary>
+        /// <param name="parameterName">Parameter name.</param>
+        /// <param name="value">Parameter value.</param>
+        void SetParameter(string parameterName, double value);
+
+        /// <summary>
+        /// Sets a parameter.
+        /// </summary>
+        /// <param name="parameterName">Parameter name.</param>
+        /// <param name="valueExpression">Parameter value expression.</param>
+        void SetParameter(string parameterName, string valueExpression);
 
         /// <summary>
         /// Sets parameter of entity to value of expression.
         /// </summary>
-        /// <param name="entity">Entity</param>
+        /// <param name="entity">Entity.</param>
         /// <param name="parameterName">Parameter name.</param>
-        /// <param name="expression">Expression.</param>
-        /// <param name="onload">Should be re-evaluated OnBeforeLoad</param>
-        void SetParameter(Entity entity, string parameterName, string expression, bool onload = true);
+        /// <param name="valueExpression">Value expression.</param>
+        /// <param name="onload">Should be re-evaluated OnBeforeLoad.</param>
+        void SetParameter(Entity entity, string parameterName, string valueExpression, bool onload = true);
 
         /// <summary>
         /// Sets the initial voltage.
@@ -136,8 +156,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="statements">Statements.</param>
         /// <param name="orderer">Orderer of statements.</param>
         void Read(Statements statements, ISpiceStatementsOrderer orderer);
-
-        void SetParameter(string pName, string expression);
 
         void AddFunction(string functionName, List<string> arguments, string body);
 

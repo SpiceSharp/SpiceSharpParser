@@ -1,6 +1,4 @@
-﻿using SpiceSharpParser.Lexers;
-
-namespace SpiceSharpParser.Lexers.Netlist.Spice
+﻿namespace SpiceSharpParser.Lexers.Netlist.Spice
 {
     /// <summary>
     /// <see cref="SpiceLexer"/> state.
@@ -10,7 +8,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
         public SpiceLexerState()
         {
         }
-      
+
         /// <summary>
         /// Gets or sets a value indicating whether lexer in "comment" lexing state.
         /// </summary>

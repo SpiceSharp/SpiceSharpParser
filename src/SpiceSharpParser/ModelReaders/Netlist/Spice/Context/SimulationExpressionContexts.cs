@@ -44,7 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                     {
                         context = SourceContext.Clone();
                         context.Data = simulation;
-                        context.Seed = SourceContext.Seed + Contexts.Count; //TODO: better hack
+                        context.Seed = SourceContext.Seed + Contexts.Count; // TODO: better hack
                         Contexts[simulation] = context;
                         return context;
                     }

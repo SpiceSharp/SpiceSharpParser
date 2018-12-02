@@ -9,6 +9,6 @@
         /// <returns>
         /// The content of the file.
         /// </returns>
-        string GetFileContent(string path);
+        string ReadAll(string path);
     }
 }
