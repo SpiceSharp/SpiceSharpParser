@@ -174,7 +174,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         private void ReadSingleLib(Statements statements, string currentDirectoryPath, Control lib)
         {
             // get full path of .lib
-            string libPath = ConvertPath(lib.Parameters.GetString(0));
+            string libPath = PathConverter.Convert(lib.Parameters.GetString(0));
             bool isAbsolutePath = Path.IsPathRooted(libPath);
             string libFullPath = isAbsolutePath ? libPath : Path.Combine(currentDirectoryPath, libPath);
 
@@ -219,25 +219,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             {
                 throw new InvalidOperationException($"Netlist include at {libFullPath} could not be loaded");
             }
-        }
-
-        private string ConvertPath(string includePath)
-        {
-#if NET45
-            return includePath.Replace("/", "\\"); // NET45 can run on Windows
-#else
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                return includePath.Replace("/", "\\");
-            }
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                return includePath.Replace("\\", "/");
-            }
-
-            return includePath;
-#endif
         }
     }
 }

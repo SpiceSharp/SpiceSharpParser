@@ -107,13 +107,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
         private static Waveform CreatePwlFromFile(ParameterCollection parameters, IReadingContext context)
         {
             var fileParameter = (AssignmentParameter)parameters.First(p => p is AssignmentParameter ap && ap.Name.ToLower() == "file");
-            var filePath = fileParameter.Value;
+            var filePath = PathConverter.Convert(fileParameter.Value);
             var workingDirectory = context.WorkingDirectory ?? Directory.GetCurrentDirectory();
             var fullFilePath = Path.Combine(workingDirectory, filePath);
 
             if (!File.Exists(fullFilePath))
             {
-                throw new ArgumentException("PWL file doesn't not exist:" + fullFilePath);
+                throw new ArgumentException("PWL file does not exist:" + fullFilePath);
             }
 
             List<double[]> csvData = CsvFileReader.Read(fullFilePath, true).ToList();
