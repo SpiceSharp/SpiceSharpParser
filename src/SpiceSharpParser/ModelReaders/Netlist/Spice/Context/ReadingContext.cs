@@ -20,8 +20,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Initializes a new instance of the <see cref="ReadingContext"/> class.
         /// </summary>
         /// <param name="contextName">Name of the context.</param>
+        /// <param name="parser">Expression parser.</param>
         /// <param name="simulationPreparations">Parameters.</param>
         /// <param name="simulationEvaluators">Evaluator for the context.</param>
+        /// <param name="contexts">Context. </param>
         /// <param name="resultService">SpiceSharpModel service for the context.</param>
         /// <param name="nodeNameGenerator">Name generator for the nodes.</param>
         /// <param name="componentNameGenerator">Name generator for the components.</param>
@@ -32,6 +34,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="readingExpressionContext">Reading expression context.</param>
         /// <param name="caseSettings">Case settings.</param>
         /// <param name="parent">Parent of th context.</param>
+        /// <param name="exporters">Exporters.</param>
+        /// <param name="workingDirectory">Working directory.</param>
         public ReadingContext(
             string contextName,
             IExpressionParser parser,
@@ -48,7 +52,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             ExpressionContext readingExpressionContext,
             SpiceNetlistCaseSensitivitySettings caseSettings,
             IReadingContext parent,
-            IMapper<Exporter> exporters)
+            IMapper<Exporter> exporters,
+            string workingDirectory = null)
         {
             Name = contextName ?? throw new ArgumentNullException(nameof(contextName));
             Result = resultService ?? throw new ArgumentNullException(nameof(resultService));
@@ -62,7 +67,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             ExpressionParser = parser;
             ReadingExpressionContext = readingExpressionContext;
             SimulationPreparations = simulationPreparations;
-            SimulutionEvaluators = simulationEvaluators;
+            SimulationEvaluators = simulationEvaluators;
             StatementsReader = statementsReader;
             WaveformReader = waveformReader;
             ReadingEvaluator = readingEvaluator;
@@ -70,7 +75,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             AvailableSubcircuits = CreateAvailableSubcircuitsCollection();
             ModelsRegistry = CreateModelsRegistry();
             Exporters = exporters;
+            WorkingDirectory = workingDirectory;
         }
+
+        /// <summary>
+        /// Gets the working directory.
+        /// </summary>
+        public string WorkingDirectory { get; }
 
         /// <summary>
         /// Gets or sets the name of context.
@@ -85,7 +96,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets the simulationEvaluators for the context.
         /// </summary>
-        public ISimulationEvaluators SimulutionEvaluators { get; }
+        public ISimulationEvaluators SimulationEvaluators { get; }
 
         /// <summary>
         /// Gets the reading evaluator.
@@ -168,7 +179,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Sets voltage initial condition for node.
         /// </summary>
         /// <param name="nodeName">Name of node.</param>
-        /// <param name="expression">Expression.</param>
+        /// <param name="expression">Expression string.</param>
         public void SetICVoltage(string nodeName, string expression)
         {
             var nodeId = NodeNameGenerator.Generate(nodeName);
@@ -201,7 +212,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="value">Parameter value.</param>
         public void SetParameter(string parameterName, double value)
         {
-            this.ReadingExpressionContext.SetParameter(parameterName, value);
+            ReadingExpressionContext.SetParameter(parameterName, value);
         }
 
         /// <summary>
@@ -238,32 +249,28 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public void SetParameter(string pName, string expression)
         {
-            this.ReadingExpressionContext.SetParameter(
+            ReadingExpressionContext.SetParameter(
                 pName,
                 expression,
-                ExpressionParser.Parse(
-                    expression,
-                    new ExpressionParserContext(CaseSensitivity.IsFunctionNameCaseSensitive)
-                        {
-                            Functions = this.ReadingExpressionContext.Functions,
-                        }).FoundParameters);
+                ExpressionParser.Parse(expression, new ExpressionParserContext(CaseSensitivity.IsFunctionNameCaseSensitive) { Functions = this.ReadingExpressionContext.Functions, }).FoundParameters);
         }
 
         public void AddFunction(string functionName, List<string> arguments, string body)
         {
             FunctionFactory factory = new FunctionFactory();
-            this.ReadingExpressionContext.Functions.Add(functionName, factory.Create(functionName, arguments, body));
+            ReadingExpressionContext.Functions.Add(functionName, factory.Create(functionName, arguments, body));
         }
 
         public void SetNamedExpression(string expressionName, string expression)
         {
-            this.ReadingExpressionContext.SetNamedExpression(expressionName, expression,
-                ExpressionParser.Parse(
-                    expression,
-                    new ExpressionParserContext(CaseSensitivity.IsFunctionNameCaseSensitive)
-                        {
-                            Functions = this.ReadingExpressionContext.Functions
-                        }).FoundParameters);
+            var foundParameters = ExpressionParser.Parse(
+                expression,
+                new ExpressionParserContext(CaseSensitivity.IsFunctionNameCaseSensitive)
+                    {
+                        Functions = this.ReadingExpressionContext.Functions,
+                    }).FoundParameters;
+
+            ReadingExpressionContext.SetNamedExpression(expressionName, expression, foundParameters);
         }
 
         public void SetParameter(Entity entity, string parameterName, string expression, bool onload = true)
@@ -281,7 +288,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 expression,
                 new ExpressionParserContext(CaseSensitivity.IsFunctionNameCaseSensitive)
                     {
-                        Functions = this.ReadingExpressionContext.Functions
+                        Functions = this.ReadingExpressionContext.Functions,
                     });
 
             if (parseResult.IsConstantExpression == false)

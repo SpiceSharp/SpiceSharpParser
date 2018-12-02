@@ -61,7 +61,7 @@ namespace SpiceSharpParser.Common.Mathematics
 
             return result;
         }
-    
+
         /// <summary>
         /// Gets a value of factorial.
         /// </summary>
@@ -82,7 +82,7 @@ namespace SpiceSharpParser.Common.Mathematics
         }
 
         /// <summary>
-        /// Gets the number of combinations with repetitions 
+        /// Gets the number of combinations with repetitions.
         /// </summary>
         /// <param name="k">Size of combination.</param>
         /// <param name="n">Number of elements.</param>
@@ -115,6 +115,7 @@ namespace SpiceSharpParser.Common.Mathematics
             {
                 combination[i] = 1;
             }
+
             return combination;
         }
 

@@ -49,6 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                         }
                     };
                 }
+
                 return simulation;
             };
         }
@@ -63,7 +64,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
                 if (parameter is AssignmentParameter asg)
                 {
-                    var evaluator = context.SimulutionEvaluators.GetEvaluator(sim);
+                    var evaluator = context.SimulationEvaluators.GetEvaluator(sim);
 
                     var parameterName = asg.Name;
                     var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<double>(parameterName, comparer);
@@ -87,7 +88,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
                 if (parameter is AssignmentParameter asg)
                 {
-                    var evaluator = context.SimulutionEvaluators.GetEvaluator(sim);
+                    var evaluator = context.SimulationEvaluators.GetEvaluator(sim);
 
                     var asgparamName = asg.Name;
                     var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<double>(asgparamName, comparer);

@@ -112,7 +112,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             // get full path of .include
             string includePath = include.Parameters.GetString(0);
 
-            includePath = ConvertPath(includePath);
+            includePath = PathConverter.Convert(includePath);
 
             bool isAbsolutePath = Path.IsPathRooted(includePath);
             string includeFullPath = isAbsolutePath ? includePath : Path.Combine(currentDirectoryPath, includePath);
@@ -124,7 +124,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             }
 
             // get include content
-            string includeContent = FileReader.GetFileContent(includeFullPath);
+            string includeContent = FileReader.ReadAll(includeFullPath);
             if (includeContent != null)
             {
                 var lexerSettings = new SpiceLexerSettings()
@@ -145,7 +145,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
                 // process includes of include netlist
                 includeModel.Statements = Process(includeModel.Statements, Path.GetDirectoryName(includeFullPath));
-                
+
                 // replace statement by the content of the include
                 statements.Replace(include, includeModel.Statements);
             }
@@ -153,25 +153,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             {
                 throw new InvalidOperationException($"Netlist include at {includeFullPath} could not be loaded");
             }
-        }
-
-        private string ConvertPath(string includePath)
-        {
-#if NET45
-            return includePath.Replace("/", "\\"); // NET45 can run on Windows
-#else
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                return includePath.Replace("/", "\\");
-            }
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                return includePath.Replace("\\", "/");
-            }
-
-            return includePath;
-#endif
         }
     }
 }

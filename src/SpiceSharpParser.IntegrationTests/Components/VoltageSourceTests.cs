@@ -6,7 +6,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
     public class VoltageSourceTests : BaseTests
     {
         [Fact]
-        public void PulseWithoutBracket_NoException()
+        public void When_PulseWithoutBracket_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -21,7 +21,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void PulseWithBracket_NoException()
+        public void When_PulseWithBracket_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -35,7 +35,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void SineWithBracket_NoException()
+        public void When_SineWithBracket_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -50,7 +50,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void SineWithoutBracket_NoException()
+        public void When_SineWithoutBracket_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -65,7 +65,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void SinWithBracket_NoException()
+        public void When_SinWithBracket_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -80,7 +80,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void SinWithoutBracket_NoException()
+        public void When_SinWithoutBracket_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -95,7 +95,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void PwlWithBracket_NoException()
+        public void When_PwlWithBracket_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -110,7 +110,83 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void PwlWithoutBracket_NoException()
+        public void When_PwlFileWithSpaces_Expect_NoException()
+        {
+            var netlist = ParseNetlist(
+                "PWL file voltage source",
+                "V1 1 0 Pwl file = Resources\\pwl_space.txt",
+                "R1 1 0 10",
+                ".SAVE V(1,0)",
+                ".TRAN 1e-8 1e-5",
+                ".END");
+
+            Assert.NotNull(netlist);
+            RunTransientSimulation(netlist, "V(1,0)");
+        }
+
+        [Fact]
+        public void When_PwlFileWithCommas_Expect_NoException()
+        {
+            var netlist = ParseNetlist(
+                "PWL file voltage source",
+                "V1 1 0 Pwl file = Resources\\pwl_comma.txt",
+                "R1 1 0 10",
+                ".SAVE V(1,0)",
+                ".TRAN 1e-8 1e-5",
+                ".END");
+
+            Assert.NotNull(netlist);
+            RunTransientSimulation(netlist, "V(1,0)");
+        }
+
+        [Fact]
+        public void When_PwlFileWithSemicolon_Expect_NoException()
+        {
+            var netlist = ParseNetlist(
+                "PWL file voltage source",
+                "V1 1 0 Pwl file = Resources\\pwl_semicolon.txt",
+                "R1 1 0 10",
+                ".SAVE V(1,0)",
+                ".TRAN 1e-8 1e-5",
+                ".END");
+
+            Assert.NotNull(netlist);
+            RunTransientSimulation(netlist, "V(1,0)");
+        }
+
+        [Fact]
+        public void When_PwlFileWithQuotes_Expect_NoException()
+        {
+            var netlist = ParseNetlist(
+                "PWL file voltage source",
+                "V1 1 0 Pwl file = \"Resources\\pwl_space.txt\"",
+                "R1 1 0 10",
+                ".SAVE V(1,0)",
+                ".TRAN 1e-8 1e-5",
+                ".END");
+
+            Assert.NotNull(netlist);
+            RunTransientSimulation(netlist, "V(1,0)");
+        }
+
+        [Fact]
+        public void When_PwlFile_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "Voltage source",
+                "V1 1 0 PWL file = \"Resources\\pwl_reference.txt\"",
+                "R1 1 0 10",
+                ".SAVE V(1,0)",
+                ".TRAN 0.1 1.5",
+                ".END");
+
+            Assert.NotNull(netlist);
+            var exports = RunTransientSimulation(netlist, "V(1,0)");
+            Assert.True(exports.All(export => EqualsWithToWithoutAssert(export.Item2, (export.Item1 < 1.0 ? 2.0 * export.Item1 : 2.0))));
+        }
+
+        [Fact]
+        public void When_PwlWithoutBracket_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -125,7 +201,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void PwlWithoutBracketWithCommas_NoException()
+        public void When_PwlWithoutBracketWithCommas_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -140,7 +216,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void Pwl_OnePoint_Expect_Reference()
+        public void When_PwlOnePoint_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -156,7 +232,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void Pwl_TwoPoints_Expect_Reference()
+        public void When_PwlTwoPoints_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -172,7 +248,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void Pwl_TwoPointsWithAc_Expect_Reference()
+        public void When_PwlTwoPointsWithAc_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -189,7 +265,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void Pwl_TwoPointsWithCommas_Expect_Reference()
+        public void When_PwlTwoPointsWithCommas_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -205,7 +281,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void Pwl_MinusTimePoint_Expect_Reference()
+        public void When_PwlMinusTimePoint_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -221,7 +297,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void ACWithoutValue_Expect_NoException()
+        public void When_ACWithoutValue_Expect_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -236,7 +312,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void ACWithDC_Expect_NoException()
+        public void When_ACWithDC_Expect_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -251,7 +327,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void DCWithoutValue_Expect_NoException()
+        public void When_DCWithoutValue_Expect_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -265,7 +341,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void ACPlusSin_Expect_NoException()
+        public void When_ACPlusSin_Expect_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -281,7 +357,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void ACPlusSine_Expect_NoException()
+        public void When_ACPlusSine_Expect_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -297,7 +373,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void ACPlusPulse_Expect_NoException()
+        public void When_ACPlusPulse_Expect_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -313,7 +389,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void ACPlusPwl_Expect_NoException()
+        public void When_ACPlusPwl_Expect_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",
@@ -329,7 +405,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void DCAndAC_Expect_NoException()
+        public void When_DCAndAC_Expect_NoException()
         {
             var netlist = ParseNetlist(
                 "Voltage source",

@@ -59,6 +59,62 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             evaluators.Add(Symbols.NewLines, (ParseTreeNodeEvaluationValues nt) => null);
         }
 
+        /// <summary>
+        /// Translates a SPICE parse tree to a context.
+        /// </summary>
+        /// <param name="root">A parse tree root.</param>
+        /// <returns>A netlist.</returns>
+        public SpiceObject Evaluate(ParseTreeNode root)
+        {
+            var traversal = new ParseTreeTraversal();
+
+            // Get tree nodes in post order
+            var treeNodes = traversal.GetIterativePostOrder(root);
+
+            // Iterate over tree nodes
+            foreach (var treeNode in treeNodes)
+            {
+                if (treeNode is ParseTreeNonTerminalNode nt)
+                {
+                    var items = new ParseTreeNodeEvaluationValues();
+
+                    foreach (var child in nt.Children)
+                    {
+                        items.Add(treeNodesValues[child]);
+                    }
+
+                    if (!evaluators.ContainsKey(nt.Name))
+                    {
+                        throw new ParseTreeEvaluationException("Unsupported evaluation of parse tree node: " + nt.Name);
+                    }
+
+                    var treeNodeResult = evaluators[nt.Name](items);
+                    treeNodesValues[treeNode] = new ParseTreeNonTerminalEvaluationValue
+                                                    {
+                                                        SpiceObject = treeNodeResult,
+                                                        Node = treeNode,
+                                                    };
+                }
+                else
+                {
+                    treeNodesValues[treeNode] = new ParseTreeNodeTerminalEvaluationValue()
+                                                    {
+                                                        Node = treeNode,
+                                                        Token = ((ParseTreeTerminalNode)treeNode).Token,
+                                                    };
+                }
+            }
+
+            if (treeNodesValues[root] is ParseTreeNonTerminalEvaluationValue rootNt)
+            {
+                return rootNt.SpiceObject;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         private SpiceObject CreatePointValues(ParseTreeNodeEvaluationValues values)
         {
             var pointValues = new PointValues();
@@ -135,62 +191,6 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             }
 
             return points;
-        }
-
-        /// <summary>
-        /// Translates a SPICE parse tree to a context.
-        /// </summary>
-        /// <param name="root">A parse tree root.</param>
-        /// <returns>A netlist.</returns>
-        public SpiceObject Evaluate(ParseTreeNode root)
-        {
-            var traversal = new ParseTreeTraversal();
-
-            // Get tree nodes in post order
-            var treeNodes = traversal.GetIterativePostOrder(root);
-
-            // Iterate over tree nodes
-            foreach (var treeNode in treeNodes)
-            {
-                if (treeNode is ParseTreeNonTerminalNode nt)
-                {
-                    var items = new ParseTreeNodeEvaluationValues();
-
-                    foreach (var child in nt.Children)
-                    {
-                        items.Add(treeNodesValues[child]);
-                    }
-
-                    if (!evaluators.ContainsKey(nt.Name))
-                    {
-                        throw new ParseTreeEvaluationException("Unsupported evaluation of parse tree node: " + nt.Name);
-                    }
-
-                    var treeNodeResult = evaluators[nt.Name](items);
-                    treeNodesValues[treeNode] = new ParseTreeNonTerminalEvaluationValue
-                    {
-                        SpiceObject = treeNodeResult,
-                        Node = treeNode,
-                    };
-                }
-                else
-                {
-                    treeNodesValues[treeNode] = new ParseTreeNodeTerminalEvaluationValue()
-                    {
-                        Node = treeNode,
-                        Token = ((ParseTreeTerminalNode)treeNode).Token,
-                    };
-                }
-            }
-
-            if (treeNodesValues[root] is ParseTreeNonTerminalEvaluationValue rootNt)
-            {
-                return rootNt.SpiceObject;
-            }
-            else
-            {
-                return null;
-            }
         }
 
         /// <summary>
@@ -690,7 +690,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 return new ExpressionEqualParameter()
                 {
                     Expression = values.GetLexem(0).Trim('{', '}'),
-                    Points = values.GetSpiceObject<Points>(1)
+                    Points = values.GetSpiceObject<Points>(1),
                 };
             }
             else if (values.Count == 3)
@@ -698,7 +698,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 return new ExpressionEqualParameter()
                 {
                     Expression = values.GetLexem(0).Trim('{', '}'),
-                    Points = values.GetSpiceObject<Points>(2)
+                    Points = values.GetSpiceObject<Points>(2),
                 };
             }
             else

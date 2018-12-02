@@ -9,10 +9,10 @@ namespace SpiceSharpParser.Common.FileSystem
     /// <summary>
     /// Creates CSV files.
     /// </summary>
-    public class CsvFileWriter
+    public static class CsvFileWriter
     {
         /// <summary>
-        /// Creates a csv file.
+        /// Writes a CSV file into a file system.
         /// </summary>
         /// <param name="path">Path of file to create.</param>
         /// <param name="columns">Columns of csv.</param>

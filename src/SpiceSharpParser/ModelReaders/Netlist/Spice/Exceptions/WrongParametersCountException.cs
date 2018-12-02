@@ -1,5 +1,4 @@
-﻿using SpiceSharp;
-using System;
+﻿using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
 {

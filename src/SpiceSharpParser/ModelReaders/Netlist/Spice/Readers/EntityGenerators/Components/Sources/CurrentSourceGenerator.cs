@@ -97,7 +97,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
             else
             {
-                if (parameters.Count == 3 
+                if (parameters.Count == 3
                     && parameters[0] is PointParameter pp1 && pp1.Values.Count() == 2
                     && parameters[1] is PointParameter pp2 && pp2.Values.Count() == 2)
                 {

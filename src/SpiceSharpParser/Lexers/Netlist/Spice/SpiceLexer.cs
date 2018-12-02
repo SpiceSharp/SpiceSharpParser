@@ -85,6 +85,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                             {
                                 openBracketCount--;
                             }
+
                             if (textToLex[i] == '{')
                             {
                                 openBracketCount++;
@@ -95,6 +96,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                         {
                             return textToLex.Substring(0, i);
                         }
+
                         throw new LexerException("Not matched brackets for expression");
                     }));
 

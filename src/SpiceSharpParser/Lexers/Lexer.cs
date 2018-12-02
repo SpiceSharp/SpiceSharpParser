@@ -65,6 +65,7 @@ namespace SpiceSharpParser.Lexers
                     {
                         state.LineNumber += continuationLines;
                     }
+
                     textToLex = GetTextToLex(strReader, currentTokenIndex, out continuationLines);
                     getNextTextToLex = false;
                 }

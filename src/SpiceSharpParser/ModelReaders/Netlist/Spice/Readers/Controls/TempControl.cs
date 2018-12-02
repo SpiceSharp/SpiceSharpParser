@@ -30,7 +30,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             foreach (Parameter param in statement.Parameters)
             {
                 if (param is Models.Netlist.Spice.Objects.Parameters.SingleParameter
-                    && (param is Models.Netlist.Spice.Objects.Parameters.ValueParameter 
+                    && (param is Models.Netlist.Spice.Objects.Parameters.ValueParameter
                         || param is Models.Netlist.Spice.Objects.Parameters.ExpressionParameter))
                 {
                     context.Result.SimulationConfiguration.TemperaturesInKelvins.Add(context.EvaluateDouble(param.Image) + Circuit.CelsiusKelvin);

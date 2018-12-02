@@ -10,55 +10,53 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
     /// </summary>
     public class ParseTreeGenerator
     {
-        delegate void Parser(
+        private Dictionary<string, Parser> _parsers = new Dictionary<string, Parser>();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ParseTreeGenerator"/> class.
+        /// </summary>
+        /// <param name="isDotStatementNameCaseSensitive">Are dot statements case-sensitive.</param>
+        public ParseTreeGenerator(bool isDotStatementNameCaseSensitive)
+        {
+            IsDotStatementNameCaseSensitive = isDotStatementNameCaseSensitive;
+            _parsers.Add(Symbols.Netlist, ReadNetlist);
+            _parsers.Add(Symbols.NetlistWithoutTitle, ReadNetlistWithoutTitle);
+            _parsers.Add(Symbols.NetlistEnding, ReadNetlistEnding);
+            _parsers.Add(Symbols.Statements, ReadStatements);
+            _parsers.Add(Symbols.Statement, ReadStatement);
+            _parsers.Add(Symbols.CommentLine, ReadCommentLine);
+            _parsers.Add(Symbols.Subckt, ReadSubckt);
+            _parsers.Add(Symbols.SubcktEnding, ReadSubcktEnding);
+            _parsers.Add(Symbols.Component, ReadComponent);
+            _parsers.Add(Symbols.Control, ReadControl);
+            _parsers.Add(Symbols.Model, ReadModel);
+            _parsers.Add(Symbols.Parameters, ReadParameters);
+            _parsers.Add(Symbols.ParametersSeperator, ReadParametersSeparator);
+            _parsers.Add(Symbols.Parameter, ReadParameter);
+            _parsers.Add(Symbols.ParameterSingle, ReadParameterSingle);
+            _parsers.Add(Symbols.ParameterBracket, ReadParameterBracket);
+            _parsers.Add(Symbols.ParameterBracketContent, ReadParameterBracketContent);
+            _parsers.Add(Symbols.ParameterEqual, ReadParameterEqual);
+            _parsers.Add(Symbols.ParameterEqualSingle, ReadParameterEqualSingle);
+            _parsers.Add(Symbols.Vector, ReadVector);
+            _parsers.Add(Symbols.VectorContinue, ReadVectorContinue);
+            _parsers.Add(Symbols.NewLine, ReadNewLine);
+            _parsers.Add(Symbols.NewLines, ReadNewLines);
+            _parsers.Add(Symbols.ExpressionEqual, ReadExpressionEqual);
+            _parsers.Add(Symbols.Points, ReadPoints);
+            _parsers.Add(Symbols.PointsContinue, ReadPointsContinue);
+            _parsers.Add(Symbols.Point, ReadPoint);
+            _parsers.Add(Symbols.PointValues, ReadPointValues);
+            _parsers.Add(Symbols.PointValue, ReadPointValue);
+        }
+
+        protected delegate void Parser(
             Stack<ParseTreeNode> stack,
             ParseTreeNonTerminalNode currentNode,
             SpiceToken[] tokens,
             int currentTokenIndex);
 
-        private Dictionary<string, Parser> parsers = new Dictionary<string, Parser>();
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ParseTreeGenerator"/> class.
-        /// </summary>
-        /// <param name="isNewLineRequiredAtTheEnd">Is NEWLINE required at the end.</param>
-        /// <param name="isDotStatementNameCaseSensitive">Are dot statements case-sensitive.</param>
-        public ParseTreeGenerator(bool isNewLineRequiredAtTheEnd, bool isDotStatementNameCaseSensitive)
-        {
-            IsDotStatementNameCaseSensitive = isDotStatementNameCaseSensitive;
-            parsers.Add(Symbols.Netlist, ReadNetlist);
-            parsers.Add(Symbols.NetlistWithoutTitle, ReadNetlistWithoutTitle);
-            parsers.Add(Symbols.NetlistEnding, ReadNetlistEnding);
-            parsers.Add(Symbols.Statements, ReadStatements);
-            parsers.Add(Symbols.Statement, ReadStatement);
-            parsers.Add(Symbols.CommentLine, ReadCommentLine);
-            parsers.Add(Symbols.Subckt, ReadSubckt);
-            parsers.Add(Symbols.SubcktEnding, ReadSubcktEnding);
-            parsers.Add(Symbols.Component, ReadComponent);
-            parsers.Add(Symbols.Control, ReadControl);
-            parsers.Add(Symbols.Model, ReadModel);
-            parsers.Add(Symbols.Parameters, ReadParameters);
-            parsers.Add(Symbols.ParametersSeperator, ReadParametersSeparator);
-            parsers.Add(Symbols.Parameter, ReadParameter);
-            parsers.Add(Symbols.ParameterSingle, ReadParameterSingle);
-            parsers.Add(Symbols.ParameterBracket, ReadParameterBracket);
-            parsers.Add(Symbols.ParameterBracketContent, ReadParameterBracketContent);
-            parsers.Add(Symbols.ParameterEqual, ReadParameterEqual);
-            parsers.Add(Symbols.ParameterEqualSingle, ReadParameterEqualSingle);
-            parsers.Add(Symbols.Vector, ReadVector);
-            parsers.Add(Symbols.VectorContinue, ReadVectorContinue);
-            parsers.Add(Symbols.NewLine, ReadNewLine);
-            parsers.Add(Symbols.NewLines, ReadNewLines);
-
-            parsers.Add(Symbols.ExpressionEqual, ReadExpressionEqual);
-            parsers.Add(Symbols.Points, ReadPoints);
-            parsers.Add(Symbols.PointsContinue, ReadPointsContinue);
-            parsers.Add(Symbols.Point, ReadPoint);
-            parsers.Add(Symbols.PointValues, ReadPointValues);
-            parsers.Add(Symbols.PointValue, ReadPointValue);
-        }
-
-        private bool IsDotStatementNameCaseSensitive { get; }
+        protected bool IsDotStatementNameCaseSensitive { get; }
 
         /// <summary>
         /// Generates a parse tree for SPICE grammar.
@@ -87,9 +85,9 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 var currentNode = stack.Pop();
                 if (currentNode is ParseTreeNonTerminalNode ntn)
                 {
-                    if (parsers.ContainsKey(ntn.Name))
+                    if (this._parsers.ContainsKey(ntn.Name))
                     {
-                        parsers[ntn.Name](stack, ntn, tokens, currentTokenIndex);
+                        this._parsers[ntn.Name](stack, ntn, tokens, currentTokenIndex);
                     }
                     else
                     {
@@ -133,6 +131,21 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             return root;
         }
 
+        private static bool IsEqualTokens(SpiceToken[] tokens, int currentTokenIndex)
+        {
+            while (tokens.Length > currentTokenIndex && tokens[currentTokenIndex].Lexem != ")")
+            {
+                currentTokenIndex += 1;
+            }
+
+            if (currentTokenIndex + 1 >= tokens.Length - 1)
+            {
+                return false;
+            }
+
+            return tokens[currentTokenIndex + 1].Lexem == "=";
+        }
+
         /// <summary>
         /// Reads <see cref="Symbols.SubcktEnding"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
@@ -167,7 +180,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 throw new ParseException("Error during parsing subcircuit. Expected .ENDS. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
             }
         }
-        
+
         /// <summary>
         /// Reads <see cref="Symbols.NewLines"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
@@ -303,7 +316,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         private void ReadNetlistEnding(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
-            
+
             if (currentToken.Is(SpiceTokenType.END))
             {
                 var nextToken = tokens[currentTokenIndex + 1];
@@ -636,7 +649,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         private void ReadPointValues(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
             var currentToken = tokens[currentTokenIndex];
-            var nextToken = tokens[currentTokenIndex + 1];          
+            var nextToken = tokens[currentTokenIndex + 1];
 
             if (nextToken.Is(SpiceTokenType.DELIMITER) && nextToken.Lexem == ")")
             {
@@ -831,7 +844,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 || currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
                 || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES)
                 || currentToken.Is(SpiceTokenType.PERCENT)
-                || currentToken.Is(SpiceTokenType.DELIMITER) && currentToken.Lexem == "(")
+                || (currentToken.Is(SpiceTokenType.DELIMITER) && currentToken.Lexem == "("))
             {
                     PushProductionExpression(
                         stack,
@@ -1084,7 +1097,6 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                         || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES)
                         || currentToken.Is(SpiceTokenType.PERCENT))
                     {
-
                         if (currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
                             || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES))
                         {
@@ -1110,7 +1122,6 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                         }
                         else
                         {
-
                             PushProductionExpression(
                                 stack,
                                 CreateNonTerminalNode(Symbols.ParameterSingle, currentNode));
@@ -1122,21 +1133,6 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     }
                 }
             }
-        }
-
-        private static bool IsEqualTokens(SpiceToken[] tokens, int currentTokenIndex)
-        {
-            while (tokens.Length > currentTokenIndex && tokens[currentTokenIndex].Lexem != ")")
-            {
-                currentTokenIndex += 1;
-            }
-
-            if (currentTokenIndex + 1 >= tokens.Length - 1)
-            {
-                return false;
-            }
-
-            return tokens[currentTokenIndex + 1].Lexem == "=";
         }
 
         /// <summary>

@@ -21,7 +21,7 @@ namespace SpiceSharpParser.Common.StringComparers
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
         /// </returns>
         public int GetHashCode(string obj)
         {

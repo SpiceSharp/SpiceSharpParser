@@ -47,6 +47,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
             {
                 return true;
             }
+
             return false;
         }
     }

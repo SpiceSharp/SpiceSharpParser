@@ -54,11 +54,6 @@ namespace SpiceSharpParser.Common.Evaluation
             CurrentValue = double.NaN;
         }
 
-        protected void OnEvaluated(double newValue)
-        {
-            Evaluated?.Invoke(this, new EvaluatedArgs() { NewValue = newValue });
-        }
-
         /// <summary>
         /// Clones the expression.
         /// </summary>
@@ -70,6 +65,11 @@ namespace SpiceSharpParser.Common.Evaluation
             var result = new Expression(ValueExpression);
             result.CurrentValue = double.NaN;
             return result;
+        }
+
+        protected void OnEvaluated(double newValue)
+        {
+            Evaluated?.Invoke(this, new EvaluatedArgs() { NewValue = newValue });
         }
     }
 }

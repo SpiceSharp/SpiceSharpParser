@@ -1,15 +1,32 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
+﻿using System;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
     public class SpiceNetlistReaderSettings
     {
-        public SpiceNetlistReaderSettings(SpiceNetlistCaseSensitivitySettings caseSensitivitySettings)
+        /// <summary>
+        /// Working directory provider.
+        /// </summary>
+        private readonly Func<string> _workingDirectoryProvider;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpiceNetlistReaderSettings"/> class. 
+        /// </summary>
+        /// <param name="caseSensitivitySettings">
+        /// Case sensitivity settings.
+        /// </param>
+        /// <param name="workingDirectoryProvider">
+        /// Working directory provider.
+        /// </param>
+        public SpiceNetlistReaderSettings(SpiceNetlistCaseSensitivitySettings caseSensitivitySettings, Func<string> workingDirectoryProvider)
         {
             EvaluatorMode = SpiceExpressionMode.Spice3f5;
             Mappings = new SpiceObjectMappings();
             Orderer = new SpiceStatementsOrderer();
-            CaseSensitivity = caseSensitivitySettings;
+
+            CaseSensitivity = caseSensitivitySettings ?? throw new ArgumentNullException(nameof(caseSensitivitySettings));
+            _workingDirectoryProvider = workingDirectoryProvider ?? throw new ArgumentNullException(nameof(workingDirectoryProvider));
         }
 
         /// <summary>
@@ -36,5 +53,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// Gets the case-sensitivity settings.
         /// </summary>
         public SpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
+
+        /// <summary>
+        /// Gets working directory.
+        /// </summary>
+        public string WorkingDirectory => _workingDirectoryProvider();
     }
 }

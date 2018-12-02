@@ -62,8 +62,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 result.AddRange(AllTemperaturesFactory.CreateSimulations(
                     statement,
                     context,
-                    createSimulationWithSweepParametersFactory
-                    ));
+                    createSimulationWithSweepParametersFactory));
             }
 
             return result;

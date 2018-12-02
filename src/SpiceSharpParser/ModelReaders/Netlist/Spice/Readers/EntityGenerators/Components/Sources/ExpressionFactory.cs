@@ -8,9 +8,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class ExpressionFactory
     {
-        public static string CreateTableExpression(string tableParameter, ExpressionEqualParameter eep)
+        public static string CreateTableExpression(string tableParameter, IEnumerable<PointParameter> points)
         {
-            var expression = $"table({tableParameter},{string.Join(",", eep.Points.Values.Select(v => string.Join(", ", v.Values.Select(a => a.Image).ToArray())).ToArray())})";
+            var expression = $"table({tableParameter},{string.Join(",", points.Select(v => string.Join(", ", v.Values.Select(a => a.Image).ToArray())).ToArray())})";
             return expression;
         }
 
@@ -26,6 +26,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             if (voltagesAreSpecifiedAsPoints)
             {
                 var variables = polyArguments.Take(dimension);
+
+                if (variables.Count < dimension)
+                {
+                    throw new WrongParametersCountException("Wrong parameter count for poly expression");
+                }
+
+                if (variables.Any(v => !(v is PointParameter)))
+                {
+                    throw new WrongParameterTypeException("Wrong parameter type for poly expression");
+                }
+
                 var variablesString = string.Join(",", variables.Select(v => $"v({((PointParameter)v).Values.Items[0].Image},{((PointParameter)v).Values.Items[1].Image})"));
 
                 var coefficients = polyArguments.Skip(dimension);
@@ -34,6 +45,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             else
             {
                 var variables = polyArguments.Take(2 * dimension);
+
+                if (variables.Count < 2 * dimension)
+                {
+                    throw new WrongParametersCountException("Wrong parameter count for poly expression");
+                }
+
+                if (variables.Any(v => !(v is SingleParameter)))
+                {
+                    throw new WrongParameterTypeException("Wrong parameter type for poly expression");
+                }
+
                 var voltages = new List<string>();
 
                 for (var i = 0; i < dimension; i++)
@@ -70,7 +92,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             ParameterCollection coefficients,
             string variablesString)
         {
-
             if (coefficients.Count == 1 && coefficients[0] is PointParameter pp)
             {
                 var coefficientsString = string.Join(",", pp.Values.Select(c => c.Image).ToArray());

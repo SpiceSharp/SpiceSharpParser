@@ -27,4 +27,19 @@
     <ProjectReference Include="..\SpiceSharpParser\SpiceSharpParser.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Resources\pwl_reference.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\pwl_comma.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\pwl_semicolon.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\pwl_space.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

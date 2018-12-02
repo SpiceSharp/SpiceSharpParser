@@ -8,7 +8,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
     public class SingleSpiceNetlistParserSettings
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SingleSpiceNetlistParserSettings"/> class. 
+        /// Initializes a new instance of the <see cref="SingleSpiceNetlistParserSettings"/> class.
         /// </summary>
         /// <param name="lexerSettings">Lexer settings.</param>
         public SingleSpiceNetlistParserSettings(SpiceLexerSettings lexerSettings)

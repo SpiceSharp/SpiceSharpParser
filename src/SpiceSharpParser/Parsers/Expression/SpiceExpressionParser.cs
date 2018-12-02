@@ -132,7 +132,7 @@ namespace SpiceSharpParser.Parsers.Expression
             // Parse the expression
             while (index < count)
             {
-                // Skip spaces and curly brackets 
+                // Skip spaces and curly brackets
                 while (index < count && (input[index] == ' ' || (input[index] == '{' || (input[index] == '}'))))
                 {
                     index++;
@@ -389,6 +389,7 @@ namespace SpiceSharpParser.Parsers.Expression
                             double parseResult = ParseDouble(expression, ref index);
                             outputStack.Push((evalContext) => parseResult);
                         }
+
                         infixPostfix = true;
                     }
 
@@ -448,9 +449,11 @@ namespace SpiceSharpParser.Parsers.Expression
                                     {
                                         throw new UnknownParameterException() { Name = parameterName };
                                     }
+
                                     return evalContext.ExpressionContext.Parameters[parameterName].Evaluate(evalContext.Evaluator, evalContext.ExpressionContext);
                                 });
                             }
+
                             infixPostfix = true;
                         }
                     }
@@ -580,6 +583,7 @@ namespace SpiceSharpParser.Parsers.Expression
                             evalContext.Evaluator,
                             evalContext.ExpressionContext);
                     }
+
                     return op.ObjectArgsLogic(null, args, evalContext.Evaluator, evalContext.ExpressionContext);
                 });
             }
@@ -652,7 +656,6 @@ namespace SpiceSharpParser.Parsers.Expression
         private void EvaluateOperator(string expression, Operator op)
         {
             Func<ExpressionEvaluationContext, double> a, b, c;
-            double res;
             switch (op.Id)
             {
                 case IdPositive: break;

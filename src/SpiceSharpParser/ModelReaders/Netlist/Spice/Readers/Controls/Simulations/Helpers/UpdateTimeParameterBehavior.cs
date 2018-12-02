@@ -19,7 +19,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
         public ExpressionContext ExpressionContext { get; set; }
 
-
         public void Setup(Simulation simulation, SetupDataProvider provider)
         {
             ExpressionContext = Context.SimulationExpressionContexts.GetContext(simulation);
