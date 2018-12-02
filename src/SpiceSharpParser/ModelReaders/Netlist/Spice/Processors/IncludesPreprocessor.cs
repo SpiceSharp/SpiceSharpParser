@@ -112,7 +112,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             // get full path of .include
             string includePath = include.Parameters.GetString(0);
 
-            includePath = ConvertPath(includePath);
+            includePath = PathConverter.Convert(includePath);
 
             bool isAbsolutePath = Path.IsPathRooted(includePath);
             string includeFullPath = isAbsolutePath ? includePath : Path.Combine(currentDirectoryPath, includePath);
@@ -153,25 +153,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             {
                 throw new InvalidOperationException($"Netlist include at {includeFullPath} could not be loaded");
             }
-        }
-
-        private string ConvertPath(string includePath)
-        {
-#if NET45
-            return includePath.Replace("/", "\\"); // NET45 can run on Windows
-#else
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                return includePath.Replace("/", "\\");
-            }
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                return includePath.Replace("\\", "/");
-            }
-
-            return includePath;
-#endif
         }
     }
 }
