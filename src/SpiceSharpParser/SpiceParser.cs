@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.FileSystem;
+using SpiceSharpParser.Common.Processors;
 using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
@@ -9,36 +9,16 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Processors;
 using SpiceSharpParser.Models.Netlist.Spice;
+using SpiceSharpParser.Parsers.Expression;
 using SpiceSharpParser.Parsers.Netlist.Spice;
 
 namespace SpiceSharpParser
 {
-    using SpiceSharpParser.Common.Processors;
-    using SpiceSharpParser.Parsers.Expression;
-
     /// <summary>
     /// The SPICE netlist parser.
     /// </summary>
     public class SpiceParser
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SpiceParser"/> class.
-        /// </summary>
-        /// <param name="spiceSingleNetlistParser">SPICE netlist parser.</param>
-        /// <param name="preProcessors">Preprocessors.</param>
-        public SpiceParser(
-            ISingleSpiceNetlistParser spiceSingleNetlistParser,
-            IProcessor[] preProcessors)
-        {
-            Settings = new SpiceParserSettings();
-            SingleNetlistParser = spiceSingleNetlistParser ?? throw new System.ArgumentNullException(nameof(spiceSingleNetlistParser));
-
-            if (preProcessors != null)
-            {
-                Preprocessors.AddRange(preProcessors);
-            }
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceParser"/> class.
         /// </summary>
@@ -50,6 +30,7 @@ namespace SpiceSharpParser
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceParser"/> class.
         /// </summary>
+        /// <param name="settings">SPICE parser settings.</param>
         public SpiceParser(SpiceParserSettings settings)
         {
             Settings = settings;
@@ -81,17 +62,17 @@ namespace SpiceSharpParser
         }
 
         /// <summary>
-        /// Gets or sets the token provider.
+        /// Gets the token provider.
         /// </summary>
         public SpiceTokenProvider TokenProvider { get; }
 
         /// <summary>
-        /// Gets or sets the parser parserSettings.
+        /// Gets the parser parserSettings.
         /// </summary>
         public SpiceParserSettings Settings { get; }
 
         /// <summary>
-        /// Gets the pre processors.
+        /// Gets the preprocessors.
         /// </summary>
         public List<IProcessor> Preprocessors { get; } = new List<IProcessor>();
 

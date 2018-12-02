@@ -20,8 +20,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Initializes a new instance of the <see cref="ReadingContext"/> class.
         /// </summary>
         /// <param name="contextName">Name of the context.</param>
+        /// <param name="parser">Expression parser.</param>
         /// <param name="simulationPreparations">Parameters.</param>
         /// <param name="simulationEvaluators">Evaluator for the context.</param>
+        /// <param name="contexts">Context. </param>
         /// <param name="resultService">SpiceSharpModel service for the context.</param>
         /// <param name="nodeNameGenerator">Name generator for the nodes.</param>
         /// <param name="componentNameGenerator">Name generator for the components.</param>
@@ -32,6 +34,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="readingExpressionContext">Reading expression context.</param>
         /// <param name="caseSettings">Case settings.</param>
         /// <param name="parent">Parent of th context.</param>
+        /// <param name="exporters">Exporters.</param>
+        /// <param name="workingDirectory">Working directory.</param>
         public ReadingContext(
             string contextName,
             IExpressionParser parser,
@@ -48,7 +52,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             ExpressionContext readingExpressionContext,
             SpiceNetlistCaseSensitivitySettings caseSettings,
             IReadingContext parent,
-            IMapper<Exporter> exporters)
+            IMapper<Exporter> exporters,
+            string workingDirectory = null)
         {
             Name = contextName ?? throw new ArgumentNullException(nameof(contextName));
             Result = resultService ?? throw new ArgumentNullException(nameof(resultService));
@@ -62,7 +67,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             ExpressionParser = parser;
             ReadingExpressionContext = readingExpressionContext;
             SimulationPreparations = simulationPreparations;
-            SimulutionEvaluators = simulationEvaluators;
+            SimulationEvaluators = simulationEvaluators;
             StatementsReader = statementsReader;
             WaveformReader = waveformReader;
             ReadingEvaluator = readingEvaluator;
@@ -70,7 +75,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             AvailableSubcircuits = CreateAvailableSubcircuitsCollection();
             ModelsRegistry = CreateModelsRegistry();
             Exporters = exporters;
+            WorkingDirectory = workingDirectory;
         }
+
+        /// <summary>
+        /// Gets the working directory.
+        /// </summary>
+        public string WorkingDirectory { get; }
 
         /// <summary>
         /// Gets or sets the name of context.
@@ -85,7 +96,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets the simulationEvaluators for the context.
         /// </summary>
-        public ISimulationEvaluators SimulutionEvaluators { get; }
+        public ISimulationEvaluators SimulationEvaluators { get; }
 
         /// <summary>
         /// Gets the reading evaluator.

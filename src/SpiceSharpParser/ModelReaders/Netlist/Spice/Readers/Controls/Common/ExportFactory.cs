@@ -63,7 +63,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
 
                 if (expressionNames.Contains(expressionName))
                 {
-                    var evaluator = context.SimulutionEvaluators.GetEvaluator(simulation);
+                    var evaluator = context.SimulationEvaluators.GetEvaluator(simulation);
                     var export = new ExpressionExport(
                         simulation.Name,
                         expressionName,

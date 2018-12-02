@@ -124,7 +124,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             }
 
             // get include content
-            string includeContent = FileReader.GetFileContent(includeFullPath);
+            string includeContent = FileReader.ReadAll(includeFullPath);
             if (includeContent != null)
             {
                 var lexerSettings = new SpiceLexerSettings()
