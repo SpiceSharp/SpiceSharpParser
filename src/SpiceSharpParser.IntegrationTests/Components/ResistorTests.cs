@@ -1,12 +1,25 @@
-using Xunit;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Components
 {
     public class ResistorTests : BaseTests
     {
         [Fact]
-        public void SimplestFormat()
+        public void When_NoResistance_Expect_Exception()
+        {
+            Assert.Throws<WrongParametersCountException>(
+                () => ParseNetlist(
+                    "Resistor circuit", 
+                    "V1 1 0 150", 
+                    "R1 1 0", 
+                    ".SAVE I(R1)",
+                    ".OP", 
+                    ".END"));
+        }
+
+        [Fact]
+        public void When_SimplestFormat_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Resistor circuit",
@@ -22,7 +35,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void NgSpiceFirstFormat()
+        public void When_NgSpiceFirstFormat_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Resistor circuit",
@@ -38,7 +51,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void NgSpiceSecondFormat()
+        public void When_NgSpiceSecondFormat_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Resistor circuit",
@@ -54,7 +67,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void SimplestFormatWithParameterWithoutExpression()
+        public void When_SimplestFormatWithParameterWithoutExpression_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Resistor circuit",
@@ -71,7 +84,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void SimplestFormatWithParameterWithoutExpressionForNgSpiceFirstFormat()
+        public void When_SimplestFormatWithParameterWithoutExpressionForNgSpiceFirstFormat_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Resistor circuit",
@@ -88,7 +101,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void SimplestFormatWithParameterWithoutExpressionForNgSpiceSecondFormat()
+        public void When_SimplestFormatWithParameterWithoutExpressionForNgSpiceSecondFormat_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Resistor circuit",
@@ -105,7 +118,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void ModelFormat()
+        public void When_ModelFormat_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Resistor circuit",
@@ -122,7 +135,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void ModelFormatWithoutWidth()
+        public void When_ModelFormatWithoutWidth_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Resistor circuit",
@@ -139,7 +152,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void ModelFormatWithoutWidthAndLength()
+        public void When_ModelFormatWithoutWidthAndLength_Expect_Reference()
         {
             Assert.Throws<GeneralReaderException>(
                 () => ParseNetlist(
@@ -153,7 +166,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void ModelFormatWithoutWidthAndLengthAndWithResitance()
+        public void When_ModelFormatWithoutWidthAndLengthAndWithResistance_Expect_Reference()
         {
             var netlist = ParseNetlist(
                     "Resistor circuit",
@@ -170,7 +183,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void TCParameterFormatWithZeroValues()
+        public void When_TCParameterFormatWithZeroValues_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Resistor circuit",
@@ -187,7 +200,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void TCParameterFormatWithNonZeroValues()
+        public void When_TCParameterFormatWithNonZeroValues_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Resistor circuit",
@@ -204,7 +217,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void TCParameterFormatWithZeroValue()
+        public void When_TCParameterFormatWithZeroValue_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Resistor circuit",
@@ -221,7 +234,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void ModelFormatWithTC1TC2ZeroValues()
+        public void When_ModelFormatWithTC1TC2ZeroValues_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Resistor circuit",
@@ -239,7 +252,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void ModelFormatWithTC2NonZeroValue()
+        public void When_ModelFormatWithTC2NonZeroValue_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Resistor circuit",
@@ -257,7 +270,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void ModelFormatWithTC2NonZeroValueWithTempParameter()
+        public void When_ModelFormatWithTC2NonZeroValueWithTempParameter_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Resistor circuit",
@@ -274,7 +287,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void ModelFormatWithTC1TC2NonZeroValues()
+        public void When_ModelFormatWithTC1TC2NonZeroValues_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Resistor circuit",
@@ -292,7 +305,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void ModelFormatWithTC1TC2NonZeroValuesAndTC1TC2OnResistor()
+        public void When_ModelFormatWithTC1TC2NonZeroValuesAndTC1TC2OnResistor_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Resistor circuit",
@@ -310,7 +323,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void ModelFormatWithTC1TC2NonZeroValuesAndTC1OnResistor()
+        public void When_ModelFormatWithTC1TC2NonZeroValuesAndTC1OnResistor_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Resistor circuit",
