@@ -1,4 +1,4 @@
-using Xunit;
+﻿using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Common
 {
@@ -9,7 +9,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         {
             var netlist = ParseNetlist(
                "Diode circuit",
-               "D�Rectifier2 1 0 1N914",
+               "D§Rectifier2 1 0 1N914",
                "V1_a 1 0 0.0",
                ".model 1N914 D(Is=2.52e-9    Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
                ".DC V1_a -1 1.0 10e-3",
