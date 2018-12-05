@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -13,8 +15,6 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
-    using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
-
     /// <summary>
     /// Reads .PRINT <see cref="Control"/> from SPICE netlist object model.
     /// </summary>
@@ -23,8 +23,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="PrintControl"/> class.
         /// </summary>
-        /// <param name="mapper">The exporter mapper</param>
-        public PrintControl(IMapper<Exporter> mapper, IExportFactory exportFactory)
+        /// <param name="mapper">The exporter mapper.</param>
+        /// <param name="exportFactory">The export factory.</param>
+        public PrintControl(
+            IMapper<Exporter> mapper,
+            IExportFactory exportFactory)
             : base(mapper, exportFactory)
         {
         }
@@ -32,10 +35,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         protected ICollection<string> SupportedPrintTypes { get; } = new List<string>() { "dc", "ac", "tran", "op" };
 
         /// <summary>
-        /// Reads <see cref="Control"/> statement and modifies the context
+        /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modify</param>
+        /// <param name="statement">A statement to process.</param>
+        /// <param name="context">A reading context.</param>
         public override void Read(Control statement, IReadingContext context)
         {
             if (context == null)
@@ -49,29 +52,29 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
 
             string type = statement.Parameters.Count > 0 ? statement.Parameters[0].Image.ToLower() : null;
-
+            string printImage = statement.Name + ":" + statement.Parameters.ToString();
             if (type != null && SupportedPrintTypes.Contains(type))
             {
                 foreach (var simulation in context.Result.Simulations)
                 {
                     if (type == "dc" && simulation is DC)
                     {
-                        CreatePrint(statement.Parameters.Skip(1), context, simulation, "Voltage (V)");
+                        CreatePrint(printImage, statement.Parameters.Skip(1), context, simulation, "Voltage (V)", true);
                     }
 
                     if (type == "tran" && simulation is Transient)
                     {
-                        CreatePrint(statement.Parameters.Skip(1), context, simulation, "Time (s)");
+                        CreatePrint(printImage, statement.Parameters.Skip(1), context, simulation, "Time (s)", true);
                     }
 
                     if (type == "ac" && simulation is AC)
                     {
-                        CreatePrint(statement.Parameters.Skip(1), context, simulation, "Frequency (Hz)");
+                        CreatePrint(printImage, statement.Parameters.Skip(1), context, simulation, "Frequency (Hz)", true);
                     }
 
                     if (type == "op" && simulation is OP)
                     {
-                        CreatePrint(statement.Parameters.Skip(1), context, simulation, "Final result");
+                        CreatePrint(printImage, statement.Parameters.Skip(1), context, simulation, null, true);
                     }
                 }
             }
@@ -81,22 +84,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 {
                     if (simulation is DC)
                     {
-                        CreatePrint(statement.Parameters, context, simulation, "Voltage (V)");
+                        CreatePrint(printImage, statement.Parameters, context, simulation, "Voltage (V)", false);
                     }
 
                     if (simulation is Transient)
                     {
-                        CreatePrint(statement.Parameters, context, simulation, "Time (s)");
+                        CreatePrint(printImage, statement.Parameters, context, simulation, "Time (s)", false);
                     }
 
                     if (simulation is AC)
                     {
-                        CreatePrint(statement.Parameters, context, simulation, "Frequency (Hz)");
+                        CreatePrint(printImage, statement.Parameters, context, simulation, "Frequency (Hz)", false);
                     }
 
                     if (simulation is OP)
                     {
-                        CreatePrint(statement.Parameters, context, simulation, null);
+                        CreatePrint(printImage, statement.Parameters, context, simulation, null, false);
                     }
                 }
             }
@@ -166,10 +169,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             return result;
         }
 
-        private void CreatePrint(ParameterCollection parameters, IReadingContext context, Simulation simulation, string firstColumnName)
+        private void CreatePrint(string printImage, ParameterCollection parameters, IReadingContext context, Simulation simulation, string firstColumnName, bool filterSpecified)
         {
             var print = new Print(simulation.Name.ToString());
 
+            // Create column names
             if (firstColumnName != null)
             {
                 print.ColumnNames.Add(firstColumnName);
@@ -181,58 +185,94 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 print.ColumnNames.Add(exports[i].Name);
             }
 
-            int index = 1;
+            int rowIndex = 0;
+            simulation.ExportSimulationData += (sender, args) => CreateRowInPrint(ref rowIndex, simulation, args, exports, print);
+            simulation.AfterExecute += (sender, args) => AddPrintToResultIfValid(printImage, context, print, simulation, filterSpecified);
+        }
 
-            simulation.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
+        private void AddPrintToResultIfValid(string printImage, IReadingContext context, Print print, Simulation simulation, bool filterSpecified)
+        {
+            if (!filterSpecified)
             {
-                Row row = new Row(index);
-                index++;
+                RemoveNaNColumns(print);
 
-                double x = 0;
-
-                if (simulation is Transient)
+                if (print.Rows.Count == 0 || print.Rows[0].Columns.Count == (simulation is OP ? 0 : 1))
                 {
-                    x = e.Time;
+                    context.Result.AddWarning($"{printImage} is not valid for: {simulation.Name}");
+                }
+                else
+                {
+                    context.Result.AddPrint(print);
+                }
+            }
+            else
+            {
+                context.Result.AddPrint(print);
+            }
+        }
+
+        private static void CreateRowInPrint(ref int rowIndex, Simulation simulation, ExportDataEventArgs eventArgs, List<Export> exports, Print print)
+        {
+            Row row = new Row(rowIndex++);
+
+            double x = 0;
+
+            if (simulation is Transient)
+            {
+                x = eventArgs.Time;
+            }
+
+            if (simulation is AC)
+            {
+                x = eventArgs.Frequency;
+            }
+
+            if (simulation is DC dc)
+            {
+                if (dc.Sweeps.Count > 1)
+                {
+                    // TODO: Add support for DC Sweeps > 1
+                    throw new GeneralReaderException(".print doesn't support sweep count > 1");
                 }
 
-                if (simulation is AC)
-                {
-                    x = e.Frequency;
-                }
+                x = eventArgs.SweepValue;
+            }
 
-                if (simulation is DC dc)
+            if (!(simulation is OP))
+            {
+                row.Columns.Add(x);
+            }
+
+            for (var i = 0; i < exports.Count; i++)
+            {
+                try
                 {
-                    if (dc.Sweeps.Count > 1)
+                    double val = exports[i].Extract();
+                    row.Columns.Add(val);
+                }
+                catch (Exception)
+                {
+                    row.Columns.Add(double.NaN);
+                }
+            }
+
+            print.Rows.Add(row);
+        }
+
+        private void RemoveNaNColumns(Print print)
+        {
+            for (var columnIndex = print.ColumnNames.Count - 1; columnIndex >= 0; columnIndex--)
+            {
+                if (print.Rows.All(row => double.IsNaN(row.Columns[columnIndex])))
+                {
+                    foreach (var row in print.Rows)
                     {
-                        // TODO: Add support for DC Sweeps > 1
-                        throw new GeneralReaderException(".print doesn't support sweep count > 1");
+                        row.Columns.RemoveAt(columnIndex);
                     }
 
-                    x = e.SweepValue;
+                    print.ColumnNames.RemoveAt(columnIndex);
                 }
-
-                if (!(simulation is OP))
-                {
-                    row.Columns.Add(x);
-                }
-
-                for (var i = 0; i < exports.Count; i++)
-                {
-                    try
-                    {
-                        double val = exports[i].Extract();
-                        row.Columns.Add(val);
-                    }
-                    catch (Exception)
-                    {
-                        row.Columns.Add(double.NaN);
-                    }
-                }
-
-                print.Rows.Add(row);
-            };
-
-            context.Result.AddPrint(print);
+            }
         }
 
         private List<Export> GenerateExports(ParameterCollection parameterCollection, Simulation simulation, IReadingContext context)
