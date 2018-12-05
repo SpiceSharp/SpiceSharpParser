@@ -26,6 +26,25 @@ namespace SpiceSharpParser.IntegrationTests.Common
             Assert.True(netlist.Statements.ToArray()[2] is Component);
         }
 
+        [Fact]
+        public void When_NewLineWithComments_Expect_NoException()
+        {
+            var netlist = string.Join(
+                "\n",
+                "Comment test circuit",
+                ".SUBCKT A 1 2",
+                string.Empty,
+                "*******************************************",
+                ".ENDS",
+                string.Empty,
+                "* Copyright (c) 2003-2012",
+                string.Empty);
+
+            var result = ParseNetlistToModel(
+                false,
+                true,
+                netlist);
+        }
 
         [Fact]
         public void When_CommentsSubckt_Expect_NoException()

@@ -288,8 +288,12 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 null,
                 (SpiceLexerState state, string lexem) =>
                 {
-                    if (state.PreviousReturnedTokenType == (int)SpiceTokenType.NEWLINE
-                    || (state.LineNumber == 1 && _options.HasTitle == false))
+                    if (state.LineNumber == 1 && _options.HasTitle == true)
+                    {
+                        return LexerRuleUseDecision.Next;
+                    }
+
+                    if (state.PreviousReturnedTokenType == 0 || state.PreviousReturnedTokenType == (int)SpiceTokenType.NEWLINE)
                     {
                         return LexerRuleUseDecision.Use;
                     }
