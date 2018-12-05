@@ -281,6 +281,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var resistorParameters = new List<Parameter>(parameters.Skip(Resistor.ResistorPinCount).ToArray());
 
                 // RName Node1 Node2 something param1 ...
+                if (resistorParameters.Count == 0)
+                {
+                    throw new WrongParametersCountException("Resistor doesn't have at least 3 parameters");
+                }
+
                 var something = resistorParameters[0];
 
                 // Check if something is a model name
