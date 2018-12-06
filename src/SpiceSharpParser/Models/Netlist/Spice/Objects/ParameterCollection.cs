@@ -286,7 +286,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 
         public override string ToString()
         {
-            return string.Join(",", Values);
+            return string.Join(",", Values.Select(v => v.Image));
         }
 
         public int IndexOf(Parameter parameter)

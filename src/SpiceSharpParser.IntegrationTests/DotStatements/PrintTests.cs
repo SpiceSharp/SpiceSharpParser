@@ -6,7 +6,47 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
     public class PrintTests : BaseTests
     {
         [Fact]
-        public void WriteToCsv()
+        public void When_InvalidExportForSimulationWithoutFilter_Expect_Reference()
+        {
+            var parseResult = ParseNetlist(
+                "PRINT - Lowpass RC circuit - The capacitor should act like an open circuit",
+                "V1 IN 0 10.0",
+                "R1 IN OUT 10e3",
+                "C1 OUT 0 10e-6",
+                ".OP",
+                ".PRINT V(OUT) I(C1)",
+                ".END");
+            RunSimulations(parseResult);
+
+            Assert.Equal(1, parseResult.Prints.Count);
+            Assert.Equal("#1 OP", parseResult.Prints[0].Name);
+            Assert.Equal(1, parseResult.Prints[0].ColumnNames.Count);
+            Assert.Equal(1, parseResult.Prints[0].Rows[0].Columns.Count);
+            Assert.Equal(1, parseResult.Prints[0].Rows.Count);
+        }
+
+        [Fact]
+        public void When_InvalidExportForSimulationWithFilter_Expect_Reference()
+        {
+            var parseResult = ParseNetlist(
+                "PRINT - Lowpass RC circuit - The capacitor should act like an open circuit",
+                "V1 IN 0 10.0",
+                "R1 IN OUT 10e3",
+                "C1 OUT 0 10e-6",
+                ".OP",
+                ".PRINT OP V(OUT) I(C1)",
+                ".END");
+            RunSimulations(parseResult);
+
+            Assert.Equal(1, parseResult.Prints.Count);
+            Assert.Equal("#1 OP", parseResult.Prints[0].Name);
+            Assert.Equal(2, parseResult.Prints[0].ColumnNames.Count);
+            Assert.Equal(2, parseResult.Prints[0].Rows[0].Columns.Count);
+            Assert.Equal(1, parseResult.Prints[0].Rows.Count);
+        }
+
+        [Fact]
+        public void When_WriteToCSV_Expect_NoException()
         {
             var parseResult = ParseNetlist(
                "PRINT - The initial voltage on capacitor is 0V. The result should be an exponential converging to dcVoltage.",
@@ -24,7 +64,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         }
 
         [Fact]
-        public void Tran()
+        public void When_PrintTran_Expect_Reference()
         {
             var parseResult = ParseNetlist(
                "PRINT - The initial voltage on capacitor is 0V. The result should be an exponential converging to dcVoltage.",
@@ -44,7 +84,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         }
 
         [Fact]
-        public void OpPrintWithoutParametersWithFilter()
+        public void When_PrintOpWithoutParametersWithFilter_Expect_Reference()
         {
             var parseResult = ParseNetlist(
                 "PRINT - Lowpass RC circuit - The capacitor should act like an open circuit",
@@ -58,12 +98,12 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             RunSimulations(parseResult);
             Assert.Equal(1, parseResult.Prints.Count);
             Assert.Equal("#1 OP", parseResult.Prints[0].Name);
-            Assert.Equal(7, parseResult.Prints[0].ColumnNames.Count);
+            Assert.Equal(6, parseResult.Prints[0].ColumnNames.Count);
             Assert.Equal(1, parseResult.Prints[0].Rows.Count);
         }
 
         [Fact]
-        public void OpPrintWithoutParameters()
+        public void When_PrintOpWithoutFilterWithoutParameters_Expect_Reference()
         {
             var parseResult = ParseNetlist(
                 "PRINT - Lowpass RC circuit - The capacitor should act like an open circuit",
@@ -77,12 +117,12 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             RunSimulations(parseResult);
             Assert.Equal(1, parseResult.Prints.Count);
             Assert.Equal("#1 OP", parseResult.Prints[0].Name);
-            Assert.Equal(6, parseResult.Prints[0].ColumnNames.Count);
+            Assert.Equal(5, parseResult.Prints[0].ColumnNames.Count);
             Assert.Equal(1, parseResult.Prints[0].Rows.Count);
         }
 
         [Fact]
-        public void OpPrintWithParameters()
+        public void When_PrintOpWithoutFilter_Expect_Reference()
         {
             var parseResult = ParseNetlist(
                 "PRINT - Lowpass RC circuit - The capacitor should act like an open circuit",
@@ -104,7 +144,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         }
 
         [Fact]
-        public void OpPrint()
+        public void When_PrintOpWithoutArgumentsWithoutFilter_Expect_Reference()
         {
             var parseResult = ParseNetlist(
                 "PRINT - Lowpass RC circuit - The capacitor should act like an open circuit",
@@ -118,20 +158,19 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
 
             Assert.Equal(1, parseResult.Prints.Count);
             Assert.Equal("#1 OP", parseResult.Prints[0].Name);
-            Assert.Equal(6, parseResult.Prints[0].ColumnNames.Count);
+            Assert.Equal(5, parseResult.Prints[0].ColumnNames.Count);
 
             Assert.Equal("I(V1)", parseResult.Prints[0].ColumnNames[0]);
             Assert.Equal("I(R1)", parseResult.Prints[0].ColumnNames[1]);
-            Assert.Equal("I(C1)", parseResult.Prints[0].ColumnNames[2]);
-            Assert.Equal("V(IN)", parseResult.Prints[0].ColumnNames[3]);
-            Assert.Equal("V(0)", parseResult.Prints[0].ColumnNames[4]);
-            Assert.Equal("V(OUT)", parseResult.Prints[0].ColumnNames[5]);
+            Assert.Equal("V(IN)", parseResult.Prints[0].ColumnNames[2]);
+            Assert.Equal("V(0)", parseResult.Prints[0].ColumnNames[3]);
+            Assert.Equal("V(OUT)", parseResult.Prints[0].ColumnNames[4]);
 
             Assert.Equal(1, parseResult.Prints[0].Rows.Count);
         }
 
         [Fact]
-        public void OpPrintWithParametersWithFilter()
+        public void When_PrintOPWithFilter_Expect_Reference()
         {
             var parseResult = ParseNetlist(
                 "PRINT - Lowpass RC circuit - The capacitor should act like an open circuit",
@@ -145,12 +184,12 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
 
             Assert.Equal(1, parseResult.Prints.Count);
             Assert.Equal("#1 OP", parseResult.Prints[0].Name);
-            Assert.Equal(3, parseResult.Prints[0].ColumnNames.Count);
+            Assert.Equal(2, parseResult.Prints[0].ColumnNames.Count);
             Assert.Equal(1, parseResult.Prints[0].Rows.Count);
         }
 
         [Fact]
-        public void DcPrintWithParameters()
+        public void When_PrintDcWithoutFilter_Expect_Reference()
         {
             var parseResult = ParseNetlist(
               "PRINT - DC Sweep - Current",
@@ -168,7 +207,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         }
 
         [Fact]
-        public void DcPrintWithParametersWithFilter()
+        public void When_PrintDcWithFilter_Expect_Reference()
         {
             var parseResult = ParseNetlist(
               "PRINT - DC Sweep - Current",
@@ -186,7 +225,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         }
 
         [Fact]
-        public void PrintWithLet()
+        public void When_LetIsUsedInPrint_Expect_Reference()
         {
             var parseResult = ParseNetlist(
               "PRINT - DC Sweep - Current",

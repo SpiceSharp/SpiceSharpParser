@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SpiceSharpParser.Lexers
+﻿namespace SpiceSharpParser.Lexers
 {
     /// <summary>
     /// Allows fast reading of text lines with line continuation support.
@@ -33,12 +31,12 @@ namespace SpiceSharpParser.Lexers
         {
             var start = _currentIndex;
 
-            if (_currentIndex > (strCharacters.Length - 1))
+            if (_currentIndex >= strCharacters.Length)
             {
                 return string.Empty;
             }
 
-            while (_currentIndex < (strCharacters.Length - 1)
+            while (_currentIndex < strCharacters.Length
                 && strCharacters[_currentIndex] != '\n'
                 && strCharacters[_currentIndex] != '\r')
             {
@@ -51,6 +49,11 @@ namespace SpiceSharpParser.Lexers
                 {
                     _currentIndex++;
                 }
+            }
+
+            if (_currentIndex == strCharacters.Length)
+            {
+                return new string(strCharacters, start, _currentIndex - start);
             }
 
             var line = new string(strCharacters, start, _currentIndex - start + 1);
@@ -86,13 +89,23 @@ namespace SpiceSharpParser.Lexers
 
             while (true)
             {
+                // TODO: Optimize/clean/refactor following code
                 string nextLine = PeekNextLine(out int nextCurrentIndex);
-                if (nextLine != string.Empty && nextLine.TrimStart(' ', '\t').StartsWith(_nextLineContinuationCharacter.ToString()))
+                if (string.IsNullOrWhiteSpace(nextLine))
+                {
+                    _currentIndex = nextCurrentIndex;
+                    string nextLineAfter = PeekNextLine(out _);
+                    if (!nextLineAfter.TrimStart(' ', '\t').StartsWith(_nextLineContinuationCharacter.ToString()))
+                    {
+                        break;
+                    }
+                }
+                else if (nextLine != string.Empty && (nextLine.TrimStart(' ', '\t').StartsWith(_nextLineContinuationCharacter.ToString())))
                 {
                     continuationLines++;
                     _currentIndex = nextCurrentIndex;
                     result = result.TrimEnd('\r', '\n');
-                    result += $" {nextLine.Trim(' ', '\t').Substring(1)}"; // skip _nextLineContinuationCharacter
+                    result += $" {nextLine.TrimStart(' ', '\t').Substring(1)}"; // skip _nextLineContinuationCharacter
                 }
                 else if (_currentLineContinuationCharacter.HasValue && GetLastCharacter(result, out var position) == _currentLineContinuationCharacter)
                 {
