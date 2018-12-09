@@ -116,7 +116,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 
                 try
                 {
-                    return exporters[exporterKey].Extract();
+                    double exportValue = exporters[exporterKey].Extract();
+
+                    return exportValue;
                 }
                 catch (Exception ex)
                 {
@@ -173,7 +175,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 
                 try
                 {
-                    return exporters[exporterKey].Extract();
+                    double exportValue = exporters[exporterKey].Extract();
+
+                    return exportValue;
                 }
                 catch (Exception ex)
                 {

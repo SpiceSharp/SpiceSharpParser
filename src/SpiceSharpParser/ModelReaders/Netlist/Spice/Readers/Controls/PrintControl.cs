@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SpiceSharp;
-using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
@@ -11,7 +9,6 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -55,118 +52,36 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             string printImage = statement.Name + ":" + statement.Parameters.ToString();
             if (type != null && SupportedPrintTypes.Contains(type))
             {
-                foreach (var simulation in context.Result.Simulations)
+                foreach (Simulation simulation in FilterSimulations(context.Result.Simulations, type))
                 {
-                    if (type == "dc" && simulation is DC)
-                    {
-                        CreatePrint(printImage, statement.Parameters.Skip(1), context, simulation, "Voltage (V)", true);
-                    }
-
-                    if (type == "tran" && simulation is Transient)
-                    {
-                        CreatePrint(printImage, statement.Parameters.Skip(1), context, simulation, "Time (s)", true);
-                    }
-
-                    if (type == "ac" && simulation is AC)
-                    {
-                        CreatePrint(printImage, statement.Parameters.Skip(1), context, simulation, "Frequency (Hz)", true);
-                    }
-
-                    if (type == "op" && simulation is OP)
-                    {
-                        CreatePrint(printImage, statement.Parameters.Skip(1), context, simulation, null, true);
-                    }
+                    string firstColumnName = GetFirstDimensionLabel(simulation);
+                    CreatePrint(printImage, statement.Parameters.Skip(1), context, simulation, firstColumnName, true);
                 }
             }
             else
             {
-                foreach (var simulation in context.Result.Simulations)
+                foreach (Simulation simulation in context.Result.Simulations)
                 {
-                    if (simulation is DC)
-                    {
-                        CreatePrint(printImage, statement.Parameters, context, simulation, "Voltage (V)", false);
-                    }
-
-                    if (simulation is Transient)
-                    {
-                        CreatePrint(printImage, statement.Parameters, context, simulation, "Time (s)", false);
-                    }
-
-                    if (simulation is AC)
-                    {
-                        CreatePrint(printImage, statement.Parameters, context, simulation, "Frequency (Hz)", false);
-                    }
-
-                    if (simulation is OP)
-                    {
-                        CreatePrint(printImage, statement.Parameters, context, simulation, null, false);
-                    }
+                    string firstColumnName = GetFirstDimensionLabel(simulation);
+                    CreatePrint(printImage, statement.Parameters, context, simulation, firstColumnName, false);
                 }
             }
         }
 
-        private List<Export> CreateExportsForAllVoltageAndCurrents(Simulation simulation, IReadingContext context)
+        private IEnumerable<Simulation> FilterSimulations(IEnumerable<Simulation> simulations, string type)
         {
-            var result = new List<Export>();
-            context.Result.Circuit.Entities.BuildOrderedComponentList(); // TODO: Verify with Sven
+            var typeLowered = type.ToLower();
 
-            var nodes = new List<string>();
-
-            foreach (Entity entity in context.Result.Circuit.Entities)
+            foreach (var simulation in simulations)
             {
-                if (entity is SpiceSharp.Components.Component c)
+                if ((simulation is DC && typeLowered == "dc")
+                    || (simulation is Transient && typeLowered == "tran")
+                    || (simulation is AC && typeLowered == "ac")
+                    || (simulation is OP && typeLowered == "op"))
                 {
-                    string componentName = c.Name;
-                    var @params = new ParameterCollection();
-                    @params.Add(new WordParameter(componentName));
-
-                    for (var i = 0; i < c.PinCount; i++)
-                    {
-                        var node = c.GetNode(i);
-                        if (!nodes.Contains(node))
-                        {
-                            nodes.Add(node);
-                        }
-                    }
-
-                    // Add current export for component
-                    result.Add(
-                        Mapper
-                        .GetValue("I", true)
-                        .CreateExport(
-                            "I(" + componentName + ")",
-                            "i",
-                            @params,
-                            simulation,
-                            context.NodeNameGenerator,
-                            context.ComponentNameGenerator,
-                            context.ModelNameGenerator,
-                            context.Result,
-                            context.CaseSensitivity));
+                    yield return simulation;
                 }
             }
-
-            foreach (var node in nodes)
-            {
-                var @params = new ParameterCollection();
-                @params.Add(new WordParameter(node));
-
-                result.Add(
-                    Mapper
-                    .GetValue("V", true)
-                    .CreateExport(
-                        "V(" + node + ")",
-                        "v",
-                        @params,
-                        simulation,
-                        context.NodeNameGenerator,
-                        context.ComponentNameGenerator,
-                        context.ModelNameGenerator,
-                        context.Result,
-                        context.CaseSensitivity));
-            }
-
-            return result;
         }
 
         private void CreatePrint(string printImage, ParameterCollection parameters, IReadingContext context, Simulation simulation, string firstColumnName, bool filterSpecified)
@@ -174,7 +89,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             var print = new Print(simulation.Name.ToString());
 
             // Create column names
-            if (firstColumnName != null)
+            if (!string.IsNullOrEmpty(firstColumnName))
             {
                 print.ColumnNames.Add(firstColumnName);
             }
@@ -273,45 +188,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     print.ColumnNames.RemoveAt(columnIndex);
                 }
             }
-        }
-
-        private List<Export> GenerateExports(ParameterCollection parameterCollection, Simulation simulation, IReadingContext context)
-        {
-            if (parameterCollection.Count == 0)
-            {
-                return CreateExportsForAllVoltageAndCurrents(simulation, context);
-            }
-
-            List<Export> result = new List<Export>();
-            foreach (Parameter parameter in parameterCollection)
-            {
-                if (parameter is BracketParameter || parameter is ReferenceParameter)
-                {
-                    result.Add(GenerateExport(parameter, context, simulation));
-                }
-                else
-                {
-                    string expressionName = parameter.Image;
-                    var evaluator = context.SimulationEvaluators.GetEvaluator(simulation);
-                    var expressionNames = context.ReadingExpressionContext.GetExpressionNames();
-
-                    if (expressionNames.Contains(expressionName))
-                    {
-                        var export = new ExpressionExport(
-                            simulation.Name,
-                            expressionName,
-                            context.ReadingExpressionContext.GetExpression(expressionName),
-                            evaluator,
-                            context.SimulationExpressionContexts,
-                            simulation);
-
-                        export.Extract();
-                        result.Add(export);
-                    }
-                }
-            }
-
-            return result;
         }
     }
 }
