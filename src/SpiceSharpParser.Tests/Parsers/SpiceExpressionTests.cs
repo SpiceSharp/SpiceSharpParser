@@ -185,7 +185,7 @@ namespace SpiceSharpParser.Tests.Parsers
             var parser = new SpiceExpressionParser();
 
             // act and assert
-            Assert.Equal(12.3 * 1e-6, parser.Parse("12.3μ", new ExpressionParserContext()).Value(new ExpressionEvaluationContext()));
+            Assert.Equal(12.3 * 1e-6, parser.Parse("12.3µ", new ExpressionParserContext()).Value(new ExpressionEvaluationContext()));
         }
 
         [Fact]

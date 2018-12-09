@@ -31,35 +31,35 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         }
 
         /// <summary>
-        /// Gets the main node
+        /// Gets the main node.
         /// </summary>
         public string Source { get; }
 
         /// <summary>
-        /// Gets the type name
+        /// Gets the type name.
         /// </summary>
         public override string TypeName => "current";
 
         /// <summary>
-        /// Gets the quantity unit
+        /// Gets the quantity unit.
         /// </summary>
         public override string QuantityUnit => "Current (A)";
 
         /// <summary>
-        /// Gets the real exporter
+        /// Gets the real exporter.
         /// </summary>
         protected RealPropertyExport ExportRealImpl { get; }
 
         /// <summary>
-        /// Gets the complex exporter
+        /// Gets the complex exporter.
         /// </summary>
         protected ComplexPropertyExport ExportImpl { get; }
 
         /// <summary>
-        /// Extracts the current value
+        /// Extracts the current value.
         /// </summary>
         /// <returns>
-        /// A current value at the source
+        /// A current value at the source.
         /// </returns>
         public override double Extract()
         {

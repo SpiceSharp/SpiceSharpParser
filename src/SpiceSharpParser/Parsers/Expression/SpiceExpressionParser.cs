@@ -839,7 +839,7 @@ namespace SpiceSharpParser.Parsers.Expression
                         case 'k':
                         case 'K': value *= 1.0e3; expressionIndex++; break;
                         case 'u':
-                        case 'μ':
+                        case 'µ':
                         case 'U': value /= 1.0e6; expressionIndex++; break;
                         case 'n':
                         case 'N': value /= 1.0e9; expressionIndex++; break;
