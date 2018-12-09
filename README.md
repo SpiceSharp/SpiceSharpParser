@@ -101,7 +101,7 @@ At the moment due to lack of implementation of LAPLACE and FREQ (part of analog 
 |W (Current Switch)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/W)|
 |X (Subcircuit)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/X)|
 
-## Supporters
+## Supported by
 [<img src="jetbrains.png" width=100/>](https://www.jetbrains.com/?from=SpiceSharpParser)
 
 ## Documentation
