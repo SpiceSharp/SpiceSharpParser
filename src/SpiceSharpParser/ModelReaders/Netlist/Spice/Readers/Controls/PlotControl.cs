@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
@@ -8,13 +8,11 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
     /// <summary>
     /// Reads .PLOT <see cref="Control"/> from SPICE netlist object model.
-    /// It supports DC, AC, TRAN type of .PLOT.
     /// </summary>
     public class PlotControl : ExportControl
     {
@@ -22,133 +20,144 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// Initializes a new instance of the <see cref="PlotControl"/> class.
         /// </summary>
         /// <param name="mapper">The exporter mapper.</param>
-        public PlotControl(IMapper<Exporter> mapper, IExportFactory exportFactory)
+        /// <param name="exportFactory">The export factory.</param>
+        public PlotControl(
+            IMapper<Exporter> mapper,
+            IExportFactory exportFactory)
             : base(mapper, exportFactory)
         {
         }
 
-        /// <summary>
-        /// Gets the supported plot types.
-        /// </summary>
         protected ICollection<string> SupportedPlotTypes { get; } = new List<string>() { "dc", "ac", "tran" };
 
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
         /// <param name="statement">A statement to process.</param>
-        /// <param name="context">A context to modify.</param>
+        /// <param name="context">A reading context.</param>
         public override void Read(Control statement, IReadingContext context)
         {
             if (context == null)
             {
-                throw new System.ArgumentNullException(nameof(context));
+                throw new ArgumentNullException(nameof(context));
             }
 
             if (statement == null)
             {
-                throw new System.ArgumentNullException(nameof(statement));
+                throw new ArgumentNullException(nameof(statement));
             }
 
-            string type = statement.Parameters[0].Image.ToLower();
+            string type = statement.Parameters.Count > 0 ? statement.Parameters[0].Image.ToLower() : null;
+            string plotImage = statement.Name + ":" + statement.Parameters.ToString();
 
-            if (!SupportedPlotTypes.Contains(type))
+            if (type != null && SupportedPlotTypes.Contains(type))
             {
-                throw new GeneralReaderException(".plot supports only dc, ac, tran plots");
+                foreach (var simulation in FilterSimulations(context.Result.Simulations, type))
+                {
+                    CreatePlot(plotImage, statement.Parameters.Skip(1), context, simulation, true);
+                }
             }
-
-            foreach (var simulation in context.Result.Simulations)
+            else
             {
-                if (type == "dc" && simulation is DC)
+                foreach (var simulation in context.Result.Simulations)
                 {
-                    CreatePlot(statement, context, simulation, "Voltage (V)");
-                }
+                    if (simulation is OP) continue;
 
-                if (type == "tran" && simulation is Transient)
-                {
-                    CreatePlot(statement, context, simulation, "Time (s)");
-                }
-
-                if (type == "ac" && simulation is AC)
-                {
-                    CreatePlot(statement, context, simulation, "Frequency (Hz)");
+                    CreatePlot(plotImage, statement.Parameters, context, simulation, false);
                 }
             }
         }
 
-        private void CreatePlot(Control statement, IReadingContext context, Simulation simulationToPlot, string xUnit)
+        private IEnumerable<Simulation> FilterSimulations(IEnumerable<Simulation> simulations, string type)
         {
-            var plot = new XyPlot(simulationToPlot.Name);
-            List<Export> exports = GenerateExports(statement.Parameters.Skip(1), simulationToPlot, context);
+            var typeLowered = type.ToLower();
+
+            foreach (var simulation in simulations)
+            {
+                if ((simulation is DC && typeLowered == "dc")
+                    || (simulation is Transient && typeLowered == "tran")
+                    || (simulation is AC && typeLowered == "ac"))
+                {
+                    yield return simulation;
+                }
+            }
+        }
+
+        private void CreatePlot(string printImage, ParameterCollection parameters, IReadingContext context, Simulation simulation, bool filterSpecified)
+        {
+            var plot = new XyPlot(simulation.Name.ToString());
+            List<Export> exports = GenerateExports(parameters, simulation, context);
+
+            for (int i = 0; i < exports.Count; i++)
+            {
+                Export export = exports[i];
+                plot.Series.Add(new Series(export.Name));
+            }
+
+            simulation.ExportSimulationData += (sender, args) => CreatePointForSeries(simulation, args, exports, plot);
+            simulation.AfterExecute += (sender, args) => AddPlotToResultIfValid(printImage, context, plot, simulation, filterSpecified);
+        }
+
+        private void AddPlotToResultIfValid(string plotImage, IReadingContext context, XyPlot plot, Simulation simulation, bool filterSpecified)
+        {
+            for (int i = plot.Series.Count - 1; i >= 0; i--)
+            {
+                Series serie = plot.Series[i];
+                if (serie.Points.Count == 0)
+                {
+                    plot.Series.RemoveAt(i);
+                }
+            }
+
+            if (plot.Series.Count > 0)
+            {
+                context.Result.AddPlot(plot);
+            }
+            else
+            {
+                context.Result.AddWarning($"{plotImage} is not valid for: {simulation.Name}");
+            }
+        }
+
+        private void CreatePointForSeries(Simulation simulation, ExportDataEventArgs eventArgs, List<Export> exports, XyPlot plot)
+        {
+            double x = 0;
+
+            if (simulation is Transient)
+            {
+                x = eventArgs.Time;
+            }
+
+            if (simulation is AC)
+            {
+                x = eventArgs.Frequency;
+            }
+
+            if (simulation is DC dc)
+            {
+                if (dc.Sweeps.Count > 1)
+                {
+                    // TODO: Add support for DC Sweeps > 1
+                    throw new GeneralReaderException(".print doesn't support sweep count > 1");
+                }
+
+                x = eventArgs.SweepValue;
+            }
 
             for (var i = 0; i < exports.Count; i++)
             {
-                plot.Series.Add(new Series(exports[i].Name) { XUnit = xUnit, YUnit = exports[i].QuantityUnit });
-            }
-
-            simulationToPlot.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
-            {
-                double x = 0;
-
-                if (simulationToPlot is Transient)
+                try
                 {
-                    x = e.Time;
-                }
-
-                if (simulationToPlot is AC)
-                {
-                    x = e.Frequency;
-                }
-
-                if (simulationToPlot is DC dc)
-                {
-                    if (dc.Sweeps.Count > 1)
+                    double val = exports[i].Extract();
+                    if (!double.IsNaN(val))
                     {
-                        // TODO: Add support for DC Sweeps > 1
-                        throw new GeneralReaderException(".plot dc doesn't support sweep count > 1");
-                    }
-
-                    x = e.SweepValue;
-                }
-
-                for (var i = 0; i < exports.Count; i++)
-                {
-                    plot.Series[i].Points.Add(new Point() { X = x, Y = exports[i].Extract() });
-                }
-            };
-
-            context.Result.AddPlot(plot);
-        }
-
-        private List<Export> GenerateExports(ParameterCollection parameterCollection, Simulation simulationToPlot, IReadingContext context)
-        {
-            List<Export> result = new List<Export>();
-            foreach (Parameter parameter in parameterCollection)
-            {
-                if (parameter is BracketParameter || parameter is ReferenceParameter)
-                {
-                    result.Add(GenerateExport(parameter, context, simulationToPlot));
-                }
-                else
-                {
-                    string expressionName = parameter.Image;
-                    var evaluator = context.SimulationEvaluators.GetEvaluator(simulationToPlot);
-                    var expressionNames = context.ReadingExpressionContext.GetExpressionNames();
-
-                    if (expressionNames.Contains(expressionName))
-                    {
-                        result.Add(
-                            new ExpressionExport(
-                                simulationToPlot.Name,
-                                expressionName,
-                                context.ReadingExpressionContext.GetExpression(expressionName),
-                                evaluator,
-                                context.SimulationExpressionContexts,
-                                simulationToPlot));
+                        plot.Series[i].Points.Add(new Point() { X = x, Y = val });
                     }
                 }
+                catch (Exception ex)
+                {
+                }
             }
-
-            return result;
         }
     }
 }
