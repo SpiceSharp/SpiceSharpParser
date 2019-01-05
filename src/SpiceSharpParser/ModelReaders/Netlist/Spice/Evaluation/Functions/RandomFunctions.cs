@@ -6,6 +6,39 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
     public class RandomFunctions
     {
         /// <summary>
+        /// Get a mc() function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of random mc function.
+        /// </returns>
+        public static Function CreateMc()
+        {
+            Function function = new Function();
+            function.Name = "mc";
+            function.VirtualParameters = false;
+            function.ArgumentsCount = 2;
+
+            function.DoubleArgsLogic = (image, args, evaluator, context) =>
+            {
+                if (args.Length != 2)
+                {
+                    throw new Exception("mc() expects two arguments");
+                }
+
+                Random random = context.Randomizer.GetRandom(context.Seed);
+                double x = args[0];
+                double tol = args[1];
+
+                double min = x - (tol * x);
+                double randomChange = random.NextDouble() * 2.0 * tol * x;
+
+                return min + randomChange;
+            };
+
+            return function;
+        }
+
+        /// <summary>
         /// Get a gauss() function.
         /// </summary>
         /// <returns>
