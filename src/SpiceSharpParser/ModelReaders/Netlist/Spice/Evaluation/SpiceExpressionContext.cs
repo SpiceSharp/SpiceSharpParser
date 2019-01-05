@@ -52,6 +52,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             Functions.Add("log", MathFunctions.CreateLog(Mode));
             Functions.Add("log10", MathFunctions.CreateLog10(Mode));
             Functions.Add("max", MathFunctions.CreateMax());
+            Functions.Add("mc", RandomFunctions.CreateMc());
             Functions.Add("min", MathFunctions.CreateMin());
             Functions.Add("nint", MathFunctions.CreateRound());
             Functions.Add("pow", MathFunctions.CreatePow(Mode));
