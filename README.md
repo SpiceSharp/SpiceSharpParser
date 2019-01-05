@@ -40,7 +40,7 @@ simulation.Run(spiceSharpModel.Circuit);
 ## Compatibility
 ### PSpice
 SpiceSharpParser is able to parse some of PSpice netlists. 
-At the moment due to lack of implementation of LAPLACE and FREQ (part of analog behavioral modeling) and a few other features parsing can fail.
+At the moment due to lack of implementation of LAPLACE and FREQ (part of analog behavioral modeling) and other features parsing or execution can fail.
 
 
 ## Capabilities
