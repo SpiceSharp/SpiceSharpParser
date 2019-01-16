@@ -238,7 +238,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             if (isDynamic)
             {
-                context.SimulationPreparations.ExecuteTemperatuteBehaviorBeforeLoad(res);
+                context.SimulationPreparations.ExecuteTemperatureBehaviorBeforeLoad(res);
             }
 
             context.CreateNodes(res, parameters);

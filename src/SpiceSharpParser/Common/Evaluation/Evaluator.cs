@@ -12,7 +12,9 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         /// <param name="name">Evaluator name.</param>
         /// <param name="parser">Expression parser.</param>
-        public Evaluator(string name, IExpressionParser parser, bool isParameterNameCaseSensitive, bool isFunctionNameCaseSensitive)
+        /// <param name="isParameterNameCaseSensitive">Is parameter name case-sensitive.</param>
+        /// <param name="isFunctionNameCaseSensitive">Is function name case-sensitive.</param>
+        protected Evaluator(string name, IExpressionParser parser, bool isParameterNameCaseSensitive, bool isFunctionNameCaseSensitive)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             IsParameterNameCaseSensitive = isParameterNameCaseSensitive;
@@ -38,6 +40,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Evaluates a specific expression to double.
         /// </summary>
         /// <param name="expression">An expression to evaluate.</param>
+        /// <param name="context">Context.</param>
         /// <returns>
         /// A double value.
         /// </returns>
@@ -48,16 +51,22 @@ namespace SpiceSharpParser.Common.Evaluation
                 return parameter.Evaluate(this, context);
             }
 
-            ExpressionParseResult parseResult = ExpressionParser.Parse(expression, new ExpressionParserContext(IsFunctionNameCaseSensitive) { Name = context.Name, Functions = context.Functions });
-            double expressionValue = parseResult.Value(new ExpressionEvaluationContext() { ExpressionContext = context, Evaluator = this });
+            ExpressionParseResult parseResult = ExpressionParser.Parse(
+                expression,
+                new ExpressionParserContext(context.Name, context.Functions));
 
-            return expressionValue;
+            return parseResult.Value(new ExpressionEvaluationContext()
+            {
+                ExpressionContext = context,
+                Evaluator = this
+            });
         }
 
         /// <summary>
         /// Gets value of named expression.
         /// </summary>
         /// <param name="expressionName">Name of expression</param>
+        /// <param name="context">Context.</param>
         /// <returns>
         /// Value of expression.
         /// </returns>

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -12,16 +11,16 @@ namespace SpiceSharpParser.Lexers
     public class LexerGrammarBuilder<TLexerState>
         where TLexerState : LexerState
     {
-        private List<LexerRegexRule> _regexRules = new List<LexerRegexRule>();
-        private List<LexerDynamicRule> _dynamicRules = new List<LexerDynamicRule>();
+        private readonly List<LexerRegexRule> _regexRules = new List<LexerRegexRule>();
+        private readonly List<LexerDynamicRule> _dynamicRules = new List<LexerDynamicRule>();
 
         /// <summary>
         /// Clears the builder.
         /// </summary>
         public void Clear()
         {
-            this._regexRules.Clear();
-            this._dynamicRules.Clear();
+            _regexRules.Clear();
+            _dynamicRules.Clear();
         }
 
         /// <summary>
@@ -32,7 +31,7 @@ namespace SpiceSharpParser.Lexers
         /// </param>
         public void AddRegexRule(LexerRegexRule rule)
         {
-            this._regexRules.Add(rule);
+            _regexRules.Add(rule);
         }
 
         /// <summary>
@@ -43,7 +42,7 @@ namespace SpiceSharpParser.Lexers
         /// </param>
         public void AddDynamicRule(LexerDynamicRule rule)
         {
-            this._dynamicRules.Add(rule);
+            _dynamicRules.Add(rule);
         }
 
         /// <summary>
@@ -56,15 +55,23 @@ namespace SpiceSharpParser.Lexers
         {
             var tokenRules = new List<LexerTokenRule<TLexerState>>();
 
-            foreach (var lexerTokenRule in this._regexRules.Where(
+            var internalTokenRules = _regexRules.Where(rule => rule is LexerInternalRule).ToList();
+
+            foreach (var lexerTokenRule in _regexRules.Where(
                 rule => rule.GetType().GetTypeInfo().IsGenericType
                 && rule.GetType().GetGenericTypeDefinition() == typeof(LexerTokenRule<>)))
             {
                 var lexerTokenRuleCloned = lexerTokenRule.Clone() as LexerTokenRule<TLexerState>;
 
-                foreach (var privateTokenRule in this._regexRules.Where(rule => rule is LexerInternalRule))
+                if (lexerTokenRuleCloned != null)
                 {
-                    lexerTokenRuleCloned.RegularExpressionPattern = lexerTokenRuleCloned.RegularExpressionPattern.Replace($"<{privateTokenRule.Name}>", privateTokenRule.RegularExpressionPattern);
+                    foreach (var internalTokenRule in internalTokenRules)
+                    {
+                        lexerTokenRuleCloned.RegularExpressionPattern =
+                            lexerTokenRuleCloned.RegularExpressionPattern.Replace(
+                                $"<{internalTokenRule.Name}>",
+                                internalTokenRule.RegularExpressionPattern);
+                    }
                 }
 
                 tokenRules.Add(lexerTokenRuleCloned);

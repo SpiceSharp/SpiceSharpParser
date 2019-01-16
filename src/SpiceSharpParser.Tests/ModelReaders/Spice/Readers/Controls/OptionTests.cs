@@ -104,6 +104,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
               new SpiceNetlistCaseSensitivitySettings(),
               null,
               null);
+            readingContext.ReadingExpressionContext = new ExpressionContext();
 
             // act
             var optionControl = new OptionsControl();

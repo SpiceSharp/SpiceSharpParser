@@ -10,8 +10,8 @@ namespace SpiceSharpParser.Common.Evaluation
     public class Randomizer
     {
         private static int _tickCount = Environment.TickCount;
-        private Dictionary<int, Random> _randomGenerators = new Dictionary<int, Random>();
-        private ReaderWriterLockSlim _cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+        private readonly Dictionary<int, Random> _randomGenerators = new Dictionary<int, Random>();
+        private readonly ReaderWriterLockSlim _cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
 
         /// <summary>
         /// Clears the randomizer.

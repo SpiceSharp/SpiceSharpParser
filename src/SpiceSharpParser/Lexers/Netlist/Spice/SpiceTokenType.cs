@@ -36,7 +36,7 @@
         COMMA = 4,
 
         /// <summary>
-        /// Delimeter characters token
+        /// Delimiter characters token
         /// </summary>
         DELIMITER = 5,
 
@@ -166,7 +166,7 @@
         ENDIF = 31,
 
         /// <summary>
-        /// Boolean expression token with delimeters
+        /// Boolean expression token with delimiters
         /// </summary>
         BOOLEAN_EXPRESSION = 32,
 

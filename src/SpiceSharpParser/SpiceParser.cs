@@ -36,10 +36,10 @@ namespace SpiceSharpParser
             Settings = settings;
             SingleNetlistParser = new SingleSpiceNetlistParser(Settings.Parsing);
 
-            TokenProvider = new SpiceTokenProvider();
+            TokenProviderPool = new SpiceTokenProviderPool();
             var includesPreprocessor = new IncludesPreprocessor(
                 new FileReader(),
-                TokenProvider,
+                TokenProviderPool,
                 SingleNetlistParser,
                 () => Settings.WorkingDirectory,
                 Settings.Reading,
@@ -47,7 +47,7 @@ namespace SpiceSharpParser
 
             var libPreprocessor = new LibPreprocessor(
                 new FileReader(),
-                TokenProvider,
+                TokenProviderPool,
                 SingleNetlistParser,
                 includesPreprocessor,
                 () => Settings.WorkingDirectory,
@@ -61,10 +61,7 @@ namespace SpiceSharpParser
             Preprocessors.AddRange(new IProcessor[] { includesPreprocessor, libPreprocessor, appendModelPreprocessor, sweepsPreprocessor, ifPostprocessor });
         }
 
-        /// <summary>
-        /// Gets the token provider.
-        /// </summary>
-        public SpiceTokenProvider TokenProvider { get; }
+        public ISpiceTokenProviderPool TokenProviderPool { get; set; }
 
         /// <summary>
         /// Gets the parser parserSettings.
@@ -101,7 +98,7 @@ namespace SpiceSharpParser
             }
 
             // Get tokens
-            var tokens = TokenProvider.GetTokens(spiceNetlist, Settings.Lexing);
+            var tokens = TokenProviderPool.GetSpiceTokenProvider(Settings.Lexing).GetTokens(spiceNetlist);
 
             SpiceNetlist originalNetlistModel = SingleNetlistParser.Parse(tokens);
 
@@ -122,7 +119,8 @@ namespace SpiceSharpParser
                 Settings.Reading.EvaluatorMode,
                 Settings.Reading.CaseSensitivity.IsParameterNameCaseSensitive,
                 Settings.Reading.CaseSensitivity.IsFunctionNameCaseSensitive,
-                Settings.Reading.CaseSensitivity.IsExpressionNameCaseSensitive);
+                Settings.Reading.CaseSensitivity.IsExpressionNameCaseSensitive,
+                new Randomizer());
 
             foreach (var exportFunction in exportFunctions)
             {

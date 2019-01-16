@@ -197,12 +197,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             foreach (var sp in subcircuitParameters)
             {
-                pp[sp.Key] = context.ExpressionParser.Parse(
-                    sp.Value,
-                    new ExpressionParserContext(context.CaseSensitivity.IsFunctionNameCaseSensitive)
-                        {
-                            Functions = context.ReadingExpressionContext.Functions,
-                        }).FoundParameters;
+                pp[sp.Key] = context.ExpressionParser.Parse(sp.Value, new ExpressionParserContext(context.Name, context.ReadingExpressionContext.Functions)).FoundParameters;
             }
 
             subCircuitExpressionContext.SetParameters(subcircuitParameters, pp);

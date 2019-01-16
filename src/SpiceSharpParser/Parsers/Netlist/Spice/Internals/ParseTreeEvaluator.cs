@@ -37,7 +37,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             evaluators.Add(Symbols.Control, (ParseTreeNodeEvaluationValues nt) => CreateControl(nt));
             evaluators.Add(Symbols.Component, (ParseTreeNodeEvaluationValues nt) => CreateComponent(nt));
             evaluators.Add(Symbols.Parameters, (ParseTreeNodeEvaluationValues nt) => CreateParameters(nt));
-            evaluators.Add(Symbols.ParametersSeperator, (ParseTreeNodeEvaluationValues nt) => CreateParametersSeperator(nt));
+            evaluators.Add(Symbols.ParametersSeparator, (ParseTreeNodeEvaluationValues nt) => CreateParametersSeperator(nt));
             evaluators.Add(Symbols.Parameter, (ParseTreeNodeEvaluationValues nt) => CreateParameter(nt));
             evaluators.Add(Symbols.Vector, (ParseTreeNodeEvaluationValues nt) => CreateVector(nt));
             evaluators.Add(Symbols.VectorContinue, (ParseTreeNodeEvaluationValues nt) => CreateVectorContinue(nt));

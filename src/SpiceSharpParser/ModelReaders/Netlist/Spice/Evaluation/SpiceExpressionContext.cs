@@ -9,7 +9,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
     public class SpiceExpressionContext : ExpressionContext
     {
         public SpiceExpressionContext(SpiceExpressionMode mode)
-            : this(string.Empty, mode, false, false, false)
+            : this(string.Empty, mode, false, false, false, new Randomizer())
         {
         }
 
@@ -18,9 +18,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             SpiceExpressionMode mode,
             bool isParameterNameCaseSensitive,
             bool isFunctionNameCaseSensitive,
-            bool isExpressionNameCaseSensitive)
+            bool isExpressionNameCaseSensitive,
+            Randomizer randomizer)
 
-        : base(name, isParameterNameCaseSensitive, isFunctionNameCaseSensitive, isExpressionNameCaseSensitive)
+        : base(name, isParameterNameCaseSensitive, isFunctionNameCaseSensitive, isExpressionNameCaseSensitive, randomizer)
         {
             this.Mode = mode;
             this.CreateSpiceFunctions();

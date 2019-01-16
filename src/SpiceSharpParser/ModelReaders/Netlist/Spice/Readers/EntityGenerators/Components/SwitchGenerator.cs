@@ -53,7 +53,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 Resistor resistor = new Resistor(name);
                 context.CreateNodes(resistor, parameters.Take(2));
-                context.SimulationPreparations.ExecuteTemperatuteBehaviorBeforeLoad(resistor);
+                context.SimulationPreparations.ExecuteTemperatureBehaviorBeforeLoad(resistor);
 
                 double rOn = s.ParameterSets.GetParameter<double>("ron");
                 double rOff = s.ParameterSets.GetParameter<double>("roff");
@@ -122,7 +122,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 Resistor resistor = new Resistor(name);
                 context.CreateNodes(resistor, parameters.Take(2));
-                context.SimulationPreparations.ExecuteTemperatuteBehaviorBeforeLoad(resistor);
+                context.SimulationPreparations.ExecuteTemperatureBehaviorBeforeLoad(resistor);
 
                 double rOn = s.ParameterSets.GetParameter<double>("ron");
                 double rOff = s.ParameterSets.GetParameter<double>("roff");

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.Parsers.Netlist.Spice;
 
 namespace SpiceSharpParser.Parsers.Expression
 {

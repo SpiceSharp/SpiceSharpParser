@@ -92,21 +92,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 Settings.Mappings.Exporters,
                 Settings.WorkingDirectory);
 
+            // Set initial seed
+            readingContext.ReadingExpressionContext.Seed = Settings.Seed;
+
             // Read statements form input netlist using created context
             readingContext.Read(netlist.Statements, Settings.Orderer);
 
-            UpdateSeed(readingContext, result);
+            // Set final seed
+            result.Seed = readingContext.ReadingExpressionContext.Seed;
 
             return result;
-        }
-
-        private void UpdateSeed(IReadingContext readingContext, SpiceNetlistReaderResult result)
-        {
-            int? seed = readingContext.Result.SimulationConfiguration.MonteCarloConfiguration.Seed
-                        ?? readingContext.Result.SimulationConfiguration.Seed ?? this.Settings.Seed;
-
-            readingContext.ReadingExpressionContext.Seed = seed;
-            result.Seed = seed;
         }
 
         private ExpressionContext CreateExpressionContext(
@@ -120,7 +115,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 Settings.EvaluatorMode,
                 Settings.CaseSensitivity.IsParameterNameCaseSensitive,
                 Settings.CaseSensitivity.IsFunctionNameCaseSensitive,
-                Settings.CaseSensitivity.IsExpressionNameCaseSensitive);
+                Settings.CaseSensitivity.IsExpressionNameCaseSensitive,
+                new Randomizer());
 
             var exportFunctions = ExportFunctions.Create(
                 Settings.Mappings.Exporters,

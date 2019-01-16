@@ -4,7 +4,6 @@
     {
         public ExpressionEvaluationContext()
         {
-            ExpressionContext = new ExpressionContext();
         }
 
         public ExpressionContext ExpressionContext { get; set; }

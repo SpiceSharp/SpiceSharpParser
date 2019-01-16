@@ -31,7 +31,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             _parsers.Add(Symbols.Control, ReadControl);
             _parsers.Add(Symbols.Model, ReadModel);
             _parsers.Add(Symbols.Parameters, ReadParameters);
-            _parsers.Add(Symbols.ParametersSeperator, ReadParametersSeparator);
+            _parsers.Add(Symbols.ParametersSeparator, ReadParametersSeparator);
             _parsers.Add(Symbols.Parameter, ReadParameter);
             _parsers.Add(Symbols.ParameterSingle, ReadParameterSingle);
             _parsers.Add(Symbols.ParameterBracket, ReadParameterBracket);
@@ -849,7 +849,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     PushProductionExpression(
                         stack,
                         CreateNonTerminalNode(Symbols.Parameter, current),
-                        CreateNonTerminalNode(Symbols.ParametersSeperator, current),
+                        CreateNonTerminalNode(Symbols.ParametersSeparator, current),
                         CreateNonTerminalNode(Symbols.Parameters, current));
             }
             else if (currentToken.Is(SpiceTokenType.EOF))

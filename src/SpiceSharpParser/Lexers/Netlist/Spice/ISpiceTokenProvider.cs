@@ -2,6 +2,6 @@
 {
     public interface ISpiceTokenProvider
     {
-        SpiceToken[] GetTokens(string netlist, SpiceLexerSettings options);
+        SpiceToken[] GetTokens(string netlist);
     }
 }
