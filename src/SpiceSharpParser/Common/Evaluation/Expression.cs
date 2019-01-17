@@ -29,12 +29,13 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Gets or sets the current evaluation value.
         /// </summary>
-        public double CurrentValue { get; protected set; }
+        public double CurrentValue { get; protected set; } = double.NaN;
 
         /// <summary>
         /// Evaluates the expression.
         /// </summary>
         /// <param name="evaluator">Evaluator.</param>
+        /// <param name="context">Context.</param>
         /// <returns>
         /// The value of the expression.
         /// </returns>
@@ -62,9 +63,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public virtual Expression Clone()
         {
-            var result = new Expression(ValueExpression);
-            result.CurrentValue = double.NaN;
-            return result;
+            return new Expression(ValueExpression);
         }
 
         protected void OnEvaluated(double newValue)

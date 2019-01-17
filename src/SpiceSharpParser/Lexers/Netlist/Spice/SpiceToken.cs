@@ -1,6 +1,4 @@
-﻿using SpiceSharpParser.Lexers;
-
-namespace SpiceSharpParser.Lexers.Netlist.Spice
+﻿namespace SpiceSharpParser.Lexers.Netlist.Spice
 {
     /// <summary>
     /// A token from SPICE netlist.

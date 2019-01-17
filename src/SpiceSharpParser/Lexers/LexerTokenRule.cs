@@ -3,9 +3,9 @@
 namespace SpiceSharpParser.Lexers
 {
     /// <summary>
-    /// The lexer token rule class. It defines how and when a token will be generated for given regulal expression pattern.
+    /// The lexer token rule class. It defines how and when a token will be generated for given regular expression pattern.
     /// </summary>
-    /// <typeparam name="TLexerState">Type of lexer state</typeparam>
+    /// <typeparam name="TLexerState">Type of lexer state.</typeparam>
     public class LexerTokenRule<TLexerState> : LexerRegexRule
         where TLexerState : LexerState
     {

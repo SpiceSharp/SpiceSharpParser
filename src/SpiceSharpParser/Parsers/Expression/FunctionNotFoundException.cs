@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SpiceSharpParser.Parsers.Netlist.Spice
+namespace SpiceSharpParser.Parsers.Expression
 {
     public class FunctionNotFoundException : Exception
     {

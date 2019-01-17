@@ -13,9 +13,9 @@
         /// <summary>
         ///  The dictionary of parse results.
         /// </summary>
-        private Dictionary<string, ExpressionParseResult> _parseResults;
+        private readonly Dictionary<string, ExpressionParseResult> _parseResults;
 
-        private ReaderWriterLockSlim cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+        private readonly ReaderWriterLockSlim cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpressionParserWithCache"/> class.

@@ -50,7 +50,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             });
         }
 
-        public void ExecuteTemperatuteBehaviorBeforeLoad(Entity entity)
+        public void ExecuteTemperatureBehaviorBeforeLoad(Entity entity)
         {
             SimulationUpdates.AddBeforeLoad((simulation, evaluators, contexts) =>
             {

@@ -13,10 +13,10 @@ namespace SpiceSharpParser.Lexers
         /// <summary>
         /// Initializes a new instance of the <see cref="LexerRegexRule"/> class.
         /// </summary>
-        /// <param name="ruleName">A name of lexer rule</param>
-        /// <param name="regularExpressionPattern">A regular expression</param>
+        /// <param name="ruleName">A name of lexer rule.</param>
+        /// <param name="regularExpressionPattern">A regular expression.</param>
         /// <param name="ignoreCase">Case is ignored.</param>
-        public LexerRegexRule(string ruleName, string regularExpressionPattern, bool ignoreCase)
+        protected LexerRegexRule(string ruleName, string regularExpressionPattern, bool ignoreCase)
         {
             RegularExpressionPattern = regularExpressionPattern;
             Name = ruleName;

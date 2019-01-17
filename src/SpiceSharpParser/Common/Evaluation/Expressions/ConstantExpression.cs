@@ -20,8 +20,7 @@
         /// </returns>
         public override Expression Clone()
         {
-            var result = new ConstantExpression(CurrentValue);
-            return result;
+            return new ConstantExpression(CurrentValue);
         }
 
         public override void Invalidate()

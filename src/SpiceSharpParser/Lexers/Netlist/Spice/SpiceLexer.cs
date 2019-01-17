@@ -7,8 +7,8 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
     /// </summary>
     public class SpiceLexer
     {
+        private readonly SpiceLexerSettings _options;
         private LexerGrammar<SpiceLexerState> _grammar;
-        private SpiceLexerSettings _options;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceLexer"/> class.

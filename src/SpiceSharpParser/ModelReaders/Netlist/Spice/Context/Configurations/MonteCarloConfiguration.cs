@@ -1,4 +1,4 @@
-﻿namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+﻿namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Configurations
 {
     using SpiceSharpParser.Models.Netlist.Spice.Objects;
 

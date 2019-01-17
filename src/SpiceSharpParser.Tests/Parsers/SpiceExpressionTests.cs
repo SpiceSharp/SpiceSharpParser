@@ -46,7 +46,7 @@ namespace SpiceSharpParser.Tests.Parsers
 
             // act
             var result = parser.Parse("0.5 * (v(out1, ref) + v(out2))",
-                new ExpressionParserContext() { Functions = functions }).Value(new ExpressionEvaluationContext()); 
+                new ExpressionParserContext(functions)).Value(new ExpressionEvaluationContext()); 
 
             // assert
             Assert.Equal(5, result);
@@ -76,7 +76,7 @@ namespace SpiceSharpParser.Tests.Parsers
             };
 
             // act
-            var result = parser.Parse("random() + 1", new ExpressionParserContext() { Functions = functions }).Value(new ExpressionEvaluationContext());
+            var result = parser.Parse("random() + 1", new ExpressionParserContext(functions)).Value(new ExpressionEvaluationContext());
 
             // assert
             Assert.Equal(randomVal + 1, result);
@@ -89,7 +89,7 @@ namespace SpiceSharpParser.Tests.Parsers
             var parser = new SpiceExpressionParser();
 
             // act and assert
-            Assert.Throws<UnknownParameterException>(() => parser.Parse("x + 1", new ExpressionParserContext()).Value(new ExpressionEvaluationContext()));
+            Assert.Throws<UnknownParameterException>(() => parser.Parse("x + 1", new ExpressionParserContext()).Value(new ExpressionEvaluationContext() { ExpressionContext = new ExpressionContext() }));
         }
 
         [Fact]
@@ -101,7 +101,7 @@ namespace SpiceSharpParser.Tests.Parsers
             context.SetParameter("x", 1);
 
             // act and assert
-            Assert.Equal(2, parser.Parse("x + 1", new ExpressionParserContext() {} ).Value(new ExpressionEvaluationContext() { ExpressionContext = context}));
+            Assert.Equal(2, parser.Parse("x + 1", new ExpressionParserContext()).Value(new ExpressionEvaluationContext() { ExpressionContext = context}));
         }
 
         [Fact]
@@ -114,7 +114,7 @@ namespace SpiceSharpParser.Tests.Parsers
             context.SetParameter("x", 1);
 
             // act and assert
-            Assert.Equal(1, parser.Parse("sin(0) + 1", new ExpressionParserContext() { Functions = context.Functions }).Value(new ExpressionEvaluationContext() { ExpressionContext = context }));
+            Assert.Equal(1, parser.Parse("sin(0) + 1", new ExpressionParserContext(context.Functions)).Value(new ExpressionEvaluationContext() { ExpressionContext = context }));
         }
 
         [Fact]
@@ -222,7 +222,7 @@ namespace SpiceSharpParser.Tests.Parsers
 
             // act and assert
             Assert.Equal(8, parser.Parse(" 2 + @obj1[param] + @obj2[param2] + @obj3.subObj[param3]", 
-                new ExpressionParserContext() { Functions = functions }).Value(new ExpressionEvaluationContext()));
+                new ExpressionParserContext(functions)).Value(new ExpressionEvaluationContext()));
         }
     }
 }

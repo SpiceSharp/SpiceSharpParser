@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.Common.Evaluation.Functions;
 
@@ -7,30 +6,31 @@ namespace SpiceSharpParser.Common.Evaluation
 {
     public class ExpressionContext
     {
-        private readonly bool isParameterNameCaseSensitive;
-        private readonly bool isFunctionNameCaseSensitive;
-        private readonly bool isExpressionNameCaseSensitive;
+        private readonly bool _isParameterNameCaseSensitive;
+        private readonly bool _isFunctionNameCaseSensitive;
+        private readonly bool _isExpressionNameCaseSensitive;
         private int? _seed;
         private object _data;
 
         public ExpressionContext()
-            : this(string.Empty, false, false, false)
+            : this(string.Empty, false, false, false, new Randomizer())
         {
         }
 
-        public ExpressionContext(string name, bool isParameterNameCaseSensitive, bool isFunctionNameCaseSensitive, bool isExpressionNameCaseSensitive)
+        public ExpressionContext(string name, bool isParameterNameCaseSensitive, bool isFunctionNameCaseSensitive, bool isExpressionNameCaseSensitive, Randomizer randomizer)
         {
+            _isParameterNameCaseSensitive = isParameterNameCaseSensitive;
+            _isFunctionNameCaseSensitive = isFunctionNameCaseSensitive;
+            _isExpressionNameCaseSensitive = isExpressionNameCaseSensitive;
+
             Name = name;
-            this.isParameterNameCaseSensitive = isParameterNameCaseSensitive;
-            this.isFunctionNameCaseSensitive = isFunctionNameCaseSensitive;
-            this.isExpressionNameCaseSensitive = isExpressionNameCaseSensitive;
             Parameters = new Dictionary<string, Expression>(StringComparerProvider.Get(isParameterNameCaseSensitive));
             Functions = new Dictionary<string, Function>(StringComparerProvider.Get(isFunctionNameCaseSensitive));
             Children = new List<ExpressionContext>();
             ExpressionRegistry = new ExpressionRegistry(isParameterNameCaseSensitive, isExpressionNameCaseSensitive);
 
             CreateCommonFunctions();
-            Randomizer = new Randomizer();
+            Randomizer = randomizer;
         }
 
         /// <summary>
@@ -63,10 +63,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         public object Data
         {
-            get
-            {
-                return _data;
-            }
+            get => _data;
 
             set
             {
@@ -184,11 +181,11 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public virtual ExpressionContext CreateChildContext(string name, bool addToChildren)
         {
-            var child = new ExpressionContext(name, isParameterNameCaseSensitive, isFunctionNameCaseSensitive, isExpressionNameCaseSensitive);
+            var child = new ExpressionContext(name, _isParameterNameCaseSensitive, _isFunctionNameCaseSensitive, _isExpressionNameCaseSensitive, Randomizer);
 
-            child.Parameters = new Dictionary<string, Expression>(Parameters, StringComparerProvider.Get(isParameterNameCaseSensitive));
+            child.Parameters = new Dictionary<string, Expression>(Parameters, StringComparerProvider.Get(_isParameterNameCaseSensitive));
             child.Data = Data;
-            child.Functions = new Dictionary<string, Function>(Functions, StringComparerProvider.Get(isFunctionNameCaseSensitive));
+            child.Functions = new Dictionary<string, Function>(Functions, StringComparerProvider.Get(_isFunctionNameCaseSensitive));
             child.ExpressionRegistry = ExpressionRegistry.Clone();
             child.Seed = Seed;
             child.Randomizer = Randomizer;
@@ -205,10 +202,11 @@ namespace SpiceSharpParser.Common.Evaluation
         {
             ExpressionContext context = new ExpressionContext(
                 Name,
-                this.isParameterNameCaseSensitive,
-                this.isFunctionNameCaseSensitive,
-                this.isExpressionNameCaseSensitive);
-            context.Parameters = new Dictionary<string, Expression>(StringComparerProvider.Get(isParameterNameCaseSensitive));
+                _isParameterNameCaseSensitive,
+                _isFunctionNameCaseSensitive,
+                _isExpressionNameCaseSensitive,
+                Randomizer);
+            context.Parameters = new Dictionary<string, Expression>(StringComparerProvider.Get(_isParameterNameCaseSensitive));
 
             foreach (var parameter in Parameters)
             {
@@ -216,7 +214,7 @@ namespace SpiceSharpParser.Common.Evaluation
             }
 
             context.ExpressionRegistry = ExpressionRegistry.Clone();
-            context.Functions = new Dictionary<string, Function>(Functions, StringComparerProvider.Get(this.isFunctionNameCaseSensitive));
+            context.Functions = new Dictionary<string, Function>(Functions, StringComparerProvider.Get(_isFunctionNameCaseSensitive));
 
             context.Children = new List<ExpressionContext>();
             foreach (var child in Children)
@@ -226,7 +224,7 @@ namespace SpiceSharpParser.Common.Evaluation
 
             context.Seed = Seed;
             context.Data = Data;
-            context.Randomizer = new Randomizer();
+            context.Randomizer = Randomizer;
 
             return context;
         }

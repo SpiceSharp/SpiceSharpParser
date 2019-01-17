@@ -17,7 +17,7 @@
         public const string Control = "CONTROL";
         public const string CommentLine = "COMMENT-LINE";
         public const string Parameters = "PARAMETERS";
-        public const string ParametersSeperator = "PARAMETERS-SEPARATOR";
+        public const string ParametersSeparator = "PARAMETERS-SEPARATOR";
         public const string Parameter = "PARAMETER";
         public const string ParameterSingle = "PARAMETER-SINGLE";
         public const string Vector = "VECTOR";

@@ -1,6 +1,7 @@
 using System;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.Parsers.Expression;
 using SpiceSharpParser.Parsers.Netlist;
 using SpiceSharpParser.Parsers.Netlist.Spice;
 using Xunit;

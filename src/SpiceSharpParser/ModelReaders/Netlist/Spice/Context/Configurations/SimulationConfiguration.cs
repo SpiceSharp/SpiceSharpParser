@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.IntegrationMethods;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Configurations
 {
     public class SimulationConfiguration
     {

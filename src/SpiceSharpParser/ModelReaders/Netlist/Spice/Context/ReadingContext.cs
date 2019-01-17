@@ -252,7 +252,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             ReadingExpressionContext.SetParameter(
                 pName,
                 expression,
-                ExpressionParser.Parse(expression, new ExpressionParserContext(CaseSensitivity.IsFunctionNameCaseSensitive) { Functions = this.ReadingExpressionContext.Functions, }).FoundParameters);
+                ExpressionParser.Parse(expression, new ExpressionParserContext(ReadingExpressionContext.Name, ReadingExpressionContext.Functions)).FoundParameters);
         }
 
         public void AddFunction(string functionName, List<string> arguments, string body)
@@ -265,10 +265,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         {
             var foundParameters = ExpressionParser.Parse(
                 expression,
-                new ExpressionParserContext(CaseSensitivity.IsFunctionNameCaseSensitive)
-                    {
-                        Functions = this.ReadingExpressionContext.Functions,
-                    }).FoundParameters;
+                new ExpressionParserContext(ReadingExpressionContext.Name, ReadingExpressionContext.Functions)).FoundParameters;
 
             ReadingExpressionContext.SetNamedExpression(expressionName, expression, foundParameters);
         }
@@ -277,19 +274,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         {
             IEqualityComparer<string> comparer = StringComparerProvider.Get(CaseSensitivity.IsEntityParameterNameCaseSensitive);
 
-            double value = ReadingEvaluator.EvaluateValueExpression(expression, this.ReadingExpressionContext);
+            double value = ReadingEvaluator.EvaluateValueExpression(expression, ReadingExpressionContext);
 
             if (!entity.SetParameter(parameterName, value, comparer))
             {
-                throw new Exception($"Uknown parameter {parameterName} for entity {entity.Name}");
+                throw new Exception($"Unknown parameter {parameterName} for entity {entity.Name}");
             }
 
             var parseResult = ReadingEvaluator.ExpressionParser.Parse(
                 expression,
-                new ExpressionParserContext(CaseSensitivity.IsFunctionNameCaseSensitive)
-                    {
-                        Functions = this.ReadingExpressionContext.Functions,
-                    });
+                new ExpressionParserContext(ReadingExpressionContext.Name, ReadingExpressionContext.Functions));
 
             if (parseResult.IsConstantExpression == false)
             {

@@ -19,10 +19,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// Initializes a new instance of the <see cref="IncludesPreprocessor"/> class.
         /// </summary>
         /// <param name="fileReader">File reader</param>
-        public IncludesPreprocessor(IFileReader fileReader, ISpiceTokenProvider tokenProvider, ISingleSpiceNetlistParser spiceNetlistParser, Func<string> initialDirectoryPathProvider, SpiceNetlistReaderSettings readerSettings, SpiceLexerSettings lexerSettings)
+        public IncludesPreprocessor(IFileReader fileReader, ISpiceTokenProviderPool tokenProviderPool, ISingleSpiceNetlistParser spiceNetlistParser, Func<string> initialDirectoryPathProvider, SpiceNetlistReaderSettings readerSettings, SpiceLexerSettings lexerSettings)
         {
             ReaderSettings = readerSettings;
-            TokenProvider = tokenProvider;
+            TokenProviderPool = tokenProviderPool;
             SpiceNetlistParser = spiceNetlistParser;
             FileReader = fileReader;
             InitialDirectoryPathProvider = initialDirectoryPathProvider;
@@ -32,18 +32,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <summary>
         /// Gets the lexer settings.
         /// </summary>
-        public SpiceLexerSettings LexerSettings { get; set; }
+        public SpiceLexerSettings LexerSettings { get; }
 
         /// <summary>
         /// Gets the initial directory path.
         /// </summary>
-        public string InitialDirectoryPath
-        {
-            get
-            {
-                return InitialDirectoryPathProvider() ?? Directory.GetCurrentDirectory();
-            }
-        }
+        public string InitialDirectoryPath => InitialDirectoryPathProvider() ?? Directory.GetCurrentDirectory();
 
         /// <summary>
         /// Gets the file reader.
@@ -53,7 +47,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <summary>
         /// Gets the token provider.
         /// </summary>
-        public ISpiceTokenProvider TokenProvider { get; }
+        public ISpiceTokenProviderPool TokenProviderPool { get; }
 
         /// <summary>
         /// Gets the SPICE netlist parser.
@@ -76,29 +70,32 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <summary>
         /// Reads .include statements.
         /// </summary>
-        /// <param name="statements">Statements</param>
+        /// <param name="statements">Statements.</param>
         /// <param name="currentDirectoryPath">Current directory path.</param>
         protected Statements Process(Statements statements, string currentDirectoryPath)
         {
-            var subCircuits = statements.Where(statement => statement is SubCircuit s);
+            var subCircuits = statements.OfType<SubCircuit>().ToList();
+
             if (subCircuits.Any())
             {
-                foreach (SubCircuit subCircuit in subCircuits.ToArray())
+                foreach (SubCircuit subCircuit in subCircuits)
                 {
-                    var subCircuitIncludes = subCircuit.Statements.Where(statement => statement is Control c && (c.Name.ToLower() == "include" || c.Name.ToLower() == "inc"));
+                    var subCircuitIncludes = subCircuit.Statements.OfType<Control>()
+                        .Where(statement => statement.Name == "include" || statement.Name.ToLower() == "inc").ToList();
 
-                    foreach (Control include in subCircuitIncludes.ToArray())
+                    foreach (Control include in subCircuitIncludes)
                     {
                         ReadSingleInclude(subCircuit.Statements, currentDirectoryPath, include);
                     }
                 }
             }
 
-            var includes = statements.Where(statement => statement is Control c && (c.Name.ToLower() == "include" || c.Name.ToLower() == "inc"));
+            var includes = statements.OfType<Control>().Where(statement =>
+                statement.Name.ToLower() == "include" || statement.Name.ToLower() == "inc").ToList();
 
             if (includes.Any())
             {
-                foreach (Control include in includes.ToArray())
+                foreach (Control include in includes)
                 {
                     ReadSingleInclude(statements, currentDirectoryPath, include);
                 }
@@ -133,7 +130,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                     IsDotStatementNameCaseSensitive = LexerSettings.IsDotStatementNameCaseSensitive,
                 };
 
-                var tokens = TokenProvider.GetTokens(includeContent, lexerSettings);
+                var tokens = TokenProviderPool.GetSpiceTokenProvider(lexerSettings).GetTokens(includeContent);
 
                 SpiceNetlistParser.Settings = new SingleSpiceNetlistParserSettings(lexerSettings)
                 {
