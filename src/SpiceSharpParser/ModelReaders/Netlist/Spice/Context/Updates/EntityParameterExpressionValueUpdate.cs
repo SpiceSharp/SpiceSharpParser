@@ -1,7 +1,6 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 {
     public class EntityParameterExpressionValueUpdate : EntityParameterUpdate
     {

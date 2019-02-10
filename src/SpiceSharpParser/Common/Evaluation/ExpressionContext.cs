@@ -29,7 +29,6 @@ namespace SpiceSharpParser.Common.Evaluation
             Children = new List<ExpressionContext>();
             ExpressionRegistry = new ExpressionRegistry(isParameterNameCaseSensitive, isExpressionNameCaseSensitive);
 
-            CreateCommonFunctions();
             Randomizer = randomizer;
         }
 
@@ -206,17 +205,14 @@ namespace SpiceSharpParser.Common.Evaluation
                 _isFunctionNameCaseSensitive,
                 _isExpressionNameCaseSensitive,
                 Randomizer);
-            context.Parameters = new Dictionary<string, Expression>(StringComparerProvider.Get(_isParameterNameCaseSensitive));
+            context.ExpressionRegistry = ExpressionRegistry.Clone();
+            context.Functions = new Dictionary<string, Function>(Functions, StringComparerProvider.Get(_isFunctionNameCaseSensitive));
 
             foreach (var parameter in Parameters)
             {
                 context.Parameters.Add(parameter.Key, parameter.Value.Clone());
             }
 
-            context.ExpressionRegistry = ExpressionRegistry.Clone();
-            context.Functions = new Dictionary<string, Function>(Functions, StringComparerProvider.Get(_isFunctionNameCaseSensitive));
-
-            context.Children = new List<ExpressionContext>();
             foreach (var child in Children)
             {
                 context.Children.Add(child.Clone());
@@ -259,7 +255,7 @@ namespace SpiceSharpParser.Common.Evaluation
             return null;
         }
 
-        protected void CreateCommonFunctions()
+        public void CreateCommonFunctions()
         {
             Functions.Add("acos", MathFunctions.CreateACos());
             Functions.Add("asin", MathFunctions.CreateASin());
