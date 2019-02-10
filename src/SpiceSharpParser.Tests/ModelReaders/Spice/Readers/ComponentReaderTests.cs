@@ -12,6 +12,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using Xunit;
 using System.Collections.Generic;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
 {

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SpiceSharp;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
 {
     public class SubcircuitNodeNameGenerator : INodeNameGenerator
     {
@@ -55,41 +54,41 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public bool IsNodeNameCaseSensitive { get; }
 
         /// <summary>
-        /// Gets the subcircuit of this node name generator
+        /// Gets the subcircuit of this node name generator.
         /// </summary>
         public SubCircuit SubCircuit { get; }
 
         /// <summary>
-        /// Gets the names of pins for the current subcircuit
+        /// Gets the names of pins for the current subcircuit.
         /// </summary>
         public List<string> PinInstanceNames { get; }
 
         /// <summary>
-        /// Gets the globals
+        /// Gets the globals.
         /// </summary>
         public IEnumerable<string> Globals => _globals;
 
        /// <summary>
-       /// Gets or sets the root name
+       /// Gets or sets the root name.
        /// </summary>
         public string RootName { get; set; }
 
         /// <summary>
-        /// Gets or sets the full name
+        /// Gets or sets the full name.
         /// </summary>
         public string FullName { get; set; }
 
         /// <summary>
-        /// Gets or sets children of node name generator
+        /// Gets or sets children of node name generator.
         /// </summary>
         public List<INodeNameGenerator> Children { get; set; } = new List<INodeNameGenerator>();
 
         /// <summary>
-        /// Generates node name
+        /// Generates node name.
         /// </summary>
-        /// <param name="pinName">Pin name</param>
+        /// <param name="pinName">Pin name.</param>
         /// <returns>
-        /// Node name
+        /// Node name.
         /// </returns>
         public string Generate(string pinName)
         {
@@ -121,9 +120,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         }
 
         /// <summary>
-        /// Makes a pin name a global pin name
+        /// Makes a pin name a global pin name.
         /// </summary>
-        /// <param name="pinName">Pin name</param>
+        /// <param name="pinName">Pin name.</param>
         public void SetGlobal(string pinName)
         {
             if (!_globals.Contains(pinName))
@@ -133,11 +132,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         }
 
         /// <summary>
-        /// Parses a path and generate a node name
+        /// Parses a path and generate a node name.
         /// </summary>
-        /// <param name="path">Node path</param>
+        /// <param name="path">Node path.</param>
         /// <returns>
-        /// A node name
+        /// A node name.
         /// </returns>
         public string Parse(string path)
         {

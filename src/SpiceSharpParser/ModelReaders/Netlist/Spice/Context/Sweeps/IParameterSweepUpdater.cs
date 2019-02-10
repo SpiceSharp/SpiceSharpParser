@@ -2,7 +2,7 @@
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
 {
     public interface IParameterSweepUpdater
     {

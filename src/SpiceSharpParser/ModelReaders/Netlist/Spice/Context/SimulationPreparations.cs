@@ -2,6 +2,7 @@
 using SpiceSharp.Behaviors;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {

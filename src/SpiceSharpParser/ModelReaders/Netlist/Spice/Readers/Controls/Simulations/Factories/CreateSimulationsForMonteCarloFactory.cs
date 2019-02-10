@@ -5,12 +5,11 @@ using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
 {
-    using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
-    using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
-
     public class CreateSimulationsForMonteCarloFactory : ICreateSimulationsForMonteCarloFactory
     {
         public CreateSimulationsForMonteCarloFactory(
@@ -47,9 +46,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             {
                 for (var i = 0; i < context.Result.SimulationConfiguration.MonteCarloConfiguration.Runs; i++)
                 {
-                    var simulations = AllTemperatures.CreateSimulations(statement, context, simulationWithStochasticModels);
-                    AttachMonteCarloDataGathering(context, simulations);
+                    var simulations = AllTemperatures
+                        .CreateSimulations(statement, context, simulationWithStochasticModels).ToList();
 
+                    AttachMonteCarloDataGathering(context, simulations);
                     result.AddRange(simulations);
                 }
             }

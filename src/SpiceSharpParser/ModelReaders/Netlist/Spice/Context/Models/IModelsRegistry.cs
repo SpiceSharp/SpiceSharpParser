@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 {
     public interface IModelsRegistry
     {

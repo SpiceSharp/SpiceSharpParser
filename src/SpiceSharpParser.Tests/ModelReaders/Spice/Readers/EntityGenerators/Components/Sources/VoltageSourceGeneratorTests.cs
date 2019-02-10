@@ -5,6 +5,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Compo
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Components.Sources

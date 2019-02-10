@@ -53,7 +53,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// Extracts a voltage decibels at the main node.
         /// </summary>
         /// <returns>
-        /// A voltage decibles at the main node.
+        /// A voltage decibels at the main node.
         /// </returns>
         public override double Extract()
         {
