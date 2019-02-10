@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class FileReader
    ">
-    <meta name="generator" content="docfx 2.39.2.0">
+    <meta name="generator" content="docfx 2.40.10.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -118,19 +118,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_FileSystem_FileReader_GetFileContent_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.FileSystem.FileReader.GetFileContent(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_FileSystem_FileReader_ReadAll_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.FileSystem.FileReader.ReadAll(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/FileSystem/FileReader.cs/#L14">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/FileSystem/FileReader.cs/#L14">View Source</a>
   </span>
-  <a id="SpiceSharpParser_Common_FileSystem_FileReader_GetFileContent_" data-uid="SpiceSharpParser.Common.FileSystem.FileReader.GetFileContent*"></a>
-  <h4 id="SpiceSharpParser_Common_FileSystem_FileReader_GetFileContent_System_String_" data-uid="SpiceSharpParser.Common.FileSystem.FileReader.GetFileContent(System.String)">GetFileContent(String)</h4>
+  <a id="SpiceSharpParser_Common_FileSystem_FileReader_ReadAll_" data-uid="SpiceSharpParser.Common.FileSystem.FileReader.ReadAll*"></a>
+  <h4 id="SpiceSharpParser_Common_FileSystem_FileReader_ReadAll_System_String_" data-uid="SpiceSharpParser.Common.FileSystem.FileReader.ReadAll(System.String)">ReadAll(String)</h4>
   <div class="markdown level1 summary"><p>Gets the content of the file located at the specified path.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string GetFileContent(string path)</code></pre>
+    <pre><code class="lang-csharp hljs">public string ReadAll(string path)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -166,6 +166,56 @@
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_FileSystem_FileReader_ReadAllLines_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.FileSystem.FileReader.ReadAllLines(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/FileSystem/FileReader.cs/#L36">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Common_FileSystem_FileReader_ReadAllLines_" data-uid="SpiceSharpParser.Common.FileSystem.FileReader.ReadAllLines*"></a>
+  <h4 id="SpiceSharpParser_Common_FileSystem_FileReader_ReadAllLines_System_String_" data-uid="SpiceSharpParser.Common.FileSystem.FileReader.ReadAllLines(System.String)">ReadAllLines(String)</h4>
+  <div class="markdown level1 summary"><p>Gets the content of the file located at the specified path.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string[] ReadAllLines(string path)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>System path to file (either absolute or relative).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><p>The content of the file in lines.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="SpiceSharpParser.Common.FileSystem.IFileReader.html">IFileReader</a>
@@ -178,10 +228,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Common_FileSystem_FileReader.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.FileSystem.FileReader%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_FileSystem_FileReader.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.FileSystem.FileReader%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Common/FileSystem/FileReader.cs/#L5" class="contribution-link">View Source</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/FileSystem/FileReader.cs/#L5" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
