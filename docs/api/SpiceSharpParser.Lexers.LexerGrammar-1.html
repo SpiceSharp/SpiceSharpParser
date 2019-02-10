@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class LexerGrammar&lt;TLexerState&gt;
    ">
-    <meta name="generator" content="docfx 2.39.2.0">
+    <meta name="generator" content="docfx 2.40.10.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -132,19 +132,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerGrammar_1__ctor_System_Collections_Generic_ICollection_SpiceSharpParser_Lexers_LexerTokenRule__0___.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerGrammar%601.%23ctor(System.Collections.Generic.ICollection%7BSpiceSharpParser.Lexers.LexerTokenRule%7B%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerGrammar_1__ctor_System_Collections_Generic_ICollection_SpiceSharpParser_Lexers_LexerTokenRule__0___System_Collections_Generic_ICollection_SpiceSharpParser_Lexers_LexerDynamicRule__.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerGrammar%601.%23ctor(System.Collections.Generic.ICollection%7BSpiceSharpParser.Lexers.LexerTokenRule%7B%600%7D%7D%2CSystem.Collections.Generic.ICollection%7BSpiceSharpParser.Lexers.LexerDynamicRule%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerGrammar.cs/#L17">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerGrammar.cs/#L17">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerGrammar_1__ctor_" data-uid="SpiceSharpParser.Lexers.LexerGrammar`1.#ctor*"></a>
-  <h4 id="SpiceSharpParser_Lexers_LexerGrammar_1__ctor_System_Collections_Generic_ICollection_SpiceSharpParser_Lexers_LexerTokenRule__0___" data-uid="SpiceSharpParser.Lexers.LexerGrammar`1.#ctor(System.Collections.Generic.ICollection{SpiceSharpParser.Lexers.LexerTokenRule{`0}})">LexerGrammar(ICollection&lt;LexerTokenRule&lt;TLexerState&gt;&gt;)</h4>
+  <h4 id="SpiceSharpParser_Lexers_LexerGrammar_1__ctor_System_Collections_Generic_ICollection_SpiceSharpParser_Lexers_LexerTokenRule__0___System_Collections_Generic_ICollection_SpiceSharpParser_Lexers_LexerDynamicRule__" data-uid="SpiceSharpParser.Lexers.LexerGrammar`1.#ctor(System.Collections.Generic.ICollection{SpiceSharpParser.Lexers.LexerTokenRule{`0}},System.Collections.Generic.ICollection{SpiceSharpParser.Lexers.LexerDynamicRule})">LexerGrammar(ICollection&lt;LexerTokenRule&lt;TLexerState&gt;&gt;, ICollection&lt;LexerDynamicRule&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="SpiceSharpParser.Lexers.LexerGrammar-1.html">LexerGrammar&lt;TLexerState&gt;</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public LexerGrammar(ICollection&lt;LexerTokenRule&lt;TLexerState&gt;&gt; lexerRules)</code></pre>
+    <pre><code class="lang-csharp hljs">public LexerGrammar(ICollection&lt;LexerTokenRule&lt;TLexerState&gt;&gt; lexerRules, ICollection&lt;LexerDynamicRule&gt; dynamicRules)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -162,25 +162,61 @@
         <td><p>A collection of lexer rules.</p>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="SpiceSharpParser.Lexers.LexerDynamicRule.html">LexerDynamicRule</a>&gt;</td>
+        <td><span class="parametername">dynamicRules</span></td>
+        <td></td>
+      </tr>
     </tbody>
   </table>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerGrammar_1_LexerRules.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerGrammar%601.LexerRules%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerGrammar_1_DynamicRules.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerGrammar%601.DynamicRules%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerGrammar.cs/#L25">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerGrammar.cs/#L31">View Source</a>
   </span>
-  <a id="SpiceSharpParser_Lexers_LexerGrammar_1_LexerRules_" data-uid="SpiceSharpParser.Lexers.LexerGrammar`1.LexerRules*"></a>
-  <h4 id="SpiceSharpParser_Lexers_LexerGrammar_1_LexerRules" data-uid="SpiceSharpParser.Lexers.LexerGrammar`1.LexerRules">LexerRules</h4>
-  <div class="markdown level1 summary"><p>Gets lexer token rules.</p>
+  <a id="SpiceSharpParser_Lexers_LexerGrammar_1_DynamicRules_" data-uid="SpiceSharpParser.Lexers.LexerGrammar`1.DynamicRules*"></a>
+  <h4 id="SpiceSharpParser_Lexers_LexerGrammar_1_DynamicRules" data-uid="SpiceSharpParser.Lexers.LexerGrammar`1.DynamicRules">DynamicRules</h4>
+  <div class="markdown level1 summary"><p>Gets lexer dynamic rules.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ICollection&lt;LexerTokenRule&lt;TLexerState&gt;&gt; LexerRules { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ICollection&lt;LexerDynamicRule&gt; DynamicRules { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="SpiceSharpParser.Lexers.LexerDynamicRule.html">LexerDynamicRule</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerGrammar_1_RegexRules.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerGrammar%601.RegexRules%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerGrammar.cs/#L26">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Lexers_LexerGrammar_1_RegexRules_" data-uid="SpiceSharpParser.Lexers.LexerGrammar`1.RegexRules*"></a>
+  <h4 id="SpiceSharpParser_Lexers_LexerGrammar_1_RegexRules" data-uid="SpiceSharpParser.Lexers.LexerGrammar`1.RegexRules">RegexRules</h4>
+  <div class="markdown level1 summary"><p>Gets lexer regex rules.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ICollection&lt;LexerTokenRule&lt;TLexerState&gt;&gt; RegexRules { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -205,10 +241,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerGrammar_1.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerGrammar%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerGrammar_1.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerGrammar%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerGrammar.cs/#L10" class="contribution-link">View Source</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerGrammar.cs/#L10" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
