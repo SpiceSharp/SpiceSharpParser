@@ -7,15 +7,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 {
     public class UpdateTimeParameterBehavior : IAcceptBehavior
     {
-        public UpdateTimeParameterBehavior(string name, IReadingContext context)
+        public UpdateTimeParameterBehavior()
         {
-            this.Context = context;
-            this.Name = name;
         }
 
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
-        public IReadingContext Context { get; private set; }
+        public IReadingContext Context { get; set; }
 
         public ExpressionContext ExpressionContext { get; set; }
 
@@ -26,8 +24,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
         public void Unsetup(Simulation simulation)
         {
-            Context = null;
-            Name = null;
+            //Context = null;
+            //Name = null;
             ExpressionContext = null;
         }
 

@@ -6,11 +6,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 {
     public class UpdateTimeParameterEntity : Entity
     {
+        private static readonly UpdateTimeParameterBehavior updateBehavior = new UpdateTimeParameterBehavior()
+        {
+            Name = "intial"
+        };
+
+        static UpdateTimeParameterEntity()
+        {
+            RegisterBehaviorFactory(typeof(UpdateTimeParameterEntity), new BehaviorFactoryDictionary
+            {
+                { typeof(IAcceptBehavior), e => updateBehavior },
+            });
+        }
+
         public UpdateTimeParameterEntity(string name, IReadingContext context)
             : base(name)
         {
-            // Register factories
-            Behaviors.Add(typeof(IAcceptBehavior), () => new UpdateTimeParameterBehavior(name, context));
+            updateBehavior.Context = context;
+            updateBehavior.Name = name;
         }
     }
 }
