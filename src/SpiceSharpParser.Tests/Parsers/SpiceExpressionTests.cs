@@ -111,6 +111,7 @@ namespace SpiceSharpParser.Tests.Parsers
             var parser = new SpiceExpressionParser();
 
             var context = new ExpressionContext();
+            context.CreateCommonFunctions();
             context.SetParameter("x", 1);
 
             // act and assert
