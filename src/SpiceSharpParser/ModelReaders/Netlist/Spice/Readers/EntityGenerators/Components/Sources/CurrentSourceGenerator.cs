@@ -42,13 +42,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         }
 
         /// <summary>
-        /// Generates a new current controlled current source: FName
+        /// Generates a new current controlled current source: FName.
         /// </summary>
-        /// <param name="name">Name of generated current controlled current source</param>
-        /// <param name="parameters">Parameters for current source</param>
-        /// <param name="context">Reading context</param>
+        /// <param name="name">Name of generated current controlled current source.</param>
+        /// <param name="parameters">Parameters for current source.</param>
+        /// <param name="context">Reading context.</param>
         /// <returns>
-        /// A new instance of current controlled current source
+        /// A new instance of current controlled current source.
         /// </returns>
         protected SpiceSharp.Components.Component GenerateCurrentControlledCurrentSource(string name,  ParameterCollection parameters, IReadingContext context)
         {
@@ -74,13 +74,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         }
 
         /// <summary>
-        /// Generates a new voltage controlled current source: GName
+        /// Generates a new voltage controlled current source: GName.
         /// </summary>
-        /// <param name="name">Name of generated voltage controlled current source</param>
-        /// <param name="parameters">Parameters for current source</param>
-        /// <param name="context">Reading context</param>
+        /// <param name="name">Name of generated voltage controlled current source.</param>
+        /// <param name="parameters">Parameters for current source.</param>
+        /// <param name="context">Reading context.</param>
         /// <returns>
-        /// A new instance of voltage controlled current source
+        /// A new instance of voltage controlled current source.
         /// </returns>
         protected SpiceSharp.Components.Component GenerateVoltageControlledCurrentSource(string name, ParameterCollection parameters, IReadingContext context)
         {
