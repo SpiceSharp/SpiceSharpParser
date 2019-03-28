@@ -28,5 +28,4 @@
   <ItemGroup>
     <PackageReference Include="SpiceSharp" Version="2.6.0" />
   </ItemGroup>
-
 </Project>

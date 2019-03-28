@@ -130,7 +130,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         capacitor,
                         parameters.GetString(2),
                         $"Could not find model {parameters.GetString(2)} for capacitor {name}",
-                        (CapacitorModel model) => capacitor.SetModel(model));
+                        (CapacitorModel model) => capacitor.Model = model.Name,
+                        context.Result);
 
                     modelBased = true;
                 }
@@ -169,6 +170,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     {
                         context.SetParameter(model, "tc1", tcParameterAssignment.Value);
                     }
+
+                    context.Result.AddEntity(model);
+                    capacitor.Model = model.Name;
                 }
                 else
                 {
@@ -184,7 +188,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
 
                     context.ModelsRegistry.RegisterModelInstance(model);
-                    capacitor.SetModel(model);
+                    context.Result.AddEntity(model);
+                    capacitor.Model = model.Name;
                 }
             }
 
@@ -316,7 +321,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         res,
                         modelName,
                         $"Could not find model {modelName} for resistor {name}",
-                        (ResistorModel model) => res.SetModel(model));
+                        (ResistorModel model) => res.Model = model.Name,
+                        context.Result);
 
                     resistorParameters.RemoveAt(0);
 
@@ -345,7 +351,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         }
 
                         context.ModelsRegistry.RegisterModelInstance(model);
-                        res.SetModel(model);
+                        res.Model = model.Name;
+                        context.Result.AddEntity(model);
                     }
 
                     // Check if something can be resistance

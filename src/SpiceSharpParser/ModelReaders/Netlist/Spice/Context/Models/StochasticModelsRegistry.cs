@@ -180,7 +180,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             return null;
         }
 
-        public void SetModel<T>(Entity entity, string modelName, string exceptionMessage, Action<T> setModelAction)
+        public void SetModel<T>(Entity entity, string modelName, string exceptionMessage, Action<T> setModelAction, IResultService result)
             where T : SpiceSharp.Components.Model
         {
             var model = FindModel<T>(modelName);
@@ -190,7 +190,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
                 throw new ModelNotFoundException(exceptionMessage);
             }
 
-            setModelAction((T)ProvideStochasticModel(entity, model));
+            var stochasticModel = (T) ProvideStochasticModel(entity, model);
+            setModelAction(stochasticModel);
+
+            if (stochasticModel != null)
+            {
+                if (!result.Circuit.Contains(stochasticModel.Name))
+                {
+                    result.Circuit.Add(stochasticModel);
+                }
+            }
         }
 
         public T FindModel<T>(string modelName)

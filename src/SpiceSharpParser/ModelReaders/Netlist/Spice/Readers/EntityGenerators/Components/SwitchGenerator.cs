@@ -71,10 +71,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.CreateNodes(vsw, parameters);
 
                 context.ModelsRegistry.SetModel<VoltageSwitchModel>(
-                  vsw,
-                  parameters.GetString(4),
-                  $"Could not find model {parameters.GetString(4)} for voltage switch {name}",
-                  (VoltageSwitchModel model) => vsw.SetModel(model));
+                    vsw,
+                    parameters.GetString(4),
+                    $"Could not find model {parameters.GetString(4)} for voltage switch {name}",
+                    (VoltageSwitchModel model) => { vsw.Model = model.Name; },
+                    context.Result);
 
                 // Optional ON or OFF
                 if (parameters.Count == 6)
@@ -154,7 +155,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                    csw,
                    parameters.GetString(3),
                    $"Could not find model {parameters.GetString(3)} for current switch {name}",
-                   (CurrentSwitchModel model) => csw.SetModel(model));
+                   (CurrentSwitchModel model) => csw.Model = model.Name,
+                   context.Result);
 
                 // Optional on or off
                 if (parameters.Count > 4)

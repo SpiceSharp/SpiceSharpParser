@@ -108,7 +108,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="entity">Entity to add.</param>
         public void AddEntity(Entity entity)
         {
-            Result.Circuit.Entities.Add(entity);
+            Result.Circuit.Add(entity);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </returns>
         public bool FindObject(string objectId, out Entity entity)
         {
-            return Result.Circuit.Entities.TryGetEntity(objectId, out entity);
+            return Result.Circuit.TryGetEntity(objectId, out entity);
         }
     }
 }
