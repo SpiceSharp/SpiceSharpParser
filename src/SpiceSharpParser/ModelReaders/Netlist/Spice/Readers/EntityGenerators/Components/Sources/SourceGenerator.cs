@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using SpiceSharp.Circuits;
+using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -9,12 +10,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public abstract class SourceGenerator : ComponentGenerator
     {
-        protected void SetSourceParameters(
+        protected SpiceSharp.Components.Component SetSourceParameters(
            string name,
            ParameterCollection parameters,
            IReadingContext context,
-           Entity component)
+           SpiceSharp.Components.Component component)
         {
+            var originalParameters = parameters;
+            parameters = parameters.Skip(VoltageSource.VoltageSourcePinCount);
+
             var acParameter = parameters.FirstOrDefault(p => p.Image.ToLower() == "ac");
             if (acParameter != null)
             {
@@ -119,6 +123,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     context.SetParameter(component, "dc", parameters[1].Image);
                 }
             }
+
+            context.CreateNodes(component, originalParameters);
+            return component;
         }
 
         protected string CreatePolyExpression(int dimension, ParameterCollection parameters, bool isVoltageControlled)

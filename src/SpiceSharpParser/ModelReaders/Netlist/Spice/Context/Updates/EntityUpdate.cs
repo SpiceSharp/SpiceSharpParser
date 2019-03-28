@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.Circuits;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 {
     public class EntityUpdate
     {

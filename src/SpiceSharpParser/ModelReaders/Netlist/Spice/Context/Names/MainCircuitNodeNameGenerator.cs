@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SpiceSharp;
 using SpiceSharpParser.Common;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
 {
     public class MainCircuitNodeNameGenerator : INodeNameGenerator
     {

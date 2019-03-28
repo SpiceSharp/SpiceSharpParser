@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.FileSystem;
-using SpiceSharpParser.Common.Processors;
 using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Processors;

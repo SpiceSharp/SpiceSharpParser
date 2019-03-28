@@ -3,7 +3,6 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Helpers;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -79,7 +78,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             ConfigureCommonSettings(tran, context);
             ConfigureTransientSettings(tran, context, useIc);
 
-            context.Result.AddEntity(new UpdateTimeParameterEntity(tran.Name, context));
+            tran.BeforeExecute += (object sender, BeforeExecuteEventArgs BeforeExecuteEventArgs) =>
+            {
+                tran.Method.TruncateProbe += (object sender2, SpiceSharp.IntegrationMethods.TruncateTimestepEventArgs args) =>
+                {
+                    var expressionContext = context.SimulationExpressionContexts.GetContext(tran);
+                    expressionContext.SetParameter("TIME", tran.Method.Time + args.Delta);
+                };
+            };
             context.Result.AddSimulation(tran);
 
             return tran;

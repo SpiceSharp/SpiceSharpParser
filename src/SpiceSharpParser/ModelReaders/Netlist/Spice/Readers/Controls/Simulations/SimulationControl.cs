@@ -2,6 +2,7 @@
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
@@ -19,7 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <summary>
         /// Initializes a new instance of the <see cref="SimulationControl"/> class.
         /// </summary>
-        public SimulationControl(IMapper<Exporter> exporterMapper)
+        protected SimulationControl(IMapper<Exporter> exporterMapper)
         {
             CreateSimulationsForAllTemperaturesFactory = new CreateSimulationsForAllTemperaturesFactory();
             CreateSimulationsForAllParameterSweepsAndTemperaturesFactory = new CreateSimulationsForAllParameterSweepsAndTemperaturesFactory(CreateSimulationsForAllTemperaturesFactory);

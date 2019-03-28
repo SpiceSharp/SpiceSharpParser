@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using SpiceSharp;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
 {
     /// <summary>
     /// Interface for all node name generators.

@@ -2,6 +2,7 @@
 using System.Linq;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Custom;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -143,7 +144,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             var vs = new VoltageSource(name);
             context.CreateNodes(vs, parameters);
-            SetSourceParameters(name, parameters.Skip(VoltageSource.VoltageSourcePinCount), context, vs);
+            SetSourceParameters(name, parameters, context, vs);
+
             return vs;
         }
     }

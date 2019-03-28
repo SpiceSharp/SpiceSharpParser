@@ -6,6 +6,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using Xunit;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
@@ -19,11 +20,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         public abstract ICollection<string> CreatedTypes { get; }
 
         /// <summary>
-        /// Creates a new export
+        /// Creates a new export.
         /// </summary>
-        /// <param name="type">A type of export</param>
-        /// <param name="parameters">A parameters of export</param>
-        /// <param name="simulation">A simulation for export</param>
+        /// <paramref name="name">Name of export.</paramref>
+        /// <param name="type">A type of export.</param>
+        /// <param name="parameters">A parameters of export.</param>
+        /// <param name="simulation">A simulation for export.</param>
         /// <returns>
         /// A new export.
         /// </returns>

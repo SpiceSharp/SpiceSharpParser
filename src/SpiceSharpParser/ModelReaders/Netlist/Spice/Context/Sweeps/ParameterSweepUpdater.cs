@@ -1,15 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
+﻿using System;
+using System.Collections.Generic;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
 {
-    using System;
-
     public class ParameterSweepUpdater : IParameterSweepUpdater
     {
         /// <summary>
@@ -21,12 +18,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public void Update(
             BaseSimulation simulation,
             IReadingContext context,
-            List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues)
+            List<KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double>> parameterValues)
         {
             UpdateSweep(simulation, context, parameterValues);
         }
 
-        protected void UpdateSweep(BaseSimulation simulation, IReadingContext context, List<KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double>> parameterValues)
+        protected void UpdateSweep(BaseSimulation simulation, IReadingContext context, List<KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double>> parameterValues)
         {
             foreach (var paramToSet in parameterValues)
             {
@@ -52,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        protected void SetDeviceParameter(BaseSimulation simulation, IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet, ReferenceParameter rp)
+        protected void SetDeviceParameter(BaseSimulation simulation, IReadingContext context, KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double> paramToSet, ReferenceParameter rp)
         {
             string objectName = rp.Name;
             string paramName = rp.Argument;
@@ -62,7 +59,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        protected void SetModelParameter(BaseSimulation simulation, IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet, BracketParameter bp)
+        protected void SetModelParameter(BaseSimulation simulation, IReadingContext context, KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double> paramToSet, BracketParameter bp)
         {
             string modelName = bp.Name;
             string paramName = bp.Parameters[0].Image;
@@ -80,7 +77,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        protected void SetSimulationParameter(BaseSimulation simulation, IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet)
+        protected void SetSimulationParameter(BaseSimulation simulation, IReadingContext context, KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double> paramToSet)
         {
             simulation.BeforeSetup += (object sender, EventArgs args) =>
             {
@@ -90,7 +87,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             };
         }
 
-        protected void SetIndependentSource(Entity @entity, BaseSimulation simulation, IReadingContext context, KeyValuePair<Models.Netlist.Spice.Objects.Parameter, double> paramToSet)
+        protected void SetIndependentSource(Entity @entity, BaseSimulation simulation, IReadingContext context, KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double> paramToSet)
         {
             if (@entity is CurrentSource || @entity is VoltageSource)
             {

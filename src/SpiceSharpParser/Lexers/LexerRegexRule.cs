@@ -56,7 +56,7 @@ namespace SpiceSharpParser.Lexers
             {
                 if (regex == null)
                 {
-                    RegexOptions options = RegexOptions.Compiled;
+                    RegexOptions options = RegexOptions.None;
 
                     if (IgnoreCase)
                     {

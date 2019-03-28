@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;

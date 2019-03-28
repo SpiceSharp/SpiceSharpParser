@@ -1,7 +1,7 @@
 ﻿using System;
 using SpiceSharp.Simulations;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 {
     public class SimulationUpdate
     {

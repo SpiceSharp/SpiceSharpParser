@@ -7,7 +7,7 @@
     <PackageLicenseUrl>https://github.com/SpiceSharp/SpiceSharpParser/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/SpiceSharp/SpiceSharpParser</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/SpiceSharp/SpiceSharp/master/api/images/logo_full.svg?sanitize=true</PackageIconUrl>
-    <Copyright>Copyright 2018</Copyright>
+    <Copyright>Copyright 2019</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/SpiceSharp/SpiceSharpParser</RepositoryUrl>
     <RepositoryType></RepositoryType>
@@ -26,7 +26,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SpiceSharp" Version="2.5.7" />
+    <PackageReference Include="SpiceSharp" Version="2.6.1" />
   </ItemGroup>
-
 </Project>

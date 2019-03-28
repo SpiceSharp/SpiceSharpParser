@@ -8,6 +8,8 @@ using System.Linq;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps;
 using SpiceSharpParser.Parsers.Expression;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 

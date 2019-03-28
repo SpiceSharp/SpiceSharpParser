@@ -7,6 +7,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharp;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.Parsers.Expression;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 
