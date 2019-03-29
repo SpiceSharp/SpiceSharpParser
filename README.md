@@ -11,8 +11,6 @@ SpiceSharpParser is a .NET library that allows to parse SPICE netlists and to si
 
 SpiceSharpParser is available as [NuGet Package](https://www.nuget.org/packages/SpiceSharp-Parser).
 
-*Note: Please don't update SpiceSharp package. The SpiceSharpParser is not yet compatible with latest SpiceSharp.*
-
 ## Quickstart
 
 Parsing a netlist and executing a simulation is relatively straightforward. For example:
