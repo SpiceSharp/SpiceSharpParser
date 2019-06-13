@@ -25,7 +25,7 @@ namespace SpiceSharpParser.Common.Evaluation
 
             Name = name;
             Parameters = new Dictionary<string, Expression>(StringComparerProvider.Get(isParameterNameCaseSensitive));
-            Functions = new Dictionary<string, Function>(StringComparerProvider.Get(isFunctionNameCaseSensitive));
+            Functions = new Dictionary<string, IFunction>(StringComparerProvider.Get(isFunctionNameCaseSensitive));
             Children = new List<ExpressionContext>();
             ExpressionRegistry = new ExpressionRegistry(isParameterNameCaseSensitive, isExpressionNameCaseSensitive);
 
@@ -83,7 +83,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Gets or sets custom functions.
         /// </summary>
-        public Dictionary<string, Function> Functions { get; protected set; }
+        public Dictionary<string, IFunction> Functions { get; protected set; }
 
         /// <summary>
         /// Gets or sets expression registry for the context.
@@ -184,7 +184,7 @@ namespace SpiceSharpParser.Common.Evaluation
 
             child.Parameters = new Dictionary<string, Expression>(Parameters, StringComparerProvider.Get(_isParameterNameCaseSensitive));
             child.Data = Data;
-            child.Functions = new Dictionary<string, Function>(Functions, StringComparerProvider.Get(_isFunctionNameCaseSensitive));
+            child.Functions = new Dictionary<string, IFunction>(Functions, StringComparerProvider.Get(_isFunctionNameCaseSensitive));
             child.ExpressionRegistry = ExpressionRegistry.Clone();
             child.Seed = Seed;
             child.Randomizer = Randomizer;
@@ -206,7 +206,7 @@ namespace SpiceSharpParser.Common.Evaluation
                 _isExpressionNameCaseSensitive,
                 Randomizer);
             context.ExpressionRegistry = ExpressionRegistry.Clone();
-            context.Functions = new Dictionary<string, Function>(Functions, StringComparerProvider.Get(_isFunctionNameCaseSensitive));
+            context.Functions = new Dictionary<string, IFunction>(Functions, StringComparerProvider.Get(_isFunctionNameCaseSensitive));
 
             foreach (var parameter in Parameters)
             {

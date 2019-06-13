@@ -1,4 +1,4 @@
-﻿using System;
+﻿using SpiceSharpParser.Common.Evaluation.Functions.Math;
 
 namespace SpiceSharpParser.Common.Evaluation.Functions
 {
@@ -10,21 +10,9 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         /// <returns>
         /// A new instance of cos() function.
         /// </returns>
-        public static Function CreateCos()
+        public static IFunction<double, double> CreateCos()
         {
-            Function function = new Function();
-            function.Name = "cos";
-            function.VirtualParameters = false;
-            function.ArgumentsCount = 1;
-
-            function.DoubleArgsLogic = (image, args, evaluator, context) =>
-            {
-                double d = args[0];
-
-                return Math.Cos(d);
-            };
-
-            return function;
+            return new CosFunction();
         }
 
         /// <summary>
@@ -33,21 +21,9 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         /// <returns>
         /// A new instance of sin() function.
         /// </returns>
-        public static Function CreateSin()
+        public static IFunction<double, double> CreateSin()
         {
-            Function function = new Function();
-            function.Name = "sin";
-            function.VirtualParameters = false;
-            function.ArgumentsCount = 1;
-
-            function.DoubleArgsLogic = (image, args, evaluator, context) =>
-            {
-                double d = args[0];
-
-                return Math.Sin(d);
-            };
-
-            return function;
+            return new SinFunction();
         }
 
         /// <summary>
@@ -56,20 +32,9 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         /// <returns>
         /// A new instance of tan() function.
         /// </returns>
-        public static Function CreateTan()
+        public static IFunction<double, double> CreateTan()
         {
-            Function function = new Function();
-            function.Name = "tan";
-            function.VirtualParameters = false;
-            function.ArgumentsCount = 1;
-
-            function.DoubleArgsLogic = (image, args, evaluator, context) =>
-            {
-                double a = args[0];
-                return Math.Tan(a);
-            };
-
-            return function;
+            return new TanFunction();
         }
 
         /// <summary>
@@ -78,20 +43,9 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         /// <returns>
         /// A new instance of cosh() function.
         /// </returns>
-        public static Function CreateCosh()
+        public static IFunction<double, double> CreateCosh()
         {
-            Function function = new Function();
-            function.Name = "cosh";
-            function.VirtualParameters = false;
-            function.ArgumentsCount = 1;
-
-            function.DoubleArgsLogic = (image, args, evaluator, context) =>
-            {
-                double a = args[0];
-                return Math.Cosh(a);
-            };
-
-            return function;
+            return new CoshFunction();
         }
 
         /// <summary>
@@ -100,20 +54,9 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         /// <returns>
         /// A new instance of sinh() function.
         /// </returns>
-        public static Function CreateSinh()
+        public static IFunction<double, double> CreateSinh()
         {
-            Function function = new Function();
-            function.Name = "sinh";
-            function.VirtualParameters = false;
-            function.ArgumentsCount = 1;
-
-            function.DoubleArgsLogic = (image, args, evaluator, context) =>
-            {
-                double a = args[0];
-                return Math.Sinh(a);
-            };
-
-            return function;
+            return new SinhFunction();
         }
 
         /// <summary>
@@ -122,20 +65,9 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         /// <returns>
         /// A new instance of tanh() function.
         /// </returns>
-        public static Function CreateTanh()
+        public static IFunction<double, double> CreateTanh()
         {
-            Function function = new Function();
-            function.Name = "tanh";
-            function.VirtualParameters = false;
-            function.ArgumentsCount = 1;
-
-            function.DoubleArgsLogic = (image, args, evaluator, context) =>
-            {
-                double a = args[0];
-                return Math.Tanh(a);
-            };
-
-            return function;
+            return new TanhFunction();
         }
 
         /// <summary>
@@ -144,20 +76,9 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         /// <returns>
         /// A new instance of acos() function.
         /// </returns>
-        public static Function CreateACos()
+        public static IFunction<double, double> CreateACos()
         {
-            Function function = new Function();
-            function.Name = "acos";
-            function.VirtualParameters = false;
-            function.ArgumentsCount = 1;
-
-            function.DoubleArgsLogic = (image, args, evaluator, context) =>
-            {
-                double a = args[0];
-                return Math.Acos(a);
-            };
-
-            return function;
+            return new ACosFunction();
         }
 
         /// <summary>
@@ -166,20 +87,9 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         /// <returns>
         /// A new instance of asin() function.
         /// </returns>
-        public static Function CreateASin()
+        public static IFunction<double, double> CreateASin()
         {
-            Function function = new Function();
-            function.Name = "asin";
-            function.VirtualParameters = false;
-            function.ArgumentsCount = 1;
-
-            function.DoubleArgsLogic = (image, args, evaluator, context) =>
-            {
-                double a = args[0];
-                return Math.Asin(a);
-            };
-
-            return function;
+            return new ASinFunction();
         }
 
         /// <summary>
@@ -188,20 +98,9 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         /// <returns>
         /// A new instance of atan() function.
         /// </returns>
-        public static Function CreateATan()
+        public static IFunction<double, double> CreateATan()
         {
-            Function function = new Function();
-            function.Name = "atan";
-            function.VirtualParameters = false;
-            function.ArgumentsCount = 1;
-
-            function.DoubleArgsLogic = (image, args, evaluator, context) =>
-            {
-                double a = args[0];
-                return Math.Atan(a);
-            };
-
-            return function;
+            return new ATanFunction();
         }
 
         /// <summary>
@@ -210,22 +109,9 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         /// <returns>
         /// A new instance of atan() function.
         /// </returns>
-        public static Function CreateATan2()
+        public static IFunction<double, double> CreateATan2()
         {
-            Function function = new Function();
-            function.Name = "atan2";
-            function.VirtualParameters = false;
-            function.ArgumentsCount = 1;
-
-            function.DoubleArgsLogic = (image, args, evaluator, context) =>
-            {
-                double y = args[0];
-                double x = args[1];
-
-                return Math.Atan2(y, x);
-            };
-
-            return function;
+            return new ATan2Function();
         }
     }
 }

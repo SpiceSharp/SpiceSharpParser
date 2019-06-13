@@ -64,10 +64,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             Functions.Add("round", MathFunctions.CreateRound());
             Functions.Add("sqrt", MathFunctions.CreateSqrt(Mode));
             Functions.Add("sgn", MathFunctions.CreateSgn());
-            Functions.Add("table", TableFunction.Create());
+            Functions.Add("table", MathFunctions.CreateTable());
             Functions.Add("u", MathFunctions.CreateU());
             Functions.Add("uramp", MathFunctions.CreateURamp());
-            Functions.Add("poly", PolyFunction.Create());
+            Functions.Add("poly", MathFunctions.CreatePoly());
         }
 
         private void CreateSpiceParameters()
