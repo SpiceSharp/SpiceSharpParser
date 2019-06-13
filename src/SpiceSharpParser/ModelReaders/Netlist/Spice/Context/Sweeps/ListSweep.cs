@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.Simulations;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
 {
     public class ListSweep : Sweep<double>
     {

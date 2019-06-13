@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/SpiceSharp/SpiceSharpParser/branch/master/graph/badge.svg)](https://codecov.io/gh/SpiceSharp/SpiceSharpParser)
 [![CodeFactor](https://www.codefactor.io/repository/github/spicesharp/spicesharpparser/badge)](https://www.codefactor.io/repository/github/spicesharp/spicesharpparser)
 
-SpiceSharpParser is a .NET library that allows to parse Spice netlists and to simulate them using SpiceSharp.
+SpiceSharpParser is a .NET library that allows to parse SPICE netlists and to simulate them using SpiceSharp.
 
 ## Installation
 
@@ -40,11 +40,11 @@ simulation.Run(spiceSharpModel.Circuit);
 ## Compatibility
 ### PSpice
 SpiceSharpParser is able to parse some of PSpice netlists. 
-At the moment due to lack of implementation of LAPLACE and FREQ (part of analog behavioral modeling) and a few other features parsing can fail.
+At the moment due to lack of implementation of LAPLACE and FREQ (part of analog behavioral modeling) and other features parsing or execution can fail.
 
 
 ## Capabilities
-### Analog Behavioral Modeling supported:
+### Analog Behavioral Modeling (partly) supported:
 * POLY(n)
 * TABLE 
 * VALUE
@@ -101,7 +101,7 @@ At the moment due to lack of implementation of LAPLACE and FREQ (part of analog 
 |W (Current Switch)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/W)|
 |X (Subcircuit)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/X)|
 
-## Supporters
+## Supported by
 [<img src="jetbrains.png" width=100/>](https://www.jetbrains.com/?from=SpiceSharpParser)
 
 ## Documentation

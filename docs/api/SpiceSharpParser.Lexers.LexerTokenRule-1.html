@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class LexerTokenRule&lt;TLexerState&gt;
    ">
-    <meta name="generator" content="docfx 2.39.2.0">
+    <meta name="generator" content="docfx 2.40.10.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -73,28 +73,28 @@
   
   <h1 id="SpiceSharpParser_Lexers_LexerTokenRule_1" data-uid="SpiceSharpParser.Lexers.LexerTokenRule`1" class="text-break">Class LexerTokenRule&lt;TLexerState&gt;
   </h1>
-  <div class="markdown level0 summary"><p>The lexer token rule class. It defines how and when a token will be generated for given regulal expression pattern.</p>
+  <div class="markdown level0 summary"><p>The lexer token rule class. It defines how and when a token will be generated for given regular expression pattern.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="SpiceSharpParser.Lexers.LexerRule.html">LexerRule</a></div>
+    <div class="level1"><a class="xref" href="SpiceSharpParser.Lexers.LexerRegexRule.html">LexerRegexRule</a></div>
     <div class="level2"><span class="xref">LexerTokenRule&lt;TLexerState&gt;</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="SpiceSharpParser.Lexers.LexerRule.html#SpiceSharpParser_Lexers_LexerRule_IgnoreCase">LexerRule.IgnoreCase</a>
+      <a class="xref" href="SpiceSharpParser.Lexers.LexerRegexRule.html#SpiceSharpParser_Lexers_LexerRegexRule_IgnoreCase">LexerRegexRule.IgnoreCase</a>
     </div>
     <div>
-      <a class="xref" href="SpiceSharpParser.Lexers.LexerRule.html#SpiceSharpParser_Lexers_LexerRule_Name">LexerRule.Name</a>
+      <a class="xref" href="SpiceSharpParser.Lexers.LexerRegexRule.html#SpiceSharpParser_Lexers_LexerRegexRule_Name">LexerRegexRule.Name</a>
     </div>
     <div>
-      <a class="xref" href="SpiceSharpParser.Lexers.LexerRule.html#SpiceSharpParser_Lexers_LexerRule_RegularExpressionPattern">LexerRule.RegularExpressionPattern</a>
+      <a class="xref" href="SpiceSharpParser.Lexers.LexerRegexRule.html#SpiceSharpParser_Lexers_LexerRegexRule_RegularExpressionPattern">LexerRegexRule.RegularExpressionPattern</a>
     </div>
     <div>
-      <a class="xref" href="SpiceSharpParser.Lexers.LexerRule.html#SpiceSharpParser_Lexers_LexerRule_RegularExpression">LexerRule.RegularExpression</a>
+      <a class="xref" href="SpiceSharpParser.Lexers.LexerRegexRule.html#SpiceSharpParser_Lexers_LexerRegexRule_RegularExpression">LexerRegexRule.RegularExpression</a>
     </div>
     <div>
       <span class="xref">System.Object.ToString()</span>
@@ -122,7 +122,7 @@
   <h6><strong>Assembly</strong>: SpiceSharpParser.dll</h6>
   <h5 id="SpiceSharpParser_Lexers_LexerTokenRule_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class LexerTokenRule&lt;TLexerState&gt; : LexerRule where TLexerState : LexerState</code></pre>
+    <pre><code class="lang-csharp hljs">public class LexerTokenRule&lt;TLexerState&gt; : LexerRegexRule where TLexerState : LexerState</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -135,7 +135,7 @@
     <tbody>
       <tr>
         <td><span class="parametername">TLexerState</span></td>
-        <td><p>Type of lexer state</p>
+        <td><p>Type of lexer state.</p>
 </td>
       </tr>
     </tbody>
@@ -144,10 +144,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerTokenRule_1__ctor_System_Int32_System_String_System_String_System_Func__0_System_String_SpiceSharpParser_Lexers_LexerRuleReturnDecision__System_Func__0_System_String_SpiceSharpParser_Lexers_LexerRuleUseDecision__System_Boolean_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerTokenRule%601.%23ctor(System.Int32%2CSystem.String%2CSystem.String%2CSystem.Func%7B%600%2CSystem.String%2CSpiceSharpParser.Lexers.LexerRuleReturnDecision%7D%2CSystem.Func%7B%600%2CSystem.String%2CSpiceSharpParser.Lexers.LexerRuleUseDecision%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerTokenRule_1__ctor_System_Int32_System_String_System_String_System_Func__0_System_String_SpiceSharpParser_Lexers_LexerRuleReturnDecision__System_Func__0_System_String_SpiceSharpParser_Lexers_LexerRuleUseDecision__System_Boolean_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerTokenRule%601.%23ctor(System.Int32%2CSystem.String%2CSystem.String%2CSystem.Func%7B%600%2CSystem.String%2CSpiceSharpParser.Lexers.LexerRuleReturnDecision%7D%2CSystem.Func%7B%600%2CSystem.String%2CSpiceSharpParser.Lexers.LexerRuleUseDecision%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerTokenRule.cs/#L21">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerTokenRule.cs/#L21">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerTokenRule_1__ctor_" data-uid="SpiceSharpParser.Lexers.LexerTokenRule`1.#ctor*"></a>
   <h4 id="SpiceSharpParser_Lexers_LexerTokenRule_1__ctor_System_Int32_System_String_System_String_System_Func__0_System_String_SpiceSharpParser_Lexers_LexerRuleReturnDecision__System_Func__0_System_String_SpiceSharpParser_Lexers_LexerRuleUseDecision__System_Boolean_" data-uid="SpiceSharpParser.Lexers.LexerTokenRule`1.#ctor(System.Int32,System.String,System.String,System.Func{`0,System.String,SpiceSharpParser.Lexers.LexerRuleReturnDecision},System.Func{`0,System.String,SpiceSharpParser.Lexers.LexerRuleUseDecision},System.Boolean)">LexerTokenRule(Int32, String, String, Func&lt;TLexerState, String, LexerRuleReturnDecision&gt;, Func&lt;TLexerState, String, LexerRuleUseDecision&gt;, Boolean)</h4>
@@ -210,10 +210,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerTokenRule_1_ReturnDecisionProvider.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerTokenRule%601.ReturnDecisionProvider%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerTokenRule_1_ReturnDecisionProvider.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerTokenRule%601.ReturnDecisionProvider%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerTokenRule.cs/#L43">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerTokenRule.cs/#L43">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerTokenRule_1_ReturnDecisionProvider_" data-uid="SpiceSharpParser.Lexers.LexerTokenRule`1.ReturnDecisionProvider*"></a>
   <h4 id="SpiceSharpParser_Lexers_LexerTokenRule_1_ReturnDecisionProvider" data-uid="SpiceSharpParser.Lexers.LexerTokenRule`1.ReturnDecisionProvider">ReturnDecisionProvider</h4>
@@ -241,10 +241,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerTokenRule_1_TokenType.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerTokenRule%601.TokenType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerTokenRule_1_TokenType.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerTokenRule%601.TokenType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerTokenRule.cs/#L38">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerTokenRule.cs/#L38">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerTokenRule_1_TokenType_" data-uid="SpiceSharpParser.Lexers.LexerTokenRule`1.TokenType*"></a>
   <h4 id="SpiceSharpParser_Lexers_LexerTokenRule_1_TokenType" data-uid="SpiceSharpParser.Lexers.LexerTokenRule`1.TokenType">TokenType</h4>
@@ -272,10 +272,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerTokenRule_1_UseDecisionProvider.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerTokenRule%601.UseDecisionProvider%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerTokenRule_1_UseDecisionProvider.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerTokenRule%601.UseDecisionProvider%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerTokenRule.cs/#L48">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerTokenRule.cs/#L48">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerTokenRule_1_UseDecisionProvider_" data-uid="SpiceSharpParser.Lexers.LexerTokenRule`1.UseDecisionProvider*"></a>
   <h4 id="SpiceSharpParser_Lexers_LexerTokenRule_1_UseDecisionProvider" data-uid="SpiceSharpParser.Lexers.LexerTokenRule`1.UseDecisionProvider">UseDecisionProvider</h4>
@@ -305,10 +305,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerTokenRule_1_CanUse__0_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerTokenRule%601.CanUse(%600%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerTokenRule_1_CanUse__0_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerTokenRule%601.CanUse(%600%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerTokenRule.cs/#L58">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerTokenRule.cs/#L58">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerTokenRule_1_CanUse_" data-uid="SpiceSharpParser.Lexers.LexerTokenRule`1.CanUse*"></a>
   <h4 id="SpiceSharpParser_Lexers_LexerTokenRule_1_CanUse__0_System_String_" data-uid="SpiceSharpParser.Lexers.LexerTokenRule`1.CanUse(`0,System.String)">CanUse(TLexerState, String)</h4>
@@ -361,10 +361,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerTokenRule_1_Clone.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerTokenRule%601.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerTokenRule_1_Clone.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerTokenRule%601.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerTokenRule.cs/#L69">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerTokenRule.cs/#L69">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerTokenRule_1_Clone_" data-uid="SpiceSharpParser.Lexers.LexerTokenRule`1.Clone*"></a>
   <h4 id="SpiceSharpParser_Lexers_LexerTokenRule_1_Clone" data-uid="SpiceSharpParser.Lexers.LexerTokenRule`1.Clone">Clone()</h4>
@@ -373,7 +373,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override LexerRule Clone()</code></pre>
+    <pre><code class="lang-csharp hljs">public override LexerRegexRule Clone()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -385,14 +385,14 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="SpiceSharpParser.Lexers.LexerRule.html">LexerRule</a></td>
+        <td><a class="xref" href="SpiceSharpParser.Lexers.LexerRegexRule.html">LexerRegexRule</a></td>
         <td><p>A clone of rule.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="SpiceSharpParser.Lexers.LexerRule.html#SpiceSharpParser_Lexers_LexerRule_Clone">LexerRule.Clone()</a></div>
+  <div><a class="xref" href="SpiceSharpParser.Lexers.LexerRegexRule.html#SpiceSharpParser_Lexers_LexerRegexRule_Clone">LexerRegexRule.Clone()</a></div>
 </article>
           </div>
           
@@ -401,10 +401,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/development/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerTokenRule_1.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerTokenRule%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerTokenRule_1.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerTokenRule%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/development/src/SpiceSharpParser/Lexers/LexerTokenRule.cs/#L9" class="contribution-link">View Source</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerTokenRule.cs/#L9" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

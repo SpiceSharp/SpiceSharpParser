@@ -7,6 +7,8 @@ using SpiceSharp.Simulations;
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Configurations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations

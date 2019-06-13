@@ -1,5 +1,5 @@
-﻿using System;
-using SpiceSharpParser.Common.Evaluation;
+﻿using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Control;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 {
@@ -11,25 +11,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// <returns>
         /// A new instance of def function.
         /// </returns>
-        public static Function CreateDef()
+        public static IFunction<object, double> CreateDef()
         {
-            Function function = new Function();
-            function.Name = "def";
-            function.VirtualParameters = true;
-            function.ArgumentsCount = 1;
-            function.ReturnType = typeof(double);
-
-            function.ObjectArgsLogic = (image, args, evaluator, context) =>
-            {
-                if (args.Length != 1)
-                {
-                    throw new ArgumentException("def() function expects one argument");
-                }
-
-                return context.Parameters.ContainsKey(args[0].ToString()) ? 1 : 0;
-            };
-
-            return function;
+            return new DefFunction();
         }
 
         /// <summary>
@@ -38,36 +22,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// <returns>
         /// A new instance of if function.
         /// </returns>
-        public static Function CreateIf()
+        public static IFunction<double, double> CreateIf()
         {
-            Function function = new Function();
-            function.Name = "if";
-            function.VirtualParameters = false;
-            function.ArgumentsCount = 3;
-            function.ReturnType = typeof(double);
-
-            function.DoubleArgsLogic = (image, args, evaluator, context) =>
-            {
-                if (args.Length != 3)
-                {
-                    throw new ArgumentException("if() function expects three arguments");
-                }
-
-                double x = args[0];
-                double y = args[1];
-                double z = args[2];
-
-                if (x > 0.5)
-                {
-                    return y;
-                }
-                else
-                {
-                    return z;
-                }
-            };
-
-            return function;
+            return new IfFunction();
         }
     }
 }

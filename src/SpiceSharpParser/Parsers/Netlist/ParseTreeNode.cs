@@ -8,7 +8,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="ParseTreeNode"/> class without the parent.
         /// </summary>
-        public ParseTreeNode()
+        protected ParseTreeNode()
         {
         }
 
@@ -16,7 +16,7 @@
         /// Initializes a new instance of the <see cref="ParseTreeNode"/> class.
         /// </summary>
         /// <param name="parent">A parent of the tree node.</param>
-        public ParseTreeNode(ParseTreeNode parent)
+        protected ParseTreeNode(ParseTreeNode parent)
         {
             Parent = parent ?? throw new System.ArgumentNullException(nameof(parent));
         }

@@ -7,6 +7,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharp;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.Parsers.Expression;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 
@@ -104,6 +105,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
               new SpiceNetlistCaseSensitivitySettings(),
               null,
               null);
+            readingContext.ReadingExpressionContext = new ExpressionContext();
 
             // act
             var optionControl = new OptionsControl();

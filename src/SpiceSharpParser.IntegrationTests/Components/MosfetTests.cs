@@ -17,7 +17,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
 
             Assert.NotNull(netlist);
 
-            var model = netlist.Circuit.Objects["my-pmos"];
+            var model = netlist.Circuit["my-pmos"];
             Assert.True(model is Mosfet1Model);
         }
 
@@ -31,7 +31,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".END");
 
             Assert.NotNull(netlist);
-            var model = netlist.Circuit.Objects["my-pmos"];
+            var model = netlist.Circuit["my-pmos"];
             Assert.True(model is Mosfet2Model);
         }
 
@@ -45,7 +45,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".END");
 
             Assert.NotNull(netlist);
-            var model = netlist.Circuit.Objects["my-pmos"];
+            var model = netlist.Circuit["my-pmos"];
             Assert.True(model is Mosfet3Model);
         }
 
@@ -59,7 +59,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".END");
 
             Assert.NotNull(netlist);
-            var model = netlist.Circuit.Objects["my-nmos"];
+            var model = netlist.Circuit["my-nmos"];
             Assert.True(model is Mosfet1Model);
         }
 
@@ -73,7 +73,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".END");
 
             Assert.NotNull(netlist);
-            var model = netlist.Circuit.Objects["my-nmos"];
+            var model = netlist.Circuit["my-nmos"];
             Assert.True(model is Mosfet2Model);
         }
 
@@ -87,7 +87,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".END");
 
             Assert.NotNull(netlist);
-            var model = netlist.Circuit.Objects["my-nmos"];
+            var model = netlist.Circuit["my-nmos"];
             Assert.True(model is Mosfet3Model);
         }
 
@@ -103,7 +103,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".END");
 
             Assert.NotNull(netlist);
-            var model = netlist.Circuit.Objects["my-pmos"];
+            var model = netlist.Circuit["my-pmos"];
             Assert.True(model is Mosfet1Model);
         }
 
@@ -117,7 +117,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".END");
 
             Assert.NotNull(netlist);
-            var model = netlist.Circuit.Objects["my-pmos"];
+            var model = netlist.Circuit["my-pmos"];
             Assert.True(model is Mosfet2Model);
         }
 
@@ -131,7 +131,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".END");
 
             Assert.NotNull(netlist);
-            var model = netlist.Circuit.Objects["my-pmos"];
+            var model = netlist.Circuit["my-pmos"];
             Assert.True(model is Mosfet3Model);
         }
 
@@ -145,7 +145,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".END");
 
             Assert.NotNull(netlist);
-            var model = netlist.Circuit.Objects["my-nmos"];
+            var model = netlist.Circuit["my-nmos"];
             Assert.True(model is Mosfet1Model);
         }
 
@@ -159,7 +159,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".END");
 
             Assert.NotNull(netlist);
-            var model = netlist.Circuit.Objects["my-nmos"];
+            var model = netlist.Circuit["my-nmos"];
             Assert.True(model is Mosfet2Model);
         }
 
@@ -173,7 +173,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".END");
 
             Assert.NotNull(netlist);
-            var model = netlist.Circuit.Objects["my-nmos"];
+            var model = netlist.Circuit["my-nmos"];
             Assert.True(model is Mosfet3Model);
         }
     }

@@ -8,7 +8,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public class SimulationExpressionContexts
     {
-        private ReaderWriterLockSlim cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+        private readonly ReaderWriterLockSlim _cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
 
         public SimulationExpressionContexts(ExpressionContext sourceContext)
         {
@@ -34,12 +34,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            cacheLock.EnterUpgradeableReadLock();
+            _cacheLock.EnterUpgradeableReadLock();
             try
             {
                 if (!Contexts.TryGetValue(simulation, out var context))
                 {
-                    cacheLock.EnterWriteLock();
+                    _cacheLock.EnterWriteLock();
                     try
                     {
                         context = SourceContext.Clone();
@@ -50,7 +50,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                     }
                     finally
                     {
-                        cacheLock.ExitWriteLock();
+                        _cacheLock.ExitWriteLock();
                     }
                 }
                 else
@@ -60,7 +60,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             finally
             {
-                cacheLock.ExitUpgradeableReadLock();
+                _cacheLock.ExitUpgradeableReadLock();
             }
         }
     }

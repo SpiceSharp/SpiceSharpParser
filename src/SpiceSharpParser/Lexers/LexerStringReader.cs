@@ -1,4 +1,6 @@
-﻿namespace SpiceSharpParser.Lexers
+﻿using SpiceSharpParser.Common;
+
+namespace SpiceSharpParser.Lexers
 {
     /// <summary>
     /// Allows fast reading of text lines with line continuation support.
@@ -95,17 +97,17 @@
                 {
                     _currentIndex = nextCurrentIndex;
                     string nextLineAfter = PeekNextLine(out _);
-                    if (!nextLineAfter.TrimStart(' ', '\t').StartsWith(_nextLineContinuationCharacter.ToString()))
+                    if (_nextLineContinuationCharacter.HasValue && !nextLineAfter.StartsWithCharacterAfterWhitespace(_nextLineContinuationCharacter.Value))
                     {
                         break;
                     }
                 }
-                else if (nextLine != string.Empty && (nextLine.TrimStart(' ', '\t').StartsWith(_nextLineContinuationCharacter.ToString())))
+                else if (nextLine != string.Empty && _nextLineContinuationCharacter.HasValue && nextLine.StartsWithCharacterAfterWhitespace(_nextLineContinuationCharacter.Value))
                 {
                     continuationLines++;
                     _currentIndex = nextCurrentIndex;
                     result = result.TrimEnd('\r', '\n');
-                    result += $" {nextLine.TrimStart(' ', '\t').Substring(1)}"; // skip _nextLineContinuationCharacter
+                    result += $" {nextLine.TrimStart().Substring(1)}"; // skip _nextLineContinuationCharacter
                 }
                 else if (_currentLineContinuationCharacter.HasValue && GetLastCharacter(result, out var position) == _currentLineContinuationCharacter)
                 {

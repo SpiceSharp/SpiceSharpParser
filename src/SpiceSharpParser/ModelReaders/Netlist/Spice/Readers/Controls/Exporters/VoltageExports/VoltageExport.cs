@@ -53,7 +53,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         public override string QuantityUnit => "Voltage (V)";
 
         /// <summary>
-        /// Gets the comple voltage export.
+        /// Gets the complex voltage export.
         /// </summary>
         protected ComplexVoltageExport ExportImpl { get; }
 

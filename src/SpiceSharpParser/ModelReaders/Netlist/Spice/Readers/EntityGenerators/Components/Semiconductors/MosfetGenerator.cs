@@ -17,21 +17,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             Mosfets.Add(typeof(Mosfet1Model), (string name) =>
             {
                 var mosfet = new Mosfet1(name);
-                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Model model) => mosfet.SetModel((Mosfet1Model)model) };
+                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Model model) => mosfet.Model = model.Name };
             });
 
             // MOS2
             Mosfets.Add(typeof(Mosfet2Model), (string name) =>
             {
                 var mosfet = new Mosfet2(name);
-                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Model model) => mosfet.SetModel((Mosfet2Model)model) };
+                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Model model) => mosfet.Model = model.Name };
             });
 
             // MOS3
             Mosfets.Add(typeof(Mosfet3Model), (string name) =>
             {
                 var mosfet = new Mosfet3(name);
-                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Model model) => mosfet.SetModel((Mosfet3Model)model) };
+                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Model model) => mosfet.Model = model.Name };
             });
         }
 
@@ -79,7 +79,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     mosfetDetails.Mosfet,
                     modelName,
                     $"Could not find model {modelName} for mosfet {componentIdentifier}",
-                    mosfetDetails.SetModelAction);
+                    mosfetDetails.SetModelAction,
+                    context.Result);
             }
             else
             {

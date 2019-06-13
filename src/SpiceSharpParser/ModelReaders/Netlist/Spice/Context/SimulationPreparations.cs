@@ -2,6 +2,7 @@
 using SpiceSharp.Behaviors;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -50,7 +51,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             });
         }
 
-        public void ExecuteTemperatuteBehaviorBeforeLoad(Entity entity)
+        public void ExecuteTemperatureBehaviorBeforeLoad(Entity entity)
         {
             SimulationUpdates.AddBeforeLoad((simulation, evaluators, contexts) =>
             {

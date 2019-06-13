@@ -9,8 +9,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public class SimulationEvaluators : ISimulationEvaluators
     {
-        private Dictionary<Simulation, IEvaluator> evaluators = new Dictionary<Simulation, IEvaluator>();
-        private ReaderWriterLockSlim cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+        private readonly Dictionary<Simulation, IEvaluator> _evaluators = new Dictionary<Simulation, IEvaluator>();
+        private readonly ReaderWriterLockSlim _cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
 
         public SimulationEvaluators(IEvaluator sourceEvaluator)
         {
@@ -26,12 +26,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            cacheLock.EnterUpgradeableReadLock();
+            _cacheLock.EnterUpgradeableReadLock();
             try
             {
-                if (!evaluators.TryGetValue(simulation, out var evaluator))
+                if (!_evaluators.TryGetValue(simulation, out var evaluator))
                 {
-                    cacheLock.EnterWriteLock();
+                    _cacheLock.EnterWriteLock();
                     try
                     {
                         evaluator = new SpiceEvaluator(
@@ -40,13 +40,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                             SourceEvaluator.IsParameterNameCaseSensitive,
                             SourceEvaluator.IsFunctionNameCaseSensitive);
 
-                        evaluators[simulation] = evaluator;
+                        _evaluators[simulation] = evaluator;
 
                         return evaluator;
                     }
                     finally
                     {
-                        cacheLock.ExitWriteLock();
+                        _cacheLock.ExitWriteLock();
                     }
                 }
                 else
@@ -56,7 +56,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             finally
             {
-                cacheLock.ExitUpgradeableReadLock();
+                _cacheLock.ExitUpgradeableReadLock();
             }
         }
     }

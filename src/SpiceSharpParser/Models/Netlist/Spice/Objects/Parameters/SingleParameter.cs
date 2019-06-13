@@ -7,7 +7,7 @@
     {
         private string rawString;
 
-        public SingleParameter(string rawString)
+        protected SingleParameter(string rawString)
         {
             this.rawString = rawString;
         }

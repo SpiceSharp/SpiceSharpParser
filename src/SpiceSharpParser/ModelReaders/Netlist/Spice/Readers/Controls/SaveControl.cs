@@ -5,6 +5,7 @@ using System.Reflection;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
@@ -240,18 +241,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
         private void CreateExportsForAllVoltageAndCurrents(IReadingContext context)
         {
-            context.Result.Circuit.Entities.BuildOrderedComponentList(); // TODO: Verify with Sven
-
             // For all simulations add exports for current and voltages
             foreach (var simulation in context.Result.Simulations)
             {
                 var nodes = new List<string>();
 
-                foreach (Entity entity in context.Result.Circuit.Entities)
+                foreach (Entity entity in context.Result.Circuit)
                 {
                     if (entity is SpiceSharp.Components.Component c)
                     {
-                        string componentName = c.Name.ToString();
+                        string componentName = c.Name;
                         var @params = new ParameterCollection();
                         @params.Add(new WordParameter(componentName));
 
@@ -284,7 +283,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 foreach (var node in nodes)
                 {
                     var @params = new ParameterCollection();
-                    @params.Add(new WordParameter(node.ToString()));
+                    @params.Add(new WordParameter(node));
 
                     context.Result.AddExport(
                         Mapper

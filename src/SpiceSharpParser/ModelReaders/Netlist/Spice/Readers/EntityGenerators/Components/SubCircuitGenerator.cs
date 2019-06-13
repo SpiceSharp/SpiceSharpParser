@@ -4,6 +4,7 @@ using System.Linq;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Processors;
@@ -197,12 +198,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             foreach (var sp in subcircuitParameters)
             {
-                pp[sp.Key] = context.ExpressionParser.Parse(
-                    sp.Value,
-                    new ExpressionParserContext(context.CaseSensitivity.IsFunctionNameCaseSensitive)
-                        {
-                            Functions = context.ReadingExpressionContext.Functions,
-                        }).FoundParameters;
+                pp[sp.Key] = context.ExpressionParser.Parse(sp.Value, new ExpressionParserContext(context.Name, context.ReadingExpressionContext.Functions)).FoundParameters;
             }
 
             subCircuitExpressionContext.SetParameters(subcircuitParameters, pp);

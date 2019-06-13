@@ -9,7 +9,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
     public class SpiceExpressionContext : ExpressionContext
     {
         public SpiceExpressionContext(SpiceExpressionMode mode)
-            : this(string.Empty, mode, false, false, false)
+            : this(string.Empty, mode, false, false, false, new Randomizer())
         {
         }
 
@@ -18,11 +18,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             SpiceExpressionMode mode,
             bool isParameterNameCaseSensitive,
             bool isFunctionNameCaseSensitive,
-            bool isExpressionNameCaseSensitive)
+            bool isExpressionNameCaseSensitive,
+            Randomizer randomizer)
 
-        : base(name, isParameterNameCaseSensitive, isFunctionNameCaseSensitive, isExpressionNameCaseSensitive)
+        : base(name, isParameterNameCaseSensitive, isFunctionNameCaseSensitive, isExpressionNameCaseSensitive, randomizer)
         {
             this.Mode = mode;
+            this.CreateCommonFunctions();
             this.CreateSpiceFunctions();
             this.CreateSpiceParameters();
         }
@@ -52,6 +54,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             Functions.Add("log", MathFunctions.CreateLog(Mode));
             Functions.Add("log10", MathFunctions.CreateLog10(Mode));
             Functions.Add("max", MathFunctions.CreateMax());
+            Functions.Add("mc", RandomFunctions.CreateMc());
             Functions.Add("min", MathFunctions.CreateMin());
             Functions.Add("nint", MathFunctions.CreateRound());
             Functions.Add("pow", MathFunctions.CreatePow(Mode));
@@ -61,10 +64,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             Functions.Add("round", MathFunctions.CreateRound());
             Functions.Add("sqrt", MathFunctions.CreateSqrt(Mode));
             Functions.Add("sgn", MathFunctions.CreateSgn());
-            Functions.Add("table", TableFunction.Create());
+            Functions.Add("table", MathFunctions.CreateTable());
             Functions.Add("u", MathFunctions.CreateU());
             Functions.Add("uramp", MathFunctions.CreateURamp());
-            Functions.Add("poly", PolyFunction.Create());
+            Functions.Add("poly", MathFunctions.CreatePoly());
         }
 
         private void CreateSpiceParameters()

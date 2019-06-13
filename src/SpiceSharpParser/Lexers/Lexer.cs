@@ -18,8 +18,8 @@ namespace SpiceSharpParser.Lexers
         /// <param name="options">Lexer options.</param>
         public Lexer(LexerGrammar<TLexerState> grammar, LexerOptions options)
         {
-            Options = options;
             Grammar = grammar ?? throw new ArgumentNullException(nameof(grammar));
+            Options = options;
         }
 
         /// <summary>
@@ -45,8 +45,6 @@ namespace SpiceSharpParser.Lexers
                 throw new ArgumentNullException(nameof(text));
             }
 
-            LexerTokenRule<TLexerState> bestTokenRule = null;
-            Match bestMatch = null;
             string textToLex = null;
             bool getNextTextToLex = true;
             int currentTokenIndex = 0;
@@ -75,7 +73,7 @@ namespace SpiceSharpParser.Lexers
                     break;
                 }
 
-                if (FindBestTokenRule(textToLex, state, out bestTokenRule, out bestMatch))
+                if (FindBestTokenRule(textToLex, state, out var bestTokenRule, out var bestMatch))
                 {
                     var tokenActionResult = bestTokenRule.ReturnDecisionProvider(state, bestMatch.Value);
                     if (tokenActionResult == LexerRuleReturnDecision.ReturnToken)
@@ -175,6 +173,10 @@ namespace SpiceSharpParser.Lexers
                         {
                             bestMatch = tokenMatch;
                             bestMatchTokenRule = tokenRule;
+                            if (state.FullMatch)
+                            {
+                                break;
+                            }
                         }
                     }
                 }

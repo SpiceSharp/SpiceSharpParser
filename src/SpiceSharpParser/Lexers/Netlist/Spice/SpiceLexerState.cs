@@ -5,10 +5,6 @@
     /// </summary>
     public class SpiceLexerState : LexerState
     {
-        public SpiceLexerState()
-        {
-        }
-
         /// <summary>
         /// Gets or sets a value indicating whether lexer in "comment" lexing state.
         /// </summary>

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
@@ -20,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// Initializes a new instance of the <see cref="LibPreprocessor"/> class.
         /// </summary>
         /// <param name="fileReader">File reader.</param>
-        /// <param name="tokenProvider">Token provider.</param>
+        /// <param name="tokenProviderPool">Token provider.</param>
         /// <param name="spiceNetlistParser">Single spice netlist parser.</param>
         /// <param name="includesPreprocessor">Includes preprocessor.</param>
         /// <param name="initialDirectoryPathProvider">Initial directory path provider.</param>
@@ -28,7 +27,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <param name="lexerSettings">Lexer settings.</param>
         public LibPreprocessor(
             IFileReader fileReader,
-            ISpiceTokenProvider tokenProvider,
+            ISpiceTokenProviderPool tokenProviderPool,
             ISingleSpiceNetlistParser spiceNetlistParser,
             IProcessor includesPreprocessor,
             Func<string> initialDirectoryPathProvider,
@@ -36,7 +35,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             SpiceLexerSettings lexerSettings)
         {
             ReaderSettings = readerSettings;
-            TokenProvider = tokenProvider;
+            TokenProviderPool = tokenProviderPool;
             IncludesPreprocessor = includesPreprocessor;
             SpiceNetlistParser = spiceNetlistParser;
             FileReader = fileReader;
@@ -48,20 +47,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
         public SpiceLexerSettings LexerSettings { get; set; }
 
-        public ISpiceTokenProvider TokenProvider { get; set; }
+        public ISpiceTokenProviderPool TokenProviderPool { get; set; }
 
         public SpiceNetlistReaderSettings ReaderSettings { get; }
 
         /// <summary>
         /// Gets the initial directory path.
         /// </summary>
-        public string InitialDirectoryPath
-        {
-            get
-            {
-                return InitialDirectoryPathProvider() ?? Directory.GetCurrentDirectory();
-            }
-        }
+        public string InitialDirectoryPath => InitialDirectoryPathProvider() ?? Directory.GetCurrentDirectory();
 
         /// <summary>
         /// Gets the file reader.
@@ -194,7 +187,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                     IsDotStatementNameCaseSensitive = LexerSettings.IsDotStatementNameCaseSensitive,
                 };
 
-                var tokens = TokenProvider.GetTokens(libContent, lexerSettings);
+                var tokens = TokenProviderPool.GetSpiceTokenProvider(lexerSettings).GetTokens(libContent);
 
                 SpiceNetlistParser.Settings = new SingleSpiceNetlistParserSettings(lexerSettings)
                 {

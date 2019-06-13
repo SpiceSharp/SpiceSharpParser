@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpiceSharp;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
     /// <summary>
-    /// Generates a property <see cref="Export"/>
+    /// Generates a property <see cref="Export"/>.
     /// </summary>
     public class PropertyExporter : Exporter
     {
         /// <summary>
-        /// Gets supported voltage exports
+        /// Gets supported voltage exports.
         /// </summary>
         /// <returns>
         /// A list of supported voltage exports.
@@ -23,13 +23,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         public override ICollection<string> CreatedTypes => new List<string>() { "@" };
 
         /// <summary>
-        /// Creates a new current export
+        /// Creates a new current export.
         /// </summary>
-        /// <param name="type">A type of export</param>
-        /// <param name="parameters">A parameters of export</param>
-        /// <param name="simulation">A simulation for export</param>
+        /// <paramref name="name">Name of export.</paramref>
+        /// <param name="type">A type of export.</param>
+        /// <param name="parameters">A parameters of export.</param>
+        /// <param name="simulation">A simulation for export.</param>
         /// <returns>
-        /// A new export
+        /// A new export.
         /// </returns>
         public override Export CreateExport(string name, string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator componentNameGenerator, IObjectNameGenerator modelNameGenerator, IResultService result, SpiceNetlistCaseSensitivitySettings caseSettings)
         {

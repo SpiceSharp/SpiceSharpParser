@@ -2,26 +2,12 @@
 
 namespace SpiceSharpParser.Common.Evaluation
 {
-    public class Function
+    public abstract class Function<TInputArgumentType, TOutputType> : IFunction<TInputArgumentType, TOutputType>
     {
         /// <summary>
-        /// Gets or sets the name of user function.
+        /// Gets or sets the name of function.
         /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets logic for user function.
-        /// Function:
-        /// name => args = => evaluator => result.
-        /// </summary>
-        public Func<string, double[], IEvaluator, ExpressionContext, double> DoubleArgsLogic { get; set; }
-
-        /// <summary>
-        /// Gets or sets logic for user function.
-        /// Function:
-        /// name => args = => evaluator => result.
-        /// </summary>
-        public Func<string, object[], IEvaluator, ExpressionContext, double> ObjectArgsLogic { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether function has virtual parameters.
@@ -33,16 +19,22 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         public int ArgumentsCount { get; set; }
 
-        // TODO: future: add validation
-
-        /// <summary>
-        /// Gets or sets the return type of user function .
-        /// </summary>
-        public Type ReturnType { get; set; }
-
         /// <summary>
         /// Gets or sets a value indicating whether function is infix.
         /// </summary>
         public bool Infix { get; set; }
+
+        /// <summary>
+        /// Computes the value of the function for given arguments.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="evaluator"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public abstract TOutputType Logic(string image, TInputArgumentType[] args, IEvaluator evaluator, ExpressionContext context);
+
+        Type IFunction.ArgumentType => typeof(TInputArgumentType);
+
+        Type IFunction.OutputType => typeof(TOutputType);
     }
 }

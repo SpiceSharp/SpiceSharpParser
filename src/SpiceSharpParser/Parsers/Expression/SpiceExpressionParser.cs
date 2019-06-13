@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.Parsers.Netlist.Spice;
 
 namespace SpiceSharpParser.Parsers.Expression
 {
@@ -554,13 +553,14 @@ namespace SpiceSharpParser.Parsers.Expression
             cfo.LeftAssociative = function.Infix || cfo.LeftAssociative;
             cfo.Name = functionName;
 
-            if (cfo.VirtualParameters)
+            if (function is IFunction<double, double> fDouble)
             {
-                cfo.ObjectArgsLogic = function.ObjectArgsLogic;
+                cfo.DoubleArgsLogic = fDouble.Logic;
             }
-            else
+
+            if (function is IFunction<object, double> fObj)
             {
-                cfo.DoubleArgsLogic = function.DoubleArgsLogic;
+                cfo.ObjectArgsLogic = fObj.Logic;
             }
 
             return cfo;

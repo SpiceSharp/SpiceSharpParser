@@ -581,51 +581,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             Assert.Equal(100 * 1000, evaluator.EvaluateValueExpression("300kHz/3", c));
         }
 
-        [Fact]
-        public void FibonacciFunction()
-        {
-            // arrange
-            var p = new SpiceEvaluator();
-
-            //TODO: It shouldn't be that messy ...
-            Func<string, double[], IEvaluator, ExpressionContext, double> fibLogic = null; //TODO: Use smarter methods to define anonymous recursion in C# (there is a nice post on some nice blog on msdn)
-            fibLogic = (string image, double[] args, IEvaluator evaluator, ExpressionContext context) =>
-            {
-                double x = (double)args[0];
-
-                if (x == 0.0)
-                {
-                    return 0.0;
-                }
-
-                if (x == 1.0)
-                {
-                    return 1.0;
-                }
-
-                return (double)fibLogic(image, new double[1] { (x - 1) }, evaluator, context) + (double)fibLogic(image, new double[1] { (x - 2) }, evaluator, context);
-            };
-
-            var fib = new Function()
-            {
-                ArgumentsCount = 1,
-                DoubleArgsLogic = fibLogic,
-                VirtualParameters = false,
-            };
-
-            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
-
-            c.Functions.Add("fib",  fib);
-
-            Assert.Equal(0, p.EvaluateValueExpression("fib(0)", c));
-            Assert.Equal(1, p.EvaluateValueExpression("fib(1)", c));
-            Assert.Equal(1, p.EvaluateValueExpression("fib(2)", c));
-            Assert.Equal(2, p.EvaluateValueExpression("fib(3)", c));
-            Assert.Equal(3, p.EvaluateValueExpression("fib(4)", c));
-            Assert.Equal(5, p.EvaluateValueExpression("fib(5)", c));
-            Assert.Equal(8, p.EvaluateValueExpression("fib(6)", c));
-        }
-
         //[Fact]
         public void FibonacciAsParam()
         {

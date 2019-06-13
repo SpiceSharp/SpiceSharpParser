@@ -1,27 +1,25 @@
-﻿using SpiceSharp;
-
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+﻿namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
 {
     /// <summary>
-    /// Interface for all object name generators
+    /// Interface for all object name generators.
     /// </summary>
     public interface IObjectNameGenerator
     {
         /// <summary>
-        /// Generates entity object name
+        /// Generates entity object name.
         /// </summary>
-        /// <param name="entityName">Name of entity</param>
+        /// <param name="entityName">Name of entity.</param>
         /// <returns>
-        /// A object name for entity
+        /// A object name for entity.
         /// </returns>
         string Generate(string entityName);
 
         /// <summary>
-        /// Creates a new child object name generator
+        /// Creates a new child object name generator.
         /// </summary>
-        /// <param name="childGeneratorName">Name of generator</param>
+        /// <param name="childGeneratorName">Name of generator.</param>
         /// <returns>
-        /// A new object name generator
+        /// A new object name generator.
         /// </returns>
         IObjectNameGenerator CreateChildGenerator(string childGeneratorName);
     }

@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using SpiceSharp;
 using SpiceSharp.Circuits;
-using SpiceSharp.Components;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 {
     public class StochasticModelsRegistry : IStochasticModelsRegistry
     {
@@ -182,7 +180,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return null;
         }
 
-        public void SetModel<T>(Entity entity, string modelName, string exceptionMessage, Action<T> setModelAction)
+        public void SetModel<T>(Entity entity, string modelName, string exceptionMessage, Action<T> setModelAction, IResultService result)
             where T : SpiceSharp.Components.Model
         {
             var model = FindModel<T>(modelName);
@@ -192,7 +190,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ModelNotFoundException(exceptionMessage);
             }
 
-            setModelAction((T)ProvideStochasticModel(entity, model));
+            var stochasticModel = (T) ProvideStochasticModel(entity, model);
+            setModelAction(stochasticModel);
+
+            if (stochasticModel != null)
+            {
+                if (!result.Circuit.Contains(stochasticModel.Name))
+                {
+                    result.Circuit.Add(stochasticModel);
+                }
+            }
         }
 
         public T FindModel<T>(string modelName)

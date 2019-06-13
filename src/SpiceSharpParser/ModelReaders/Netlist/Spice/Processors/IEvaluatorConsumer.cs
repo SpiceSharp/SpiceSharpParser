@@ -1,7 +1,6 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice;
 
-namespace SpiceSharpParser.Common.Processors
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
     public interface IEvaluatorConsumer
     {

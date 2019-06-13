@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
@@ -49,21 +50,36 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
             string type = statement.Parameters.Count > 0 ? statement.Parameters[0].Image.ToLower() : null;
             string plotImage = statement.Name + ":" + statement.Parameters.ToString();
+            bool merge = statement.Parameters.Any(p => p.Image == "merge");
 
-            if (type != null && SupportedPlotTypes.Contains(type))
+            if (merge)
             {
-                foreach (var simulation in FilterSimulations(context.Result.Simulations, type))
+                if (type != null && SupportedPlotTypes.Contains(type))
                 {
-                    CreatePlot(plotImage, statement.Parameters.Skip(1), context, simulation, true);
+                    CreatePlot(plotImage, statement.Parameters.Skip(1), context, FilterSimulations(context.Result.Simulations, type), true);
+                }
+                else
+                {
+                    CreatePlot(plotImage, statement.Parameters, context, context.Result.Simulations, false);
                 }
             }
             else
             {
-                foreach (var simulation in context.Result.Simulations)
+                if (type != null && SupportedPlotTypes.Contains(type))
                 {
-                    if (simulation is OP) continue;
+                    foreach (var simulation in FilterSimulations(context.Result.Simulations, type))
+                    {
+                        CreatePlot(plotImage, statement.Parameters.Skip(1), context, simulation, true);
+                    }
+                }
+                else
+                {
+                    foreach (var simulation in context.Result.Simulations)
+                    {
+                        if (simulation is OP) continue;
 
-                    CreatePlot(plotImage, statement.Parameters, context, simulation, false);
+                        CreatePlot(plotImage, statement.Parameters, context, simulation, false);
+                    }
                 }
             }
         }
@@ -83,9 +99,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void CreatePlot(string printImage, ParameterCollection parameters, IReadingContext context, Simulation simulation, bool filterSpecified)
+        private void CreatePlot(string plotImage, ParameterCollection parameters, IReadingContext context, Simulation simulation, bool filterSpecified)
         {
-            var plot = new XyPlot(simulation.Name.ToString());
+            var plot = new XyPlot(simulation.Name);
             List<Export> exports = GenerateExports(parameters, simulation, context);
 
             for (int i = 0; i < exports.Count; i++)
@@ -94,16 +110,37 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 plot.Series.Add(new Series(export.Name));
             }
 
-            simulation.ExportSimulationData += (sender, args) => CreatePointForSeries(simulation, args, exports, plot);
-            simulation.AfterExecute += (sender, args) => AddPlotToResultIfValid(printImage, context, plot, simulation, filterSpecified);
+            simulation.ExportSimulationData += (sender, args) => CreatePointForSeries(simulation, args, exports, plot.Series, plot);
+            simulation.AfterExecute += (sender, args) => AddPlotToResultIfValid(plotImage, context, plot, simulation, filterSpecified);
+        }
+
+        private void CreatePlot(string plotImage, ParameterCollection parameters, IReadingContext context, IEnumerable<Simulation> simulations, bool filterSpecified)
+        {
+            var plot = new XyPlot($"Merged: {plotImage}");
+            foreach (var simulation in simulations)
+            {
+                List<Export> exports = GenerateExports(parameters, simulation, context);
+
+                List<Series> series = new List<Series>();
+                for (int i = 0; i < exports.Count; i++)
+                {
+                    Export export = exports[i];
+                    series.Add(new Series($"{simulation.Name} {export.Name}"));
+                }
+                plot.Series.AddRange(series);
+
+                simulation.ExportSimulationData += (sender, args) => CreatePointForSeries(simulation, args, exports, series, plot);
+            }
+
+            context.Result.AddPlot(plot);
         }
 
         private void AddPlotToResultIfValid(string plotImage, IReadingContext context, XyPlot plot, Simulation simulation, bool filterSpecified)
         {
             for (int i = plot.Series.Count - 1; i >= 0; i--)
             {
-                Series serie = plot.Series[i];
-                if (serie.Points.Count == 0)
+                Series series = plot.Series[i];
+                if (series.Points.Count == 0)
                 {
                     plot.Series.RemoveAt(i);
                 }
@@ -119,7 +156,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void CreatePointForSeries(Simulation simulation, ExportDataEventArgs eventArgs, List<Export> exports, XyPlot plot)
+        private void CreatePointForSeries(Simulation simulation, ExportDataEventArgs eventArgs, List<Export> exports, List<Series> series, XyPlot plot)
         {
             double x = 0;
 
@@ -151,7 +188,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     double val = exports[i].Extract();
                     if (!double.IsNaN(val))
                     {
-                        plot.Series[i].Points.Add(new Point() { X = x, Y = val });
+                        series[i].Points.Add(new Point() { X = x, Y = val });
                     }
                 }
                 catch (Exception ex)
