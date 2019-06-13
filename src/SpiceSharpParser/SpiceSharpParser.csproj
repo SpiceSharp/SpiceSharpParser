@@ -4,7 +4,7 @@
     <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">netstandard1.5;netstandard2.0;net45</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netstandard1.5;netstandard2.0</TargetFrameworks>
     <Authors>SpiceSharp</Authors>
-    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageLicenseUrl>https://github.com/SpiceSharp/SpiceSharpParser/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/SpiceSharp/SpiceSharpParser</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/SpiceSharp/SpiceSharp/master/api/images/logo_full.svg?sanitize=true</PackageIconUrl>
     <Copyright>Copyright 2019</Copyright>
