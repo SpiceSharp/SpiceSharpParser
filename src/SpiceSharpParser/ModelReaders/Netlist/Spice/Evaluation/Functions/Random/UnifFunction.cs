@@ -3,11 +3,11 @@ using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random
 {
-    public class McFunction : Function<double, double>
+    public class UnifFunction : Function<double, double>
     {
-        public McFunction()
+        public UnifFunction()
         {
-            Name = "mc";
+            Name = "unif";
             VirtualParameters = false;
             ArgumentsCount = 2;
         }
@@ -16,18 +16,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
         {
             if (args.Length != 2)
             {
-                throw new Exception("mc expects two arguments");
+                throw new Exception("unif expects two arguments: nominal_val, rel_variation");
             }
 
             System.Random random = context.Randomizer.GetRandom(context.Seed);
 
-            double x = args[0];
-            double tol = args[1];
+            double dRand = (2.0 * random.NextDouble()) - 1.0;
+            double nominal = args[0];
+            double variation = args[1];
 
-            double min = x - (tol * x);
-            double randomChange = random.NextDouble() * 2.0 * tol * x;
-
-            return min + randomChange;
+            return nominal + (nominal * variation * dRand);
         }
     }
 }

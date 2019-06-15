@@ -124,7 +124,7 @@ namespace SpiceSharpParser
 
             foreach (var exportFunction in exportFunctions)
             {
-                preprocessorContext.Functions.Add(exportFunction.Key, exportFunction.Value);
+                preprocessorContext.AddFunction(exportFunction.Key, exportFunction.Value);
             }
 
             var parser = new SpiceExpressionParser(Settings.Reading.EvaluatorMode == SpiceExpressionMode.LtSpice);

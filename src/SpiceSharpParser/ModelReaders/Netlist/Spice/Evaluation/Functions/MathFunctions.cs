@@ -88,6 +88,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
+        /// Get a nint() function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of min function.
+        /// </returns>
+        public static IFunction<double, double> CreateNint()
+        {
+            return new NintFunction();
+        }
+
+        /// <summary>
         /// Get a max() function.
         /// </summary>
         /// <returns>
@@ -184,6 +195,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         public static IFunction<double, double> CreateAbs()
         {
             return new AbsFunction();
+        }
+
+        /// <summary>
+        /// Get a fabs() function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of fabs function.
+        /// </returns>
+        public static IFunction<double, double> CreateFAbs()
+        {
+            return new FAbsFunction();
         }
 
         /// <summary>

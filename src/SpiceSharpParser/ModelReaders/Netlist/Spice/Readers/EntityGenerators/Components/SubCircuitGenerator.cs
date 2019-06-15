@@ -228,7 +228,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             foreach (var exportFunction in exportFunctions)
             {
-                subCircuitExpressionContext.Functions[exportFunction.Key] = exportFunction.Value;
+                subCircuitExpressionContext.Functions[exportFunction.Key] = new List<IFunction>() { exportFunction.Value }; //TODO: double check this
             }
 
             return new ReadingContext(

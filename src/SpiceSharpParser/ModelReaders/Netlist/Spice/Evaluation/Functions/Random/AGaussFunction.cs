@@ -3,20 +3,20 @@ using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random
 {
-    public class GaussFunction : Function<double, double>
+    public class AGaussFunction : Function<double, double>
     {
-        public GaussFunction()
+        public AGaussFunction()
         {
-            Name = "gauss";
+            Name = "agauss";
             VirtualParameters = false;
-            ArgumentsCount = 1;
+            ArgumentsCount = 3;
         }
 
         public override double Logic(string image, double[] args, IEvaluator evaluator, ExpressionContext context)
         {
-            if (args.Length != 1)
+            if (args.Length != 3)
             {
-                throw new Exception("gauss expects one argument - stdDev");
+                throw new Exception("agauss expects three arguments: nominal_val, abs_variation and sigma");
             }
 
             System.Random random = context.Randomizer.GetRandom(context.Seed);
@@ -25,9 +25,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
             double p2 = 1 - random.NextDouble();
 
             double normal = System.Math.Sqrt(-2.0 * System.Math.Log(p1)) * System.Math.Sin(2.0 * System.Math.PI * p2);
-            double stdDev = args[0];
+            double nominal = args[0];
+            double stdDev = args[1];
+            double sigma = args[2];
 
-            return stdDev * normal;
+            double stdVar = stdDev / sigma;
+
+            return nominal + (stdVar * normal);
         }
     }
 }

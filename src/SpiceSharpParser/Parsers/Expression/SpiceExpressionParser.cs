@@ -8,7 +8,7 @@ namespace SpiceSharpParser.Parsers.Expression
 {
     /// <summary>
     /// @author: Sven Boulanger
-    /// @author: Marcin Gołębiowski (custom functions, lazy evaluation)
+    /// @author: Marcin Gołębiowski (functions, lazy evaluation)
     /// A very light-weight and fast expression parser made for parsing SPICE expressions
     /// It is based on Dijkstra's Shunting Yard algorithm. It is very fast for parsing expressions only once.
     /// The parser is also not very expressive for errors, so only use it for relatively simple expressions.
@@ -543,26 +543,16 @@ namespace SpiceSharpParser.Parsers.Expression
                 throw new FunctionNotFoundException(functionName);
             }
 
-            var function = context.Functions[functionName];
+            var functions = context.Functions[functionName];
+
             var cfo = new FunctionOperator();
-            cfo.StartIndex = startIndex;
-            cfo.VirtualParameters = function.VirtualParameters;
-            cfo.ArgumentsCount = function.ArgumentsCount;
-            cfo.ArgumentsStackCount = outputStack.Count;
-            cfo.Precedence = function.Infix ? PrecedenceMultiplicative : cfo.Precedence;
-            cfo.LeftAssociative = function.Infix || cfo.LeftAssociative;
             cfo.Name = functionName;
-
-            if (function is IFunction<double, double> fDouble)
-            {
-                cfo.DoubleArgsLogic = fDouble.Logic;
-            }
-
-            if (function is IFunction<object, double> fObj)
-            {
-                cfo.ObjectArgsLogic = fObj.Logic;
-            }
-
+            cfo.StartIndex = startIndex;
+            cfo.VirtualParameters = functions.First().VirtualParameters;
+            cfo.ArgumentsStackCount = outputStack.Count;
+            cfo.LeftAssociative = functions.First().Infix || cfo.LeftAssociative;
+            cfo.Precedence = functions.First().Infix ? PrecedenceMultiplicative : cfo.Precedence;
+            cfo.Functions = functions;
             return cfo;
         }
 
@@ -570,27 +560,67 @@ namespace SpiceSharpParser.Parsers.Expression
         {
             if (op.VirtualParameters)
             {
-                var argCount = op.ArgumentsCount != -1 ? op.ArgumentsCount : virtualParametersStack.Count;
+                if (op.Functions.Count > 1)
+                {
+                    throw new InvalidOperationException("Cannot have more than one virtual function with same name");
+                }
+
+                var function = op.Functions.Single();
+
+                if (!(function is IFunction<object, double> df))
+                {
+                    throw new InvalidOperationException("Virtual function needs to have objects as arguments");
+                }
+
+                var argCount = function.ArgumentsCount != -1 ? function.ArgumentsCount : virtualParametersStack.Count;
                 var args = PopAndReturnArguments(virtualParametersStack, argCount);
 
                 outputStack.Push((evalContext) =>
                 {
                     if (endIndex != null)
                     {
-                        return op.ObjectArgsLogic(
+                        return df.Logic(
                             op.Name + expression.Substring(op.StartIndex - 1, endIndex.Value - op.StartIndex + 2),
                             args,
                             evalContext.Evaluator,
                             evalContext.ExpressionContext);
                     }
 
-                    return op.ObjectArgsLogic(null, args, evalContext.Evaluator, evalContext.ExpressionContext);
+                    return df.Logic(null, args, evalContext.Evaluator, evalContext.ExpressionContext);
                 });
             }
             else
             {
-                var argCount = op.ArgumentsCount != -1 ? op.ArgumentsCount : outputStack.Count - op.ArgumentsStackCount;
-                var args = PopAndReturnArguments(outputStack, argCount);
+                var functionArguments = outputStack.Count - op.ArgumentsStackCount;
+
+                IFunction function;
+
+                if (op.Functions.Count == 1 && op.Functions.First().Infix)
+                {
+                    functionArguments++;
+                }
+
+                if (op.Functions.Count == 1 && op.Functions.First().ArgumentsCount == -1)
+                {
+                    function = op.Functions.First();
+                }
+                else
+                {
+                    function = op.Functions.SingleOrDefault(f => f.ArgumentsCount == functionArguments);
+
+                    if (function == null)
+                    {
+                        throw new InvalidOperationException(
+                            $"Function {op.Name} has been called with unsupported number of arguments");
+                    }
+                }
+
+                if (!(function is IFunction<double, double> df))
+                {
+                    throw new InvalidOperationException("Virtual function needs to have double as arguments");
+                }
+
+                var args = PopAndReturnArguments(outputStack, functionArguments);
 
                 if (endIndex != null)
                 {
@@ -598,7 +628,7 @@ namespace SpiceSharpParser.Parsers.Expression
                     {
                         var evaluatedArgs = Evaluate(args, evalContext);
 
-                        return op.DoubleArgsLogic(
+                        return df.Logic(
                             op.Name
                             + expression.Substring(op.StartIndex - 1, endIndex.Value - op.StartIndex + 2),
                             evaluatedArgs,
@@ -611,7 +641,7 @@ namespace SpiceSharpParser.Parsers.Expression
                     outputStack.Push((evalContext) =>
                     {
                         var evaluatedArgs = Evaluate(args, evalContext);
-                        return op.DoubleArgsLogic(null, evaluatedArgs, evalContext.Evaluator, evalContext.ExpressionContext);
+                        return df.Logic(null, evaluatedArgs, evalContext.Evaluator, evalContext.ExpressionContext);
                     });
                 }
             }
@@ -962,16 +992,9 @@ namespace SpiceSharpParser.Parsers.Expression
             /// </summary>
             public string Name { get; set; }
 
-            /// <summary>
-            /// Gets or sets the function logic.
-            /// </summary>
-            public Func<string, double[], IEvaluator, ExpressionContext, double> DoubleArgsLogic { get; set; }
-
-            public Func<string, object[], IEvaluator, ExpressionContext, double> ObjectArgsLogic { get; set; }
-
             public bool VirtualParameters { get; set; }
 
-            public int ArgumentsCount { get; set; }
+            public List<IFunction> Functions { get; set; }
 
             public int ArgumentsStackCount { get; set; }
 

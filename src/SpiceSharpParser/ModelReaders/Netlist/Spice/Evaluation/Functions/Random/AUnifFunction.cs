@@ -3,27 +3,29 @@ using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random
 {
-    public class FlatFunction : Function<double, double>
+    public class AUnifFunction : Function<double, double>
     {
-        public FlatFunction()
+        public AUnifFunction()
         {
-            Name = "flat";
+            Name = "aunif";
             VirtualParameters = false;
-            ArgumentsCount = 1;
+            ArgumentsCount = 2;
         }
 
         public override double Logic(string image, double[] args, IEvaluator evaluator, ExpressionContext context)
         {
-            if (args.Length != 1)
+            if (args.Length != 2)
             {
-                throw new ArgumentException("flat function expects one argument");
+                throw new Exception("aunif expects two arguments: nominal_val, rel_variation");
             }
 
             System.Random random = context.Randomizer.GetRandom(context.Seed);
 
-            double x = (double)args[0];
+            double dRand = (2.0 * random.NextDouble()) - 1.0;
+            double nominal = args[0];
+            double variation = args[1];
 
-            return x * ((random.NextDouble() * 2.0) - 1.0);
+            return nominal + (variation * dRand);
         }
     }
 }

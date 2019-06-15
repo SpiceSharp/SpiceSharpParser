@@ -1,7 +1,7 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
 using System;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random
 {
     public class RandomFunction : Function<double, double>
     {
@@ -16,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         {
             if (args.Length != 0)
             {
-                throw new Exception("random() expects no arguments");
+                throw new Exception("random expects no arguments");
             }
 
             System.Random random = context.Randomizer.GetRandom(context.Seed);
