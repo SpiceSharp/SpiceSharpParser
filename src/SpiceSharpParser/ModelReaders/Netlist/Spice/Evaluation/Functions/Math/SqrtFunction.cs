@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public SqrtFunction(SpiceExpressionMode mode)
         {
             Name = "sqrt";
-            VirtualParameters = false;
             ArgumentsCount = 1;
             Mode = mode;
         }

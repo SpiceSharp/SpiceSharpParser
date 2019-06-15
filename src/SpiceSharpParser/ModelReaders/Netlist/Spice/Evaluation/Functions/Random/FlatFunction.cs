@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
         public FlatFunction()
         {
             Name = "flat";
-            VirtualParameters = false;
             ArgumentsCount = 1;
         }
 

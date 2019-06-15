@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
         public RandomFunction()
         {
             Name = "random";
-            VirtualParameters = false;
             ArgumentsCount = 0;
         }
 

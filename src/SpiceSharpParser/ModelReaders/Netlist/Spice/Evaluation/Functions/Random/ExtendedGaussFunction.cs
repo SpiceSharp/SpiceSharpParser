@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
         public ExtendedGaussFunction()
         {
             Name = "gauss";
-            VirtualParameters = false;
             ArgumentsCount = 3;
         }
 

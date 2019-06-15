@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public ExpFunction()
         {
             Name = "exp";
-            VirtualParameters = false;
             ArgumentsCount = 1;
         }
 

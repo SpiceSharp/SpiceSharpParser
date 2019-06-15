@@ -32,7 +32,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Expor
             SpiceNetlistCaseSensitivitySettings caseSensitivity)
         {
             Name = name;
-            VirtualParameters = true;
             ArgumentsCount = 2;
             this.exporters = exporters;
             this.exporter = exporter;

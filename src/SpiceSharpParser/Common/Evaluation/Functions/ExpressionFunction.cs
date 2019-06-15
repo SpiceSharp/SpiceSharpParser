@@ -9,8 +9,6 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
         {
             Name = name;
             ArgumentsCount = arguments.Count;
-            VirtualParameters = false;
-
             Arguments = arguments;
             Expression = expression;
         }

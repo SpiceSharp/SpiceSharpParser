@@ -10,7 +10,7 @@ using System.Collections.Concurrent;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Export
 {
-    public class OrdinaryExportFunction : Function<object, double>
+    public class OrdinaryExportFunction : Function<string, double>
     {
         private readonly ConcurrentDictionary<string, Readers.Controls.Exporters.Export> exporters;
         private readonly Exporter exporter;
@@ -32,7 +32,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Expor
             SpiceNetlistCaseSensitivitySettings caseSensitivity)
         {
             Name = name;
-            VirtualParameters = true;
             ArgumentsCount = -1;
             this.exporters = exporters;
             this.exporter = exporter;
@@ -44,7 +43,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Expor
             this.caseSensitivity = caseSensitivity;
         }
 
-        public override double Logic(string image, object[] args, IEvaluator evaluator, ExpressionContext context)
+        public override double Logic(string image, string[] args, IEvaluator evaluator, ExpressionContext context)
         {
             if (context.Data == null || !(context.Data is Simulation))
             {
@@ -58,7 +57,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Expor
                 var vectorParameter = new VectorParameter();
                 foreach (var arg in args)
                 {
-                    vectorParameter.Elements.Add(new WordParameter(arg.ToString()));
+                    vectorParameter.Elements.Add(new WordParameter(arg));
                 }
 
                 var parameters = new ParameterCollection();

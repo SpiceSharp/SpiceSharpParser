@@ -7,7 +7,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public PwrFunction(SpiceExpressionMode mode)
         {
             Name = "pwr";
-            VirtualParameters = false;
             ArgumentsCount = 2;
             Mode = mode;
         }

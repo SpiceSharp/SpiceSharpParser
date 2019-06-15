@@ -10,7 +10,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public PolyFunction()
         {
             Name = "poly";
-            VirtualParameters = false;
             ArgumentsCount = -1;
         }
 

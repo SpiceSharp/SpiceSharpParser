@@ -9,7 +9,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public PowInfixFunction(SpiceExpressionMode mode)
         {
             Name = "**";
-            VirtualParameters = false;
             ArgumentsCount = 2;
             Infix = true;
             Mode = mode;

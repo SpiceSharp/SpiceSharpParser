@@ -83,7 +83,7 @@ namespace SpiceSharpParser.Parsers.Expression
         /// Private variables.
         /// </summary>
         private readonly Stack<Func<ExpressionEvaluationContext, double>> outputStack = new Stack<Func<ExpressionEvaluationContext, double>>();
-        private readonly Stack<object> virtualParametersStack = new Stack<object>();
+        private readonly Stack<string> stringParametersStack = new Stack<string>();
         private readonly Stack<Operator> operatorStack = new Stack<Operator>();
         private readonly StringBuilder sb = new StringBuilder();
         private string input;
@@ -241,7 +241,7 @@ namespace SpiceSharpParser.Parsers.Expression
                             int endIndex = index;
                             if (index != count)
                             {
-                                virtualParametersStack
+                                stringParametersStack
                                     .Push(input.Substring(startIndex + 1, endIndex - startIndex - 1));
                                 index++;
                             }
@@ -355,7 +355,7 @@ namespace SpiceSharpParser.Parsers.Expression
                         if (operatorStack.Count > 0
                             && operatorStack.FirstOrDefault(o => o.Id == IdFunction) != null)
                         {
-                            if (operatorStack.Peek() is FunctionOperator fo && fo.VirtualParameters)
+                            if (operatorStack.Peek() is FunctionOperator fo && fo.Functions.First() is IFunction<string, double>)
                             {
                                 int startIndex = index;
 
@@ -375,7 +375,7 @@ namespace SpiceSharpParser.Parsers.Expression
                                 }
 
                                 var virtualParameter = expression.Substring(startIndex, index - startIndex);
-                                virtualParametersStack.Push(virtualParameter);
+                                stringParametersStack.Push(virtualParameter);
                             }
                             else
                             {
@@ -435,9 +435,9 @@ namespace SpiceSharpParser.Parsers.Expression
                             string parameterName = sb.ToString();
 
                             if (operatorStack.Count > 0 && operatorStack.Peek().Id == IdFunction
-                                                        && ((FunctionOperator)operatorStack.Peek()).VirtualParameters)
+                                                        && ((FunctionOperator)operatorStack.Peek()).Functions.First() is IFunction<string, double>)
                             {
-                                virtualParametersStack.Push(parameterName);
+                                stringParametersStack.Push(parameterName);
                             }
                             else
                             {
@@ -490,7 +490,7 @@ namespace SpiceSharpParser.Parsers.Expression
                         int endIndex = index;
                         if (index != count)
                         {
-                            virtualParametersStack.Push(input.Substring(startIndex + 1, endIndex - startIndex - 1));
+                            stringParametersStack.Push(input.Substring(startIndex + 1, endIndex - startIndex - 1));
                             index++;
                             infixPostfix = true;
                         }
@@ -548,7 +548,6 @@ namespace SpiceSharpParser.Parsers.Expression
             var cfo = new FunctionOperator();
             cfo.Name = functionName;
             cfo.StartIndex = startIndex;
-            cfo.VirtualParameters = functions.First().VirtualParameters;
             cfo.ArgumentsStackCount = outputStack.Count;
             cfo.LeftAssociative = functions.First().Infix || cfo.LeftAssociative;
             cfo.Precedence = functions.First().Infix ? PrecedenceMultiplicative : cfo.Precedence;
@@ -558,35 +557,28 @@ namespace SpiceSharpParser.Parsers.Expression
 
         private void EvaluateFunction(string expression, FunctionOperator op, int? endIndex = null)
         {
-            if (op.VirtualParameters)
+            if (op.Functions.First() is IFunction<string, double> stringFunction)
             {
                 if (op.Functions.Count > 1)
                 {
                     throw new InvalidOperationException("Cannot have more than one virtual function with same name");
                 }
 
-                var function = op.Functions.Single();
-
-                if (!(function is IFunction<object, double> df))
-                {
-                    throw new InvalidOperationException("Virtual function needs to have objects as arguments");
-                }
-
-                var argCount = function.ArgumentsCount != -1 ? function.ArgumentsCount : virtualParametersStack.Count;
-                var args = PopAndReturnArguments(virtualParametersStack, argCount);
+                var argCount = stringFunction.ArgumentsCount != -1 ? stringFunction.ArgumentsCount : stringParametersStack.Count;
+                var args = PopAndReturnArguments(stringParametersStack, argCount);
 
                 outputStack.Push((evalContext) =>
                 {
                     if (endIndex != null)
                     {
-                        return df.Logic(
+                        return stringFunction.Logic(
                             op.Name + expression.Substring(op.StartIndex - 1, endIndex.Value - op.StartIndex + 2),
                             args,
                             evalContext.Evaluator,
                             evalContext.ExpressionContext);
                     }
 
-                    return df.Logic(null, args, evalContext.Evaluator, evalContext.ExpressionContext);
+                    return stringFunction.Logic(null, args, evalContext.Evaluator, evalContext.ExpressionContext);
                 });
             }
             else
@@ -927,9 +919,9 @@ namespace SpiceSharpParser.Parsers.Expression
             return result.ToArray();
         }
 
-        private object[] PopAndReturnArguments(Stack<object> stack, int count)
+        private string[] PopAndReturnArguments(Stack<string> stack, int count)
         {
-            var result = new List<object>(count);
+            var result = new List<string>(count);
             for (var i = 0; i < count; i++)
             {
                 var val = stack.Pop();
@@ -991,8 +983,6 @@ namespace SpiceSharpParser.Parsers.Expression
             /// Gets or sets the function name.
             /// </summary>
             public string Name { get; set; }
-
-            public bool VirtualParameters { get; set; }
 
             public List<IFunction> Functions { get; set; }
 

@@ -15,7 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// <summary>
         /// Creates export functions.
         /// </summary>
-        public static IEnumerable<KeyValuePair<string, IFunction<object, double>>> Create(
+        public static IEnumerable<KeyValuePair<string, IFunction<string, double>>> Create(
             IMapper<Exporter> exporterRegistry,
             INodeNameGenerator nodeNameGenerator,
             IObjectNameGenerator componentNameGenerator,
@@ -28,12 +28,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                 throw new ArgumentNullException(nameof(exporterRegistry));
             }
 
-            var result = new List<KeyValuePair<string, IFunction<object, double>>>();
+            var result = new List<KeyValuePair<string, IFunction<string, double>>>();
             var exporters = new ConcurrentDictionary<string, Readers.Controls.Exporters.Export>();
 
             foreach (KeyValuePair<string, Exporter> exporter in exporterRegistry)
             {
-                IFunction<object, double> spiceFunction;
+                IFunction<string, double> spiceFunction;
 
                 if (exporter.Key == "@")
                 {
@@ -60,13 +60,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
                         caseSettings);
                 }
 
-                result.Add(new KeyValuePair<string, IFunction<object, double>>(exporter.Key, spiceFunction));
+                result.Add(new KeyValuePair<string, IFunction<string, double>>(exporter.Key, spiceFunction));
             }
 
             return result;
         }
 
-        public static IFunction<object, double> CreateOrdinaryExport(
+        public static IFunction<string, double> CreateOrdinaryExport(
             ConcurrentDictionary<string, Readers.Controls.Exporters.Export> exporters,
             Exporter exporter,
             string exportType,

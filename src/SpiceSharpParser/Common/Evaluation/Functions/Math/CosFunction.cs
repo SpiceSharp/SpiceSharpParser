@@ -7,7 +7,6 @@ namespace SpiceSharpParser.Common.Evaluation.Functions.Math
         public CosFunction()
         {
             Name = "cos";
-            VirtualParameters = false;
             ArgumentsCount = 1;
         }
 

@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public BufFunction()
         {
             Name = "buf";
-            VirtualParameters = false;
             ArgumentsCount = 1;
         }
 

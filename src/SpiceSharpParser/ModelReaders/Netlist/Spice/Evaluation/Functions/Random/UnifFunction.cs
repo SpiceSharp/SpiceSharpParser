@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
         public UnifFunction()
         {
             Name = "unif";
-            VirtualParameters = false;
             ArgumentsCount = 2;
         }
 

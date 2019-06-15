@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
         public McFunction()
         {
             Name = "mc";
-            VirtualParameters = false;
             ArgumentsCount = 2;
         }
 

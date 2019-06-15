@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
         public LimitFunction()
         {
             Name = "limit";
-            VirtualParameters = false;
             ArgumentsCount = 2;
         }
 

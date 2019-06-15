@@ -7,7 +7,6 @@ namespace SpiceSharpParser.Common.Evaluation.Functions.Math
         public ASinFunction()
         {
             Name = "asin";
-            VirtualParameters = false;
             ArgumentsCount = 1;
         }
 

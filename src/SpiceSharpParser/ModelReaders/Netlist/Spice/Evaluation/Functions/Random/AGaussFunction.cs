@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
         public AGaussFunction()
         {
             Name = "agauss";
-            VirtualParameters = false;
             ArgumentsCount = 3;
         }
 

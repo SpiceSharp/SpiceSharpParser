@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public CeilFunction()
         {
             Name = "ceil";
-            VirtualParameters = false;
             ArgumentsCount = 1;
         }
 

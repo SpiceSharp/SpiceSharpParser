@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public DbFunction(SpiceExpressionMode mode)
         {
             Name = "db";
-            VirtualParameters = false;
             ArgumentsCount = 1;
             Mode = mode;
         }

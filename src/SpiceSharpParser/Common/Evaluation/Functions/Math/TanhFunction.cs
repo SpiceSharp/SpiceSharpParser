@@ -7,7 +7,6 @@ namespace SpiceSharpParser.Common.Evaluation.Functions.Math
         public TanhFunction()
         {
             Name = "tanh";
-            VirtualParameters = false;
             ArgumentsCount = 1;
         }
 

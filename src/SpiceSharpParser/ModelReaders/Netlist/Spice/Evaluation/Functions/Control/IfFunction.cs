@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Contr
         public IfFunction()
         {
             Name = "if";
-            VirtualParameters = false;
             ArgumentsCount = 3;
         }
 

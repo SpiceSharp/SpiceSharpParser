@@ -7,7 +7,6 @@ namespace SpiceSharpParser.Common.Evaluation.Functions.Math
         public ACosFunction()
         {
             Name = "acos";
-            VirtualParameters = false;
             ArgumentsCount = 1;
         }
 
