@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public SgnFunction()
         {
             Name = "sgn";
-            VirtualParameters = false;
             ArgumentsCount = 1;
         }
 

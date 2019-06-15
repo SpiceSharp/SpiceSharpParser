@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public Log10Function(SpiceExpressionMode mode)
         {
             Name = "log10";
-            VirtualParameters = false;
             ArgumentsCount = 1;
             Mode = mode;
         }

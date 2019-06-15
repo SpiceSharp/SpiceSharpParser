@@ -7,7 +7,6 @@ namespace SpiceSharpParser.Common.Evaluation.Functions.Math
         public ATanFunction()
         {
             Name = "atan";
-            VirtualParameters = false;
             ArgumentsCount = 1;
         }
 

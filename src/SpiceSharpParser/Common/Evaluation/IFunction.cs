@@ -1,6 +1,6 @@
 ﻿namespace SpiceSharpParser.Common.Evaluation
 {
-    public interface IFunction<TInputArgumentType, TOutputType> : IFunction
+    public interface IFunction<in TInputArgumentType, out TOutputType> : IFunction
     {
         TOutputType Logic(string image, TInputArgumentType[] args, IEvaluator evaluator, ExpressionContext context);
     }
@@ -12,8 +12,6 @@
         bool Infix { get; set; }
 
         string Name { get; set; }
-
-        bool VirtualParameters { get; set; }
 
         System.Type ArgumentType { get; }
 

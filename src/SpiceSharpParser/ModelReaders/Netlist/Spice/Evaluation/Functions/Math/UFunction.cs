@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public UFunction()
         {
             Name = "u";
-            VirtualParameters = false;
             ArgumentsCount = 1;
         }
 

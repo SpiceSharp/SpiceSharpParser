@@ -260,7 +260,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public void AddFunction(string functionName, List<string> arguments, string body)
         {
             FunctionFactory factory = new FunctionFactory();
-            ReadingExpressionContext.Functions.Add(functionName, factory.Create(functionName, arguments, body));
+            ReadingExpressionContext.AddFunction(functionName, factory.Create(functionName, arguments, body));
         }
 
         public void SetNamedExpression(string expressionName, string expression)

@@ -254,6 +254,69 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         }
 
         [Fact]
+        public void DoubleTrue()
+        {
+            var netlist = ParseNetlistToModel(
+                false,
+                true,
+                "Simplest netlist with if",
+                ".IF (a == 1 && b == 2)",
+                "* Comment 1",
+                ".ENDIF",
+                ".PARAM a = 1",
+                ".PARAM b = 2",
+                ".END");
+
+            Assert.Equal(3, netlist.Statements.Count);
+            Assert.True(netlist.Statements[0] is CommentLine);
+            Assert.True(netlist.Statements[1] is Control);
+            Assert.True(netlist.Statements[2] is Control);
+        }
+
+        [Fact]
+        public void AdvancedTrue()
+        {
+            var netlist = ParseNetlistToModel(
+                false,
+                true,
+                "Simplest netlist with if",
+                ".IF (a == 1 && (b == 2 || c == 3))",
+                "* Comment 1",
+                ".ENDIF",
+                ".PARAM a = 1",
+                ".PARAM b = 5",
+                ".PARAM c = 3",
+                ".END");
+
+            Assert.Equal(4, netlist.Statements.Count);
+            Assert.True(netlist.Statements[0] is CommentLine);
+            Assert.True(netlist.Statements[1] is Control);
+            Assert.True(netlist.Statements[2] is Control);
+            Assert.True(netlist.Statements[3] is Control);
+        }
+        [Fact]
+        public void AdvancedSecondExampleTrue()
+        {
+            var netlist = ParseNetlistToModel(
+                false,
+                true,
+                "Simplest netlist with if",
+                ".IF (a != 1 && (b == 2 || c == 3))",
+                "* Comment 1",
+                ".ENDIF",
+                ".PARAM a = 3",
+                ".PARAM b = 5",
+                ".PARAM c = 3",
+                ".END");
+
+            Assert.Equal(4, netlist.Statements.Count);
+            Assert.True(netlist.Statements[0] is CommentLine);
+            Assert.True(netlist.Statements[1] is Control);
+            Assert.True(netlist.Statements[2] is Control);
+            Assert.True(netlist.Statements[3] is Control);
+        }
+
+        [Fact]
         public void Subcircuit()
         {
             var spiceSharpModel = ParseNetlist(

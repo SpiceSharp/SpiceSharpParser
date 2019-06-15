@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public MaxFunction()
         {
             Name = "max";
-            VirtualParameters = false;
             ArgumentsCount = -1;
         }
 

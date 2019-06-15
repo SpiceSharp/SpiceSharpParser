@@ -7,7 +7,6 @@ namespace SpiceSharpParser.Common.Evaluation.Functions.Math
         public CoshFunction()
         {
             Name = "cosh";
-            VirtualParameters = false;
             ArgumentsCount = 1;
         }
 

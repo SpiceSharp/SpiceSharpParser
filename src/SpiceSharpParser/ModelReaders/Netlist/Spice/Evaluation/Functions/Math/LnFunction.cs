@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public LnFunction()
         {
             Name = "ln";
-            VirtualParameters = false;
             ArgumentsCount = 1;
         }
 

@@ -319,6 +319,50 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         }
 
         [Fact]
+        public void AGauss()
+        {
+            // arrange
+            var evaluator = new SpiceEvaluator();
+            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
+
+            // act and assert
+            evaluator.EvaluateValueExpression("agauss(0, 1, 2)", c);
+        }
+
+        [Fact]
+        public void AUnif()
+        {
+            // arrange
+            var evaluator = new SpiceEvaluator();
+            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
+
+            // act and assert
+            evaluator.EvaluateValueExpression("aunif(0, 1)", c);
+        }
+
+        [Fact]
+        public void Unif()
+        {
+            // arrange
+            var evaluator = new SpiceEvaluator();
+            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
+
+            // act and assert
+            evaluator.EvaluateValueExpression("unif(1, 0.5)", c);
+        }
+
+        [Fact]
+        public void LimitRandom()
+        {
+            // arrange
+            var evaluator = new SpiceEvaluator();
+            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
+
+            // act and assert
+            evaluator.EvaluateValueExpression("limit(0, 1)", c);
+        }
+
+        [Fact]
         public void Buf()
         {
             // arrange
@@ -430,6 +474,39 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
 
             // act and assert
             Assert.Equal(5, evaluator.EvaluateValueExpression("hypot(3,4)", c));
+        }
+
+        [Fact]
+        public void Gauss()
+        {
+            // arrange
+            var evaluator = new SpiceEvaluator();
+            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
+
+            // act and assert
+            evaluator.EvaluateValueExpression("gauss(1.2)", c);
+        }
+
+        [Fact]
+        public void ExtendedGauss()
+        {
+            // arrange
+            var evaluator = new SpiceEvaluator();
+            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
+
+            // act and assert
+            evaluator.EvaluateValueExpression("gauss(1, 2.3, 4.5)", c);
+        }
+
+        [Fact]
+        public void ExtendedGauss_TooManyArguments()
+        {
+            // arrange
+            var evaluator = new SpiceEvaluator();
+            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
+
+            // act and assert
+            Assert.Throws<InvalidOperationException>(() => evaluator.EvaluateValueExpression("gauss(1, 2.3, 4.5, 0)", c));
         }
 
         [Fact]
@@ -589,7 +666,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             var p = new SpiceEvaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
-            c.Functions.Add("fib",
+            c.AddFunction("fib",
                 functionFactory.Create("fib",
                 new System.Collections.Generic.List<string>() { "x" },
                 "x <= 0 ? 0 : (x == 1 ? 1 : lazy(#fib(x-1) + fib(x-2)#))"));
@@ -610,7 +687,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             var p = new SpiceEvaluator();
-            c.Functions.Add("fib",
+            c.AddFunction("fib",
                 functionFactory.Create("fib",
                 new System.Collections.Generic.List<string>() { "x" },
                 "x <= 0 ? 0 : (x == 1 ? 1 : (fib(x-1) + fib(x-2)))"));

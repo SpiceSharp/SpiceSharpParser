@@ -10,7 +10,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public LimitFunction()
         {
             Name = "limit";
-            VirtualParameters = false;
             ArgumentsCount = 3;
         }
 

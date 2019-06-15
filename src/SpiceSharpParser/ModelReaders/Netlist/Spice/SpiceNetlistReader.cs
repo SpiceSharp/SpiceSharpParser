@@ -130,7 +130,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
             foreach (var exportFunction in exportFunctions)
             {
-                rootContext.Functions.Add(exportFunction.Key, exportFunction.Value);
+                rootContext.AddFunction(exportFunction.Key, exportFunction.Value);
             }
 
             return rootContext;

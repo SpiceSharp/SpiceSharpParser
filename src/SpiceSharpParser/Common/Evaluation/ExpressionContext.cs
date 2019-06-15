@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.Common.Evaluation.Functions;
 
@@ -25,7 +26,7 @@ namespace SpiceSharpParser.Common.Evaluation
 
             Name = name;
             Parameters = new Dictionary<string, Expression>(StringComparerProvider.Get(isParameterNameCaseSensitive));
-            Functions = new Dictionary<string, IFunction>(StringComparerProvider.Get(isFunctionNameCaseSensitive));
+            Functions = new Dictionary<string, List<IFunction>>(StringComparerProvider.Get(isFunctionNameCaseSensitive));
             Children = new List<ExpressionContext>();
             ExpressionRegistry = new ExpressionRegistry(isParameterNameCaseSensitive, isExpressionNameCaseSensitive);
 
@@ -83,7 +84,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Gets or sets custom functions.
         /// </summary>
-        public Dictionary<string, IFunction> Functions { get; protected set; }
+        public Dictionary<string, List<IFunction>> Functions { get; protected set; }
 
         /// <summary>
         /// Gets or sets expression registry for the context.
@@ -184,7 +185,7 @@ namespace SpiceSharpParser.Common.Evaluation
 
             child.Parameters = new Dictionary<string, Expression>(Parameters, StringComparerProvider.Get(_isParameterNameCaseSensitive));
             child.Data = Data;
-            child.Functions = new Dictionary<string, IFunction>(Functions, StringComparerProvider.Get(_isFunctionNameCaseSensitive));
+            child.Functions = new Dictionary<string, List<IFunction>>(Functions, StringComparerProvider.Get(_isFunctionNameCaseSensitive));
             child.ExpressionRegistry = ExpressionRegistry.Clone();
             child.Seed = Seed;
             child.Randomizer = Randomizer;
@@ -206,7 +207,7 @@ namespace SpiceSharpParser.Common.Evaluation
                 _isExpressionNameCaseSensitive,
                 Randomizer);
             context.ExpressionRegistry = ExpressionRegistry.Clone();
-            context.Functions = new Dictionary<string, IFunction>(Functions, StringComparerProvider.Get(_isFunctionNameCaseSensitive));
+            context.Functions = new Dictionary<string, List<IFunction>>(Functions, StringComparerProvider.Get(_isFunctionNameCaseSensitive));
 
             foreach (var parameter in Parameters)
             {
@@ -255,18 +256,36 @@ namespace SpiceSharpParser.Common.Evaluation
             return null;
         }
 
+        public void AddFunction(string name, IFunction function)
+        {
+            if (!Functions.ContainsKey(name))
+            {
+                Functions[name] = new List<IFunction>();
+            }
+
+            var overridenFunction = Functions[name].SingleOrDefault(f => f.ArgumentsCount == function.ArgumentsCount);
+
+            if (overridenFunction != null)
+            {
+                Functions[name].Remove(overridenFunction);
+            }
+
+            Functions[name].Add(function);
+        }
+
+
         public void CreateCommonFunctions()
         {
-            Functions.Add("acos", MathFunctions.CreateACos());
-            Functions.Add("asin", MathFunctions.CreateASin());
-            Functions.Add("atan", MathFunctions.CreateATan());
-            Functions.Add("atan2", MathFunctions.CreateATan2());
-            Functions.Add("cos", MathFunctions.CreateCos());
-            Functions.Add("cosh", MathFunctions.CreateCosh());
-            Functions.Add("sin", MathFunctions.CreateSin());
-            Functions.Add("sinh", MathFunctions.CreateSinh());
-            Functions.Add("tan", MathFunctions.CreateTan());
-            Functions.Add("tanh", MathFunctions.CreateTanh());
+            AddFunction("acos", MathFunctions.CreateACos());
+            AddFunction("asin", MathFunctions.CreateASin());
+            AddFunction("atan", MathFunctions.CreateATan());
+            AddFunction("atan2", MathFunctions.CreateATan2());
+            AddFunction("cos", MathFunctions.CreateCos());
+            AddFunction("cosh", MathFunctions.CreateCosh());
+            AddFunction("sin", MathFunctions.CreateSin());
+            AddFunction("sinh", MathFunctions.CreateSinh());
+            AddFunction("tan", MathFunctions.CreateTan());
+            AddFunction("tanh", MathFunctions.CreateTanh());
         }
 
         protected void SetParameter(string parameterName, string expression, ICollection<string> expressionParameters, Expression parameter)

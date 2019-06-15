@@ -9,7 +9,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public TableFunction()
         {
             Name = "table";
-            VirtualParameters = false;
             ArgumentsCount = -1;
         }
 

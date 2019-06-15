@@ -7,7 +7,6 @@ namespace SpiceSharpParser.Common.Evaluation.Functions.Math
         public SinFunction()
         {
             Name = "sin";
-            VirtualParameters = false;
             ArgumentsCount = 1;
         }
 

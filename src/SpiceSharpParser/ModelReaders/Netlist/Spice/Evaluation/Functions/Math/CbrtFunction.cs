@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public CbrtFunction()
         {
             Name = "cbrt";
-            VirtualParameters = false;
             ArgumentsCount = 1;
         }
 

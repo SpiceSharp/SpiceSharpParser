@@ -7,7 +7,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public PwrsFunction()
         {
             Name = "pwrs";
-            VirtualParameters = false;
             ArgumentsCount = 2;
         }
 

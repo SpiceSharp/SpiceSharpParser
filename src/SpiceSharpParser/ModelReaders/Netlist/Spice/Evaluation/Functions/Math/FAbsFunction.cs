@@ -1,13 +1,13 @@
-﻿using System;
-using SpiceSharpParser.Common.Evaluation;
+﻿using SpiceSharpParser.Common.Evaluation;
+using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
 {
-    public class ExpFunction : Function<double, double>
+    public class FAbsFunction : Function<double, double>
     {
-        public ExpFunction()
+        public FAbsFunction()
         {
-            Name = "exp";
+            Name = "fabs";
             ArgumentsCount = 1;
         }
 
@@ -15,11 +15,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         {
             if (args.Length != 1)
             {
-                throw new ArgumentException("exp() function expects one argument");
+                throw new ArgumentException("fabs() function expects one argument");
             }
 
             double x = args[0];
-            return System.Math.Exp(x);
+            return System.Math.Abs(x);
         }
     }
 }

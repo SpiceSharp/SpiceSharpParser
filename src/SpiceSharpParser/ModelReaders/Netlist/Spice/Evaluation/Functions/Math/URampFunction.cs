@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public URampFunction()
         {
             Name = "uramp";
-            VirtualParameters = false;
             ArgumentsCount = 1;
         }
 

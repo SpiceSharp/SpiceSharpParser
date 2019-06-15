@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public HypotFunction()
         {
             Name = "hypot";
-            VirtualParameters = false;
             ArgumentsCount = 2;
         }
 

@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Contr
         public DefFunction()
         {
             Name = "def";
-            VirtualParameters = true;
             ArgumentsCount = 1;
         }
 

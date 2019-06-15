@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public PowFunction(SpiceExpressionMode mode)
         {
             Name = "pow";
-            VirtualParameters = false;
             ArgumentsCount = 2;
             Mode = mode;
         }

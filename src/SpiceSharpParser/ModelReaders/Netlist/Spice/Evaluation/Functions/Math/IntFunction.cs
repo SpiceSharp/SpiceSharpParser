@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public IntFunction()
         {
             Name = "int";
-            VirtualParameters = false;
             ArgumentsCount = 1;
         }
 

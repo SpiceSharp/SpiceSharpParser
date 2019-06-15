@@ -8,7 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public MinFunction()
         {
             Name = "min";
-            VirtualParameters = false;
             ArgumentsCount = -1;
         }
 
