@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.Common.Evaluation.Functions;
 
@@ -261,6 +262,14 @@ namespace SpiceSharpParser.Common.Evaluation
             {
                 Functions[name] = new List<IFunction>();
             }
+
+            var overridenFunction = Functions[name].SingleOrDefault(f => f.ArgumentsCount == function.ArgumentsCount);
+
+            if (overridenFunction != null)
+            {
+                Functions[name].Remove(overridenFunction);
+            }
+
             Functions[name].Add(function);
         }
 
