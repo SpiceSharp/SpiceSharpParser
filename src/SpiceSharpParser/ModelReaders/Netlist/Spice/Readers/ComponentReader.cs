@@ -1,4 +1,5 @@
-﻿using SpiceSharp.Circuits;
+﻿using System;
+using SpiceSharp.Circuits;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
@@ -32,6 +33,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <param name="context">A context to modify.</param>
         public override void Read(Component statement, IReadingContext context)
         {
+            if (statement == null)
+            {
+                throw new ArgumentNullException(nameof(statement));
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             string componentName = statement.Name;
 
             IComponentGenerator generator = GetComponentGenerator(context, componentName, out string componentType);

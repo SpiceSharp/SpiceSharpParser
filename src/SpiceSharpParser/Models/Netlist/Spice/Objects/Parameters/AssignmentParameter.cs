@@ -32,10 +32,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         /// </summary>
         public string Value
         {
-            get
-            {
-                return Values[0];
-            }
+            get => Values[0];
 
             set
             {
@@ -79,9 +76,10 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         {
             return new AssignmentParameter()
             {
-                Arguments = new List<string>(this.Arguments.ToArray()),
-                Values = this.Values,
-                Name = this.Name,
+                Arguments = new List<string>(Arguments.ToArray()),
+                Values = Values,
+                Name = Name,
+                HasFunctionSyntax = HasFunctionSyntax,
             };
         }
     }

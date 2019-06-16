@@ -1,6 +1,6 @@
 ﻿using SpiceSharpParser.Models.Netlist.Spice;
 
-namespace SpiceSharpParser.Parsers.Netlist.Spice
+namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
 {
     /// <summary>
     /// The non-terminal tree node evaluation value.

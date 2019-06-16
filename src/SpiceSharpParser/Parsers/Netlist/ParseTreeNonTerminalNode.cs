@@ -14,8 +14,8 @@ namespace SpiceSharpParser.Parsers.Netlist
         /// <param name="name">A name of the non-terminal node.</param>
         public ParseTreeNonTerminalNode(string name)
         {
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             Children = new List<ParseTreeNode>();
-            Name = name;
         }
 
         /// <summary>

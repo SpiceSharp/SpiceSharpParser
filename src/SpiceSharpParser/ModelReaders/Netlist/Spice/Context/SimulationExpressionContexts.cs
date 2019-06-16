@@ -12,7 +12,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public SimulationExpressionContexts(ExpressionContext sourceContext)
         {
-            SourceContext = sourceContext;
+            SourceContext = sourceContext ?? throw new ArgumentNullException(nameof(sourceContext));
             Contexts = new Dictionary<Simulation, ExpressionContext>();
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
@@ -12,35 +13,41 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyExport"/> class.
         /// </summary>
-        /// <param name="simulation">A simulation</param>
-        /// <param name="source">A identifier of component</param>
-        /// <param name="property">Name of property for export</param>
+        /// <param name="name">Name of export.</param>
+        /// <param name="simulation">A simulation.</param>
+        /// <param name="source">A identifier of component.</param>
+        /// <param name="property">Name of property for export.</param>
         /// <param name="comparer">Entity property name comparer.</param>
         public PropertyExport(string name, Simulation simulation, string source, string property, IEqualityComparer<string> comparer)
             : base(simulation)
         {
             Name = name ?? throw new System.NullReferenceException(nameof(name));
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
+
             Source = source ?? throw new System.NullReferenceException(nameof(source));
             ExportRealImpl = new RealPropertyExport(simulation, source, property, comparer);
         }
 
         /// <summary>
-        /// Gets the main node
+        /// Gets the main node.
         /// </summary>
         public string Source { get; }
 
         /// <summary>
-        /// Gets the type name
+        /// Gets the type name.
         /// </summary>
         public override string TypeName => string.Empty;
 
         /// <summary>
-        /// Gets the quantity unit
+        /// Gets the quantity unit.
         /// </summary>
         public override string QuantityUnit => string.Empty;
 
         /// <summary>
-        /// Gets the real exporter
+        /// Gets the real exporter.
         /// </summary>
         protected RealPropertyExport ExportRealImpl { get; }
 

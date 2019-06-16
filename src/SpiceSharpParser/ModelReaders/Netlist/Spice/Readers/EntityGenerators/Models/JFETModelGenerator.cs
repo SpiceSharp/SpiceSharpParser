@@ -18,11 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
                 case "njf": model.SetParameter("njf", true); break;
             }
 
-            if (model != null)
-            {
-                SetParameters(context, model, parameters);
-            }
-
+            SetParameters(context, model, parameters);
             return model;
         }
     }

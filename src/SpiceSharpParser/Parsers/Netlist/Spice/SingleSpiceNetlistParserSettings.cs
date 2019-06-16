@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.Lexers.Netlist.Spice;
+﻿using System;
+using SpiceSharpParser.Lexers.Netlist.Spice;
 
 namespace SpiceSharpParser.Parsers.Netlist.Spice
 {
@@ -13,7 +14,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// <param name="lexerSettings">Lexer settings.</param>
         public SingleSpiceNetlistParserSettings(SpiceLexerSettings lexerSettings)
         {
-            Lexer = lexerSettings;
+            Lexer = lexerSettings ?? throw new ArgumentNullException(nameof(lexerSettings));
         }
 
         /// <summary>

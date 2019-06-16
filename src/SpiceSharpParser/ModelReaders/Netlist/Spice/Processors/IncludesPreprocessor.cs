@@ -63,6 +63,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <param name="statements">Statements</param>
         public Statements Process(Statements statements)
         {
+            if (statements == null)
+            {
+                throw new ArgumentNullException(nameof(statements));
+            }
+
             return Process(statements, InitialDirectoryPath);
         }
 

@@ -34,13 +34,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             SpiceNetlistReaderSettings readerSettings,
             SpiceLexerSettings lexerSettings)
         {
-            ReaderSettings = readerSettings;
-            TokenProviderPool = tokenProviderPool;
-            IncludesPreprocessor = includesPreprocessor;
-            SpiceNetlistParser = spiceNetlistParser;
-            FileReader = fileReader;
-            InitialDirectoryPathProvider = initialDirectoryPathProvider;
-            LexerSettings = lexerSettings;
+            ReaderSettings = readerSettings ?? throw new ArgumentNullException(nameof(readerSettings));
+            TokenProviderPool = tokenProviderPool ?? throw new ArgumentNullException(nameof(tokenProviderPool));
+            IncludesPreprocessor = includesPreprocessor ?? throw new ArgumentNullException(nameof(includesPreprocessor));
+            SpiceNetlistParser = spiceNetlistParser ?? throw new ArgumentNullException(nameof(spiceNetlistParser));
+            FileReader = fileReader ?? throw new ArgumentNullException(nameof(fileReader));
+            InitialDirectoryPathProvider = initialDirectoryPathProvider ?? throw new ArgumentNullException(nameof(initialDirectoryPathProvider));
+            LexerSettings = lexerSettings ?? throw new ArgumentNullException(nameof(lexerSettings));
         }
 
         public SingleSpiceNetlistParserSettings ParserSettings { get; set; }
@@ -79,6 +79,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <param name="statements">Netlist model to search for .include statements</param>
         public Statements Process(Statements statements)
         {
+            if (statements == null)
+            {
+                throw new ArgumentNullException(nameof(statements));
+            }
+
             return Process(statements, InitialDirectoryPath);
         }
 

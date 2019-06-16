@@ -6,9 +6,11 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp.Simulations;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Configurations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
@@ -43,7 +45,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = Substitute.For<IReadingContext>();
             readingContext.Result.Returns(resultService);
             readingContext.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
-            readingContext.SimulationPreparations.Returns(new SimulationPreparations(new EntityUpdates(false, null, null), new SimulationsUpdates(null, null)));
+            readingContext.SimulationPreparations.Returns(new SimulationPreparations(new EntityUpdates(false, new SimulationEvaluators(new SpiceEvaluator()), new SimulationExpressionContexts(new ExpressionContext())), new SimulationsUpdates(null, null)));
             // act
             var dcControl = new DCControl(new ExporterMapper());
             dcControl.Read(control, readingContext);

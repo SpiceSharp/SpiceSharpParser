@@ -26,6 +26,36 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
         /// </returns>
         public SpiceSharp.Components.Model GenerateModel(IModelGenerator modelGenerator, string id, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
+            if (modelGenerator == null)
+            {
+                throw new ArgumentNullException(nameof(modelGenerator));
+            }
+
+            if (id == null)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
+            if (originalName == null)
+            {
+                throw new ArgumentNullException(nameof(originalName));
+            }
+
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            if (parameters == null)
+            {
+                throw new ArgumentNullException(nameof(parameters));
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             if (!(context.ModelsRegistry is IStochasticModelsRegistry stochasticModelRegistry))
             {
                 throw new Exception();

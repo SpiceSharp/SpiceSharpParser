@@ -20,6 +20,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
             IReadingContext context,
             List<KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double>> parameterValues)
         {
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            if (parameterValues == null)
+            {
+                throw new ArgumentNullException(nameof(parameterValues));
+            }
+
             UpdateSweep(simulation, context, parameterValues);
         }
 

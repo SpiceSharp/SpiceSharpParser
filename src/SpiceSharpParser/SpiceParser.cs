@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.Lexers.Netlist.Spice;
@@ -33,7 +34,7 @@ namespace SpiceSharpParser
         /// <param name="settings">SPICE parser settings.</param>
         public SpiceParser(SpiceParserSettings settings)
         {
-            Settings = settings;
+            Settings = settings ?? throw new ArgumentNullException(nameof(settings));
             SingleNetlistParser = new SingleSpiceNetlistParser(Settings.Parsing);
 
             TokenProviderPool = new SpiceTokenProviderPool();

@@ -65,6 +65,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         /// <param name="pinName">Pin name.</param>
         public void SetGlobal(string pinName)
         {
+            if (pinName == null)
+            {
+                throw new ArgumentNullException(nameof(pinName));
+            }
+
             if (!_globals.Contains(pinName))
             {
                 _globals.Add(pinName);
@@ -80,6 +85,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         /// </returns>
         public string Parse(string path)
         {
+            if (path == null)
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
             string[] parts = path.Split('.');
 
             if (parts.Length == 1)
@@ -105,6 +115,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
 
         private void InitGlobals(IEnumerable<string> globals)
         {
+            if (globals == null)
+            {
+                throw new ArgumentNullException(nameof(globals));
+            }
+
             _globals = new HashSet<string>(StringComparerProvider.Get(IsNodeNameCaseSensitive));
 
             foreach (var global in globals)

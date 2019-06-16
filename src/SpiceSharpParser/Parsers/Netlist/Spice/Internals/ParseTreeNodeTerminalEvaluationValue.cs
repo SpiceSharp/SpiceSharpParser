@@ -1,6 +1,6 @@
 ﻿using SpiceSharpParser.Lexers.Netlist.Spice;
 
-namespace SpiceSharpParser.Parsers.Netlist.Spice
+namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
 {
     /// <summary>
     /// The terminal parse tree node evaluation value.

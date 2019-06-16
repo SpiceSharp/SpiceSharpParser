@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
@@ -11,18 +12,23 @@ namespace SpiceSharpParser.Common.Evaluation
 
         public ExpressionParserContext(string name, bool caseSensitiveFunctions)
         {
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             Functions = new Dictionary<string, List<IFunction>>(StringComparerProvider.Get(caseSensitiveFunctions));
         }
 
         public ExpressionParserContext(string name, Dictionary<string, List<IFunction>> functions)
         {
-            Name = name;
-            Functions = functions;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+            Functions = functions ?? throw new ArgumentNullException(nameof(functions));
         }
 
-        public ExpressionParserContext(Dictionary<string, List<IFunction>> functions) : this(string.Empty, functions)
+        public ExpressionParserContext(Dictionary<string, List<IFunction>> functions) 
+            : this(string.Empty, functions)
         {
+            if (functions == null)
+            {
+                throw new ArgumentNullException(nameof(functions));
+            }
         }
 
         /// <summary>

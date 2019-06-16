@@ -19,6 +19,26 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
 
         public override double Logic(string image, double[] args, IEvaluator evaluator, ExpressionContext context)
         {
+            if (image == null)
+            {
+                throw new ArgumentNullException(nameof(image));
+            }
+
+            if (args == null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
+            if (evaluator == null)
+            {
+                throw new ArgumentNullException(nameof(evaluator));
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             var childContext = context.CreateChildContext(string.Empty, false);
             for (var i = 0; i < Arguments.Count; i++)
             {

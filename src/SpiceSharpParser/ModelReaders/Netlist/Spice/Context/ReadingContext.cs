@@ -184,6 +184,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="expression">Expression string.</param>
         public void SetICVoltage(string nodeName, string expression)
         {
+            if (nodeName == null)
+            {
+                throw new ArgumentNullException(nameof(nodeName));
+            }
+
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
             var nodeId = NodeNameGenerator.Generate(nodeName);
             SimulationPreparations.SetICVoltage(nodeId, expression);
         }
@@ -197,9 +207,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </returns>
         public double EvaluateDouble(string expression)
         {
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
             try
             {
-                return ReadingEvaluator.EvaluateValueExpression(expression, this.ReadingExpressionContext);
+                return ReadingEvaluator.EvaluateValueExpression(expression, ReadingExpressionContext);
             }
             catch (Exception ex)
             {
@@ -214,6 +228,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="value">Parameter value.</param>
         public void SetParameter(string parameterName, double value)
         {
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
             ReadingExpressionContext.SetParameter(parameterName, value);
         }
 
@@ -224,6 +242,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="parameters">Parameters of component.</param>
         public void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters)
         {
+            if (component == null)
+            {
+                throw new ArgumentNullException(nameof(component));
+            }
+
+            if (parameters == null)
+            {
+                throw new ArgumentNullException(nameof(parameters));
+            }
+
             if (parameters.Count < component.PinCount)
             {
                 throw new WrongParametersCountException(
@@ -242,6 +270,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public virtual void Read(Statements statements, ISpiceStatementsOrderer orderer)
         {
+            if (statements == null)
+            {
+                throw new ArgumentNullException(nameof(statements));
+            }
+
+            if (orderer == null)
+            {
+                throw new ArgumentNullException(nameof(orderer));
+            }
+
             var orderedStatements = orderer.Order(statements);
             foreach (var statement in orderedStatements)
             {
@@ -249,22 +287,56 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        public void SetParameter(string pName, string expression)
+        public void SetParameter(string parameterName, string expression)
         {
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
             ReadingExpressionContext.SetParameter(
-                pName,
+                parameterName,
                 expression,
                 ExpressionParser.Parse(expression, new ExpressionParserContext(ReadingExpressionContext.Name, ReadingExpressionContext.Functions)).FoundParameters);
         }
 
         public void AddFunction(string functionName, List<string> arguments, string body)
         {
+            if (functionName == null)
+            {
+                throw new ArgumentNullException(nameof(functionName));
+            }
+
+            if (arguments == null)
+            {
+                throw new ArgumentNullException(nameof(arguments));
+            }
+
+            if (body == null)
+            {
+                throw new ArgumentNullException(nameof(body));
+            }
             FunctionFactory factory = new FunctionFactory();
             ReadingExpressionContext.AddFunction(functionName, factory.Create(functionName, arguments, body));
         }
 
         public void SetNamedExpression(string expressionName, string expression)
         {
+            if (expressionName == null)
+            {
+                throw new ArgumentNullException(nameof(expressionName));
+            }
+
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
             var foundParameters = ExpressionParser.Parse(
                 expression,
                 new ExpressionParserContext(ReadingExpressionContext.Name, ReadingExpressionContext.Functions)).FoundParameters;
@@ -274,6 +346,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public void SetParameter(Entity entity, string parameterName, string expression, bool onload = true)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
             IEqualityComparer<string> comparer = StringComparerProvider.Get(CaseSensitivity.IsEntityParameterNameCaseSensitive);
 
             double value = ReadingEvaluator.EvaluateValueExpression(expression, ReadingExpressionContext);

@@ -71,6 +71,11 @@ namespace SpiceSharpParser.Common.Mathematics
         /// </returns>
         public long GetFactorial(int n)
         {
+            if (n <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(n));
+            }
+
             long result = 1;
 
             for (var i = 1; i <= n; i++)

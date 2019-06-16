@@ -6,9 +6,11 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp.Simulations;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Configurations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
@@ -44,7 +46,12 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             readingContext.Result.Returns(resultService);
             readingContext.EvaluateDouble(Arg.Any<string>()).Returns(x => double.Parse((string)x[0]));
             readingContext.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
-            readingContext.SimulationPreparations.Returns(new SimulationPreparations(new EntityUpdates(false, null, null), new SimulationsUpdates(null, null)));
+            readingContext.SimulationPreparations.Returns(new SimulationPreparations(
+                new EntityUpdates(false, 
+                    new SimulationEvaluators(new SpiceEvaluator()),
+                    new SimulationExpressionContexts(new ExpressionContext())),
+                new SimulationsUpdates(new SimulationEvaluators(new SpiceEvaluator()),
+                new SimulationExpressionContexts(new ExpressionContext()))));
             // act
             var tranControl = new TransientControl(new ExporterMapper());
             tranControl.Read(control, readingContext);
@@ -84,7 +91,12 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             readingContext.Result.Returns(resultService);
             readingContext.EvaluateDouble(Arg.Any<string>()).Returns(x => double.Parse((string)x[0]));
             readingContext.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
-            readingContext.SimulationPreparations.Returns(new SimulationPreparations(new EntityUpdates(false, null, null), new SimulationsUpdates(null, null)));
+            readingContext.SimulationPreparations.Returns(new SimulationPreparations(
+                new EntityUpdates(false,
+                    new SimulationEvaluators(new SpiceEvaluator()),
+                    new SimulationExpressionContexts(new ExpressionContext())),
+                new SimulationsUpdates(new SimulationEvaluators(new SpiceEvaluator()),
+                    new SimulationExpressionContexts(new ExpressionContext()))));
 
             // act
             var tranControl = new TransientControl(new ExporterMapper());

@@ -20,24 +20,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         /// <param name="currentSubCircuit">The current subcircuit.</param>
         /// <param name="pinInstanceNames">The names of pins.</param>
         /// <param name="globals">Global pin names.</param>
+        /// <param name="isNodeNameCaseSensitive">Is node name case sensitive.</param>
         public SubcircuitNodeNameGenerator(string subcircuitFullName, string subCircuitName, SubCircuit currentSubCircuit, List<string> pinInstanceNames, IEnumerable<string> globals, bool isNodeNameCaseSensitive)
         {
+            RootName = subCircuitName ?? throw new ArgumentNullException(nameof(subCircuitName));
+            FullName = subcircuitFullName ?? throw new ArgumentNullException(nameof(subcircuitFullName));
+
+            SubCircuit = currentSubCircuit ?? throw new ArgumentNullException(nameof(currentSubCircuit));
+            PinInstanceNames = pinInstanceNames ?? throw new ArgumentNullException(nameof(pinInstanceNames));
             if (globals == null)
             {
                 throw new ArgumentNullException(nameof(globals));
             }
 
-            RootName = subCircuitName;
-            FullName = subcircuitFullName;
-
-            SubCircuit = currentSubCircuit ?? throw new ArgumentNullException(nameof(currentSubCircuit));
-            PinInstanceNames = pinInstanceNames ?? throw new ArgumentNullException(nameof(pinInstanceNames));
-
             _pinMap = new Dictionary<string, string>(StringComparerProvider.Get(isNodeNameCaseSensitive));
 
             if (SubCircuit.Pins.Count != PinInstanceNames.Count)
             {
-                throw new GeneralReaderException("Subcircuit: " + subcircuitFullName + " has wrong number of nodes");
+                throw new GeneralReaderException($"Subcircuit: {subcircuitFullName} has wrong number of nodes");
             }
 
             for (var i = 0; i < SubCircuit.Pins.Count; i++)
@@ -115,7 +115,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
             }
             else
             {
-                return string.Format("{0}.{1}", FullName, pinName);
+                return $"{FullName}.{pinName}";
             }
         }
 
@@ -125,6 +125,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         /// <param name="pinName">Pin name.</param>
         public void SetGlobal(string pinName)
         {
+            if (pinName == null)
+            {
+                throw new ArgumentNullException(nameof(pinName));
+            }
+
             if (!_globals.Contains(pinName))
             {
                 _globals.Add(pinName);
@@ -140,6 +145,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         /// </returns>
         public string Parse(string path)
         {
+            if (path == null)
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
             string[] parts = path.Split('.');
 
             if (parts.Length == 1)
@@ -157,7 +167,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
                 }
                 else
                 {
-                    return FullName + "." + pinName;
+                    return $"{FullName}.{pinName}";
                 }
             }
             else

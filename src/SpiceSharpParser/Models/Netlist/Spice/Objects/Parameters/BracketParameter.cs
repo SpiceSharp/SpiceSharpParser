@@ -55,8 +55,8 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         {
             return new BracketParameter()
             {
-                Name = this.Name,
-                Parameters = (ParameterCollection)this.Parameters.Clone(),
+                Name = Name,
+                Parameters = (ParameterCollection)Parameters.Clone(),
             };
         }
     }

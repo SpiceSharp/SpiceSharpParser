@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+﻿using System;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -31,6 +32,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
+            if (statement == null)
+            {
+                throw new ArgumentNullException(nameof(statement));
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             string type = statement.Name;
 
             if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsDotStatementNameCaseSensitive, out var controlReader))

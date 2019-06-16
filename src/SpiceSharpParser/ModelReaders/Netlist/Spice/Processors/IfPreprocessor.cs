@@ -32,6 +32,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
         public Statements Process(Statements statements)
         {
+            if (statements == null)
+            {
+                throw new ArgumentNullException(nameof(statements));
+            }
+
             if (Evaluator == null)
             {
                 throw new InvalidOperationException("No evaluator");

@@ -1,4 +1,6 @@
-﻿namespace SpiceSharpParser.Common.Evaluation
+﻿using System;
+
+namespace SpiceSharpParser.Common.Evaluation
 {
     using System.Collections.Generic;
     using System.Threading;
@@ -23,7 +25,7 @@
         /// <param name="parser">A expression parser</param>
         public ExpressionParserWithCache(IExpressionParser parser)
         {
-            _parser = parser;
+            _parser = parser ?? throw new ArgumentNullException(nameof(parser));
             _parseResults = new Dictionary<string, ExpressionParseResult>();
         }
 
@@ -35,6 +37,16 @@
         /// <returns>Returns the result of parsing.</returns>
         public ExpressionParseResult Parse(string expression, ExpressionParserContext context)
         {
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             cacheLock.EnterUpgradeableReadLock();
             try
             {

@@ -17,9 +17,9 @@ namespace SpiceSharpParser.Common.Evaluation
         protected Evaluator(string name, IExpressionParser parser, bool isParameterNameCaseSensitive, bool isFunctionNameCaseSensitive)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
+            ExpressionParser = parser ?? throw new ArgumentNullException(nameof(parser));
             IsParameterNameCaseSensitive = isParameterNameCaseSensitive;
             IsFunctionNameCaseSensitive = isFunctionNameCaseSensitive;
-            ExpressionParser = parser ?? throw new ArgumentNullException(nameof(parser));
         }
 
         /// <summary>
@@ -46,6 +46,16 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public double EvaluateValueExpression(string expression, ExpressionContext context)
         {
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             if (context.Parameters.TryGetValue(expression, out var parameter))
             {
                 return parameter.Evaluate(this, context);
@@ -72,6 +82,16 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public double EvaluateNamedExpression(string expressionName, ExpressionContext context)
         {
+            if (expressionName == null)
+            {
+                throw new ArgumentNullException(nameof(expressionName));
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             return context.ExpressionRegistry.GetExpression(expressionName).Evaluate(this, context);
         }
 
@@ -85,6 +105,16 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public double EvaluateParameter(string id, ExpressionContext context)
         {
+            if (id == null)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             return context.Parameters[id].Evaluate(this, context);
         }
     }

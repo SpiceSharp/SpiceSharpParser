@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
@@ -11,6 +12,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <param name="statements">Statements</param>
         public Statements Process(Statements statements)
         {
+            if (statements == null)
+            {
+                throw new ArgumentNullException(nameof(statements));
+            }
+
             foreach (var statement in statements.ToArray())
             {
                 if (statement is Control c)

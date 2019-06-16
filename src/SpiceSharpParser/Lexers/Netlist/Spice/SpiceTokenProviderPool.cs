@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace SpiceSharpParser.Lexers.Netlist.Spice
@@ -10,6 +11,11 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
 
         public ISpiceTokenProvider GetSpiceTokenProvider(SpiceLexerSettings settings)
         {
+            if (settings == null)
+            {
+                throw new ArgumentNullException(nameof(settings));
+            }
+
             string key = settings.HasTitle + "_" + settings.IsDotStatementNameCaseSensitive;
 
             _cacheLock.EnterUpgradeableReadLock();

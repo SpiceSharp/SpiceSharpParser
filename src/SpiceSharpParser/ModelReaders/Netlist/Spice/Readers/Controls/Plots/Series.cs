@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots
 {
     /// <summary>
-    /// Data series
+    /// Data series.
     /// </summary>
     public class Series
     {
@@ -13,8 +14,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots
         /// <param name="name">Name of the series.</param>
         public Series(string name)
         {
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             Points = new List<Point>();
-            Name = name;
         }
 
         /// <summary>

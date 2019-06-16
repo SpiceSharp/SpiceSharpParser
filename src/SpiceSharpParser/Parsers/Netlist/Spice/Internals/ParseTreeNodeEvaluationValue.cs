@@ -1,4 +1,4 @@
-﻿namespace SpiceSharpParser.Parsers.Netlist.Spice
+﻿namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
 {
     /// <summary>
     /// The tree node evaluation value.

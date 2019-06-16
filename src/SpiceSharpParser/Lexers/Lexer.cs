@@ -19,7 +19,7 @@ namespace SpiceSharpParser.Lexers
         public Lexer(LexerGrammar<TLexerState> grammar, LexerOptions options)
         {
             Grammar = grammar ?? throw new ArgumentNullException(nameof(grammar));
-            Options = options;
+            Options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
         /// <summary>
