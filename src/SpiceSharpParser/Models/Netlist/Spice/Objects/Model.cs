@@ -23,9 +23,9 @@
         {
             return new Model()
             {
-                Name = this.Name,
-                LineNumber = this.LineNumber,
-                Parameters = (ParameterCollection)this.Parameters.Clone(),
+                Name = Name,
+                LineNumber = LineNumber,
+                Parameters = (ParameterCollection)Parameters.Clone(),
             };
         }
     }

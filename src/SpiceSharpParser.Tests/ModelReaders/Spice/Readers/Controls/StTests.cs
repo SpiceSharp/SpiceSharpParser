@@ -10,6 +10,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
 using SpiceSharpParser.Parsers.Expression;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 
@@ -41,22 +42,27 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 new SpiceNetlistReaderResult(new SpiceSharp.Circuit(), "title"));
 
             var readingContext = new ReadingContext(
-               string.Empty,
-               new SpiceExpressionParser(),
-               new SimulationPreparations(null, null),
-               new SimulationEvaluators(evaluator),
-               new SimulationExpressionContexts(null),
-               resultService,
-               new MainCircuitNodeNameGenerator(new string[] { }, true),
-               new ObjectNameGenerator(string.Empty),
-               new ObjectNameGenerator(string.Empty),
-               null,
-               null,
-               new SpiceEvaluator(),
-               new ExpressionContext(),
-               new SpiceNetlistCaseSensitivitySettings(),
-               null,
-               null);
+                string.Empty,
+                new SpiceExpressionParser(),
+                new SimulationPreparations(
+                    new EntityUpdates(false,
+                        new SimulationEvaluators(new SpiceEvaluator()),
+                        new SimulationExpressionContexts(new ExpressionContext())),
+                    new SimulationsUpdates(new SimulationEvaluators(new SpiceEvaluator()),
+                        new SimulationExpressionContexts(new ExpressionContext()))),
+                new SimulationEvaluators(evaluator),
+                new SimulationExpressionContexts(new ExpressionContext()),
+                resultService,
+                new MainCircuitNodeNameGenerator(new string[] { }, true),
+                new ObjectNameGenerator(string.Empty),
+                new ObjectNameGenerator(string.Empty),
+                null,
+                null,
+                new SpiceEvaluator(),
+                new ExpressionContext(),
+                new SpiceNetlistCaseSensitivitySettings(),
+                null,
+                null);
 
             // act
             var stControl = new StControl();
@@ -93,22 +99,27 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 new SpiceNetlistReaderResult(new SpiceSharp.Circuit(), "title"));
 
             var readingContext = new ReadingContext(
-               string.Empty,
-               new SpiceExpressionParser(),
-               new SimulationPreparations(null, null),
-               new SimulationEvaluators(evaluator),
-               new SimulationExpressionContexts(null),
-               resultService,
-               new MainCircuitNodeNameGenerator(new string[] { }, true),
-               new ObjectNameGenerator(string.Empty),
-               new ObjectNameGenerator(string.Empty),
-               null,
-               null,
-               new SpiceEvaluator(),
-               new ExpressionContext(),
-               new SpiceNetlistCaseSensitivitySettings(),
-               null,
-               null);
+                string.Empty,
+                new SpiceExpressionParser(),
+                new SimulationPreparations(
+                    new EntityUpdates(false,
+                        new SimulationEvaluators(new SpiceEvaluator()),
+                        new SimulationExpressionContexts(new ExpressionContext())),
+                    new SimulationsUpdates(new SimulationEvaluators(new SpiceEvaluator()),
+                        new SimulationExpressionContexts(new ExpressionContext()))),
+                new SimulationEvaluators(evaluator),
+                new SimulationExpressionContexts(new ExpressionContext()),
+                resultService,
+                new MainCircuitNodeNameGenerator(new string[] { }, true),
+                new ObjectNameGenerator(string.Empty),
+                new ObjectNameGenerator(string.Empty),
+                null,
+                null,
+                new SpiceEvaluator(),
+                new ExpressionContext(),
+                new SpiceNetlistCaseSensitivitySettings(),
+                null,
+                null);
 
             // act
             var stControl = new StControl();
@@ -145,22 +156,27 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 new SpiceNetlistReaderResult(new SpiceSharp.Circuit(), "title"));
 
             var readingContext = new ReadingContext(
-               string.Empty,
-               new SpiceExpressionParser(),
-               new SimulationPreparations(null, null),
-               new SimulationEvaluators(evaluator),
-               new SimulationExpressionContexts(null),
-               resultService,
-               new MainCircuitNodeNameGenerator(new string[] { }, true),
-               new ObjectNameGenerator(string.Empty),
-               new ObjectNameGenerator(string.Empty),
-               null,
-               null,
-               new SpiceEvaluator(),
-               new ExpressionContext(),
-               new SpiceNetlistCaseSensitivitySettings(),
-               null,
-               null);
+                string.Empty,
+                new SpiceExpressionParser(),
+                new SimulationPreparations(
+                    new EntityUpdates(false,
+                        new SimulationEvaluators(new SpiceEvaluator()),
+                        new SimulationExpressionContexts(new ExpressionContext())),
+                    new SimulationsUpdates(new SimulationEvaluators(new SpiceEvaluator()),
+                        new SimulationExpressionContexts(new ExpressionContext()))),
+                new SimulationEvaluators(evaluator),
+                new SimulationExpressionContexts(new ExpressionContext()),
+                resultService,
+                new MainCircuitNodeNameGenerator(new string[] { }, true),
+                new ObjectNameGenerator(string.Empty),
+                new ObjectNameGenerator(string.Empty),
+                null,
+                null,
+                new SpiceEvaluator(),
+                new ExpressionContext(),
+                new SpiceNetlistCaseSensitivitySettings(),
+                null,
+                null);
 
             // act
             var stControl = new StControl();
@@ -197,22 +213,27 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 new SpiceNetlistReaderResult(new SpiceSharp.Circuit(), "title"));
 
             var readingContext = new ReadingContext(
-               string.Empty,
-               new SpiceExpressionParser(),
-               new SimulationPreparations(null, null),
-               new SimulationEvaluators(evaluator),
-               new SimulationExpressionContexts(null),
-               resultService,
-               new MainCircuitNodeNameGenerator(new string[] { }, true),
-               new ObjectNameGenerator(string.Empty),
-               new ObjectNameGenerator(string.Empty),
-               null,
-               null,
-               new SpiceEvaluator(),
-               new ExpressionContext(),
-               new SpiceNetlistCaseSensitivitySettings(),
-               null,
-               null);
+                string.Empty,
+                new SpiceExpressionParser(),
+                new SimulationPreparations(
+                    new EntityUpdates(false,
+                        new SimulationEvaluators(new SpiceEvaluator()),
+                        new SimulationExpressionContexts(new ExpressionContext())),
+                    new SimulationsUpdates(new SimulationEvaluators(new SpiceEvaluator()),
+                        new SimulationExpressionContexts(new ExpressionContext()))),
+                new SimulationEvaluators(evaluator),
+                new SimulationExpressionContexts(new ExpressionContext()),
+                resultService,
+                new MainCircuitNodeNameGenerator(new string[] { }, true),
+                new ObjectNameGenerator(string.Empty),
+                new ObjectNameGenerator(string.Empty),
+                null,
+                null,
+                new SpiceEvaluator(),
+                new ExpressionContext(),
+                new SpiceNetlistCaseSensitivitySettings(),
+                null,
+                null);
 
             // act
             var stControl = new StControl();
@@ -250,9 +271,14 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var readingContext = new ReadingContext(
                 string.Empty,
                 new SpiceExpressionParser(),
-                new SimulationPreparations(null, null),
+                new SimulationPreparations(
+                    new EntityUpdates(false,
+                        new SimulationEvaluators(new SpiceEvaluator()),
+                        new SimulationExpressionContexts(new ExpressionContext())),
+                    new SimulationsUpdates(new SimulationEvaluators(new SpiceEvaluator()),
+                        new SimulationExpressionContexts(new ExpressionContext()))),
                 new SimulationEvaluators(evaluator),
-                new SimulationExpressionContexts(null),
+                new SimulationExpressionContexts(new ExpressionContext()),
                 resultService,
                 new MainCircuitNodeNameGenerator(new string[] { }, true),
                 new ObjectNameGenerator(string.Empty),

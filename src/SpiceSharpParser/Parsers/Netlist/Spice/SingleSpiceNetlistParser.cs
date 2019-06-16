@@ -1,6 +1,7 @@
 ﻿using System;
 using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
+using SpiceSharpParser.Parsers.Netlist.Spice.Internals;
 
 namespace SpiceSharpParser.Parsers.Netlist.Spice
 {
@@ -8,7 +9,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
     {
         public SingleSpiceNetlistParser(SingleSpiceNetlistParserSettings settings)
         {
-            Settings = settings;
+            Settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
         /// <summary>
@@ -54,6 +55,16 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             string rootSymbol,
             bool isDotStatementNameCaseSensitive)
         {
+            if (tokens == null)
+            {
+                throw new ArgumentNullException(nameof(tokens));
+            }
+
+            if (rootSymbol == null)
+            {
+                throw new ArgumentNullException(nameof(rootSymbol));
+            }
+
             var generator = new ParseTreeGenerator(isDotStatementNameCaseSensitive);
             return generator.GetParseTree(tokens, rootSymbol);
         }

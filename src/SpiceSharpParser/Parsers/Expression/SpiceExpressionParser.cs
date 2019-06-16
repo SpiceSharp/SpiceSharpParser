@@ -8,7 +8,7 @@ namespace SpiceSharpParser.Parsers.Expression
 {
     /// <summary>
     /// @author: Sven Boulanger
-    /// @author: Marcin Gołębiowski (custom functions, lazy evaluation)
+    /// @author: Marcin Gołębiowski (functions, lazy evaluation)
     /// A very light-weight and fast expression parser made for parsing SPICE expressions
     /// It is based on Dijkstra's Shunting Yard algorithm. It is very fast for parsing expressions only once.
     /// The parser is also not very expressive for errors, so only use it for relatively simple expressions.
@@ -83,7 +83,7 @@ namespace SpiceSharpParser.Parsers.Expression
         /// Private variables.
         /// </summary>
         private readonly Stack<Func<ExpressionEvaluationContext, double>> outputStack = new Stack<Func<ExpressionEvaluationContext, double>>();
-        private readonly Stack<object> virtualParametersStack = new Stack<object>();
+        private readonly Stack<string> stringParametersStack = new Stack<string>();
         private readonly Stack<Operator> operatorStack = new Stack<Operator>();
         private readonly StringBuilder sb = new StringBuilder();
         private string input;
@@ -241,7 +241,7 @@ namespace SpiceSharpParser.Parsers.Expression
                             int endIndex = index;
                             if (index != count)
                             {
-                                virtualParametersStack
+                                stringParametersStack
                                     .Push(input.Substring(startIndex + 1, endIndex - startIndex - 1));
                                 index++;
                             }
@@ -355,7 +355,7 @@ namespace SpiceSharpParser.Parsers.Expression
                         if (operatorStack.Count > 0
                             && operatorStack.FirstOrDefault(o => o.Id == IdFunction) != null)
                         {
-                            if (operatorStack.Peek() is FunctionOperator fo && fo.VirtualParameters)
+                            if (operatorStack.Peek() is FunctionOperator fo && fo.Functions.First() is IFunction<string, double>)
                             {
                                 int startIndex = index;
 
@@ -375,7 +375,7 @@ namespace SpiceSharpParser.Parsers.Expression
                                 }
 
                                 var virtualParameter = expression.Substring(startIndex, index - startIndex);
-                                virtualParametersStack.Push(virtualParameter);
+                                stringParametersStack.Push(virtualParameter);
                             }
                             else
                             {
@@ -435,9 +435,9 @@ namespace SpiceSharpParser.Parsers.Expression
                             string parameterName = sb.ToString();
 
                             if (operatorStack.Count > 0 && operatorStack.Peek().Id == IdFunction
-                                                        && ((FunctionOperator)operatorStack.Peek()).VirtualParameters)
+                                                        && ((FunctionOperator)operatorStack.Peek()).Functions.First() is IFunction<string, double>)
                             {
-                                virtualParametersStack.Push(parameterName);
+                                stringParametersStack.Push(parameterName);
                             }
                             else
                             {
@@ -490,7 +490,7 @@ namespace SpiceSharpParser.Parsers.Expression
                         int endIndex = index;
                         if (index != count)
                         {
-                            virtualParametersStack.Push(input.Substring(startIndex + 1, endIndex - startIndex - 1));
+                            stringParametersStack.Push(input.Substring(startIndex + 1, endIndex - startIndex - 1));
                             index++;
                             infixPostfix = true;
                         }
@@ -543,53 +543,76 @@ namespace SpiceSharpParser.Parsers.Expression
                 throw new FunctionNotFoundException(functionName);
             }
 
-            var function = context.Functions[functionName];
+            var functions = context.Functions[functionName];
+
             var cfo = new FunctionOperator();
-            cfo.StartIndex = startIndex;
-            cfo.VirtualParameters = function.VirtualParameters;
-            cfo.ArgumentsCount = function.ArgumentsCount;
-            cfo.ArgumentsStackCount = outputStack.Count;
-            cfo.Precedence = function.Infix ? PrecedenceMultiplicative : cfo.Precedence;
-            cfo.LeftAssociative = function.Infix || cfo.LeftAssociative;
             cfo.Name = functionName;
-
-            if (cfo.VirtualParameters)
-            {
-                cfo.ObjectArgsLogic = function.ObjectArgsLogic;
-            }
-            else
-            {
-                cfo.DoubleArgsLogic = function.DoubleArgsLogic;
-            }
-
+            cfo.StartIndex = startIndex;
+            cfo.ArgumentsStackCount = outputStack.Count;
+            cfo.LeftAssociative = functions.First().Infix || cfo.LeftAssociative;
+            cfo.Precedence = functions.First().Infix ? PrecedenceMultiplicative : cfo.Precedence;
+            cfo.Functions = functions;
             return cfo;
         }
 
         private void EvaluateFunction(string expression, FunctionOperator op, int? endIndex = null)
         {
-            if (op.VirtualParameters)
+            if (op.Functions.First() is IFunction<string, double> stringFunction)
             {
-                var argCount = op.ArgumentsCount != -1 ? op.ArgumentsCount : virtualParametersStack.Count;
-                var args = PopAndReturnArguments(virtualParametersStack, argCount);
+                if (op.Functions.Count > 1)
+                {
+                    throw new InvalidOperationException("Cannot have more than one virtual function with same name");
+                }
+
+                var argCount = stringFunction.ArgumentsCount != -1 ? stringFunction.ArgumentsCount : stringParametersStack.Count;
+                var args = PopAndReturnArguments(stringParametersStack, argCount);
 
                 outputStack.Push((evalContext) =>
                 {
                     if (endIndex != null)
                     {
-                        return op.ObjectArgsLogic(
+                        return stringFunction.Logic(
                             op.Name + expression.Substring(op.StartIndex - 1, endIndex.Value - op.StartIndex + 2),
                             args,
                             evalContext.Evaluator,
                             evalContext.ExpressionContext);
                     }
 
-                    return op.ObjectArgsLogic(null, args, evalContext.Evaluator, evalContext.ExpressionContext);
+                    return stringFunction.Logic(null, args, evalContext.Evaluator, evalContext.ExpressionContext);
                 });
             }
             else
             {
-                var argCount = op.ArgumentsCount != -1 ? op.ArgumentsCount : outputStack.Count - op.ArgumentsStackCount;
-                var args = PopAndReturnArguments(outputStack, argCount);
+                var functionArguments = outputStack.Count - op.ArgumentsStackCount;
+
+                IFunction function;
+
+                if (op.Functions.Count == 1 && op.Functions.First().Infix)
+                {
+                    functionArguments++;
+                }
+
+                if (op.Functions.Count == 1 && op.Functions.First().ArgumentsCount == -1)
+                {
+                    function = op.Functions.First();
+                }
+                else
+                {
+                    function = op.Functions.SingleOrDefault(f => f.ArgumentsCount == functionArguments);
+
+                    if (function == null)
+                    {
+                        throw new InvalidOperationException(
+                            $"Function {op.Name} has been called with unsupported number of arguments");
+                    }
+                }
+
+                if (!(function is IFunction<double, double> df))
+                {
+                    throw new InvalidOperationException("Virtual function needs to have double as arguments");
+                }
+
+                var args = PopAndReturnArguments(outputStack, functionArguments);
 
                 if (endIndex != null)
                 {
@@ -597,7 +620,7 @@ namespace SpiceSharpParser.Parsers.Expression
                     {
                         var evaluatedArgs = Evaluate(args, evalContext);
 
-                        return op.DoubleArgsLogic(
+                        return df.Logic(
                             op.Name
                             + expression.Substring(op.StartIndex - 1, endIndex.Value - op.StartIndex + 2),
                             evaluatedArgs,
@@ -610,7 +633,7 @@ namespace SpiceSharpParser.Parsers.Expression
                     outputStack.Push((evalContext) =>
                     {
                         var evaluatedArgs = Evaluate(args, evalContext);
-                        return op.DoubleArgsLogic(null, evaluatedArgs, evalContext.Evaluator, evalContext.ExpressionContext);
+                        return df.Logic(null, evaluatedArgs, evalContext.Evaluator, evalContext.ExpressionContext);
                     });
                 }
             }
@@ -896,9 +919,9 @@ namespace SpiceSharpParser.Parsers.Expression
             return result.ToArray();
         }
 
-        private object[] PopAndReturnArguments(Stack<object> stack, int count)
+        private string[] PopAndReturnArguments(Stack<string> stack, int count)
         {
-            var result = new List<object>(count);
+            var result = new List<string>(count);
             for (var i = 0; i < count; i++)
             {
                 var val = stack.Pop();
@@ -961,16 +984,7 @@ namespace SpiceSharpParser.Parsers.Expression
             /// </summary>
             public string Name { get; set; }
 
-            /// <summary>
-            /// Gets or sets the function logic.
-            /// </summary>
-            public Func<string, double[], IEvaluator, ExpressionContext, double> DoubleArgsLogic { get; set; }
-
-            public Func<string, object[], IEvaluator, ExpressionContext, double> ObjectArgsLogic { get; set; }
-
-            public bool VirtualParameters { get; set; }
-
-            public int ArgumentsCount { get; set; }
+            public List<IFunction> Functions { get; set; }
 
             public int ArgumentsStackCount { get; set; }
 

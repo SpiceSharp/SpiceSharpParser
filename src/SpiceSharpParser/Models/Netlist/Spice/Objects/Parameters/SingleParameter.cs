@@ -5,16 +5,16 @@
     /// </summary>
     public abstract class SingleParameter : Parameter
     {
-        private string rawString;
+        private string _rawString;
 
         protected SingleParameter(string rawString)
         {
-            this.rawString = rawString;
+            _rawString = rawString;
         }
 
         /// <summary>
         /// Gets the string representation of the parameter.
         /// </summary>
-        public override string Image => this.rawString;
+        public override string Image => _rawString;
     }
 }

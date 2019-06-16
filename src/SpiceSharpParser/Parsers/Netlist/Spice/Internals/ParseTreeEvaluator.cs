@@ -5,6 +5,7 @@ using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using SpiceSharpParser.Parsers.Netlist.Spice.Internals;
 
 namespace SpiceSharpParser.Parsers.Netlist.Spice
 {
@@ -66,6 +67,11 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// <returns>A netlist.</returns>
         public SpiceObject Evaluate(ParseTreeNode root)
         {
+            if (root == null)
+            {
+                throw new ArgumentNullException(nameof(root));
+            }
+
             var traversal = new ParseTreeTraversal();
 
             // Get tree nodes in post order

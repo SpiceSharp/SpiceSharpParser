@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
 namespace SpiceSharpParser.Lexers
 {
@@ -18,8 +19,8 @@ namespace SpiceSharpParser.Lexers
         /// <param name="ignoreCase">Case is ignored.</param>
         protected LexerRegexRule(string ruleName, string regularExpressionPattern, bool ignoreCase)
         {
-            RegularExpressionPattern = regularExpressionPattern;
-            Name = ruleName;
+            Name = ruleName ?? throw new ArgumentNullException(nameof(ruleName));
+            RegularExpressionPattern = regularExpressionPattern ?? throw new ArgumentNullException(nameof(regularExpressionPattern));
             IgnoreCase = ignoreCase;
         }
 

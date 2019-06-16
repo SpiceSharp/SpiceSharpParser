@@ -49,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     {
                         FunctionFactory factory = new FunctionFactory();
 
-                        expressionContext.Functions.Add(
+                        expressionContext.AddFunction(
                             assignmentParameter.Name,
                             factory.Create(
                                 assignmentParameter.Name,

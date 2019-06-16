@@ -14,10 +14,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// Initializes a new instance of the <see cref="StochasticModelsRegistry"/> class.
         /// </summary>
         /// <param name="modelNamesGenerators">The enumerable of model name generators.</param>
+        /// <param name="isModelNameCaseSensitive">Is model names case sensitive.</param>
         public StochasticModelsRegistry(IEnumerable<IObjectNameGenerator> modelNamesGenerators, bool isModelNameCaseSensitive)
         {
-            IsModelNameCaseSensitive = isModelNameCaseSensitive;
             ModelNamesGenerators = modelNamesGenerators ?? throw new ArgumentNullException(nameof(modelNamesGenerators));
+            IsModelNameCaseSensitive = isModelNameCaseSensitive;
 
             AllModels = new Dictionary<string, Entity>(StringComparerProvider.Get(isModelNameCaseSensitive));
         }
@@ -63,6 +64,26 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// <param name="percent">A percent (value of dev).</param>
         public void RegisterModelDev(SpiceSharp.Components.Model model, Func<string, SpiceSharp.Components.Model> generator, Parameter parameter, Parameter percent)
         {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            if (generator == null)
+            {
+                throw new ArgumentNullException(nameof(generator));
+            }
+
+            if (parameter == null)
+            {
+                throw new ArgumentNullException(nameof(parameter));
+            }
+
+            if (percent == null)
+            {
+                throw new ArgumentNullException(nameof(percent));
+            }
+
             if (!ModelsWithDev.ContainsKey(model))
             {
                 ModelsWithDev[model] = new Dictionary<Parameter, Parameter>();

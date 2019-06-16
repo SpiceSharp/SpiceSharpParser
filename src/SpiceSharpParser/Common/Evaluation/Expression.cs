@@ -41,6 +41,16 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public virtual double Evaluate(IEvaluator evaluator, ExpressionContext context)
         {
+            if (evaluator == null)
+            {
+                throw new ArgumentNullException(nameof(evaluator));
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             var newValue = evaluator.EvaluateValueExpression(ValueExpression, context);
             CurrentValue = newValue;
             OnEvaluated(newValue);

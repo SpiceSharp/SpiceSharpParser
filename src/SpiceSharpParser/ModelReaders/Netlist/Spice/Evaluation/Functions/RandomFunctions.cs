@@ -1,5 +1,6 @@
-﻿using System;
-using SpiceSharpParser.Common.Evaluation;
+﻿using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 {
@@ -11,31 +12,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// <returns>
         /// A new instance of random mc function.
         /// </returns>
-        public static Function CreateMc()
+        public static IFunction<double, double> CreateMc()
         {
-            Function function = new Function();
-            function.Name = "mc";
-            function.VirtualParameters = false;
-            function.ArgumentsCount = 2;
-
-            function.DoubleArgsLogic = (image, args, evaluator, context) =>
-            {
-                if (args.Length != 2)
-                {
-                    throw new Exception("mc() expects two arguments");
-                }
-
-                Random random = context.Randomizer.GetRandom(context.Seed);
-                double x = args[0];
-                double tol = args[1];
-
-                double min = x - (tol * x);
-                double randomChange = random.NextDouble() * 2.0 * tol * x;
-
-                return min + randomChange;
-            };
-
-            return function;
+            return new McFunction();
         }
 
         /// <summary>
@@ -44,30 +23,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// <returns>
         /// A new instance of random gauss function.
         /// </returns>
-        public static Function CreateGauss()
+        public static IFunction<double, double> CreateGauss()
         {
-            Function function = new Function();
-            function.Name = "gauss";
-            function.VirtualParameters = false;
-            function.ArgumentsCount = 1;
+            return new GaussFunction();
+        }
 
-            function.DoubleArgsLogic = (image, args, evaluator, context) =>
-            {
-                if (args.Length != 1)
-                {
-                    throw new Exception("gauss() expects one argument");
-                }
-
-                Random random = context.Randomizer.GetRandom(context.Seed);
-
-                double p1 = 1 - random.NextDouble();
-                double p2 = 1 - random.NextDouble();
-
-                double std = Math.Sqrt(-2.0 * Math.Log(p1)) * Math.Sin(2.0 * Math.PI * p2);
-                return (double)args[0] * std;
-            };
-
-            return function;
+        /// <summary>
+        /// Get a gauss() function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of random gauss function.
+        /// </returns>
+        public static IFunction<double, double> CreateExtendedGauss()
+        {
+            return new ExtendedGaussFunction();
         }
 
         /// <summary>
@@ -76,25 +45,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// <returns>
         /// A new instance of random function.
         /// </returns>
-        public static Function CreateRandom()
+        public static IFunction<double, double> CreateRandom()
         {
-            Function function = new Function();
-            function.Name = "random";
-            function.VirtualParameters = false;
-            function.ArgumentsCount = 0;
-
-            function.DoubleArgsLogic = (image, args, evaluator, context) =>
-            {
-                if (args.Length != 0)
-                {
-                    throw new Exception("random() expects no arguments");
-                }
-
-                Random random = context.Randomizer.GetRandom(context.Seed);
-                return random.NextDouble();
-            };
-
-            return function;
+            return new RandomFunction();
         }
 
         /// <summary>
@@ -103,28 +56,53 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// <returns>
         /// A new instance of random function.
         /// </returns>
-        public static Function CreateFlat()
+        public static IFunction<double, double> CreateFlat()
         {
-            Function function = new Function();
-            function.Name = "flat";
-            function.VirtualParameters = false;
-            function.ArgumentsCount = 1;
+            return new FlatFunction();
+        }
 
-            function.DoubleArgsLogic = (image, args, evaluator, context) =>
-            {
-                if (args.Length != 1)
-                {
-                    throw new ArgumentException("flat() function expects one argument");
-                }
+        /// <summary>
+        /// Get a limit() function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of limit function.
+        /// </returns>
+        public static IFunction<double, double> CreateLimit()
+        {
+            return new SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.LimitFunction();
+        }
 
-                Random random = context.Randomizer.GetRandom(context.Seed);
+        /// <summary>
+        /// Get a unif() function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of unif function.
+        /// </returns>
+        public static IFunction<double, double> CreateUnif()
+        {
+            return new SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.UnifFunction();
+        }
 
-                double x = (double)args[0];
+        /// <summary>
+        /// Get a aunif() function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of aunif function.
+        /// </returns>
+        public static IFunction<double, double> CreateAUnif()
+        {
+            return new SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.AUnifFunction();
+        }
 
-                return (random.NextDouble() * 2.0 * x) - x;
-            };
-
-            return function;
+        /// <summary>
+        /// Get a agauss() function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of agauss function.
+        /// </returns>
+        public static IFunction<double, double> CreateAGauss()
+        {
+            return new SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.AGaussFunction();
         }
     }
 }

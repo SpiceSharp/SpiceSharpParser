@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharp.Circuits;
@@ -12,8 +13,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
         public EntityUpdates(bool isParameterNameCaseSensitive, ISimulationEvaluators evaluators, SimulationExpressionContexts contexts)
         {
             IsParameterNameCaseSensitive = isParameterNameCaseSensitive;
-            Contexts = contexts;
-            Evaluators = evaluators;
+            Evaluators = evaluators ?? throw new ArgumentNullException(nameof(evaluators));
+            Contexts = contexts ?? throw new ArgumentNullException(nameof(contexts));
             CommonUpdates = new Dictionary<Entity, EntityUpdate>();
             SimulationSpecificUpdates = new Dictionary<Simulation, Dictionary<Entity, EntityUpdate>>();
             SimulationEntityParametersCache = new ConcurrentDictionary<string, Parameter<double>>();
@@ -33,6 +34,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
         public void Apply(BaseSimulation simulation)
         {
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
+
             simulation.BeforeLoad += (sender, args) =>
             {
                 foreach (var entity in CommonUpdates.Keys)
@@ -124,6 +130,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
         public void Add(Entity entity, string parameterName, string expression, bool beforeTemperature, bool beforeLoad)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
             if (CommonUpdates.ContainsKey(entity) == false)
             {
                 CommonUpdates[entity] = new EntityUpdate();
@@ -147,6 +168,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
         public void Add(Entity entity, Simulation simulation, string parameterName, string expression, bool beforeTemperature, bool beforeLoad)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
             if (SimulationSpecificUpdates.ContainsKey(simulation) == false)
             {
                 SimulationSpecificUpdates[simulation] = new Dictionary<Entity, EntityUpdate>();
@@ -175,6 +211,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
         public void Add(Entity entity, string parameterName, double value, bool beforeTemperature, bool beforeLoad)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
             if (CommonUpdates.ContainsKey(entity) == false)
             {
                 CommonUpdates[entity] = new EntityUpdate();
@@ -199,6 +245,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
         public void Add(Entity entity, Simulation simulation, string parameterName, double value, bool beforeTemperature, bool beforeLoad)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
+
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
             if (SimulationSpecificUpdates.ContainsKey(simulation) == false)
             {
                 SimulationSpecificUpdates[simulation] = new Dictionary<Entity, EntityUpdate>();

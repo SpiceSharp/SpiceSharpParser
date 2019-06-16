@@ -13,7 +13,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="name">Name of a function.</param>
         /// <param name="arguments">Arguments of a function.</param>
         /// <param name="functionBodyExpression">Body expression of a function.</param>
-        Function Create(
+        IFunction<double, double> Create(
             string name,
             List<string> arguments,
             string functionBodyExpression);

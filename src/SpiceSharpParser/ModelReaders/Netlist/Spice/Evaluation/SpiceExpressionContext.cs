@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Evaluation.Expressions;
@@ -33,41 +34,54 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
         private void CreateSpiceFunctions()
         {
-            Functions.Add("**", MathFunctions.CreatePowInfix(Mode));
-            Functions.Add("abs", MathFunctions.CreateAbs());
-            Functions.Add("buf", MathFunctions.CreateBuf());
-            Functions.Add("cbrt", MathFunctions.CreateCbrt());
-            Functions.Add("ceil", MathFunctions.CreateCeil());
-            Functions.Add("db", MathFunctions.CreateDb(Mode));
-            Functions.Add("def", ControlFunctions.CreateDef());
-            Functions.Add("exp", MathFunctions.CreateExp());
-            Functions.Add("fabs", MathFunctions.CreateAbs());
-            Functions.Add("flat", RandomFunctions.CreateFlat());
-            Functions.Add("floor", MathFunctions.CreateFloor());
-            Functions.Add("gauss", RandomFunctions.CreateGauss());
-            Functions.Add("hypot", MathFunctions.CreateHypot());
-            Functions.Add("if", ControlFunctions.CreateIf());
-            Functions.Add("int", MathFunctions.CreateInt());
-            Functions.Add("inv", MathFunctions.CreateInv());
-            Functions.Add("ln", MathFunctions.CreateLn());
-            Functions.Add("limit", MathFunctions.CreateLimit());
-            Functions.Add("log", MathFunctions.CreateLog(Mode));
-            Functions.Add("log10", MathFunctions.CreateLog10(Mode));
-            Functions.Add("max", MathFunctions.CreateMax());
-            Functions.Add("mc", RandomFunctions.CreateMc());
-            Functions.Add("min", MathFunctions.CreateMin());
-            Functions.Add("nint", MathFunctions.CreateRound());
-            Functions.Add("pow", MathFunctions.CreatePow(Mode));
-            Functions.Add("pwr", MathFunctions.CreatePwr(Mode));
-            Functions.Add("pwrs", MathFunctions.CreatePwrs());
-            Functions.Add("random", RandomFunctions.CreateRandom());
-            Functions.Add("round", MathFunctions.CreateRound());
-            Functions.Add("sqrt", MathFunctions.CreateSqrt(Mode));
-            Functions.Add("sgn", MathFunctions.CreateSgn());
-            Functions.Add("table", TableFunction.Create());
-            Functions.Add("u", MathFunctions.CreateU());
-            Functions.Add("uramp", MathFunctions.CreateURamp());
-            Functions.Add("poly", PolyFunction.Create());
+            var functions = new List<IFunction>
+            {
+                MathFunctions.CreatePowInfix(Mode),
+                MathFunctions.CreateAbs(),
+                RandomFunctions.CreateAGauss(),
+                RandomFunctions.CreateAUnif(),
+                MathFunctions.CreateBuf(),
+                MathFunctions.CreateCbrt(),
+                MathFunctions.CreateCeil(),
+                MathFunctions.CreateDb(Mode),
+                ControlFunctions.CreateDef(),
+                MathFunctions.CreateExp(),
+                MathFunctions.CreateFAbs(),
+                RandomFunctions.CreateFlat(),
+                MathFunctions.CreateFloor(),
+                RandomFunctions.CreateGauss(),
+                RandomFunctions.CreateExtendedGauss(),
+                MathFunctions.CreateHypot(),
+                ControlFunctions.CreateIf(),
+                MathFunctions.CreateInt(),
+                MathFunctions.CreateInv(),
+                MathFunctions.CreateLn(),
+                MathFunctions.CreateLimit(),
+                RandomFunctions.CreateLimit(),
+                MathFunctions.CreateLog(Mode),
+                MathFunctions.CreateLog10(Mode),
+                MathFunctions.CreateMax(),
+                RandomFunctions.CreateMc(),
+                MathFunctions.CreateMin(),
+                MathFunctions.CreateNint(),
+                MathFunctions.CreateRound(),
+                MathFunctions.CreatePow(Mode),
+                MathFunctions.CreatePwr(Mode),
+                MathFunctions.CreatePwrs(),
+                RandomFunctions.CreateRandom(),
+                MathFunctions.CreateSqrt(Mode),
+                MathFunctions.CreateSgn(),
+                MathFunctions.CreateTable(),
+                MathFunctions.CreateU(),
+                RandomFunctions.CreateUnif(),
+                MathFunctions.CreateURamp(),
+                MathFunctions.CreatePoly()
+            };
+
+            foreach (var function in functions)
+            {
+               AddFunction(function.Name, function);
+            }
         }
 
         private void CreateSpiceParameters()

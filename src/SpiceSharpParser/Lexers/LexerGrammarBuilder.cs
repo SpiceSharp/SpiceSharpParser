@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -31,6 +32,10 @@ namespace SpiceSharpParser.Lexers
         /// </param>
         public void AddRegexRule(LexerRegexRule rule)
         {
+            if (rule == null)
+            {
+                throw new ArgumentNullException(nameof(rule));
+            }
             _regexRules.Add(rule);
         }
 
@@ -42,6 +47,11 @@ namespace SpiceSharpParser.Lexers
         /// </param>
         public void AddDynamicRule(LexerDynamicRule rule)
         {
+            if (rule == null)
+            {
+                throw new ArgumentNullException(nameof(rule));
+            }
+
             _dynamicRules.Add(rule);
         }
 

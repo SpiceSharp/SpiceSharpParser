@@ -15,10 +15,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
     public class PropertyExporter : Exporter
     {
         /// <summary>
-        /// Gets supported voltage exports.
+        /// Gets supported property exports.
         /// </summary>
         /// <returns>
-        /// A list of supported voltage exports.
+        /// A list of supported property exports.
         /// </returns>
         public override ICollection<string> CreatedTypes => new List<string>() { "@" };
 
@@ -26,14 +26,35 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// Creates a new current export.
         /// </summary>
         /// <paramref name="name">Name of export.</paramref>
+        /// <param name="name"></param>
         /// <param name="type">A type of export.</param>
         /// <param name="parameters">A parameters of export.</param>
         /// <param name="simulation">A simulation for export.</param>
+        /// <param name="nodeNameGenerator"></param>
+        /// <param name="componentNameGenerator"></param>
+        /// <param name="modelNameGenerator"></param>
+        /// <param name="result"></param>
+        /// <param name="caseSettings"></param>
         /// <returns>
         /// A new export.
         /// </returns>
         public override Export CreateExport(string name, string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator componentNameGenerator, IObjectNameGenerator modelNameGenerator, IResultService result, SpiceNetlistCaseSensitivitySettings caseSettings)
         {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            if (parameters == null)
+            {
+                throw new ArgumentNullException(nameof(parameters));
+            }
+
             if (parameters.Count != 2)
             {
                 throw new WrongParameterException("Property exports should have two parameters: name of component and property name");

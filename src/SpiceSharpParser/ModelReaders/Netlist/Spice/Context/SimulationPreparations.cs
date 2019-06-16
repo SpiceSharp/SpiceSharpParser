@@ -10,8 +10,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
     {
         public SimulationPreparations(EntityUpdates entityUpdates, SimulationsUpdates simulationUpdates)
         {
-            EntityUpdates = entityUpdates;
-            SimulationUpdates = simulationUpdates;
+            EntityUpdates = entityUpdates ?? throw new ArgumentNullException(nameof(entityUpdates));
+            SimulationUpdates = simulationUpdates ?? throw new ArgumentNullException(nameof(simulationUpdates));
         }
 
         protected EntityUpdates EntityUpdates { get; }
@@ -20,12 +20,27 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public void Prepare(BaseSimulation simulation)
         {
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
+
             SimulationUpdates.Apply(simulation);
             EntityUpdates.Apply(simulation);
         }
 
         public void SetNodeSetVoltage(string nodeId, string expression)
         {
+            if (nodeId == null)
+            {
+                throw new ArgumentNullException(nameof(nodeId));
+            }
+
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
             SimulationUpdates.AddBeforeTemperature((simulation, evaluators, contexts) =>
             {
                 var simEval = evaluators.GetEvaluator(simulation);
@@ -38,6 +53,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public void SetICVoltage(string nodeId, string expression)
         {
+            if (nodeId == null)
+            {
+                throw new ArgumentNullException(nameof(nodeId));
+            }
+
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
             SimulationUpdates.AddBeforeSetup((simulation, evaluators, contexts) =>
             {
                 var simEval = evaluators.GetEvaluator(simulation);
@@ -53,6 +78,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public void ExecuteTemperatureBehaviorBeforeLoad(Entity entity)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
             SimulationUpdates.AddBeforeLoad((simulation, evaluators, contexts) =>
             {
                 if (simulation.EntityBehaviors[entity.Name].TryGet<ITemperatureBehavior>(out var temperatureBehavior))
@@ -68,16 +98,55 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public void SetParameter(Entity @object, string paramName, string expression, bool beforeTemperature, bool onload)
         {
+            if (@object == null)
+            {
+                throw new ArgumentNullException(nameof(@object));
+            }
+
+            if (paramName == null)
+            {
+                throw new ArgumentNullException(nameof(paramName));
+            }
+
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
             EntityUpdates.Add(@object, paramName, expression, beforeTemperature, onload);
         }
 
         public void SetParameter(Entity @object, string paramName, double value, bool beforeTemperature, bool onload)
         {
+            if (@object == null)
+            {
+                throw new ArgumentNullException(nameof(@object));
+            }
+
+            if (paramName == null)
+            {
+                throw new ArgumentNullException(nameof(paramName));
+            }
+
             EntityUpdates.Add(@object, paramName, value, beforeTemperature, onload);
         }
 
         public void SetParameter(Entity @object, BaseSimulation simulation, string paramName, double value, bool beforeTemperature, bool onload)
         {
+            if (@object == null)
+            {
+                throw new ArgumentNullException(nameof(@object));
+            }
+
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
+
+            if (paramName == null)
+            {
+                throw new ArgumentNullException(nameof(paramName));
+            }
+
             EntityUpdates.Add(@object, simulation, paramName, value, beforeTemperature, onload);
         }
     }

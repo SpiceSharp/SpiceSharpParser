@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace SpiceSharpParser.Common.Mathematics
@@ -18,6 +19,16 @@ namespace SpiceSharpParser.Common.Mathematics
         /// </returns>
         public static List<int[]> GetCombinations(int count, int n)
         {
+            if (count <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(count));
+            }
+
+            if (n <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(n));
+            }
+
             string key = count + "_" + n;
 
             if (!Cache.TryGetValue(key, out var combination))

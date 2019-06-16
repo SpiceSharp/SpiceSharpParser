@@ -17,11 +17,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots
         /// <param name="binWidth">Width of one bin.</param>
         public HistogramPlot(string name, string xUnit, double xMin, double xMax, double binWidth)
         {
-            BinWidth = binWidth;
-            XMax = xMax;
-            XMin = xMin;
             Name = name;
             XUnit = xUnit;
+            XMin = xMin;
+            XMax = xMax;
+            BinWidth = binWidth;
             Bins = new Dictionary<int, Bin>();
         }
 

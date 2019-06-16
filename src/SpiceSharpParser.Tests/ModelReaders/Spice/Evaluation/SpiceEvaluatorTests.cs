@@ -319,6 +319,50 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         }
 
         [Fact]
+        public void AGauss()
+        {
+            // arrange
+            var evaluator = new SpiceEvaluator();
+            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
+
+            // act and assert
+            evaluator.EvaluateValueExpression("agauss(0, 1, 2)", c);
+        }
+
+        [Fact]
+        public void AUnif()
+        {
+            // arrange
+            var evaluator = new SpiceEvaluator();
+            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
+
+            // act and assert
+            evaluator.EvaluateValueExpression("aunif(0, 1)", c);
+        }
+
+        [Fact]
+        public void Unif()
+        {
+            // arrange
+            var evaluator = new SpiceEvaluator();
+            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
+
+            // act and assert
+            evaluator.EvaluateValueExpression("unif(1, 0.5)", c);
+        }
+
+        [Fact]
+        public void LimitRandom()
+        {
+            // arrange
+            var evaluator = new SpiceEvaluator();
+            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
+
+            // act and assert
+            evaluator.EvaluateValueExpression("limit(0, 1)", c);
+        }
+
+        [Fact]
         public void Buf()
         {
             // arrange
@@ -430,6 +474,39 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
 
             // act and assert
             Assert.Equal(5, evaluator.EvaluateValueExpression("hypot(3,4)", c));
+        }
+
+        [Fact]
+        public void Gauss()
+        {
+            // arrange
+            var evaluator = new SpiceEvaluator();
+            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
+
+            // act and assert
+            evaluator.EvaluateValueExpression("gauss(1.2)", c);
+        }
+
+        [Fact]
+        public void ExtendedGauss()
+        {
+            // arrange
+            var evaluator = new SpiceEvaluator();
+            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
+
+            // act and assert
+            evaluator.EvaluateValueExpression("gauss(1, 2.3, 4.5)", c);
+        }
+
+        [Fact]
+        public void ExtendedGauss_TooManyArguments()
+        {
+            // arrange
+            var evaluator = new SpiceEvaluator();
+            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
+
+            // act and assert
+            Assert.Throws<InvalidOperationException>(() => evaluator.EvaluateValueExpression("gauss(1, 2.3, 4.5, 0)", c));
         }
 
         [Fact]
@@ -581,51 +658,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             Assert.Equal(100 * 1000, evaluator.EvaluateValueExpression("300kHz/3", c));
         }
 
-        [Fact]
-        public void FibonacciFunction()
-        {
-            // arrange
-            var p = new SpiceEvaluator();
-
-            //TODO: It shouldn't be that messy ...
-            Func<string, double[], IEvaluator, ExpressionContext, double> fibLogic = null; //TODO: Use smarter methods to define anonymous recursion in C# (there is a nice post on some nice blog on msdn)
-            fibLogic = (string image, double[] args, IEvaluator evaluator, ExpressionContext context) =>
-            {
-                double x = (double)args[0];
-
-                if (x == 0.0)
-                {
-                    return 0.0;
-                }
-
-                if (x == 1.0)
-                {
-                    return 1.0;
-                }
-
-                return (double)fibLogic(image, new double[1] { (x - 1) }, evaluator, context) + (double)fibLogic(image, new double[1] { (x - 2) }, evaluator, context);
-            };
-
-            var fib = new Function()
-            {
-                ArgumentsCount = 1,
-                DoubleArgsLogic = fibLogic,
-                VirtualParameters = false,
-            };
-
-            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
-
-            c.Functions.Add("fib",  fib);
-
-            Assert.Equal(0, p.EvaluateValueExpression("fib(0)", c));
-            Assert.Equal(1, p.EvaluateValueExpression("fib(1)", c));
-            Assert.Equal(1, p.EvaluateValueExpression("fib(2)", c));
-            Assert.Equal(2, p.EvaluateValueExpression("fib(3)", c));
-            Assert.Equal(3, p.EvaluateValueExpression("fib(4)", c));
-            Assert.Equal(5, p.EvaluateValueExpression("fib(5)", c));
-            Assert.Equal(8, p.EvaluateValueExpression("fib(6)", c));
-        }
-
         //[Fact]
         public void FibonacciAsParam()
         {
@@ -634,7 +666,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             var p = new SpiceEvaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
-            c.Functions.Add("fib",
+            c.AddFunction("fib",
                 functionFactory.Create("fib",
                 new System.Collections.Generic.List<string>() { "x" },
                 "x <= 0 ? 0 : (x == 1 ? 1 : lazy(#fib(x-1) + fib(x-2)#))"));
@@ -655,7 +687,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             var p = new SpiceEvaluator();
-            c.Functions.Add("fib",
+            c.AddFunction("fib",
                 functionFactory.Create("fib",
                 new System.Collections.Generic.List<string>() { "x" },
                 "x <= 0 ? 0 : (x == 1 ? 1 : (fib(x-1) + fib(x-2)))"));

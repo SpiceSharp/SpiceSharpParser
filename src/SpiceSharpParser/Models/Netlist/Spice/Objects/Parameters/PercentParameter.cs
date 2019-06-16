@@ -16,7 +16,7 @@
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new PercentParameter(this.Image);
+            return new PercentParameter(Image);
         }
     }
 }
