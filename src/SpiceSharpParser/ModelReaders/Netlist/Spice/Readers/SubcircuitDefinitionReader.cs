@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+﻿using System;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
@@ -22,6 +23,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <param name="context">A reading context.</param>
         public override void Read(SubCircuit statement, IReadingContext context)
         {
+            if (statement == null)
+            {
+                throw new ArgumentNullException(nameof(statement));
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             context.AvailableSubcircuits.Add(statement);
         }
     }

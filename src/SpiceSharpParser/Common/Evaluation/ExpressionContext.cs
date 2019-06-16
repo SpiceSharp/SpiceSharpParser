@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.Common.Evaluation.Functions;
@@ -103,6 +104,11 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="value">A value of parameter.</param>
         public void SetParameter(string parameterName, double value)
         {
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
             var parameter = new ConstantExpression(value);
             Parameters[parameterName] = parameter;
 
@@ -121,8 +127,24 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         /// <param name="parameterName">A name of parameter.</param>
         /// <param name="expression">An expression of parameter.</param>
+        /// <param name="expressionParameters">Parameters in expression.</param>
         public void SetParameter(string parameterName, string expression, ICollection<string> expressionParameters)
         {
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
+            if (expressionParameters == null)
+            {
+                throw new ArgumentNullException(nameof(expressionParameters));
+            }
+
             var parameter = new Expression(expression);
             SetParameter(parameterName, expression, expressionParameters, parameter);
         }
@@ -132,8 +154,24 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         /// <param name="parameterName">A name of parameter.</param>
         /// <param name="expression">An expression of parameter.</param>
+        /// <param name="expressionParameters">Parameters in expression.</param>
         public void SetCachedParameter(string parameterName, string expression, ICollection<string> expressionParameters)
         {
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
+            if (expressionParameters == null)
+            {
+                throw new ArgumentNullException(nameof(expressionParameters));
+            }
+
             var parameter = new CachedExpression(expression);
             SetParameter(parameterName, expression, expressionParameters, parameter);
         }
@@ -154,8 +192,24 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         /// <param name="expressionName">Expression name.</param>
         /// <param name="expression">Expression.</param>
+        /// <param name="parameters">Parameters.</param>
         public void SetNamedExpression(string expressionName, string expression, ICollection<string> parameters)
         {
+            if (expressionName == null)
+            {
+                throw new ArgumentNullException(nameof(expressionName));
+            }
+
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
+            if (parameters == null)
+            {
+                throw new ArgumentNullException(nameof(parameters));
+            }
+
             ExpressionRegistry.Add(new NamedExpression(expressionName, expression), parameters);
         }
 
@@ -168,6 +222,11 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public string GetExpression(string expressionName)
         {
+            if (expressionName == null)
+            {
+                throw new ArgumentNullException(nameof(expressionName));
+            }
+
             return ExpressionRegistry.GetExpression(expressionName)?.ValueExpression;
         }
 
@@ -181,6 +240,10 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public virtual ExpressionContext CreateChildContext(string name, bool addToChildren)
         {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
             var child = new ExpressionContext(name, _isParameterNameCaseSensitive, _isFunctionNameCaseSensitive, _isExpressionNameCaseSensitive, Randomizer);
 
             child.Parameters = new Dictionary<string, Expression>(Parameters, StringComparerProvider.Get(_isParameterNameCaseSensitive));
@@ -230,6 +293,16 @@ namespace SpiceSharpParser.Common.Evaluation
             Dictionary<string, string> parameters,
             Dictionary<string, ICollection<string>> parametersOfParameters)
         {
+            if (parameters == null)
+            {
+                throw new ArgumentNullException(nameof(parameters));
+            }
+
+            if (parametersOfParameters == null)
+            {
+                throw new ArgumentNullException(nameof(parametersOfParameters));
+            }
+
             foreach (var paramName in parameters)
             {
                 SetParameter(paramName.Key, paramName.Value, parametersOfParameters[paramName.Key]);
@@ -238,6 +311,11 @@ namespace SpiceSharpParser.Common.Evaluation
 
         public ExpressionContext Find(string name)
         {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
             if (Name == name)
             {
                 return this;
@@ -272,7 +350,6 @@ namespace SpiceSharpParser.Common.Evaluation
 
             Functions[name].Add(function);
         }
-
 
         public void CreateCommonFunctions()
         {

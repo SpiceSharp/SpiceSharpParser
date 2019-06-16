@@ -2,7 +2,7 @@
 using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
 
-namespace SpiceSharpParser.Parsers.Netlist.Spice
+namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
 {
     /// <summary>
     /// A collection of <see cref="ParseTreeNodeEvaluationValue"/> items.

@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+﻿using System;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
@@ -24,7 +25,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <param name="context">A context to modify.</param>
         public void Read(Statement statement, IReadingContext context)
         {
-            this.Read((TStatement)statement, context);
+            if (statement == null)
+            {
+                throw new ArgumentNullException(nameof(statement));
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            Read((TStatement)statement, context);
         }
     }
 }

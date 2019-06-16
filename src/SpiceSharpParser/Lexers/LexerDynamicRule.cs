@@ -10,9 +10,9 @@ namespace SpiceSharpParser.Lexers
         public LexerDynamicRule(int tokenType, string ruleName, string prefix, Func<string, string> action)
         {
             TokenType = tokenType;
-            RuleName = ruleName;
-            Prefix = prefix;
-            Action = action;
+            RuleName = ruleName ?? throw new ArgumentNullException(nameof(ruleName));
+            Prefix = prefix ?? throw new ArgumentNullException(nameof(prefix));
+            Action = action ?? throw new ArgumentNullException(nameof(action));
         }
 
         public int TokenType { get; }

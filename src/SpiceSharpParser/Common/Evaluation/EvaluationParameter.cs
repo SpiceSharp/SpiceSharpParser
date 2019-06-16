@@ -1,4 +1,5 @@
-﻿using SpiceSharp;
+﻿using System;
+using SpiceSharp;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
@@ -16,8 +17,8 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <param name="parameterName">A parameter name.</param>
         public EvaluationParameter(ExpressionContext context, string parameterName)
         {
+            ExpressionContext = context ?? throw new ArgumentNullException(nameof(context));
             ParameterName = parameterName ?? throw new System.ArgumentNullException(nameof(parameterName));
-            ExpressionContext = context;
         }
 
         /// <summary>

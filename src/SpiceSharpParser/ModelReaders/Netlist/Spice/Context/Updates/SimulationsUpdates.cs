@@ -24,6 +24,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
         public void Apply(BaseSimulation simulation)
         {
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
             // Apply common updates
             simulation.BeforeSetup += (object sender, EventArgs args) =>
             {
@@ -74,6 +78,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
         public void AddBeforeSetup(BaseSimulation simulation, Action<BaseSimulation, ISimulationEvaluators, SimulationExpressionContexts> update)
         {
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
+
             if (SpecificUpdates.ContainsKey(simulation) == false)
             {
                 SpecificUpdates[simulation] = new SimulationUpdates() { Simulation = simulation };
@@ -84,6 +93,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
         public void AddBeforeTemperature(BaseSimulation simulation, Action<BaseSimulation, ISimulationEvaluators, SimulationExpressionContexts> update)
         {
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
+
             if (SpecificUpdates.ContainsKey(simulation) == false)
             {
                 SpecificUpdates[simulation] = new SimulationUpdates() { Simulation = simulation };
@@ -94,16 +108,31 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
         public void AddBeforeSetup(Action<BaseSimulation, ISimulationEvaluators, SimulationExpressionContexts> update)
         {
+            if (update == null)
+            {
+                throw new ArgumentNullException(nameof(update));
+            }
+
             CommonUpdates.ParameterUpdatesBeforeSetup.Add(new SimulationUpdate() { Simulation = null, Update = update });
         }
 
         public void AddBeforeLoad(Action<BaseSimulation, ISimulationEvaluators, SimulationExpressionContexts> update)
         {
+            if (update == null)
+            {
+                throw new ArgumentNullException(nameof(update));
+            }
+
             CommonUpdates.ParameterUpdatesBeforeLoad.Add(new SimulationUpdate() { Update = update });
         }
 
         public void AddBeforeTemperature(Action<BaseSimulation, ISimulationEvaluators, SimulationExpressionContexts> update)
         {
+            if (update == null)
+            {
+                throw new ArgumentNullException(nameof(update));
+            }
+
             CommonUpdates.ParameterUpdatesBeforeTemperature.Add(new SimulationUpdate() { Simulation = null, Update = update });
         }
     }

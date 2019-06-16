@@ -9,6 +9,11 @@ namespace SpiceSharpParser.Common.FileSystem
     {
         public static IEnumerable<double[]> Read(string path, bool hasHeader)
         {
+            if (path == null)
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
             FileReader fileReader = new FileReader();
             var lines = fileReader.ReadAllLines(path);
 

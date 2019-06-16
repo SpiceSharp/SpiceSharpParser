@@ -27,7 +27,8 @@ namespace SpiceSharpParser.Tests.Parsers
             context.SetParameter("x", 1);
 
             // act and assert
-            Assert.Equal(2, parser.Parse("x + 1", new ExpressionParserContext()).Value(new ExpressionEvaluationContext() { ExpressionContext = context}));
+            Assert.Equal(2, parser.Parse("x + 1", new ExpressionParserContext()).Value(
+                new ExpressionEvaluationContext() { ExpressionContext = context, Evaluator = new SpiceEvaluator() }));
         }
 
         [Fact]
@@ -77,8 +78,8 @@ namespace SpiceSharpParser.Tests.Parsers
             context.SetParameter("e", Math.E);
 
             // act and assert
-            Assert.Equal((2 * Math.PI) + (2 * Math.E), parser.Parse("PI + e + pi + E", new ExpressionParserContext() { })
-                .Value(new ExpressionEvaluationContext() { ExpressionContext = context }));
+            Assert.Equal((2 * Math.PI) + (2 * Math.E), parser.Parse("PI + e + pi + E", new ExpressionParserContext() {  })
+                .Value(new ExpressionEvaluationContext() { ExpressionContext = context, Evaluator = new SpiceEvaluator() }));
         }
 
         [Fact]
@@ -99,10 +100,10 @@ namespace SpiceSharpParser.Tests.Parsers
             var context = new SpiceExpressionContext(SpiceExpressionMode.HSpice);
             context.SetParameter("TEMP", 26);
             // act and assert
-            Assert.Equal(2.52e-9, parser.Parse("TEMP == 26 ? 2.52e-9 : 2.24e-9", new ExpressionParserContext() {  }).Value(new ExpressionEvaluationContext() { ExpressionContext = context }));
+            Assert.Equal(2.52e-9, parser.Parse("TEMP == 26 ? 2.52e-9 : 2.24e-9", new ExpressionParserContext()).Value(new ExpressionEvaluationContext() { Evaluator = new SpiceEvaluator(), ExpressionContext = context }));
 
             context.SetParameter("TEMP", 27);
-            Assert.Equal(2.24e-9, parser.Parse("TEMP == 26 ? 2.52e-9 : 2.24e-9", new ExpressionParserContext() {  }).Value(new ExpressionEvaluationContext() { ExpressionContext = context }));
+            Assert.Equal(2.24e-9, parser.Parse("TEMP == 26 ? 2.52e-9 : 2.24e-9", new ExpressionParserContext()).Value(new ExpressionEvaluationContext() { Evaluator = new SpiceEvaluator(), ExpressionContext = context }));
         }
 
         [Fact]

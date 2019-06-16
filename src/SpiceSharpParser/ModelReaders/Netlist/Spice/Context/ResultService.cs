@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
@@ -63,6 +64,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="warning">Warning to add.</param>
         public void AddWarning(string warning)
         {
+            if (warning == null)
+            {
+                throw new ArgumentNullException(nameof(warning));
+            }
             Result.Warnings.Add(warning);
         }
 
@@ -72,6 +77,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="statement">Comment to add.</param>
         public void AddComment(CommentLine statement)
         {
+            if (statement == null)
+            {
+                throw new ArgumentNullException(nameof(statement));
+            }
             Result.Comments.Add(statement.Text);
         }
 
@@ -81,6 +90,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="export">Export to add.</param>
         public void AddExport(Export export)
         {
+            if (export == null)
+            {
+                throw new ArgumentNullException(nameof(export));
+            }
             Result.Exports.Add(export);
         }
 
@@ -90,6 +103,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="plot">Plot to add.</param>
         public void AddPlot(XyPlot plot)
         {
+            if (plot == null)
+            {
+                throw new ArgumentNullException(nameof(plot));
+            }
             Result.XyPlots.Add(plot);
         }
 
@@ -99,6 +116,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="print">Print to add.</param>
         public void AddPrint(Print print)
         {
+            if (print == null)
+            {
+                throw new ArgumentNullException(nameof(print));
+            }
             Result.Prints.Add(print);
         }
 
@@ -108,6 +129,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="entity">Entity to add.</param>
         public void AddEntity(Entity entity)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
             Result.Circuit.Add(entity);
         }
 
@@ -117,6 +142,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="simulation">Simulation to add.</param>
         public void AddSimulation(BaseSimulation simulation)
         {
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
             Result.Simulations.Add(simulation);
         }
 
@@ -130,6 +159,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </returns>
         public bool FindObject(string objectId, out Entity entity)
         {
+            if (objectId == null)
+            {
+                throw new ArgumentNullException(nameof(objectId));
+            }
             return Result.Circuit.TryGetEntity(objectId, out entity);
         }
     }

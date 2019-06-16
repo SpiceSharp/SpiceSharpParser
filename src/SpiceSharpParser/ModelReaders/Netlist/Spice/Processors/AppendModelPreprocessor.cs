@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -14,6 +15,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <param name="statements">Statements to process.</param>
         public Statements Process(Statements statements)
         {
+            if (statements == null)
+            {
+                throw new ArgumentNullException(nameof(statements));
+            }
+
             // 1. Iterate over all subcircuits
             var subCircuits = statements.Where(statement => statement is SubCircuit s);
             if (subCircuits.Any())

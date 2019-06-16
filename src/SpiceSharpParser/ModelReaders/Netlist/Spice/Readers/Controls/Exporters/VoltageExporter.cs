@@ -25,9 +25,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <summary>
         /// Creates a new voltage export
         /// </summary>
+        /// <param name="name"></param>
         /// <param name="type">A type of export</param>
         /// <param name="parameters">A parameters of export</param>
         /// <param name="simulation">A simulation for export</param>
+        /// <param name="nodeNameGenerator"></param>
+        /// <param name="componentNameGenerator"></param>
+        /// <param name="modelNameGenerator"></param>
+        /// <param name="result"></param>
+        /// <param name="caseSettings"></param>
         /// <returns>
         /// A new export
         /// </returns>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SpiceSharpParser.Lexers.Netlist.Spice;
 
-namespace SpiceSharpParser.Parsers.Netlist.Spice
+namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
 {
     /// <summary>
     /// A parser tree generator for Spice netlist based on grammar from SpiceGrammar.txt.

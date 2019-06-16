@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
@@ -27,6 +28,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// </returns>
         public IEnumerable<Statement> Order(Statements statements)
         {
+            if (statements == null)
+            {
+                throw new ArgumentNullException(nameof(statements));
+            }
+
             return statements.OrderBy(GetOrder);
         }
 

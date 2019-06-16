@@ -9,7 +9,7 @@ namespace SpiceSharpParser.Lexers
     {
         private readonly char? _nextLineContinuationCharacter;
         private readonly char? _currentLineContinuationCharacter;
-        private readonly char[] strCharacters = null;
+        private readonly char[] _strCharacters = null;
         private int _currentIndex = 0;
 
         /// <summary>
@@ -20,9 +20,9 @@ namespace SpiceSharpParser.Lexers
         /// <param name="currentLineContinuationCharacter">A line continuation character (in the current line).</param>
         public LexerStringReader(string @string, char? nextLineContinuationCharacter, char? currentLineContinuationCharacter)
         {
+            _strCharacters = @string.ToCharArray();
             _nextLineContinuationCharacter = nextLineContinuationCharacter;
             _currentLineContinuationCharacter = currentLineContinuationCharacter;
-            strCharacters = @string.ToCharArray();
         }
 
         /// <summary>
@@ -33,32 +33,32 @@ namespace SpiceSharpParser.Lexers
         {
             var start = _currentIndex;
 
-            if (_currentIndex >= strCharacters.Length)
+            if (_currentIndex >= _strCharacters.Length)
             {
                 return string.Empty;
             }
 
-            while (_currentIndex < strCharacters.Length
-                && strCharacters[_currentIndex] != '\n'
-                && strCharacters[_currentIndex] != '\r')
+            while (_currentIndex < _strCharacters.Length
+                && _strCharacters[_currentIndex] != '\n'
+                && _strCharacters[_currentIndex] != '\r')
             {
                 _currentIndex++;
             }
 
-            if (_currentIndex < (strCharacters.Length - 1))
+            if (_currentIndex < (_strCharacters.Length - 1))
             {
-                if (strCharacters[_currentIndex] == '\r' && strCharacters[_currentIndex + 1] == '\n')
+                if (_strCharacters[_currentIndex] == '\r' && _strCharacters[_currentIndex + 1] == '\n')
                 {
                     _currentIndex++;
                 }
             }
 
-            if (_currentIndex == strCharacters.Length)
+            if (_currentIndex == _strCharacters.Length)
             {
-                return new string(strCharacters, start, _currentIndex - start);
+                return new string(_strCharacters, start, _currentIndex - start);
             }
 
-            var line = new string(strCharacters, start, _currentIndex - start + 1);
+            var line = new string(_strCharacters, start, _currentIndex - start + 1);
             _currentIndex++;
 
             return line;
@@ -133,7 +133,7 @@ namespace SpiceSharpParser.Lexers
         /// </returns>
         public string GetSubstring(int startIndex)
         {
-            return new string(strCharacters, startIndex, strCharacters.Length - startIndex);
+            return new string(_strCharacters, startIndex, _strCharacters.Length - startIndex);
         }
 
         private char? GetLastCharacter(string result, out int position)

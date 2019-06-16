@@ -16,7 +16,7 @@
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new ValueParameter(this.Image);
+            return new ValueParameter(Image);
         }
     }
 }

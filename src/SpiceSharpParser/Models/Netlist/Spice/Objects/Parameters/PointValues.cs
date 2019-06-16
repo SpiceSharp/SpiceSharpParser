@@ -14,12 +14,12 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
 
         public IEnumerator<SingleParameter> GetEnumerator()
         {
-            return this.Items.GetEnumerator();
+            return Items.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.Items.GetEnumerator();
+            return Items.GetEnumerator();
         }
     }
 }

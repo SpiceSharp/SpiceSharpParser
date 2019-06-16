@@ -1,4 +1,6 @@
-﻿namespace SpiceSharpParser.Common.Evaluation.Expressions
+﻿using System;
+
+namespace SpiceSharpParser.Common.Evaluation.Expressions
 {
     public class CachedExpression : Expression
     {
@@ -26,6 +28,16 @@
         /// </returns>
         public override double Evaluate(IEvaluator evaluator, ExpressionContext context)
         {
+            if (evaluator == null)
+            {
+                throw new ArgumentNullException(nameof(evaluator));
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             if (!IsEvaluated)
             {
                 CurrentValue = evaluator.EvaluateValueExpression(ValueExpression, context);
