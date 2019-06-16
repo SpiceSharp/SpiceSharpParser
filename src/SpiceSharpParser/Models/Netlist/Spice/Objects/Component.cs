@@ -1,7 +1,7 @@
 ﻿namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 {
     /// <summary>
-    /// A SPICE component
+    /// A SPICE component.
     /// </summary>
     public class Component : Statement
     {
@@ -23,9 +23,9 @@
         {
             return new Component()
             {
-                Name = this.Name,
-                PinsAndParameters = (ParameterCollection)this.PinsAndParameters.Clone(),
-                LineNumber = this.LineNumber,
+                Name = Name,
+                PinsAndParameters = (ParameterCollection)PinsAndParameters.Clone(),
+                LineNumber = LineNumber,
             };
         }
     }

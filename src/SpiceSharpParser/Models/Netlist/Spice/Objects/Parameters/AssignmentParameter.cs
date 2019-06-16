@@ -79,6 +79,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
                 Arguments = new List<string>(Arguments.ToArray()),
                 Values = Values,
                 Name = Name,
+                HasFunctionSyntax = HasFunctionSyntax,
             };
         }
     }

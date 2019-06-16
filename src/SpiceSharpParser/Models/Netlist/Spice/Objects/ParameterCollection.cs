@@ -22,13 +22,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// <summary>
         /// Gets the count of parameters in the collection.
         /// </summary>
-        public int Count
-        {
-            get
-            {
-                return Values.Count;
-            }
-        }
+        public int Count => Values.Count;
 
         /// <summary>
         /// Gets or sets the values of parameters.
@@ -263,7 +257,14 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// </returns>
         public override SpiceObject Clone()
         {
-            return new ParameterCollection() { Values = new List<Parameter>(this.Values) };
+            var result = new ParameterCollection();
+
+            foreach (var param in Values)
+            {
+                result.Add((Parameter)param.Clone());
+            }
+
+            return result;
         }
 
         /// <summary>

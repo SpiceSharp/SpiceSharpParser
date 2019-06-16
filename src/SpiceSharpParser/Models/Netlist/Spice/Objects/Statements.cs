@@ -10,45 +10,33 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
     /// </summary>
     public class Statements : SpiceObject, IEnumerable<Statement>
     {
-        private List<Statement> list = null;
+        private List<Statement> _list = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Statements"/> class.
         /// </summary>
         public Statements()
         {
-            list = new List<Statement>();
+            _list = new List<Statement>();
         }
 
         /// <summary>
         /// Gets the statements count.
         /// </summary>
-        public int Count
-        {
-            get
-            {
-                return this.list.Count;
-            }
-        }
+        public int Count => _list.Count;
 
         /// <summary>
         /// Indexer.
         /// </summary>
         public Statement this[int index]
         {
-            get
-            {
-                return this.list[index];
-            }
+            get => _list[index];
 
-            set
-            {
-                this.list[index] = value;
-            }
+            set => _list[index] = value;
         }
 
         /// <summary>
-        /// Gets an index of statement in statemens.
+        /// Gets an index of statement in statements.
         /// </summary>
         /// <param name="statement">A statement.</param>
         /// <returns>
@@ -61,7 +49,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
                 throw new ArgumentNullException(nameof(statement));
             }
 
-            return this.list.IndexOf(statement);
+            return _list.IndexOf(statement);
         }
 
         /// <summary>
@@ -69,7 +57,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// </summary>
         public void Clear()
         {
-            list.Clear();
+            _list.Clear();
         }
 
         public void Replace(int start, int end, IEnumerable<Statement> statements)
@@ -79,8 +67,8 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
                 throw new ArgumentNullException(nameof(statements));
             }
 
-            list.RemoveRange(start, end - start + 1);
-            list.InsertRange(start, statements);
+            _list.RemoveRange(start, end - start + 1);
+            _list.InsertRange(start, statements);
         }
 
         /// <summary>
@@ -94,7 +82,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
                 throw new ArgumentNullException(nameof(statement));
             }
 
-            list.Add(statement);
+            _list.Add(statement);
         }
 
         /// <summary>
@@ -105,7 +93,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// </returns>
         public IEnumerator<Statement> GetEnumerator()
         {
-            return list.GetEnumerator();
+            return _list.GetEnumerator();
         }
 
         /// <summary>
@@ -116,7 +104,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return list.GetEnumerator();
+            return _list.GetEnumerator();
         }
 
         /// <summary>
@@ -130,7 +118,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
                 throw new ArgumentNullException(nameof(sts));
             }
 
-            list.AddRange(sts.list);
+            _list.AddRange(sts._list);
         }
 
         /// <summary>
@@ -150,20 +138,20 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
                 throw new ArgumentNullException(nameof(statements));
             }
 
-            if (list.Contains(statement))
+            if (_list.Contains(statement))
             {
-                var index = list.IndexOf(statement);
-                list.InsertRange(index, statements);
-                list.Remove(statement);
+                var index = _list.IndexOf(statement);
+                _list.InsertRange(index, statements);
+                _list.Remove(statement);
             }
             else
             {
-                throw new Exception("Unkonwn statement to replace");
+                throw new Exception("Unknown statement to replace");
             }
         }
 
         /// <summary>
-        /// Gets the enumerator of statemets in the given order.
+        /// Gets the enumerator of statements in the given order.
         /// </summary>
         /// <param name="orderByFunc">Specifies the order.</param>
         /// <returns>
@@ -176,7 +164,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
                 throw new ArgumentNullException(nameof(orderByFunc));
             }
 
-            return list.OrderBy(orderByFunc);
+            return _list.OrderBy(orderByFunc);
         }
 
         /// <summary>
@@ -187,7 +175,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         {
             var clone = new Statements();
 
-            foreach (Statement statement in this.list)
+            foreach (Statement statement in _list)
             {
                 clone.Add((Statement)statement.Clone());
             }

@@ -9,7 +9,14 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
 
         public override SpiceObject Clone()
         {
-            return new Points();
+            var result = new Points();
+
+            foreach (var value in Values)
+            {
+                result.Values.Add((PointParameter)value.Clone());
+            }
+
+            return result;
         }
 
         public IEnumerator<PointParameter> GetEnumerator()

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
 {
@@ -29,7 +30,9 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new ValueParameter(this.Image);
+            var result = new PointParameter { Values = (PointValues) Values.Clone() };
+
+            return result;
         }
     }
 }
