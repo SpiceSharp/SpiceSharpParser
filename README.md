@@ -57,6 +57,7 @@ At the moment due to lack of implementation of LAPLACE and FREQ (part of analog 
 |.DC          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.DC)|
 |.ELSE        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.ELSE)|
 |.ENDIF       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.ENDIF)|
+|.FUNC        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.FUNC)|
 |.GLOBAL      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.GLOBAL)|         
 |.IC          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.IC)|
 |.IF          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.IF)|
