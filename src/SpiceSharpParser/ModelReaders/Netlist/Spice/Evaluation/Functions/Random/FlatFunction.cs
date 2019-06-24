@@ -1,5 +1,6 @@
 ﻿using System;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Common.Mathematics.Probability;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random
 {
@@ -18,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
                 throw new ArgumentException("flat function expects one argument");
             }
 
-            System.Random random = context.Randomizer.GetRandom(context.Seed);
+            IRandom random = context.Randomizer.GetRandom(context.Seed);
 
             double x = (double)args[0];
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Common.Mathematics.Probability;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random
 {
@@ -18,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
                 throw new Exception("unif expects two arguments: nominal_val, rel_variation");
             }
 
-            System.Random random = context.Randomizer.GetRandom(context.Seed);
+            IRandom random = context.Randomizer.GetRandom(context.Seed);
 
             double dRand = (2.0 * random.NextDouble()) - 1.0;
             double nominal = args[0];

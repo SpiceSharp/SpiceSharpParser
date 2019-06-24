@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.Common.Evaluation.Functions;
+using SpiceSharpParser.Common.Mathematics.Probability;
 
 namespace SpiceSharpParser.Common.Evaluation
 {

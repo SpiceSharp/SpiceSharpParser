@@ -1,5 +1,6 @@
 ﻿using System;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Common.Mathematics.Probability;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random
 {
@@ -18,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
                 throw new Exception("gauss expects three arguments: nominal_val, rel_variation and sigma");
             }
 
-            System.Random random = context.Randomizer.GetRandom(context.Seed);
+            IRandom random = context.Randomizer.GetRandom(context.Seed);
 
             double p1 = 1 - random.NextDouble();
             double p2 = 1 - random.NextDouble();

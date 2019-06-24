@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-namespace SpiceSharpParser.Common.Mathematics
+namespace SpiceSharpParser.Common.Mathematics.Combinatorics
 {
     public class CombinationCache
     {

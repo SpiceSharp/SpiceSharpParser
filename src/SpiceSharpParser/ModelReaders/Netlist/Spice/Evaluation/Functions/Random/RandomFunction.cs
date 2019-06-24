@@ -1,5 +1,6 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
 using System;
+using SpiceSharpParser.Common.Mathematics.Probability;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random
 {
@@ -18,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
                 throw new Exception("random expects no arguments");
             }
 
-            System.Random random = context.Randomizer.GetRandom(context.Seed);
+            IRandom random = context.Randomizer.GetRandom(context.Seed);
             return random.NextDouble();
         }
     }

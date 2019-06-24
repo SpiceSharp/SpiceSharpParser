@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SpiceSharpParser.Common.Mathematics
+namespace SpiceSharpParser.Common.Mathematics.Combinatorics
 {
     /// <summary>
     /// Helper methods for generating combinations.
