@@ -9,6 +9,8 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         private readonly Dictionary<string, CustomRandomNumberProviderFactory> _customRandomNumberProviderFactories = new Dictionary<string, CustomRandomNumberProviderFactory>();
         private readonly DefaultRandomNumberProviderFactory _defaultRandomNumberProviderFactory = new DefaultRandomNumberProviderFactory();
 
+        public string CurrentPdf { get; set; }
+
         public void RegisterPdf(string name, Pdf pdf)
         {
             _pdfDictionary[name] = pdf;
@@ -28,7 +30,14 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         {
             if (pdfName == null)
             {
-                return _defaultRandomNumberProviderFactory.GetRandom(seed);
+                if (CurrentPdf == null)
+                {
+                    return _defaultRandomNumberProviderFactory.GetRandom(seed);
+                }
+                else
+                {
+                    pdfName = CurrentPdf;
+                }
             }
 
             if (_pdfDictionary.ContainsKey(pdfName))

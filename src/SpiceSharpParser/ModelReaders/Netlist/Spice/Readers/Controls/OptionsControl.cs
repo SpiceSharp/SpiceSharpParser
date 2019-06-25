@@ -68,6 +68,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             context.Result.SimulationConfiguration.Seed = seed;
                             context.ReadingExpressionContext.Seed = seed;
                             break;
+                        case "distribution":
+                            context.ReadingExpressionContext.Randomizer.CurrentPdf = value;
+                            break;
                         default:
                             context.Result.AddWarning("Unsupported option: " + name);
                             break;

@@ -19,6 +19,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         SimulationExpressionContexts SimulationExpressionContexts { get; }
 
+        /// <summary>
+        /// Gets the reading expression context.
+        /// </summary>
         ExpressionContext ReadingExpressionContext { get; }
 
         /// <summary>
