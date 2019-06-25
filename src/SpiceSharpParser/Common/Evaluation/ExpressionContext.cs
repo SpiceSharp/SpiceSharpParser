@@ -20,7 +20,7 @@ namespace SpiceSharpParser.Common.Evaluation
         {
         }
 
-        public ExpressionContext(string name, bool isParameterNameCaseSensitive, bool isFunctionNameCaseSensitive, bool isExpressionNameCaseSensitive, Randomizer randomizer)
+        public ExpressionContext(string name, bool isParameterNameCaseSensitive, bool isFunctionNameCaseSensitive, bool isExpressionNameCaseSensitive, IRandomizer randomizer)
         {
             _isParameterNameCaseSensitive = isParameterNameCaseSensitive;
             _isFunctionNameCaseSensitive = isFunctionNameCaseSensitive;
@@ -58,7 +58,7 @@ namespace SpiceSharpParser.Common.Evaluation
             }
         }
 
-        public Randomizer Randomizer { get; set; }
+        public IRandomizer Randomizer { get; set; }
 
         /// <summary>
         /// Gets or sets data of the context.

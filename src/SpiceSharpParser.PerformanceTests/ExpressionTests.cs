@@ -45,7 +45,14 @@ namespace SpiceSharpParser.PerformanceTests
             int n = 2000000;
             for (var i = 0; i < n; i++)
             {
-                sum += expressionParser.EvaluateValueExpression("1 + 1 + 1 + 1 + 1 + 1 + 1", new ExpressionContext(string.Empty, false, false, false, new Randomizer()));
+                sum += expressionParser.EvaluateValueExpression(
+                    "1 + 1 + 1 + 1 + 1 + 1 + 1",
+                    new ExpressionContext(
+                        string.Empty,
+                        false,
+                        false,
+                        false,
+                        new Randomizer()));
             }
         }
     }

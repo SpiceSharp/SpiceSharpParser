@@ -105,7 +105,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
         private static double GetValueForDevParameter(ExpressionContext expressionContext, double currentValue, double percentValue)
         {
-            var random = expressionContext.Randomizer.GetRandom(expressionContext.Seed);
+            var random = expressionContext.Randomizer.GetRandomProvider(expressionContext.Seed);
 
             double newValue = 0;
             if (random.Next() % 2 == 0)
@@ -127,7 +127,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 return LotValues[baseModel][parameterName];
             }
 
-            var random = expressionContext.Randomizer.GetRandom(expressionContext.Seed);
+            var random = expressionContext.Randomizer.GetRandomProvider(expressionContext.Seed);
 
             double newValue = 0;
             if (random.Next() % 2 == 0)

@@ -4,7 +4,7 @@ using Xunit;
 
 namespace SpiceSharpParser.Tests.Common.Mathematics.Probability
 {
-    public class CustomRandomTests
+    public class CustomRandomNumberProviderTests
     {
         [Fact]
         public void When_NextDouble_Expect_Reference()
@@ -17,9 +17,9 @@ namespace SpiceSharpParser.Tests.Common.Mathematics.Probability
             pdfCurve.Add(new Point(1, 0));
             var pdf = new Pdf(pdfCurve);
 
-            IRandom baseRandom = Substitute.For<IRandom>();
+            IRandomNumberProvider baseRandom = Substitute.For<IRandomNumberProvider>();
             baseRandom.NextDouble().Returns(0.3);
-            var customRandom = new CustomRandom(pdf, baseRandom);
+            var customRandom = new CustomRandomNumberProvider(pdf, baseRandom);
 
             // act
             var randomNumber = customRandom.NextDouble();

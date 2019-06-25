@@ -1,77 +1,82 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace SpiceSharpParser.Common.Mathematics.Probability
 {
-    /// <summary>
-    /// Provider of random number generators.
-    /// </summary>
-    public class Randomizer
+    public class Randomizer : IRandomizer
     {
-        private static int _tickCount = Environment.TickCount;
-        private readonly Dictionary<int, IRandom> _randomGenerators = new Dictionary<int, IRandom>();
-        private readonly ReaderWriterLockSlim _cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+        private readonly Dictionary<string, Pdf> _pdfDictionary = new Dictionary<string, Pdf>();
+        private readonly Dictionary<string, CustomRandomNumberProviderFactory> _customRandomNumberProviderFactories = new Dictionary<string, CustomRandomNumberProviderFactory>();
+        private readonly DefaultRandomNumberProviderFactory _defaultRandomNumberProviderFactory = new DefaultRandomNumberProviderFactory();
 
-        /// <summary>
-        /// Clears the randomizer.
-        /// </summary>
-        public void Clear()
+        public void RegisterPdf(string name, Pdf pdf)
         {
-            _cacheLock.EnterWriteLock();
-            try
-            {
-                _randomGenerators.Clear();
-            }
-            finally
-            {
-                _cacheLock.ExitWriteLock();
-            }
+            _pdfDictionary[name] = pdf;
         }
 
-        /// <summary>
-        /// Provides a random number generator.
-        /// </summary>
-        /// <param name="randomSeed">Random generator seed.</param>
-        /// <returns>
-        /// A new instance of a random number generator.
-        /// </returns>
-        public IRandom GetRandom(int? randomSeed)
+        public IRandomDoubleProvider GetRandomDoubleProvider(int? seed, string pdfName = null)
         {
-            if (randomSeed.HasValue)
+            if (pdfName == null)
             {
-                _cacheLock.EnterUpgradeableReadLock();
-                try
-                {
-                    if (!_randomGenerators.ContainsKey(randomSeed.Value))
-                    {
-                        _cacheLock.EnterWriteLock();
-                        try
-                        {
-                            var randomGenerator = new DefaultRandom(new Random(randomSeed.Value));
-                            _randomGenerators[randomSeed.Value] = randomGenerator;
+                return _defaultRandomNumberProviderFactory.GetRandomDouble(seed);
+            }
 
-                            return randomGenerator;
-                        }
-                        finally
-                        {
-                            _cacheLock.ExitWriteLock();
-                        }
-                    }
-                    else
-                    {
-                        return _randomGenerators[randomSeed.Value];
-                    }
-                }
-                finally
+            if (_pdfDictionary.ContainsKey(pdfName))
+            {
+                if (!_customRandomNumberProviderFactories.ContainsKey(pdfName))
                 {
-                    _cacheLock.ExitUpgradeableReadLock();
+                    _customRandomNumberProviderFactories[pdfName] = new CustomRandomNumberProviderFactory(_pdfDictionary[pdfName]);
                 }
+
+                return _customRandomNumberProviderFactories[pdfName].GetRandomDouble(seed);
             }
             else
             {
-                int seed = Interlocked.Increment(ref _tickCount);
-                return new DefaultRandom(new Random(seed));
+                throw new ArgumentException("Unknown pdf", nameof(pdfName));
+            }
+        }
+
+        public IRandomIntegerProvider GetRandomIntegerProvider(int? seed, string pdfName = null)
+        {
+            if (pdfName == null)
+            {
+                return _defaultRandomNumberProviderFactory.GetRandomInteger(seed);
+            }
+
+            if (_pdfDictionary.ContainsKey(pdfName))
+            {
+                if (!_customRandomNumberProviderFactories.ContainsKey(pdfName))
+                {
+                    _customRandomNumberProviderFactories[pdfName] = new CustomRandomNumberProviderFactory(_pdfDictionary[pdfName]);
+                }
+
+                return _customRandomNumberProviderFactories[pdfName].GetRandomInteger(seed);
+            }
+            else
+            {
+                throw new ArgumentException("Unknown pdf", nameof(pdfName));
+            }
+        }
+
+        public IRandomNumberProvider GetRandomProvider(int? seed, string pdfName = null)
+        {
+            if (pdfName == null)
+            {
+                return _defaultRandomNumberProviderFactory.GetRandom(seed);
+            }
+
+            if (_pdfDictionary.ContainsKey(pdfName))
+            {
+                if (!_customRandomNumberProviderFactories.ContainsKey(pdfName))
+                {
+                    _customRandomNumberProviderFactories[pdfName] = new CustomRandomNumberProviderFactory(_pdfDictionary[pdfName]);
+                }
+
+                return _customRandomNumberProviderFactories[pdfName].GetRandom(seed);
+            }
+            else
+            {
+                throw new ArgumentException("Unknown pdf", nameof(pdfName));
             }
         }
     }

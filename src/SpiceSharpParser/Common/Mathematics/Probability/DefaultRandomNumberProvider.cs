@@ -2,11 +2,11 @@
 
 namespace SpiceSharpParser.Common.Mathematics.Probability
 {
-    public class DefaultRandom : IRandom
+    public class DefaultRandomNumberProvider: IRandomNumberProvider
     {
         private readonly Random _random;
 
-        public DefaultRandom(Random random)
+        public DefaultRandomNumberProvider(Random random)
         {
             _random = random;
         }

@@ -1,6 +1,5 @@
 ﻿using System;
 using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.Common.Mathematics.Probability;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random
 {
@@ -19,7 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
                 throw new Exception("mc expects two arguments");
             }
 
-            IRandom random = context.Randomizer.GetRandom(context.Seed);
+            var random = context.Randomizer.GetRandomDoubleProvider(context.Seed);
 
             double x = args[0];
             double tol = args[1];

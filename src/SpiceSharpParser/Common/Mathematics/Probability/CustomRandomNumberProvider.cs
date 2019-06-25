@@ -2,12 +2,12 @@
 
 namespace SpiceSharpParser.Common.Mathematics.Probability
 {
-    public class CustomRandom : IRandomDouble
+    public class CustomRandomNumberProvider : IRandomNumberProvider
     {
-        private readonly IRandom _random;
+        private readonly IRandomDoubleProvider _baseRandom;
         private readonly Cdf _cdf;
 
-        public CustomRandom(Pdf pdf, IRandom random)
+        public CustomRandomNumberProvider(Pdf pdf, IRandomDoubleProvider baseRandom)
         {
             if (pdf.GetFirstPoint().X < -1.0 || pdf.GetLastPoint().X > 1.0)
             {
@@ -15,12 +15,12 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
             }
 
             _cdf = new Cdf(pdf);
-            _random = random;
+            _baseRandom = baseRandom;
         }
 
         public double NextDouble()
         {
-            var p = _random.NextDouble();
+            var p = _baseRandom.NextDouble();
 
             for (var i = 1; i < _cdf.PointsCount; i++)
             {
@@ -34,6 +34,12 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
             }
 
             throw new InvalidOperationException("CDF was invalid");
+        }
+
+        public int Next()
+        {
+            // TODO: this is far from perfect, learn and implement something better
+            return (int)(NextDouble() * int.MaxValue);
         }
     }
 }
