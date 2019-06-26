@@ -6,6 +6,8 @@
 
     public interface IRandomDoubleProvider
     {
+        double NextSignedDouble();
+
         double NextDouble();
     }
 

@@ -16,6 +16,11 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
             return _random.NextDouble();
         }
 
+        public double NextSignedDouble()
+        {
+            return _random.NextDouble() * 2.0 - 1.0;
+        }
+
         public int Next()
         {
             return _random.Next();

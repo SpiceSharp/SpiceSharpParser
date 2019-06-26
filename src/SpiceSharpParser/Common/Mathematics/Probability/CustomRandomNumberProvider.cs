@@ -18,7 +18,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
             _baseRandom = baseRandom;
         }
 
-        public double NextDouble()
+        public double NextSignedDouble()
         {
             var p = _baseRandom.NextDouble();
 
@@ -40,6 +40,11 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         {
             // TODO: this is far from perfect, learn and implement something better
             return (int)(NextDouble() * int.MaxValue);
+        }
+
+        public double NextDouble()
+        {
+            return (NextSignedDouble() + 1) / 2.0;
         }
     }
 }
