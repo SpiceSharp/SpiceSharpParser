@@ -2,6 +2,7 @@
 using System.Linq;
 using SpiceSharp.IntegrationMethods;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.DotStatements
@@ -94,6 +95,45 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
 
             var tran = result.Simulations.First();
             Assert.IsType<FixedEuler>(tran.Configurations.Get<TimeConfiguration>().Method);
+        }
+
+        [Fact]
+        public void When_CdfPoints_GreaterThan3_Expect_NoException()
+        {
+            //TODO
+            var result = ParseNetlist(
+                "Monte Carlo Analysis - OP - POWER",
+                "V1 0 1 100",
+                "R1 1 0 {R}",
+                ".OP",
+                ".PARAM R={random()*1000}",
+                ".LET power {V(1)*I(R1)}",
+                ".SAVE power",
+                ".MC 1000 OP power MAX",
+                ".OPTIONS DISTRIBUTION = triangle_dist",
+                ".OPTIONS CDFPOINTS = 4",
+                ".DISTRIBUTION triangle_dist (-1,0) (0, 1) (1, 0)",
+                ".END");
+
+            RunSimulations(result);
+        }
+
+        [Fact]
+        public void When_CdfPoints_LessThan4_Expect_Exception()
+        {
+            Assert.Throws<GeneralReaderException>(() => ParseNetlist(
+                "Monte Carlo Analysis - OP - POWER",
+                "V1 0 1 100",
+                "R1 1 0 {R}",
+                ".OP",
+                ".PARAM R={random()*1000}",
+                ".LET power {V(1)*I(R1)}",
+                ".SAVE power",
+                ".MC 1000 OP power MAX",
+                ".OPTIONS DISTRIBUTION = triangle_dist",
+                ".OPTIONS CDFPOINTS = 3",
+                ".DISTRIBUTION triangle_dist (-1,0) (0, 1) (1, 0)",
+                ".END"));
         }
     }
 }

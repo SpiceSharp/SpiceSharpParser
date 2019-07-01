@@ -15,14 +15,10 @@ namespace SpiceSharpParser.Tests.Common.Mathematics.Probability
             var pdf = new Pdf(curve);
 
             // act
-            var cdf = new Cdf(pdf);
+            var cdf = new Cdf(pdf, 100);
 
             // assert
-            Assert.Equal(2, cdf.PointsCount);
-            Assert.Equal(-1, cdf[0].X);
-            Assert.Equal(0, cdf[0].Y);
-            Assert.Equal(1, cdf[1].X);
-            Assert.Equal(1, cdf[1].Y);
+            Assert.Equal(100, cdf.PointsCount);
         }
 
         [Fact]
@@ -37,18 +33,10 @@ namespace SpiceSharpParser.Tests.Common.Mathematics.Probability
             var pdf = new Pdf(curve);
 
             // act
-            var cdf = new Cdf(pdf);
+            var cdf = new Cdf(pdf, 100);
 
             // assert
-            Assert.Equal(3, cdf.PointsCount);
-            Assert.Equal(-1, cdf[0].X);
-            Assert.Equal(0, cdf[0].Y);
-
-            Assert.Equal(0, cdf[1].X);
-            Assert.Equal(2.5 / 5.0, cdf[1].Y);
-
-            Assert.Equal(1, cdf[2].X);
-            Assert.Equal(1.0, cdf[2].Y);
+            Assert.Equal(100, cdf.PointsCount);
         }
     }
 }

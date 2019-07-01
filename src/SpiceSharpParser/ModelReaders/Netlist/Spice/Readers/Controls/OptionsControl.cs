@@ -1,6 +1,8 @@
-﻿using SpiceSharp;
+﻿using System;
+using SpiceSharp;
 using SpiceSharp.IntegrationMethods;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
@@ -69,7 +71,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             context.ReadingExpressionContext.Seed = seed;
                             break;
                         case "distribution":
-                            context.ReadingExpressionContext.Randomizer.CurrentPdf = value;
+                            context.ReadingExpressionContext.Randomizer.CurrentPdfName = value;
+                            break;
+                        case "cdfpoints":
+                            var points = (int)context.EvaluateDouble(value);
+
+                            if (points < 4)
+                            {
+                                throw new GeneralReaderException("cdfpoints needs to be greater than 3");
+                            }
+
+                            context.ReadingExpressionContext.Randomizer.CdfPoints = points;
                             break;
                         default:
                             context.Result.AddWarning("Unsupported option: " + name);

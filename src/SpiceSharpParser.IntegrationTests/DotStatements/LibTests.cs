@@ -85,11 +85,11 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         public void LibOneArgumentWithInclude()
         {
             string modelFileContent = ".model 1N914 D(Is=2.52e-9 Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)\n";
-            string modelFilePath = Path.Combine(Directory.GetCurrentDirectory(), "diodes4.mod");
+            string modelFilePath = Path.Combine(Directory.GetCurrentDirectory(), "diodes4_.mod");
             File.WriteAllText(modelFilePath, modelFileContent);
 
             string l1Path = Path.Combine(Directory.GetCurrentDirectory(), "l12");
-            File.WriteAllText(l1Path, ".include diodes4.mod\n");
+            File.WriteAllText(l1Path, ".include diodes4_.mod\n");
 
             var netlist = ParseNetlist(
                 "Lib - Diode circuit",

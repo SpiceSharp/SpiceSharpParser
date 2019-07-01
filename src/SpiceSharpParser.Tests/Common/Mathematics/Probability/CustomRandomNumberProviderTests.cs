@@ -12,20 +12,18 @@ namespace SpiceSharpParser.Tests.Common.Mathematics.Probability
             // arrange
             var pdfCurve = new Curve();
             pdfCurve.Add(new Point(-1.0, 1));
-            pdfCurve.Add(new Point(0.5, 1));
-            pdfCurve.Add(new Point(0.5, 0));
-            pdfCurve.Add(new Point(1, 0));
+            pdfCurve.Add(new Point(0, 1));
             var pdf = new Pdf(pdfCurve);
 
             IRandomNumberProvider baseRandom = Substitute.For<IRandomNumberProvider>();
-            baseRandom.NextDouble().Returns(0.3);
-            var customRandom = new CustomRandomNumberProvider(pdf, baseRandom);
+            baseRandom.NextDouble().Returns(0.5);
+            var customRandom = new CustomRandomNumberProvider(new Cdf(pdf, 10), baseRandom);
 
             // act
             var randomNumber = customRandom.NextSignedDouble();
 
             // assert
-            Assert.Equal(-0.55, randomNumber);
+            Assert.Equal(-0.5, randomNumber);
         }
 
         [Fact]
@@ -39,13 +37,34 @@ namespace SpiceSharpParser.Tests.Common.Mathematics.Probability
 
             IRandomNumberProvider baseRandom = Substitute.For<IRandomNumberProvider>();
             baseRandom.NextDouble().Returns(0.3);
-            var customRandom = new CustomRandomNumberProvider(pdf, baseRandom);
+            var customRandom = new CustomRandomNumberProvider(new Cdf(pdf, 10), baseRandom);
 
             // act
             var randomNumber = customRandom.NextDouble();
 
             // assert
             Assert.Equal(0.3, randomNumber);
+        }
+
+        [Fact]
+        public void When_NextDouble_Zeros_Expect_Reference()
+        {
+            // arrange
+            var pdfCurve = new Curve();
+            pdfCurve.Add(new Point(-1.0, 0));
+            pdfCurve.Add(new Point(0, 0));
+            pdfCurve.Add(new Point(1, 1));
+            var pdf = new Pdf(pdfCurve);
+
+            IRandomNumberProvider baseRandom = Substitute.For<IRandomNumberProvider>();
+            baseRandom.NextDouble().Returns(0);
+            var customRandom = new CustomRandomNumberProvider(new Cdf(pdf, 10), baseRandom);
+
+            // act
+            var randomNumber = customRandom.NextDouble();
+
+            // assert
+            Assert.Equal(0, randomNumber);
         }
 
         [Fact]
@@ -59,7 +78,7 @@ namespace SpiceSharpParser.Tests.Common.Mathematics.Probability
 
             IRandomNumberProvider baseRandom = Substitute.For<IRandomNumberProvider>();
             baseRandom.NextDouble().Returns(0.5);
-            var customRandom = new CustomRandomNumberProvider(pdf, baseRandom);
+            var customRandom = new CustomRandomNumberProvider(new Cdf(pdf, 10), baseRandom);
 
             // act
             var randomNumber = customRandom.NextSignedDouble();

@@ -2,8 +2,15 @@
 
 namespace SpiceSharpParser.Common.Mathematics.Probability
 {
+    /// <summary>
+    /// Probability density function.
+    /// </summary>
     public class Pdf : Curve
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Pdf"/> class.
+        /// </summary>
+        /// <param name="curve">Pdf curve.</param>
         public Pdf(Curve curve)
         {
             if (curve == null)
