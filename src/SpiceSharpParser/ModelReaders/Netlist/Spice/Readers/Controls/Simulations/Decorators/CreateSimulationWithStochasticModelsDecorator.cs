@@ -34,14 +34,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
                             foreach (var componentModel in componentModels)
                             {
-                                Dictionary<Parameter, PercentSpecification> stochasticDevParameters = modelsRegistry.GetStochasticModelDevParameters(baseModel);
+                                Dictionary<Parameter, ParameterRandomness> stochasticDevParameters = modelsRegistry.GetStochasticModelDevParameters(baseModel);
 
                                 if (stochasticDevParameters != null)
                                 {
                                     SetModelDevModelParameters(context, simulation, baseModel, componentModel, stochasticDevParameters);
                                 }
 
-                                Dictionary<Parameter, PercentSpecification> stochasticLotParameters = modelsRegistry.GetStochasticModelLotParameters(baseModel);
+                                Dictionary<Parameter, ParameterRandomness> stochasticLotParameters = modelsRegistry.GetStochasticModelLotParameters(baseModel);
                                 if (stochasticLotParameters != null)
                                 {
                                     SetModelLotModelParameters(context, simulation,  baseModel, componentModel, stochasticLotParameters);
@@ -55,7 +55,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             };
         }
 
-        private static void SetModelLotModelParameters(IReadingContext context, BaseSimulation sim, Entity baseModel, Entity componentModel, Dictionary<Parameter, PercentSpecification> stochasticLotParameters)
+        private static void SetModelLotModelParameters(IReadingContext context, BaseSimulation sim, Entity baseModel, Entity componentModel, Dictionary<Parameter, ParameterRandomness> stochasticLotParameters)
         {
             var comparer = StringComparerProvider.Get(context.CaseSensitivity.IsEntityParameterNameCaseSensitive);
             foreach (var stochasticParameter in stochasticLotParameters)
@@ -73,13 +73,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
                     var currentValue = currentValueParameter.Value;
                     var percentValue = evaluator.EvaluateValueExpression(parameterPercent.Parameter.Image, expressionContext);
-                    double newValue = GetValueForLotParameter(expressionContext, baseModel, parameterName, currentValue, percentValue, parameterPercent.DistributionName, comparer);
+                    double newValue = GetValueForLotParameter(expressionContext, baseModel, parameterName, currentValue, percentValue, parameterPercent.RandomDistribiutionName, comparer);
                     context.SimulationPreparations.SetParameter(componentModel, sim, parameterName, newValue, true, false);
                 }
             }
         }
 
-        private static void SetModelDevModelParameters(IReadingContext context, BaseSimulation sim, Entity baseModel, Entity componentModel, Dictionary<Parameter, PercentSpecification> stochasticDevParameters)
+        private static void SetModelDevModelParameters(IReadingContext context, BaseSimulation sim, Entity baseModel, Entity componentModel, Dictionary<Parameter, ParameterRandomness> stochasticDevParameters)
         {
             var comparer = StringComparerProvider.Get(context.CaseSensitivity.IsEntityParameterNameCaseSensitive);
             foreach (var stochasticParameter in stochasticDevParameters)
@@ -97,7 +97,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var expressionContext = context.SimulationExpressionContexts.GetContext(sim);
                     var percentValue = evaluator.EvaluateValueExpression(parameterPercent.Parameter.Image, expressionContext);
 
-                    double newValue = GetValueForDevParameter(expressionContext, currentValue, percentValue, parameterPercent.DistributionName);
+                    double newValue = GetValueForDevParameter(expressionContext, currentValue, percentValue, parameterPercent.RandomDistribiutionName);
                     context.SimulationPreparations.SetParameter(componentModel, sim, asgparamName, newValue, true, false);
                 }
             }

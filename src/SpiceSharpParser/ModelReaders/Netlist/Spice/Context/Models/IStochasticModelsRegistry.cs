@@ -22,8 +22,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 
         Dictionary<Model, List<Model>> GetStochasticModels();
 
-        Dictionary<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, PercentSpecification> GetStochasticModelDevParameters(Model baseModel);
+        Dictionary<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, ParameterRandomness> GetStochasticModelDevParameters(Model baseModel);
 
-        Dictionary<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, PercentSpecification> GetStochasticModelLotParameters(Model baseModel);
+        Dictionary<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, ParameterRandomness> GetStochasticModelLotParameters(Model baseModel);
     }
 }

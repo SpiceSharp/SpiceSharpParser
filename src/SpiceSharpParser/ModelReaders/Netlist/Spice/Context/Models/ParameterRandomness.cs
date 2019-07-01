@@ -2,9 +2,9 @@
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 {
-    public class PercentSpecification
+    public class ParameterRandomness
     {
-        public string DistributionName { get; set; }
+        public string RandomDistribiutionName { get; set; }
 
         public Parameter Parameter { get; set; }
     }
