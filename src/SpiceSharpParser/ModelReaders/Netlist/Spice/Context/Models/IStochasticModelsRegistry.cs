@@ -10,14 +10,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             Model model,
             Func<string, Model> generator,
             SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter parameter,
-            SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter percent,
+            SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter tolerance,
             string distributionName);
 
         void RegisterModelLot(
             Model model,
             Func<string, Model> generator,
             SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter parameter,
-            SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter percent,
+            SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter tolerance,
             string distributionName);
 
         Dictionary<Model, List<Model>> GetStochasticModels();

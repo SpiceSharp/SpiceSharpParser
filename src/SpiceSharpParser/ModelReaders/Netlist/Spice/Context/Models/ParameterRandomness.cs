@@ -2,10 +2,19 @@
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 {
+    /// <summary>
+    /// Specifies random tolerance for a parameter.
+    /// </summary>
     public class ParameterRandomness
     {
-        public string RandomDistribiutionName { get; set; }
+        /// <summary>
+        /// Gets or sets random distribution name.
+        /// </summary>
+        public string RandomDistributionName { get; set; }
 
-        public Parameter Parameter { get; set; }
+        /// <summary>
+        /// Gets or sets tolerance parameter.
+        /// </summary>
+        public Parameter Tolerance { get; set; }
     }
 }

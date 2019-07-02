@@ -72,8 +72,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var expressionContext = context.SimulationExpressionContexts.GetContext(sim);
 
                     var currentValue = currentValueParameter.Value;
-                    var percentValue = evaluator.EvaluateValueExpression(parameterPercent.Parameter.Image, expressionContext);
-                    double newValue = GetValueForLotParameter(expressionContext, baseModel, parameterName, currentValue, percentValue, parameterPercent.RandomDistribiutionName, comparer);
+                    var percentValue = evaluator.EvaluateValueExpression(parameterPercent.Tolerance.Image, expressionContext);
+                    double newValue = GetValueForLotParameter(expressionContext, baseModel, parameterName, currentValue, percentValue, parameterPercent.RandomDistributionName, comparer);
                     context.SimulationPreparations.SetParameter(componentModel, sim, parameterName, newValue, true, false);
                 }
             }
@@ -95,9 +95,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<double>(asgparamName, comparer);
                     var currentValue = currentValueParameter.Value;
                     var expressionContext = context.SimulationExpressionContexts.GetContext(sim);
-                    var percentValue = evaluator.EvaluateValueExpression(parameterPercent.Parameter.Image, expressionContext);
+                    var percentValue = evaluator.EvaluateValueExpression(parameterPercent.Tolerance.Image, expressionContext);
 
-                    double newValue = GetValueForDevParameter(expressionContext, currentValue, percentValue, parameterPercent.RandomDistribiutionName);
+                    double newValue = GetValueForDevParameter(expressionContext, currentValue, percentValue, parameterPercent.RandomDistributionName);
                     context.SimulationPreparations.SetParameter(componentModel, sim, asgparamName, newValue, true, false);
                 }
             }
