@@ -18,7 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
                 throw new Exception("aunif expects two arguments: nominal_val, rel_variation");
             }
 
-            System.Random random = context.Randomizer.GetRandom(context.Seed);
+            var random = context.Randomizer.GetRandomDoubleProvider(context.Seed);
 
             double dRand = (2.0 * random.NextDouble()) - 1.0;
             double nominal = args[0];

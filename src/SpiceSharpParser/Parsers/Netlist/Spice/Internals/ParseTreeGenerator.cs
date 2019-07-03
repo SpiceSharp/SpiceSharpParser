@@ -48,6 +48,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             _parsers.Add(Symbols.Point, ReadPoint);
             _parsers.Add(Symbols.PointValues, ReadPointValues);
             _parsers.Add(Symbols.PointValue, ReadPointValue);
+            _parsers.Add(Symbols.Distribution, ReadDistribution);
         }
 
         protected delegate void Parser(
@@ -458,6 +459,13 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
                         PushProductionExpression(
                             stack,
                             CreateNonTerminalNode(Symbols.Model, current),
+                            CreateTerminalNode(SpiceTokenType.NEWLINE, current));
+                    }
+                    else if (nextToken.Equal("DISTRIBUTION", IsDotStatementNameCaseSensitive))
+                    {
+                        PushProductionExpression(
+                            stack,
+                            CreateNonTerminalNode(Symbols.Distribution, current),
                             CreateTerminalNode(SpiceTokenType.NEWLINE, current));
                     }
                     else
@@ -1223,6 +1231,38 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             else
             {
                 throw new ParseException("Error during parsing a model, line=" + currentToken.LineNumber, currentToken.LineNumber);
+            }
+        }
+
+        /// <summary>
+        /// Reads <see cref="Symbols.Distribution"/> non-terminal node
+        /// Pushes tree nodes to the stack based on the grammar.
+        /// </summary>
+        /// <param name="stack">A stack where the production is pushed.</param>
+        /// <param name="currentNode">A reference to the current node.</param>
+        /// <param name="tokens">A reference to the array of tokens.</param>
+        /// <param name="currentTokenIndex">A index of the current token.</param>
+        private void ReadDistribution(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
+        {
+            var currentToken = tokens[currentTokenIndex];
+            var nextToken = tokens[currentTokenIndex + 1];
+            var nextNextToken = tokens[currentTokenIndex + 2];
+
+            if (currentToken.Is(SpiceTokenType.DOT)
+                && nextToken.Is(SpiceTokenType.WORD)
+                && nextToken.Equal("DISTRIBUTION", IsDotStatementNameCaseSensitive)
+                && (nextNextToken.Is(SpiceTokenType.WORD) || nextNextToken.Is(SpiceTokenType.IDENTIFIER)))
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
+                    CreateTerminalNode(nextToken.SpiceTokenType, currentNode),
+                    CreateTerminalNode(nextNextToken.SpiceTokenType, currentNode),
+                    CreateNonTerminalNode(Symbols.Parameters, currentNode));
+            }
+            else
+            {
+                throw new ParseException("Error during parsing a distribution, line=" + currentToken.LineNumber, currentToken.LineNumber);
             }
         }
 

@@ -18,7 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
                 throw new Exception("gauss expects three arguments: nominal_val, rel_variation and sigma");
             }
 
-            System.Random random = context.Randomizer.GetRandom(context.Seed);
+            var random = context.Randomizer.GetRandomDoubleProvider(context.Seed);
 
             double p1 = 1 - random.NextDouble();
             double p2 = 1 - random.NextDouble();

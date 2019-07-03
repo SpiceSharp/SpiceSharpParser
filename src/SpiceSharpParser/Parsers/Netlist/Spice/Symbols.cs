@@ -34,5 +34,6 @@
         public const string PointValue = "POINT-VALUE";
         public const string PointValues = "POINT-VALUES";
         public const string ExpressionEqual = "EXPRESSION-EQUAL";
+        public const string Distribution = "DISTRIBUTION";
     }
 }

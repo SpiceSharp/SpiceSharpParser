@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         {
         }
 
-        protected List<string> TopControls { get; set; } = new List<string>() { "st_r", "step_r", "param", "sparam", "func", "options" };
+        protected List<string> TopControls { get; set; } = new List<string>() { "st_r", "step_r", "param", "sparam", "func", "distribution", "options" };
 
         protected List<string> ControlsAfterComponents { get; set; } = new List<string>() { "plot", "print", "save" };
 

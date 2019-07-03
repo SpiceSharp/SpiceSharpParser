@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Evaluation.Expressions;
+using SpiceSharpParser.Common.Mathematics.Probability;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
@@ -20,7 +21,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             bool isParameterNameCaseSensitive,
             bool isFunctionNameCaseSensitive,
             bool isExpressionNameCaseSensitive,
-            Randomizer randomizer)
+            IRandomizer randomizer)
 
         : base(name, isParameterNameCaseSensitive, isFunctionNameCaseSensitive, isExpressionNameCaseSensitive, randomizer)
         {

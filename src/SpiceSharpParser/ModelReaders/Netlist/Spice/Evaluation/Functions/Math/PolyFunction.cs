@@ -2,6 +2,7 @@
 using SpiceSharpParser.Common.Mathematics;
 using System;
 using System.Collections.Generic;
+using SpiceSharpParser.Common.Mathematics.Combinatorics;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
 {

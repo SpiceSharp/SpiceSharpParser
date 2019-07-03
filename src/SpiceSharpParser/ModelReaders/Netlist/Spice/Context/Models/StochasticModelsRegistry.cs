@@ -28,12 +28,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// <summary>
         /// Gets or sets the dictionary of stochastic models with dev parameters.
         /// </summary>
-        protected Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, Parameter>> ModelsWithDev { get; set; } = new Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, Parameter>>();
+        protected Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, ParameterRandomness>> ModelsWithDev { get; set; } = new Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, ParameterRandomness>>();
 
         /// <summary>
         /// Gets or sets the dictionary of stochastic models with lot parameters.
         /// </summary>
-        protected Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, Parameter>> ModelsWithLot { get; set; } = new Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, Parameter>>();
+        protected Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, ParameterRandomness>> ModelsWithLot { get; set; } = new Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, ParameterRandomness>>();
 
         /// <summary>
         /// Gets or sets the dictionary of models generators.
@@ -61,8 +61,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// <param name="model">A model.</param>
         /// <param name="generator">A model generator.</param>
         /// <param name="parameter">A parameter.</param>
-        /// <param name="percent">A percent (value of dev).</param>
-        public void RegisterModelDev(SpiceSharp.Components.Model model, Func<string, SpiceSharp.Components.Model> generator, Parameter parameter, Parameter percent)
+        /// <param name="tolerance">A tolerance (value of dev).</param>
+        /// <param name="distribution">Distribution name.</param>
+        public void RegisterModelDev(
+            SpiceSharp.Components.Model model,
+            Func<string, SpiceSharp.Components.Model> generator,
+            Parameter parameter,
+            Parameter tolerance,
+            string distribution)
         {
             if (model == null)
             {
@@ -79,17 +85,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
                 throw new ArgumentNullException(nameof(parameter));
             }
 
-            if (percent == null)
+            if (tolerance == null)
             {
-                throw new ArgumentNullException(nameof(percent));
+                throw new ArgumentNullException(nameof(tolerance));
             }
 
             if (!ModelsWithDev.ContainsKey(model))
             {
-                ModelsWithDev[model] = new Dictionary<Parameter, Parameter>();
+                ModelsWithDev[model] = new Dictionary<Parameter, ParameterRandomness>();
             }
 
-            ModelsWithDev[model][parameter] = percent;
+            ModelsWithDev[model][parameter] = new ParameterRandomness
+            {
+                RandomDistributionName = distribution,
+                Tolerance = tolerance,
+            };
 
             if (!ModelsGenerators.ContainsKey(model))
             {
@@ -103,15 +113,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// <param name="model">A model.</param>
         /// <param name="generator">A model generator.</param>
         /// <param name="parameter">A parameter.</param>
-        /// <param name="percent">A percent (value of lot).</param>
-        public void RegisterModelLot(SpiceSharp.Components.Model model, Func<string, SpiceSharp.Components.Model> generator, Parameter parameter, Parameter percent)
+        /// <param name="tolerance">A tolerance (value of lot).</param>
+        /// <param name="distributionName">Distribution name.</param>
+        public void RegisterModelLot(
+            SpiceSharp.Components.Model model, 
+            Func<string, SpiceSharp.Components.Model> generator, 
+            Parameter parameter, 
+            Parameter tolerance,
+            string distributionName)
         {
             if (!ModelsWithLot.ContainsKey(model))
             {
-                ModelsWithLot[model] = new Dictionary<Parameter, Parameter>();
+                ModelsWithLot[model] = new Dictionary<Parameter, ParameterRandomness>();
             }
 
-            ModelsWithLot[model][parameter] = percent;
+            ModelsWithLot[model][parameter] = new ParameterRandomness
+            {
+                RandomDistributionName = distributionName,
+                Tolerance = tolerance,
+            };
 
             if (!ModelsGenerators.ContainsKey(model))
             {
@@ -163,9 +183,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// </summary>
         /// <param name="baseModel">A base model.</param>
         /// <returns>
-        /// A dictionary of DEV parameters and their percent value.
+        /// A dictionary of DEV parameters and their tolerance value.
         /// </returns>
-        public Dictionary<Parameter, Parameter> GetStochasticModelDevParameters(SpiceSharp.Components.Model baseModel)
+        public Dictionary<Parameter, ParameterRandomness> GetStochasticModelDevParameters(SpiceSharp.Components.Model baseModel)
         {
             if (ModelsWithDev.ContainsKey(baseModel))
             {
@@ -189,9 +209,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// </summary>
         /// <param name="baseModel">A base model.</param>
         /// <returns>
-        /// A dictionary of LOT parameters and their percent value.
+        /// A dictionary of LOT parameters and their tolerance value.
         /// </returns>
-        public Dictionary<Parameter, Parameter> GetStochasticModelLotParameters(SpiceSharp.Components.Model baseModel)
+        public Dictionary<Parameter, ParameterRandomness> GetStochasticModelLotParameters(SpiceSharp.Components.Model baseModel)
         {
             if (ModelsWithLot.ContainsKey(baseModel))
             {
@@ -244,8 +264,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             var result = new StochasticModelsRegistry(generators, IsModelNameCaseSensitive);
 
             result.AllModels = new Dictionary<string, Entity>(AllModels, StringComparerProvider.Get(IsModelNameCaseSensitive));
-            result.ModelsWithDev = new Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, Parameter>>(ModelsWithDev);
-            result.ModelsWithLot = new Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, Parameter>>(ModelsWithLot);
+            result.ModelsWithDev = new Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, ParameterRandomness>>(ModelsWithDev);
+            result.ModelsWithLot = new Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, ParameterRandomness>>(ModelsWithLot);
 
             return result;
         }
