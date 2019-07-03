@@ -119,7 +119,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
                 foreach (var temp in tempValues)
                 {
-                    context.Result.SimulationConfiguration.TemperaturesInKelvins.Add(Circuit.CelsiusKelvin + temp);
+                    context.Result.SimulationConfiguration.TemperaturesInKelvins.Add(Constants.CelsiusKelvin + temp);
                 }
             }
         }

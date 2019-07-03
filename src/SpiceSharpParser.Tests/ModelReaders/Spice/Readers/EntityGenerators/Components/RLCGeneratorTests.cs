@@ -1,4 +1,5 @@
 ﻿using NSubstitute;
+using SpiceSharp;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components;
@@ -39,7 +40,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         public void GenerateSemiconductorResistor()
         {
             var context = Substitute.For<IReadingContext>();
-            context.When(a => a.SetParameter(Arg.Any<Entity>(), "L", "12", true)).Do(x => ((Entity)x[0]).SetParameter("l", 12));
+            context.When(a => a.SetParameter(Arg.Any<Entity>(), "L", "12.0", true)).Do(x => ((Entity)x[0]).SetParameter("l", 12));
             context.ModelsRegistry.FindModel<ResistorModel>(Arg.Any<string>()).Returns(new ResistorModel("test"));
             context.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
 
@@ -151,7 +152,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             Assert.NotNull(cap);
             Assert.IsType<Capacitor>(cap);
             context.Received().SetParameter(cap, "capacitance", "4.3", true);
-            Assert.Equal(13.3, cap.ParameterSets.GetParameter<double>("ic").Value);
+            Assert.Equal(13.3, cap.ParameterSets.GetParameter<Parameter<double>>("ic").Value);
         }
 
         // cA3 1 0 CModel L=10u W=1u Ic=12
@@ -190,7 +191,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             Assert.IsType<Capacitor>(cap);
 
             context.Received().SetParameter(cap, "L", "10u", true);
-            Assert.Equal(12, cap.ParameterSets.GetParameter<double>("ic").Value);
+            Assert.Equal(12, cap.ParameterSets.GetParameter<Parameter<double>>("ic").Value);
         }
     }
 }

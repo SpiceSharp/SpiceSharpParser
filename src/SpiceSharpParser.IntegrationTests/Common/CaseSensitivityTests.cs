@@ -573,7 +573,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".DC V1 -1 1 10e-3",
                 ".SAVE i(V1)",
                 ".END");
-            Assert.Throws<Exception>(() => parser.ParseNetlist(text));
+            Assert.Throws<SpiceSharp.CircuitException>(() => parser.ParseNetlist(text));
         }
     }
 }

@@ -51,7 +51,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <returns>
         /// A clone of parameter.
         /// </returns>
-        public override BaseParameter Clone()
+        public override Parameter<double> Clone()
         {
             return new EvaluationParameter(ExpressionContext, ParameterName);
         }

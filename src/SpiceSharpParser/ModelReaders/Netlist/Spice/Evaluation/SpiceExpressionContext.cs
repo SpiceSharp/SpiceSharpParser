@@ -87,7 +87,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
         private void CreateSpiceParameters()
         {
-            Parameters.Add("TEMP", new ConstantExpression(Circuit.ReferenceTemperature - Circuit.CelsiusKelvin));
+            Parameters.Add("TEMP", new ConstantExpression(Constants.ReferenceTemperature - Constants.CelsiusKelvin));
             Parameters.Add("TIME", new ConstantExpression(0));
             Parameters.Add("FREQ", new ConstantExpression(0));
             Parameters.Add("PI", new ConstantExpression(Math.PI));

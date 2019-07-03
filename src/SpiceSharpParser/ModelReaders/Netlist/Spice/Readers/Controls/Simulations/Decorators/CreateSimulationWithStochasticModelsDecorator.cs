@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
@@ -68,7 +69,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var evaluator = context.SimulationEvaluators.GetEvaluator(sim);
 
                     var parameterName = asg.Name;
-                    var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<double>(parameterName, comparer);
+                    var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<Parameter<double>>(parameterName, comparer);
                     var expressionContext = context.SimulationExpressionContexts.GetContext(sim);
 
                     var currentValue = currentValueParameter.Value;
@@ -92,7 +93,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var evaluator = context.SimulationEvaluators.GetEvaluator(sim);
 
                     var asgparamName = asg.Name;
-                    var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<double>(asgparamName, comparer);
+                    var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<Parameter<double>>(asgparamName, comparer);
                     var currentValue = currentValueParameter.Value;
                     var expressionContext = context.SimulationExpressionContexts.GetContext(sim);
                     var percentValue = evaluator.EvaluateValueExpression(parameterPercent.Tolerance.Image, expressionContext);
