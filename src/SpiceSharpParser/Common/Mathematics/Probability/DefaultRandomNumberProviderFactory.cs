@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace SpiceSharpParser.Common.Evaluation
+namespace SpiceSharpParser.Common.Mathematics.Probability
 {
     /// <summary>
-    /// Provider of random number generator.
+    /// Provider of random number generators.
     /// </summary>
-    public class Randomizer
+    public class DefaultRandomNumberProviderFactory : IRandomNumberProviderFactory
     {
         private static int _tickCount = Environment.TickCount;
-        private readonly Dictionary<int, Random> _randomGenerators = new Dictionary<int, Random>();
+        private readonly Dictionary<int, IRandomNumberProvider> _randomGenerators = new Dictionary<int, IRandomNumberProvider>();
         private readonly ReaderWriterLockSlim _cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <returns>
         /// A new instance of a random number generator.
         /// </returns>
-        public Random GetRandom(int? randomSeed)
+        public IRandomNumberProvider GetRandom(int? randomSeed)
         {
             if (randomSeed.HasValue)
             {
@@ -48,7 +48,7 @@ namespace SpiceSharpParser.Common.Evaluation
                         _cacheLock.EnterWriteLock();
                         try
                         {
-                            var randomGenerator = new Random(randomSeed.Value);
+                            var randomGenerator = new DefaultRandomNumberProvider(new Random(randomSeed.Value));
                             _randomGenerators[randomSeed.Value] = randomGenerator;
 
                             return randomGenerator;
@@ -71,8 +71,18 @@ namespace SpiceSharpParser.Common.Evaluation
             else
             {
                 int seed = Interlocked.Increment(ref _tickCount);
-                return new Random(seed);
+                return new DefaultRandomNumberProvider(new Random(seed));
             }
+        }
+
+        public IRandomDoubleProvider GetRandomDouble(int? randomSeed)
+        {
+            return GetRandom(randomSeed);
+        }
+
+        public IRandomIntegerProvider GetRandomInteger(int? randomSeed)
+        {
+            return GetRandom(randomSeed);
         }
     }
 }

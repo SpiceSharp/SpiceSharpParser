@@ -18,10 +18,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
                 throw new ArgumentException("flat function expects one argument");
             }
 
-            System.Random random = context.Randomizer.GetRandom(context.Seed);
+            var random = context.Randomizer.GetRandomDoubleProvider(context.Seed);
 
-            double x = (double)args[0];
-
+            double x = args[0];
             return x * ((random.NextDouble() * 2.0) - 1.0);
         }
     }

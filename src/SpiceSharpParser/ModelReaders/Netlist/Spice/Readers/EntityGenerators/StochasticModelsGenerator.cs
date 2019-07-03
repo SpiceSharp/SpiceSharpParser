@@ -83,14 +83,39 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
         {
             for (var i = 0; i < parameters.Count; i++)
             {
-                if (parameters[i].Image.ToUpper() == "DEV")
+                var parameter = parameters[i].Image;
+                string distribution = null;
+
+                if (parameter.Contains("/"))
                 {
-                    stochasticModelRegistry.RegisterModelDev(model, generator, parameters[i - 1], parameters[i + 1]);
+                    var parts = parameter.Split('/');
+                    parameter = parts[0].ToUpper();
+                    distribution = parts[1];
+                }
+                else
+                {
+                    parameter = parameter.ToUpper();
+                }
+
+                if (parameter == "DEV")
+                {
+                    stochasticModelRegistry.RegisterModelDev(
+                        model,
+                        generator,
+                        parameters[i - 1],
+                        parameters[i + 1],
+                        distribution);
+
                     i++;
                 }
-                else if (parameters[i].Image.ToUpper() == "LOT")
+                else if (parameter == "LOT")
                 {
-                    stochasticModelRegistry.RegisterModelLot(model, generator, parameters[i - 1], parameters[i + 1]);
+                    stochasticModelRegistry.RegisterModelLot(
+                        model,
+                        generator,
+                        parameters[i - 1],
+                        parameters[i + 1],
+                        distribution);
                     i++;
                 }
             }
@@ -102,11 +127,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
 
             for (var i = 0; i < parameters.Count; i++)
             {
-                if (parameters[i].Image.ToUpper() == "DEV")
+                var parameter = parameters[i].Image.ToUpper();
+
+                if (parameter.Contains("DEV"))
                 {
                     i++;
                 }
-                else if (parameters[i].Image.ToUpper() == "LOT")
+                else if (parameter.Contains("LOT"))
                 {
                     i++;
                 }

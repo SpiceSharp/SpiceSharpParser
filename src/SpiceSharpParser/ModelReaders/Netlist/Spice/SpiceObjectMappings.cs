@@ -50,6 +50,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Controls.Map("FUNC", new FuncControl());
             Controls.Map("GLOBAL", new GlobalControl());
             Controls.Map("CONNECT", new ConnectControl());
+            Controls.Map("DISTRIBUTION", new DistributionControl());
             Controls.Map("OPTIONS", new OptionsControl());
             Controls.Map("TEMP", new TempControl());
             Controls.Map("ST", new StControl());

@@ -34,14 +34,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
                             foreach (var componentModel in componentModels)
                             {
-                                Dictionary<Parameter, Parameter> stochasticDevParameters = modelsRegistry.GetStochasticModelDevParameters(baseModel);
+                                Dictionary<Parameter, ParameterRandomness> stochasticDevParameters = modelsRegistry.GetStochasticModelDevParameters(baseModel);
 
                                 if (stochasticDevParameters != null)
                                 {
                                     SetModelDevModelParameters(context, simulation, baseModel, componentModel, stochasticDevParameters);
                                 }
 
-                                Dictionary<Parameter, Parameter> stochasticLotParameters = modelsRegistry.GetStochasticModelLotParameters(baseModel);
+                                Dictionary<Parameter, ParameterRandomness> stochasticLotParameters = modelsRegistry.GetStochasticModelLotParameters(baseModel);
                                 if (stochasticLotParameters != null)
                                 {
                                     SetModelLotModelParameters(context, simulation,  baseModel, componentModel, stochasticLotParameters);
@@ -55,7 +55,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             };
         }
 
-        private static void SetModelLotModelParameters(IReadingContext context, BaseSimulation sim, Entity baseModel, Entity componentModel, Dictionary<Parameter, Parameter> stochasticLotParameters)
+        private static void SetModelLotModelParameters(IReadingContext context, BaseSimulation sim, Entity baseModel, Entity componentModel, Dictionary<Parameter, ParameterRandomness> stochasticLotParameters)
         {
             var comparer = StringComparerProvider.Get(context.CaseSensitivity.IsEntityParameterNameCaseSensitive);
             foreach (var stochasticParameter in stochasticLotParameters)
@@ -72,14 +72,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var expressionContext = context.SimulationExpressionContexts.GetContext(sim);
 
                     var currentValue = currentValueParameter.Value;
-                    var percentValue = evaluator.EvaluateValueExpression(parameterPercent.Image, expressionContext);
-                    double newValue = GetValueForLotParameter(expressionContext, baseModel, parameterName, currentValue, percentValue, comparer);
+                    var percentValue = evaluator.EvaluateValueExpression(parameterPercent.Tolerance.Image, expressionContext);
+                    double newValue = GetValueForLotParameter(expressionContext, baseModel, parameterName, currentValue, percentValue, parameterPercent.RandomDistributionName, comparer);
                     context.SimulationPreparations.SetParameter(componentModel, sim, parameterName, newValue, true, false);
                 }
             }
         }
 
-        private static void SetModelDevModelParameters(IReadingContext context, BaseSimulation sim, Entity baseModel, Entity componentModel, System.Collections.Generic.Dictionary<Parameter, Parameter> stochasticDevParameters)
+        private static void SetModelDevModelParameters(IReadingContext context, BaseSimulation sim, Entity baseModel, Entity componentModel, Dictionary<Parameter, ParameterRandomness> stochasticDevParameters)
         {
             var comparer = StringComparerProvider.Get(context.CaseSensitivity.IsEntityParameterNameCaseSensitive);
             foreach (var stochasticParameter in stochasticDevParameters)
@@ -95,49 +95,31 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<double>(asgparamName, comparer);
                     var currentValue = currentValueParameter.Value;
                     var expressionContext = context.SimulationExpressionContexts.GetContext(sim);
-                    var percentValue = evaluator.EvaluateValueExpression(parameterPercent.Image, expressionContext);
+                    var percentValue = evaluator.EvaluateValueExpression(parameterPercent.Tolerance.Image, expressionContext);
 
-                    double newValue = GetValueForDevParameter(expressionContext, currentValue, percentValue);
+                    double newValue = GetValueForDevParameter(expressionContext, currentValue, percentValue, parameterPercent.RandomDistributionName);
                     context.SimulationPreparations.SetParameter(componentModel, sim, asgparamName, newValue, true, false);
                 }
             }
         }
 
-        private static double GetValueForDevParameter(ExpressionContext expressionContext, double currentValue, double percentValue)
+        private static double GetValueForDevParameter(ExpressionContext expressionContext, double currentValue, double percentValue, string distributionName)
         {
-            var random = expressionContext.Randomizer.GetRandom(expressionContext.Seed);
-
-            double newValue = 0;
-            if (random.Next() % 2 == 0)
-            {
-                newValue = currentValue + ((percentValue / 100.0) * currentValue * random.NextDouble());
-            }
-            else
-            {
-                newValue = currentValue - ((percentValue / 100.0) * currentValue * random.NextDouble());
-            }
-
+            var random = expressionContext.Randomizer.GetRandomProvider(expressionContext.Seed, distributionName);
+            var r = random.NextSignedDouble();
+            double newValue = currentValue + (percentValue / 100.0 * currentValue * r);
             return newValue;
         }
 
-        private static double GetValueForLotParameter(ExpressionContext expressionContext, Entity baseModel, string parameterName, double currentValue, double percentValue, IEqualityComparer<string> comparer)
+        private static double GetValueForLotParameter(ExpressionContext expressionContext, Entity baseModel, string parameterName, double currentValue, double percentValue, string distributionName, IEqualityComparer<string> comparer)
         {
             if (LotValues.ContainsKey(baseModel) && LotValues[baseModel].ContainsKey(parameterName))
             {
                 return LotValues[baseModel][parameterName];
             }
 
-            var random = expressionContext.Randomizer.GetRandom(expressionContext.Seed);
-
-            double newValue = 0;
-            if (random.Next() % 2 == 0)
-            {
-                newValue = currentValue + ((percentValue / 100.0) * currentValue * random.NextDouble());
-            }
-            else
-            {
-                newValue = currentValue - ((percentValue / 100.0) * currentValue * random.NextDouble());
-            }
+            var random = expressionContext.Randomizer.GetRandomProvider(expressionContext.Seed, distributionName);
+            double newValue = currentValue + (percentValue / 100.0 * currentValue * random.NextSignedDouble());
 
             if (!LotValues.ContainsKey(baseModel))
             {

@@ -35,6 +35,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             evaluators.Add(Symbols.Statements, (ParseTreeNodeEvaluationValues nt) => CreateStatements(nt));
             evaluators.Add(Symbols.Statement, (ParseTreeNodeEvaluationValues nt) => CreateStatement(nt));
             evaluators.Add(Symbols.Model, (ParseTreeNodeEvaluationValues nt) => CreateModel(nt));
+            evaluators.Add(Symbols.Distribution, (ParseTreeNodeEvaluationValues nt) => CreateDistribution(nt));
             evaluators.Add(Symbols.Control, (ParseTreeNodeEvaluationValues nt) => CreateControl(nt));
             evaluators.Add(Symbols.Component, (ParseTreeNodeEvaluationValues nt) => CreateComponent(nt));
             evaluators.Add(Symbols.Parameters, (ParseTreeNodeEvaluationValues nt) => CreateParameters(nt));
@@ -566,6 +567,24 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             model.LineNumber = values.GetLexemLineNumber(2);
             return model;
         }
+
+        /// <summary>
+        /// Returns new instance of <see cref="Model"/>
+        /// from the values of children nodes of <see cref="Symbols.Model"/> parse tree node.
+        /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="Model"/>.
+        /// </returns>
+        private SpiceObject CreateDistribution(ParseTreeNodeEvaluationValues values)
+        {
+            var model = new Control();
+            model.Name = "DISTRIBUTION";
+            model.Parameters = values.GetSpiceObject<ParameterCollection>(3);
+            model.Parameters.Insert(0, new StringParameter(values.GetLexem(2)));
+            model.LineNumber = values.GetLexemLineNumber(2);
+            return model;
+        }
+
 
         /// <summary>
         /// Returns new instance of <see cref="VectorParameter"/>

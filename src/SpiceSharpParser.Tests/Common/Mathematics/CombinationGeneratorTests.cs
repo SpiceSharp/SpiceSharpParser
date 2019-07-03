@@ -1,5 +1,5 @@
-﻿using Xunit;
-using SpiceSharpParser.Common.Mathematics;
+﻿using SpiceSharpParser.Common.Mathematics.Combinatorics;
+using Xunit;
 
 namespace SpiceSharpParser.Tests.Common.Mathematics
 {
