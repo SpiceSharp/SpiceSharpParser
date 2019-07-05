@@ -59,10 +59,10 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             // assert
             Assert.Single(simulations);
             Assert.IsType<Transient>(simulations.First());
-            Assert.True(simulations.First().ParameterSets.Get<TimeConfiguration>().UseIc);
-            Assert.Equal(1e-5, simulations.First().ParameterSets.Get<TimeConfiguration>().Step);
-            Assert.Equal(1e-3, simulations.First().ParameterSets.Get<TimeConfiguration>().FinalTime);
-            Assert.Equal(1e-4, simulations.First().ParameterSets.Get<TimeConfiguration>().MaxStep);
+            Assert.True(simulations.First().Configurations.Get<TimeConfiguration>().UseIc);
+            Assert.Equal(1e-5, simulations.First().Configurations.Get<TimeConfiguration>().Step);
+            Assert.Equal(1e-3, simulations.First().Configurations.Get<TimeConfiguration>().FinalTime);
+            Assert.Equal(1e-4, simulations.First().Configurations.Get<TimeConfiguration>().MaxStep);
         }
 
         [Fact]
@@ -105,10 +105,10 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             // assert
             Assert.Single(simulations);
             Assert.IsType<Transient>(simulations.First());
-            Assert.False(simulations.First().ParameterSets.Get<TimeConfiguration>().UseIc);
-            Assert.Equal(1e-5, simulations.First().ParameterSets.Get<TimeConfiguration>().Step);
-            Assert.Equal(1e-3, simulations.First().ParameterSets.Get<TimeConfiguration>().FinalTime);
-            Assert.Equal(1e-4, simulations.First().ParameterSets.Get<TimeConfiguration>().MaxStep);
+            Assert.False(simulations.First().Configurations.Get<TimeConfiguration>().UseIc);
+            Assert.Equal(1e-5, simulations.First().Configurations.Get<TimeConfiguration>().Step);
+            Assert.Equal(1e-3, simulations.First().Configurations.Get<TimeConfiguration>().FinalTime);
+            Assert.Equal(1e-4, simulations.First().Configurations.Get<TimeConfiguration>().MaxStep);
         }
     }
 }

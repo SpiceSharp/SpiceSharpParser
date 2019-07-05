@@ -45,11 +45,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             double temp = 0;
             if (operatingTemperatureInKelvins.HasValue)
             {
-                temp = operatingTemperatureInKelvins.Value - Circuit.CelsiusKelvin;
+                temp = operatingTemperatureInKelvins.Value - Constants.CelsiusKelvin;
             }
             else
             {
-                temp = Circuit.ReferenceTemperature - Circuit.CelsiusKelvin;
+                temp = Constants.ReferenceTemperature - Constants.CelsiusKelvin;
             }
 
             simulation.BeforeTemperature += (object sender, LoadStateEventArgs e) =>
@@ -76,7 +76,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         {
             if (temperatureInKelvin.HasValue)
             {
-                return string.Format("#{0} {1} - at {2} Kelvins ({3} Celsius)", context.Result.Simulations.Count() + 1, statement.Name, temperatureInKelvin.Value, temperatureInKelvin.Value - SpiceSharp.Circuit.CelsiusKelvin);
+                return string.Format("#{0} {1} - at {2} Kelvins ({3} Celsius)", context.Result.Simulations.Count() + 1, statement.Name, temperatureInKelvin.Value, temperatureInKelvin.Value - Constants.CelsiusKelvin);
             }
 
             return string.Format("#{0} {1}", context.Result.Simulations.Count() + 1, statement.Name);

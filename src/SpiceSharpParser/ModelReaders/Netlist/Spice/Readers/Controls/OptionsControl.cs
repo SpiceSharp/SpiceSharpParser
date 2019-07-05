@@ -44,11 +44,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             // TODO: ????
                             break;
                         case "temp":
-                            double temp = context.EvaluateDouble(value) + Circuit.CelsiusKelvin;
+                            double temp = context.EvaluateDouble(value) + Constants.CelsiusKelvin;
                             context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions = temp;
                             context.Result.SimulationConfiguration.TemperaturesInKelvins.Add(temp); break;
                         case "tnom":
-                            context.Result.SimulationConfiguration.NominalTemperatureInKelvins = context.EvaluateDouble(value) + Circuit.CelsiusKelvin; break;
+                            context.Result.SimulationConfiguration.NominalTemperatureInKelvins = context.EvaluateDouble(value) + Constants.CelsiusKelvin; break;
                         case "method":
                             switch (value.ToLower())
                             {

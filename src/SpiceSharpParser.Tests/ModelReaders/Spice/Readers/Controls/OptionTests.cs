@@ -71,8 +71,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             optionControl.Read(control, readingContext);
 
             // assert
-            Assert.Equal(12.2 + Circuit.CelsiusKelvin, resultService.SimulationConfiguration.TemperaturesInKelvins[0]);
-            Assert.Equal(12.3 + Circuit.CelsiusKelvin, resultService.SimulationConfiguration.NominalTemperatureInKelvins);
+            Assert.Equal(12.2 + Constants.CelsiusKelvin, resultService.SimulationConfiguration.TemperaturesInKelvins[0]);
+            Assert.Equal(12.3 + Constants.CelsiusKelvin, resultService.SimulationConfiguration.NominalTemperatureInKelvins);
         }
 
         [Fact]

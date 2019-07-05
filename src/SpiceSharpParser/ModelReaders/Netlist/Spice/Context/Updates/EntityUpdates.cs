@@ -300,7 +300,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
             if (!SimulationEntityParametersCache.TryGetValue(key, out var result))
             {
-                result = simulation.EntityParameters[@object.Name].GetParameter<double>(paramName, comparer);
+                result = simulation.EntityParameters[@object.Name].GetParameter<Parameter<double>>(paramName, comparer);
                 SimulationEntityParametersCache[key] = result;
             }
 
