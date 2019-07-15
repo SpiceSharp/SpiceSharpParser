@@ -136,7 +136,6 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
                 -0.1530782464069611
             };
 
-
             EqualsWithTol(export, references);
         }
 
@@ -182,7 +181,6 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
                  -0.28074831986005333
             };
 
-
             EqualsWithTol(export, references);
         }
 
@@ -226,7 +224,6 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
                 -0.1530782464069611,
                 -0.28074831986005333
             };
-
 
             EqualsWithTol(export, references);
         }
@@ -333,7 +330,6 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
                  -0.1530782464069611,
                  -0.28074831986005333
             };
-
 
             EqualsWithTol(export, references);
         }
