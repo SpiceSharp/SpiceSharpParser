@@ -10,6 +10,13 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// <summary>
         /// Initializes a new instance of the <see cref="Pdf"/> class.
         /// </summary>
+        public Pdf()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Pdf"/> class.
+        /// </summary>
         /// <param name="curve">Pdf curve.</param>
         public Pdf(Curve curve)
         {
@@ -34,6 +41,18 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
             foreach (var point in probabilityCurve)
             {
                 Add(point);
+            }
+        }
+
+        /// <summary>
+        /// Validates the pdf.
+        /// </summary>
+        public void Validate()
+        {
+            var area = ComputeAreaUnderCurve();
+            if (area != 1.0)
+            {
+                throw new Exception("Pdf is invalid");
             }
         }
     }

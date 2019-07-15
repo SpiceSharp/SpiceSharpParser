@@ -16,6 +16,11 @@
         int CdfPoints { get; set; }
 
         /// <summary>
+        /// Gets or sets normal limit.
+        /// </summary>
+        double NormalLimit { get; set; }
+
+        /// <summary>
         /// Registers a Pdf in the randomizer.
         /// </summary>
         /// <param name="name">Name of Pdf.</param>

@@ -10,20 +10,20 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
     /// </summary>
     public class Curve : IEnumerable<Point>
     {
-        private readonly List<Point> _points;
+        protected readonly List<Point> Points;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Curve"/> class.
         /// </summary>
         public Curve()
         {
-            _points = new List<Point>();
+            Points = new List<Point>();
         }
 
         /// <summary>
         /// Gets the count of points.
         /// </summary>
-        public int PointsCount => _points.Count;
+        public int PointsCount => Points.Count;
 
         /// <summary>
         /// Gets or sets a point.
@@ -32,7 +32,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// <returns>
         /// A curve's point.
         /// </returns>
-        public Point this[int index] => _points[index];
+        public Point this[int index] => Points[index];
 
         /// <summary>
         /// Adds a point to the curve.
@@ -45,16 +45,16 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
                 throw new ArgumentNullException(nameof(point));
             }
 
-            for (var i = 0; i < _points.Count; i++)
+            for (var i = 0; i < Points.Count; i++)
             {
-                if (_points[i].X > point.X)
+                if (Points[i].X > point.X)
                 {
-                    _points.Insert(i, point);
+                    Points.Insert(i, point);
                     return;
                 }
             }
 
-            _points.Add(point);
+            Points.Add(point);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// </returns>
         public double ComputeAreaUnderCurve()
         {
-            return ComputeAreaUnderCurve(_points.Count);
+            return ComputeAreaUnderCurve(Points.Count);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// </returns>
         public double ComputeAreaUnderCurve(int limitPointIndex)
         {
-            if (limitPointIndex > _points.Count)
+            if (limitPointIndex > Points.Count)
             {
                 throw new ArgumentOutOfRangeException(nameof(limitPointIndex));
             }
@@ -86,7 +86,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
 
             for (var i = 1; i < limitPointIndex; i++)
             {
-                result += (_points[i].X - _points[i - 1].X) * (_points[i].Y + _points[i - 1].Y) / 2.0;
+                result += (Points[i].X - Points[i - 1].X) * (Points[i].Y + Points[i - 1].Y) / 2.0;
             }
 
             return result;
@@ -104,9 +104,9 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
             double result = 0.0;
 
             var i = 0;
-            while (i < _points.Count - 1)
+            while (i < Points.Count - 1)
             {
-                if (_points[i + 1].X > x)
+                if (Points[i + 1].X > x)
                 {
                     break;
                 }
@@ -116,19 +116,19 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
 
             for (var j = 1; j < i + 1; j++)
             {
-                result += (_points[j].X - _points[j-1].X) * (_points[j].Y + _points[j-1].Y) / 2.0;
+                result += (Points[j].X - Points[j-1].X) * (Points[j].Y + Points[j-1].Y) / 2.0;
             }
 
-            if (i < _points.Count - 1)
+            if (i < Points.Count - 1)
             {
-                var nextPoint = _points.Skip(i+1).SkipWhile(r => r.X == _points[i].X).FirstOrDefault();
+                var nextPoint = Points.Skip(i+1).SkipWhile(r => r.X == Points[i].X).FirstOrDefault();
 
                 if (nextPoint != null)
                 {
-                    var yDiff = (nextPoint.Y - _points[i].Y) / (nextPoint.X - _points[i].X) *
-                                Math.Abs(x - _points[i].X);
+                    var yDiff = (nextPoint.Y - Points[i].Y) / (nextPoint.X - Points[i].X) *
+                                Math.Abs(x - Points[i].X);
 
-                    result += Math.Abs(x - _points[i].X) * ((2 * _points[i].Y) + yDiff) / 2.0;
+                    result += Math.Abs(x - Points[i].X) * ((2 * Points[i].Y) + yDiff) / 2.0;
                 }
             }
 
@@ -141,7 +141,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// <param name="scaleFactor">Scaling factor.</param>
         public void ScaleY(double scaleFactor)
         {
-            _points.ForEach(p => p.Y *= scaleFactor);
+            Points.ForEach(p => p.Y *= scaleFactor);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// </returns>
         public Point GetFirstPoint()
         {
-            return _points.FirstOrDefault();
+            return Points.FirstOrDefault();
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// </returns>
         public Point GetLastPoint()
         {
-            return _points.LastOrDefault();
+            return Points.LastOrDefault();
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// </summary>
         public void Clear()
         {
-            _points.Clear();
+            Points.Clear();
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// </returns>
         public IEnumerator<Point> GetEnumerator()
         {
-            return _points.GetEnumerator();
+            return Points.GetEnumerator();
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         {
             var cloned = new Curve();
 
-            foreach (var point in _points)
+            foreach (var point in Points)
             {
                 cloned.Add(point.Clone());
             }

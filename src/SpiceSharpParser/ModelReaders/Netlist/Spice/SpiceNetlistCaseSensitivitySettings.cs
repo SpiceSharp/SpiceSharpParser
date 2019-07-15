@@ -57,6 +57,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         public bool IsFunctionNameCaseSensitive { get; set; } = false;
 
         /// <summary>
+        /// Gets or sets a value indicating whether random distribution names are case-sensitive.
+        /// </summary>
+        public bool IsDistributionNameCaseSensitive { get; set; } = false;
+
+        /// <summary>
         /// Gets or sets a value indicating whether parameter names are case-sensitive.
         /// </summary>
         public bool IsParameterNameCaseSensitive { get; set; } = false;

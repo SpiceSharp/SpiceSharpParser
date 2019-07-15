@@ -119,7 +119,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 Settings.CaseSensitivity.IsParameterNameCaseSensitive,
                 Settings.CaseSensitivity.IsFunctionNameCaseSensitive,
                 Settings.CaseSensitivity.IsExpressionNameCaseSensitive,
-                new Randomizer());
+                new Randomizer(Settings.CaseSensitivity.IsDistributionNameCaseSensitive));
 
             var exportFunctions = ExportFunctions.Create(
                 Settings.Mappings.Exporters,
