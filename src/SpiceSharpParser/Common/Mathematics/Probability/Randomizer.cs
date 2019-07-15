@@ -22,7 +22,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// <summary>
         /// Default limit of normal distribution.
         /// </summary>
-        public const int DefaultNormalLimit = 10;
+        public const int DefaultNormalLimit = 3;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Randomizer"/> class.
