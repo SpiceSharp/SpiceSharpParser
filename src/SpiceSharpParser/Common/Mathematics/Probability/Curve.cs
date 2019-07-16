@@ -10,8 +10,6 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
     /// </summary>
     public class Curve : IEnumerable<Point>
     {
-        protected readonly List<Point> Points;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Curve"/> class.
         /// </summary>
@@ -19,6 +17,8 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         {
             Points = new List<Point>();
         }
+
+        public List<Point> Points { get; protected set; }
 
         /// <summary>
         /// Gets the count of points.

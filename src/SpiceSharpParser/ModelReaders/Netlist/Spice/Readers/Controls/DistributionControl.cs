@@ -32,7 +32,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 }
             }
 
-            context.ReadingExpressionContext.Randomizer.RegisterPdf(distributionName, new Pdf(curve));
+            context.ReadingExpressionContext.Randomizer.RegisterPdf(distributionName, () => new Pdf(curve));
         }
     }
 }
