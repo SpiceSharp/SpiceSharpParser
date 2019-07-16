@@ -43,6 +43,7 @@ namespace SpiceSharpParser.PerformanceTests
             var expressionParser = new SpiceEvaluator(string.Empty, new SpiceExpressionParser(false), false, false);
             double sum = 0;
             int n = 2000000;
+            var randomizer = new Randomizer();
             for (var i = 0; i < n; i++)
             {
                 sum += expressionParser.EvaluateValueExpression(
@@ -52,7 +53,7 @@ namespace SpiceSharpParser.PerformanceTests
                         false,
                         false,
                         false,
-                        new Randomizer()));
+                        randomizer));
             }
         }
     }

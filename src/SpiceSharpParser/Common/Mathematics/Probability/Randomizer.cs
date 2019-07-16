@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using SpiceSharpParser.Common.Mathematics.Probability.Pdfs;
+using SpiceSharpParser.Common.StringComparers;
 
 namespace SpiceSharpParser.Common.Mathematics.Probability
 {
@@ -8,8 +10,8 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
     /// </summary>
     public class Randomizer : IRandomizer
     {
-        private readonly Dictionary<string, Pdf> _pdfDictionary = new Dictionary<string, Pdf>();
-        private readonly Dictionary<string, CustomRandomNumberProviderFactory> _customRandomNumberProviderFactories = new Dictionary<string, CustomRandomNumberProviderFactory>();
+        private readonly Dictionary<string, Pdf> _pdfDictionary = null;
+        private readonly Dictionary<string, CustomRandomNumberProviderFactory> _customRandomNumberProviderFactories = null;
         private readonly DefaultRandomNumberProviderFactory _defaultRandomNumberProviderFactory = new DefaultRandomNumberProviderFactory();
 
         /// <summary>
@@ -18,13 +20,41 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         public const int DefaultCdfPoints = 1000;
 
         /// <summary>
+        /// Default limit of normal distribution.
+        /// </summary>
+        public const int DefaultNormalLimit = 3;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Randomizer"/> class.
         /// </summary>
+        /// <param name="isDistributionNameCaseSensitive">Is distribiution name case-sensitive</param>
         /// <param name="cdfPoints">Number of cdf points.</param>
-        public Randomizer(int? cdfPoints = null)
+        /// <param name="normalLimit">Normal limit.</param>
+        public Randomizer(bool isDistributionNameCaseSensitive = false, int? cdfPoints = null, double? normalLimit = null)
         {
+            _pdfDictionary = new Dictionary<string, Pdf>(StringComparerProvider.Get(isDistributionNameCaseSensitive));
+            _customRandomNumberProviderFactories = new Dictionary<string, CustomRandomNumberProviderFactory>(StringComparerProvider.Get(isDistributionNameCaseSensitive));
+
             CurrentPdfName = null;
             CdfPoints = cdfPoints ?? DefaultCdfPoints;
+            NormalLimit = normalLimit ?? DefaultNormalLimit;
+
+            RegisterDefaultPdfs();
+        }
+
+        private double _normalLimit;
+
+        /// <summary>
+        /// Gets or sets normal limit.
+        /// </summary>
+        public double NormalLimit
+        {
+            get => _normalLimit;
+            set
+            {
+                _normalLimit = value;
+                RegisterDefaultPdfs();
+            }
         }
 
         /// <summary>
@@ -32,10 +62,20 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// </summary>
         public string CurrentPdfName { get; set; }
 
+        private int _cdfPoints;
+
         /// <summary>
         /// Gets or sets number of CDF points.
         /// </summary>
-        public int CdfPoints { get; set; }
+        public int CdfPoints
+        { 
+            get => _cdfPoints;
+            set
+            {
+                _cdfPoints = value;
+                RegisterDefaultPdfs();
+            }
+        }
 
         /// <summary>
         /// Registers a Pdf in the randomizer.
@@ -116,6 +156,12 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
             {
                 throw new ArgumentException("Unknown pdf", nameof(pdfName));
             }
+        }
+
+        private void RegisterDefaultPdfs()
+        {
+            RegisterPdf("uniform", new UniformPdf());
+            RegisterPdf("gauss", new NormalPdf(CdfPoints, NormalLimit));
         }
     }
 }

@@ -50,6 +50,65 @@ namespace SpiceSharpParser.IntegrationTests.Common
         }
 
         [Fact]
+        public void When_DistributionNameNotSensitive_Expect_NoException()
+        {
+            var parser = new SpiceParser();
+            parser.Settings.Reading.CaseSensitivity.IsDistributionNameCaseSensitive = false;
+            var text = string.Join(Environment.NewLine,
+               "Dev - Diode circuit",
+                "D1 OUT 0 1N914",
+                "V1 OUT 0 0",
+                ".model 1N914 D(Is=2.52e-9 DEV/unifoRm 10% Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
+                ".DC V1 -1 1 0.1",
+                ".SAVE i(V1)",
+                ".DISTRIBUTION uniform (-1,1) (1, 1)",
+                ".END");
+
+            var parseResult = parser.ParseNetlist(text);
+            parseResult.SpiceSharpModel.Simulations[0].Run(parseResult.SpiceSharpModel.Circuit);
+        }
+
+        [Fact]
+        public void When_DistributionNameSensitive_Positive_Expect_NoException()
+        {
+            var parser = new SpiceParser();
+            parser.Settings.Reading.CaseSensitivity.IsDistributionNameCaseSensitive = true;
+            var text = string.Join(Environment.NewLine,
+                "Dev - Diode circuit",
+                "D1 OUT 0 1N914",
+                "V1 OUT 0 0",
+                ".model 1N914 D(Is=2.52e-9 DEV/unifoRm1 10% Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
+                ".DC V1 -1 1 0.1",
+                ".SAVE i(V1)",
+                ".DISTRIBUTION unifoRm1 (-1,1) (1, 1)",
+                ".END");
+
+            var parseResult = parser.ParseNetlist(text);
+            parseResult.SpiceSharpModel.Simulations[0].Run(parseResult.SpiceSharpModel.Circuit);
+        }
+
+        [Fact]
+        public void When_DistributionNameSensitive_Negative_Expect_Exception()
+        {
+            var parser = new SpiceParser();
+            parser.Settings.Reading.CaseSensitivity.IsDistributionNameCaseSensitive = true;
+
+            var text = string.Join(Environment.NewLine,
+                "Dev - Diode circuit",
+                "D1 OUT 0 1N914",
+                "V1 OUT 0 0",
+                ".model 1N914 D(Is=2.52e-9 DEV/unifoRm1 10% Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
+                ".DC V1 -1 1 0.1",
+                ".SAVE i(V1)",
+                ".DISTRIBUTION uniform1 (-1,1) (1, 1)",
+                ".END");
+
+            var parseResult = parser.ParseNetlist(text);
+            Assert.Throws<ArgumentException>(() =>
+                parseResult.SpiceSharpModel.Simulations[0].Run(parseResult.SpiceSharpModel.Circuit));
+        }
+
+        [Fact]
         public void FunctionNameNotFound()
         {
             var parser = new SpiceParser();

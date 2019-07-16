@@ -83,6 +83,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                             context.ReadingExpressionContext.Randomizer.CdfPoints = points;
                             break;
+                        case "normallimit":
+                            context.ReadingExpressionContext.Randomizer.NormalLimit = context.EvaluateDouble(value);
+                            break;
                         default:
                             context.Result.AddWarning("Unsupported option: " + name);
                             break;

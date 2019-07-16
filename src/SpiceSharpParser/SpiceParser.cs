@@ -122,7 +122,7 @@ namespace SpiceSharpParser
                 Settings.Reading.CaseSensitivity.IsParameterNameCaseSensitive,
                 Settings.Reading.CaseSensitivity.IsFunctionNameCaseSensitive,
                 Settings.Reading.CaseSensitivity.IsExpressionNameCaseSensitive,
-                new Randomizer());
+                new Randomizer(Settings.Reading.CaseSensitivity.IsDistributionNameCaseSensitive));
 
             foreach (var exportFunction in exportFunctions)
             {

@@ -60,7 +60,7 @@ namespace SpiceSharpParser.Parsers.Expression
         /// Operators.
         /// </summary>
         private static readonly Operator OperatorPositive = new Operator(IdPositive, PrecedenceUnary, false);
-        private static readonly Operator OperatorNegative = new Operator(IdNegative, PrecedenceUnary, false);
+        private readonly Operator OperatorNegative = new Operator(IdNegative, PrecedenceUnary, false);
         private static readonly Operator OperatorNot = new Operator(IdNot, PrecedenceUnary, false);
         private static readonly Operator OperatorAdd = new Operator(IdAdd, PrecedenceAdditive, true);
         private static readonly Operator OperatorSubtract = new Operator(IdSubtract, PrecedenceAdditive, true);

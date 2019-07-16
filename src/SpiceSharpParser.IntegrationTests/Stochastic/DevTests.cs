@@ -136,7 +136,6 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
                 -0.1530782464069611
             };
 
-
             EqualsWithTol(export, references);
         }
 
@@ -182,6 +181,49 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
                  -0.28074831986005333
             };
 
+            EqualsWithTol(export, references);
+        }
+
+        [Fact]
+        public void DevNonZeroConstantWithUniformDistributionWithoutUniformDeclaration()
+        {
+            int randomSeed = 1234;
+            var netlist = ParseNetlist(
+                randomSeed,
+                "Dev - Diode circuit",
+                "D1 OUT 0 1N914",
+                "V1 OUT 0 0",
+                ".model 1N914 D(Is=2.52e-9 DEV/uniform 10% Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
+                ".DC V1 -1 1 0.1",
+                ".SAVE i(V1)",
+                ".END");
+            var export = RunDCSimulation(netlist, "i(V1)");
+
+            // Get reference
+            double[] references =
+            {
+                2.4698278977552945E-09,
+                2.469613180622332E-09,
+                2.4693336264647314E-09,
+                2.4689363886665205E-09,
+                2.4683068922115581E-09,
+                2.4671660270314533E-09,
+                2.464711323924007E-09,
+                2.4579984714279135E-09,
+                2.4307326151884467E-09,
+                2.1975083697167719E-09,
+                1.1179182910003865E-32,
+                -1.9967465791914663E-08,
+                -2.0140620987652014E-07,
+                -1.850061914332457E-06,
+                -1.6827914452899329E-05,
+                -0.00015267136741214937,
+                -0.00136636546425839,
+                -0.01100315469852986,
+                -0.056515585377548971,
+                -0.1530782464069611,
+                -0.28074831986005333
+            };
 
             EqualsWithTol(export, references);
         }
@@ -232,6 +274,22 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
         }
 
         [Fact]
+        public void When_DevNonZeroConstantWithGaussDistribution_Expect_NoException()
+        {
+            int randomSeed = 1234;
+            var netlist = ParseNetlist(
+                randomSeed,
+                "Dev - Diode circuit",
+                "D1 OUT 0 1N914",
+                "V1 OUT 0 0",
+                ".model 1N914 D(Is=2.52e-9 DEV/gauss 10% Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
+                ".DC V1 -1 1 0.1",
+                ".SAVE i(V1)",
+                ".END");
+            var export = RunDCSimulation(netlist, "i(V1)");
+        }
+
+        [Fact]
         public void DevNonZeroParam()
         {
             int randomSeed = 1234;
@@ -272,7 +330,6 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
                  -0.1530782464069611,
                  -0.28074831986005333
             };
-
 
             EqualsWithTol(export, references);
         }
