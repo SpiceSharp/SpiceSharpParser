@@ -16,7 +16,17 @@ SpiceSharpParser is available as [NuGet Package](https://www.nuget.org/packages/
 Parsing a netlist and executing a simulation is relatively straightforward. For example:
 
 ```csharp
-var netlist = string.Join(Environment.NewLine,
+using System;
+using System.Linq;
+using SpiceSharpParser;
+
+namespace SpiceSharpParserExample
+{
+    class Program
+    {
+        static void Main(string[] pogramArgs)
+        {
+            var netlist = string.Join(Environment.NewLine,
                 "Diode circuit",
                 "D1 OUT 0 1N914",
                 "V1 OUT 0 0",
@@ -25,16 +35,19 @@ var netlist = string.Join(Environment.NewLine,
                 ".SAVE i(V1)",
                 ".END");
 
-// Parsing part - SpiceSharpParser
-var parser = new SpiceParser();
-var parseResult = parser.ParseNetlist(netlist);
-var spiceSharpModel = parseResult.SpiceSharpModel;
+            // Parsing part - SpiceSharpParser
+            var parser = new SpiceParser();
+            var parseResult = parser.ParseNetlist(netlist);
+            var spiceSharpModel = parseResult.SpiceSharpModel;
 
-// Simulation part - SpiceSharp
-var simulation = spiceSharpModel.Simulations.Single();
-var export = spiceSharpModel.Exports.Find(e => e.Name == "i(V1)");
-simulation.ExportSimulationData += (sender, args) => Console.WriteLine(export.Extract());
-simulation.Run(spiceSharpModel.Circuit);    
+            // Simulation part - SpiceSharp
+            var simulation = spiceSharpModel.Simulations.Single();
+            var export = spiceSharpModel.Exports.Find(e => e.Name == "i(V1)");
+            simulation.ExportSimulationData += (sender, args) => Console.WriteLine(export.Extract());
+            simulation.Run(spiceSharpModel.Circuit);
+        }
+    }
+}    
 
 ```
 ## Compatibility
