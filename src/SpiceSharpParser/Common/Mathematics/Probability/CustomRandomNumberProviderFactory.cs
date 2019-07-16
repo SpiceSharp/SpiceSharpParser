@@ -11,7 +11,6 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
     {
         private static int _tickCount = Environment.TickCount;
 
-        private readonly Pdf _pdf;
         private readonly Cdf _cdf;
         private readonly int _cdfPoints;
         private readonly Dictionary<int, IRandomNumberProvider> _randomGenerators = new Dictionary<int, IRandomNumberProvider>();
@@ -20,18 +19,10 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomRandomNumberProviderFactory"/> class.
         /// </summary>
-        /// <param name="pdf">Pdf.</param>
-        /// <param name="cdfPoints">Number of cdf points.</param>
-        public CustomRandomNumberProviderFactory(Pdf pdf, int cdfPoints)
+        /// <param name="cdf">Cdf.</param>
+        public CustomRandomNumberProviderFactory(Cdf cdf)
         {
-            _pdf = pdf ?? throw new ArgumentNullException(nameof(pdf));
-            if (cdfPoints <= 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(cdfPoints));
-            }
-
-            _cdfPoints = cdfPoints;
-            _cdf = new Cdf(_pdf, _cdfPoints);
+            _cdf = cdf ?? throw new ArgumentNullException(nameof(cdf));
         }
 
         /// <summary>

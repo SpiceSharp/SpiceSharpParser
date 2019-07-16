@@ -1,4 +1,6 @@
-﻿namespace SpiceSharpParser.Common.Mathematics.Probability
+﻿using System;
+
+namespace SpiceSharpParser.Common.Mathematics.Probability
 {
     /// <summary>
     /// Interface for all random numbers generator facades.
@@ -24,8 +26,8 @@
         /// Registers a Pdf in the randomizer.
         /// </summary>
         /// <param name="name">Name of Pdf.</param>
-        /// <param name="pdf">Pdf.</param>
-        void RegisterPdf(string name, Pdf pdf);
+        /// <param name="pdf">Pdf factory.</param>
+        void RegisterPdf(string name, Func<Pdf> pdf);
 
         /// <summary>
         /// Gets a random number provider for a given seed and pdf.
