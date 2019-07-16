@@ -24,7 +24,7 @@ namespace SpiceSharpParserExample
 {
     class Program
     {
-        static void Main(string[] pogramArgs)
+        static void Main(string[] programArgs)
         {
             var netlist = string.Join(Environment.NewLine,
                 "Diode circuit",
