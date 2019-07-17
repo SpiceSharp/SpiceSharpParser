@@ -19,16 +19,14 @@ namespace SpiceSharpParser.Common.Mathematics.Probability.Pdfs
             double step = (xMax - xMin) / evaluationPoints;
 
             double currentX = xMin;
-            for (var i = 0; i < evaluationPoints; i++)
-            {
-                if (currentX > xMax)
-                {
-                    currentX = xMax;
-                }
 
+            for (var i = 0; i < evaluationPoints - 1; i++)
+            {
                 Add(new Point(currentX, Compute(currentX)));
                 currentX += step;
             }
+
+            Add(new Point(xMax, Compute(xMax)));
 
             ScaleY(1.0 / ComputeAreaUnderCurve());
         }
