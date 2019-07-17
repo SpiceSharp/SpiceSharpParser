@@ -74,7 +74,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
             ISpiceStatementsReader statementsReader = new SpiceStatementsReader(Settings.Mappings.Controls, Settings.Mappings.Models, Settings.Mappings.Components);
             IWaveformReader waveformReader = new WaveformReader(Settings.Mappings.Waveforms);
-            IExpressionParser parser = new ExpressionParserWithCache(new SpiceExpressionParser(Settings.EvaluatorMode == SpiceExpressionMode.LtSpice));
+            IExpressionParser parser = new ExpressionParserWithCache(new SpiceExpressionParser());
 
             IReadingContext readingContext = new ReadingContext(
                 "Netlist reading context",
@@ -142,7 +142,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             var readingEvaluator = new SpiceEvaluator(
                 "Netlist reading evaluator",
                 new ExpressionParserWithCache(
-                    new SpiceExpressionParser(Settings.EvaluatorMode == SpiceExpressionMode.LtSpice)),
+                    new SpiceExpressionParser()),
                 Settings.CaseSensitivity.IsParameterNameCaseSensitive,
                 Settings.CaseSensitivity.IsFunctionNameCaseSensitive);
 

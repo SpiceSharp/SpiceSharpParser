@@ -10,12 +10,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
     public class SpiceEvaluator : Evaluator
     {
         public SpiceEvaluator()
-            : this(string.Empty, new SpiceExpressionParser(false), false, false)
-        {
-        }
-
-        public SpiceEvaluator(bool isNegationAssociative)
-            : this(string.Empty, new SpiceExpressionParser(isNegationAssociative), false, false)
+            : this(string.Empty, new SpiceExpressionParser(), false, false)
         {
         }
 

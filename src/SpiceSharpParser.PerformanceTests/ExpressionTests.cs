@@ -40,7 +40,7 @@ namespace SpiceSharpParser.PerformanceTests
         [Fact]
         public void EvaluateDouble()
         {
-            var expressionParser = new SpiceEvaluator(string.Empty, new SpiceExpressionParser(false), false, false);
+            var expressionParser = new SpiceEvaluator(string.Empty, new SpiceExpressionParser(), false, false);
             double sum = 0;
             int n = 2000000;
             var randomizer = new Randomizer();

@@ -18,6 +18,7 @@ namespace SpiceSharpParser.Parsers.Expression
         /// <summary>
         /// Precedence levels.
         /// </summary>
+        private const byte PrecedenceFunction = 0;
         private const byte PrecedenceConditional = 1;
         private const byte PrecedenceConditionalOr = 2;
         private const byte PrecedenceConditionalAnd = 3;
@@ -29,8 +30,9 @@ namespace SpiceSharpParser.Parsers.Expression
         private const byte PrecedenceShift = 9;
         private const byte PrecedenceAdditive = 10;
         private const byte PrecedenceMultiplicative = 11;
-        private const byte PrecedenceUnary = 12;
-        private const byte PrecedencePrimary = 13;
+        private const byte PrecedencePowerInfix = 12;
+        private const byte PrecedenceUnary = 13;
+        private const byte PrecedencePrimary = 14;
 
         /// <summary>
         /// Operator ID's.
@@ -60,7 +62,7 @@ namespace SpiceSharpParser.Parsers.Expression
         /// Operators.
         /// </summary>
         private static readonly Operator OperatorPositive = new Operator(IdPositive, PrecedenceUnary, false);
-        private readonly Operator OperatorNegative = new Operator(IdNegative, PrecedenceUnary, false);
+        private static readonly Operator OperatorNegative = new Operator(IdNegative, PrecedenceUnary, false);
         private static readonly Operator OperatorNot = new Operator(IdNot, PrecedenceUnary, false);
         private static readonly Operator OperatorAdd = new Operator(IdAdd, PrecedenceAdditive, true);
         private static readonly Operator OperatorSubtract = new Operator(IdSubtract, PrecedenceAdditive, true);
@@ -93,10 +95,8 @@ namespace SpiceSharpParser.Parsers.Expression
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceExpressionParser"/> class.
         /// </summary>
-        /// <param name="isNegationAssociative">Specifies whether negation is associative.</param>
-        public SpiceExpressionParser(bool isNegationAssociative = false)
+        public SpiceExpressionParser()
         {
-            OperatorNegative.LeftAssociative = isNegationAssociative;
         }
 
         /// <summary>
@@ -157,7 +157,12 @@ namespace SpiceSharpParser.Parsers.Expression
                         case '*':
                             if ((index + 1 < count) && input[index + 1] == '*')
                             {
-                                PushOperator(expression, CreateOperatorForFunction("**", index, context));
+                                while (operatorStack.Count > 0 && operatorStack.Peek().Precedence > PrecedencePowerInfix)
+                                {
+                                    EvaluateOperator(expression, operatorStack.Pop());
+                                }
+
+                                PushOperator(expression, CreateOperatorForFunction("**", index, context, PrecedencePowerInfix));
                                 index++;
                                 break;
                             }
@@ -536,7 +541,8 @@ namespace SpiceSharpParser.Parsers.Expression
         private FunctionOperator CreateOperatorForFunction(
             string functionName,
             int startIndex,
-            ExpressionParserContext context)
+            ExpressionParserContext context,
+            byte precedence = PrecedenceFunction)
         {
             if (!context.Functions.ContainsKey(functionName))
             {
@@ -549,8 +555,8 @@ namespace SpiceSharpParser.Parsers.Expression
             cfo.Name = functionName;
             cfo.StartIndex = startIndex;
             cfo.ArgumentsStackCount = outputStack.Count;
-            cfo.LeftAssociative = functions.First().Infix || cfo.LeftAssociative;
-            cfo.Precedence = functions.First().Infix ? PrecedenceMultiplicative : cfo.Precedence;
+            cfo.LeftAssociative = functions.First().Infix;
+            cfo.Precedence = precedence;
             cfo.Functions = functions;
             return cfo;
         }

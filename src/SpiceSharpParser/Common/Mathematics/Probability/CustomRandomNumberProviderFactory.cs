@@ -12,7 +12,6 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         private static int _tickCount = Environment.TickCount;
 
         private readonly Cdf _cdf;
-        private readonly int _cdfPoints;
         private readonly Dictionary<int, IRandomNumberProvider> _randomGenerators = new Dictionary<int, IRandomNumberProvider>();
         private readonly ReaderWriterLockSlim _cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
 
