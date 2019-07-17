@@ -32,6 +32,11 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         {
             var p = _baseRandom.NextDouble();
 
+            var min = _cdf.GetFirstPoint().X;
+            var max = _cdf.GetLastPoint().X;
+
+            var scale = (Math.Max(1, max) - Math.Min(-1, min)) / 2.0;
+
             for (var i = 1; i < _cdf.PointsCount; i++)
             {
                 var p1 = _cdf[i - 1];
@@ -46,7 +51,9 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
 
                 if (p1.Y <= p && p < p2.Y)
                 {
-                    return ((p2.X - p1.X) * (p - p1.Y) / (p2.Y - p1.Y)) + p1.X;
+                    var result = (((p2.X - p1.X) * (p - p1.Y) / (p2.Y - p1.Y)) + p1.X) / scale;
+
+                    return result;
                 }
             }
 

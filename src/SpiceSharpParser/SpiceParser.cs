@@ -129,7 +129,7 @@ namespace SpiceSharpParser
                 preprocessorContext.AddFunction(exportFunction.Key, exportFunction.Value);
             }
 
-            var parser = new SpiceExpressionParser(Settings.Reading.EvaluatorMode == SpiceExpressionMode.LtSpice);
+            var parser = new SpiceExpressionParser();
 
             foreach (var preprocessor in Preprocessors)
             {
@@ -160,7 +160,7 @@ namespace SpiceSharpParser
         {
             SpiceEvaluator preprocessorEvaluator = new SpiceEvaluator(
                 "Preprocessors evaluator",
-                new SpiceExpressionParser(Settings.Reading.EvaluatorMode == SpiceExpressionMode.LtSpice),
+                new SpiceExpressionParser(),
                 Settings.Reading.CaseSensitivity.IsParameterNameCaseSensitive,
                 Settings.Reading.CaseSensitivity.IsFunctionNameCaseSensitive);
 

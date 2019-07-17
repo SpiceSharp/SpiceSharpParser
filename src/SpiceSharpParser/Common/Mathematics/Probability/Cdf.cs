@@ -24,11 +24,13 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
 
             Add(new Point(xFirst, 0.0));
 
-            for (var i = 0; i < numberOfPoints - 1; i++)
+            for (var i = 0; i < numberOfPoints - 2; i++)
             {
                 double x = xFirst + (((xLast - xFirst) / (numberOfPoints - 1)) * (i + 1));
                 Add(new Point(x, pdfCurve.ComputeAreaUnderCurve(x)));
             }
+
+            Add(new Point(xLast, pdfCurve.ComputeAreaUnderCurve()));
         }
     }
 }

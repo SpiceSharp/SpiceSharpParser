@@ -41,7 +41,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void GetVariables()
         {
             // prepare
-            IExpressionParser v = new SpiceExpressionParser(false);
+            IExpressionParser v = new SpiceExpressionParser();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
             c.SetParameter("xyz", 13.0);
             c.SetParameter("a", 1.0);
@@ -200,7 +200,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void MinusPowerInfixLtSpice()
         {
             // arrange
-            var evaluator = new SpiceEvaluator(true);
+            var evaluator = new SpiceEvaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.LtSpice);
 
             // act and assert
