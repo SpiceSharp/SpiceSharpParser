@@ -2,12 +2,32 @@
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.Parsers.Expression;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.Parsers
 {
     public class SpiceExpressionTests
     {
+        public class CustomFunction : IFunction<string, double>
+        {
+            public CustomFunction()
+            {
+                ArgumentsCount = 2;
+            }
+
+            public double Logic(string image, string[] args, IEvaluator evaluator, ExpressionContext context)
+            {
+                return 0;
+            }
+
+            public int ArgumentsCount { get; set; } 
+            public bool Infix { get; set; }
+            public string Name { get; set; }
+            public Type ArgumentType => typeof(string);
+            public Type OutputType { get; }
+        }
+
         [Fact]
         public void When_ExpressionHasUnknownParameter_Expect_Exception()
         {
@@ -16,6 +36,21 @@ namespace SpiceSharpParser.Tests.Parsers
 
             // act and assert
             Assert.Throws<UnknownParameterException>(() => parser.Parse("x + 1", new ExpressionParserContext()).Value(new ExpressionEvaluationContext() { ExpressionContext = new ExpressionContext() }));
+        }
+
+        [Fact]
+        public void When_ExpressionHasStringFunctionWithParameters_Expect_Exception()
+        {
+            // arrange
+            var parser = new SpiceExpressionParser();
+
+            var context = new ExpressionEvaluationContext() {ExpressionContext = new ExpressionContext()};
+            context.ExpressionContext.AddFunction("v", new CustomFunction());
+            var parserContext = new ExpressionParserContext();
+            parserContext.Functions.Add("v", new List<IFunction>() { new CustomFunction()});
+
+            // act and assert
+            parser.Parse("1 + v(2,0) + 3", parserContext).Value(context);
         }
 
         [Fact]
@@ -44,6 +79,7 @@ namespace SpiceSharpParser.Tests.Parsers
             // act and assert
             Assert.Equal(1, parser.Parse("sin(0) + 1", new ExpressionParserContext(context.Functions)).Value(new ExpressionEvaluationContext() { ExpressionContext = context }));
         }
+
 
         [Fact]
         public void When_ExpressionHasParameters_Expect_Reference()

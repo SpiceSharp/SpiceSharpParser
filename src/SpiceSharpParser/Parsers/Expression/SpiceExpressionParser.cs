@@ -357,111 +357,149 @@ namespace SpiceSharpParser.Parsers.Expression
                     }
                     else if (c == '.' || (c >= '0' && c <= '9'))
                     {
-                        if (operatorStack.Count > 0
-                            && operatorStack.FirstOrDefault(o => o.Id == IdFunction) != null)
+                        infixPostfix = true;
+
+                        if (operatorStack.Count > 0 && operatorStack.Peek() is FunctionOperator fo && fo.Functions.First() is IFunction<string, double>)
                         {
-                            if (operatorStack.Peek() is FunctionOperator fo && fo.Functions.First() is IFunction<string, double>)
+                            int startIndex = index;
+
+                            while (index < expression.Length)
                             {
-                                int startIndex = index;
-
-                                while (index < expression.Length)
+                                if (expression[index] == ')')
                                 {
-                                    if (expression[index] == ',')
-                                    {
-                                        break;
-                                    }
-
-                                    if (expression[index] == ')')
-                                    {
-                                        break;
-                                    }
-
-                                    index++;
+                                    break;
                                 }
 
-                                var virtualParameter = expression.Substring(startIndex, index - startIndex);
-                                stringParametersStack.Push(virtualParameter);
+                                if (expression[index] == ',')
+                                {
+                                    break;
+                                }
+
+                                if (expression[index] == '[')
+                                {
+                                    break;
+                                }
+
+                                if (expression[index] == ']')
+                                {
+                                    break;
+                                }
+
+                                index++;
                             }
-                            else
-                            {
-                                double parseResult = ParseDouble(expression, ref index);
-                                outputStack.Push((evalContext) => parseResult);
-                            }
+
+                            var stringParameter = expression.Substring(startIndex, index - startIndex);
+                            stringParametersStack.Push(stringParameter);
+                            infixPostfix = true;
                         }
                         else
                         {
                             double parseResult = ParseDouble(expression, ref index);
                             outputStack.Push((evalContext) => parseResult);
                         }
-
-                        infixPostfix = true;
                     }
-
                     // Parse a parameter or a function
                     else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == '_') || (c == '.'))
                     {
-                        sb.Clear();
-                        sb.Append(input[index++]);
-                        while (index < count)
+                        if (operatorStack.Count > 0 && operatorStack.Peek() is FunctionOperator fo && fo.Functions.First() is IFunction<string, double>)
                         {
-                            c = input[index];
-                            if ((c >= '0' && c <= '9') ||
-                                (c >= 'a' && c <= 'z') ||
-                                (c >= 'A' && c <= 'Z') ||
-                                c == '_' ||
-                                c == '.')
+                            int startIndex = index;
+
+                            while (index < expression.Length)
                             {
-                                sb.Append(c);
+                                if (expression[index] == ')')
+                                {
+                                    break;
+                                }
+
+                                if (expression[index] == ',')
+                                {
+                                    break;
+                                }
+
+                                if (expression[index] == '[')
+                                {
+                                    break;
+                                }
+
+                                if (expression[index] == ']')
+                                {
+                                    break;
+                                }
+
                                 index++;
                             }
-                            else
-                            {
-                                break;
-                            }
-                        }
 
-                        if (index < count && input[index] == '(')
-                        {
-                            index++;
-                            var functionName = sb.ToString();
-
-                            if (context.Functions.ContainsKey(functionName))
-                            {
-                                foundFunctions.Add(functionName);
-                                operatorStack.Push(CreateOperatorForFunction(functionName, index, context));
-                            }
-                            else
-                            {
-                                throw new FunctionNotFoundException(functionName);
-                            }
+                            var stringParameter = expression.Substring(startIndex, index - startIndex);
+                            stringParametersStack.Push(stringParameter);
+                            infixPostfix = true;
                         }
                         else
                         {
-                            string parameterName = sb.ToString();
-
-                            if (operatorStack.Count > 0 && operatorStack.Peek().Id == IdFunction
-                                                        && ((FunctionOperator)operatorStack.Peek()).Functions.First() is IFunction<string, double>)
+                            sb.Clear();
+                            sb.Append(input[index++]);
+                            while (index < count)
                             {
-                                stringParametersStack.Push(parameterName);
+                                c = input[index];
+                                if ((c >= '0' && c <= '9') ||
+                                    (c >= 'a' && c <= 'z') ||
+                                    (c >= 'A' && c <= 'Z') ||
+                                    c == '_' ||
+                                    c == '.')
+                                {
+                                    sb.Append(c);
+                                    index++;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+
+                            if (index < count && input[index] == '(')
+                            {
+                                index++;
+                                var functionName = sb.ToString();
+
+                                if (context.Functions.ContainsKey(functionName))
+                                {
+                                    foundFunctions.Add(functionName);
+                                    operatorStack.Push(CreateOperatorForFunction(functionName, index, context));
+                                }
+                                else
+                                {
+                                    throw new FunctionNotFoundException(functionName);
+                                }
                             }
                             else
                             {
-                                foundParameters.Add(parameterName);
-                                outputStack.Push((evalContext) =>
+                                string parameterName = sb.ToString();
+
+                                if (operatorStack.Count > 0 && operatorStack.Peek().Id == IdFunction
+                                                            && ((FunctionOperator) operatorStack.Peek()).Functions
+                                                            .First() is IFunction<string, double>)
                                 {
-                                    if (!evalContext.ExpressionContext.Parameters.ContainsKey(parameterName))
+                                    stringParametersStack.Push(parameterName);
+                                }
+                                else
+                                {
+                                    foundParameters.Add(parameterName);
+                                    outputStack.Push((evalContext) =>
                                     {
-                                        throw new UnknownParameterException() { Name = parameterName };
-                                    }
+                                        if (!evalContext.ExpressionContext.Parameters.ContainsKey(parameterName))
+                                        {
+                                            throw new UnknownParameterException() {Name = parameterName};
+                                        }
 
-                                    return evalContext.ExpressionContext.Parameters[parameterName].Evaluate(evalContext.Evaluator, evalContext.ExpressionContext);
-                                });
+                                        return evalContext.ExpressionContext.Parameters[parameterName]
+                                            .Evaluate(evalContext.Evaluator, evalContext.ExpressionContext);
+                                    });
+                                }
+                                infixPostfix = true;
                             }
-
-                            infixPostfix = true;
                         }
                     }
-                    else if (input[index] == ')' && index >= 1 && input[index - 1] == '(')
+                    else if (input[index] == ')')
                     {
                         while (operatorStack.Count > 0)
                         {
@@ -615,7 +653,7 @@ namespace SpiceSharpParser.Parsers.Expression
 
                 if (!(function is IFunction<double, double> df))
                 {
-                    throw new InvalidOperationException("Virtual function needs to have double as arguments");
+                    throw new InvalidOperationException("Function needs to have double as arguments");
                 }
 
                 var args = PopAndReturnArguments(outputStack, functionArguments);

@@ -3,15 +3,22 @@ using SpiceSharp.Simulations;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
 {
-    public class NominalTemperatureSimulationDecorator
+    public class NominalTemperatureSimulationDecorator : ISimulationDecorator
     {
-        public static BaseSimulation Decorate(BaseSimulation simulation, double nominalTemperatureInKelvins)
+        private readonly double _nominalTemperatureInKelvins;
+
+        public NominalTemperatureSimulationDecorator(double nominalTemperatureInKelvins)
+        {
+            _nominalTemperatureInKelvins = nominalTemperatureInKelvins;
+        }
+
+        public BaseSimulation Decorate(BaseSimulation simulation)
         {
             EventHandler<LoadStateEventArgs> setState = (object sender, LoadStateEventArgs e) =>
             {
                 if (e.State is BaseSimulationState rs)
                 {
-                    rs.NominalTemperature = nominalTemperatureInKelvins;
+                    rs.NominalTemperature = _nominalTemperatureInKelvins;
                 }
 
                 // TODO: What to do with complex state?

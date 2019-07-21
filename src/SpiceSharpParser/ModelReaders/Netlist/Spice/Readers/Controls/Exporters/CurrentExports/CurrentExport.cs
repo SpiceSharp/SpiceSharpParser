@@ -12,8 +12,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// Initializes a new instance of the <see cref="CurrentExport"/> class.
         /// </summary>
         /// <param name="name">Name of export.</param>
-        /// <param name="simulation">A simulation</param>
-        /// <param name="source">A identifier</param>
+        /// <param name="simulation">A simulation.</param>
+        /// <param name="source">A name of current source.</param>
         public CurrentExport(string name, Simulation simulation, string source)
             : base(simulation)
         {

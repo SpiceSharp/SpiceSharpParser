@@ -2,12 +2,8 @@
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
@@ -17,30 +13,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
     /// </summary>
     public abstract class SimulationControl : BaseControl
     {
+        private readonly ISimulationsFactory _factory;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SimulationControl"/> class.
         /// </summary>
         protected SimulationControl(IMapper<Exporter> exporterMapper)
         {
-            CreateSimulationsForAllTemperaturesFactory = new CreateSimulationsForAllTemperaturesFactory();
-            CreateSimulationsForAllParameterSweepsAndTemperaturesFactory = new CreateSimulationsForAllParameterSweepsAndTemperaturesFactory(CreateSimulationsForAllTemperaturesFactory);
-            CreateSimulationsForMonteCarloFactory = new CreateSimulationsForMonteCarloFactory(
-                CreateSimulationsForAllTemperaturesFactory,
-                CreateSimulationsForAllParameterSweepsAndTemperaturesFactory,
-                new ExportFactory(),
-                exporterMapper);
-        }
-
-        public ICreateSimulationsForAllTemperaturesFactory CreateSimulationsForAllTemperaturesFactory { get; private set; }
-
-        public ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory CreateSimulationsForAllParameterSweepsAndTemperaturesFactory { get; private set; }
-
-        public ICreateSimulationsForMonteCarloFactory CreateSimulationsForMonteCarloFactory { get; }
-
-        protected static bool IsMonteCarloEnabledForSimulation(Control statement, IReadingContext context)
-        {
-            return context.Result.SimulationConfiguration.MonteCarloConfiguration.Enabled
-                   && statement.Name.ToLower() == context.Result.SimulationConfiguration.MonteCarloConfiguration.SimulationType.ToLower();
+            _factory = new SimulationsFactory(exporterMapper);
         }
 
         /// <summary>
@@ -48,40 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// </summary>
         protected void CreateSimulations(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
         {
-            if (context.ModelsRegistry is StochasticModelsRegistry)
-            {
-                createSimulation = CreateSimulationWithStochasticModelsDecorator.Decorate(context, createSimulation);
-            }
-
-            if (!IsMonteCarloEnabledForSimulation(statement, context))
-            {
-                if (context.Result.SimulationConfiguration.ParameterSweeps.Count == 0)
-                {
-                    var simulations = CreateSimulationsForAllTemperaturesFactory.CreateSimulations(statement, context, createSimulation);
-
-                    foreach (var simulation in simulations)
-                    {
-                        context.SimulationPreparations.Prepare(simulation);
-                    }
-                }
-                else
-                {
-                    var simulations = CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(statement, context, createSimulation);
-                    foreach (var simulation in simulations)
-                    {
-                        context.SimulationPreparations.Prepare(simulation);
-                    }
-                }
-            }
-            else
-            {
-                var simulations = CreateSimulationsForMonteCarloFactory.Create(statement, context, createSimulation);
-
-                foreach (var simulation in simulations)
-                {
-                    context.SimulationPreparations.Prepare(simulation);
-                }
-            }
+            _factory.Create(statement, context, createSimulation);
         }
 
         /// <summary>
