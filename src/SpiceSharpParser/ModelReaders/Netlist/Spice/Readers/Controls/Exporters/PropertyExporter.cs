@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -14,6 +15,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
     /// </summary>
     public class PropertyExporter : Exporter
     {
+        public PropertyExporter()
+        {
+
+        }
         /// <summary>
         /// Gets supported property exports.
         /// </summary>
@@ -68,14 +73,28 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 string modelName = modelNameGenerator.Generate(entityName);
                 if (result.FindObject(modelName, out var model) && model is SpiceSharp.Components.Model)
                 {
-                    return new PropertyExport(name, simulation, modelName, parameters[1].Image, comparer);
+                    if (simulation != null)
+                    {
+                        return new PropertyExport(name, simulation, modelName, parameters[1].Image, comparer);
+                    }
+                    else
+                    {
+                        return new ZeroExport();
+                    }
                 }
                 else
                 {
                     string componentName = componentNameGenerator.Generate(entityName);
                     if (result.FindObject(componentName, out var component) && component is SpiceSharp.Components.Component)
                     {
-                        return new PropertyExport(name, simulation, componentName, parameters[1].Image, comparer);
+                        if (simulation != null)
+                        {
+                            return new PropertyExport(name, simulation, componentName, parameters[1].Image, comparer);
+                        }
+                        else
+                        {
+                            return new ZeroExport();
+                        }
                     }
                     else
                     {
@@ -87,8 +106,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                             {
                                 if (obj2 is SpiceSharp.Components.Model)
                                 {
-                                    string modelName2 = modelNameGenerator.Generate(entityName);
-                                    return new PropertyExport(name, simulation, modelName2, parameters[1].Image, comparer);
+                                    string modelName2 = modelNameGenerator.Generate(entityName) + "_" + simulation.Name;
+                                    return new PropertyExport(name, simulation, modelName2, parameters[1].Image,
+                                        comparer);
                                 }
                             }
                         }

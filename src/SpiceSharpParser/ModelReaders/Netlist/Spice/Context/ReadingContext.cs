@@ -255,7 +255,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             if (parameters.Count < component.PinCount)
             {
                 throw new WrongParametersCountException(
-                    "Too less parameters for: " + component.Name + " to create nodes");
+                    "Too few parameters for: " + component.Name + " to create nodes");
             }
 
             string[] nodes = new string[component.PinCount];
@@ -344,7 +344,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             ReadingExpressionContext.SetNamedExpression(expressionName, expression, foundParameters);
         }
 
-        public void SetParameter(Entity entity, string parameterName, string expression, bool onload = true)
+        public void SetParameter(Entity entity, string parameterName, string expression, bool onload = true, bool beforeTemperature = true)
         {
             if (entity == null)
             {
@@ -372,7 +372,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             if (parseResult.IsConstantExpression == false)
             {
-                SimulationPreparations.SetParameter(entity, parameterName, expression, true, onload);
+                SimulationPreparations.SetParameter(entity, parameterName, expression, beforeTemperature, onload);
             }
         }
 

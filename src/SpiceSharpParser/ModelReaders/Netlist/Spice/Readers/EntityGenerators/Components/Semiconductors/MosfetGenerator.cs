@@ -75,12 +75,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var mosfetDetails = Mosfets[model.GetType()].Invoke(componentIdentifier);
                 mosfet = mosfetDetails.Mosfet;
 
-                context.ModelsRegistry.SetModel<SpiceSharp.Components.Model>(
-                    mosfetDetails.Mosfet,
-                    modelName,
-                    $"Could not find model {modelName} for mosfet {componentIdentifier}",
-                    mosfetDetails.SetModelAction,
-                    context.Result);
+                context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
+                {
+                    context.ModelsRegistry.SetModel<SpiceSharp.Components.Model>(
+                        mosfetDetails.Mosfet,
+                        simulation,
+                        modelName,
+                        $"Could not find model {modelName} for mosfet {componentIdentifier}",
+                        mosfetDetails.SetModelAction,
+                        context.Result);
+                });
             }
             else
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SpiceSharp.Behaviors;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
@@ -12,11 +13,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         {
             EntityUpdates = entityUpdates ?? throw new ArgumentNullException(nameof(entityUpdates));
             SimulationUpdates = simulationUpdates ?? throw new ArgumentNullException(nameof(simulationUpdates));
+            BeforeExecute = new List<Action<BaseSimulation>>();
         }
 
         protected EntityUpdates EntityUpdates { get; }
 
         protected SimulationsUpdates SimulationUpdates { get; }
+
+        protected List<Action<BaseSimulation>> BeforeExecute { get; }
 
         public void Prepare(BaseSimulation simulation)
         {
@@ -24,6 +28,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new ArgumentNullException(nameof(simulation));
             }
+
+            simulation.BeforeSetup += (obj, args) =>
+            {
+                foreach (var action in BeforeExecute)
+                {
+                    action(simulation);
+                }
+            };
 
             SimulationUpdates.Apply(simulation);
             EntityUpdates.Apply(simulation);
@@ -94,6 +106,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                     throw new InvalidOperationException($"No temperature behavior for {entity.Name}");
                 }
             });
+        }
+
+        public void ExecuteActionBeforeSetup(Action<BaseSimulation> action)
+        {
+            BeforeExecute.Add(action);
         }
 
         public void SetParameter(Entity @object, string paramName, string expression, bool beforeTemperature, bool onload)

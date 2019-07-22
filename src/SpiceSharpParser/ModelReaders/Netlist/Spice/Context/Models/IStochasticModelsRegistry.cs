@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using SpiceSharp.Simulations;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 {
@@ -20,7 +22,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter tolerance,
             string distributionName);
 
-        Dictionary<Model, List<Model>> GetStochasticModels();
+        Model ProvideStochasticModel(string componentName, BaseSimulation sim, SpiceSharp.Components.Model model);
+
+        Dictionary<Model, List<Model>> GetStochasticModels(BaseSimulation sim);
 
         Dictionary<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, ParameterRandomness> GetStochasticModelDevParameters(Model baseModel);
 

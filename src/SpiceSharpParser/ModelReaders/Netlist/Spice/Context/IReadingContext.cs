@@ -139,7 +139,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="parameterName">Parameter name.</param>
         /// <param name="valueExpression">Value expression.</param>
         /// <param name="onload">Should be re-evaluated OnBeforeLoad.</param>
-        void SetParameter(Entity entity, string parameterName, string valueExpression, bool onload = true);
+        void SetParameter(Entity entity, string parameterName, string valueExpression, bool onload = true,
+            bool beforeTemperature = true);
 
         /// <summary>
         /// Sets the initial voltage.

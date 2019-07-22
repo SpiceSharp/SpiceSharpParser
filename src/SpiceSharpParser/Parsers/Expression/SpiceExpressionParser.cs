@@ -616,7 +616,7 @@ namespace SpiceSharpParser.Parsers.Expression
                     if (endIndex != null)
                     {
                         return stringFunction.Logic(
-                            op.Name + expression.Substring(op.StartIndex - 1, endIndex.Value - op.StartIndex + 2),
+                            op.Name + expression.Substring(op.StartIndex, endIndex.Value - op.StartIndex + 1),
                             args,
                             evalContext.Evaluator,
                             evalContext.ExpressionContext);

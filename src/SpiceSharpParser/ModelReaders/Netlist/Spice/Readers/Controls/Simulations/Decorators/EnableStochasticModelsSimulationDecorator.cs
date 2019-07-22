@@ -30,7 +30,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             {
                 simulation.BeforeExecute += (object sender, BeforeExecuteEventArgs arg) =>
                 {
-                    foreach (var stochasticModels in modelsRegistry.GetStochasticModels())
+                    foreach (var stochasticModels in modelsRegistry.GetStochasticModels(simulation))
                     {
                         var baseModel = stochasticModels.Key;
                         var componentModels = stochasticModels.Value;
@@ -75,6 +75,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var currentValue = currentValueParameter.Value;
                     var percentValue = evaluator.EvaluateValueExpression(parameterPercent.Tolerance.Image, expressionContext);
                     double newValue = GetValueForLotParameter(expressionContext, baseModel, parameterName, currentValue, percentValue, parameterPercent.RandomDistributionName, comparer);
+
                     _context.SimulationPreparations.SetParameter(componentModel, sim, parameterName, newValue, true, false);
                 }
             }
@@ -99,6 +100,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var percentValue = evaluator.EvaluateValueExpression(parameterPercent.Tolerance.Image, expressionContext);
 
                     double newValue = GetValueForDevParameter(expressionContext, currentValue, percentValue, parameterPercent.RandomDistributionName);
+
                     _context.SimulationPreparations.SetParameter(componentModel, sim, parameterName, newValue, true, false);
                 }
             }
@@ -108,7 +110,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         {
             var random = expressionContext.Randomizer.GetRandomProvider(expressionContext.Seed, distributionName);
             var r = random.NextSignedDouble();
-            return currentValue + (percentValue / 100.0 * currentValue * r);
+            return currentValue + (percentValue / 100.0) * currentValue * r;
         }
 
         private double GetValueForLotParameter(ExpressionContext expressionContext, Entity baseModel, string parameterName, double currentValue, double percentValue, string distributionName, IEqualityComparer<string> comparer)
@@ -119,7 +121,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             }
 
             var random = expressionContext.Randomizer.GetRandomProvider(expressionContext.Seed, distributionName);
-            double newValue = currentValue + (percentValue / 100.0 * currentValue * random.NextSignedDouble());
+            double newValue = currentValue + (percentValue / 100.0) * currentValue * random.NextSignedDouble();
 
             if (!LotValues.ContainsKey(baseModel))
             {

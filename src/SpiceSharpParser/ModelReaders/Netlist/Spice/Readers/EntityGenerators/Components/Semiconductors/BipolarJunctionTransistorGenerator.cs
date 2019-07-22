@@ -42,12 +42,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 throw new WrongParametersCountException();
             }
 
-            context.ModelsRegistry.SetModel<BipolarJunctionTransistorModel>(
-                bjt,
-                parameters.GetString(4),
-                $"Could not find model {parameters.GetString(4)} for BJT {originalName}",
-                (BipolarJunctionTransistorModel model) => bjt.Model = model.Name,
-                context.Result);
+            context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
+            {
+                context.ModelsRegistry.SetModel<BipolarJunctionTransistorModel>(
+                    bjt,
+                    simulation,
+                    parameters.GetString(4),
+                    $"Could not find model {parameters.GetString(4)} for BJT {originalName}",
+                    (BipolarJunctionTransistorModel model) => bjt.Model = model.Name,
+                    context.Result);
+            });
 
             for (int i = 5; i < parameters.Count; i++)
             {

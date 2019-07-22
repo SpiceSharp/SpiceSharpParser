@@ -21,12 +21,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             JFET jfet = new JFET(componentIdentifier);
             context.CreateNodes(jfet, parameters);
 
-            context.ModelsRegistry.SetModel<JFETModel>(
-              jfet,
-              parameters.GetString(3),
-              $"Could not find model {parameters.GetString(3)} for JFET {originalName}",
-              (JFETModel model) => jfet.Model = model.Name,
-              context.Result);
+            context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
+            {
+                context.ModelsRegistry.SetModel<JFETModel>(
+                    jfet,
+                    simulation,
+                    parameters.GetString(3),
+                    $"Could not find model {parameters.GetString(3)} for JFET {originalName}",
+                    (JFETModel model) => jfet.Model = model.Name,
+                    context.Result);
+            });
 
             // Read the rest of the parameters
             for (int i = 3; i < parameters.Count; i++)

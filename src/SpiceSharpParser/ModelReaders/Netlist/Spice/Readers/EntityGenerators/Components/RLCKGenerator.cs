@@ -126,12 +126,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    context.ModelsRegistry.SetModel<CapacitorModel>(
-                        capacitor,
-                        parameters.GetString(2),
-                        $"Could not find model {parameters.GetString(2)} for capacitor {name}",
-                        (CapacitorModel model) => capacitor.Model = model.Name,
-                        context.Result);
+                    context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
+                    {
+                        context.ModelsRegistry.SetModel<CapacitorModel>(
+                            capacitor,
+                            simulation,
+                            parameters.GetString(2),
+                            $"Could not find model {parameters.GetString(2)} for capacitor {name}",
+                            (CapacitorModel model) => capacitor.Model = model.Name,
+                            context.Result);
+                    });
 
                     modelBased = true;
                 }
@@ -317,12 +321,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     var modelName = resistorParameters[0].Image;
 
                     // Ignore tc parameter on resistor ...
-                    context.ModelsRegistry.SetModel<ResistorModel>(
-                        res,
-                        modelName,
-                        $"Could not find model {modelName} for resistor {name}",
-                        (ResistorModel model) => res.Model = model.Name,
-                        context.Result);
+
+                    context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
+                    {
+                        context.ModelsRegistry.SetModel<ResistorModel>(
+                            res,
+                            simulation,
+                            modelName,
+                            $"Could not find model {modelName} for resistor {name}",
+                            (ResistorModel model) => res.Model = model.Name,
+                            context.Result);
+                    });
 
                     resistorParameters.RemoveAt(0);
 
