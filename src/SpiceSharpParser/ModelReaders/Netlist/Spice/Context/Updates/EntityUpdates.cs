@@ -55,7 +55,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                             Common.Evaluation.ExpressionContext context = GetEntityContext(simulation, entity);
 
                             var value = entityUpdate.GetValue(evaluator, context);
-                            parameter.Value = value;
+
+                            if (!double.IsNaN(value))
+                            {
+                                parameter.Value = value;
+                            }
                         }
                     }
                 }
@@ -76,7 +80,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                                 Common.Evaluation.ExpressionContext context = GetEntityContext(simulation, entityPair.Key);
 
                                 var value = entityUpdate.GetValue(evaluator, context);
-                                parameter.Value = value;
+                                if (!double.IsNaN(value))
+                                {
+                                    parameter.Value = value;
+                                }
                             }
                         }
                     }
@@ -99,7 +106,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                             Common.Evaluation.ExpressionContext context = GetEntityContext(simulation, entity);
 
                             var value = entityUpdate.GetValue(evaluator, context);
-                            parameter.Value = value;
+
+                            if (!double.IsNaN(value))
+                            {
+                                parameter.Value = value;
+                            }
                         }
                     }
                 }
@@ -120,7 +131,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                                 Common.Evaluation.ExpressionContext context = GetEntityContext(simulation, entityPair.Key);
 
                                 var value = entityUpdate.GetValue(evaluator, context);
-                                parameter.Value = value;
+                                if (!double.IsNaN(value))
+                                {
+                                    parameter.Value = value;
+                                }
                             }
                         }
                     }

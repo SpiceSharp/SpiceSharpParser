@@ -71,7 +71,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             if (result != null)
             {
                 string modelName = modelNameGenerator.Generate(entityName);
-                if (result.FindObject(modelName, out var model) && model is SpiceSharp.Components.Model)
+
+                if (result.FindObject(entityName, out var entity) && entity is SpiceSharp.Components.Model)
+                {
+                    if (simulation != null)
+                    {
+                        return new PropertyExport(name, simulation, entityName, parameters[1].Image, comparer);
+                    }
+                    else
+                    {
+                        return new ZeroExport();
+                    }
+                }
+                else if (result.FindObject(modelName, out var model) && model is SpiceSharp.Components.Model)
                 {
                     if (simulation != null)
                     {

@@ -344,7 +344,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             ReadingExpressionContext.SetNamedExpression(expressionName, expression, foundParameters);
         }
 
-        public void SetParameter(Entity entity, string parameterName, string expression, bool onload = true, bool beforeTemperature = true)
+        public void SetParameter(Entity entity, string parameterName, string expression, bool beforeTemperature = true, bool onload = true)
         {
             if (entity == null)
             {

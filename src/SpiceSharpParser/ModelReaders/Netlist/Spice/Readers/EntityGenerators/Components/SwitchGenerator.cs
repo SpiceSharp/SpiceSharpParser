@@ -58,7 +58,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.CreateNodes(resistor, parameters.Take(2));
                 context.SimulationPreparations.ExecuteTemperatureBehaviorBeforeLoad(resistor);
 
-
                 context.SimulationPreparations.ExecuteActionBeforeSetup(
                     (simulation) =>
                     {
@@ -66,7 +65,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         {
                             resistorModel = stochasticModelsRegistry.ProvideStochasticModel(name, simulation, vmodel);
 
-                            if (resistorModel != vmodel)
+                            if (!context.Result.FindObject(resistorModel.Name, out _))
                             {
                                 stochasticModelsRegistry.RegisterModelInstance(resistorModel);
                                 context.Result.Circuit.Add(resistorModel);
@@ -77,7 +76,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                         string resExpression =
                             $"pos(table(v({parameters.GetString(2)}, {parameters.GetString(3)}), @{resistorModel.Name}[voff], @{resistorModel.Name}[roff] , @{resistorModel.Name}[von], @{resistorModel.Name}[ron]), {rOff.ToString(CultureInfo.InvariantCulture)})";
-                        context.SetParameter(resistor, "resistance", resExpression, onload: true, beforeTemperature: true);
+                        context.SetParameter(resistor, "resistance", resExpression, beforeTemperature: true, onload: true);
                     });
                 return resistor;
             }
@@ -142,17 +141,29 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             if (context.ModelsRegistry.FindModel<SpiceSharp.Components.Model>(modelName) is ISwitchModel s)
             {
                 Resistor resistor = new Resistor(name);
+                Model resistorModel = s;
                 context.CreateNodes(resistor, parameters.Take(2));
                 context.SimulationPreparations.ExecuteTemperatureBehaviorBeforeLoad(resistor);
 
-                double rOn = s.ParameterSets.GetParameter<double>("ron");
-                double rOff = s.ParameterSets.GetParameter<double>("roff");
-                double iOn = s.ParameterSets.GetParameter<double>("ion");
-                double iOff = s.ParameterSets.GetParameter<double>("ioff");
+                context.SimulationPreparations.ExecuteActionBeforeSetup(
+                    (simulation) =>
+                    {
+                        if (context.ModelsRegistry is StochasticModelsRegistry stochasticModelsRegistry)
+                        {
+                            resistorModel = stochasticModelsRegistry.ProvideStochasticModel(name, simulation, s);
 
-                string resExpression = $"table(i({parameters.GetString(2)}), {iOff.ToString(CultureInfo.InvariantCulture)}, {rOff.ToString(CultureInfo.InvariantCulture)}, {iOn.ToString(CultureInfo.InvariantCulture)}, {rOn.ToString(CultureInfo.InvariantCulture)})";
-                context.SetParameter(resistor, "resistance", resExpression);
+                            if (!context.Result.FindObject(resistorModel.Name, out _))
+                            {
+                                stochasticModelsRegistry.RegisterModelInstance(resistorModel);
+                                context.Result.Circuit.Add(resistorModel);
+                            }
+                        }
 
+                        double rOff = resistorModel.ParameterSets.GetParameter<double>("roff");
+
+                        string resExpression = $"pos(table(i({parameters.GetString(2)}), @{resistorModel.Name}[ioff], @{resistorModel.Name}[roff] , @{resistorModel.Name}[ion], @{resistorModel.Name}[ron]), {rOff.ToString(CultureInfo.InvariantCulture)})";
+                        context.SetParameter(resistor, "resistance", resExpression, beforeTemperature: true, onload: true);
+                    });
                 return resistor;
             }
             else

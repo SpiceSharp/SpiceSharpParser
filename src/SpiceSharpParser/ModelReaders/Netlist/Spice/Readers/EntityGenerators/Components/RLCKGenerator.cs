@@ -278,11 +278,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // Set resistance
                 if (something is AssignmentParameter asp)
                 {
-                    context.SetParameter(res, "resistance", asp.Value, isDynamic);
+                    context.SetParameter(res, "resistance", asp.Value, true, isDynamic);
                 }
                 else
                 {
-                    context.SetParameter(res, "resistance", something.Image, isDynamic);
+                    context.SetParameter(res, "resistance", something.Image, true, isDynamic);
                 }
             }
             else
@@ -340,7 +340,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                                                          || resistorParameters[0] is ValueParameter
                                                          || resistorParameters[0] is ExpressionParameter))
                     {
-                        context.SetParameter(res, "resistance", resistorParameters[0].Image, false);
+                        context.SetParameter(res, "resistance", resistorParameters[0].Image, true);
                         resistorParameters.RemoveAt(0);
                     }
                 }
@@ -378,11 +378,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                     if (resistanceParameter is AssignmentParameter asp)
                     {
-                        context.SetParameter(res, "resistance", asp.Value, isDynamic);
+                        context.SetParameter(res, "resistance", asp.Value, true, isDynamic);
                     }
                     else
                     {
-                        context.SetParameter(res, "resistance", resistanceParameter.Image, isDynamic);
+                        context.SetParameter(res, "resistance", resistanceParameter.Image, true, isDynamic);
                     }
 
                     resistorParameters.RemoveAt(0);
