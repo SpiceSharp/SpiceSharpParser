@@ -77,11 +77,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         public List<Print> Prints { get; } = new List<Print>();
 
         /// <summary>
-        /// Gets or sets the evaluators for simulation.
-        /// </summary>
-        public IDictionary<Simulation, IEvaluator> Evaluators { get; set; }
-
-        /// <summary>
         /// Gets or sets the used random seed.
         /// </summary>
         public int? Seed { get; set; }
