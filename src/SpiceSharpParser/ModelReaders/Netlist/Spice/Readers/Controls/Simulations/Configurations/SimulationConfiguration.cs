@@ -2,7 +2,7 @@
 using SpiceSharp.IntegrationMethods;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Configurations
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations
 {
     public class SimulationConfiguration
     {

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Configurations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
@@ -26,7 +26,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets simulation configuration.
         /// </summary>
-        public SimulationConfiguration SimulationConfiguration { get; } = new SimulationConfiguration();
+        public SimulationConfiguration SimulationConfiguration => Result.SimulationConfiguration;
 
         /// <summary>
         /// Gets all simulations.
@@ -51,7 +51,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets or sets used random seed.
         /// </summary>
-        public int? Seed { get => Result.Seed; set => Result.Seed = value; }
+        public int? Seed
+        {
+            get => Result.Seed;
+            set => Result.Seed = value;
+        }
 
         /// <summary>
         /// Gets the result where things are added.
@@ -68,6 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new ArgumentNullException(nameof(warning));
             }
+
             Result.Warnings.Add(warning);
         }
 
@@ -81,6 +86,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new ArgumentNullException(nameof(statement));
             }
+
             Result.Comments.Add(statement.Text);
         }
 
@@ -94,6 +100,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new ArgumentNullException(nameof(export));
             }
+
             Result.Exports.Add(export);
         }
 
@@ -107,6 +114,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new ArgumentNullException(nameof(plot));
             }
+
             Result.XyPlots.Add(plot);
         }
 
@@ -120,6 +128,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new ArgumentNullException(nameof(print));
             }
+
             Result.Prints.Add(print);
         }
 
@@ -133,6 +142,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new ArgumentNullException(nameof(entity));
             }
+
             Result.Circuit.Add(entity);
         }
 
@@ -146,6 +156,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new ArgumentNullException(nameof(simulation));
             }
+
             Result.Simulations.Add(simulation);
         }
 
@@ -163,6 +174,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new ArgumentNullException(nameof(objectId));
             }
+
             return Result.Circuit.TryGetEntity(objectId, out entity);
         }
     }

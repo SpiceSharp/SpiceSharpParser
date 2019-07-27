@@ -6,6 +6,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
@@ -64,6 +65,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// Gets the Monte Carlo Analysis results.
         /// </summary>
         public MonteCarloResult MonteCarloResult { get; } = new MonteCarloResult();
+
+        /// <summary>
+        /// Gets the simulation configuration.
+        /// </summary>
+        public SimulationConfiguration SimulationConfiguration { get; } = new SimulationConfiguration();
 
         /// <summary>
         /// Gets the list of generated prints.
