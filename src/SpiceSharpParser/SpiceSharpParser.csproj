@@ -29,7 +29,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SpiceSharp" Version="2.7.3" />
+    <PackageReference Include="SpiceSharp" Version="2.7.6" />
   </ItemGroup>
 
   <ItemGroup>

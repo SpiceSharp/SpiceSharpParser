@@ -12,9 +12,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// Initializes a new instance of the <see cref="VoltageDecibelExport"/> class.
         /// </summary>
         /// <param name="name">Name of export.</param>
-        /// <param name="simulation">Simulation</param>
-        /// <param name="node">Positive node</param>
-        /// <param name="reference">Negative reference node</param>
+        /// <param name="simulation">Simulation.</param>
+        /// <param name="node">Positive node.</param>
+        /// <param name="reference">Negative reference node.</param>
         public VoltageDecibelExport(string name, Simulation simulation, string node, string reference = null)
             : base(simulation)
         {

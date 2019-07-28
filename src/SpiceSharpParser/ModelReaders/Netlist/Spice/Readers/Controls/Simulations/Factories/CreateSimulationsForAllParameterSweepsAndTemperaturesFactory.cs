@@ -14,11 +14,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
     {
         public CreateSimulationsForAllParameterSweepsAndTemperaturesFactory(ICreateSimulationsForAllTemperaturesFactory allTemperaturesFactory)
         {
-            AllTemperaturesFactory = allTemperaturesFactory;
-
+            AllTemperaturesFactory = allTemperaturesFactory ?? throw new ArgumentNullException(nameof(allTemperaturesFactory));
             ParameterUpdater = new ParameterSweepUpdater();
         }
 
+        /// <summary>
+        /// Gets the simulations factory.
+        /// </summary>
         public ICreateSimulationsForAllTemperaturesFactory AllTemperaturesFactory { get; }
 
         /// <summary>
@@ -26,11 +28,28 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// </summary>
         protected IParameterSweepUpdater ParameterUpdater { get; }
 
+        /// <summary>
+        /// Creates simulations for all parameter and temperature sweeps.
+        /// </summary>
+        /// <param name="statement">Statement.</param>
+        /// <param name="context">Context.</param>
+        /// <param name="createSimulation">Create simulation factory.</param>
+        /// <returns></returns>
         public List<BaseSimulation> CreateSimulations(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
         {
             var result = new List<BaseSimulation>();
 
             ProcessTempParameterSweep(context);
+
+            if (context.Result.SimulationConfiguration.ParameterSweeps.Count == 0)
+            {
+                result.AddRange(AllTemperaturesFactory.CreateSimulations(
+                    statement,
+                    context,
+                    createSimulation));
+
+                return result;
+            }
 
             List<List<double>> sweeps = new List<List<double>>();
             int productCount = 1;
@@ -51,7 +70,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 Func<string, Control, IReadingContext, BaseSimulation> createSimulationWithSweepParametersFactory =
                     (name, control, modifiedContext) =>
                     {
-                        List<KeyValuePair<Parameter, double>> parameterValues = GetSweepParameterValues(context, sweeps, system, indexes);
+                        List<KeyValuePair<Parameter, double>> parameterValues =
+                            GetSweepParameterValues(context, sweeps, system, indexes);
                         string suffix = GetSimulationNameSuffix(parameterValues);
 
                         var simulation = createSimulation(name + " (" + suffix + ")", control, modifiedContext);

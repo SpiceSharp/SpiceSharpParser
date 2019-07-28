@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Custom;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using Model = SpiceSharp.Components.Model;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
 {
@@ -49,20 +51,33 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             string modelName = parameters.GetString(4);
 
-            if (context.ModelsRegistry.FindModel<SpiceSharp.Components.Model>(modelName) is VSwitchModel s)
+            if (context.ModelsRegistry.FindModel<SpiceSharp.Components.Model>(modelName) is VSwitchModel vmodel)
             {
                 Resistor resistor = new Resistor(name);
+                Model resistorModel = vmodel;
                 context.CreateNodes(resistor, parameters.Take(2));
                 context.SimulationPreparations.ExecuteTemperatureBehaviorBeforeLoad(resistor);
 
-                double rOn = s.ParameterSets.GetParameter<double>("ron");
-                double rOff = s.ParameterSets.GetParameter<double>("roff");
-                double vOn = s.ParameterSets.GetParameter<double>("von");
-                double vOff = s.ParameterSets.GetParameter<double>("voff");
+                context.SimulationPreparations.ExecuteActionBeforeSetup(
+                    (simulation) =>
+                    {
+                        if (context.ModelsRegistry is StochasticModelsRegistry stochasticModelsRegistry)
+                        {
+                            resistorModel = stochasticModelsRegistry.ProvideStochasticModel(name, simulation, vmodel);
 
-                string resExpression = $"table(v({parameters.GetString(2)}, {parameters.GetString(3)}), {vOff.ToString(CultureInfo.InvariantCulture)}, {rOff.ToString(CultureInfo.InvariantCulture)}, {vOn.ToString(CultureInfo.InvariantCulture)}, {rOn.ToString(CultureInfo.InvariantCulture)})";
-                context.SetParameter(resistor, "resistance", resExpression);
+                            if (!context.Result.FindObject(resistorModel.Name, out _))
+                            {
+                                stochasticModelsRegistry.RegisterModelInstance(resistorModel);
+                                context.Result.Circuit.Add(resistorModel);
+                            }
+                        }
 
+                        double rOff = resistorModel.ParameterSets.GetParameter<double>("roff");
+
+                        string resExpression =
+                            $"pos(table(v({parameters.GetString(2)}, {parameters.GetString(3)}), @{resistorModel.Name}[voff], @{resistorModel.Name}[roff] , @{resistorModel.Name}[von], @{resistorModel.Name}[ron]), {rOff.ToString(CultureInfo.InvariantCulture)})";
+                        context.SetParameter(resistor, "resistance", resExpression, beforeTemperature: true, onload: true);
+                    });
                 return resistor;
             }
             else
@@ -70,12 +85,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 VoltageSwitch vsw = new VoltageSwitch(name);
                 context.CreateNodes(vsw, parameters);
 
-                context.ModelsRegistry.SetModel<VoltageSwitchModel>(
-                    vsw,
-                    parameters.GetString(4),
-                    $"Could not find model {parameters.GetString(4)} for voltage switch {name}",
-                    (VoltageSwitchModel model) => { vsw.Model = model.Name; },
-                    context.Result);
+                context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
+                {
+                    context.ModelsRegistry.SetModel<VoltageSwitchModel>(
+                        vsw,
+                        simulation,
+                        parameters.GetString(4),
+                        $"Could not find model {parameters.GetString(4)} for voltage switch {name}",
+                        (VoltageSwitchModel model) => { vsw.Model = model.Name; },
+                        context.Result);
+                });
 
                 // Optional ON or OFF
                 if (parameters.Count == 6)
@@ -122,17 +141,29 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             if (context.ModelsRegistry.FindModel<SpiceSharp.Components.Model>(modelName) is ISwitchModel s)
             {
                 Resistor resistor = new Resistor(name);
+                Model resistorModel = s;
                 context.CreateNodes(resistor, parameters.Take(2));
                 context.SimulationPreparations.ExecuteTemperatureBehaviorBeforeLoad(resistor);
 
-                double rOn = s.ParameterSets.GetParameter<double>("ron");
-                double rOff = s.ParameterSets.GetParameter<double>("roff");
-                double iOn = s.ParameterSets.GetParameter<double>("ion");
-                double iOff = s.ParameterSets.GetParameter<double>("ioff");
+                context.SimulationPreparations.ExecuteActionBeforeSetup(
+                    (simulation) =>
+                    {
+                        if (context.ModelsRegistry is StochasticModelsRegistry stochasticModelsRegistry)
+                        {
+                            resistorModel = stochasticModelsRegistry.ProvideStochasticModel(name, simulation, s);
 
-                string resExpression = $"table(i({parameters.GetString(2)}), {iOff.ToString(CultureInfo.InvariantCulture)}, {rOff.ToString(CultureInfo.InvariantCulture)}, {iOn.ToString(CultureInfo.InvariantCulture)}, {rOn.ToString(CultureInfo.InvariantCulture)})";
-                context.SetParameter(resistor, "resistance", resExpression);
+                            if (!context.Result.FindObject(resistorModel.Name, out _))
+                            {
+                                stochasticModelsRegistry.RegisterModelInstance(resistorModel);
+                                context.Result.Circuit.Add(resistorModel);
+                            }
+                        }
 
+                        double rOff = resistorModel.ParameterSets.GetParameter<double>("roff");
+
+                        string resExpression = $"pos(table(i({parameters.GetString(2)}), @{resistorModel.Name}[ioff], @{resistorModel.Name}[roff] , @{resistorModel.Name}[ion], @{resistorModel.Name}[ron]), {rOff.ToString(CultureInfo.InvariantCulture)})";
+                        context.SetParameter(resistor, "resistance", resExpression, beforeTemperature: true, onload: true);
+                    });
                 return resistor;
             }
             else
@@ -151,12 +182,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
 
                 // Get the model
-                context.ModelsRegistry.SetModel<CurrentSwitchModel>(
-                   csw,
-                   parameters.GetString(3),
-                   $"Could not find model {parameters.GetString(3)} for current switch {name}",
-                   (CurrentSwitchModel model) => csw.Model = model.Name,
-                   context.Result);
+                context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
+                {
+                    context.ModelsRegistry.SetModel<CurrentSwitchModel>(
+                        csw,
+                        simulation,
+                        parameters.GetString(3),
+                        $"Could not find model {parameters.GetString(3)} for current switch {name}",
+                        (CurrentSwitchModel model) => csw.Model = model.Name,
+                        context.Result);
+                });
 
                 // Optional on or off
                 if (parameters.Count > 4)

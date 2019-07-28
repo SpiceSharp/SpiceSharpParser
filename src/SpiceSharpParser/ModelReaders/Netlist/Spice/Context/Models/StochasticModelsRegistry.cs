@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using SpiceSharp.Circuits;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using Model = SpiceSharp.Components.Model;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 {
@@ -43,7 +45,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// <summary>
         /// Gets or sets the dictionary of stochastic models.
         /// </summary>
-        protected Dictionary<SpiceSharp.Components.Model, List<SpiceSharp.Components.Model>> StochasticModels { get; set; } = new Dictionary<SpiceSharp.Components.Model, List<SpiceSharp.Components.Model>>();
+        protected Dictionary<BaseSimulation, Dictionary<SpiceSharp.Components.Model, List<SpiceSharp.Components.Model>>> StochasticModels { get; set; } = new Dictionary<BaseSimulation, Dictionary<Model, List<Model>>>();
 
         /// <summary>
         /// Gets or sets the list of all models in the registry.
@@ -142,25 +144,30 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// <summary>
         /// Provides a model for component.
         /// </summary>
-        /// <param name="component">A component.</param>
+        /// <param name="componentName">A component name.</param>
         /// <param name="model">A model for component.</param>
         /// <returns>
         /// If a model is stochastic (dev, lot) then a copy of model with be returned.
         /// If a model is not stochastic then a raw model is returned.
         /// </returns>
-        public SpiceSharp.Components.Model ProvideStochasticModel(Entity component, SpiceSharp.Components.Model model)
+        public Model ProvideStochasticModel(string componentName, BaseSimulation simulation, SpiceSharp.Components.Model model)
         {
             if (ModelsGenerators.ContainsKey(model))
             {
-                string modelId = string.Format("{0}#{1}", model.Name, component.Name);
+                string modelId = string.Format("{0}#{1}_{2}", model.Name, componentName, simulation.Name);
                 var modelForComponent = ModelsGenerators[model](modelId);
 
-                if (!StochasticModels.ContainsKey(model))
+                if (!StochasticModels.ContainsKey(simulation))
                 {
-                    StochasticModels[model] = new List<SpiceSharp.Components.Model>();
+                    StochasticModels[simulation] = new Dictionary<Model, List<Model>>();
                 }
 
-                StochasticModels[model].Add(modelForComponent);
+                if (!StochasticModels[simulation].ContainsKey(model))
+                {
+                    StochasticModels[simulation][model] = new List<SpiceSharp.Components.Model>();
+                }
+
+                StochasticModels[simulation][model].Add(modelForComponent);
                 return modelForComponent;
             }
 
@@ -173,9 +180,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// <returns>
         /// A dictionary of base models and their stochastic models.
         /// </returns>
-        public Dictionary<SpiceSharp.Components.Model, List<SpiceSharp.Components.Model>> GetStochasticModels()
+        public Dictionary<SpiceSharp.Components.Model, List<SpiceSharp.Components.Model>> GetStochasticModels(BaseSimulation simulation)
         {
-            return StochasticModels;
+            return StochasticModels.ContainsKey(simulation)
+                ? StochasticModels[simulation]
+                : new Dictionary<Model, List<Model>>();
         }
 
         /// <summary>
@@ -221,7 +230,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             return null;
         }
 
-        public void SetModel<T>(Entity entity, string modelName, string exceptionMessage, Action<T> setModelAction, IResultService result)
+        public void SetModel<T>(Entity entity, BaseSimulation simulation, string modelName, string exceptionMessage, Action<T> setModelAction, IResultService result)
             where T : SpiceSharp.Components.Model
         {
             var model = FindModel<T>(modelName);
@@ -231,7 +240,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
                 throw new ModelNotFoundException(exceptionMessage);
             }
 
-            var stochasticModel = (T) ProvideStochasticModel(entity, model);
+            var stochasticModel = (T) ProvideStochasticModel(entity.Name, simulation, model);
             setModelAction(stochasticModel);
 
             if (stochasticModel != null)
@@ -266,7 +275,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             result.AllModels = new Dictionary<string, Entity>(AllModels, StringComparerProvider.Get(IsModelNameCaseSensitive));
             result.ModelsWithDev = new Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, ParameterRandomness>>(ModelsWithDev);
             result.ModelsWithLot = new Dictionary<SpiceSharp.Components.Model, Dictionary<Parameter, ParameterRandomness>>(ModelsWithLot);
-
+            result.StochasticModels = new Dictionary<BaseSimulation, Dictionary<Model, List<Model>>>(StochasticModels);
             return result;
         }
     }

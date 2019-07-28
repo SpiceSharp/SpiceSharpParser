@@ -37,6 +37,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         {
             var functions = new List<IFunction>
             {
+                MathFunctions.CreatePos(),
                 MathFunctions.CreatePowInfix(Mode),
                 MathFunctions.CreateAbs(),
                 RandomFunctions.CreateAGauss(),

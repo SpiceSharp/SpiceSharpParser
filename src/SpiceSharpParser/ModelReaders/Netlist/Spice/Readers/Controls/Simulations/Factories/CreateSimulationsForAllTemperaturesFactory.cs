@@ -11,7 +11,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 {
     public class CreateSimulationsForAllTemperaturesFactory : ICreateSimulationsForAllTemperaturesFactory
     {
-        public IEnumerable<BaseSimulation> CreateSimulations(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
+        public List<BaseSimulation> CreateSimulations(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
         {
             var result = new List<BaseSimulation>();
 
@@ -63,12 +63,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         {
             if (operatingTemperatureInKelvins.HasValue)
             {
-                CircuitTemperatureSimulationDecorator.Decorate(simulation, operatingTemperatureInKelvins.Value);
+                var decorator = new CircuitTemperatureSimulationDecorator(operatingTemperatureInKelvins.Value);
+                decorator.Decorate(simulation);
             }
 
             if (nominalTemperatureInKelvins.HasValue)
             {
-                NominalTemperatureSimulationDecorator.Decorate(simulation, nominalTemperatureInKelvins.Value);
+                var decorator = new NominalTemperatureSimulationDecorator(nominalTemperatureInKelvins.Value);
+                decorator.Decorate(simulation);
             }
         }
 

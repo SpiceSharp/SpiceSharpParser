@@ -3,64 +3,61 @@ using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
 {
     public class CreateSimulationsForMonteCarloFactory : ICreateSimulationsForMonteCarloFactory
     {
         public CreateSimulationsForMonteCarloFactory(
-            ICreateSimulationsForAllTemperaturesFactory allTemperatures,
-            ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory allTemperaturesAndSweeps,
+            ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory temperatureAndParameterSweepsSimulationFactory,
             IExportFactory exportFactory,
             IMapper<Exporter> mapperExporter)
         {
-            AllTemperaturesAndSweeps = allTemperaturesAndSweeps;
+            TemperatureAndParameterSweepsSimulationFactory = temperatureAndParameterSweepsSimulationFactory;
             ExportFactory = exportFactory;
-            AllTemperatures = allTemperatures;
             MapperExporter = mapperExporter;
         }
 
-        public IMapper<Exporter> MapperExporter { get; set; }
+        /// <summary>
+        /// Gets the exporter mapper.
+        /// </summary>
+        protected IMapper<Exporter> MapperExporter { get; }
 
-        public ICreateSimulationsForAllTemperaturesFactory AllTemperatures { get; }
+        /// <summary>
+        /// Gets the simulations factory.
+        /// </summary>
+        protected ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory TemperatureAndParameterSweepsSimulationFactory { get; }
 
-        public ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory AllTemperaturesAndSweeps { get; }
+        /// <summary>
+        /// Gets the export factory.
+        /// </summary>
+        protected IExportFactory ExportFactory { get; }
 
-        public IExportFactory ExportFactory { get; }
-
-        public List<BaseSimulation> Create(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> simulationWithStochasticModels)
+        /// <summary>
+        /// Creates simulations for Monte Carlo simulation.
+        /// </summary>
+        /// <param name="statement">Statement/</param>
+        /// <param name="context">Context.</param>
+        /// <param name="createSimulation">Simulation factory.</param>
+        /// <returns></returns>
+        public List<BaseSimulation> Create(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
         {
             context.Result.MonteCarlo.Enabled = true;
             context.Result.MonteCarlo.Seed = context.Result.SimulationConfiguration.MonteCarloConfiguration.Seed;
-            context.Result.MonteCarlo.OutputVariable =
-                context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable.Image;
+            context.Result.MonteCarlo.OutputVariable = context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable.Image;
             context.Result.MonteCarlo.Function = context.Result.SimulationConfiguration.MonteCarloConfiguration.Function;
 
             var result = new List<BaseSimulation>();
 
-            if (context.Result.SimulationConfiguration.ParameterSweeps.Count == 0)
+            for (var i = 0; i < context.Result.SimulationConfiguration.MonteCarloConfiguration.Runs; i++)
             {
-                for (var i = 0; i < context.Result.SimulationConfiguration.MonteCarloConfiguration.Runs; i++)
-                {
-                    var simulations = AllTemperatures
-                        .CreateSimulations(statement, context, simulationWithStochasticModels).ToList();
-
-                    AttachMonteCarloDataGathering(context, simulations);
-                    result.AddRange(simulations);
-                }
-            }
-            else
-            {
-                for (var i = 0; i < context.Result.SimulationConfiguration.MonteCarloConfiguration.Runs; i++)
-                {
-                    var simulations = AllTemperaturesAndSweeps.CreateSimulations(statement, context, simulationWithStochasticModels);
-                    AttachMonteCarloDataGathering(context, simulations);
-                    result.AddRange(simulations);
-                }
+                var simulations = TemperatureAndParameterSweepsSimulationFactory.CreateSimulations(statement, context, createSimulation);
+                AttachMonteCarloDataGathering(context, simulations);
+                result.AddRange(simulations);
             }
 
             return result;
@@ -80,7 +77,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             simulation.BeforeSetup += (sender, args) =>
             {
-                Export export = context.Result.Exports.FirstOrDefault(e => e.Simulation == simulation && e.Name == exportParam.Image);
+               Export export = context.Result.Exports.FirstOrDefault(e => e.Simulation == simulation && e.Name == exportParam.Image);
 
                 if (export == null)
                 {
@@ -88,13 +85,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 }
 
                 simulation.ExportSimulationData += (exportSender, exportArgs) =>
+                {
+                    if (export != null)
                     {
-                        if (export != null)
-                        {
-                            var value = export.Extract();
-                            context.Result.MonteCarlo.Collect(simulation, value);
-                        }
-                    };
+                        var value = export.Extract();
+                        context.Result.MonteCarlo.Collect(simulation, value);
+                    }
+                };
             };
         }
     }

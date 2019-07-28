@@ -126,12 +126,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    context.ModelsRegistry.SetModel<CapacitorModel>(
-                        capacitor,
-                        parameters.GetString(2),
-                        $"Could not find model {parameters.GetString(2)} for capacitor {name}",
-                        (CapacitorModel model) => capacitor.Model = model.Name,
-                        context.Result);
+                    context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
+                    {
+                        context.ModelsRegistry.SetModel<CapacitorModel>(
+                            capacitor,
+                            simulation,
+                            parameters.GetString(2),
+                            $"Could not find model {parameters.GetString(2)} for capacitor {name}",
+                            (CapacitorModel model) => capacitor.Model = model.Name,
+                            context.Result);
+                    });
 
                     modelBased = true;
                 }
@@ -274,11 +278,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // Set resistance
                 if (something is AssignmentParameter asp)
                 {
-                    context.SetParameter(res, "resistance", asp.Value, isDynamic);
+                    context.SetParameter(res, "resistance", asp.Value, true, isDynamic);
                 }
                 else
                 {
-                    context.SetParameter(res, "resistance", something.Image, isDynamic);
+                    context.SetParameter(res, "resistance", something.Image, true, isDynamic);
                 }
             }
             else
@@ -317,12 +321,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     var modelName = resistorParameters[0].Image;
 
                     // Ignore tc parameter on resistor ...
-                    context.ModelsRegistry.SetModel<ResistorModel>(
-                        res,
-                        modelName,
-                        $"Could not find model {modelName} for resistor {name}",
-                        (ResistorModel model) => res.Model = model.Name,
-                        context.Result);
+
+                    context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
+                    {
+                        context.ModelsRegistry.SetModel<ResistorModel>(
+                            res,
+                            simulation,
+                            modelName,
+                            $"Could not find model {modelName} for resistor {name}",
+                            (ResistorModel model) => res.Model = model.Name,
+                            context.Result);
+                    });
 
                     resistorParameters.RemoveAt(0);
 
@@ -331,7 +340,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                                                          || resistorParameters[0] is ValueParameter
                                                          || resistorParameters[0] is ExpressionParameter))
                     {
-                        context.SetParameter(res, "resistance", resistorParameters[0].Image, false);
+                        context.SetParameter(res, "resistance", resistorParameters[0].Image, true);
                         resistorParameters.RemoveAt(0);
                     }
                 }
@@ -369,11 +378,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                     if (resistanceParameter is AssignmentParameter asp)
                     {
-                        context.SetParameter(res, "resistance", asp.Value, isDynamic);
+                        context.SetParameter(res, "resistance", asp.Value, true, isDynamic);
                     }
                     else
                     {
-                        context.SetParameter(res, "resistance", resistanceParameter.Image, isDynamic);
+                        context.SetParameter(res, "resistance", resistanceParameter.Image, true, isDynamic);
                     }
 
                     resistorParameters.RemoveAt(0);

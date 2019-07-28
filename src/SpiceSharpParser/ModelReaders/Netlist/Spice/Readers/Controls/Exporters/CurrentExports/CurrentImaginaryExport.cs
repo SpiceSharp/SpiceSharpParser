@@ -13,8 +13,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// Initializes a new instance of the <see cref="CurrentImaginaryExport"/> class.
         /// </summary>
         /// <param name="name">Name of export.</param>
-        /// <param name="simulation">A simulation</param>
-        /// <param name="source">An identifier</param>
+        /// <param name="simulation">A simulation.</param>
+        /// <param name="source">A name of current source.</param>
         public CurrentImaginaryExport(string name, Simulation simulation, string source)
             : base(simulation)
         {
@@ -24,30 +24,30 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         }
 
         /// <summary>
-        /// Gets the main node
+        /// Gets the main node.
         /// </summary>
         public string Source { get; }
 
         /// <summary>
-        /// Gets the type name
+        /// Gets the type name.
         /// </summary>
         public override string TypeName => "current";
 
         /// <summary>
-        /// Gets the quantity unit
+        /// Gets the quantity unit.
         /// </summary>
         public override string QuantityUnit => "Current (A)";
 
         /// <summary>
-        /// Gets the complex property export
+        /// Gets the complex property export.
         /// </summary>
         protected ComplexPropertyExport ExportImpl { get; }
 
         /// <summary>
-        /// Extracts current imaginary value
+        /// Extracts current imaginary value.
         /// </summary>
         /// <returns>
-        /// Current imaginary value
+        /// Current imaginary value.
         /// </returns>
         public override double Extract()
         {

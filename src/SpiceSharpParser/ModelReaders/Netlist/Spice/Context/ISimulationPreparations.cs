@@ -1,4 +1,5 @@
-﻿using SpiceSharp.Circuits;
+﻿using System;
+using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
@@ -18,5 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         void SetParameter(Entity @object, BaseSimulation simulation, string paramName, double value, bool beforeTemperature, bool onload);
 
         void ExecuteTemperatureBehaviorBeforeLoad(Entity @object);
+
+        void ExecuteActionBeforeSetup(Action<BaseSimulation> action);
     }
 }

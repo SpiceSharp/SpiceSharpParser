@@ -18,7 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 if (parameter is AssignmentParameter ap)
                 {
-                    context.SetParameter(entity, ap.Name, ap.Value, onload);
+                    context.SetParameter(entity, ap.Name, ap.Value, true, onload);
                 }
                 else
                 {

@@ -7,6 +7,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
     public class MathFunctions
     {
         /// <summary>
+        /// Get a pos() function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of poly function.
+        /// </returns>
+        public static IFunction<double, double> CreatePos()
+        {
+            return new PosFunction();
+        }
+
+        /// <summary>
         /// Get a poly() function.
         /// </summary>
         /// <returns>

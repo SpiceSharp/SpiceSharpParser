@@ -2,11 +2,11 @@
 using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Configurations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context

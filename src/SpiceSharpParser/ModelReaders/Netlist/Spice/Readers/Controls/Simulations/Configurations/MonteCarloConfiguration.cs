@@ -1,7 +1,7 @@
-﻿namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Configurations
-{
-    using SpiceSharpParser.Models.Netlist.Spice.Objects;
+﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations
+{
     public class MonteCarloConfiguration
     {
         public bool Enabled { get; set; } = false;
