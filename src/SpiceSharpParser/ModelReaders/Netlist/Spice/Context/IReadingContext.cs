@@ -109,6 +109,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         string WorkingDirectory { get; }
 
+
+        InstanceData InstanceData { get; set; }
+
         /// <summary>
         /// Parses an expression to double.
         /// </summary>

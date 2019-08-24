@@ -99,7 +99,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 if (simulation.EntityBehaviors[entity.Name].TryGet<ITemperatureBehavior>(out var temperatureBehavior))
                 {
-                    temperatureBehavior.Temperature(simulation);
+                    temperatureBehavior.Temperature();
                 }
                 else
                 {

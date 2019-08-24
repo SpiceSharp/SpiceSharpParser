@@ -1,6 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using SpiceSharpBehavioral.Parsers;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -10,6 +14,48 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public abstract class SourceGenerator : ComponentGenerator
     {
+        protected ISpiceDerivativeParser<double> CreateParser(IReadingContext context)
+        {
+            var parser = new SimpleDerivativeParser();
+            parser.VariableFound += (sender, args) =>
+            {
+                if (context.ReadingExpressionContext.Parameters.TryGetValue(args.Name, out var expression))
+                {
+                    var d = new DoubleDerivatives(1);
+                    d[0] = () => context.EvaluateDouble(expression.ValueExpression);
+                    args.Result = d;
+                }
+            };
+            parser.FunctionFound += (sender, args) =>
+            {
+                if (context.ReadingExpressionContext.Functions.TryGetValue(args.Name, out var functions))
+                {
+                    var function = functions.First() as IFunction<double, double>;
+
+                    if (function != null)
+                    {
+                        var d = new DoubleDerivatives(1);
+
+                        var arguments = new List<Func<double>>();
+
+                        for (var i = 0; i < args.ArgumentCount; i++)
+                        {
+                            if (args[i].Count > 0)
+                            {
+                                var arg = args[i];
+                                arguments.Add(() => arg[0]());
+                            }
+                        }
+
+                        d[0] = () => function.Logic(string.Empty, arguments.Select(arg => arg()).ToArray(), context.ReadingEvaluator, context.ReadingExpressionContext);
+                        args.Result = d;
+                    }
+                }
+            };
+
+            return parser;
+        }
+
         protected SpiceSharp.Components.Component SetSourceParameters(
            string name,
            ParameterCollection parameters,
@@ -136,74 +182,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             return ExpressionFactory.CreatePolyCurrentExpression(dimension, parameters);
-        }
-
-        protected void SetControlledSourceParameters(
-            string name,
-            ParameterCollection parameters,
-            IReadingContext context,
-            Entity entity,
-            bool isVoltageControlled)
-        {
-            if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
-            {
-                var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
-                context.SetParameter(entity, "dc", valueParameter.Value);
-            }
-
-            if (parameters.Any(p => p is WordParameter ap && ap.Image.ToLower() == "value"))
-            {
-                var expressionParameter = parameters.FirstOrDefault(p => p is ExpressionParameter);
-                if (expressionParameter != null)
-                {
-                    context.SetParameter(entity, "dc", expressionParameter.Image);
-                }
-            }
-
-            if (parameters.Any(p => p is WordParameter bp && bp.Image.ToLower() == "poly"))
-            {
-                var dimension = 1;
-                var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled);
-                context.SetParameter(entity, "dc", expression);
-            }
-
-            if (parameters.Any(p => p is BracketParameter bp && bp.Name.ToLower() == "poly"))
-            {
-                var polyParameter = (BracketParameter)parameters.Single(p => p is BracketParameter bp && bp.Name.ToLower() == "poly");
-
-                if (polyParameter.Parameters.Count != 1)
-                {
-                    throw new WrongParametersCountException(name, "poly expects one argument => dimension");
-                }
-
-                var dimension = (int)context.EvaluateDouble(polyParameter.Parameters[0].Image);
-                var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled);
-                context.SetParameter(entity, "dc", expression);
-            }
-
-            var tableParameter = parameters.FirstOrDefault(p => p.Image.ToLower() == "table");
-            if (tableParameter != null)
-            {
-                int tableParameterPosition = parameters.IndexOf(tableParameter);
-                if (tableParameterPosition == parameters.Count - 1)
-                {
-                    throw new WrongParametersCountException(name, "table expects expression parameter");
-                }
-
-                var nextParameter = parameters[tableParameterPosition + 1];
-
-                if (nextParameter is ExpressionEqualParameter eep)
-                {
-                    var tableParameterName = name + "_table_variable";
-                    context.SetParameter(tableParameterName, eep.Expression);
-                    string expression = ExpressionFactory.CreateTableExpression(tableParameterName, eep.Points);
-                    context.SetParameter(entity, "dc", expression);
-                }
-                else
-                {
-                    throw new WrongParameterTypeException(name, "table expects expression equal parameter");
-                }
-            }
         }
     }
 }

@@ -85,6 +85,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         public string WorkingDirectory { get; }
 
+        public InstanceData InstanceData { get; set; }
+
         /// <summary>
         /// Gets or sets the name of context.
         /// </summary>
