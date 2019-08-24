@@ -11,7 +11,7 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
                 "Poly in expression test circuit",
                 "R1 1 0 100",
                 "V1 1 0 2",
-                "ESource 2 0 VALUE = { poly(1, V(1), 2, 1) }", // Value = V(1) + 2
+                "ESource 2 0 VALUE = { poly(1, V( 1 ), 2, 1) }", // Value = V(1) + 2
                 ".OP",
                 ".SAVE V(2,0)",
                 ".END");

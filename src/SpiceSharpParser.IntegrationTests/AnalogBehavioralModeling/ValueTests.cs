@@ -122,8 +122,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
-            double export = RunOpSimulation(netlist, "V(2,0)");
-            Assert.Equal(double.PositiveInfinity, export);
+            Assert.Throws<SpiceSharp.CircuitException>(() => RunOpSimulation(netlist, "V(2,0)"));
         }
         
         [Fact]
@@ -191,8 +190,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
-            double export = RunOpSimulation(netlist, "V(2,0)");
-            Assert.Equal(double.PositiveInfinity, export);
+            Assert.Throws<SpiceSharp.CircuitException>(() => RunOpSimulation(netlist, "V(2,0)"));
         }
 
         [Fact]
