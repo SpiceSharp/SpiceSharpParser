@@ -1,10 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using SpiceSharpBehavioral.Components.BehavioralBehaviors;
+using SpiceSharpBehavioral.Parsers;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Custom;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using Component = SpiceSharp.Components.Component;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {
@@ -88,10 +96,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    var vs = new VoltageSource(name);
-                    context.CreateNodes(vs, parameters);
-                    SetControlledSourceParameters(name, parameters.Skip(VoltageSource.VoltageSourcePinCount), context, vs, true);
-                    return vs;
+                    return CreateCustomVoltageSource(name, parameters, context, true);
                 }
             }
         }
@@ -124,10 +129,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
             else
             {
-                var vs = new VoltageSource(name);
-                context.CreateNodes(vs, parameters);
-                SetControlledSourceParameters(name, parameters.Skip(VoltageSource.VoltageSourcePinCount), context, vs, false);
-                return vs;
+                return CreateCustomVoltageSource(name, parameters, context, false);
             }
         }
 
@@ -145,8 +147,103 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var vs = new VoltageSource(name);
             context.CreateNodes(vs, parameters);
             SetSourceParameters(name, parameters, context, vs);
-
             return vs;
+        }
+
+        protected Component CreateCustomVoltageSource(
+            string name,
+            ParameterCollection parameters,
+            IReadingContext context,
+            bool isVoltageControlled)
+        {
+            var parser = CreateParser(context);
+
+            if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
+            {
+                var entity = new BehavioralVoltageSource(name);
+                context.CreateNodes(entity, parameters);
+                entity.SetParameter("parser", parser);
+
+                var baseParameters = entity.ParameterSets.Get<BaseParameters>();
+                var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
+                baseParameters.Expression = valueParameter.Value;
+
+                return entity;
+            }
+
+            if (parameters.Any(p => p is WordParameter ap && ap.Image.ToLower() == "value"))
+            {
+                var entity = new BehavioralVoltageSource(name);
+                entity.SetParameter("parser", parser);
+                context.CreateNodes(entity, parameters);
+                var baseParameters = entity.ParameterSets.Get<BaseParameters>();
+                var expressionParameter = parameters.FirstOrDefault(p => p is ExpressionParameter);
+                if (expressionParameter != null)
+                {
+                    baseParameters.Expression = expressionParameter.Image;
+                }
+
+                return entity;
+            }
+
+            if (parameters.Any(p => p is WordParameter bp && bp.Image.ToLower() == "poly"))
+            {
+                var entity = new VoltageSource(name);
+                context.CreateNodes(entity, parameters);
+                parameters = parameters.Skip(VoltageSource.VoltageSourcePinCount);
+                var dimension = 1;
+                var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled);
+                context.SetParameter(entity, "dc", expression);
+
+                return entity;
+            }
+
+            if (parameters.Any(p => p is BracketParameter bp && bp.Name.ToLower() == "poly"))
+            {
+                var polyParameter = (BracketParameter)parameters.Single(p => p is BracketParameter bp && bp.Name.ToLower() == "poly");
+
+                if (polyParameter.Parameters.Count != 1)
+                {
+                    throw new WrongParametersCountException(name, "poly expects one argument => dimension");
+                }
+
+                var entity = new VoltageSource(name);
+                context.CreateNodes(entity, parameters);
+                parameters = parameters.Skip(VoltageSource.VoltageSourcePinCount);
+                var dimension = (int)context.EvaluateDouble(polyParameter.Parameters[0].Image);
+                var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled);
+                context.SetParameter(entity, "dc", expression);
+                return entity;
+            }
+
+            var tableParameter = parameters.FirstOrDefault(p => p.Image.ToLower() == "table");
+            if (tableParameter != null)
+            {
+                int tableParameterPosition = parameters.IndexOf(tableParameter);
+                if (tableParameterPosition == parameters.Count - 1)
+                {
+                    throw new WrongParametersCountException(name, "table expects expression parameter");
+                }
+
+                var nextParameter = parameters[tableParameterPosition + 1];
+
+                if (nextParameter is ExpressionEqualParameter eep)
+                {
+                    var entity = new VoltageSource(name);
+                    context.CreateNodes(entity, parameters);
+                    var tableParameterName = name + "_table_variable";
+                    context.SetParameter(tableParameterName, eep.Expression);
+                    string expression = ExpressionFactory.CreateTableExpression(tableParameterName, eep.Points);
+                    context.SetParameter(entity, "dc", expression);
+                    return entity;
+                }
+                else
+                {
+                    throw new WrongParameterTypeException(name, "table expects expression equal parameter");
+                }
+            }
+
+            return null;
         }
     }
 }
