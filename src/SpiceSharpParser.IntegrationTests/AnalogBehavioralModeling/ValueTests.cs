@@ -30,6 +30,30 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         }
 
         [Fact]
+        public void When_VoltageControlledVoltageSourcePower_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "Value test circuit",
+                "R1 1 0 100",
+                "V1 1 0 1",
+                "V2 2 0 2",
+                "V3 3 0 3",
+                "V4 4 0 4",
+                "V5 5 0 5",
+                "X1 3 6 4 COMP1",
+                ".SUBCKT COMP1 4 5 2",
+                "ESource 4 5 VALUE = { Pow(V(2), 2) + 2 }",
+                ".ENDS",
+                ".OP",
+                ".SAVE V(3,6)",
+                ".END");
+
+            Assert.NotNull(netlist);
+            double export = RunOpSimulation(netlist, "V(3,6)");
+            Assert.Equal(18, export);
+        }
+
+        [Fact]
         public void When_TwoVoltageControlledVoltageSourceInSubcktSameVoltage_Expect_Reference()
         {
             var netlist = ParseNetlist(

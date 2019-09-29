@@ -14,21 +14,31 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public abstract class SourceGenerator : ComponentGenerator
     {
-        protected ISpiceDerivativeParser<double> CreateParser(IReadingContext context)
+        protected SimpleDerivativeParser CreateParser(IReadingContext context)
         {
+            if (context.Result.Simulations.Count() > 1)
+            {
+                throw new GeneralReaderException("Behavioral sources requires that there is only one simulation in the netlist");
+            }
+
+
             var parser = new SimpleDerivativeParser();
             parser.VariableFound += (sender, args) =>
             {
-                if (context.ReadingExpressionContext.Parameters.TryGetValue(args.Name, out var expression))
+                var simulationExpressionContext = context.SimulationExpressionContexts.GetContext(context.Result.Simulations.First());
+
+                if (simulationExpressionContext.Parameters.ContainsKey(args.Name))
                 {
                     var d = new DoubleDerivatives(1);
-                    d[0] = () => context.EvaluateDouble(expression.ValueExpression);
+                    d[0] = () => GetParameter(simulationExpressionContext, args.Name);
                     args.Result = d;
                 }
             };
             parser.FunctionFound += (sender, args) =>
             {
-                if (context.ReadingExpressionContext.Functions.TryGetValue(args.Name, out var functions))
+                var simulationExpressionContext = context.SimulationExpressionContexts.GetContext(context.Result.Simulations.First());
+
+                if (simulationExpressionContext.Functions.TryGetValue(args.Name, out var functions))
                 {
                     var function = functions.First() as IFunction<double, double>;
 
@@ -47,13 +57,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             }
                         }
 
-                        d[0] = () => function.Logic(string.Empty, arguments.Select(arg => arg()).ToArray(), context.ReadingEvaluator, context.ReadingExpressionContext);
+                        d[0] = () => function.Logic(string.Empty, arguments.Select(arg => arg()).ToArray(), context.ReadingEvaluator, simulationExpressionContext);
                         args.Result = d;
                     }
                 }
             };
 
             return parser;
+        }
+
+        private double GetParameter(ExpressionContext simulationExpressionContext, string argsName)
+        {
+            return simulationExpressionContext.Parameters[argsName].CurrentValue;
         }
 
         protected SpiceSharp.Components.Component SetSourceParameters(
