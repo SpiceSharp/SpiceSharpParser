@@ -80,6 +80,10 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">NominalTemperatureSimulationDecorator</span></div>
   </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ISimulationDecorator.html">ISimulationDecorator</a></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -108,24 +112,58 @@
   <h6><strong>Assembly</strong>: SpiceSharpParser.dll</h6>
   <h5 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Simulations_Decorators_NominalTemperatureSimulationDecorator_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class NominalTemperatureSimulationDecorator</code></pre>
+    <pre><code class="lang-csharp hljs">public class NominalTemperatureSimulationDecorator : ISimulationDecorator</code></pre>
   </div>
-  <h3 id="methods">Methods
+  <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Simulations_Decorators_NominalTemperatureSimulationDecorator_Decorate_SpiceSharp_Simulations_BaseSimulation_System_Double_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.NominalTemperatureSimulationDecorator.Decorate(SpiceSharp.Simulations.BaseSimulation%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Simulations_Decorators_NominalTemperatureSimulationDecorator__ctor_System_Double_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.NominalTemperatureSimulationDecorator.%23ctor(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Decorators/NominalTemperatureSimulationDecorator.cs/#L8">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Decorators/NominalTemperatureSimulationDecorator.cs/#L10">View Source</a>
   </span>
-  <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Simulations_Decorators_NominalTemperatureSimulationDecorator_Decorate_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.NominalTemperatureSimulationDecorator.Decorate*"></a>
-  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Simulations_Decorators_NominalTemperatureSimulationDecorator_Decorate_SpiceSharp_Simulations_BaseSimulation_System_Double_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.NominalTemperatureSimulationDecorator.Decorate(SpiceSharp.Simulations.BaseSimulation,System.Double)">Decorate(BaseSimulation, Double)</h4>
+  <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Simulations_Decorators_NominalTemperatureSimulationDecorator__ctor_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.NominalTemperatureSimulationDecorator.#ctor*"></a>
+  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Simulations_Decorators_NominalTemperatureSimulationDecorator__ctor_System_Double_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.NominalTemperatureSimulationDecorator.#ctor(System.Double)">NominalTemperatureSimulationDecorator(Double)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static BaseSimulation Decorate(BaseSimulation simulation, double nominalTemperatureInKelvins)</code></pre>
+    <pre><code class="lang-csharp hljs">public NominalTemperatureSimulationDecorator(double nominalTemperatureInKelvins)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td><span class="parametername">nominalTemperatureInKelvins</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Simulations_Decorators_NominalTemperatureSimulationDecorator_Decorate_SpiceSharp_Simulations_BaseSimulation_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.NominalTemperatureSimulationDecorator.Decorate(SpiceSharp.Simulations.BaseSimulation)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Decorators/NominalTemperatureSimulationDecorator.cs/#L15">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Simulations_Decorators_NominalTemperatureSimulationDecorator_Decorate_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.NominalTemperatureSimulationDecorator.Decorate*"></a>
+  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_Controls_Simulations_Decorators_NominalTemperatureSimulationDecorator_Decorate_SpiceSharp_Simulations_BaseSimulation_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.NominalTemperatureSimulationDecorator.Decorate(SpiceSharp.Simulations.BaseSimulation)">Decorate(BaseSimulation)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BaseSimulation Decorate(BaseSimulation simulation)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -140,11 +178,6 @@
       <tr>
         <td><span class="xref">SpiceSharp.Simulations.BaseSimulation</span></td>
         <td><span class="parametername">simulation</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">nominalTemperatureInKelvins</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -164,6 +197,10 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ISimulationDecorator.html">ISimulationDecorator</a>
+  </div>
 </article>
           </div>
           

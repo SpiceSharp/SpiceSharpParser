@@ -114,19 +114,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateFlat.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateFlat%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateAGauss.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateAGauss%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/RandomFunctions.cs/#L106">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/RandomFunctions.cs/#L103">View Source</a>
   </span>
-  <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateFlat_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateFlat*"></a>
-  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateFlat" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateFlat">CreateFlat()</h4>
-  <div class="markdown level1 summary"><p>Get a flat() function. It generates number between -x and +x.</p>
+  <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateAGauss_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateAGauss*"></a>
+  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateAGauss" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateAGauss">CreateAGauss()</h4>
+  <div class="markdown level1 summary"><p>Get a agauss() function.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Function CreateFlat()</code></pre>
+    <pre><code class="lang-csharp hljs">public static IFunction&lt;double, double&gt; CreateAGauss()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -138,7 +138,103 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.Function.html">Function</a></td>
+        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.IFunction-2.html">IFunction</a>&lt;<span class="xref">System.Double</span>, <span class="xref">System.Double</span>&gt;</td>
+        <td><p>A new instance of agauss function.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateAUnif.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateAUnif%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/RandomFunctions.cs/#L92">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateAUnif_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateAUnif*"></a>
+  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateAUnif" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateAUnif">CreateAUnif()</h4>
+  <div class="markdown level1 summary"><p>Get a aunif() function.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IFunction&lt;double, double&gt; CreateAUnif()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.IFunction-2.html">IFunction</a>&lt;<span class="xref">System.Double</span>, <span class="xref">System.Double</span>&gt;</td>
+        <td><p>A new instance of aunif function.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateExtendedGauss.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateExtendedGauss%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/RandomFunctions.cs/#L37">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateExtendedGauss_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateExtendedGauss*"></a>
+  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateExtendedGauss" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateExtendedGauss">CreateExtendedGauss()</h4>
+  <div class="markdown level1 summary"><p>Get a gauss() function.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IFunction&lt;double, double&gt; CreateExtendedGauss()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.IFunction-2.html">IFunction</a>&lt;<span class="xref">System.Double</span>, <span class="xref">System.Double</span>&gt;</td>
+        <td><p>A new instance of random gauss function.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateFlat.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateFlat%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/RandomFunctions.cs/#L59">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateFlat_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateFlat*"></a>
+  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateFlat" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateFlat">CreateFlat()</h4>
+  <div class="markdown level1 summary"><p>Get a flat() function. It generates number between -x and +x.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IFunction&lt;double, double&gt; CreateFlat()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.IFunction-2.html">IFunction</a>&lt;<span class="xref">System.Double</span>, <span class="xref">System.Double</span>&gt;</td>
         <td><p>A new instance of random function.</p>
 </td>
       </tr>
@@ -149,7 +245,7 @@
     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateGauss.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateGauss%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/RandomFunctions.cs/#L47">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/RandomFunctions.cs/#L26">View Source</a>
   </span>
   <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateGauss_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateGauss*"></a>
   <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateGauss" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateGauss">CreateGauss()</h4>
@@ -158,7 +254,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Function CreateGauss()</code></pre>
+    <pre><code class="lang-csharp hljs">public static IFunction&lt;double, double&gt; CreateGauss()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -170,8 +266,40 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.Function.html">Function</a></td>
+        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.IFunction-2.html">IFunction</a>&lt;<span class="xref">System.Double</span>, <span class="xref">System.Double</span>&gt;</td>
         <td><p>A new instance of random gauss function.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateLimit.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateLimit%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/RandomFunctions.cs/#L70">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateLimit_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateLimit*"></a>
+  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateLimit" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateLimit">CreateLimit()</h4>
+  <div class="markdown level1 summary"><p>Get a limit() function.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IFunction&lt;double, double&gt; CreateLimit()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.IFunction-2.html">IFunction</a>&lt;<span class="xref">System.Double</span>, <span class="xref">System.Double</span>&gt;</td>
+        <td><p>A new instance of limit function.</p>
 </td>
       </tr>
     </tbody>
@@ -181,7 +309,7 @@
     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateMc.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateMc%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/RandomFunctions.cs/#L14">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/RandomFunctions.cs/#L15">View Source</a>
   </span>
   <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateMc_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateMc*"></a>
   <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateMc" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateMc">CreateMc()</h4>
@@ -190,7 +318,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Function CreateMc()</code></pre>
+    <pre><code class="lang-csharp hljs">public static IFunction&lt;double, double&gt; CreateMc()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -202,7 +330,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.Function.html">Function</a></td>
+        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.IFunction-2.html">IFunction</a>&lt;<span class="xref">System.Double</span>, <span class="xref">System.Double</span>&gt;</td>
         <td><p>A new instance of random mc function.</p>
 </td>
       </tr>
@@ -213,7 +341,7 @@
     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateRandom.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateRandom%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/RandomFunctions.cs/#L79">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/RandomFunctions.cs/#L48">View Source</a>
   </span>
   <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateRandom_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateRandom*"></a>
   <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateRandom" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateRandom">CreateRandom()</h4>
@@ -222,7 +350,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Function CreateRandom()</code></pre>
+    <pre><code class="lang-csharp hljs">public static IFunction&lt;double, double&gt; CreateRandom()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -234,8 +362,40 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.Function.html">Function</a></td>
+        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.IFunction-2.html">IFunction</a>&lt;<span class="xref">System.Double</span>, <span class="xref">System.Double</span>&gt;</td>
         <td><p>A new instance of random function.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateUnif.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateUnif%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/RandomFunctions.cs/#L81">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateUnif_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateUnif*"></a>
+  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions_CreateUnif" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.CreateUnif">CreateUnif()</h4>
+  <div class="markdown level1 summary"><p>Get a unif() function.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IFunction&lt;double, double&gt; CreateUnif()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.IFunction-2.html">IFunction</a>&lt;<span class="xref">System.Double</span>, <span class="xref">System.Double</span>&gt;</td>
+        <td><p>A new instance of unif function.</p>
 </td>
       </tr>
     </tbody>
@@ -251,7 +411,7 @@
                     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_RandomFunctions.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/RandomFunctions.cs/#L6" class="contribution-link">View Source</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/RandomFunctions.cs/#L7" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -78,75 +78,30 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">SpiceSharp.Parameterized</span></div>
-    <div class="level2"><span class="xref">SpiceSharp.Attributes.NamedParameterized</span></div>
-    <div class="level3"><span class="xref">SpiceSharp.ParameterSet</span></div>
-    <div class="level4"><span class="xref">ISwitchModelBaseParameters</span></div>
+    <div class="level1"><span class="xref">SpiceSharp.ParameterSet</span></div>
+    <div class="level2"><span class="xref">ISwitchModelBaseParameters</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">SpiceSharp.ICloneable</span></div>
+    <div><span class="xref">SpiceSharp.ICloneable</span>&lt;<span class="xref">SpiceSharp.ParameterSet</span>&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">SpiceSharp.ParameterSet.GetParameter&lt;T&gt;(System.String, System.Collections.Generic.IEqualityComparer&lt;System.String&gt;)</span>
-    </div>
-    <div>
-      <span class="xref">SpiceSharp.ParameterSet.GetParameter&lt;T&gt;()</span>
-    </div>
-    <div>
-      <span class="xref">SpiceSharp.ParameterSet.SetParameter&lt;T&gt;(System.String, T, System.Collections.Generic.IEqualityComparer&lt;System.String&gt;)</span>
-    </div>
-    <div>
-      <span class="xref">SpiceSharp.ParameterSet.SetParameter(System.String)</span>
-    </div>
-    <div>
-      <span class="xref">SpiceSharp.ParameterSet.SetParameter(System.String, System.Collections.Generic.IEqualityComparer&lt;System.String&gt;)</span>
-    </div>
-    <div>
-      <span class="xref">SpiceSharp.ParameterSet.SetParameter&lt;T&gt;(T)</span>
-    </div>
-    <div>
-      <span class="xref">SpiceSharp.ParameterSet.SetParameter(System.String, System.Object, System.Collections.Generic.IEqualityComparer&lt;System.String&gt;)</span>
-    </div>
-    <div>
       <span class="xref">SpiceSharp.ParameterSet.CalculateDefaults()</span>
     </div>
     <div>
-      <span class="xref">SpiceSharp.ParameterSet.DeepClone()</span>
+      <span class="xref">SpiceSharp.ParameterSet.Clone()</span>
     </div>
     <div>
-      <span class="xref">SpiceSharp.Attributes.NamedParameterized.Named(System.String, System.Collections.Generic.IEqualityComparer&lt;System.String&gt;)</span>
+      <span class="xref">SpiceSharp.ParameterSet.SpiceSharp.ICloneable.Clone()</span>
     </div>
     <div>
-      <span class="xref">SpiceSharp.Attributes.NamedParameterized.CreateSetters&lt;T&gt;(System.Collections.Generic.IEqualityComparer&lt;System.String&gt;)</span>
+      <span class="xref">SpiceSharp.ParameterSet.CopyFrom(SpiceSharp.ParameterSet)</span>
     </div>
     <div>
-      <span class="xref">SpiceSharp.Attributes.NamedParameterized.CreateSetter&lt;T&gt;(System.String, System.Collections.Generic.IEqualityComparer&lt;System.String&gt;)</span>
-    </div>
-    <div>
-      <span class="xref">SpiceSharp.Attributes.NamedParameterized.CreateSetter&lt;T&gt;()</span>
-    </div>
-    <div>
-      <span class="xref">SpiceSharp.Attributes.NamedParameterized.CreateGetter&lt;T&gt;(System.String, System.Collections.Generic.IEqualityComparer&lt;System.String&gt;)</span>
-    </div>
-    <div>
-      <span class="xref">SpiceSharp.Attributes.NamedParameterized.CreateGetter&lt;T&gt;()</span>
-    </div>
-    <div>
-      <span class="xref">SpiceSharp.Attributes.NamedParameterized.CreateGetters&lt;T&gt;(System.Collections.Generic.IEqualityComparer&lt;System.String&gt;)</span>
-    </div>
-    <div>
-      <span class="xref">SpiceSharp.Attributes.NamedParameterized.Principal</span>
-    </div>
-    <div>
-      <span class="xref">SpiceSharp.Parameterized.CreateSetter&lt;T&gt;(System.Reflection.MemberInfo)</span>
-    </div>
-    <div>
-      <span class="xref">SpiceSharp.Parameterized.CreateGetter&lt;T&gt;(System.Reflection.MemberInfo)</span>
-    </div>
-    <div>
-      <span class="xref">SpiceSharp.Parameterized.SetMember&lt;T&gt;(System.Reflection.MemberInfo, T)</span>
-    </div>
-    <div>
-      <span class="xref">SpiceSharp.Parameterized.Members</span>
+      <span class="xref">SpiceSharp.ParameterSet.SpiceSharp.ICloneable.CopyFrom(SpiceSharp.ICloneable)</span>
     </div>
     <div>
       <span class="xref">System.Object.ToString()</span>
@@ -174,7 +129,7 @@
   <h6><strong>Assembly</strong>: SpiceSharpParser.dll</h6>
   <h5 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Custom_ISwitchModelBaseParameters_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ISwitchModelBaseParameters : ParameterSet</code></pre>
+    <pre><code class="lang-csharp hljs">public class ISwitchModelBaseParameters : ParameterSet, ICloneable, ICloneable&lt;ParameterSet&gt;</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -306,6 +261,13 @@ public GivenParameter&lt;double&gt; OnResistance { get; }</code></pre>
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">SpiceSharp.ICloneable</span>
+  </div>
+  <div>
+      <span class="xref">SpiceSharp.ICloneable&lt;T&gt;</span>
+  </div>
 </article>
           </div>
           
