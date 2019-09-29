@@ -53,7 +53,7 @@ namespace SpiceSharpParserExample
 ## Compatibility
 ### PSpice
 SpiceSharpParser is able to parse some of PSpice netlists. 
-At the moment due to lack of implementation of LAPLACE and FREQ (part of analog behavioral modeling) and other features parsing or execution can fail.
+At the moment due to lack of implementation of LAPLACE and FREQ (part of analog behavioral modeling) and other features parsing or simulation can fail.
 
 
 ## Capabilities
@@ -97,6 +97,7 @@ At the moment due to lack of implementation of LAPLACE and FREQ (part of analog 
 ### Device statements supported:
 | Device Statement  |  Documentation   |
 |:------------|-----------------------:|
+|B (Arbitrary Behavioral Voltage or Current Sources)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/B)|
 |C (Capacitor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/C)|
 |D (Diode)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/D)|
 |E (Voltage-Controlled Voltage Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/E)|
