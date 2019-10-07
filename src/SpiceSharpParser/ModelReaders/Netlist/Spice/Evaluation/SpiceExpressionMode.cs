@@ -6,5 +6,6 @@
         SmartSpice = 1,
         HSpice = 2,
         LtSpice = 3,
+        PSpice = 4
     }
 }
