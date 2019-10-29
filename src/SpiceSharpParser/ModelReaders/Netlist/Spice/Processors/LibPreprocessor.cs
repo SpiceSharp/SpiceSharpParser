@@ -140,14 +140,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         private bool ReadLibs(Statements statements, string currentDirectoryPath)
         {
             bool result = false;
-            var subCircuits = statements.Where(statement => statement is SubCircuit s);
+            var subCircuits = statements.Where(statement => statement is SubCircuit).Cast<SubCircuit>().ToList();
             if (subCircuits.Any())
             {
-                foreach (SubCircuit subCircuit in subCircuits.ToArray())
+                foreach (SubCircuit subCircuit in subCircuits)
                 {
-                    var subCircuitLibs = subCircuit.Statements.Where(statement => statement is Control c && (c.Name.ToLower() == "lib"));
+                    var subCircuitLibs = subCircuit.Statements.Where(statement => statement is Control c && (c.Name.ToLower() == "lib")).Cast<Control>().ToList();
 
-                    foreach (Control include in subCircuitLibs.ToArray())
+                    foreach (Control include in subCircuitLibs)
                     {
                         result = true;
                         ReadSingleLib(subCircuit.Statements, currentDirectoryPath, include);
@@ -155,12 +155,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                 }
             }
 
-            var libs = statements.Where(statement => statement is Control c && (c.Name.ToLower() == "lib"));
+            var libs = statements.Where(statement => statement is Control c && (c.Name.ToLower() == "lib")).Cast<Control>().ToList();
 
             if (libs.Any())
             {
                 result = true;
-                foreach (Control include in libs.ToArray())
+                foreach (Control include in libs)
                 {
                     ReadSingleLib(statements, currentDirectoryPath, include);
                 }

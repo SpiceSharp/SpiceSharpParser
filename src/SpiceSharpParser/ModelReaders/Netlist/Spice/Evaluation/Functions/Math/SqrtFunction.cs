@@ -1,5 +1,7 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
 using System.Numerics;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
 {
@@ -14,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
 
         public SpiceExpressionMode Mode { get; }
 
-        public override double Logic(string image, double[] args, IEvaluator evaluator, ExpressionContext context)
+        public override double Logic(string image, double[] args, IEvaluator evaluator, ExpressionContext context, Simulation simulation = null, IReadingContext readingContext = null)
         {
             double x = args[0];
 

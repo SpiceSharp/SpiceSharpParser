@@ -41,7 +41,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             EntityUpdates.Apply(simulation);
         }
 
-        public void SetNodeSetVoltage(string nodeId, string expression)
+        public void SetNodeSetVoltage(string nodeId, string expression, IReadingContext readingContext)
         {
             if (nodeId == null)
             {
@@ -57,13 +57,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 var simEval = evaluators.GetEvaluator(simulation);
                 var context = contexts.GetContext(simulation);
-                var value = simEval.EvaluateValueExpression(expression, context);
+                var value = simEval.EvaluateValueExpression(expression, context, simulation, readingContext);
 
                 simulation.Configurations.Get<BaseConfiguration>().Nodesets[nodeId] = value;
             });
         }
 
-        public void SetICVoltage(string nodeId, string expression)
+        public void SetICVoltage(string nodeId, string expression, IReadingContext readingContext)
         {
             if (nodeId == null)
             {
@@ -79,7 +79,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 var simEval = evaluators.GetEvaluator(simulation);
                 var context = contexts.GetContext(simulation);
-                var value = simEval.EvaluateValueExpression(expression, context);
+                var value = simEval.EvaluateValueExpression(expression, context, simulation, readingContext);
 
                 if (simulation is TimeSimulation ts)
                 {
@@ -113,7 +113,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             BeforeExecute.Add(action);
         }
 
-        public void SetParameter(Entity @object, string paramName, string expression, bool beforeTemperature, bool onload)
+        public void SetParameter(Entity @object, string paramName, string expression, bool beforeTemperature, bool onload, IReadingContext readingContext)
         {
             if (@object == null)
             {
@@ -129,7 +129,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new ArgumentNullException(nameof(expression));
             }
-            EntityUpdates.Add(@object, paramName, expression, beforeTemperature, onload);
+            EntityUpdates.Add(@object, paramName, expression, beforeTemperature, onload, readingContext);
         }
 
         public void SetParameter(Entity @object, string paramName, double value, bool beforeTemperature, bool onload)

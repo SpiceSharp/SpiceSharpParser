@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SpiceSharpParser.Common.Mathematics.Combinatorics
 {
-    public class CombinationCache
+    public static class CombinationCache
     {
         private static readonly ConcurrentDictionary<string, List<int[]>> Cache = new ConcurrentDictionary<string, List<int[]>>();
         private static readonly CombinationGenerator Generator = new CombinationGenerator();

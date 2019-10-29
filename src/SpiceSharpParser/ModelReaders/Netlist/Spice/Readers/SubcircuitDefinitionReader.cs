@@ -10,13 +10,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
     public class SubcircuitDefinitionReader : StatementReader<SubCircuit>, ISubcircuitDefinitionReader
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SubcircuitDefinitionReader"/> class.
-        /// </summary>
-        public SubcircuitDefinitionReader()
-        {
-        }
-
-        /// <summary>
         /// Reads a subcircuit statement.
         /// </summary>
         /// <param name="statement">A statement to process.</param>

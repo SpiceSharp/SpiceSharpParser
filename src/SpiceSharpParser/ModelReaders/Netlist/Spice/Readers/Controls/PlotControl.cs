@@ -49,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
 
             string type = statement.Parameters.Count > 0 ? statement.Parameters[0].Image.ToLower() : null;
-            string plotImage = statement.Name + ":" + statement.Parameters.ToString();
+            string plotImage = statement.Name + ":" + statement.Parameters;
             bool merge = statement.Parameters.Any(p => p.Image == "merge");
 
             if (merge)

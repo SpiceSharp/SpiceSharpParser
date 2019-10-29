@@ -1,4 +1,5 @@
 ﻿using System;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
@@ -7,7 +8,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
     {
         public double Value { get; set; }
 
-        public override double GetValue(IEvaluator evaluator, ExpressionContext context)
+        public override double GetValue(IEvaluator evaluator, ExpressionContext context, Simulation simulation)
         {
             if (evaluator == null)
             {

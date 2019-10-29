@@ -21,13 +21,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         public PropertyExport(string name, Simulation simulation, string source, string property, IEqualityComparer<string> comparer)
             : base(simulation)
         {
-            Name = name ?? throw new System.NullReferenceException(nameof(name));
+            Name = name ?? throw new NullReferenceException(nameof(name));
             if (simulation == null)
             {
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            Source = source ?? throw new System.NullReferenceException(nameof(source));
+            Source = source ?? throw new NullReferenceException(nameof(source));
             ExportRealImpl = new RealPropertyExport(simulation, source, property, comparer);
         }
 

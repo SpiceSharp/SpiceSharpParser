@@ -17,7 +17,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <param name="mapper">The base control mapper.</param>
         public ControlReader(IMapper<BaseControl> mapper)
         {
-            Mapper = mapper ?? throw new System.ArgumentNullException(nameof(mapper));
+            Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         /// <summary>

@@ -24,23 +24,9 @@ namespace SpiceSharpParser.PerformanceTests
         }
 
         [Fact]
-        public void ExpressionParse()
-        {
-            var expressionParser = new SpiceExpressionParser();
-            var result = expressionParser.Parse("1 + 1 + 1 + 1 + 1 + 1 + 1", new ExpressionParserContext());
-
-            double sum = 0;
-            int n = 2000000;
-            for (var i = 0; i < n; i++)
-            {
-                sum += result.Value(new ExpressionEvaluationContext());
-            }
-        }
-
-        [Fact]
         public void EvaluateDouble()
         {
-            var expressionParser = new SpiceEvaluator(string.Empty, new SpiceExpressionParser(), false, false);
+            var expressionParser = new Evaluator(string.Empty);
             double sum = 0;
             int n = 2000000;
             var randomizer = new Randomizer();

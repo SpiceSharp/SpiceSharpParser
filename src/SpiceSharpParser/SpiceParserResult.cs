@@ -8,12 +8,6 @@ namespace SpiceSharpParser
     /// </summary>
     public class SpiceParserResult
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SpiceParserResult"/> class.
-        /// </summary>
-        public SpiceParserResult()
-        {
-        }
 
         /// <summary>
         /// Gets or sets the result of reading <see cref="SpiceNetlistReaderResult"/> model.

@@ -25,10 +25,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
         : base(name, isParameterNameCaseSensitive, isFunctionNameCaseSensitive, isExpressionNameCaseSensitive, randomizer)
         {
-            this.Mode = mode;
-            this.CreateCommonFunctions();
-            this.CreateSpiceFunctions();
-            this.CreateSpiceParameters();
+            Mode = mode;
+            CreateCommonFunctions();
+            CreateSpiceFunctions();
+            CreateSpiceParameters();
         }
 
         public SpiceExpressionMode Mode { get; }

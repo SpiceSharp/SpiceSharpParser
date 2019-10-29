@@ -109,7 +109,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         public void ParamFunctionFactRecursiveFunctionCleanSyntax()
         {
             var netlist = ParseNetlist(
-                "PARAM recurisve custom function test",
+                "PARAM recursive custom function test",
                 "V1 OUT 0 60.0",
                 "R1 OUT 0 {fact(3)}",
                 ".OP",

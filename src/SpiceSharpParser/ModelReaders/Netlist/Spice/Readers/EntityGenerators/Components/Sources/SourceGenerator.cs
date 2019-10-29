@@ -1,34 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SpiceSharp.Circuits;
+﻿using System.Linq;
 using SpiceSharp.Components;
+using SpiceSharp.Simulations;
 using SpiceSharpBehavioral.Parsers;
-using SpiceSharpBehavioral.Parsers.Helper;
-using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {
     public abstract class SourceGenerator : ComponentGenerator
     {
-        protected SimpleDerivativeParser CreateParser(IReadingContext context)
+        protected SimpleDerivativeParser CreateParser(IReadingContext context, Simulation simulation)
         {
-            if (context.Result.Simulations.Count() > 1)
-            {
-                throw new GeneralReaderException(
-                    "Behavioral sources requires that there is only one simulation in the netlist");
-            }
-
-            var parser = Parsers.Expression.ParsersHelpers.GetDeriveParser(context);
-           
+            var parser = Parsers.Expression.ExpressionParserHelpers.GetDeriveParser(context.SimulationExpressionContexts.GetContext(simulation), context, context.ReadingEvaluator, simulation);
             return parser;
         }
-      
+
         protected SpiceSharp.Components.Component SetSourceParameters(
            string name,
            ParameterCollection parameters,

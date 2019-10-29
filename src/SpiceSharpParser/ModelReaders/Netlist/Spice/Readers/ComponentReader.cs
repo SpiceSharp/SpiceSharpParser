@@ -18,7 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <param name="mapper">A component mapper.</param>
         public ComponentReader(IMapper<IComponentGenerator> mapper)
         {
-            Mapper = mapper ?? throw new System.NullReferenceException(nameof(mapper));
+            Mapper = mapper ?? throw new NullReferenceException(nameof(mapper));
         }
 
         /// <summary>
@@ -64,14 +64,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         {
             foreach (var map in Mapper)
             {
-                if (componentName.StartsWith(map.Key, context.CaseSensitivity.IsEntityNameCaseSensitive ? System.StringComparison.CurrentCulture : System.StringComparison.CurrentCultureIgnoreCase))
+                if (componentName.StartsWith(map.Key, context.CaseSensitivity.IsEntityNameCaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase))
                 {
                     componentType = map.Key;
                     return map.Value;
                 }
             }
 
-            throw new System.Exception("Unsupported component type");
+            throw new Exception("Unsupported component type");
         }
     }
 }

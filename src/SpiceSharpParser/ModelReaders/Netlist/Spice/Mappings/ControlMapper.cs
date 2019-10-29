@@ -7,11 +7,5 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
     /// </summary>
     public class ControlMapper : BaseMapper<BaseControl>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ControlMapper"/> class.
-        /// </summary>
-        public ControlMapper()
-        {
-        }
     }
 }

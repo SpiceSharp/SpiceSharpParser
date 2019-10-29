@@ -1,10 +1,9 @@
-﻿using System;
-using SpiceSharpParser.Common.Evaluation;
+﻿using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 {
-    public class MathFunctions
+    public static class MathFunctions
     {
         /// <summary>
         /// Get a pos() function.

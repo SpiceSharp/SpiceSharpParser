@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SpiceSharp;
 using SpiceSharp.Components;
 using SpiceSharp.Components.BipolarBehaviors;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
@@ -44,7 +43,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
             {
-                context.ModelsRegistry.SetModel<BipolarJunctionTransistorModel>(
+                context.ModelsRegistry.SetModel(
                     bjt,
                     simulation,
                     parameters.GetString(4),

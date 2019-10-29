@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using SpiceSharp.Simulations;
 using SpiceSharpBehavioral.Parsers;
-using SpiceSharpBehavioral.Parsers.Helper;
+using SpiceSharpParser.Common.Evaluation.Expressions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.Common.Evaluation.Functions
@@ -20,7 +22,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
 
         public string Expression { get; }
 
-        public override double Logic(string image, double[] args, IEvaluator evaluator, ExpressionContext context)
+        public override double Logic(string image, double[] args, IEvaluator evaluator, ExpressionContext context, Simulation simulation = null, IReadingContext readingContext = null)
         {
             if (image == null)
             {
@@ -48,12 +50,11 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
                 childContext.SetParameter(Arguments[i], args[i]);
             }
 
-            var parser = ParsersHelpers.GetSimpleParser(childContext, evaluator);
-            var parseResult = parser.Parse(Expression);
-            return parseResult;
+            var @value = ExpressionParserHelpers.GetExpressionValue(Expression, childContext, evaluator, simulation, readingContext);
+            return @value;
         }
 
-        public Derivatives<Func<double>> Derivative(string image, double[] args, IEvaluator evaluator, ExpressionContext context)
+        public Derivatives<Func<double>> Derivative(string image, double[] args, IEvaluator evaluator, ExpressionContext context, Simulation simulation = null, IReadingContext readingContext = null)
         {
             if (image == null)
             {
@@ -79,9 +80,10 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
             for (var i = 0; i < Arguments.Count; i++)
             {
                 childContext.SetParameter(Arguments[i], args[i]);
+                childContext.Arguments.Add(Arguments[i], new ConstantExpression(args[i]));
             }
 
-            var parser = ParsersHelpers.GetDeriveParser(childContext, evaluator, Arguments, args);
+            var parser = ExpressionParserHelpers.GetDeriveParser(childContext, readingContext, evaluator, simulation);
             var parseResult = parser.Parse(Expression);
             return parseResult;
         }

@@ -33,14 +33,14 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         {
             var clone = new SubCircuit()
             {
-                Name = this.Name,
-                Pins = new List<string>(this.Pins.ToArray()),
+                Name = Name,
+                Pins = new List<string>(Pins.ToArray()),
                 DefaultParameters = new List<AssignmentParameter>(),
-                Statements = (Statements)this.Statements.Clone(),
-                LineNumber = this.LineNumber,
+                Statements = (Statements)Statements.Clone(),
+                LineNumber = LineNumber,
             };
 
-            foreach (AssignmentParameter defaultParameter in this.DefaultParameters)
+            foreach (AssignmentParameter defaultParameter in DefaultParameters)
             {
                 clone.DefaultParameters.Add((AssignmentParameter)defaultParameter.Clone());
             }

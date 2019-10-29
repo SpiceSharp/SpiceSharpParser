@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
@@ -10,6 +11,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -22,7 +24,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Initializes a new instance of the <see cref="ReadingContext"/> class.
         /// </summary>
         /// <param name="contextName">Name of the context.</param>
-        /// <param name="parser">Expression parser.</param>
         /// <param name="simulationPreparations">Parameters.</param>
         /// <param name="simulationEvaluators">Evaluator for the context.</param>
         /// <param name="contexts">Context. </param>
@@ -40,7 +41,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="workingDirectory">Working directory.</param>
         public ReadingContext(
             string contextName,
-            IExpressionParser parser,
             ISimulationPreparations simulationPreparations,
             ISimulationEvaluators simulationEvaluators,
             SimulationExpressionContexts contexts,
@@ -66,7 +66,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             Children = new List<IReadingContext>();
             CaseSensitivity = caseSettings;
             SimulationExpressionContexts = contexts;
-            ExpressionParser = parser;
             ReadingExpressionContext = readingExpressionContext;
             SimulationPreparations = simulationPreparations;
             SimulationEvaluators = simulationEvaluators;
@@ -111,11 +110,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Gets or sets exporter mapper.
         /// </summary>
         public IMapper<Exporter> Exporters { get; set; }
-
-        /// <summary>
-        /// Gets the expression parser.
-        /// </summary>
-        public IExpressionParser ExpressionParser { get; }
 
         /// <summary>
         /// Gets the simulation expression contexts.
@@ -197,7 +191,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
 
             var nodeId = NodeNameGenerator.Generate(nodeName);
-            SimulationPreparations.SetICVoltage(nodeId, expression);
+            SimulationPreparations.SetICVoltage(nodeId, expression, this);
         }
 
         /// <summary>
@@ -301,10 +295,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(expression));
             }
 
+            var parameters = ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, false);
             ReadingExpressionContext.SetParameter(
                 parameterName,
                 expression,
-                ExpressionParser.Parse(expression, new ExpressionParserContext(ReadingExpressionContext.Name, ReadingExpressionContext.Functions)).FoundParameters);
+                parameters);
         }
 
         public void AddFunction(string functionName, List<string> arguments, string body)
@@ -323,7 +318,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new ArgumentNullException(nameof(body));
             }
-            FunctionFactory factory = new FunctionFactory();
+            IFunctionFactory factory = new FunctionFactory();
             ReadingExpressionContext.AddFunction(functionName, factory.Create(functionName, arguments, body));
         }
 
@@ -339,11 +334,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            var foundParameters = ExpressionParser.Parse(
-                expression,
-                new ExpressionParserContext(ReadingExpressionContext.Name, ReadingExpressionContext.Functions)).FoundParameters;
-
-            ReadingExpressionContext.SetNamedExpression(expressionName, expression, foundParameters);
+            var parameters = ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, false);
+            ReadingExpressionContext.SetNamedExpression(expressionName, expression, parameters);
         }
 
         public void SetParameter(Entity entity, string parameterName, string expression, bool beforeTemperature = true, bool onload = true)
@@ -365,16 +357,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             IEqualityComparer<string> comparer = StringComparerProvider.Get(CaseSensitivity.IsEntityParameterNameCaseSensitive);
 
-            double value = ReadingEvaluator.EvaluateValueExpression(expression, ReadingExpressionContext);
+            double value = ReadingEvaluator.EvaluateValueExpression(expression, ReadingExpressionContext, null, this);
             entity.SetParameter(parameterName, value, comparer);
 
-            var parseResult = ReadingEvaluator.ExpressionParser.Parse(
-                expression,
-                new ExpressionParserContext(ReadingExpressionContext.Name, ReadingExpressionContext.Functions));
+            bool isDynamic = ExpressionParserHelpers.HaveSpiceProperties(expression, ReadingExpressionContext, this, false)
+                            || ExpressionParserHelpers.HaveFunctions(expression, ReadingExpressionContext, this, false)
+                             || ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, false).Any();
 
-            if (parseResult.IsConstantExpression == false)
+            if (isDynamic)
             {
-                SimulationPreparations.SetParameter(entity, parameterName, expression, beforeTemperature, onload);
+                SimulationPreparations.SetParameter(entity, parameterName, expression, beforeTemperature, onload, this);
             }
         }
 

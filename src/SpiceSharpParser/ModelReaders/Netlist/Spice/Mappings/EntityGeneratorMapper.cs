@@ -7,11 +7,5 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
     /// </summary>
     public class EntityGeneratorMapper : BaseMapper<IComponentGenerator>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EntityGeneratorMapper"/> class.
-        /// </summary>
-        public EntityGeneratorMapper()
-        {
-        }
     }
 }

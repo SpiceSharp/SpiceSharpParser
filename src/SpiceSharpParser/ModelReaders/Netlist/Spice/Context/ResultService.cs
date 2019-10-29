@@ -20,7 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="result">A SPICE model reader result.</param>
         public ResultService(SpiceNetlistReaderResult result)
         {
-            Result = result ?? throw new System.ArgumentNullException(nameof(result));
+            Result = result ?? throw new ArgumentNullException(nameof(result));
         }
 
         /// <summary>

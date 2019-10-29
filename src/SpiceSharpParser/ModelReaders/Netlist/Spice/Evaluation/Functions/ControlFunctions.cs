@@ -11,7 +11,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// <returns>
         /// A new instance of def function.
         /// </returns>
-        public static IFunction<object, double> CreateDef()
+        public static IFunction<double, double> CreateDef()
         {
             return new DefFunction();
         }

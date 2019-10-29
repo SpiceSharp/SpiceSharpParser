@@ -39,7 +39,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             evaluators.Add(Symbols.Control, (ParseTreeNodeEvaluationValues nt) => CreateControl(nt));
             evaluators.Add(Symbols.Component, (ParseTreeNodeEvaluationValues nt) => CreateComponent(nt));
             evaluators.Add(Symbols.Parameters, (ParseTreeNodeEvaluationValues nt) => CreateParameters(nt));
-            evaluators.Add(Symbols.ParametersSeparator, (ParseTreeNodeEvaluationValues nt) => CreateParametersSeperator(nt));
+            evaluators.Add(Symbols.ParametersSeparator, (ParseTreeNodeEvaluationValues nt) => CreateParametersSeparator());
             evaluators.Add(Symbols.Parameter, (ParseTreeNodeEvaluationValues nt) => CreateParameter(nt));
             evaluators.Add(Symbols.Vector, (ParseTreeNodeEvaluationValues nt) => CreateVector(nt));
             evaluators.Add(Symbols.VectorContinue, (ParseTreeNodeEvaluationValues nt) => CreateVectorContinue(nt));
@@ -360,7 +360,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             return parameters;
         }
 
-        private SpiceObject CreateParametersSeperator(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateParametersSeparator()
         {
             var parameters = new ParameterCollection();
             return parameters;
@@ -407,12 +407,12 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     break;
                 case ".if":
                     control.Name = "if";
-                    control.Parameters = new ParameterCollection() { new ExpressionParameter(values.GetLexem(1).Trim('(', ')')) };
+                    control.Parameters = new ParameterCollection() { new ExpressionParameter(values.GetLexem(1)) };
                     control.LineNumber = values.GetLexemLineNumber(0);
                     break;
                 case ".elseif":
                     control.Name = "elseif";
-                    control.Parameters = new ParameterCollection() { new ExpressionParameter(values.GetLexem(1).Trim('(', ')')) };
+                    control.Parameters = new ParameterCollection() { new ExpressionParameter(values.GetLexem(1)) };
                     control.LineNumber = values.GetLexemLineNumber(0);
                     break;
                 case ".else":
@@ -542,7 +542,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 throw new ParseTreeEvaluationException("Error during translating statement - Statement is not finished by newline");
             }
 
-            if (values.Count == 3 && values[1] is ParseTreeNonTerminalEvaluationValue nv && nv.SpiceObject != null && !(nv.SpiceObject is CommentLine c))
+            if (values.Count == 3 && values[1] is ParseTreeNonTerminalEvaluationValue nv && nv.SpiceObject != null && !(nv.SpiceObject is CommentLine))
             {
                 throw new ParseTreeEvaluationException("Error during translating statement - Statement has second element that is not comment");
             }
@@ -561,7 +561,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// </returns>
         private SpiceObject CreateModel(ParseTreeNodeEvaluationValues values)
         {
-            var model = new Models.Netlist.Spice.Objects.Model();
+            var model = new Model();
             model.Name = values.GetLexem(2);
             model.Parameters = values.GetSpiceObject<ParameterCollection>(3);
             model.LineNumber = values.GetLexemLineNumber(2);
@@ -803,7 +803,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
             if (values.Count == 2)
             {
-                if (values.TryToGetSpiceObject<Statement>(0, out Statement st))
+                if (values.TryToGetSpiceObject(0, out Statement st))
                 {
                     statements.Add(st);
                 }

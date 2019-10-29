@@ -20,8 +20,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <param name="modelsGenerator">The models generator.</param>
         public ModelReader(IMapper<IModelGenerator> mapper, IModelsGenerator modelsGenerator)
         {
-            Mapper = mapper ?? throw new System.ArgumentNullException(nameof(mapper));
-            ModelsGenerator = modelsGenerator ?? throw new System.ArgumentNullException(nameof(modelsGenerator));
+            Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            ModelsGenerator = modelsGenerator ?? throw new ArgumentNullException(nameof(modelsGenerator));
         }
 
         /// <summary>

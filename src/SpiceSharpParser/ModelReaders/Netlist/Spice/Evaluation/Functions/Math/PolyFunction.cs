@@ -1,8 +1,9 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.Common.Mathematics;
 using System;
 using System.Collections.Generic;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.Common.Mathematics.Combinatorics;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
 {
@@ -14,7 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             ArgumentsCount = -1;
         }
 
-        public override double Logic(string image, double[] args, IEvaluator evaluator, ExpressionContext context)
+        public override double Logic(string image, double[] args, IEvaluator evaluator, ExpressionContext context, Simulation simulation = null, IReadingContext readingContext = null)
         {
             var dimension = (int)args[0];
             List<double> variables = new List<double>();

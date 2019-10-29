@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
 {

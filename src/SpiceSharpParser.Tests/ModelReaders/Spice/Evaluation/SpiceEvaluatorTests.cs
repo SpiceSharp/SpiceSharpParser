@@ -12,7 +12,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void ParentEvaluator()
         {
             // arrange
-            var p = new SpiceEvaluator();
+            var p = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
             c.SetParameter("a", 1);
 
@@ -30,7 +30,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         [Fact]
         public void EvaluateParameter()
         {
-            Evaluator v = new SpiceEvaluator();
+            Evaluator v = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
             c.SetParameter("xyz", 13.0);
 
@@ -38,26 +38,9 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         }
 
         [Fact]
-        public void GetVariables()
-        {
-            // prepare
-            IExpressionParser v = new SpiceExpressionParser();
-            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
-            c.SetParameter("xyz", 13.0);
-            c.SetParameter("a", 1.0);
-
-            // act
-            var parameters = v.Parse("xyz + 1 + a", new ExpressionParserContext()).FoundParameters;
-
-            // assert
-            Assert.Contains("a", parameters);
-            Assert.Contains("xyz", parameters);
-        }
-
-        [Fact]
         public void EvaluateSuffix()
         {
-            Evaluator v = new SpiceEvaluator();
+            Evaluator v = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
             Assert.Equal(2, v.EvaluateValueExpression("1V + 1", c));
         }
@@ -65,7 +48,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         [Fact]
         public void TableBasic()
         {
-            SpiceEvaluator v = new SpiceEvaluator();
+            Evaluator v = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
             c.SetParameter("N", 1.0);
             Assert.Equal(10, v.EvaluateValueExpression("table(N, 1, pow(10, 1), 2 + 0, 20, 3, 30)", c));
@@ -74,7 +57,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         [Fact]
         public void TableInterpolation()
         {
-            SpiceEvaluator v = new SpiceEvaluator();
+            Evaluator v = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             c.SetParameter("N", 1.5);
@@ -93,59 +76,17 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         [Fact]
         public void TableAdvanced()
         {
-            SpiceEvaluator v = new SpiceEvaluator();
+            Evaluator v = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
             c.SetParameter("N", 1.0);
             Assert.Equal(10, v.EvaluateValueExpression("table(N, 1, pow(10, 1), 2 + 0, 20, 3, 30)", c));
         }
 
         [Fact]
-        public void PowerInfix()
-        {
-            // arrange
-            var evaluator = new SpiceEvaluator();
-            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
-            // act and assert
-            Assert.Equal(8, evaluator.EvaluateValueExpression("2**3", c));
-        }
-
-        [Fact]
-        public void PowerInfixPrecedence()
-        {
-            // arrange
-            var evaluator = new SpiceEvaluator();
-            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
-
-            // act and assert
-            Assert.Equal(7, evaluator.EvaluateValueExpression("2**3-1", c));
-        }
-
-        [Fact]
-        public void PowerInfixSecondPrecedence()
-        {
-            // arrange
-            var evaluator = new SpiceEvaluator();
-            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
-
-            // act and assert
-            Assert.Equal(8, evaluator.EvaluateValueExpression("1+2**3-1", c));
-        }
-
-        [Fact]
-        public void PowerInfixThirdPrecedence()
-        {
-            // arrange
-            var evaluator = new SpiceEvaluator();
-            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
-            // act and assert
-            Assert.Equal(17, evaluator.EvaluateValueExpression("1+2**3*2", c));
-        }
-
-        [Fact]
         public void Round()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
             // act and assert
             Assert.Equal(1, evaluator.EvaluateValueExpression("round(1.2)", c));
@@ -156,7 +97,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void PowMinusLtSpice()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.LtSpice);
 
             // act and assert
@@ -167,7 +108,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void PwrLtSpice()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.LtSpice);
 
             // act and assert
@@ -178,7 +119,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void PwrHSpice()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.HSpice);
 
             // act and assert
@@ -189,7 +130,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void PwrSmartSpice()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.SmartSpice);
 
             // act and assert
@@ -197,21 +138,10 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         }
 
         [Fact]
-        public void MinusPowerInfixLtSpice()
-        {
-            // arrange
-            var evaluator = new SpiceEvaluator();
-            var c = new SpiceExpressionContext(SpiceExpressionMode.LtSpice);
-
-            // act and assert
-            Assert.Equal(0, evaluator.EvaluateValueExpression("-2**1.5", c));
-        }
-
-        [Fact]
         public void PowMinusSmartSpice()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.SmartSpice);
 
             // act and assert
@@ -222,7 +152,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void PowMinusHSpice()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.HSpice);
             // act and assert
             Assert.Equal(Math.Pow(-2, (int)1.5), evaluator.EvaluateValueExpression("pow(-2,1.5)", c));
@@ -232,7 +162,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Sgn()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
             // act and assert
             Assert.Equal(0, evaluator.EvaluateValueExpression("sgn(0)", c));
@@ -244,7 +174,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Sqrt()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -255,7 +185,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void SqrtMinusHSpice()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.HSpice);
 
             // act and assert
@@ -266,7 +196,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void SqrtMinusSmartSpice()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.SmartSpice);
 
             // act and assert
@@ -277,7 +207,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void SqrtMinusLtSpice()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.LtSpice);
 
             // act and assert
@@ -288,7 +218,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void DefPositive()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
             c.SetParameter("x1", 1);
             
@@ -300,7 +230,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void DefNegative()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -311,7 +241,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Abs()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -322,7 +252,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void AGauss()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -333,7 +263,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void AUnif()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -344,7 +274,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Unif()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -355,7 +285,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void LimitRandom()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -366,7 +296,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Buf()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -378,7 +308,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Cbrt()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -389,7 +319,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Ceil()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -400,7 +330,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void DbSmartSpice()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.SmartSpice);
 
             // act and assert
@@ -411,7 +341,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Db()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -422,7 +352,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Exp()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -433,7 +363,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Fabs()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -444,7 +374,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Flat()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act
@@ -458,7 +388,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Floor()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -469,7 +399,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Hypot()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -480,7 +410,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Gauss()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -491,7 +421,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void ExtendedGauss()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -502,18 +432,18 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void ExtendedGauss_TooManyArguments()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
-            Assert.Throws<InvalidOperationException>(() => evaluator.EvaluateValueExpression("gauss(1, 2.3, 4.5, 0)", c));
+            Assert.Throws<SpiceSharpBehavioral.Parsers.ParserException>(() => evaluator.EvaluateValueExpression("gauss(1, 2.3, 4.5, 0)", c));
         }
 
         [Fact]
         public void If()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -525,7 +455,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Int()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -536,7 +466,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Inv()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -548,7 +478,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Ln()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -559,7 +489,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Limit()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -572,7 +502,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Log()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -583,7 +513,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Log10()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -594,7 +524,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Max()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -605,7 +535,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Min()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -616,7 +546,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void Nint()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -628,7 +558,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void URamp()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
@@ -640,7 +570,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void U()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             Assert.Equal(1, evaluator.EvaluateValueExpression("u(1.2)", c));
@@ -651,42 +581,20 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void UnitInExpression()
         {
             // arrange
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
             // act and assert
             Assert.Equal(100 * 1000, evaluator.EvaluateValueExpression("300kHz/3", c));
         }
 
-        //[Fact]
-        public void FibonacciAsParam()
-        {
-            var functionFactory = new FunctionFactory();
-
-            var p = new SpiceEvaluator();
-            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
-
-            c.AddFunction("fib",
-                functionFactory.Create("fib",
-                new System.Collections.Generic.List<string>() { "x" },
-                "x <= 0 ? 0 : (x == 1 ? 1 : lazy(#fib(x-1) + fib(x-2)#))"));
-
-            Assert.Equal(0, p.EvaluateValueExpression("fib(0)", c));
-            Assert.Equal(1, p.EvaluateValueExpression("fib(1)", c));
-            Assert.Equal(1, p.EvaluateValueExpression("fib(2)", c));
-            Assert.Equal(2, p.EvaluateValueExpression("fib(3)", c));
-            Assert.Equal(3, p.EvaluateValueExpression("fib(4)", c));
-            Assert.Equal(5, p.EvaluateValueExpression("fib(5)", c));
-            Assert.Equal(8, p.EvaluateValueExpression("fib(6)", c));
-        }
-
         [Fact]
-        public void FibonacciAsWithoutLazyParam()
+        public void Fibonacci()
         {
             var functionFactory = new FunctionFactory();
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
 
-            var p = new SpiceEvaluator();
+            var p = new Evaluator();
             c.AddFunction("fib",
                 functionFactory.Create("fib",
                 new System.Collections.Generic.List<string>() { "x" },
@@ -705,7 +613,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void PolyThreeVariablesSum()
         {
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
-            var p = new SpiceEvaluator();
+            var p = new Evaluator();
             Assert.Equal(15, p.EvaluateValueExpression("poly(3, 3, 5, 7, 0, 1, 1, 1)", c));
         }
 
@@ -713,7 +621,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void PolyTwoVariablesSum()
         {
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
-            var p = new SpiceEvaluator();
+            var p = new Evaluator();
             Assert.Equal(3, p.EvaluateValueExpression("poly(2, 1, 2, 0, 1, 1)", c));
         }
 
@@ -721,7 +629,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void PolyTwoVariablesMult()
         {
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
-            var p = new SpiceEvaluator();
+            var p = new Evaluator();
             var context = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
             Assert.Equal(6, p.EvaluateValueExpression("poly(2, 3, 2, 0, 0, 0, 0, 1)", c));
         }
@@ -730,7 +638,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void PolyOneVariableSquare()
         {
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
-            var p = new SpiceEvaluator();
+            var p = new Evaluator();
             Assert.Equal(4, p.EvaluateValueExpression("poly(1, 2, 0, 0, 1)", c));
         }
 
@@ -738,7 +646,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void PolyOneVariablePowerOfThree()
         {
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
-            var p = new SpiceEvaluator();
+            var p = new Evaluator();
             Assert.Equal(8, p.EvaluateValueExpression("poly(1, 2, 0, 0, 0, 1)", c));
         }
 
@@ -746,7 +654,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void PolyOneVariableMultiple()
         {
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
-            var p = new SpiceEvaluator();
+            var p = new Evaluator();
             Assert.Equal(4, p.EvaluateValueExpression("poly(1, 2, 0, 2)", c));
         }
 
@@ -754,7 +662,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         public void PolyOneVariableSquerePlusConstant()
         {
             var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
-            var p = new SpiceEvaluator();
+            var p = new Evaluator();
             Assert.Equal(14, p.EvaluateValueExpression("poly(1, 2, 10, 0, 1)", c));
         }
     }

@@ -51,7 +51,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
             if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsFunctionNameCaseSensitive, out var reader))
             {
-                throw new System.Exception("Unsupported waveform");
+                throw new Exception("Unsupported waveform");
             }
 
             return reader.Generate(parameters, context);
@@ -59,8 +59,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
         public bool Supports(string type, IReadingContext context)
         {
-            if (type == null) throw new ArgumentNullException(nameof(type));
-            if (Mapper.TryGetValue(type, context.CaseSensitivity.IsFunctionNameCaseSensitive, out var reader))
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            if (Mapper.TryGetValue(type, context.CaseSensitivity.IsFunctionNameCaseSensitive, out _))
             {
                 return true;
             }

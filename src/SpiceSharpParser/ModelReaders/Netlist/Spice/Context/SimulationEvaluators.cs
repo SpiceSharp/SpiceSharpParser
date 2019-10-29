@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -34,12 +33,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                     _cacheLock.EnterWriteLock();
                     try
                     {
-                        evaluator = new SpiceEvaluator(
-                            simulation.Name,
-                            SourceEvaluator.ExpressionParser,
-                            SourceEvaluator.IsParameterNameCaseSensitive,
-                            SourceEvaluator.IsFunctionNameCaseSensitive);
-
+                        evaluator = new Evaluator(simulation.Name);
                         _evaluators[simulation] = evaluator;
 
                         return evaluator;

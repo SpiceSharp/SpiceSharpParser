@@ -128,7 +128,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                     {
-                        context.ModelsRegistry.SetModel<CapacitorModel>(
+                        context.ModelsRegistry.SetModel(
                             capacitor,
                             simulation,
                             parameters.GetString(2),
@@ -145,7 +145,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 if (modelBased)
                 {
                     var bp = capacitor.ParameterSets[typeof(SpiceSharp.Components.CapacitorBehaviors.BaseParameters)] as SpiceSharp.Components.CapacitorBehaviors.BaseParameters;
-                    if (!bp.Length.Given)
+                    if (bp == null || !bp.Length.Given)
                     {
                         throw new GeneralReaderException("L needs to be specified");
                     }
@@ -324,7 +324,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                     context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                     {
-                        context.ModelsRegistry.SetModel<ResistorModel>(
+                        context.ModelsRegistry.SetModel(
                             res,
                             simulation,
                             modelName,

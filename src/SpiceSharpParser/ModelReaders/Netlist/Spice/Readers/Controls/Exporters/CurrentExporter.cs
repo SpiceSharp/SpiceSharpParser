@@ -20,16 +20,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <returns>
         /// A list of supported voltage exports.
         /// </returns>
-        public override ICollection<string> CreatedTypes => new List<string>() { "i", "ir", "ii", "im", "idb", "ip" };
+        public virtual ICollection<string> CreatedTypes => new List<string>() { "i", "ir", "ii", "im", "idb", "ip" };
 
         /// <summary>
         /// Creates a new current export
         /// </summary>
+        /// <param name="name"></param>
         /// <param name="type">A type of export</param>
         /// <param name="parameters">A parameters of export</param>
         /// <param name="simulation">A simulation for export</param>
+        /// <param name="nodeNameGenerator"></param>
+        /// <param name="componentNameGenerator"></param>
+        /// <param name="modelNameGenerator"></param>
+        /// <param name="result"></param>
+        /// <param name="caseSettings"></param>
         /// <returns>
-        /// A new export
+        /// A new export.
         /// </returns>
         public override Export CreateExport(string name, string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator componentNameGenerator, IObjectNameGenerator modelNameGenerator, IResultService result, SpiceNetlistCaseSensitivitySettings caseSettings)
         {

@@ -26,7 +26,7 @@
         /// <summary>
         /// Gets a value indicating whether token's lexem can be 'multi-line' or 'single-line'.
         /// </summary>
-        public bool MultipleLineTokens { get; } = false;
+        public bool MultipleLineTokens { get; }
 
         /// <summary>
         /// Gets the character that makes next line to be part of current line (character is at first position on second line).

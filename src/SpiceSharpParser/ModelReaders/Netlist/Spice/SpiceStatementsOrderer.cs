@@ -6,13 +6,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
     public class SpiceStatementsOrderer : ISpiceStatementsOrderer
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SpiceStatementsOrderer"/> class.
-        /// </summary>
-        public SpiceStatementsOrderer()
-        {
-        }
-
         protected List<string> TopControls { get; set; } = new List<string>() { "st_r", "step_r", "param", "sparam", "func", "options", "distribution" };
 
         protected List<string> ControlsAfterComponents { get; set; } = new List<string>() { "plot", "print", "save" };

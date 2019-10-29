@@ -17,17 +17,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
-            Read(statement, context.ExpressionParser, context.ReadingExpressionContext, context.CaseSensitivity);
+            Read(statement, context.ReadingExpressionContext, context.CaseSensitivity, context.ReadingEvaluator, context);
         }
 
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
         /// <param name="statement">A statement to process.</param>
-        /// <param name="expressionParser">Parser.</param>
         /// <param name="expressionContext">Context.</param>
         /// <param name="caseSettings">Case settings.</param>
-        public void Read(Control statement, IExpressionParser expressionParser, ExpressionContext expressionContext, SpiceNetlistCaseSensitivitySettings caseSettings)
+        /// <param name="evaluator">Evaluator.</param>
+        /// <param name="readingContext">Reading context.</param>
+        public void Read(Control statement, ExpressionContext expressionContext, SpiceNetlistCaseSensitivitySettings caseSettings, IEvaluator evaluator, IReadingContext readingContext)
         {
             if (statement.Parameters == null)
             {
@@ -43,7 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         string parameterName = assignmentParameter.Name;
                         string parameterExpression = assignmentParameter.Value;
 
-                        SetParameter(parameterName, parameterExpression, expressionParser, expressionContext, caseSettings);
+                        SetParameter(parameterName, parameterExpression, expressionContext, caseSettings, evaluator, readingContext);
                     }
                     else
                     {
@@ -67,8 +68,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         protected abstract void SetParameter(
             string parameterName,
             string parameterExpression,
-            IExpressionParser expressionParser,
             ExpressionContext expressionContext,
-            SpiceNetlistCaseSensitivitySettings caseSettings);
+            SpiceNetlistCaseSensitivitySettings caseSettings,
+            IEvaluator evaluator,
+            IReadingContext readingContext);
     }
 }

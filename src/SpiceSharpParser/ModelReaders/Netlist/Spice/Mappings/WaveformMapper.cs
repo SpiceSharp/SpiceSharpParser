@@ -7,11 +7,5 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
     /// </summary>
     public class WaveformMapper : BaseMapper<WaveformGenerator>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WaveformMapper"/> class.
-        /// </summary>
-        public WaveformMapper()
-        {
-        }
     }
 }

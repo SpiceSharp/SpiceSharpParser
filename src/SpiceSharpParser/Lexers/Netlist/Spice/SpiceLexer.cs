@@ -17,7 +17,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
         /// <param name="options">options for lexer.</param>
         public SpiceLexer(SpiceLexerSettings options)
         {
-            _options = options ?? throw new System.ArgumentNullException(nameof(options));
+            _options = options ?? throw new ArgumentNullException(nameof(options));
             BuildGrammar();
         }
 
@@ -106,6 +106,35 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                         throw new LexerException("Not matched brackets for expression");
                     }));
 
+            builder.AddDynamicRule(new LexerDynamicRule(
+                (int)SpiceTokenType.BOOLEAN_EXPRESSION,
+                "A mathematical (also nested) expression in brackets",
+                "(",
+                (string textToLex) =>
+                {
+                    int openBracketCount = 1;
+                    var i = 0;
+                    for (i = 1; i < textToLex.Length && openBracketCount > 0; i++)
+                    {
+                        if (textToLex[i] == ')')
+                        {
+                            openBracketCount--;
+                        }
+
+                        if (textToLex[i] == '(')
+                        {
+                            openBracketCount++;
+                        }
+                    }
+
+                    if (openBracketCount == 0)
+                    {
+                        return textToLex.Substring(0, i);
+                    }
+
+                    throw new LexerException("Not matched brackets for expression");
+                }));
+
             builder.AddRegexRule(
                 new LexerTokenRule<SpiceLexerState>(
                     (int)SpiceTokenType.DOT,
@@ -120,10 +149,19 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
 
             builder.AddRegexRule(
                 new LexerTokenRule<SpiceLexerState>(
-                    (int)SpiceTokenType.DELIMITER,
+                    (int) SpiceTokenType.DELIMITER,
                     "A delimiter character",
                     @"(\(|\)|\|)",
-                    (SpiceLexerState state, string lexem) => LexerRuleReturnDecision.ReturnToken));
+                    (SpiceLexerState state, string lexem) => LexerRuleReturnDecision.ReturnToken,
+                    (SpiceLexerState state, string lexem) =>
+                    {
+                        if (state.PreviousReturnedTokenType == (int) SpiceTokenType.IF || (state.PreviousReturnedTokenType == (int)SpiceTokenType.ELSE_IF))
+                        {
+                            return LexerRuleUseDecision.Next;
+                        }
+
+                        return LexerRuleUseDecision.Use;
+                    }));
 
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.COM_START,
@@ -219,21 +257,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                ".ENDL",
                ignoreCase: !_options.IsDotStatementNameCaseSensitive));
 
-            builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
-              (int)SpiceTokenType.BOOLEAN_EXPRESSION,
-              "An boolean expression token",
-              @"\(.*\)",
-              null,
-              (SpiceLexerState state, string lexem) =>
-               {
-                   if (state.PreviousReturnedTokenType == (int)SpiceTokenType.IF
-                   || state.PreviousReturnedTokenType == (int)SpiceTokenType.ELSE_IF)
-                   {
-                       return LexerRuleUseDecision.Use;
-                   }
-
-                   return LexerRuleUseDecision.Next;
-               }));
+           
 
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
               (int)SpiceTokenType.IF,
@@ -294,7 +318,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 null,
                 (SpiceLexerState state, string lexem) =>
                 {
-                    if (state.LineNumber == 1 && _options.HasTitle == true)
+                    if (state.LineNumber == 1 && _options.HasTitle )
                     {
                         return LexerRuleUseDecision.Next;
                     }
@@ -350,7 +374,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 (SpiceLexerState state, string lexem) =>
                 {
                     if (state.LexerOptions.CurrentLineContinuationCharacter.HasValue
-                        && lexem.EndsWith(state.LexerOptions.CurrentLineContinuationCharacter.Value.ToString(), System.StringComparison.Ordinal)
+                        && lexem.EndsWith(state.LexerOptions.CurrentLineContinuationCharacter.Value.ToString(), StringComparison.Ordinal)
                         && state.BeforeLineBreak)
                     {
                         return LexerRuleUseDecision.Next;
