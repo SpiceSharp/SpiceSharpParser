@@ -5,10 +5,10 @@ namespace SpiceSharpParser.Common
 {
     public static class StringComparerProvider
     {
-        private static readonly IEqualityComparer<string> caseSensitiveComparer = new CaseSensitiveComparer();
-        private static readonly IEqualityComparer<string> caseInsensitiveComparer = new CaseInsensitiveComparer();
+        private static readonly EqualityComparer<string> caseSensitiveComparer = new CaseSensitiveComparer();
+        private static readonly EqualityComparer<string> caseInsensitiveComparer = new CaseInsensitiveComparer();
 
-        public static IEqualityComparer<string> Get(bool caseSensitive)
+        public static EqualityComparer<string> Get(bool caseSensitive)
         {
             return caseSensitive ? caseSensitiveComparer : caseInsensitiveComparer;
         }

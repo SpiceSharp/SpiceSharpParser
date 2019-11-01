@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SpiceSharpParser.Common.StringComparers
 {
-    public class CaseInsensitiveComparer : IEqualityComparer<string>
+    public class CaseInsensitiveComparer : EqualityComparer<string>
     {
         /// <summary>
         /// Determines whether the specified objects are equal.
@@ -13,7 +13,7 @@ namespace SpiceSharpParser.Common.StringComparers
         /// <returns>
         /// True if x equals y.
         /// </returns>
-        public bool Equals(string x, string y)
+        public override bool Equals(string x, string y)
         {
             // Do case insensitive equality checking on the identifiers
             return StringComparer.OrdinalIgnoreCase.Equals(x, y);
@@ -26,7 +26,7 @@ namespace SpiceSharpParser.Common.StringComparers
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
         /// </returns>
-        public int GetHashCode(string obj)
+        public override int GetHashCode(string obj)
         {
             // Make sure the hash code is case insensitive
             return obj.ToLowerInvariant().GetHashCode();
