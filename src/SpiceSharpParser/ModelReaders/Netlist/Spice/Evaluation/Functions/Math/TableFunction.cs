@@ -1,6 +1,8 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
 using System;
 using System.Collections.Generic;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
 {
@@ -12,16 +14,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             ArgumentsCount = -1;
         }
 
-        public override double Logic(string image, double[] args, IEvaluator evaluator, ExpressionContext context)
+        public override double Logic(string image, double[] args, IEvaluator evaluator, ExpressionContext context, Simulation simulation = null, IReadingContext readingContext = null)
         {
-            var parameterValue = (double)args[0];
+            var parameterValue = args[0];
 
             var points = new List<Tuple<double, double>>();
 
             for (var i = 1; i < args.Length - 1; i += 2)
             {
-                var pointX = (double)args[i];
-                var pointY = (double)args[i + 1];
+                var pointX = args[i];
+                var pointY = args[i + 1];
                 points.Add(new Tuple<double, double>(pointX, pointY));
 
                 if (pointX == parameterValue)

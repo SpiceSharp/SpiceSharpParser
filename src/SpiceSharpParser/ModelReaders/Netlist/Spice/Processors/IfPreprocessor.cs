@@ -12,15 +12,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
     /// </summary>
     public class IfPreprocessor : IProcessor, IEvaluatorConsumer
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IfPreprocessor"/> class.
-        /// </summary>
-        public IfPreprocessor()
-        {
-        }
-
-        public IExpressionParser ExpressionParser { get; set; }
-
         public ExpressionContext ExpressionContext { get; set; }
 
         public IEvaluator Evaluator { get; set; }
@@ -43,9 +34,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             }
 
             ParamControl paramControl = new ParamControl();
-            foreach (Control param in statements.Where(statement => statement is Control c && c.Name.ToLower() == "param"))
+            foreach (Control param in statements.Where(statement => statement is Control c && c.Name.ToLower() == "param").Cast<Control>())
             {
-                paramControl.Read(param, ExpressionParser, ExpressionContext, CaseSettings);
+                paramControl.Read(param, ExpressionContext, CaseSettings, Evaluator, null);
             }
 
             return ReadIfs(statements);

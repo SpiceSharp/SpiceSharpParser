@@ -25,10 +25,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
-            CreateSimulations(statement, context, CreateACSimulation);
+            CreateSimulations(statement, context, CreateAcSimulation);
         }
 
-        private AC CreateACSimulation(string name, Control statement, IReadingContext context)
+        private AC CreateAcSimulation(string name, Control statement, IReadingContext context)
         {
             switch (statement.Parameters.Count)
             {
@@ -57,7 +57,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             ConfigureCommonSettings(ac, context);
             ConfigureAcSettings(ac.Configurations.Get<FrequencyConfiguration>(), context);
 
-            ac.BeforeFrequencyLoad += (object sender, LoadStateEventArgs args) =>
+            ac.BeforeFrequencyLoad += (sender, args) =>
                 {
                     if (ac.ComplexState != null)
                     {

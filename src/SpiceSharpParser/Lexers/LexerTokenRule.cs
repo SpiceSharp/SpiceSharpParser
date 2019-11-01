@@ -28,8 +28,8 @@ namespace SpiceSharpParser.Lexers
             : base(ruleName, regularExpressionPattern, ignoreCase)
         {
             TokenType = tokenType;
-            ReturnDecisionProvider = returnDecisionProvider ?? new Func<TLexerState, string, LexerRuleReturnDecision>((state, lexem) => LexerRuleReturnDecision.ReturnToken);
-            UseDecisionProvider = useDecisionProvider ?? new Func<TLexerState, string, LexerRuleUseDecision>((state, lexem) => LexerRuleUseDecision.Use);
+            ReturnDecisionProvider = returnDecisionProvider ?? ((state, lexem) => LexerRuleReturnDecision.ReturnToken);
+            UseDecisionProvider = useDecisionProvider ?? ((state, lexem) => LexerRuleUseDecision.Use);
         }
 
         /// <summary>

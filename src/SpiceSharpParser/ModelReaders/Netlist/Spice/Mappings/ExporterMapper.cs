@@ -7,11 +7,5 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
     /// </summary>
     public class ExporterMapper : BaseMapper<Exporter>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExporterMapper"/> class.
-        /// </summary>
-        public ExporterMapper()
-        {
-        }
     }
 }

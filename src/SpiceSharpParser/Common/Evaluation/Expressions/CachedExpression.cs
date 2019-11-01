@@ -1,4 +1,6 @@
 ﻿using System;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.Common.Evaluation.Expressions
 {
@@ -23,10 +25,12 @@ namespace SpiceSharpParser.Common.Evaluation.Expressions
         /// </summary>
         /// <param name="evaluator">Evaluator.</param>
         /// <param name="context">Context.</param>
+        /// <param name="sim">Simulation.</param>
+        /// <param name="readingContext">Reading context.</param>
         /// <returns>
         /// The value of the expression.
         /// </returns>
-        public override double Evaluate(IEvaluator evaluator, ExpressionContext context)
+        public override double Evaluate(IEvaluator evaluator, ExpressionContext context, Simulation sim, IReadingContext readingContext)
         {
             if (evaluator == null)
             {
@@ -40,7 +44,7 @@ namespace SpiceSharpParser.Common.Evaluation.Expressions
 
             if (!IsEvaluated)
             {
-                CurrentValue = evaluator.EvaluateValueExpression(ValueExpression, context);
+                CurrentValue = evaluator.EvaluateValueExpression(ValueExpression,context, sim, readingContext);
                 IsEvaluated = true;
             }
 

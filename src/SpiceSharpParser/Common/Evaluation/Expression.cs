@@ -1,4 +1,6 @@
 ﻿using System;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
@@ -36,10 +38,12 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         /// <param name="evaluator">Evaluator.</param>
         /// <param name="context">Context.</param>
+        /// <param name="simulation"></param>
+        /// <param name="readingContext"></param>
         /// <returns>
         /// The value of the expression.
         /// </returns>
-        public virtual double Evaluate(IEvaluator evaluator, ExpressionContext context)
+        public virtual double Evaluate(IEvaluator evaluator, ExpressionContext context, Simulation simulation, IReadingContext readingContext)
         {
             if (evaluator == null)
             {
@@ -51,7 +55,7 @@ namespace SpiceSharpParser.Common.Evaluation
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var newValue = evaluator.EvaluateValueExpression(ValueExpression, context);
+            var newValue = evaluator.EvaluateValueExpression(ValueExpression, context, simulation, readingContext);
             CurrentValue = newValue;
             OnEvaluated(newValue);
             return newValue;

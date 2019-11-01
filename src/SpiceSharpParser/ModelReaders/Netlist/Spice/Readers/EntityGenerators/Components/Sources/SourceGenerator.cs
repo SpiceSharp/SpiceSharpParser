@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SpiceSharp.Circuits;
+﻿using System.Linq;
 using SpiceSharp.Components;
+using SpiceSharp.Simulations;
 using SpiceSharpBehavioral.Parsers;
-using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -14,61 +11,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public abstract class SourceGenerator : ComponentGenerator
     {
-        protected SimpleDerivativeParser CreateParser(IReadingContext context)
+        protected SimpleDerivativeParser CreateParser(IReadingContext context, Simulation simulation)
         {
-            if (context.Result.Simulations.Count() > 1)
-            {
-                throw new GeneralReaderException("Behavioral sources requires that there is only one simulation in the netlist");
-            }
-
-
-            var parser = new SimpleDerivativeParser();
-            parser.VariableFound += (sender, args) =>
-            {
-                var simulationExpressionContext = context.SimulationExpressionContexts.GetContext(context.Result.Simulations.First());
-
-                if (simulationExpressionContext.Parameters.ContainsKey(args.Name))
-                {
-                    var d = new DoubleDerivatives(1);
-                    d[0] = () => GetParameter(simulationExpressionContext, args.Name);
-                    args.Result = d;
-                }
-            };
-            parser.FunctionFound += (sender, args) =>
-            {
-                var simulationExpressionContext = context.SimulationExpressionContexts.GetContext(context.Result.Simulations.First());
-
-                if (simulationExpressionContext.Functions.TryGetValue(args.Name, out var functions))
-                {
-                    var function = functions.First() as IFunction<double, double>;
-
-                    if (function != null)
-                    {
-                        var d = new DoubleDerivatives(1);
-
-                        var arguments = new List<Func<double>>();
-
-                        for (var i = 0; i < args.ArgumentCount; i++)
-                        {
-                            if (args[i].Count > 0)
-                            {
-                                var arg = args[i];
-                                arguments.Add(() => arg[0]());
-                            }
-                        }
-
-                        d[0] = () => function.Logic(string.Empty, arguments.Select(arg => arg()).ToArray(), context.ReadingEvaluator, simulationExpressionContext);
-                        args.Result = d;
-                    }
-                }
-            };
-
+            var parser = Parsers.Expression.ExpressionParserHelpers.GetDeriveParser(context.SimulationExpressionContexts.GetContext(simulation), context, context.ReadingEvaluator, simulation);
             return parser;
-        }
-
-        private double GetParameter(ExpressionContext simulationExpressionContext, string argsName)
-        {
-            return simulationExpressionContext.Parameters[argsName].CurrentValue;
         }
 
         protected SpiceSharp.Components.Component SetSourceParameters(

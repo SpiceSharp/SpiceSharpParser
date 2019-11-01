@@ -71,7 +71,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
         {
             if (tokens == null)
             {
-                throw new System.ArgumentNullException(nameof(tokens));
+                throw new ArgumentNullException(nameof(tokens));
             }
 
             var stack = new Stack<ParseTreeNode>();
@@ -86,9 +86,9 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
                 var currentNode = stack.Pop();
                 if (currentNode is ParseTreeNonTerminalNode ntn)
                 {
-                    if (this._parsers.ContainsKey(ntn.Name))
+                    if (_parsers.ContainsKey(ntn.Name))
                     {
-                        this._parsers[ntn.Name](stack, ntn, tokens, currentTokenIndex);
+                        _parsers[ntn.Name](stack, ntn, tokens, currentTokenIndex);
                     }
                     else
                     {
@@ -656,7 +656,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
         /// <param name="currentTokenIndex">A index of the current token</param>
         private void ReadPointValues(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
-            var currentToken = tokens[currentTokenIndex];
+            //var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
 
             if (nextToken.Is(SpiceTokenType.DELIMITER) && nextToken.Lexem == ")")
@@ -794,7 +794,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
         }
 
         /// <summary>
-        /// Reads <see cref="Symbols.ParametersSeperator"/> non-terminal node
+        /// Reads <see cref="Symbols.ParametersSeparator"/> non-terminal node
         /// Pushes tree nodes to the stack based on the grammar.
         /// </summary>
         /// <param name="stack">A stack where the production is pushed.</param>

@@ -40,12 +40,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             if (context == null)
             {
-                throw new System.ArgumentNullException(nameof(context));
+                throw new ArgumentNullException(nameof(context));
             }
 
             if (statement == null)
             {
-                throw new System.ArgumentNullException(nameof(statement));
+                throw new ArgumentNullException(nameof(statement));
             }
 
             string type = statement.Parameters.Count > 0 ? statement.Parameters[0].Image.ToLower() : null;

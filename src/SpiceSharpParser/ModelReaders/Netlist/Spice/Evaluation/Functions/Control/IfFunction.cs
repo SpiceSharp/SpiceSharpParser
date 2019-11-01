@@ -1,5 +1,7 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
 using System;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Control
 {
@@ -11,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Contr
             ArgumentsCount = 3;
         }
 
-        public override double Logic(string image, double[] args, IEvaluator evaluator, ExpressionContext context)
+        public override double Logic(string image, double[] args, IEvaluator evaluator, ExpressionContext context, Simulation simulation = null, IReadingContext readingContext = null)
         {
             if (args.Length != 3)
             {

@@ -80,12 +80,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         private void ReadOtherCases(ParameterCollection parameters, IReadingContext context)
         {
             bool list = false;
-            int index = 0;
             for (var i = 0; i <= 2; i++)
             {
                 if (parameters[i].Image.ToLower() == "list")
                 {
-                    index = i;
                     list = true;
                 }
             }

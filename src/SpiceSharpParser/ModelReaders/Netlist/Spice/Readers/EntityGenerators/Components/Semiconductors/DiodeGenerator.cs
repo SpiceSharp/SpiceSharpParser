@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SpiceSharp;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -29,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
             {
-                context.ModelsRegistry.SetModel<DiodeModel>(
+                context.ModelsRegistry.SetModel(
                     diode,
                     simulation,
                     parameters.GetString(2),
@@ -65,7 +64,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                 }
 
-                if (parameters[i] is ValueParameter v1 || parameters[i] is ExpressionParameter v2)
+                if (parameters[i] is ValueParameter || parameters[i] is ExpressionParameter)
                 {
                     // TODO: Fix this please it's broken ...
                     var bp = diode.ParameterSets.Get<SpiceSharp.Components.DiodeBehaviors.BaseParameters>();

@@ -21,13 +21,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             }
 
             // 1. Iterate over all subcircuits
-            var subCircuits = statements.Where(statement => statement is SubCircuit s);
+            var subCircuits = statements.Where(statement => statement is SubCircuit).Cast<SubCircuit>().ToList();
             if (subCircuits.Any())
             {
                 foreach (SubCircuit subCircuit in subCircuits)
                 {
                     // 2. For each subcircuit find all APPENDMODELS
-                    var subCircuitAppendModels = subCircuit.Statements.Where(statement => statement is Control c && (c.Name.ToLower() == "appendmodel"));
+                    var subCircuitAppendModels = subCircuit.Statements
+                        .Where(statement => statement is Control c && (c.Name.ToLower() == "appendmodel"))
+                        .Cast<Control>().ToList();
 
                     foreach (Control appendModel in subCircuitAppendModels)
                     {
@@ -38,7 +40,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             }
 
             // 4. Find all APPENDMODELs from main circuit
-            var appendModels = statements.Where(statement => statement is Control c && (c.Name.ToLower() == "appendmodel"));
+            var appendModels = statements
+                .Where(statement => statement is Control c && (c.Name.ToLower() == "appendmodel"))
+                .Cast<Control>().ToList();
 
             if (appendModels.Any())
             {
@@ -57,12 +61,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// </summary>
         /// <param name="statements">Statements to process</param>
         /// <param name="appendModel">Append model statement</param>
-        /// <param name="appendModels">Append model statements</param>
         private void ReadAppendModel(Statements statements, Control appendModel)
         {
             if (appendModel.Parameters.Count != 4 && appendModel.Parameters.Count != 2)
             {
-                throw new System.Exception("Wrong parameter count for .APPENDMODEL");
+                throw new Exception("Wrong parameter count for .APPENDMODEL");
             }
 
             if (appendModel.Parameters.Count == 4)
@@ -78,30 +81,30 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         private void ReadAppendModelWithTwoParameters(Statements statements, Control appendModel)
         {
             string sourceModel = appendModel.Parameters.GetString(0);
-            var sourceModelObj = (Model)statements.FirstOrDefault(s => s is Models.Netlist.Spice.Objects.Model m && m.Name == sourceModel);
+            var sourceModelObj = (Model)statements.FirstOrDefault(s => s is Model m && m.Name == sourceModel);
             if (sourceModelObj == null)
             {
-                throw new System.Exception("Could not find source model for .APPENDMODEL");
+                throw new Exception("Could not find source model for .APPENDMODEL");
             }
 
             string destinationModel = appendModel.Parameters.GetString(1);
             if (destinationModel == "*")
             {
                 var destinationModelsObj = statements
-                   .Where(s =>
-                   s is Models.Netlist.Spice.Objects.Model m
-                   && m.Name != sourceModel);
+                    .Where(s =>
+                        s is Model m
+                        && m.Name != sourceModel).Cast<Model>();
 
                 AppendParametersToModel(destinationModelsObj, sourceModelObj.Parameters);
             }
             else
             {
-                var destinationModelObj = (Models.Netlist.Spice.Objects.Model)statements
-                    .FirstOrDefault(s => s is Models.Netlist.Spice.Objects.Model m && m.Name == destinationModel);
+                var destinationModelObj = (Model)statements
+                    .FirstOrDefault(s => s is Model m && m.Name == destinationModel);
 
                 if (destinationModelObj == null)
                 {
-                    throw new System.Exception("Could not find destination model for .APPENDMODEL");
+                    throw new Exception("Could not find destination model for .APPENDMODEL");
                 }
 
                 destinationModelObj.Parameters.Set(sourceModelObj.Parameters);
@@ -111,7 +114,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         private void ReadAppendModelWithFourParameters(Statements statements, Control appendModel)
         {
             string sourceModel = appendModel.Parameters.GetString(0);
-            string sourceModelType = appendModel.Parameters.GetString(1); // ignored (for now)
+            //string sourceModelType = appendModel.Parameters.GetString(1); // ignored (for now)
             string destinationModel = appendModel.Parameters.GetString(2);
             string destinationModelType = appendModel.Parameters.GetString(3);
 
@@ -119,7 +122,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
             if (sourceModelObj == null)
             {
-                throw new System.Exception("Could not find source model for .APPENDMODEL");
+                throw new Exception("Could not find source model for .APPENDMODEL");
             }
 
             var parametersToSet = sourceModelObj.Parameters;
@@ -130,38 +133,35 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
             if (destinationModel == "*")
             {
-                IEnumerable<Statement> destinationModelsObj = GetModelsOfType(statements, sourceModel, destinationModelType);
+                IEnumerable<Model> destinationModelsObj = GetModelsOfType(statements, sourceModel, destinationModelType);
                 AppendParametersToModel(destinationModelsObj, parametersToSet);
             }
             else if (destinationModel.Contains("*"))
             {
                 string regularExpression = destinationModel.Replace("*", ".*");
 
-                IEnumerable<Statement> destinationModelsObj = GetModelsRegex(statements, sourceModel, destinationModelType, regularExpression);
+                IEnumerable<Model> destinationModelsObj = GetModelsRegex(statements, sourceModel, destinationModelType, regularExpression);
                 AppendParametersToModel(destinationModelsObj, parametersToSet);
             }
             else
             {
                 var destinationModelObj = (Model)statements.FirstOrDefault(s => s is Model m && m.Name == destinationModel);
 
-                if (destinationModelObj != null)
-                {
-                    destinationModelObj.Parameters.Set(parametersToSet);
-                }
+                destinationModelObj?.Parameters.Set(parametersToSet);
             }
         }
 
         /// <summary>
         /// Gets the models with name matching regex and with different name than source model.
         /// </summary>
-        private IEnumerable<Statement> GetModelsRegex(Statements statements, string sourceModelName, string destinationModelType, string regularExpression)
+        private IEnumerable<Model> GetModelsRegex(Statements statements, string sourceModelName, string destinationModelType, string regularExpression)
         {
             return statements
                 .Where(s =>
-                s is Models.Netlist.Spice.Objects.Model m
-                && GetTypeOfModel(m).ToLower() == destinationModelType.ToLower()
-                && m.Name != sourceModelName
-                && Regex.Match(m.Name, regularExpression).Success);
+                    s is Model m
+                    && GetTypeOfModel(m).ToLower() == destinationModelType.ToLower()
+                    && m.Name != sourceModelName
+                    && Regex.Match(m.Name, regularExpression).Success).Cast<Model>();
         }
 
         /// <summary>
@@ -173,13 +173,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <returns>
         /// Enumerable of models.
         /// </returns>
-        private IEnumerable<Statement> GetModelsOfType(Statements statements, string sourceModelName, string modelType)
+        private IEnumerable<Model> GetModelsOfType(Statements statements, string sourceModelName, string modelType)
         {
             return statements
-            .Where(s =>
-                s is Model m
-                && GetTypeOfModel(m).ToLower() == modelType.ToLower()
-                && m.Name != sourceModelName);
+                .Where(s =>
+                    s is Model m
+                    && GetTypeOfModel(m).ToLower() == modelType.ToLower()
+                    && m.Name != sourceModelName).Cast<Model>();
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// </summary>
         /// <param name="models">A enumerable of models.</param>
         /// <param name="parametersToSet">Parameters to set.</param>
-        private void AppendParametersToModel(IEnumerable<Statement> models, ParameterCollection parametersToSet)
+        private void AppendParametersToModel(IEnumerable<Model> models, ParameterCollection parametersToSet)
         {
             foreach (Model model in models)
             {

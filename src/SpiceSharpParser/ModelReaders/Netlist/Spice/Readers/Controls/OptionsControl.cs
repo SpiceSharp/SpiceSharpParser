@@ -1,5 +1,4 @@
-﻿using System;
-using SpiceSharp;
+﻿using SpiceSharp;
 using SpiceSharp.IntegrationMethods;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;

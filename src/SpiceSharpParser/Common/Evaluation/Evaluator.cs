@@ -1,25 +1,26 @@
 ﻿using System;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
     /// <summary>
-    /// Abstract evaluator.
+    /// Evaluator.
     /// </summary>
-    public abstract class Evaluator : IEvaluator
+    public class Evaluator : IEvaluator
     {
+        public Evaluator() : this(string.Empty)
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Evaluator"/> class.
         /// </summary>
         /// <param name="name">Evaluator name.</param>
-        /// <param name="parser">Expression parser.</param>
-        /// <param name="isParameterNameCaseSensitive">Is parameter name case-sensitive.</param>
-        /// <param name="isFunctionNameCaseSensitive">Is function name case-sensitive.</param>
-        protected Evaluator(string name, IExpressionParser parser, bool isParameterNameCaseSensitive, bool isFunctionNameCaseSensitive)
+        public Evaluator(string name)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
-            ExpressionParser = parser ?? throw new ArgumentNullException(nameof(parser));
-            IsParameterNameCaseSensitive = isParameterNameCaseSensitive;
-            IsFunctionNameCaseSensitive = isFunctionNameCaseSensitive;
         }
 
         /// <summary>
@@ -27,24 +28,17 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         public string Name { get; set; }
 
-        public bool IsParameterNameCaseSensitive { get; }
-
-        public bool IsFunctionNameCaseSensitive { get; }
-
-        /// <summary>
-        /// Gets the expression parser.
-        /// </summary>
-        public IExpressionParser ExpressionParser { get; private set; }
-
         /// <summary>
         /// Evaluates a specific expression to double.
         /// </summary>
         /// <param name="expression">An expression to evaluate.</param>
         /// <param name="context">Context.</param>
+        /// <param name="simulation"></param>
+        /// <param name="readingContext"></param>
         /// <returns>
         /// A double value.
         /// </returns>
-        public double EvaluateValueExpression(string expression, ExpressionContext context)
+        public double EvaluateValueExpression(string expression, ExpressionContext context, Simulation simulation = null, IReadingContext readingContext = null)
         {
             if (expression == null)
             {
@@ -58,64 +52,10 @@ namespace SpiceSharpParser.Common.Evaluation
 
             if (context.Parameters.TryGetValue(expression, out var parameter))
             {
-                return parameter.Evaluate(this, context);
+                return parameter.Evaluate(this, context, simulation, readingContext);
             }
 
-            ExpressionParseResult parseResult = ExpressionParser.Parse(
-                expression,
-                new ExpressionParserContext(context.Name, context.Functions));
-
-            return parseResult.Value(new ExpressionEvaluationContext()
-            {
-                ExpressionContext = context,
-                Evaluator = this
-            });
-        }
-
-        /// <summary>
-        /// Gets value of named expression.
-        /// </summary>
-        /// <param name="expressionName">Name of expression</param>
-        /// <param name="context">Context.</param>
-        /// <returns>
-        /// Value of expression.
-        /// </returns>
-        public double EvaluateNamedExpression(string expressionName, ExpressionContext context)
-        {
-            if (expressionName == null)
-            {
-                throw new ArgumentNullException(nameof(expressionName));
-            }
-
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            return context.ExpressionRegistry.GetExpression(expressionName).Evaluate(this, context);
-        }
-
-        /// <summary>
-        /// Gets the value of parameter.
-        /// </summary>
-        /// <param name="id">A parameter identifier.</param>
-        /// <param name="context">Context.</param>
-        /// <returns>
-        /// A value of parameter.
-        /// </returns>
-        public double EvaluateParameter(string id, ExpressionContext context)
-        {
-            if (id == null)
-            {
-                throw new ArgumentNullException(nameof(id));
-            }
-
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            return context.Parameters[id].Evaluate(this, context);
+            return ExpressionParserHelpers.GetExpressionValue(expression, context, this, simulation, readingContext, false);
         }
     }
 }

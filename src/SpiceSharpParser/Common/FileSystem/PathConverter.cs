@@ -2,7 +2,7 @@
 
 namespace SpiceSharpParser.Common.FileSystem
 {
-    public class PathConverter
+    public static class PathConverter
     {
         public static string Convert(string includePath)
         {

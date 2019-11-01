@@ -24,6 +24,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// Initializes a new instance of the <see cref="SaveControl"/> class.
         /// </summary>
         /// <param name="mapper">The exporter mapper.</param>
+        /// <param name="factory">Export factory.</param>
         public SaveControl(IMapper<Exporter> mapper, IExportFactory factory)
             : base(mapper, factory)
         {
@@ -217,7 +218,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 var expressionContext = context.SimulationExpressionContexts.GetContext(export.Simulation);
                 var firstParameterSweepParameter = expressionContext.Parameters[firstParameterSweep.Parameter.Image];
                 var evaluator = context.SimulationEvaluators.GetEvaluator(export.Simulation);
-                var value = firstParameterSweepParameter.Evaluate(evaluator, context.SimulationExpressionContexts.GetContext(export.Simulation));
+                var value = firstParameterSweepParameter.Evaluate(evaluator, context.SimulationExpressionContexts.GetContext(export.Simulation), export.Simulation, context);
 
                 series.Points.Add(new Point() { X = value, Y = export.Extract() });
             };
@@ -327,7 +328,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             context.ReadingExpressionContext.GetExpression(expressionName),
                             evaluator,
                             context.SimulationExpressionContexts,
-                            simulation);
+                            simulation, context);
 
                     context.Result.AddExport(export);
                 }

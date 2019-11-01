@@ -1,5 +1,4 @@
-﻿using SpiceSharpParser.Common;
-using SpiceSharpParser.Lexers.Netlist.Spice;
+﻿using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.Parsers.Netlist.Spice;
 

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SpiceSharp;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -23,7 +22,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
             {
-                context.ModelsRegistry.SetModel<JFETModel>(
+                context.ModelsRegistry.SetModel(
                     jfet,
                     simulation,
                     parameters.GetString(3),
@@ -72,7 +71,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                 }
 
-                if (parameters[i] is ValueParameter v1 || parameters[i] is ExpressionParameter v2)
+                if (parameters[i] is ValueParameter || parameters[i] is ExpressionParameter)
                 {
                     context.SetParameter(jfet, "area", parameters[i].Image);
                 }

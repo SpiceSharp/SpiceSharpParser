@@ -28,6 +28,7 @@ namespace SpiceSharpParser.Common.Evaluation
 
             Name = name;
             Parameters = new Dictionary<string, Expression>(StringComparerProvider.Get(isParameterNameCaseSensitive));
+            Arguments = new Dictionary<string, Expression>(StringComparerProvider.Get(isParameterNameCaseSensitive));
             Functions = new Dictionary<string, List<IFunction>>(StringComparerProvider.Get(isFunctionNameCaseSensitive));
             Children = new List<ExpressionContext>();
             ExpressionRegistry = new ExpressionRegistry(isParameterNameCaseSensitive, isExpressionNameCaseSensitive);
@@ -82,6 +83,11 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Gets or sets the parameters.
         /// </summary>
         public Dictionary<string, Expression> Parameters { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the parameters.
+        /// </summary>
+        public Dictionary<string, Expression> Arguments { get; protected set; }
 
         /// <summary>
         /// Gets or sets custom functions.

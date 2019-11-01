@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.Common.Evaluation;
+﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 {
@@ -6,6 +7,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
     {
         public string ParameterName { get; set; }
 
-        public abstract double GetValue(IEvaluator evaluator, ExpressionContext context);
+        public abstract double GetValue(IEvaluator evaluator, ExpressionContext context, Simulation simulation);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports;
@@ -21,7 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <returns>
         /// A list of supported voltage exports.
         /// </returns>
-        public override ICollection<string> CreatedTypes => new List<string>() { "v", "vr", "vi", "vm", "vdb", "vp", "vph" };
+        public virtual ICollection<string> CreatedTypes => new List<string>() { "v", "vr", "vi", "vm", "vdb", "vp", "vph" };
 
         /// <summary>
         /// Creates a new voltage export

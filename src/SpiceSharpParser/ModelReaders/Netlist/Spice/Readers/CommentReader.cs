@@ -9,10 +9,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
     /// </summary>
     public class CommentReader : StatementReader<CommentLine>, ICommentReader
     {
-        public CommentReader()
-        {
-        }
-
         /// <summary>
         /// Reads a comment statement and modifies the context.
         /// </summary>

@@ -5,13 +5,9 @@ using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.Common.Mathematics.Probability;
 using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Processors;
 using SpiceSharpParser.Models.Netlist.Spice;
-using SpiceSharpParser.Parsers.Expression;
 using SpiceSharpParser.Parsers.Netlist.Spice;
 
 namespace SpiceSharpParser
@@ -44,7 +40,6 @@ namespace SpiceSharpParser
                 TokenProviderPool,
                 SingleNetlistParser,
                 () => Settings.WorkingDirectory,
-                Settings.Reading,
                 Settings.Lexing);
 
             var libPreprocessor = new LibPreprocessor(
@@ -91,12 +86,12 @@ namespace SpiceSharpParser
         {
             if (spiceNetlist == null)
             {
-                throw new System.ArgumentNullException(nameof(spiceNetlist));
+                throw new ArgumentNullException(nameof(spiceNetlist));
             }
 
             if (Settings == null)
             {
-                throw new System.InvalidOperationException(nameof(Settings));
+                throw new InvalidOperationException(nameof(Settings));
             }
 
             // Get tokens
@@ -106,15 +101,7 @@ namespace SpiceSharpParser
 
             // Preprocessing
             SpiceNetlist preprocessedNetListModel = (SpiceNetlist)originalNetlistModel.Clone();
-            SpiceEvaluator preprocessorEvaluator = CreatePreprocessorEvaluator();
-
-            var exportFunctions = ExportFunctions.Create(
-                Settings.Reading.Mappings.Exporters,
-                new MainCircuitNodeNameGenerator(new string[] { "0" }, Settings.Reading.CaseSensitivity.IsNodeNameCaseSensitive),
-                new ObjectNameGenerator(string.Empty),
-                new ObjectNameGenerator(string.Empty),
-                null,
-                Settings.Reading.CaseSensitivity);
+            Evaluator preprocessorEvaluator = CreatePreprocessorEvaluator();
 
             ExpressionContext preprocessorContext = new SpiceExpressionContext(
                 string.Empty,
@@ -124,13 +111,6 @@ namespace SpiceSharpParser
                 Settings.Reading.CaseSensitivity.IsExpressionNameCaseSensitive,
                 new Randomizer(Settings.Reading.CaseSensitivity.IsDistributionNameCaseSensitive));
 
-            foreach (var exportFunction in exportFunctions)
-            {
-                preprocessorContext.AddFunction(exportFunction.Key, exportFunction.Value);
-            }
-
-            var parser = new SpiceExpressionParser();
-
             foreach (var preprocessor in Preprocessors)
             {
                 if (preprocessor is IEvaluatorConsumer consumer)
@@ -138,7 +118,6 @@ namespace SpiceSharpParser
                     consumer.Evaluator = preprocessorEvaluator;
                     consumer.ExpressionContext = preprocessorContext;
                     consumer.CaseSettings = Settings.Reading?.CaseSensitivity;
-                    consumer.ExpressionParser = parser;
                 }
 
                 preprocessedNetListModel.Statements = preprocessor.Process(preprocessedNetListModel.Statements);
@@ -156,14 +135,9 @@ namespace SpiceSharpParser
             };
         }
 
-        private SpiceEvaluator CreatePreprocessorEvaluator()
+        private Evaluator CreatePreprocessorEvaluator()
         {
-            SpiceEvaluator preprocessorEvaluator = new SpiceEvaluator(
-                "Preprocessors evaluator",
-                new SpiceExpressionParser(),
-                Settings.Reading.CaseSensitivity.IsParameterNameCaseSensitive,
-                Settings.Reading.CaseSensitivity.IsFunctionNameCaseSensitive);
-
+            Evaluator preprocessorEvaluator = new Evaluator("Preprocessors evaluator");
             return preprocessorEvaluator;
         }
     }

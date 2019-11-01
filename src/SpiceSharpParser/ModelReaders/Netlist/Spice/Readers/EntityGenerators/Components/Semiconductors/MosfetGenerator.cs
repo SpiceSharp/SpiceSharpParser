@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpiceSharp;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
@@ -64,7 +63,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             // Get the model and generate a component for it
             SpiceSharp.Components.Component mosfet = null;
             string modelName = parameters.GetString(4);
-            SpiceSharp.Components.Model model = context.ModelsRegistry.FindModel<SpiceSharp.Components.Model>(modelName);
+            Model model = context.ModelsRegistry.FindModel<Model>(modelName);
             if (model == null)
             {
                 throw new ModelNotFoundException($"Could not find model {modelName} for mosfet {originalName}");
@@ -77,7 +76,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                 {
-                    context.ModelsRegistry.SetModel<SpiceSharp.Components.Model>(
+                    context.ModelsRegistry.SetModel(
                         mosfetDetails.Mosfet,
                         simulation,
                         modelName,

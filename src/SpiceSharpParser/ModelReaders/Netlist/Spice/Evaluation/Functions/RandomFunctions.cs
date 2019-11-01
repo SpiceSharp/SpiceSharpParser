@@ -1,5 +1,4 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
@@ -69,7 +68,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// </returns>
         public static IFunction<double, double> CreateLimit()
         {
-            return new SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.LimitFunction();
+            return new LimitFunction();
         }
 
         /// <summary>
@@ -80,7 +79,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// </returns>
         public static IFunction<double, double> CreateUnif()
         {
-            return new SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.UnifFunction();
+            return new UnifFunction();
         }
 
         /// <summary>
@@ -91,7 +90,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// </returns>
         public static IFunction<double, double> CreateAUnif()
         {
-            return new SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.AUnifFunction();
+            return new AUnifFunction();
         }
 
         /// <summary>
@@ -102,7 +101,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// </returns>
         public static IFunction<double, double> CreateAGauss()
         {
-            return new SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.AGaussFunction();
+            return new AGaussFunction();
         }
     }
 }

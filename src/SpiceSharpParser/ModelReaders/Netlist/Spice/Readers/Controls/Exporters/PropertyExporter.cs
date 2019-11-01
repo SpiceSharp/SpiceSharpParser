@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
@@ -15,17 +14,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
     /// </summary>
     public class PropertyExporter : Exporter
     {
-        public PropertyExporter()
-        {
-
-        }
         /// <summary>
         /// Gets supported property exports.
         /// </summary>
         /// <returns>
         /// A list of supported property exports.
         /// </returns>
-        public override ICollection<string> CreatedTypes => new List<string>() { "@" };
+        public virtual ICollection<string> CreatedTypes => new List<string>() { "@" };
 
         /// <summary>
         /// Creates a new current export.
@@ -60,15 +55,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 throw new ArgumentNullException(nameof(parameters));
             }
 
-            if (parameters.Count != 2)
-            {
-                throw new WrongParameterException("Property exports should have two parameters: name of component and property name");
-            }
-
             var comparer = StringComparerProvider.Get(caseSettings.IsEntityParameterNameCaseSensitive);
 
-            var entityName = parameters[0].Image;
-            if (result != null)
+            var entityName = (parameters[0] as VectorParameter)?.Elements[0].Image;
+            var propertyName = (parameters[0] as VectorParameter)?.Elements[1].Image;
+
+            if (result != null && entityName != null && propertyName != null)
             {
                 string modelName = modelNameGenerator.Generate(entityName);
 
@@ -76,7 +68,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 {
                     if (simulation != null)
                     {
-                        return new PropertyExport(name, simulation, entityName, parameters[1].Image, comparer);
+                        return new PropertyExport(name, simulation, entityName, propertyName, comparer);
                     }
                     else
                     {
@@ -87,7 +79,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 {
                     if (simulation != null)
                     {
-                        return new PropertyExport(name, simulation, modelName, parameters[1].Image, comparer);
+                        return new PropertyExport(name, simulation, modelName, propertyName, comparer);
                     }
                     else
                     {
@@ -101,7 +93,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                     {
                         if (simulation != null)
                         {
-                            return new PropertyExport(name, simulation, componentName, parameters[1].Image, comparer);
+                            return new PropertyExport(name, simulation, componentName, propertyName, comparer);
                         }
                         else
                         {
@@ -119,7 +111,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                                 if (obj2 is SpiceSharp.Components.Model)
                                 {
                                     string modelName2 = modelNameGenerator.Generate(entityName) + "_" + simulation.Name;
-                                    return new PropertyExport(name, simulation, modelName2, parameters[1].Image,
+                                    return new PropertyExport(name, simulation, modelName2, propertyName,
                                         comparer);
                                 }
                             }

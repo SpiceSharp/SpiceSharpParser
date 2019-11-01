@@ -28,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         var nodeName = ap.Arguments[0];
                         var nodeId = context.NodeNameGenerator.Generate(nodeName);
 
-                        context.SimulationPreparations.SetNodeSetVoltage(nodeId, value);
+                        context.SimulationPreparations.SetNodeSetVoltage(nodeId, value, context);
                     }
                     else
                     {

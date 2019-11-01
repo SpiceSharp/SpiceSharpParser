@@ -28,7 +28,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new SpiceNetlist() { Title = this.Title, Statements = (Statements)Statements.Clone() };
+            return new SpiceNetlist() { Title = Title, Statements = (Statements)Statements.Clone() };
         }
     }
 }

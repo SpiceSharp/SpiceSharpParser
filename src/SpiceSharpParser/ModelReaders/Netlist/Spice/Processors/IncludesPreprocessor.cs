@@ -17,10 +17,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <summary>
         /// Initializes a new instance of the <see cref="IncludesPreprocessor"/> class.
         /// </summary>
-        /// <param name="fileReader">File reader</param>
-        public IncludesPreprocessor(IFileReader fileReader, ISpiceTokenProviderPool tokenProviderPool, ISingleSpiceNetlistParser spiceNetlistParser, Func<string> initialDirectoryPathProvider, SpiceNetlistReaderSettings readerSettings, SpiceLexerSettings lexerSettings)
+        /// <param name="fileReader">File reader.</param>
+        /// <param name="tokenProviderPool">Token provider pool.</param>
+        /// <param name="spiceNetlistParser">Parser.</param>
+        /// <param name="lexerSettings">Lexer settings.</param>
+        /// <param name="initialDirectoryPathProvider">Directory provider.</param>
+        public IncludesPreprocessor(IFileReader fileReader, ISpiceTokenProviderPool tokenProviderPool, ISingleSpiceNetlistParser spiceNetlistParser, Func<string> initialDirectoryPathProvider, SpiceLexerSettings lexerSettings)
         {
-            ReaderSettings = readerSettings;
             TokenProviderPool = tokenProviderPool;
             SpiceNetlistParser = spiceNetlistParser;
             FileReader = fileReader;
@@ -54,8 +57,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         public ISingleSpiceNetlistParser SpiceNetlistParser { get; }
 
         protected Func<string> InitialDirectoryPathProvider { get; }
-
-        protected SpiceNetlistReaderSettings ReaderSettings { get; }
 
         /// <summary>
         /// Reads .include statements.

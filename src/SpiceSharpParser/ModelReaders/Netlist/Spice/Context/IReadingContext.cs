@@ -100,11 +100,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         SpiceNetlistCaseSensitivitySettings CaseSensitivity { get; set; }
 
         /// <summary>
-        /// Gets the expression parser.
-        /// </summary>
-        IExpressionParser ExpressionParser { get; }
-
-        /// <summary>
         /// Gets or sets working directory.
         /// </summary>
         string WorkingDirectory { get; }

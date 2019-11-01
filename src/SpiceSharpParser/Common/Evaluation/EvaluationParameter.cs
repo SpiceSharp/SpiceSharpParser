@@ -18,7 +18,7 @@ namespace SpiceSharpParser.Common.Evaluation
         public EvaluationParameter(ExpressionContext context, string parameterName)
         {
             ExpressionContext = context ?? throw new ArgumentNullException(nameof(context));
-            ParameterName = parameterName ?? throw new System.ArgumentNullException(nameof(parameterName));
+            ParameterName = parameterName ?? throw new ArgumentNullException(nameof(parameterName));
         }
 
         /// <summary>

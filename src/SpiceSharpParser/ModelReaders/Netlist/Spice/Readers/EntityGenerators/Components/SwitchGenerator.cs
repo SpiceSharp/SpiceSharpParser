@@ -51,7 +51,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             string modelName = parameters.GetString(4);
 
-            if (context.ModelsRegistry.FindModel<SpiceSharp.Components.Model>(modelName) is VSwitchModel vmodel)
+            if (context.ModelsRegistry.FindModel<Model>(modelName) is VSwitchModel vmodel)
             {
                 Resistor resistor = new Resistor(name);
                 Model resistorModel = vmodel;
@@ -87,7 +87,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                 {
-                    context.ModelsRegistry.SetModel<VoltageSwitchModel>(
+                    context.ModelsRegistry.SetModel(
                         vsw,
                         simulation,
                         parameters.GetString(4),
@@ -138,7 +138,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             string modelName = parameters.GetString(3);
 
-            if (context.ModelsRegistry.FindModel<SpiceSharp.Components.Model>(modelName) is ISwitchModel s)
+            if (context.ModelsRegistry.FindModel<Model>(modelName) is ISwitchModel s)
             {
                 Resistor resistor = new Resistor(name);
                 Model resistorModel = s;
@@ -184,7 +184,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // Get the model
                 context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                 {
-                    context.ModelsRegistry.SetModel<CurrentSwitchModel>(
+                    context.ModelsRegistry.SetModel(
                         csw,
                         simulation,
                         parameters.GetString(3),

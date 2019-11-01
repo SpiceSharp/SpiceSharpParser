@@ -106,26 +106,26 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 values.Add(Math.Abs(Max[simulation] - Min[simulation]));
             }
 
-            return CreatePlot("YMAX - " + this.OutputVariable, bins, values);
+            return CreatePlot("YMAX - " + OutputVariable, bins, values);
         }
 
         protected HistogramPlot GetMaxPlot(int bins)
         {
             var values = Max.Values.ToList();
-            return CreatePlot("MAX - " + this.OutputVariable, bins, values);
+            return CreatePlot("MAX - " + OutputVariable, bins, values);
         }
 
         protected HistogramPlot GetMinPlot(int bins)
         {
             var values = Min.Values.ToList();
-            return CreatePlot("MIN - " + this.OutputVariable, bins, values);
+            return CreatePlot("MIN - " + OutputVariable, bins, values);
         }
 
         protected HistogramPlot CreatePlot(string title, int bins, List<double> values)
         {
             var max = values.Max();
             var min = values.Min();
-            var width = max - min;
+            //var width = max - min;
 
             var binWidth = (max - min) / bins;
             if (Math.Abs(binWidth) < 1e-16)
@@ -134,7 +134,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 binWidth = 0;
             }
 
-            var plot = new HistogramPlot(title, this.OutputVariable, min, max, binWidth);
+            var plot = new HistogramPlot(title, OutputVariable, min, max, binWidth);
 
             for (var i = 1; i <= bins; i++)
             {

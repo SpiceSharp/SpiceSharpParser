@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             where T : Model;
 
         T FindModel<T>(string modelName)
-            where T : SpiceSharp.Components.Model;
+            where T : Model;
 
         void RegisterModelInstance(Model model);
 

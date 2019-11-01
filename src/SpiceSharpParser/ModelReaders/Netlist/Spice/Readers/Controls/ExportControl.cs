@@ -17,6 +17,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// Initializes a new instance of the <see cref="ExportControl"/> class.
         /// </summary>
         /// <param name="mapper">The exporter mapper.</param>
+        /// <param name="exportFactory">Export factory.</param>
         public ExportControl(IMapper<Exporter> mapper, IExportFactory exportFactory)
         {
             Mapper = mapper ?? throw new System.ArgumentNullException(nameof(mapper));
@@ -131,9 +132,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             context.ReadingExpressionContext.GetExpression(expressionName),
                             evaluator,
                             context.SimulationExpressionContexts,
-                            simulation);
+                            simulation,
+                            context);
 
-                        export.Extract();
                         result.Add(export);
                     }
                 }

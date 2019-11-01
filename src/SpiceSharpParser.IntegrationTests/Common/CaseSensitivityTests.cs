@@ -109,27 +109,6 @@ namespace SpiceSharpParser.IntegrationTests.Common
         }
 
         [Fact]
-        public void FunctionNameNotFound()
-        {
-            var parser = new SpiceParser();
-
-            parser.Settings.Lexing.HasTitle = true;
-            parser.Settings.Parsing.IsEndRequired = true;
-            parser.Settings.Reading.CaseSensitivity.IsFunctionNameCaseSensitive = true;
-
-            var text = string.Join(
-                Environment.NewLine,
-                "CaseSensitivity",
-                "R1 0 1 {fUn(1)}",
-                "V1 0 1 10",
-                ".FUNC fun(x) = { x* x +1}",
-                ".OP",
-                ".End");
-
-            Assert.Throws<FunctionNotFoundException>(() => parser.ParseNetlist(text));
-        }
-
-        [Fact]
         public void BuiltInFunctionNamePositive()
         {
             var parser = new SpiceParser();
@@ -149,26 +128,6 @@ namespace SpiceSharpParser.IntegrationTests.Common
             var parseResult = parser.ParseNetlist(text);
 
             parseResult.SpiceSharpModel.Simulations[0].Run(parseResult.SpiceSharpModel.Circuit);
-        }
-
-        [Fact]
-        public void BuiltInFunctionNameNotFound()
-        {
-            var parser = new SpiceParser();
-
-            parser.Settings.Lexing.HasTitle = true;
-            parser.Settings.Parsing.IsEndRequired = true;
-            parser.Settings.Reading.CaseSensitivity.IsFunctionNameCaseSensitive = true;
-
-            var text = string.Join(
-                Environment.NewLine,
-                "CaseSensitivity",
-                "R1 0 1 {Cos(1)}",
-                "V1 0 1 10",
-                ".OP",
-                ".End");
-
-            Assert.Throws<FunctionNotFoundException>(() => parser.ParseNetlist(text));
         }
 
         [Fact]

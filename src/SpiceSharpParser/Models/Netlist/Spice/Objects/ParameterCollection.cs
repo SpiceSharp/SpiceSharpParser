@@ -9,7 +9,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
     /// <summary>
     /// A ordered collection of parameters.
     /// </summary>
-    public class ParameterCollection : SpiceObject, IEnumerable, IEnumerable<Parameter>
+    public class ParameterCollection : SpiceObject, IEnumerable<Parameter>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ParameterCollection"/> class.
@@ -165,7 +165,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         public ParameterCollection Skip(int count)
         {
             var result = new ParameterCollection();
-            result.Values.AddRange(this.Values.Skip(count));
+            result.Values.AddRange(Values.Skip(count));
 
             return result;
         }
@@ -180,7 +180,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         public ParameterCollection Take(int count)
         {
             var result = new ParameterCollection();
-            result.Values.AddRange(this.Values.Take(count));
+            result.Values.AddRange(Values.Take(count));
             return result;
         }
 
@@ -273,7 +273,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// <param name="index">An index of parameter to remove.</param>
         public void RemoveAt(int index)
         {
-            this.Values.RemoveAt(index);
+            Values.RemoveAt(index);
         }
 
         /// <summary>
@@ -282,7 +282,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// <param name="parameter">Parameter to remove.</param>
         public void Remove(Parameter parameter)
         {
-            this.Values.Remove(parameter);
+            Values.Remove(parameter);
         }
 
         public override string ToString()
@@ -292,7 +292,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 
         public int IndexOf(Parameter parameter)
         {
-            return this.Values.IndexOf(parameter);
+            return Values.IndexOf(parameter);
         }
     }
 }

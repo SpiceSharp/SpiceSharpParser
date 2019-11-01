@@ -6,10 +6,8 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.Models.Netlist.Spice;
-using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
@@ -59,13 +57,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
             IEvaluator readingEvaluator = CreateReadingEvaluator();
             ISimulationEvaluators simulationEvaluators = new SimulationEvaluators(readingEvaluator);
-
-            var readingExpressionContext = CreateExpressionContext(
-                nodeNameGenerator,
-                componentNameGenerator,
-                modelNameGenerator,
-                resultService);
-
+            var readingExpressionContext = CreateExpressionContext();
             var simulationContexts = new SimulationExpressionContexts(readingExpressionContext);
 
             SimulationPreparations simulationPreparations = new SimulationPreparations(
@@ -74,11 +66,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
             ISpiceStatementsReader statementsReader = new SpiceStatementsReader(Settings.Mappings.Controls, Settings.Mappings.Models, Settings.Mappings.Components);
             IWaveformReader waveformReader = new WaveformReader(Settings.Mappings.Waveforms);
-            IExpressionParser parser = new ExpressionParserWithCache(new SpiceExpressionParser());
 
             IReadingContext readingContext = new ReadingContext(
                 "Netlist reading context",
-                parser,
                 simulationPreparations,
                 simulationEvaluators,
                 simulationContexts,
@@ -107,11 +97,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             return result;
         }
 
-        private ExpressionContext CreateExpressionContext(
-            MainCircuitNodeNameGenerator nodeNameGenerator,
-            ObjectNameGenerator componentNameGenerator,
-            ObjectNameGenerator modelNameGenerator,
-            IResultService result)
+        private ExpressionContext CreateExpressionContext()
         {
             ExpressionContext rootContext = new SpiceExpressionContext(
                 string.Empty,
@@ -121,31 +107,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 Settings.CaseSensitivity.IsExpressionNameCaseSensitive,
                 new Randomizer(Settings.CaseSensitivity.IsDistributionNameCaseSensitive));
 
-            var exportFunctions = ExportFunctions.Create(
-                Settings.Mappings.Exporters,
-                nodeNameGenerator,
-                componentNameGenerator,
-                modelNameGenerator,
-                result,
-                Settings.CaseSensitivity);
-
-            foreach (var exportFunction in exportFunctions)
-            {
-                rootContext.AddFunction(exportFunction.Key, exportFunction.Value);
-            }
-
             return rootContext;
         }
 
-        private SpiceEvaluator CreateReadingEvaluator()
+        private Evaluator CreateReadingEvaluator()
         {
-            var readingEvaluator = new SpiceEvaluator(
-                "Netlist reading evaluator",
-                new ExpressionParserWithCache(
-                    new SpiceExpressionParser()),
-                Settings.CaseSensitivity.IsParameterNameCaseSensitive,
-                Settings.CaseSensitivity.IsFunctionNameCaseSensitive);
-
+            var readingEvaluator = new Evaluator("Netlist reading evaluator");
             return readingEvaluator;
         }
     }

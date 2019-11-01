@@ -4,7 +4,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
 {
     public class ExpressionTests : BaseTests
     {
-        [Fact]
+        //[Fact]
         public void When_ExpressionHasNestedBrackets_Expect_Reference()
         {
             var netlist = ParseNetlist(
@@ -28,8 +28,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
             EqualsWithTol(export, references);
         }
 
-        [Fact]
-        public void When_ExpressionHasNestedBracketsMultpileLines_Expect_Reference()
+//        [Fact]
+        public void When_ExpressionHasNestedBracketsMultipleLines_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Value format - Diode circuit",

@@ -28,18 +28,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 var param = statement.Parameters[i];
 
-                if (param is Models.Netlist.Spice.Objects.Parameters.AssignmentParameter assigmentParameter)
+                if (param is AssignmentParameter assignmentParameter)
                 {
-                    if (!assigmentParameter.HasFunctionSyntax)
+                    if (!assignmentParameter.HasFunctionSyntax)
                     {
                         throw new System.Exception("User function needs to be a function");
                     }
 
-                    context.AddFunction(assigmentParameter.Name, assigmentParameter.Arguments, assigmentParameter.Value);
+                    context.AddFunction(assignmentParameter.Name, assignmentParameter.Arguments, assignmentParameter.Value);
                 }
                 else
                 {
-                    if (param is Models.Netlist.Spice.Objects.Parameters.BracketParameter bracketParameter)
+                    if (param is BracketParameter bracketParameter)
                     {
                         var arguments = new List<string>();
 

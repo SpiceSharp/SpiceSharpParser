@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
@@ -22,21 +23,6 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Computes the value of the function for given arguments.
         /// </summary>
-        /// <param name="image"></param>
-        /// <param name="args"></param>
-        /// <param name="evaluator"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public abstract TOutputType Logic(string image, TInputArgumentType[] args, IEvaluator evaluator, ExpressionContext context);
-
-        /// <summary>
-        /// Gets the argument type.
-        /// </summary>
-        Type IFunction.ArgumentType => typeof(TInputArgumentType);
-
-        /// <summary>
-        /// Gets the output type.
-        /// </summary>
-        Type IFunction.OutputType => typeof(TOutputType);
+        public abstract TOutputType Logic(string image, TInputArgumentType[] args, IEvaluator evaluator, ExpressionContext context, Simulation simulation = null, IReadingContext readingContext = null);
     }
 }

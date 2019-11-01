@@ -7,6 +7,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
+using SpiceSharpParser.Common.Evaluation;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Components
@@ -125,7 +126,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         [Fact]
         public void GenerateCapacitorWithIC()
         {
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var context = Substitute.For<IReadingContext>();
             context.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
             context.When(a => a.SetParameter(
@@ -159,7 +160,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         [Fact]
         public void GenerateSemicondutorCapacitor()
         {
-            var evaluator = new SpiceEvaluator();
+            var evaluator = new Evaluator();
             var context = Substitute.For<IReadingContext>();
             context.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
 
