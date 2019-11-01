@@ -131,8 +131,9 @@ namespace SpiceSharpParser.Parsers.Expression
                     throw new Exception("Unknown spice property");
                 }
 
-                var export = factory.CreateExport(string.Empty,
-                    type,
+                var export = factory.CreateExport(
+                    string.Empty,
+                    type.ToLower(),
                     parameters,
                     simulation,
                     readingContext.NodeNameGenerator,

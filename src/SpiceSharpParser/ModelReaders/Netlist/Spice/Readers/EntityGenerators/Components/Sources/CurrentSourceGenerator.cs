@@ -4,6 +4,7 @@ using System.Linq;
 using SpiceSharp.Components;
 using SpiceSharp.Simulations;
 using SpiceSharpBehavioral.Parsers;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -138,11 +139,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 var entity = new BehavioralCurrentSource(name);
                 entity.SetParameter<Func<Simulation, ISpiceDerivativeParser<double>>>("parser", (sim) => CreateParser(context, sim));
-
                 context.CreateNodes(entity, parameters);
                 var baseParameters = entity.ParameterSets.Get<SpiceSharpBehavioral.Components.BehavioralBehaviors.BaseParameters>();
                 baseParameters.Expression = valueParameter.Value;
-
+                baseParameters.SpicePropertyComparer = StringComparerProvider.Get(context.CaseSensitivity.IsFunctionNameCaseSensitive);
                 return entity;
             }
 
@@ -157,6 +157,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     context.CreateNodes(entity, parameters);
                     var baseParameters = entity.ParameterSets.Get<SpiceSharpBehavioral.Components.BehavioralBehaviors.BaseParameters>();
                     baseParameters.Expression = expressionParameter.Image;
+                    baseParameters.SpicePropertyComparer = StringComparerProvider.Get(context.CaseSensitivity.IsFunctionNameCaseSensitive);
 
                     return entity;
                 }

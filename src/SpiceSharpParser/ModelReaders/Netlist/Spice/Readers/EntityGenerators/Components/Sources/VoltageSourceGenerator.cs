@@ -5,6 +5,7 @@ using SpiceSharp.Components;
 using SpiceSharp.Simulations;
 using SpiceSharpBehavioral.Components.BehavioralBehaviors;
 using SpiceSharpBehavioral.Parsers;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -155,6 +156,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var baseParameters = entity.ParameterSets.Get<BaseParameters>();
                 var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
                 baseParameters.Expression = valueParameter.Value;
+                baseParameters.SpicePropertyComparer = StringComparerProvider.Get(context.CaseSensitivity.IsFunctionNameCaseSensitive);
 
                 return entity;
             }
@@ -170,6 +172,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     baseParameters.Expression = expressionParameter.Image;
                 }
+                baseParameters.SpicePropertyComparer = StringComparerProvider.Get(context.CaseSensitivity.IsFunctionNameCaseSensitive);
 
                 return entity;
             }
