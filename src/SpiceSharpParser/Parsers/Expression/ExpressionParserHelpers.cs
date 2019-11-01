@@ -101,7 +101,22 @@ namespace SpiceSharpParser.Parsers.Expression
                 var vectorParameter = new VectorParameter();
                 for (var i = 0; i < arg.Property.ArgumentCount; i++)
                 {
-                    vectorParameter.Elements.Add(new WordParameter(arg.Property[i].ToString()));
+                    var argument = arg.Property[i].ToString();
+
+                    if (context.Arguments.ContainsKey(argument))
+                    {
+                        var argumentValue = context.Arguments[argument].Evaluate(evaluator, context, simulation, readingContext);
+                        vectorParameter.Elements.Add(new WordParameter(((int)argumentValue).ToString()));
+                    }
+                    else if (context.Parameters.ContainsKey(argument))
+                    {
+                        var argumentValue = context.Parameters[argument].Evaluate(evaluator, context, simulation, readingContext);
+                        vectorParameter.Elements.Add(new WordParameter(((int)argumentValue).ToString()));
+                    }
+                    else
+                    {
+                        vectorParameter.Elements.Add(new WordParameter(argument));
+                    }
                 }
 
                 var voltageExportFactory = new VoltageExporter();

@@ -1,7 +1,6 @@
-using System;
 using Xunit;
 
-namespace SpiceSharpParser.IntegrationTests.Expressions
+namespace SpiceSharpParser.IntegrationTests.DotStatements
 {
     public class FuncTests : BaseTests
     {
@@ -112,6 +111,46 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
                 ".OP",
                 ".SAVE V(OUT) @R1[i]",
                 ".FUNC somefunction() = {17}",
+                ".END");
+
+            double[] export = RunOpSimulation(netlist, new string[] { "V(OUT)", "@R1[i]" });
+
+            Assert.Equal(10.0, export[0]);
+            Assert.Equal(10.0 / 17.0, export[1]);
+        }
+
+        [Fact]
+        public void FuncWithVoltageFunctionWithArgument()
+        {
+            var netlist = ParseNetlist(
+                "FUNC user function test",
+                "V1 OUT 0 10.0",
+                "R1 OUT 0 {somefunction(1)}",
+                "V2 1 0 17",
+                ".OP",
+                ".SAVE V(OUT) @R1[i]",
+                ".OPTIONS dynamic-resistors",
+                ".FUNC somefunction(x) = {V(x,0) + V(OUT) - 10.0}",
+                ".END");
+
+            double[] export = RunOpSimulation(netlist, new string[] { "V(OUT)", "@R1[i]" });
+
+            Assert.Equal(10.0, export[0]);
+            Assert.Equal(10.0 / 17.0, export[1]);
+        }
+
+        [Fact]
+        public void FuncWithVoltageFunction()
+        {
+            var netlist = ParseNetlist(
+                "FUNC user function test",
+                "V1 OUT 0 10.0",
+                "R1 OUT 0 {somefunction()}",
+                "V2 1 0 17",
+                ".OP",
+                ".SAVE V(OUT) @R1[i]",
+                ".OPTIONS dynamic-resistors",
+                ".FUNC somefunction() = {V(1,0) + V(OUT) - 10.0}",
                 ".END");
 
             double[] export = RunOpSimulation(netlist, new string[] { "V(OUT)", "@R1[i]" });
