@@ -62,7 +62,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         }
 
         [Fact]
-        public void LetResitance()
+        public void LetResistance()
         {
             var netlist = ParseNetlist(
                 "Let - Simple circuit",
@@ -76,6 +76,25 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
 
             double export = RunOpSimulation(netlist, "something");
             Assert.Equal(1000, export);
+        }
+
+        [Fact]
+        public void LetResistanceFunc()
+        {
+            var netlist = ParseNetlist(
+                "Let - Simple circuit",
+                "V1 0 1 10.0",
+                "R1 1 0 {R}",
+                "V2 3 0 1",
+                ".OP",
+                ".PARAM R = { 1000 }",
+                ".FUNC somefunc() = {@R1[resistance] + V(3)}",
+                ".LET something {somefunc()}",
+                ".SAVE something",
+                ".END");
+
+            double export = RunOpSimulation(netlist, "something");
+            Assert.Equal(1001, export);
         }
 
         [Fact]

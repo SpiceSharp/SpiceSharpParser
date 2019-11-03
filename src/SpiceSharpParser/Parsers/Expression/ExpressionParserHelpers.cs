@@ -136,7 +136,7 @@ namespace SpiceSharpParser.Parsers.Expression
                     factory = voltageExportFactory;
                 }
 
-                if (type.ToLower() == "@")
+                if (type == "@")
                 {
                     factory = propertyExporter;
                 }
