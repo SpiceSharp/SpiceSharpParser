@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
@@ -358,11 +359,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             IEqualityComparer<string> comparer = StringComparerProvider.Get(CaseSensitivity.IsEntityParameterNameCaseSensitive);
 
             double value = ReadingEvaluator.EvaluateValueExpression(expression, ReadingExpressionContext, null, this);
-            entity.SetParameter(parameterName, value, comparer);
+
+            try
+            {
+                entity.SetParameter(parameterName, value, comparer);
+            }
+            catch (CircuitException e)
+            {
+                throw new WrongParameterException($"Problem with setting parameter = {parameterName} with value = {value}", e);
+            }
 
             bool isDynamic = ExpressionParserHelpers.HaveSpiceProperties(expression, ReadingExpressionContext, this, false)
                             || ExpressionParserHelpers.HaveFunctions(expression, ReadingExpressionContext, this, false)
-                             || ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, false).Any();
+                            || ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, false).Any();
 
             if (isDynamic)
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -71,7 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                 }
             }
 
-            throw new Exception("Unsupported component type");
+            throw new UnknownComponentException($"Unsupported component {componentName}");
         }
     }
 }
