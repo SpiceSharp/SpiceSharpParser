@@ -117,6 +117,59 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
+        public void When_Connectors_Are_Used()
+        {
+            var netlist = ParseNetlist(
+                "Subcircuit - Voltometr",
+                "V1 IN 0 4.0",
+                "X1 IN 0 OUT voltometr",
+                "X2 IN 0 OUT2 voltometr2",
+                ".SUBCKT voltometr measure_pos measure_neg output",
+                "B1 output 0 V={0.6 * V(measure_pos,measure_neg)}",
+                ".ENDS voltometr",
+                ".SUBCKT voltometr2 measure_pos measure_neg output",
+                "B1 output 0 V={0.5 * V(measure_pos,measure_neg)}",
+                ".ENDS voltometr2",
+                ".OP",
+                ".SAVE V(OUT) V(OUT2)",
+                ".END");
+
+            double[] exports = RunOpSimulation(netlist, "V(OUT)", "V(OUT2)");
+
+            // Get references
+            double[] references = { 2.4, 2.0 };
+
+            EqualsWithTol(exports, references);
+        }
+
+        [Fact]
+        public void When_ConnectorsSame_Are_Used()
+        {
+            var netlist = ParseNetlist(
+                "Subcircuit",
+                "V1 IN 0 10.0",
+                "V2 IN2 0 5.0",
+                "X1 OUT 0 IN something",
+                "X2 OUT2 0 IN2 something2",
+                ".SUBCKT something output base input",
+                "B1 output base V={0.5 * V(input)}",
+                ".ENDS something",
+                ".SUBCKT something2 output base input",
+                "B1 output base V={0.1 * V(input)}",
+                ".ENDS something2",
+                ".OP",
+                ".SAVE V(OUT) V(OUT2)",
+                ".END");
+
+            double[] exports = RunOpSimulation(netlist, "V(OUT)", "V(OUT2)");
+
+            // Get references
+            double[] references = { 5.0, 0.5 };
+
+            EqualsWithTol(exports, references);
+        }
+
+        [Fact]
         public void SingleSubcircuitWithoutParamsKeyword()
         {
             var netlist = ParseNetlist(
