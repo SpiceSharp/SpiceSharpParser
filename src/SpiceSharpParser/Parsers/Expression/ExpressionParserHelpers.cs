@@ -91,6 +91,15 @@ namespace SpiceSharpParser.Parsers.Expression
             parser.FunctionFound += GetFunctionFound(context, readingContext, evaluator, simulation);
             parser.SpicePropertyFound += (sender, arg) =>
             {
+                if (arg is SimpleDerivativePropertyEventArgs argTyped)
+                {
+                    if (argTyped.Result != null)
+                    {
+                        return;
+                    }
+                }
+
+
                 if (simulation == null)
                 {
                     arg.Apply(() => 0);

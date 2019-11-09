@@ -30,14 +30,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             if (parameters.Any(p => p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "v"))
             {
                 var expressionParameter = (AssignmentParameter) parameters.First(p => p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "v");
-
                 var entity = new BehavioralVoltageSource(componentIdentifier);
-                entity.SetParameter<Func<Simulation, ISpiceDerivativeParser<double>>>("parser", (Simulation sim) => CreateParser(context, sim), null);
-
                 context.CreateNodes(entity, parameters);
                 var baseParameters = entity.ParameterSets.Get<SpiceSharpBehavioral.Components.BehavioralBehaviors.BaseParameters>();
                 baseParameters.Expression = expressionParameter.Value;
-
+                baseParameters.Parser = (Simulation sim) => CreateParser(context, sim);
                 return entity;
             }
 
