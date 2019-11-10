@@ -5,6 +5,7 @@ using SpiceSharp.Simulations;
 using SpiceSharpBehavioral.Parsers;
 using SpiceSharpBehavioral.Parsers.Helper;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -16,14 +17,14 @@ namespace SpiceSharpParser.Parsers.Expression
     {
         public static double GetExpressionValue(string expression, ExpressionContext context, IEvaluator evaluator, Simulation simulation, IReadingContext readingContext, bool @throw = true)
         {
-            var parser = GetDeriveParser(context, readingContext, evaluator, simulation, @throw);
+            var parser = GetDeriveParser(context, readingContext, evaluator, simulation, readingContext?.CaseSensitivity, @throw);
             var derivatives = parser.Parse(expression);
             return derivatives[0]();
         }
 
-        public static List<string> GetExpressionParameters(string expression, ExpressionContext context, IReadingContext readingContext, bool @throw)
+        public static List<string> GetExpressionParameters(string expression, ExpressionContext context, IReadingContext readingContext, SpiceNetlistCaseSensitivitySettings caseSettings, bool @throw)
         {
-            var parser = GetDeriveParser(context, readingContext, null, null, @throw);
+            var parser = GetDeriveParser(context, readingContext, null, null, caseSettings, @throw);
             var parameters = new List<string>();
             parser.VariableFound += (sender, e) => 
             {
@@ -38,73 +39,17 @@ namespace SpiceSharpParser.Parsers.Expression
             return parameters;
         }
 
-        public static SimpleDerivativeParser GetDeriveParser(ExpressionContext context, IReadingContext readingContext, IEvaluator evaluator, Simulation simulation, bool @throw = true)
+        public static SimpleDerivativeParser GetDeriveParser(ExpressionContext context, IReadingContext readingContext, IEvaluator evaluator, Simulation simulation, SpiceNetlistCaseSensitivitySettings caseSettings,  bool @throw = true)
         {
-            var parser = new SimpleDerivativeParser();
-            parser.RegisterDefaultFunctions();
-
-            parser.VariableFound += (sender, args) =>
-            {
-                if (context.Arguments.Any(a => a.Key == args.Name))
-                {
-                    var d = new DoubleDerivatives(2);
-                    d[0] = () =>
-                    {
-                        var expression = context.Arguments.First(a => a.Key == args.Name).Value;
-                        var value = evaluator.Evaluate(expression, context, simulation, readingContext);
-                        return value;
-                    };
-                    d[1] = () => 1;
-                    args.Result = d;
-                    return;
-                }
-
-                if (context.Parameters.ContainsKey(args.Name))
-                {
-                    var d = new DoubleDerivatives(2);
-                    d[0] = () =>
-                    {
-                        var parameter = context.Parameters[args.Name];
-                        var value = evaluator.Evaluate(parameter, context, simulation, readingContext);
-                        return value;
-                    };
-                    d[1] = () => 0;
-                    args.Result = d;
-                    return;
-                }
-
-                if (readingContext != null)
-                {
-                    var readingExpressionContext = readingContext.ReadingExpressionContext;
-
-                    if (readingExpressionContext.Parameters.ContainsKey(args.Name))
-                    {
-                        var d = new DoubleDerivatives(2);
-                        d[0] = () =>
-                        {
-                            var expression = readingExpressionContext.Parameters[args.Name];
-                            var value = evaluator.Evaluate(expression, context, simulation, readingContext);
-                            return value;
-                        };
-                        d[1] = () => 0;
-                        args.Result = d;
-                        return;
-                    }
-                }
-
-                if (@throw)
-                {
-                    throw new UnknownParameterException();
-                }
-                else
-                {
-                    var d = new DoubleDerivatives(1);
-                    d[0] = () => double.NaN;
-                    args.Result = d;
-                }
-            };
-            parser.FunctionFound += GetFunctionFound(context, readingContext, evaluator, simulation);
-            parser.SpicePropertyFound += (sender, arg) =>
+            var parser = new ExpressionParser(caseSettings);
+            parser.VariableFound += OnVariableFound(context, readingContext, evaluator, simulation, @throw);
+            parser.FunctionFound += OnFunctionFound(context, readingContext, evaluator, simulation);
+            parser.SpicePropertyFound += OnSpicePropertyFound(context, readingContext, evaluator, simulation);
+            return parser;
+        }
+        private static EventHandler<SpicePropertyFoundEventArgs<double>> OnSpicePropertyFound(ExpressionContext context, IReadingContext readingContext, IEvaluator evaluator, Simulation simulation)
+        {
+            return (sender, arg) =>
             {
                 if (arg is SimpleDerivativePropertyEventArgs argTyped)
                 {
@@ -185,10 +130,73 @@ namespace SpiceSharpParser.Parsers.Expression
 
                 arg.Apply(() => export.Extract());
             };
-            return parser;
         }
 
-        private static EventHandler<FunctionFoundEventArgs<Derivatives<Func<double>>>> GetFunctionFound(ExpressionContext context, IReadingContext readingContext, IEvaluator evaluator, Simulation simulation)
+        private static EventHandler<VariableFoundEventArgs<Derivatives<Func<double>>>> OnVariableFound(ExpressionContext context, IReadingContext readingContext, IEvaluator evaluator, Simulation simulation, bool @throw)
+        {
+            return (sender, args) =>
+            {
+                if (context.Arguments.Any(a => a.Key == args.Name))
+                {
+                    var d = new DoubleDerivatives(2);
+                    d[0] = () =>
+                    {
+                        var expression = context.Arguments.First(a => a.Key == args.Name).Value;
+                        var value = evaluator.Evaluate(expression, context, simulation, readingContext);
+                        return value;
+                    };
+                    d[1] = () => 1;
+                    args.Result = d;
+                    return;
+                }
+
+                if (context.Parameters.ContainsKey(args.Name))
+                {
+                    var d = new DoubleDerivatives(2);
+                    d[0] = () =>
+                    {
+                        var parameter = context.Parameters[args.Name];
+                        var value = evaluator.Evaluate(parameter, context, simulation, readingContext);
+                        return value;
+                    };
+                    d[1] = () => 0;
+                    args.Result = d;
+                    return;
+                }
+
+                if (readingContext != null)
+                {
+                    var readingExpressionContext = readingContext.ReadingExpressionContext;
+
+                    if (readingExpressionContext.Parameters.ContainsKey(args.Name))
+                    {
+                        var d = new DoubleDerivatives(2);
+                        d[0] = () =>
+                        {
+                            var expression = readingExpressionContext.Parameters[args.Name];
+                            var value = evaluator.Evaluate(expression, context, simulation, readingContext);
+                            return value;
+                        };
+                        d[1] = () => 0;
+                        args.Result = d;
+                        return;
+                    }
+                }
+
+                if (@throw)
+                {
+                    throw new UnknownParameterException();
+                }
+                else
+                {
+                    var d = new DoubleDerivatives(1);
+                    d[0] = () => double.NaN;
+                    args.Result = d;
+                }
+            };
+        }
+
+        private static EventHandler<FunctionFoundEventArgs<Derivatives<Func<double>>>> OnFunctionFound(ExpressionContext context, IReadingContext readingContext, IEvaluator evaluator, Simulation simulation)
         {
             return (sender, args) =>
             {
@@ -383,7 +391,7 @@ namespace SpiceSharpParser.Parsers.Expression
         public static bool HaveSpiceProperties(string expression, ExpressionContext context, ReadingContext readingContext, bool b)
         {
             bool present = false;
-            var parser = GetDeriveParser(context, readingContext, null, null);
+            var parser = GetDeriveParser(context, readingContext, null, null, readingContext.CaseSensitivity);
             parser.SpicePropertyFound += (sender, e) =>
             {
                 present = true;
@@ -394,10 +402,10 @@ namespace SpiceSharpParser.Parsers.Expression
             return present;
         }
 
-        public static bool HaveFunctions(string expression, ExpressionContext context, ReadingContext readingContext, bool v)
+        public static bool HaveFunctions(string expression, ExpressionContext context, ReadingContext readingContext)
         {
             bool present = false;
-            var parser = GetDeriveParser(context, readingContext, null, null);
+            var parser = GetDeriveParser(context, readingContext, null, null, readingContext.CaseSensitivity);
             parser.FunctionFound += (sender, e) =>
             {
                 present = true;

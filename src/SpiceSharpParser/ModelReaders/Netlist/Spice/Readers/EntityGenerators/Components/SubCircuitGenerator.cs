@@ -219,7 +219,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var pp = new Dictionary<string, ICollection<string>>();
             foreach (var sp in subcircuitParameters)
             {
-                pp[sp.Key] = ExpressionParserHelpers.GetExpressionParameters(sp.Value, subCircuitExpressionContext, context, false);
+                pp[sp.Key] = ExpressionParserHelpers.GetExpressionParameters(sp.Value, subCircuitExpressionContext, context,context.CaseSensitivity, false);
             }
 
             subCircuitExpressionContext.SetParameters(subcircuitParameters, pp);

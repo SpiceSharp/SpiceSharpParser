@@ -297,7 +297,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            var parameters = ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, false);
+            var parameters = ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this,  CaseSensitivity, false);
+            
             ReadingExpressionContext.SetParameter(
                 parameterName,
                 expression,
@@ -336,7 +337,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            var parameters = ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, false);
+            var parameters = ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, CaseSensitivity, false);
             ReadingExpressionContext.SetNamedExpression(expressionName, expression, parameters);
         }
 
@@ -371,8 +372,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
 
             bool isDynamic = ExpressionParserHelpers.HaveSpiceProperties(expression, ReadingExpressionContext, this, false)
-                            || ExpressionParserHelpers.HaveFunctions(expression, ReadingExpressionContext, this, false)
-                            || ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, false).Any();
+                            || ExpressionParserHelpers.HaveFunctions(expression, ReadingExpressionContext, this)
+                            || ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, CaseSensitivity, false).Any();
 
             if (isDynamic)
             {

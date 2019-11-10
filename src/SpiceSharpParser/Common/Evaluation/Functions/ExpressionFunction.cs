@@ -76,6 +76,11 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
                 throw new ArgumentNullException(nameof(context));
             }
 
+            if (readingContext == null)
+            {
+                throw new ArgumentNullException(nameof(readingContext));
+            }
+
             var childContext = context.CreateChildContext(string.Empty, false);
             for (var i = 0; i < Arguments.Count; i++)
             {
@@ -83,7 +88,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
                 childContext.Arguments.Add(Arguments[i], new ConstantExpression(args[i]));
             }
 
-            var parser = ExpressionParserHelpers.GetDeriveParser(childContext, readingContext, evaluator, simulation);
+            var parser = ExpressionParserHelpers.GetDeriveParser(childContext, readingContext, evaluator, simulation, readingContext.CaseSensitivity);
             var parseResult = parser.Parse(Expression);
             return parseResult;
         }

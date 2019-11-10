@@ -95,17 +95,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         }
 
         [Fact]
-        public void PowMinusLtSpice()
-        {
-            // arrange
-            var evaluator = new Evaluator();
-            var c = new SpiceExpressionContext(SpiceExpressionMode.LtSpice);
-
-            // act and assert
-            Assert.Equal(0, evaluator.Evaluate("pow(-2,1.5)", c, null, null));
-        }
-
-        [Fact]
         public void PwrLtSpice()
         {
             // arrange
@@ -139,27 +128,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         }
 
         [Fact]
-        public void PowMinusSmartSpice()
-        {
-            // arrange
-            var evaluator = new Evaluator();
-            var c = new SpiceExpressionContext(SpiceExpressionMode.SmartSpice);
-
-            // act and assert
-            Assert.Equal(Math.Pow(2, (int)1.5), evaluator.Evaluate("pow(-2,1.5)", c, null, null));
-        }
-
-        [Fact]
-        public void PowMinusHSpice()
-        {
-            // arrange
-            var evaluator = new Evaluator();
-            var c = new SpiceExpressionContext(SpiceExpressionMode.HSpice);
-            // act and assert
-            Assert.Equal(Math.Pow(-2, (int)1.5), evaluator.Evaluate("pow(-2,1.5)", c, null, null));
-        }
-
-        [Fact]
         public void Sgn()
         {
             // arrange
@@ -180,39 +148,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
 
             // act and assert
             Assert.Equal(2, evaluator.Evaluate("sqrt(4)", c, null, null));
-        }
-
-        [Fact]
-        public void SqrtMinusHSpice()
-        {
-            // arrange
-            var evaluator = new Evaluator();
-            var c = new SpiceExpressionContext(SpiceExpressionMode.HSpice);
-
-            // act and assert
-            Assert.Equal(-2, evaluator.Evaluate("sqrt(-4)", c, null, null));
-        }
-
-        [Fact]
-        public void SqrtMinusSmartSpice()
-        {
-            // arrange
-            var evaluator = new Evaluator();
-            var c = new SpiceExpressionContext(SpiceExpressionMode.SmartSpice);
-
-            // act and assert
-            Assert.Equal(2, evaluator.Evaluate("sqrt(-4)", c, null, null));
-        }
-
-        [Fact]
-        public void SqrtMinusLtSpice()
-        {
-            // arrange
-            var evaluator = new Evaluator();
-            var c = new SpiceExpressionContext(SpiceExpressionMode.LtSpice);
-
-            // act and assert
-            Assert.Equal(0, evaluator.Evaluate("sqrt(-4)", c, null, null));
         }
 
         [Fact]
