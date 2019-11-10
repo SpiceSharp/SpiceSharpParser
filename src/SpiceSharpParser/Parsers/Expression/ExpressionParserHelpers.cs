@@ -48,7 +48,12 @@ namespace SpiceSharpParser.Parsers.Expression
                 if (context.Arguments.Any(a => a.Key == args.Name))
                 {
                     var d = new DoubleDerivatives(2);
-                    d[0] = () => context.Arguments.First(a => a.Key == args.Name).Value.Evaluate(evaluator, context,simulation, readingContext);
+                    d[0] = () =>
+                    {
+                        var expression = context.Arguments.First(a => a.Key == args.Name).Value;
+                        var value = evaluator.Evaluate(expression, context, simulation, readingContext);
+                        return value;
+                    };
                     d[1] = () => 1;
                     args.Result = d;
                     return;
@@ -57,7 +62,12 @@ namespace SpiceSharpParser.Parsers.Expression
                 if (context.Parameters.ContainsKey(args.Name))
                 {
                     var d = new DoubleDerivatives(2);
-                    d[0] = () => context.Parameters[args.Name].Evaluate(evaluator, context, simulation, readingContext);
+                    d[0] = () =>
+                    {
+                        var parameter = context.Parameters[args.Name];
+                        var value = evaluator.Evaluate(parameter, context, simulation, readingContext);
+                        return value;
+                    };
                     d[1] = () => 0;
                     args.Result = d;
                     return;
@@ -70,7 +80,12 @@ namespace SpiceSharpParser.Parsers.Expression
                     if (readingExpressionContext.Parameters.ContainsKey(args.Name))
                     {
                         var d = new DoubleDerivatives(2);
-                        d[0] = () => readingExpressionContext.Parameters[args.Name].Evaluate(evaluator, context,simulation, readingContext);
+                        d[0] = () =>
+                        {
+                            var expression = readingExpressionContext.Parameters[args.Name];
+                            var value = evaluator.Evaluate(expression, context, simulation, readingContext);
+                            return value;
+                        };
                         d[1] = () => 0;
                         args.Result = d;
                         return;
@@ -114,12 +129,14 @@ namespace SpiceSharpParser.Parsers.Expression
 
                     if (context.Arguments.ContainsKey(argument))
                     {
-                        var argumentValue = context.Arguments[argument].Evaluate(evaluator, context, simulation, readingContext);
+                        var expression = context.Arguments[argument];
+                        var argumentValue = evaluator.Evaluate(expression, context, simulation, readingContext);
                         vectorParameter.Elements.Add(new WordParameter(((int)argumentValue).ToString()));
                     }
                     else if (context.Parameters.ContainsKey(argument))
                     {
-                        var argumentValue = context.Parameters[argument].Evaluate(evaluator, context, simulation, readingContext);
+                        var expression = context.Parameters[argument];
+                        var argumentValue = evaluator.Evaluate(expression, context, simulation, readingContext);
                         vectorParameter.Elements.Add(new WordParameter(((int)argumentValue).ToString()));
                     }
                     else

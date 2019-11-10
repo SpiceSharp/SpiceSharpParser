@@ -5,11 +5,13 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using Xunit;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharp;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
+using SpiceSharpParser.Common.Evaluation.Expressions;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 {
@@ -38,8 +40,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             };
 
             var evaluator = Substitute.For<IEvaluator>();
-            evaluator.EvaluateValueExpression("12.2", Arg.Any<ExpressionContext>()).Returns(12.2);
-            evaluator.EvaluateValueExpression("12.3", Arg.Any<ExpressionContext>()).Returns(12.3);
+            evaluator.Evaluate(new ConstantExpression(12.2), Arg.Any<ExpressionContext>(), Arg.Any<Simulation>(), Arg.Any<IReadingContext>()).Returns(12.2);
+            evaluator.Evaluate(new ConstantExpression(12.3), Arg.Any<ExpressionContext>(), Arg.Any<Simulation>(), Arg.Any<IReadingContext>()).Returns(12.3);
 
             var resultService = new ResultService(new SpiceNetlistReaderResult(new Circuit(), "title"));
             var readingContext = new ReadingContext(

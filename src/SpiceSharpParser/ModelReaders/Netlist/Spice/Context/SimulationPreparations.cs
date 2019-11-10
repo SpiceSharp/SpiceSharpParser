@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SpiceSharp.Behaviors;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
@@ -57,7 +58,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 var simEval = evaluators.GetEvaluator(simulation);
                 var context = contexts.GetContext(simulation);
-                var value = simEval.EvaluateValueExpression(expression, context, simulation, readingContext);
+                var value = simEval.Evaluate(new DynamicExpression(expression), context, simulation, readingContext);
 
                 simulation.Configurations.Get<BaseConfiguration>().Nodesets[nodeId] = value;
             });
@@ -79,7 +80,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 var simEval = evaluators.GetEvaluator(simulation);
                 var context = contexts.GetContext(simulation);
-                var value = simEval.EvaluateValueExpression(expression, context, simulation, readingContext);
+                var value = simEval.Evaluate(new DynamicExpression(expression), context, simulation, readingContext);
 
                 if (simulation is TimeSimulation ts)
                 {

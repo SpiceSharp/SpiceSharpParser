@@ -218,8 +218,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 var expressionContext = context.SimulationExpressionContexts.GetContext(export.Simulation);
                 var firstParameterSweepParameter = expressionContext.Parameters[firstParameterSweep.Parameter.Image];
                 var evaluator = context.SimulationEvaluators.GetEvaluator(export.Simulation);
-                var value = firstParameterSweepParameter.Evaluate(evaluator, context.SimulationExpressionContexts.GetContext(export.Simulation), export.Simulation, context);
-
+                
+                var value = evaluator.Evaluate(firstParameterSweepParameter, expressionContext, export.Simulation, context);
                 series.Points.Add(new Point() { X = value, Y = export.Extract() });
             };
         }

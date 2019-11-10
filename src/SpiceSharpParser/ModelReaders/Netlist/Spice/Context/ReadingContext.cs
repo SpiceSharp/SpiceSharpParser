@@ -5,6 +5,7 @@ using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
@@ -210,7 +211,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             try
             {
-                return ReadingEvaluator.EvaluateValueExpression(expression, ReadingExpressionContext);
+                return ReadingEvaluator.Evaluate(new DynamicExpression(expression), ReadingExpressionContext, null, this);
             }
             catch (Exception ex)
             {
@@ -358,7 +359,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             IEqualityComparer<string> comparer = StringComparerProvider.Get(CaseSensitivity.IsEntityParameterNameCaseSensitive);
 
-            double value = ReadingEvaluator.EvaluateValueExpression(expression, ReadingExpressionContext, null, this);
+            double value = ReadingEvaluator.Evaluate(new DynamicExpression(expression), ReadingExpressionContext, null, this);
 
             try
             {

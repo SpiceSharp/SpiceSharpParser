@@ -8,6 +8,6 @@ namespace SpiceSharpParser.Common.Evaluation
     /// </summary>
     public interface IEvaluator
     {
-        double EvaluateValueExpression(string expression, ExpressionContext context, Simulation simulation = null, IReadingContext readingContext = null);
+        double Evaluate(Expression expression, ExpressionContext context, Simulation simulation, IReadingContext readingContext);
     }
 }

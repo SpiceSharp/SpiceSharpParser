@@ -8,6 +8,7 @@ using System.Linq;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
@@ -34,8 +35,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             };
 
             var evaluator = Substitute.For<IEvaluator>();
-            evaluator.EvaluateValueExpression("1", Arg.Any<ExpressionContext>()).Returns(1.0);
-            evaluator.EvaluateValueExpression("5", Arg.Any<ExpressionContext>()).Returns(5.0);
+            evaluator.Evaluate(new ConstantExpression(1), Arg.Any<ExpressionContext>(), Arg.Any<Simulation>(), Arg.Any<IReadingContext>()).Returns(1.0);
+            evaluator.Evaluate(new ConstantExpression(5), Arg.Any<ExpressionContext>(), Arg.Any<Simulation>(), Arg.Any<IReadingContext>()).Returns(5.0);
 
             var resultService = new ResultService(
                 new SpiceNetlistReaderResult(new SpiceSharp.Circuit(), "title"));
@@ -90,8 +91,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             };
 
             var evaluator = Substitute.For<IEvaluator>();
-            evaluator.EvaluateValueExpression("1", Arg.Any<ExpressionContext>()).Returns(1.0);
-            evaluator.EvaluateValueExpression("5", Arg.Any<ExpressionContext>()).Returns(5.0);
+            evaluator.Evaluate(new ConstantExpression(1.0), Arg.Any<ExpressionContext>(), Arg.Any<Simulation>(), Arg.Any<IReadingContext>()).Returns(1.0);
+            evaluator.Evaluate(new ConstantExpression(5), Arg.Any<ExpressionContext>(), Arg.Any<Simulation>(), Arg.Any<IReadingContext>()).Returns(5.0);
 
             var resultService = new ResultService(
                 new SpiceNetlistReaderResult(new SpiceSharp.Circuit(), "title"));
@@ -146,8 +147,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             };
 
             var evaluator = Substitute.For<IEvaluator>();
-            evaluator.EvaluateValueExpression("1", Arg.Any<ExpressionContext>()).Returns(1.0);
-            evaluator.EvaluateValueExpression("16", Arg.Any<ExpressionContext>()).Returns(16);
+            evaluator.Evaluate(new ConstantExpression(1), Arg.Any<ExpressionContext>(), Arg.Any<Simulation>(), Arg.Any<IReadingContext>()).Returns(1.0);
+            evaluator.Evaluate(new ConstantExpression(16.0), Arg.Any<ExpressionContext>(), Arg.Any<Simulation>(), Arg.Any<IReadingContext>()).Returns(16);
 
             var resultService = new ResultService(
                 new SpiceNetlistReaderResult(new SpiceSharp.Circuit(), "title"));
@@ -202,8 +203,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             };
 
             var evaluator = Substitute.For<IEvaluator>();
-            evaluator.EvaluateValueExpression("1", Arg.Any<ExpressionContext>()).Returns(1.0);
-            evaluator.EvaluateValueExpression("16", Arg.Any<ExpressionContext>()).Returns(16);
+            evaluator.Evaluate(new ConstantExpression(1.0), Arg.Any<ExpressionContext>(), Arg.Any<Simulation>(), Arg.Any<IReadingContext>()).Returns(1.0);
+            evaluator.Evaluate(new ConstantExpression(16), Arg.Any<ExpressionContext>(), Arg.Any<Simulation>(), Arg.Any<IReadingContext>()).Returns(16);
 
             var resultService = new ResultService(
                 new SpiceNetlistReaderResult(new SpiceSharp.Circuit(), "title"));
@@ -258,7 +259,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             };
 
             var evaluator = Substitute.For<IEvaluator>();
-            evaluator.EvaluateValueExpression("1.0", Arg.Any<ExpressionContext>()).Returns(1.0);
+            evaluator.Evaluate(new ConstantExpression(1.0), Arg.Any<ExpressionContext>(), Arg.Any<Simulation>(), Arg.Any<IReadingContext>()).Returns(1.0);
 
             var resultService = new ResultService(
                 new SpiceNetlistReaderResult(new SpiceSharp.Circuit(), "title"));
