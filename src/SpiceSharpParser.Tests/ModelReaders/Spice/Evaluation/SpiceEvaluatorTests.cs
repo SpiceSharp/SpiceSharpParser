@@ -296,17 +296,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
         }
 
         [Fact]
-        public void Fabs()
-        {
-            // arrange
-            var evaluator = new Evaluator();
-            var c = new SpiceExpressionContext(SpiceExpressionMode.Spice3f5);
-
-            // act and assert
-            Assert.Equal(3, evaluator.Evaluate("fabs(-3)", c, null, null));
-        }
-
-        [Fact]
         public void Flat()
         {
             // arrange

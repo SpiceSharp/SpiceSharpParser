@@ -331,15 +331,9 @@ namespace SpiceSharpParser.Common.Evaluation
 
         public void CreateCommonFunctions()
         {
-            AddFunction("acos", MathFunctions.CreateACos());
-            AddFunction("asin", MathFunctions.CreateASin());
-            AddFunction("atan", MathFunctions.CreateATan());
             AddFunction("atan2", MathFunctions.CreateATan2());
-            AddFunction("cos", MathFunctions.CreateCos());
             AddFunction("cosh", MathFunctions.CreateCosh());
-            AddFunction("sin", MathFunctions.CreateSin());
             AddFunction("sinh", MathFunctions.CreateSinh());
-            AddFunction("tan", MathFunctions.CreateTan());
             AddFunction("tanh", MathFunctions.CreateTanh());
         }
 

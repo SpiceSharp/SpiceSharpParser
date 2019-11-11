@@ -28,18 +28,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Get a pow() function.
-        /// </summary>
-        /// <param name="mode">Evaluator mode.</param>
-        /// <returns>
-        /// A new instance of pow function.
-        /// </returns>
-        public static IFunction<double, double> CreatePow(SpiceExpressionMode mode)
-        {
-            return new PowFunction(mode);
-        }
-
-        /// <summary>
         /// Get a pwr() function.
         /// </summary>
         /// <param name="mode">Evaluator mode.</param>
@@ -60,30 +48,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         public static IFunction<double, double> CreatePwrs()
         {
             return new PwrsFunction();
-        }
-
-        /// <summary>
-        /// Get a sqrt function.
-        /// </summary>
-        /// <param name="mode">Evaluator mode.</param>
-        /// <returns>
-        /// A new instance of pow function.
-        /// </returns>
-        public static IFunction<double, double> CreateSqrt(SpiceExpressionMode mode)
-        {
-            return new SqrtFunction(mode);
-        }
-
-        /// <summary>
-        /// Get a ** function.
-        /// </summary>
-        /// <param name="mode">Evaluator mode.</param>
-        /// <returns>
-        /// A new instance of ** function.
-        /// </returns>
-        public static IFunction<double, double> CreatePowInfix(SpiceExpressionMode mode)
-        {
-            return new PowInfixFunction(mode);
         }
 
         /// <summary>
@@ -142,28 +106,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Get a log() function.
-        /// </summary>
-        /// <returns>
-        /// A new instance of log function.
-        /// </returns>
-        public static IFunction<double, double> CreateLog(SpiceExpressionMode mode)
-        {
-            return new LogFunction(mode);
-        }
-
-        /// <summary>
-        /// Get a log10() function.
-        /// </summary>
-        /// <returns>
-        /// A new instance of log10 function.
-        /// </returns>
-        public static IFunction<double, double> CreateLog10(SpiceExpressionMode mode)
-        {
-            return new Log10Function(mode);
-        }
-
-        /// <summary>
         /// Get a cbrt() function.
         /// </summary>
         /// <returns>
@@ -194,28 +136,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         public static IFunction<double, double> CreateCeil()
         {
             return new CeilFunction();
-        }
-
-        /// <summary>
-        /// Get a abs() function.
-        /// </summary>
-        /// <returns>
-        /// A new instance of abs function.
-        /// </returns>
-        public static IFunction<double, double> CreateAbs()
-        {
-            return new AbsFunction();
-        }
-
-        /// <summary>
-        /// Get a fabs() function.
-        /// </summary>
-        /// <returns>
-        /// A new instance of fabs function.
-        /// </returns>
-        public static IFunction<double, double> CreateFAbs()
-        {
-            return new FAbsFunction();
         }
 
         /// <summary>
@@ -260,17 +180,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         public static IFunction<double, double> CreateInv()
         {
             return new InvFunction();
-        }
-
-        /// <summary>
-        /// Get a exp() function.
-        /// </summary>
-        /// <returns>
-        /// A new instance of exp function.
-        /// </returns>
-        public static IFunction<double, double> CreateExp()
-        {
-            return new ExpFunction();
         }
 
         /// <summary>
