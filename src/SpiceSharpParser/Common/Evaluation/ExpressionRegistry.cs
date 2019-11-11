@@ -212,56 +212,6 @@ namespace SpiceSharpParser.Common.Evaluation
         }
 
         /// <summary>
-        /// Refreshes the expressions in the registry that depends on the given parameter.
-        /// </summary>
-        /// <param name="parameterName">Parameter name.</param>
-        public void InvalidateDependentParameters(string parameterName)
-        {
-            if (parameterName == null)
-            {
-                throw new ArgumentNullException(nameof(parameterName));
-            }
-
-            if (ParametersDependencies.ContainsKey(parameterName))
-            {
-                foreach (var parameter in ParametersDependencies[parameterName])
-                {
-                    Parameters[parameter].Invalidate();
-
-                    InvalidateDependentParameters(parameter);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Refreshes the expressions in the registry that depends on the given parameter.
-        /// </summary>
-        /// <param name="parameterName">Parameter name.</param>
-        public void InvalidateExpressions(string parameterName)
-        {
-            if (parameterName == null)
-            {
-                throw new ArgumentNullException(nameof(parameterName));
-            }
-
-            if (ParametersDependencies.ContainsKey(parameterName))
-            {
-                foreach (var parameter in ParametersDependencies[parameterName])
-                {
-                    InvalidateExpressions(parameter);
-                }
-            }
-
-            if (ParametersExpressionsDependencies.ContainsKey(parameterName))
-            {
-                foreach (var expression in ParametersExpressionsDependencies[parameterName])
-                {
-                    expression.Invalidate();
-                }
-            }
-        }
-
-        /// <summary>
         /// Clones the registry.
         /// </summary>
         /// <returns>
@@ -325,30 +275,6 @@ namespace SpiceSharpParser.Common.Evaluation
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Invalidates the registry.
-        /// </summary>
-        public void Invalidate()
-        {
-            foreach (var exprDep in ParametersExpressionsDependencies)
-            {
-                foreach (var expr in exprDep.Value)
-                {
-                    expr.Invalidate();
-                }
-            }
-
-            foreach (var expression in NamedExpressions.Values)
-            {
-                expression.Invalidate();
-            }
-
-            foreach (var expression in UnnamedExpressions)
-            {
-                expression.Invalidate();
-            }
         }
     }
 }

@@ -120,8 +120,6 @@ namespace SpiceSharpParser.Common.Evaluation
             Parameters[parameterName] = parameter;
 
             ExpressionRegistry.AddOrUpdate(parameterName, parameter);
-            ExpressionRegistry.InvalidateDependentParameters(parameterName);
-            ExpressionRegistry.InvalidateExpressions(parameterName);
 
             foreach (var child in Children)
             {
@@ -152,34 +150,7 @@ namespace SpiceSharpParser.Common.Evaluation
                 throw new ArgumentNullException(nameof(expressionParameters));
             }
 
-            var parameter = new Expression(expression);
-            SetParameter(parameterName, expression, expressionParameters, parameter);
-        }
-
-        /// <summary>
-        /// Sets the cached parameter.
-        /// </summary>
-        /// <param name="parameterName">A name of parameter.</param>
-        /// <param name="expression">An expression of parameter.</param>
-        /// <param name="expressionParameters">Parameters in expression.</param>
-        public void SetCachedParameter(string parameterName, string expression, ICollection<string> expressionParameters)
-        {
-            if (parameterName == null)
-            {
-                throw new ArgumentNullException(nameof(parameterName));
-            }
-
-            if (expression == null)
-            {
-                throw new ArgumentNullException(nameof(expression));
-            }
-
-            if (expressionParameters == null)
-            {
-                throw new ArgumentNullException(nameof(expressionParameters));
-            }
-
-            var parameter = new CachedExpression(expression);
+            var parameter = new DynamicExpression(expression);
             SetParameter(parameterName, expression, expressionParameters, parameter);
         }
 
@@ -227,14 +198,14 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <returns>
         /// Expression.
         /// </returns>
-        public string GetExpression(string expressionName)
+        public Expression GetExpression(string expressionName)
         {
             if (expressionName == null)
             {
                 throw new ArgumentNullException(nameof(expressionName));
             }
 
-            return ExpressionRegistry.GetExpression(expressionName)?.ValueExpression;
+            return ExpressionRegistry.GetExpression(expressionName);
         }
 
         /// <summary>
@@ -360,15 +331,9 @@ namespace SpiceSharpParser.Common.Evaluation
 
         public void CreateCommonFunctions()
         {
-            AddFunction("acos", MathFunctions.CreateACos());
-            AddFunction("asin", MathFunctions.CreateASin());
-            AddFunction("atan", MathFunctions.CreateATan());
             AddFunction("atan2", MathFunctions.CreateATan2());
-            AddFunction("cos", MathFunctions.CreateCos());
             AddFunction("cosh", MathFunctions.CreateCosh());
-            AddFunction("sin", MathFunctions.CreateSin());
             AddFunction("sinh", MathFunctions.CreateSinh());
-            AddFunction("tan", MathFunctions.CreateTan());
             AddFunction("tanh", MathFunctions.CreateTanh());
         }
 
@@ -378,8 +343,6 @@ namespace SpiceSharpParser.Common.Evaluation
 
             ExpressionRegistry.AddOrUpdate(parameterName, parameter);
             ExpressionRegistry.AddOrUpdateParameterDependencies(parameterName, expressionParameters);
-            ExpressionRegistry.InvalidateDependentParameters(parameterName);
-            ExpressionRegistry.InvalidateExpressions(parameterName);
 
             foreach (var child in Children)
             {

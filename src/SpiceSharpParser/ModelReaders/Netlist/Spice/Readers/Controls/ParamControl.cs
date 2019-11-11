@@ -12,7 +12,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
     {
         protected override void SetParameter(string parameterName, string parameterExpression, ExpressionContext expressionContext, SpiceNetlistCaseSensitivitySettings caseSettings, IEvaluator evaluator, IReadingContext readingContext)
         {
-            var parameters = ExpressionParserHelpers.GetExpressionParameters(parameterExpression, expressionContext, readingContext, @throw: false);
+            var parameters = ExpressionParserHelpers.GetExpressionParameters(parameterExpression, expressionContext, readingContext, caseSettings, @throw: false);
             expressionContext.SetParameter(parameterName, parameterExpression, parameters);
         }
     }

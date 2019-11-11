@@ -32,14 +32,16 @@ namespace SpiceSharpParser.PerformanceTests
             var randomizer = new Randomizer();
             for (var i = 0; i < n; i++)
             {
-                sum += expressionParser.EvaluateValueExpression(
+                sum += expressionParser.Evaluate(
                     "1 + 1 + 1 + 1 + 1 + 1 + 1",
                     new ExpressionContext(
                         string.Empty,
                         false,
                         false,
                         false,
-                        randomizer));
+                        randomizer),
+                    null,
+                    null);
             }
         }
     }

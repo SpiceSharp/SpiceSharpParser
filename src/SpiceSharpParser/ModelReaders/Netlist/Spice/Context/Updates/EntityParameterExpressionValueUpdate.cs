@@ -7,7 +7,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
     public class EntityParameterExpressionValueUpdate : EntityParameterUpdate
     {
         private readonly IReadingContext _readingContext;
-        public string ValueExpression { get; set; }
+        public Expression Expression { get; set; }
 
         public EntityParameterExpressionValueUpdate(IReadingContext readingContext)
         {
@@ -27,7 +27,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                 throw new ArgumentNullException(nameof(context));
             }
 
-            return evaluator.EvaluateValueExpression(ValueExpression, context, simulation, _readingContext);
+            return evaluator.Evaluate(Expression, context, simulation, _readingContext);
         }
     }
 }

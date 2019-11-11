@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
@@ -121,7 +122,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                 elseIfControl = result[elseIfControlIndex] as Control;
             }
 
-            if (Evaluator.EvaluateValueExpression(ifCondition.Image, ExpressionContext) >= 1.0)
+            if (Evaluator.Evaluate(new DynamicExpression(ifCondition.Image), ExpressionContext, null, null) >= 1.0)
             {
                 if (elseIfControl != null)
                 {

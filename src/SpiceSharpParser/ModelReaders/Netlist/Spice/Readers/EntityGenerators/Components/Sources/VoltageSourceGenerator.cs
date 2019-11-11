@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Components;
-using SpiceSharp.Simulations;
 using SpiceSharpBehavioral.Components.BehavioralBehaviors;
-using SpiceSharpBehavioral.Parsers;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
@@ -151,12 +148,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var entity = new BehavioralVoltageSource(name);
                 context.CreateNodes(entity, parameters);
-                entity.SetParameter<Func<Simulation, ISpiceDerivativeParser<double>>>("parser", (Simulation sim) => CreateParser(context, sim), null);
-
                 var baseParameters = entity.ParameterSets.Get<BaseParameters>();
                 var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
                 baseParameters.Expression = valueParameter.Value;
                 baseParameters.SpicePropertyComparer = StringComparerProvider.Get(context.CaseSensitivity.IsFunctionNameCaseSensitive);
+                baseParameters.Parser = (sim) => CreateParser(context, sim);
 
                 return entity;
             }
@@ -164,8 +160,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             if (parameters.Any(p => p is WordParameter ap && ap.Image.ToLower() == "value"))
             {
                 var entity = new BehavioralVoltageSource(name);
-                entity.SetParameter<Func<Simulation, ISpiceDerivativeParser<double>>>("parser", (Simulation sim) => CreateParser(context, sim), null);
                 context.CreateNodes(entity, parameters);
+
                 var baseParameters = entity.ParameterSets.Get<BaseParameters>();
                 var expressionParameter = parameters.FirstOrDefault(p => p is ExpressionParameter);
                 if (expressionParameter != null)
@@ -173,6 +169,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     baseParameters.Expression = expressionParameter.Image;
                 }
                 baseParameters.SpicePropertyComparer = StringComparerProvider.Get(context.CaseSensitivity.IsFunctionNameCaseSensitive);
+                baseParameters.Parser = (sim) => CreateParser(context, sim);
 
                 return entity;
             }
@@ -220,12 +217,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (nextParameter is ExpressionEqualParameter eep)
                 {
-                    var entity = new VoltageSource(name);
+                    var entity = new BehavioralVoltageSource(name);
                     context.CreateNodes(entity, parameters);
-                    var tableParameterName = name + "_table_variable";
-                    context.SetParameter(tableParameterName, eep.Expression);
-                    string expression = ExpressionFactory.CreateTableExpression(tableParameterName, eep.Points);
-                    context.SetParameter(entity, "dc", expression);
+                    
+                    var baseParameters = entity.ParameterSets.Get<BaseParameters>();
+                    baseParameters.Parser = (sim) => CreateParser(context, sim);
+                    baseParameters.Expression = ExpressionFactory.CreateTableExpression(eep.Expression, eep.Points);
+                    baseParameters.SpicePropertyComparer = StringComparerProvider.Get(context.CaseSensitivity.IsFunctionNameCaseSensitive);
+
                     return entity;
                 }
                 else

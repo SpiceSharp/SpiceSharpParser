@@ -1,5 +1,6 @@
 ﻿using System;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Parsers.Expression;
 
@@ -38,7 +39,21 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <returns>
         /// A double value.
         /// </returns>
-        public double EvaluateValueExpression(string expression, ExpressionContext context, Simulation simulation = null, IReadingContext readingContext = null)
+        public double Evaluate(string expression, ExpressionContext context, Simulation simulation, IReadingContext readingContext)
+        {
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+            return ExpressionParserHelpers.GetExpressionValue(expression, context, this, simulation, readingContext, false);
+        }
+
+        public double Evaluate(Expression expression, ExpressionContext context, Simulation simulation, IReadingContext readingContext)
         {
             if (expression == null)
             {
@@ -50,12 +65,12 @@ namespace SpiceSharpParser.Common.Evaluation
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (context.Parameters.TryGetValue(expression, out var parameter))
+            if (expression is ConstantExpression ce)
             {
-                return parameter.Evaluate(this, context, simulation, readingContext);
+                return ce.Value;
             }
 
-            return ExpressionParserHelpers.GetExpressionValue(expression, context, this, simulation, readingContext, false);
+            return Evaluate(expression.ValueExpression, context, simulation, readingContext);
         }
     }
 }

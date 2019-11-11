@@ -13,6 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Examples\example01.cir" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="SpiceSharp" Version="2.8.0" />
     <PackageReference Include="SpiceSharpBehavioral" Version="1.1.5" />
@@ -29,6 +33,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Resources\example01.cir">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\pwl_reference.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

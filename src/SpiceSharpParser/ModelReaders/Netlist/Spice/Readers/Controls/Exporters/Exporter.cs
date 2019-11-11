@@ -20,11 +20,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <param name="nodeNameGenerator">Node name generator.</param>
         /// <param name="componentNameGenerator">Component name generator.</param>
         /// <param name="modelNameGenerator">Model name generator.</param>
-        /// <param name="result">Result.</param>
         /// <param name="caseSettings">Case settings.</param>
         /// <returns>
         /// A new export.
         /// </returns>
-        public abstract Export CreateExport(string name, string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator componentNameGenerator, IObjectNameGenerator modelNameGenerator, IResultService result, SpiceNetlistCaseSensitivitySettings caseSettings);
+        public abstract Export CreateExport(string name, string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator componentNameGenerator, IObjectNameGenerator modelNameGenerator, IResultService resultService, SpiceNetlistCaseSensitivitySettings caseSettings);
     }
 }

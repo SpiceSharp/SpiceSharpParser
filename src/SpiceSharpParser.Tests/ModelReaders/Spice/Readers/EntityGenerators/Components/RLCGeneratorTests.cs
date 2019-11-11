@@ -136,7 +136,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                true
                )).Do(x =>
                {
-                   ((Entity)x[0]).SetParameter(((string)x[1]).ToLower(), evaluator.EvaluateValueExpression((string)x[2], new SpiceSharpParser.Common.Evaluation.ExpressionContext()));
+                   ((Entity)x[0]).SetParameter(((string)x[1]).ToLower(), evaluator.Evaluate((string)x[2], new SpiceSharpParser.Common.Evaluation.ExpressionContext(), null, null));
                });
 
             var parameters = new ParameterCollection
@@ -171,7 +171,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                true
                )).Do(x =>
                {
-                   ((Entity)x[0]).SetParameter(((string)x[1]).ToLower(), evaluator.EvaluateValueExpression((string)x[2], new SpiceSharpParser.Common.Evaluation.ExpressionContext()));
+                   ((Entity)x[0]).SetParameter(((string)x[1]).ToLower(), evaluator.Evaluate((string)x[2], new SpiceSharpParser.Common.Evaluation.ExpressionContext(), null, null));
                });
             context.ModelsRegistry.FindModel<CapacitorModel>(Arg.Any<string>()).Returns(new CapacitorModel("CModel"));
 

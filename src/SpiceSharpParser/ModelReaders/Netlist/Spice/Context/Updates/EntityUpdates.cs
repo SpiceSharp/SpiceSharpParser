@@ -5,6 +5,7 @@ using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation.Expressions;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 {
@@ -170,13 +171,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                     new EntityParameterExpressionValueUpdate(readingContext)
                     {
                         ParameterName = parameterName,
-                        ValueExpression = expression,
+                        Expression = new DynamicExpression(expression),
                     });
             }
 
             if (beforeTemperature)
             {
-                CommonUpdates[entity].ParameterUpdatesBeforeTemperature.Add(new EntityParameterExpressionValueUpdate(readingContext) { ValueExpression = expression, ParameterName = parameterName });
+                CommonUpdates[entity].ParameterUpdatesBeforeTemperature.Add(new EntityParameterExpressionValueUpdate(readingContext)
+                {
+                    Expression = new DynamicExpression(expression),
+                    ParameterName = parameterName
+                });
             }
         }
 
@@ -213,13 +218,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                     new EntityParameterExpressionValueUpdate(readingContext)
                     {
                         ParameterName = parameterName,
-                        ValueExpression = expression,
+                        Expression = new DynamicExpression(expression),
                     });
             }
 
             if (beforeTemperature)
             {
-                SimulationSpecificUpdates[simulation][entity].ParameterUpdatesBeforeTemperature.Add(new EntityParameterExpressionValueUpdate(readingContext) { ValueExpression = expression, ParameterName = parameterName });
+                SimulationSpecificUpdates[simulation][entity].ParameterUpdatesBeforeTemperature.Add(new EntityParameterExpressionValueUpdate(readingContext)
+                {
+                    Expression = new DynamicExpression(expression), 
+                    ParameterName = parameterName
+                });
             }
         }
 

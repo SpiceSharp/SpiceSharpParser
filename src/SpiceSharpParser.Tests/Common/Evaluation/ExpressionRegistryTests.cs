@@ -2,6 +2,8 @@ using NSubstitute;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 using System.Linq;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.Common.Evaluation
@@ -13,7 +15,7 @@ namespace SpiceSharpParser.Tests.Common.Evaluation
         {
             var registry = new ExpressionRegistry(false, false);
             var evaluator = Substitute.For<IEvaluator>();
-            evaluator.EvaluateValueExpression(Arg.Any<string>(), Arg.Any<ExpressionContext>()).Returns(1);
+            evaluator.Evaluate(Arg.Any<Expression>(), Arg.Any<ExpressionContext>(), Arg.Any<Simulation>(), Arg.Any<IReadingContext>()).Returns(1);
 
             registry.Add(new NamedExpression("test", "1"), new System.Collections.Generic.List<string>());
 
@@ -24,7 +26,7 @@ namespace SpiceSharpParser.Tests.Common.Evaluation
         public void AddExpressionWithParameters()
         {
             var registry = new ExpressionRegistry(false, false);
-            registry.Add(new Expression("x+1"), new System.Collections.Generic.List<string>() { "x" });
+            registry.Add(new DynamicExpression("x+1"), new System.Collections.Generic.List<string>() { "x" });
 
             Assert.Single(registry.GetDependentExpressions("x"));
         }
@@ -33,9 +35,9 @@ namespace SpiceSharpParser.Tests.Common.Evaluation
         public void AddExpressionsWithSingleParameter()
         {
             var registry = new ExpressionRegistry(false, false);
-            registry.Add(new Expression("x+1"), new System.Collections.Generic.List<string>() { "x" });
-            registry.Add(new Expression("y+1"), new System.Collections.Generic.List<string>() { "y" });
-            registry.Add(new Expression("x+1"), new System.Collections.Generic.List<string>() { "x" });
+            registry.Add(new DynamicExpression("x+1"), new System.Collections.Generic.List<string>() { "x" });
+            registry.Add(new DynamicExpression("y+1"), new System.Collections.Generic.List<string>() { "y" });
+            registry.Add(new DynamicExpression("x+1"), new System.Collections.Generic.List<string>() { "x" });
 
             Assert.Single(registry.GetDependentExpressions("y"));
             Assert.Equal(2, registry.GetDependentExpressions("x").Count());
@@ -45,9 +47,9 @@ namespace SpiceSharpParser.Tests.Common.Evaluation
         public void AddExpressionsWithMultipleParameter()
         {
             var registry = new ExpressionRegistry(false, false);
-            registry.Add(new Expression("x+y+1"), new System.Collections.Generic.List<string>() { "x", "y" });
-            registry.Add(new Expression("y+x+1"), new System.Collections.Generic.List<string>() { "y", "x" });
-            registry.Add(new Expression("x+1"), new System.Collections.Generic.List<string>() { "x" });
+            registry.Add(new DynamicExpression("x+y+1"), new System.Collections.Generic.List<string>() { "x", "y" });
+            registry.Add(new DynamicExpression("y+x+1"), new System.Collections.Generic.List<string>() { "y", "x" });
+            registry.Add(new DynamicExpression("x+1"), new System.Collections.Generic.List<string>() { "x" });
 
             Assert.Equal(2, registry.GetDependentExpressions("y").Count());
             Assert.Equal(3, registry.GetDependentExpressions("x").Count());

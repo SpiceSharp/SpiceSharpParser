@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <param name="contexts">Contexts.</param>
         /// <param name="simulation">Simulation.</param>
         /// <param name="readingContext">Reading context.</param>
-        public ExpressionExport(string name, string expressionName, string expression, IEvaluator evaluator, SimulationExpressionContexts contexts, Simulation simulation, IReadingContext readingContext)
+        public ExpressionExport(string name, string expressionName, Expression expression, IEvaluator evaluator, SimulationExpressionContexts contexts, Simulation simulation, IReadingContext readingContext)
             : base(simulation)
         {
             Name = name;
@@ -51,12 +51,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <summary>
         /// Gets the expression.
         /// </summary>
-        public string Expression { get; }
+        public Expression Expression { get; }
 
         /// <summary>
         /// Gets the type name.
         /// </summary>
-        public override string TypeName => Expression;
+        public override string TypeName => Expression.ValueExpression;
 
         /// <summary>
         /// Gets the export unit.
@@ -71,7 +71,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// </returns>
         public override double Extract()
         {
-            return Evaluator.EvaluateValueExpression(Expression, ExpressionContexts.GetContext(Simulation), Simulation, ReadingContext);
+            return Evaluator.Evaluate(Expression, ExpressionContexts.GetContext(Simulation), Simulation, ReadingContext);
         }
     }
 }

@@ -5,6 +5,7 @@ using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -73,7 +74,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var expressionContext = _context.SimulationExpressionContexts.GetContext(sim);
 
                     var currentValue = currentValueParameter.Value;
-                    var percentValue = evaluator.EvaluateValueExpression(parameterPercent.Tolerance.Image, expressionContext);
+                    var percentValue = evaluator.Evaluate(new DynamicExpression(parameterPercent.Tolerance.Image), expressionContext, null, _context);
                     double newValue = GetValueForLotParameter(expressionContext, baseModel, parameterName, currentValue, percentValue, parameterPercent.RandomDistributionName, comparer);
 
                     _context.SimulationPreparations.SetParameter(componentModel, sim, parameterName, newValue, true, false);
@@ -97,7 +98,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var currentValueParameter = sim.EntityParameters[componentModel.Name].GetParameter<Parameter<double>>(parameterName, comparer);
                     var currentValue = currentValueParameter.Value;
                     var expressionContext = _context.SimulationExpressionContexts.GetContext(sim);
-                    var percentValue = evaluator.EvaluateValueExpression(parameterPercent.Tolerance.Image, expressionContext);
+                    var percentValue = evaluator.Evaluate(new DynamicExpression(parameterPercent.Tolerance.Image), expressionContext, sim, _context);
 
                     double newValue = GetValueForDevParameter(expressionContext, currentValue, percentValue, parameterPercent.RandomDistributionName);
 

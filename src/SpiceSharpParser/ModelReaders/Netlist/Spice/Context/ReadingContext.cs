@@ -5,6 +5,7 @@ using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
@@ -210,7 +211,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             try
             {
-                return ReadingEvaluator.EvaluateValueExpression(expression, ReadingExpressionContext);
+                return ReadingEvaluator.Evaluate(new DynamicExpression(expression), ReadingExpressionContext, null, this);
             }
             catch (Exception ex)
             {
@@ -296,7 +297,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            var parameters = ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, false);
+            var parameters = ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this,  CaseSensitivity, false);
+            
             ReadingExpressionContext.SetParameter(
                 parameterName,
                 expression,
@@ -335,7 +337,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            var parameters = ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, false);
+            var parameters = ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, CaseSensitivity, false);
             ReadingExpressionContext.SetNamedExpression(expressionName, expression, parameters);
         }
 
@@ -358,7 +360,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             IEqualityComparer<string> comparer = StringComparerProvider.Get(CaseSensitivity.IsEntityParameterNameCaseSensitive);
 
-            double value = ReadingEvaluator.EvaluateValueExpression(expression, ReadingExpressionContext, null, this);
+            double value = ReadingEvaluator.Evaluate(new DynamicExpression(expression), ReadingExpressionContext, null, this);
 
             try
             {
@@ -370,8 +372,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
 
             bool isDynamic = ExpressionParserHelpers.HaveSpiceProperties(expression, ReadingExpressionContext, this, false)
-                            || ExpressionParserHelpers.HaveFunctions(expression, ReadingExpressionContext, this, false)
-                            || ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, false).Any();
+                            || ExpressionParserHelpers.HaveFunctions(expression, ReadingExpressionContext, this)
+                            || ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, CaseSensitivity, false).Any();
 
             if (isDynamic)
             {
