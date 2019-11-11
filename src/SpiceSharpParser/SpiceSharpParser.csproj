@@ -14,7 +14,7 @@
     <PackageTags>circuit electronics netlist parser spice</PackageTags>
     <PackageId>SpiceSharp-Parser</PackageId>
     <Product>SpiceSharpParser</Product>
-    <Description>Netlist parser for SpiceSharp</Description>
+    <Description>SPICE netlists parser for .NET</Description>
     <PackageReleaseNotes>Refer to the GitHub release for release notes</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <DebugType>full</DebugType>
@@ -23,6 +23,7 @@
     <OutputType>Library</OutputType>
     <StartupObject />
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageLicenseUrl Condition="'$(OS)' != 'Windows_NT'">https://github.com/SpiceSharp/SpiceSharpParser/blob/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.5|AnyCPU'">
