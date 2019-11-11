@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp;
@@ -87,6 +88,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public string WorkingDirectory { get; }
 
         public InstanceData InstanceData { get; set; }
+        public ConcurrentDictionary<string, Export> ExporterInstances { get; set; } = new ConcurrentDictionary<string, Export>();
 
         /// <summary>
         /// Gets or sets the name of context.

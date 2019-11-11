@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
@@ -106,6 +107,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
 
         InstanceData InstanceData { get; set; }
+
+        ConcurrentDictionary<string, Export> ExporterInstances { get; set; }
 
         /// <summary>
         /// Parses an expression to double.
