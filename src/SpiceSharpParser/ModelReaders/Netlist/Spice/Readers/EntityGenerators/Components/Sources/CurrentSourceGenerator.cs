@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Components;
-using SpiceSharp.Simulations;
-using SpiceSharpBehavioral.Parsers;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
@@ -138,11 +135,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
 
                 var entity = new BehavioralCurrentSource(name);
-                entity.SetParameter<Func<Simulation, ISpiceDerivativeParser<double>>>("parser", (sim) => CreateParser(context, sim));
                 context.CreateNodes(entity, parameters);
+                
                 var baseParameters = entity.ParameterSets.Get<SpiceSharpBehavioral.Components.BehavioralBehaviors.BaseParameters>();
                 baseParameters.Expression = valueParameter.Value;
                 baseParameters.SpicePropertyComparer = StringComparerProvider.Get(context.CaseSensitivity.IsFunctionNameCaseSensitive);
+                baseParameters.Parser = (sim) => CreateParser(context, sim);
                 return entity;
             }
 
@@ -152,13 +150,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 if (expressionParameter != null)
                 {
                     var entity = new BehavioralCurrentSource(name);
-                    entity.SetParameter<Func<Simulation, ISpiceDerivativeParser<double>>>("parser", (sim) => CreateParser(context, sim));
-
                     context.CreateNodes(entity, parameters);
+
                     var baseParameters = entity.ParameterSets.Get<SpiceSharpBehavioral.Components.BehavioralBehaviors.BaseParameters>();
                     baseParameters.Expression = expressionParameter.Image;
                     baseParameters.SpicePropertyComparer = StringComparerProvider.Get(context.CaseSensitivity.IsFunctionNameCaseSensitive);
-
+                    baseParameters.Parser = (sim) => CreateParser(context, sim);
                     return entity;
                 }
             }
@@ -207,14 +204,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (nextParameter is ExpressionEqualParameter eep)
                 {
-                    var entity = new CurrentSource(name);
+                    var entity = new BehavioralCurrentSource(name);
                     context.CreateNodes(entity, parameters);
-                    parameters = parameters.Skip(CurrentSource.CurrentSourcePinCount);
-
-                    var tableParameterName = name + "_table_variable";
-                    context.SetParameter(tableParameterName, eep.Expression);
-                    string expression = ExpressionFactory.CreateTableExpression(tableParameterName, eep.Points);
-                    context.SetParameter(entity, "dc", expression);
+                    
+                    var baseParameters = entity.ParameterSets.Get<SpiceSharpBehavioral.Components.BehavioralBehaviors.BaseParameters>();
+                    baseParameters.Expression = ExpressionFactory.CreateTableExpression(eep.Expression, eep.Points);
+                    baseParameters.SpicePropertyComparer = StringComparerProvider.Get(context.CaseSensitivity.IsFunctionNameCaseSensitive);
+                    baseParameters.Parser = (sim) => CreateParser(context, sim);
                     return entity;
                 }
                 else
