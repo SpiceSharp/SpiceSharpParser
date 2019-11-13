@@ -103,22 +103,37 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             public double Y { get; set; }
         }
 
-        public Derivatives<Func<double>> Derivative(string image, double[] args, IEvaluator evaluator, ExpressionContext context,
-            Simulation simulation = null, IReadingContext readingContext = null)
+        public Derivatives<Func<double>> Derivative(
+            string image,
+            Func<double>[] args,
+            IEvaluator evaluator,
+            ExpressionContext context,
+            Simulation simulation = null,
+            IReadingContext readingContext = null)
         {
+            Derivatives<Func<double>> derivatives = GetDerivatives(args);
+
+            return derivatives;
+        }
+
+        private static Derivatives<Func<double>> GetDerivatives(Func<double>[] args)
+        {
+            Derivatives<Func<double>> derivatives = new DoubleDerivatives(2);
+
+
             var parameterValue = args[0];
             var points = new List<Point>();
-            Derivatives<Func<double>> derivatives;
+            var value = parameterValue();
 
             for (var i = 1; i < args.Length - 1; i += 2)
             {
-                var pointX = args[i];
-                var pointY = args[i + 1];
-                points.Add(new Point() { X = pointX, Y = pointY });
+                var pointX = args[i]();
+                var pointY = args[i + 1]();
 
-                if (pointX == parameterValue)
+                points.Add(new Point() {X = pointX, Y = pointY});
+
+                if (pointX == value)
                 {
-                    derivatives = new DoubleDerivatives(1);
                     derivatives[0] = () => pointY;
                     return derivatives;
                 }
@@ -135,29 +150,28 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
 
             int index = 0;
 
-            while (index < points.Count && points[index].X < parameterValue)
+            while (index < points.Count && points[index].X < value)
             {
                 index++;
             }
 
             if (index == points.Count)
             {
-                derivatives = new DoubleDerivatives(2);
                 derivatives[0] = () => points[points.Count - 1].Y;
                 derivatives[1] = () => linesDefinition.Last().A;
 
                 return derivatives;
             }
 
-            if (index == 0 && points[0].X > parameterValue)
+            if (index == 0 && points[0].X > value)
             {
-                derivatives = new DoubleDerivatives(2);
                 derivatives[0] = () => points[0].Y;
                 derivatives[1] = () => linesDefinition.First().A;
+
+                return derivatives;
             }
-         
-            derivatives = new DoubleDerivatives(2);
-            derivatives[0] = () => linesDefinition[index].A * parameterValue + linesDefinition[index].B;
+
+            derivatives[0] = () => (linesDefinition[index].A * value) + linesDefinition[index].B;
             derivatives[1] = () => linesDefinition[index].A;
 
             return derivatives;

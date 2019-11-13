@@ -70,6 +70,13 @@ namespace SpiceSharpParser.Common.Evaluation
                 return ce.Value;
             }
 
+
+            if (expression is FunctionExpression fe)
+            {
+                return fe.Value();
+            }
+
+
             return Evaluate(expression.ValueExpression, context, simulation, readingContext);
         }
     }
