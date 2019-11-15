@@ -20,10 +20,10 @@ namespace SpiceSharpParser.IntegrationTests.Common
 
             Assert.Equal("Comment test circuit", netlist.Title);
             Assert.Equal(3, netlist.Statements.Count());
-            Assert.True(netlist.Statements.ToArray()[0] is CommentLine);
+            Assert.True(netlist.Statements[0] is CommentLine);
 
-            Assert.True(netlist.Statements.ToArray()[1] is Component);
-            Assert.True(netlist.Statements.ToArray()[2] is Component);
+            Assert.True(netlist.Statements[1] is Component);
+            Assert.True(netlist.Statements[2] is Component);
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 "* Copyright (c) 2003-2012",
                 string.Empty);
 
-            var result = ParseNetlistToModel(
+            ParseNetlistToModel(
                 false,
                 true,
                 netlist);
@@ -49,7 +49,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void When_CommentsSubckt_Expect_NoException()
         {
-            var netlist = ParseNetlistToModel(
+            ParseNetlistToModel(
                 true,
                 true,
                 "*",
@@ -67,7 +67,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void When_CommentsOnly_Expect_NoException()
         {
-            var netlist = ParseNetlistToModel(
+            ParseNetlistToModel(
                 false,
                 false,
                 "**",

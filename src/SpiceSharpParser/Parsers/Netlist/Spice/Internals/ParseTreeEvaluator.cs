@@ -314,25 +314,25 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             if (values[0] is ParseTreeNodeTerminalEvaluationValue t)
             {
                 var lexemValue = t.Token.Lexem;
-                switch (t.Token.TokenType)
+                switch (t.Token.SpiceTokenType)
                 {
-                    case (int)SpiceTokenType.REFERENCE:
+                    case SpiceTokenType.REFERENCE:
                         return new ReferenceParameter(lexemValue);
-                    case (int)SpiceTokenType.DOUBLE_QUOTED_STRING:
+                    case SpiceTokenType.DOUBLE_QUOTED_STRING:
                         return new StringParameter(lexemValue.Trim('"'));
-                    case (int)SpiceTokenType.SINGLE_QUOTED_STRING:
+                    case SpiceTokenType.SINGLE_QUOTED_STRING:
                         return new StringParameter(lexemValue.Trim('\''));
-                    case (int)SpiceTokenType.VALUE:
+                    case SpiceTokenType.VALUE:
                         return new ValueParameter(lexemValue);
-                    case (int)SpiceTokenType.WORD:
+                    case SpiceTokenType.WORD:
                         return new WordParameter(lexemValue);
-                    case (int)SpiceTokenType.IDENTIFIER:
+                    case SpiceTokenType.IDENTIFIER:
                         return new IdentifierParameter(lexemValue);
-                    case (int)SpiceTokenType.EXPRESSION_BRACKET:
+                    case SpiceTokenType.EXPRESSION_BRACKET:
                         return new ExpressionParameter(lexemValue.Trim('{', '}'));
-                    case (int)SpiceTokenType.EXPRESSION_SINGLE_QUOTES:
+                    case SpiceTokenType.EXPRESSION_SINGLE_QUOTES:
                         return new ExpressionParameter(lexemValue.Trim('\''));
-                    case (int)SpiceTokenType.PERCENT:
+                    case SpiceTokenType.PERCENT:
                         return new PercentParameter(lexemValue.TrimEnd('%'));
                 }
             }

@@ -40,7 +40,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
 
             foreach (var token in lexer.GetTokens(netlistText, state))
             {
-                yield return new SpiceToken((SpiceTokenType)token.TokenType, token.Lexem, state.LineNumber);
+                yield return new SpiceToken((SpiceTokenType)token.Type, token.Lexem, state.LineNumber);
             }
         }
 
@@ -229,8 +229,6 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 @"(\r\n|\n|\r)",
                 (SpiceLexerState state, string lexem) =>
                 {
-                    state.LineNumber++;
-
                     if (state.InCommentBlock)
                     {
                         return LexerRuleReturnDecision.IgnoreToken;

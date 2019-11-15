@@ -10,7 +10,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
     /// </summary>
     public class ParseTreeGenerator
     {
-        private Dictionary<string, Parser> _parsers = new Dictionary<string, Parser>();
+        private readonly Dictionary<string, Parser> _parsers = new Dictionary<string, Parser>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ParseTreeGenerator"/> class.
@@ -103,22 +103,21 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
                         throw new ParseException("End of tokens. Expected token type: " + tn.Token.SpiceTokenType + " line=" + tokens[tokens.Length - 1].LineNumber, tokens[tokens.Length - 1].LineNumber);
                     }
 
-                    if (tn.Token.SpiceTokenType == tokens[currentTokenIndex].SpiceTokenType
-                        && (tn.Token.Lexem == null || tn.Token.Lexem == tokens[currentTokenIndex].Lexem))
+                    if (tn.Token.SpiceTokenType == tokens[currentTokenIndex].SpiceTokenType && (tn.Token.Lexem == null || tn.Token.Lexem == tokens[currentTokenIndex].Lexem))
                     {
-                        tn.Token.UpdateLexem(tokens[currentTokenIndex].Lexem);
-                        tn.Token.UpdateLineNumber(tokens[currentTokenIndex].LineNumber);
+                        tn.Token.Lexem = tokens[currentTokenIndex].Lexem;
+                        tn.Token.LineNumber = tokens[currentTokenIndex].LineNumber;
                         currentTokenIndex++;
                     }
                     else
                     {
                         throw new ParseException(
                             string.Format(
-                                "Unexpected token: '{0}' of type: {1}. Expected token type: {2} line={3}",
+                                "Unexpected token '{0}' of type: {1} at line = {2}. Expected token type: {3}",
                                 tokens[currentTokenIndex].Lexem,
                                 tokens[currentTokenIndex].SpiceTokenType,
-                                tn.Token.SpiceTokenType,
-                                tokens[currentTokenIndex].LineNumber),
+                                tokens[currentTokenIndex].LineNumber,
+                                tn.Token.SpiceTokenType),
                             tokens[currentTokenIndex].LineNumber);
                     }
                 }

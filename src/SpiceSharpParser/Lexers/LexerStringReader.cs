@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.Common;
+﻿using System.Collections.Generic;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.Lexers
 {
@@ -28,40 +29,38 @@ namespace SpiceSharpParser.Lexers
         /// <summary>
         /// Read next text line with line ending characters.
         /// </summary>
-        /// <returns>A text line</returns>
+        /// <returns>A text line.</returns>
         public string ReadLine()
         {
             var start = _currentIndex;
 
-            if (_currentIndex >= _strCharacters.Length)
+            if (_currentIndex == _strCharacters.Length)
             {
-                return string.Empty;
+                return null;
             }
 
-            while (_currentIndex < _strCharacters.Length
-                && _strCharacters[_currentIndex] != '\n'
-                && _strCharacters[_currentIndex] != '\r')
+            while (_currentIndex < _strCharacters.Length && _strCharacters[_currentIndex] != '\n' && _strCharacters[_currentIndex] != '\r')
             {
                 _currentIndex++;
             }
 
-            if (_currentIndex < (_strCharacters.Length - 1))
-            {
-                if (_strCharacters[_currentIndex] == '\r' && _strCharacters[_currentIndex + 1] == '\n')
-                {
-                    _currentIndex++;
-                }
-            }
-
+            // end of characters
             if (_currentIndex == _strCharacters.Length)
             {
-                return new string(_strCharacters, start, _currentIndex - start);
+                return GetSubstring(start, _currentIndex - 1);
             }
 
-            var line = new string(_strCharacters, start, _currentIndex - start + 1);
+            // \r\n ending
+            if (_currentIndex < (_strCharacters.Length - 1) && (_strCharacters[_currentIndex] == '\r' && _strCharacters[_currentIndex + 1] == '\n'))
+            {
+                _currentIndex += 2;
+                return GetSubstring(start, _currentIndex - 1);
+            }
+
+            // \n or \r ending
             _currentIndex++;
 
-            return line;
+            return GetSubstring(start, _currentIndex - 1);
         }
 
         /// <summary>
@@ -79,41 +78,72 @@ namespace SpiceSharpParser.Lexers
         }
 
         /// <summary>
-        /// Reads next continuation line.
+        /// Peeks next line with line ending characters. It doesn't update current index.
+        /// </summary>
+        /// <param name="currentIndex">A index of start index.</param>
+        /// <param name="nextLineIndex">A index at the end of peeked line.</param>
+        /// <returns>A text line.</returns>
+        public string PeekNextLine(int currentIndex, out int nextLineIndex)
+        {
+            var storedCurrentIndex = _currentIndex;
+            _currentIndex = currentIndex;
+            var line = ReadLine();
+            nextLineIndex = _currentIndex;
+            _currentIndex = storedCurrentIndex;
+            return line;
+        }
+
+        /// <summary>
+        /// Reads logical line.
         /// </summary>
         /// <returns>
-        /// A continuation line.
+        /// A logical line that contains physical lines.
         /// </returns>
-        public string ReadLineWithContinuation(out int continuationLines)
+        public LexerLogicalLine ReadLogicalLine()
         {
-            string result = ReadLine();
-            continuationLines = 0;
+            var result = new List<string>();
+            string currentLine = ReadLine();
+            result.Add(currentLine);
 
             while (true)
             {
-                // TODO: Optimize/clean/refactor following code
-                string nextLine = PeekNextLine(out int nextCurrentIndex);
-                if (string.IsNullOrWhiteSpace(nextLine))
+                bool includeNextLine = _currentLineContinuationCharacter.HasValue && currentLine.GetLastCharacter(out _) == _currentLineContinuationCharacter.Value;
+
+                string nextLine;
+                // iterate over empty lines
+                int start = _currentIndex;
+                var emptyLines = new List<string>();
+                do
                 {
-                    _currentIndex = nextCurrentIndex;
-                    string nextLineAfter = PeekNextLine(out _);
-                    if (_nextLineContinuationCharacter.HasValue && !nextLineAfter.StartsWithCharacterAfterWhitespace(_nextLineContinuationCharacter.Value))
+                    nextLine = PeekNextLine(start, out int nextCurrentIndex);
+
+                    if (nextLine.IsEmptyLine())
+                    {
+                        emptyLines.Add(nextLine);
+                    }
+
+                    start = nextCurrentIndex;
+                }
+                while (nextLine.IsEmptyLine());
+
+                // continuation line  (next line character)
+                if (_nextLineContinuationCharacter.HasValue &&
+                    nextLine.StartsWithCharacterAfterWhitespace(_nextLineContinuationCharacter.Value))
+                {
+                    // add empty lines
+                    result.AddRange(emptyLines);
+                    result.Add(nextLine.TrimStart().Substring(1));
+                    _currentIndex = start;
+                }
+                else if (includeNextLine)
+                {
+                    result.Add(nextLine);
+                    _currentIndex = start;
+
+                    if (nextLine == null)
                     {
                         break;
                     }
-                }
-                else if (nextLine != string.Empty && _nextLineContinuationCharacter.HasValue && nextLine.StartsWithCharacterAfterWhitespace(_nextLineContinuationCharacter.Value))
-                {
-                    continuationLines++;
-                    _currentIndex = nextCurrentIndex;
-                    result = result.TrimEnd('\r', '\n');
-                    result += $" {nextLine.TrimStart().Substring(1)}"; // skip _nextLineContinuationCharacter
-                }
-                else if (_currentLineContinuationCharacter.HasValue && GetLastCharacter(result, out var position) == _currentLineContinuationCharacter)
-                {
-                    _currentIndex = nextCurrentIndex;
-                    result = result.Remove(position, 1).TrimEnd('\r', '\n');  // skip _currentLineContinuationCharacter
-                    result += $" {nextLine}";
                 }
                 else
                 {
@@ -121,45 +151,12 @@ namespace SpiceSharpParser.Lexers
                 }
             }
 
-            return result;
+            return new LexerLogicalLine(result);
         }
 
-        /// <summary>
-        /// Gets the substring of all text.
-        /// </summary>
-        /// <param name="startIndex">Start index of the substring.</param>
-        /// <returns>
-        /// A substring from the text.
-        /// </returns>
-        public string GetSubstring(int startIndex)
+        private string GetSubstring(int startIndex, int endIndex)
         {
-            return new string(_strCharacters, startIndex, _strCharacters.Length - startIndex);
-        }
-
-        private char? GetLastCharacter(string result, out int position)
-        {
-            if (result.EndsWith("\r\n") && result.Length >= 3)
-            {
-                position = result.Length - 3;
-                return result[result.Length - 3];
-            }
-
-            if (result.EndsWith("\n") && result.Length >= 2)
-            {
-                position = result.Length - 2;
-                return result[result.Length - 2];
-            }
-
-            if (result.Length >= 1)
-            {
-                position = result.Length - 1;
-                return result[result.Length - 1];
-            }
-            else
-            {
-                position = -1;
-                return null;
-            }
+            return new string(_strCharacters, startIndex, endIndex - startIndex + 1);
         }
     }
 }
