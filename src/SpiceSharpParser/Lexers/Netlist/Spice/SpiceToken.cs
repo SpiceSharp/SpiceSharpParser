@@ -18,20 +18,11 @@
         /// <summary>
         /// Gets token line number.
         /// </summary>
-        public int LineNumber { get; private set; }
+        public int LineNumber { get; set; }
 
         /// <summary>
         /// Gets token type.
         /// </summary>
         public SpiceTokenType SpiceTokenType { get; }
-
-        /// <summary>
-        /// Updates the line number.
-        /// </summary>
-        /// <param name="lineNumber">New line number.</param>
-        public void UpdateLineNumber(int lineNumber)
-        {
-            LineNumber = lineNumber;
-        }
     }
 }

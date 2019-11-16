@@ -54,7 +54,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
             return @value;
         }
 
-        public Derivatives<Func<double>> Derivative(string image, double[] args, IEvaluator evaluator, ExpressionContext context, Simulation simulation = null, IReadingContext readingContext = null)
+        public Derivatives<Func<double>> Derivative(string image, Func<double>[] args, IEvaluator evaluator, ExpressionContext context, Simulation simulation = null, IReadingContext readingContext = null)
         {
             if (image == null)
             {
@@ -84,8 +84,9 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
             var childContext = context.CreateChildContext(string.Empty, false);
             for (var i = 0; i < Arguments.Count; i++)
             {
-                childContext.SetParameter(Arguments[i], args[i]);
-                childContext.Arguments.Add(Arguments[i], new ConstantExpression(args[i]));
+                var iLocal = i;
+                childContext.SetParameter(Arguments[i], args[iLocal]);
+                childContext.Arguments.Add(Arguments[i], new FunctionExpression(args[iLocal]));
             }
 
             var parser = ExpressionParserHelpers.GetDeriveParser(childContext, readingContext, evaluator, simulation, readingContext.CaseSensitivity);

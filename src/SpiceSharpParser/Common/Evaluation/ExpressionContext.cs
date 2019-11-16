@@ -131,6 +131,29 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Sets the parameter.
         /// </summary>
         /// <param name="parameterName">A name of parameter.</param>
+        /// <param name="value">A value of parameter.</param>
+        public void SetParameter(string parameterName, Func<double> value)
+        {
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
+            var parameter = new FunctionExpression(value);
+            Parameters[parameterName] = parameter;
+
+            ExpressionRegistry.AddOrUpdate(parameterName, parameter);
+
+            foreach (var child in Children)
+            {
+                child.SetParameter(parameterName, value);
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter.
+        /// </summary>
+        /// <param name="parameterName">A name of parameter.</param>
         /// <param name="expression">An expression of parameter.</param>
         /// <param name="expressionParameters">Parameters in expression.</param>
         public void SetParameter(string parameterName, string expression, ICollection<string> expressionParameters)
