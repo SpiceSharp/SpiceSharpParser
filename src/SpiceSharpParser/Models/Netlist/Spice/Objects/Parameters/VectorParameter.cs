@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
@@ -49,6 +50,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
                 result.Elements.Add((SingleParameter)element.Clone());
             }
 
+            result.LineNumber = Elements.FirstOrDefault()?.LineNumber ?? 0;
             return result;
         }
     }

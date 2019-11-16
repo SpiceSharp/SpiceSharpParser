@@ -47,10 +47,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     throw new WrongParametersCountException("Too many parameters");
             }
 
-            string type = statement.Parameters.GetString(2);
-            var numberSteps = context.EvaluateDouble(statement.Parameters.GetString(3));
-            var start = context.EvaluateDouble(statement.Parameters.GetString(4));
-            var stop = context.EvaluateDouble(statement.Parameters.GetString(5));
+            string type = statement.Parameters.Get(2).Image;
+            var numberSteps = context.EvaluateDouble(statement.Parameters.Get(3));
+            var start = context.EvaluateDouble(statement.Parameters.Get(4));
+            var stop = context.EvaluateDouble(statement.Parameters.Get(5));
 
             Sweep<double> sweep;
 

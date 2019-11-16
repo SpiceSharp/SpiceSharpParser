@@ -20,7 +20,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void When_UnknownProperty_Expect_Exception()
         {
-            Assert.Throws<ModelReaders.Netlist.Spice.Exceptions.WrongParameterException>(
+            Assert.Throws<ModelReaders.Netlist.Spice.Exceptions.GeneralReaderException>(
                 () =>
                     ParseNetlist(
                         "Exceptions",

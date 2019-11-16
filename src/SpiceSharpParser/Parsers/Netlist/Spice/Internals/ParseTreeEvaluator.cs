@@ -45,14 +45,14 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             evaluators.Add(Symbols.VectorContinue, (ParseTreeNodeEvaluationValues nt) => CreateVectorContinue(nt));
             evaluators.Add(Symbols.ParameterBracket, (ParseTreeNodeEvaluationValues nt) => CreateBracketParameter(nt));
             evaluators.Add(Symbols.ParameterBracketContent, (ParseTreeNodeEvaluationValues nt) => CreateBracketParameterContent(nt));
-            evaluators.Add(Symbols.ParameterEqual, (ParseTreeNodeEvaluationValues nt) => CreateAssigmentParameter(nt));
+            evaluators.Add(Symbols.ParameterEqual, (ParseTreeNodeEvaluationValues nt) => CreateAssignmentParameter(nt));
             evaluators.Add(Symbols.ExpressionEqual, (ParseTreeNodeEvaluationValues nt) => CreateExpressionEqualParameter(nt));
-            evaluators.Add(Symbols.Point, (ParseTreeNodeEvaluationValues nt) => CreatPointParameter(nt));
+            evaluators.Add(Symbols.Point, (ParseTreeNodeEvaluationValues nt) => CreatePointParameter(nt));
             evaluators.Add(Symbols.PointValue, (ParseTreeNodeEvaluationValues nt) => CreatePointValue(nt));
             evaluators.Add(Symbols.PointValues, (ParseTreeNodeEvaluationValues nt) => CreatePointValues(nt));
-            evaluators.Add(Symbols.Points, (ParseTreeNodeEvaluationValues nt) => CreatPoints(nt));
+            evaluators.Add(Symbols.Points, (ParseTreeNodeEvaluationValues nt) => CreatePoints(nt));
             evaluators.Add(Symbols.PointsContinue, (ParseTreeNodeEvaluationValues nt) => CreatPointsContinue(nt));
-            evaluators.Add(Symbols.ParameterEqualSingle, (ParseTreeNodeEvaluationValues nt) => CreateAssigmentSimpleParameter(nt));
+            evaluators.Add(Symbols.ParameterEqualSingle, (ParseTreeNodeEvaluationValues nt) => CreateAssignmentSimpleParameter(nt));
             evaluators.Add(Symbols.ParameterSingle, (ParseTreeNodeEvaluationValues nt) => CreateParameterSingle(nt));
             evaluators.Add(Symbols.Subckt, (ParseTreeNodeEvaluationValues nt) => CreateSubCircuit(nt));
             evaluators.Add(Symbols.SubcktEnding, (ParseTreeNodeEvaluationValues nt) => null);
@@ -151,12 +151,12 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             return (nt[0] as ParseTreeNonTerminalEvaluationValue)?.SpiceObject;
         }
 
-        private SpiceObject CreatPointParameter(ParseTreeNodeEvaluationValues nt)
+        private SpiceObject CreatePointParameter(ParseTreeNodeEvaluationValues nt)
         {
             return new PointParameter() { Values = nt.GetSpiceObject<PointValues>(1), };
         }
 
-        private SpiceObject CreatPoints(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreatePoints(ParseTreeNodeEvaluationValues values)
         {
             var points = new Points();
 
@@ -317,23 +317,23 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 switch (t.Token.SpiceTokenType)
                 {
                     case SpiceTokenType.REFERENCE:
-                        return new ReferenceParameter(lexemValue);
+                        return new ReferenceParameter(lexemValue) {LineNumber = t.Token.LineNumber};
                     case SpiceTokenType.DOUBLE_QUOTED_STRING:
-                        return new StringParameter(lexemValue.Trim('"'));
+                        return new StringParameter(lexemValue.Trim('"')) { LineNumber = t.Token.LineNumber };
                     case SpiceTokenType.SINGLE_QUOTED_STRING:
-                        return new StringParameter(lexemValue.Trim('\''));
+                        return new StringParameter(lexemValue.Trim('\'')) { LineNumber = t.Token.LineNumber };
                     case SpiceTokenType.VALUE:
-                        return new ValueParameter(lexemValue);
+                        return new ValueParameter(lexemValue) { LineNumber = t.Token.LineNumber };
                     case SpiceTokenType.WORD:
-                        return new WordParameter(lexemValue);
+                        return new WordParameter(lexemValue) { LineNumber = t.Token.LineNumber };
                     case SpiceTokenType.IDENTIFIER:
-                        return new IdentifierParameter(lexemValue);
+                        return new IdentifierParameter(lexemValue) { LineNumber = t.Token.LineNumber };
                     case SpiceTokenType.EXPRESSION_BRACKET:
-                        return new ExpressionParameter(lexemValue.Trim('{', '}'));
+                        return new ExpressionParameter(lexemValue.Trim('{', '}')) { LineNumber = t.Token.LineNumber };
                     case SpiceTokenType.EXPRESSION_SINGLE_QUOTES:
-                        return new ExpressionParameter(lexemValue.Trim('\''));
+                        return new ExpressionParameter(lexemValue.Trim('\'')) { LineNumber = t.Token.LineNumber };
                     case SpiceTokenType.PERCENT:
-                        return new PercentParameter(lexemValue.TrimEnd('%'));
+                        return new PercentParameter(lexemValue.TrimEnd('%')) { LineNumber = t.Token.LineNumber };
                 }
             }
 
@@ -685,14 +685,18 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// <returns>
         /// A new instance of <see cref="AssignmentParameter"/>.
         /// </returns>
-        private SpiceObject CreateAssigmentSimpleParameter(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateAssignmentSimpleParameter(ParseTreeNodeEvaluationValues values)
         {
             if (values.Count == 3)
             {
-                var assignmentParameter = new AssignmentParameter();
-                assignmentParameter.Name = values.GetLexem(0);
                 var singleParameter = values.GetSpiceObject<SingleParameter>(2);
-                assignmentParameter.Values = new List<string>() { singleParameter.Image };
+
+                var assignmentParameter = new AssignmentParameter
+                {
+                    Name = values.GetLexem(0),
+                    LineNumber = singleParameter.LineNumber,
+                    Values = new List<string>() {singleParameter.Image}
+                };
                 return assignmentParameter;
             }
             else
@@ -739,7 +743,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// <returns>
         /// A instance of <see cref="AssignmentParameter"/>.
         /// </returns>
-        private SpiceObject CreateAssigmentParameter(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreateAssignmentParameter(ParseTreeNodeEvaluationValues values)
         {
             if (values.Count == 1)
             {
@@ -749,6 +753,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             {
                 var assignmentParameter = new AssignmentParameter();
                 assignmentParameter.Name = values.GetLexem(0);
+                assignmentParameter.LineNumber = values.GetLexemLineNumber(0);
 
                 if (values.Count == 6)
                 {

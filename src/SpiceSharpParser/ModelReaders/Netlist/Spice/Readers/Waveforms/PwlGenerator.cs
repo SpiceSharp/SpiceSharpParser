@@ -65,8 +65,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 
             for (var i = 0; i < parameters.Count / 2; i++)
             {
-                times[i] = context.EvaluateDouble(parameters.GetString(2 * i));
-                voltages[i] = context.EvaluateDouble(parameters.GetString((2 * i) + 1));
+                times[i] = context.EvaluateDouble(parameters.Get(2 * i));
+                voltages[i] = context.EvaluateDouble(parameters.Get((2 * i) + 1));
             }
 
             var pwl = new Pwl(times, voltages);

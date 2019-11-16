@@ -37,13 +37,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             }
 
             var w = new Pulse();
-            w.InitialValue.Value = context.EvaluateDouble(parameters.GetString(0));
-            w.PulsedValue.Value = context.EvaluateDouble(parameters.GetString(1));
-            w.Delay.Value = context.EvaluateDouble(parameters.GetString(2));
-            w.RiseTime.Value = context.EvaluateDouble(parameters.GetString(3));
-            w.FallTime.Value = context.EvaluateDouble(parameters.GetString(4));
-            w.PulseWidth.Value = context.EvaluateDouble(parameters.GetString(5));
-            w.Period.Value = context.EvaluateDouble(parameters.GetString(6));
+            w.InitialValue.Value = context.EvaluateDouble(parameters.Get(0));
+            w.PulsedValue.Value = context.EvaluateDouble(parameters.Get(1));
+            w.Delay.Value = context.EvaluateDouble(parameters.Get(2));
+            w.RiseTime.Value = context.EvaluateDouble(parameters.Get(3));
+            w.FallTime.Value = context.EvaluateDouble(parameters.Get(4));
+            w.PulseWidth.Value = context.EvaluateDouble(parameters.Get(5));
+            w.Period.Value = context.EvaluateDouble(parameters.Get(6));
 
             return w;
         }

@@ -22,8 +22,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 throw new WrongParametersCountException("Wrong parameter count for .connect");
             }
 
-            string nodeA = statement.Parameters.GetString(0);
-            string nodeB = statement.Parameters.GetString(1);
+            string nodeA = statement.Parameters.Get(0).Image;
+            string nodeB = statement.Parameters.Get(1).Image;
 
             var vsrc = new VoltageSource("Voltage connector: " + nodeA + " <-> " + nodeB);
             context.CreateNodes(vsrc, statement.Parameters);

@@ -77,7 +77,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             }
             else
             {
-                nodePath = parameters.GetString(0);
+                nodePath = parameters.Get(0).Image;
                 node = nodeNameGenerator.Parse(nodePath);
             }
 

@@ -192,38 +192,14 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// <returns>
         /// A string from parameter.
         /// </returns>
-        public string GetString(int parameterIndex)
+        public Parameter Get(int parameterIndex)
         {
-            var singleParameter = this[parameterIndex] as SingleParameter;
-            if (singleParameter == null)
+            if (Count <= parameterIndex)
             {
-                throw new Exception("Parameter [" + parameterIndex + "] is not string parameter");
+                return null;
             }
 
-            return singleParameter.Image;
-        }
-
-        /// <summary>
-        /// Gets the value string from parameter in the collection.
-        /// Throws an exception if parameter is not a value type parameter.
-        /// </summary>
-        /// <param name="parameterIndex">An index of parameter.</param>
-        /// <returns>
-        /// A value from parameter.
-        /// </returns>
-        public string GetValueString(int parameterIndex)
-        {
-            var singleParameter = this[parameterIndex] as SingleParameter;
-
-            if (singleParameter == null
-                || singleParameter is PercentParameter
-                || singleParameter is ReferenceParameter
-                || singleParameter is StringParameter)
-            {
-                throw new Exception("Parameter [" + parameterIndex + "] is not value type");
-            }
-
-            return singleParameter.Image;
+            return this[parameterIndex];
         }
 
         /// <summary>

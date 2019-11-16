@@ -25,8 +25,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.ModelsRegistry.SetModel(
                     jfet,
                     simulation,
-                    parameters.GetString(3),
-                    $"Could not find model {parameters.GetString(3)} for JFET {originalName}",
+                    parameters.Get(3).Image,
+                    $"Could not find model {parameters.Get(3)} for JFET {originalName}",
                     (JFETModel model) => jfet.Model = model.Name,
                     context.Result);
             });

@@ -61,7 +61,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             }
             else
             {
-                componentIdentifier = componentNameGenerator.Generate(parameters.GetString(0));
+                componentIdentifier = componentNameGenerator.Generate(parameters.Get(0).Image);
             }
 
             Export export = null;

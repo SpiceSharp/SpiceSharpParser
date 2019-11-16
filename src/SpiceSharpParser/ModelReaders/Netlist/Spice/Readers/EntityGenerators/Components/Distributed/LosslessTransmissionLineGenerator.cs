@@ -46,7 +46,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                     else
                     {
-                        throw new UnknownParameterException() { Name = paramName };
+                        throw new UnknownParameterException(paramName);
                     }
                 }
             }

@@ -33,7 +33,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (acParameterIndex != parameters.Count - 1)
                 {
-                    var acParameterValue = parameters.GetValueString(acParameterIndex + 1);
+                    var acParameterValue = parameters.Get(acParameterIndex + 1);
                     context.SetParameter(component, "acmag", acParameterValue);
 
                     if (acParameterIndex + 1 != parameters.Count - 1)
@@ -44,7 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             && !context.WaveformReader.Supports(acPhaseCandidate, context)
                             && acPhaseCandidate.ToLower() != "dc")
                         {
-                            var acPhaseParameterValue = parameters.GetValueString(acParameterIndex + 2);
+                            var acPhaseParameterValue = parameters.Get(acParameterIndex + 2);
                             context.SetParameter(component, "acphase", acPhaseParameterValue);
 
                             parameters.RemoveAt(acParameterIndex + 2);
@@ -64,7 +64,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 int dcParameterIndex = parameters.IndexOf(dcParameter);
                 if (dcParameterIndex != parameters.Count - 1)
                 {
-                    var dcParameterValue = parameters.GetValueString(dcParameterIndex + 1);
+                    var dcParameterValue = parameters.Get(dcParameterIndex + 1);
                     context.SetParameter(component, "dc", dcParameterValue);
                     parameters.RemoveAt(dcParameterIndex + 1);
                 }
@@ -78,7 +78,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     && !context.WaveformReader.Supports(sp.Image, context)
                     && parameters[0].Image.ToLower() != "value")
                 {
-                    context.SetParameter(component, "dc", sp.Image);
+                    context.SetParameter(component, "dc", sp);
                     parameters.RemoveAt(0);
                 }
             }

@@ -65,10 +65,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 throw new WrongParameterTypeException(name, "Component name expected");
             }
 
-            mut.InductorName1 = parameters.GetString(0);
-            mut.InductorName2 = parameters.GetString(1);
+            mut.InductorName1 = parameters.Get(0).Image;
+            mut.InductorName2 = parameters.Get(1).Image;
 
-            context.SetParameter(mut, "k", parameters.GetString(2));
+            context.SetParameter(mut, "k", parameters.Get(2));
 
             return mut;
         }
@@ -105,7 +105,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // CXXXXXXX N1 N2 VALUE
                 if (parameters[2] is ExpressionParameter || parameters[2] is ValueParameter)
                 {
-                    context.SetParameter(capacitor, "capacitance", parameters.GetString(2));
+                    context.SetParameter(capacitor, "capacitance", parameters.Get(2));
                 }
                 else
                 {
@@ -122,7 +122,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // CMOD 3 7 1.3 IC=1
                 if (parameters[2] is ExpressionParameter || parameters[2] is ValueParameter)
                 {
-                    context.SetParameter(capacitor, "capacitance", parameters.GetString(2));
+                    context.SetParameter(capacitor, "capacitance", parameters.Get(2));
                 }
                 else
                 {
@@ -131,8 +131,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         context.ModelsRegistry.SetModel(
                             capacitor,
                             simulation,
-                            parameters.GetString(2),
-                            $"Could not find model {parameters.GetString(2)} for capacitor {name}",
+                            parameters.Get(2).Image,
+                            $"Could not find model {parameters.Get(2)} for capacitor {name}",
                             (CapacitorModel model) => capacitor.Model = model.Name,
                             context.Result);
                     });
@@ -163,7 +163,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (modelBased)
                 {
-                    var model = context.ModelsRegistry.FindModel<CapacitorModel>(parameters.GetString(2));
+                    var model = context.ModelsRegistry.FindModel<CapacitorModel>(parameters.Get(2).Image);
 
                     if (tcParameterAssignment.Values.Count == 2)
                     {
@@ -218,7 +218,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             var inductor = new Inductor(name);
             context.CreateNodes(inductor, parameters);
-            context.SetParameter(inductor, "inductance", parameters.GetString(2));
+            context.SetParameter(inductor, "inductance", parameters.Get(2));
 
             return inductor;
         }
@@ -259,7 +259,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 // Check if something is a model name
                 if ((something is WordParameter || something is IdentifierParameter)
-                    && context.ModelsRegistry.FindModel<ResistorModel>(parameters.GetString(2)) != null)
+                    && context.ModelsRegistry.FindModel<ResistorModel>(parameters.Get(2).Image) != null)
                 {
                     // RName Node1 Node2 modelName
                     throw new GeneralReaderException("L parameter needs to be specified");

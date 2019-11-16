@@ -29,7 +29,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            var result = new PointParameter { Values = (PointValues) Values.Clone() };
+            var result = new PointParameter { Values = (PointValues) Values.Clone(), LineNumber = LineNumber};
 
             return result;
         }

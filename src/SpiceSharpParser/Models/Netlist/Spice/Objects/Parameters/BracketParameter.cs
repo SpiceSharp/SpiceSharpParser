@@ -57,6 +57,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
             {
                 Name = Name,
                 Parameters = (ParameterCollection)Parameters.Clone(),
+                LineNumber = LineNumber
             };
         }
     }

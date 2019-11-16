@@ -96,7 +96,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         private static void ReadSingleLibWithTwoArguments(Statements statements, Control lib, List<Statement> allStatements)
         {
             // Find lib by entry
-            var libEntry = allStatements.SingleOrDefault(s => s is Control c && c.Name == "lib" && c.Parameters.GetString(0) == lib.Parameters.GetString(1));
+            var libEntry = allStatements.SingleOrDefault(s => s is Control c && c.Name == "lib" && c.Parameters.Get(0).Image == lib.Parameters.Get(1).Image);
             if (libEntry != null)
             {
                 // look for .endl
@@ -172,7 +172,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         private void ReadSingleLib(Statements statements, string currentDirectoryPath, Control lib)
         {
             // get full path of .lib
-            string libPath = PathConverter.Convert(lib.Parameters.GetString(0));
+            string libPath = PathConverter.Convert(lib.Parameters.Get(0).Image);
             bool isAbsolutePath = Path.IsPathRooted(libPath);
             string libFullPath = isAbsolutePath ? libPath : Path.Combine(currentDirectoryPath, libPath);
 

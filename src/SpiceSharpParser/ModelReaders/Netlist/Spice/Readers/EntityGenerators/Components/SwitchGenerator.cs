@@ -49,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 throw new WrongParametersCountException("Wrong parameter count for voltage switch");
             }
 
-            string modelName = parameters.GetString(4);
+            string modelName = parameters.Get(4).Image;
 
             if (context.ModelsRegistry.FindModel<Model>(modelName) is VSwitchModel vmodel)
             {
@@ -75,7 +75,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         double rOff = resistorModel.ParameterSets.GetParameter<double>("roff");
 
                         string resExpression =
-                            $"pos(table(v({parameters.GetString(2)}, {parameters.GetString(3)}), @{resistorModel.Name}[voff], @{resistorModel.Name}[roff] , @{resistorModel.Name}[von], @{resistorModel.Name}[ron]), {rOff.ToString(CultureInfo.InvariantCulture)})";
+                            $"pos(table(v({parameters.Get(2)}, {parameters.Get(3)}), @{resistorModel.Name}[voff], @{resistorModel.Name}[roff] , @{resistorModel.Name}[von], @{resistorModel.Name}[ron]), {rOff.ToString(CultureInfo.InvariantCulture)})";
                         context.SetParameter(resistor, "resistance", resExpression, beforeTemperature: true, onload: true);
                     });
                 return resistor;
@@ -90,8 +90,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     context.ModelsRegistry.SetModel(
                         vsw,
                         simulation,
-                        parameters.GetString(4),
-                        $"Could not find model {parameters.GetString(4)} for voltage switch {name}",
+                        parameters.Get(4).Image,
+                        $"Could not find model {parameters.Get(4)} for voltage switch {name}",
                         (VoltageSwitchModel model) => { vsw.Model = model.Name; },
                         context.Result);
                 });
@@ -99,7 +99,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // Optional ON or OFF
                 if (parameters.Count == 6)
                 {
-                    switch (parameters.GetString(5).ToLower())
+                    switch (parameters.Get(5).Image.ToLower())
                     {
                         case "on":
                             vsw.ParameterSets.SetParameter("on");
@@ -136,7 +136,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 throw new WrongParametersCountException("Wrong parameter count for current switch");
             }
 
-            string modelName = parameters.GetString(3);
+            string modelName = parameters.Get(3).Image;
 
             if (context.ModelsRegistry.FindModel<Model>(modelName) is ISwitchModel s)
             {
@@ -161,7 +161,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                         double rOff = resistorModel.ParameterSets.GetParameter<double>("roff");
 
-                        string resExpression = $"pos(table(i({parameters.GetString(2)}), @{resistorModel.Name}[ioff], @{resistorModel.Name}[roff] , @{resistorModel.Name}[ion], @{resistorModel.Name}[ron]), {rOff.ToString(CultureInfo.InvariantCulture)})";
+                        string resExpression = $"pos(table(i({parameters.Get(2)}), @{resistorModel.Name}[ioff], @{resistorModel.Name}[roff] , @{resistorModel.Name}[ion], @{resistorModel.Name}[ron]), {rOff.ToString(CultureInfo.InvariantCulture)})";
                         context.SetParameter(resistor, "resistance", resExpression, beforeTemperature: true, onload: true);
                     });
                 return resistor;
@@ -174,7 +174,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // Get the controlling voltage source
                 if (parameters[2] is WordParameter || parameters[2] is IdentifierParameter)
                 {
-                    csw.ControllingName = context.ComponentNameGenerator.Generate(parameters.GetString(2));
+                    csw.ControllingName = context.ComponentNameGenerator.Generate(parameters.Get(2).Image);
                 }
                 else
                 {
@@ -187,8 +187,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     context.ModelsRegistry.SetModel(
                         csw,
                         simulation,
-                        parameters.GetString(3),
-                        $"Could not find model {parameters.GetString(3)} for current switch {name}",
+                        parameters.Get(3).Image,
+                        $"Could not find model {parameters.Get(3)} for current switch {name}",
                         (CurrentSwitchModel model) => csw.Model = model.Name,
                         context.Result);
                 });
@@ -196,7 +196,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // Optional on or off
                 if (parameters.Count > 4)
                 {
-                    switch (parameters.GetString(4).ToLower())
+                    switch (parameters.Get(4).Image.ToLower())
                     {
                         case "on":
                             csw.ParameterSets.SetParameter("on");

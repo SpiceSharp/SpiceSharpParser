@@ -120,6 +120,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         double EvaluateDouble(string expression);
 
         /// <summary>
+        /// Parses an expression to double.
+        /// </summary>
+        /// <param name="parameter">Parameter to parse</param>
+        /// <returns>
+        /// A value of expression.
+        /// </returns>
+        double EvaluateDouble(Parameter parameter);
+
+        /// <summary>
         /// Sets a parameter.
         /// </summary>
         /// <param name="parameterName">Parameter name.</param>
@@ -130,8 +139,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Sets a parameter.
         /// </summary>
         /// <param name="parameterName">Parameter name.</param>
-        /// <param name="valueExpression">Parameter value expression.</param>
-        void SetParameter(string parameterName, string valueExpression);
+        /// <param name="parameter">Parameter value.</param>
+        void SetParameter(string parameterName, Parameter parameter);
 
         /// <summary>
         /// Sets parameter of entity to value of expression.
@@ -142,6 +151,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="beforeTemperature">Should be re-evaluated before temperature.</param>
         /// <param name="onload">Should be re-evaluated OnBeforeLoad.</param>
         void SetParameter(Entity entity, string parameterName, string valueExpression, bool beforeTemperature = true, bool onload = true);
+
+        /// <summary>
+        /// Sets parameter of entity to value of expression.
+        /// </summary>
+        /// <param name="entity">Entity.</param>
+        /// <param name="parameterName">Parameter name.</param>
+        /// <param name="valueExpression">Value expression.</param>
+        /// <param name="beforeTemperature">Should be re-evaluated before temperature.</param>
+        /// <param name="onload">Should be re-evaluated OnBeforeLoad.</param>
+        void SetParameter(Entity entity, string parameterName, Parameter valueExpression, bool beforeTemperature = true, bool onload = true);
 
         /// <summary>
         /// Sets the initial voltage.

@@ -62,7 +62,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             // Get the model and generate a component for it
             SpiceSharp.Components.Component mosfet = null;
-            string modelName = parameters.GetString(4);
+            string modelName = parameters.Get(4).Image;
             Model model = context.ModelsRegistry.FindModel<Model>(modelName);
             if (model == null)
             {

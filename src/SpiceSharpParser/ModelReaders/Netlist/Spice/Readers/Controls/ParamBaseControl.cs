@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.Common.Evaluation;
+﻿using System;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -17,7 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
-            Read(statement, context.ReadingExpressionContext, context.CaseSensitivity, context.ReadingEvaluator, context);
+            Read(statement, context.ReadingExpressionContext, context.CaseSensitivity, context.ReadingEvaluator, context, true);
         }
 
         /// <summary>
@@ -28,7 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <param name="caseSettings">Case settings.</param>
         /// <param name="evaluator">Evaluator.</param>
         /// <param name="readingContext">Reading context.</param>
-        public void Read(Control statement, ExpressionContext expressionContext, SpiceNetlistCaseSensitivitySettings caseSettings, IEvaluator evaluator, IReadingContext readingContext)
+        public void Read(Control statement, ExpressionContext expressionContext, SpiceNetlistCaseSensitivitySettings caseSettings, IEvaluator evaluator, IReadingContext readingContext, bool validate)
         {
             if (statement.Parameters == null)
             {
@@ -44,7 +45,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         string parameterName = assignmentParameter.Name;
                         string parameterExpression = assignmentParameter.Value;
 
-                        SetParameter(parameterName, parameterExpression, expressionContext, caseSettings, evaluator, readingContext);
+                        try
+                        {
+                            SetParameter(parameterName, parameterExpression, expressionContext, evaluator, caseSettings, readingContext);
+                        }
+                        catch (Exception e)
+                        {
+                            if (validate)
+                            {
+                                throw new Exception(
+                                    $"Problem with setting param `{assignmentParameter.Name}` with expression =`{assignmentParameter.Value}` at line = {assignmentParameter.LineNumber}",
+                                    e);
+                            }
+                        }
                     }
                     else
                     {
@@ -69,8 +82,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             string parameterName,
             string parameterExpression,
             ExpressionContext expressionContext,
-            SpiceNetlistCaseSensitivitySettings caseSettings,
             IEvaluator evaluator,
+            SpiceNetlistCaseSensitivitySettings caseSettings,
             IReadingContext readingContext);
     }
 }

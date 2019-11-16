@@ -402,7 +402,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".SAVE i(V1)",
                 ".END");
 
-            Assert.Throws<UnknownParameterException>(() => parser.ParseNetlist(text));
+            Assert.Throws<GeneralReaderException>(() => parser.ParseNetlist(text));
         }
 
         [Fact]
@@ -591,7 +591,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".DC V1 -1 1 10e-3",
                 ".SAVE i(V1)",
                 ".END");
-            Assert.Throws<WrongParameterException>(() => parser.ParseNetlist(text));
+            Assert.Throws<GeneralReaderException>(() => parser.ParseNetlist(text));
         }
     }
 }
