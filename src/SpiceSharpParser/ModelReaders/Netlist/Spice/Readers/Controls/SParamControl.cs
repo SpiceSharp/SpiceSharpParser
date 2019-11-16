@@ -10,7 +10,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
     /// </summary>
     public class SParamControl : ParamBaseControl
     {
-        protected override void SetParameter(string parameterName, string parameterExpression, ExpressionContext expressionContext, SpiceNetlistCaseSensitivitySettings caseSettings, IEvaluator evaluator, IReadingContext readingContext)
+        protected override void SetParameter(string parameterName, string parameterExpression, ExpressionContext expressionContext, IEvaluator evaluator, SpiceNetlistCaseSensitivitySettings caseSettings, IReadingContext readingContext)
         {
             var value = readingContext.ReadingEvaluator.Evaluate(new DynamicExpression(parameterExpression), expressionContext, null, readingContext);
             expressionContext.SetParameter(parameterName, value);

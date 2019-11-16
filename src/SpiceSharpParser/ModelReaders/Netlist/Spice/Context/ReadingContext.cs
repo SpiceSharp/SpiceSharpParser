@@ -23,6 +23,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
     /// </summary>
     public class ReadingContext : IReadingContext
     {
+
+        public ReadingContext()
+        {
+
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ReadingContext"/> class.
         /// </summary>
@@ -221,6 +227,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
+        public double EvaluateDouble(Parameter parameter)
+        {
+            if (parameter == null)
+            {
+                throw new ArgumentNullException(nameof(parameter));
+            }
+
+            try
+            {
+                return ReadingEvaluator.Evaluate(new DynamicExpression(parameter.Image), ReadingExpressionContext, null, this);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(
+                    $"Exception during evaluation of expression: `{parameter.Image}` at line={parameter.LineNumber}", ex);
+            }
+
+        }
+
         /// <summary>
         /// Sets the parameter.
         /// </summary>
@@ -232,7 +257,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new ArgumentNullException(nameof(parameterName));
             }
+
             ReadingExpressionContext.SetParameter(parameterName, value);
+        }
+
+        public void SetParameter(string parameterName, Parameter parameter)
+        {
+
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
+            ReadingExpressionContext.SetParameter(parameterName, parameter);
         }
 
         /// <summary>
@@ -261,7 +298,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             string[] nodes = new string[component.PinCount];
             for (var i = 0; i < component.PinCount; i++)
             {
-                string pinName = parameters.GetString(i);
+                string pinName = parameters.Get(i).Image;
                 nodes[i] = NodeNameGenerator.Generate(pinName);
             }
 
@@ -285,26 +322,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 StatementsReader.Read(statement, this);
             }
-        }
-
-        public void SetParameter(string parameterName, string expression)
-        {
-            if (parameterName == null)
-            {
-                throw new ArgumentNullException(nameof(parameterName));
-            }
-
-            if (expression == null)
-            {
-                throw new ArgumentNullException(nameof(expression));
-            }
-
-            var parameters = ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this,  CaseSensitivity, false);
-            
-            ReadingExpressionContext.SetParameter(
-                parameterName,
-                expression,
-                parameters);
         }
 
         public void AddFunction(string functionName, List<string> arguments, string body)
@@ -367,19 +384,63 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             try
             {
                 entity.SetParameter(parameterName, value, comparer);
+
+                bool isDynamic = ExpressionParserHelpers.HaveSpiceProperties(expression, ReadingExpressionContext, this, false)
+                                 || ExpressionParserHelpers.HaveFunctions(expression, ReadingExpressionContext, this)
+                                 || ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, CaseSensitivity, false).Any();
+
+                if (isDynamic)
+                {
+                    SimulationPreparations.SetParameter(entity, parameterName, expression, beforeTemperature, onload, this);
+                }
             }
-            catch (CircuitException e)
+            catch (Exception e)
             {
-                throw new WrongParameterException($"Problem with setting parameter = {parameterName} with value = {value}", e);
+                throw new GeneralReaderException($"Problem with setting parameter = {parameterName} with value = {value}", e);
             }
 
-            bool isDynamic = ExpressionParserHelpers.HaveSpiceProperties(expression, ReadingExpressionContext, this, false)
-                            || ExpressionParserHelpers.HaveFunctions(expression, ReadingExpressionContext, this)
-                            || ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, CaseSensitivity, false).Any();
+        }
 
-            if (isDynamic)
+        public void SetParameter(Entity entity, string parameterName, Parameter parameter, bool beforeTemperature = true, bool onload = true)
+        {
+            if (entity == null)
             {
-                SimulationPreparations.SetParameter(entity, parameterName, expression, beforeTemperature, onload, this);
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
+            if (parameter == null)
+            {
+                throw new ArgumentNullException(nameof(parameter));
+            }
+
+            string expression = parameter.Image;
+
+            IEqualityComparer<string> comparer = StringComparerProvider.Get(CaseSensitivity.IsEntityParameterNameCaseSensitive);
+
+            try
+            {
+                double value = ReadingEvaluator.Evaluate(new DynamicExpression(expression), ReadingExpressionContext, null, this);
+
+                entity.SetParameter(parameterName, value, comparer);
+
+                bool isDynamic = ExpressionParserHelpers.HaveSpiceProperties(expression, ReadingExpressionContext, this, false)
+                                 || ExpressionParserHelpers.HaveFunctions(expression, ReadingExpressionContext, this)
+                                 || ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, CaseSensitivity, false).Any();
+
+                if (isDynamic)
+                {
+                    SimulationPreparations.SetParameter(entity, parameterName, expression, beforeTemperature, onload, this);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new GeneralReaderException(
+                    $"Exception during evaluation of parameter with expression: `{expression}` at line={parameter.LineNumber}", ex);
             }
         }
 

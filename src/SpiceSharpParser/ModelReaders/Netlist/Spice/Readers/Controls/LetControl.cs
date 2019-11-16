@@ -34,7 +34,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 throw new WrongParameterTypeException("Second parameter for .let should be an expression");
             }
 
-            string expression = statement.Parameters.GetString(1);
+            string expression = statement.Parameters.Get(1).Image;
             context.SetNamedExpression(expressionName, expression);
         }
     }

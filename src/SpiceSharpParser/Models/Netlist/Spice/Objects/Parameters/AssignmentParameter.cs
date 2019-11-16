@@ -80,6 +80,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
                 Values = Values,
                 Name = Name,
                 HasFunctionSyntax = HasFunctionSyntax,
+                LineNumber = LineNumber
             };
         }
     }

@@ -40,10 +40,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             AC ac;
 
-            string type = statement.Parameters.GetString(0).ToLower();
-            var numberSteps = context.EvaluateDouble(statement.Parameters.GetString(1));
-            var start = context.EvaluateDouble(statement.Parameters.GetString(2));
-            var stop = context.EvaluateDouble(statement.Parameters.GetString(3));
+            string type = statement.Parameters.Get(0).Image.ToLower();
+            var numberSteps = context.EvaluateDouble(statement.Parameters.Get(1));
+            var start = context.EvaluateDouble(statement.Parameters.Get(2));
+            var stop = context.EvaluateDouble(statement.Parameters.Get(3));
 
             switch (type)
             {

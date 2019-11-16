@@ -31,8 +31,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.ModelsRegistry.SetModel(
                     diode,
                     simulation,
-                    parameters.GetString(2),
-                    $"Could not find model {parameters.GetString(2)} for diode {originalName}",
+                    parameters.Get(2).Image,
+                    $"Could not find model {parameters.Get(2)} for diode {originalName}",
                     (DiodeModel model) => diode.Model = model.Name,
                     context.Result);
             });
@@ -70,13 +70,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     var bp = diode.ParameterSets.Get<SpiceSharp.Components.DiodeBehaviors.BaseParameters>();
                     if (!bp.Area.Given)
                     {
-                        bp.Area.Value = context.EvaluateDouble(parameters.GetString(i));
+                        bp.Area.Value = context.EvaluateDouble(parameters.Get(i));
                     }
                     else
                     {
                         if (!bp.Temperature.Given)
                         {
-                            bp.Temperature.Value = context.EvaluateDouble(parameters.GetString(i));
+                            bp.Temperature.Value = context.EvaluateDouble(parameters.Get(i));
                         }
                     }
                 }

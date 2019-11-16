@@ -78,7 +78,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
 
             Assert.NotNull(mut);
             Assert.IsType<MutualInductance>(mut);
-            context.Received().SetParameter(mut, "k", "12.3", true);
+            context.Received().SetParameter(mut, "k", parameters[2], true);
         }
 
         [Fact]
@@ -98,7 +98,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
 
             Assert.NotNull(inductor);
             Assert.IsType<Inductor>(inductor);
-            context.Received().SetParameter(inductor, "inductance", "4.3", true);
+            context.Received().SetParameter(inductor, "inductance", parameters[2], true);
         }
 
         // cA3 1 0 4.3
@@ -119,7 +119,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
 
             Assert.NotNull(cap);
             Assert.IsType<Capacitor>(cap);
-            context.Received().SetParameter(cap, "capacitance", "4.3", true);
+            context.Received().SetParameter(cap, "capacitance", parameters[2], true);
         }
 
         // cA3 1 0 4.3 ic = 13.3
@@ -132,12 +132,23 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             context.When(a => a.SetParameter(
                Arg.Any<Capacitor>(),
                Arg.Any<string>(),
-               Arg.Any<string>(),
+               Arg.Any<Parameter>(),
                true
                )).Do(x =>
                {
-                   ((Entity)x[0]).SetParameter(((string)x[1]).ToLower(), evaluator.Evaluate((string)x[2], new SpiceSharpParser.Common.Evaluation.ExpressionContext(), null, null));
+                   ((Entity)x[0]).SetParameter(((string)x[1]).ToLower(), evaluator.Evaluate(((Parameter)x[2]).Image, new ExpressionContext(), null, null));
                });
+
+            context.When(a => a.SetParameter(
+                Arg.Any<Capacitor>(),
+                Arg.Any<string>(),
+                Arg.Any<string>(),
+                true
+            )).Do(x =>
+            {
+                ((Entity)x[0]).SetParameter(((string)x[1]).ToLower(), evaluator.Evaluate(((string)x[2]), new ExpressionContext(), null, null));
+            });
+
 
             var parameters = new ParameterCollection
             {
@@ -152,7 +163,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
 
             Assert.NotNull(cap);
             Assert.IsType<Capacitor>(cap);
-            context.Received().SetParameter(cap, "capacitance", "4.3", true);
+            context.Received().SetParameter(cap, "capacitance", parameters[2], true);
             Assert.Equal(13.3, cap.ParameterSets.GetParameter<Parameter<double>>("ic").Value);
         }
 

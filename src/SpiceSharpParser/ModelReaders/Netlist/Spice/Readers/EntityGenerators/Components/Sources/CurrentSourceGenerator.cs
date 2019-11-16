@@ -54,8 +54,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var cccs = new CurrentControlledCurrentSource(name);
                 context.CreateNodes(cccs, parameters);
-                cccs.ControllingName = context.ComponentNameGenerator.Generate(parameters.GetString(2));
-                context.SetParameter(cccs, "gain", parameters.GetString(3));
+                cccs.ControllingName = context.ComponentNameGenerator.Generate(parameters.Get(2).Image);
+                context.SetParameter(cccs, "gain", parameters.Get(3));
                 return cccs;
             }
             else
@@ -84,7 +84,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var vccs = new VoltageControlledCurrentSource(name);
                 context.CreateNodes(vccs, parameters);
-                context.SetParameter(vccs, "gain", parameters.GetValueString(4));
+                context.SetParameter(vccs, "gain", parameters.Get(4));
                 return vccs;
             }
             else
@@ -101,7 +101,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                     var vccs = new VoltageControlledCurrentSource(name);
                     context.CreateNodes(vccs, vccsNodes);
-                    context.SetParameter(vccs, "gain", parameters.GetString(2));
+                    context.SetParameter(vccs, "gain", parameters.Get(2));
                     return vccs;
                 }
                 else

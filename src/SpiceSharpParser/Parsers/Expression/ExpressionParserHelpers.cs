@@ -243,7 +243,7 @@ namespace SpiceSharpParser.Parsers.Expression
 
                 if (@throw)
                 {
-                    throw new UnknownParameterException();
+                    throw new UnknownParameterException(args.Name);
                 }
                 else
                 {

@@ -12,5 +12,12 @@
         {
             get;
         }
+
+        public int LineNumber { get; set; }
+
+        public override string ToString()
+        {
+            return Image;
+        }
     }
 }

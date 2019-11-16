@@ -59,7 +59,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var vcvs = new VoltageControlledVoltageSource(name);
                 context.CreateNodes(vcvs, parameters);
-                context.SetParameter(vcvs, "gain", parameters.GetValueString(4));
+                context.SetParameter(vcvs, "gain", parameters.Get(4));
 
                 return vcvs;
             }
@@ -79,7 +79,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                     var vcvs = new VoltageControlledVoltageSource(name);
                     context.CreateNodes(vcvs, vcvsNodes);
-                    context.SetParameter(vcvs, "gain", parameters.GetString(2));
+                    context.SetParameter(vcvs, "gain", parameters.Get(2));
                     return vcvs;
                 }
                 else
@@ -111,8 +111,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var ccvs = new CurrentControlledVoltageSource(name);
                 context.CreateNodes(ccvs, parameters);
-                ccvs.ControllingName = context.ComponentNameGenerator.Generate(parameters.GetString(2));
-                context.SetParameter(ccvs, "gain", parameters.GetString(3));
+                ccvs.ControllingName = context.ComponentNameGenerator.Generate(parameters.Get(2).Image);
+                context.SetParameter(ccvs, "gain", parameters.Get(3).Image);
                 return ccvs;
             }
             else

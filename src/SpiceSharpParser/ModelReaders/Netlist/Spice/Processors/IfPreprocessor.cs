@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Evaluation.Expressions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
@@ -37,7 +38,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             ParamControl paramControl = new ParamControl();
             foreach (Control param in statements.Where(statement => statement is Control c && c.Name.ToLower() == "param").Cast<Control>())
             {
-                paramControl.Read(param, ExpressionContext, CaseSettings, Evaluator, null);
+                paramControl.Read(param, ExpressionContext, CaseSettings, Evaluator, null, false);
             }
 
             return ReadIfs(statements);

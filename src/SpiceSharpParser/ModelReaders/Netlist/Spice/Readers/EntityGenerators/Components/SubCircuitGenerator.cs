@@ -160,7 +160,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 skipCount++;
             }
 
-            string subCircuitDefinitionName = parameters.GetString(parameters.Count - skipCount - 1);
+            string subCircuitDefinitionName = parameters.Get(parameters.Count - skipCount - 1).Image;
             var result = context.AvailableSubcircuits.ToList().Find(subCkt => subCkt.Name == subCircuitDefinitionName);
 
             if (result == null)
@@ -228,7 +228,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var pinInstanceIdentifiers = new List<string>();
             for (var i = 0; i < parameters.Count - parameterParameters - 1; i++)
             {
-                var nodeName  = parameters.GetString(i);
+                var nodeName  = parameters.Get(i).Image;
                 var pinInstanceName = context.NodeNameGenerator.Generate(nodeName);
                 pinInstanceIdentifiers.Add(pinInstanceName);
             }

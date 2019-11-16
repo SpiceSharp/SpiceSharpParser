@@ -12,7 +12,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
 
         public override SpiceObject Clone()
         {
-            var result = new ExpressionEqualParameter { Expression = Expression, Points = (Points) Points.Clone() };
+            var result = new ExpressionEqualParameter { Expression = Expression, Points = (Points) Points.Clone(), LineNumber = LineNumber};
             return result;
         }
     }

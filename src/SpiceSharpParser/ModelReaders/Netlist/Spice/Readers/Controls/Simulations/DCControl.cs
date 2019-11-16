@@ -53,10 +53,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             for (int i = 0; i < count; i++)
             {
                 SweepConfiguration sweep = new SweepConfiguration(
-                    statement.Parameters.GetString(4 * i),
-                    context.EvaluateDouble(statement.Parameters.GetString((4 * i) + 1)),
-                    context.EvaluateDouble(statement.Parameters.GetString((4 * i) + 2)),
-                    context.EvaluateDouble(statement.Parameters.GetString((4 * i) + 3)));
+                    statement.Parameters.Get(4 * i).Image,
+                    context.EvaluateDouble(statement.Parameters.Get((4 * i) + 1)),
+                    context.EvaluateDouble(statement.Parameters.Get((4 * i) + 2)),
+                    context.EvaluateDouble(statement.Parameters.Get((4 * i) + 3)));
 
                 sweeps.Add(sweep);
             }
