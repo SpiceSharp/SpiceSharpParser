@@ -97,7 +97,7 @@ At the moment due to lack of implementation of LAPLACE and FREQ (part of analog 
 ### Device statements supported:
 | Device Statement  |  Documentation   |
 |:------------|-----------------------:|
-|B (Arbitrary Behavioral Voltage or Current Sources)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/B)|
+|B (Arbitrary Behavioral Voltage or Current Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/B)|
 |C (Capacitor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/C)|
 |D (Diode)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/D)|
 |E (Voltage-Controlled Voltage Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/E)|
