@@ -114,10 +114,10 @@ namespace SpiceSharpParser.Lexers
                         {
                             var dynamicResult = dynamicRule.Action(textToLex);
 
-                            yield return new Token(dynamicRule.TokenType, dynamicResult, state?.LineNumber ?? 0);
+                            yield return new Token(dynamicRule.TokenType, dynamicResult.Item1, state?.LineNumber ?? 0);
 
-                            currentTokenIndex += dynamicResult.Length;
-                            UpdateTextToLex(ref textToLex, ref getNextTextToLex, dynamicResult.Length, state);
+                            currentTokenIndex += dynamicResult.Item2;
+                            UpdateTextToLex(ref textToLex, ref getNextTextToLex, dynamicResult.Item2, state);
                             matched = true;
                         }
                     }

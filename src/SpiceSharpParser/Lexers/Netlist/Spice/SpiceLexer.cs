@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace SpiceSharpParser.Lexers.Netlist.Spice
 {
@@ -124,7 +125,10 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
 
                         if (openBracketCount == 0)
                         {
-                            return textToLex.Substring(0, i);
+                            //TODO this is a hack, please refactor me
+                            var text = textToLex.Substring(0, i);
+                            var replaced = Regex.Replace(text, @"((\r\n|\r|\n)[\t 	]*)+\+", "");
+                            return new Tuple<string, int>(replaced, text.Length);
                         }
 
                         throw new LexerException("Not matched brackets for expression");
@@ -153,7 +157,9 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
 
                     if (openBracketCount == 0)
                     {
-                        return textToLex.Substring(0, i);
+                        var text = textToLex.Substring(0, i);
+                        var replaced = Regex.Replace(text, @"((\r\n|\r|\n)[\t 	]*)+\+", "");
+                        return new Tuple<string, int>(replaced, text.Length);
                     }
 
                     throw new LexerException("Not matched brackets for expression");
