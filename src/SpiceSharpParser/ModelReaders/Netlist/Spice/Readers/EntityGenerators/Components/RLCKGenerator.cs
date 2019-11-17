@@ -278,11 +278,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // Set resistance
                 if (something is AssignmentParameter asp)
                 {
-                    context.SetParameter(res, "resistance", asp.Value, true, isDynamic);
+                    context.SetParameter(res, "resistance", asp, true, isDynamic);
                 }
                 else
                 {
-                    context.SetParameter(res, "resistance", something.Image, true, isDynamic);
+                    context.SetParameter(res, "resistance", something, true, isDynamic);
                 }
             }
             else

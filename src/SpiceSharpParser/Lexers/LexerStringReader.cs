@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories;
 
 namespace SpiceSharpParser.Lexers
 {
@@ -102,13 +105,13 @@ namespace SpiceSharpParser.Lexers
         public LexerLogicalLine ReadLogicalLine()
         {
             var result = new List<string>();
+
             string currentLine = ReadLine();
             result.Add(currentLine);
 
             while (true)
             {
                 bool includeNextLine = _currentLineContinuationCharacter.HasValue && currentLine.GetLastCharacter(out _) == _currentLineContinuationCharacter.Value;
-
                 string nextLine;
                 // iterate over empty lines
                 int start = _currentIndex;
@@ -132,7 +135,7 @@ namespace SpiceSharpParser.Lexers
                 {
                     // add empty lines
                     result.AddRange(emptyLines);
-                    result.Add(nextLine.TrimStart().Substring(1));
+                    result.Add(nextLine);
                     _currentIndex = start;
                 }
                 else if (includeNextLine)
@@ -150,7 +153,6 @@ namespace SpiceSharpParser.Lexers
                     break;
                 }
             }
-
             return new LexerLogicalLine(result);
         }
 

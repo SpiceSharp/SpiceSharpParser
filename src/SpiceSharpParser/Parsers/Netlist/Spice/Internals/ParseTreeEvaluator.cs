@@ -562,9 +562,9 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         private SpiceObject CreateModel(ParseTreeNodeEvaluationValues values)
         {
             var model = new Model();
-            model.Name = values.GetLexem(2);
-            model.Parameters = values.GetSpiceObject<ParameterCollection>(3);
-            model.LineNumber = values.GetLexemLineNumber(2);
+            model.Name = values.GetLexem(1);
+            model.Parameters = values.GetSpiceObject<ParameterCollection>(2);
+            model.LineNumber = values.GetLexemLineNumber(1);
             return model;
         }
 

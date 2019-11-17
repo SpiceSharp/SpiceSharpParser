@@ -24,5 +24,10 @@
         /// Gets or sets the current line number.
         /// </summary>
         public int LineNumber { get; set; } = 1;
+
+        /// <summary>
+        /// Gets or sets a value indicating lexer is lexing new line.
+        /// </summary>
+        public bool NewLine { get; set; }
     }
 }

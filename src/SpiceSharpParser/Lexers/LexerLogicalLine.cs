@@ -12,13 +12,9 @@ namespace SpiceSharpParser.Lexers
             _physicalLines = physicalLines;
         }
 
-        public int PhysicalLinesCount => _physicalLines.Count;
-
         public string GetLine()
         {
-            var result = string.Join(" ",
-                _physicalLines.Where(line => line != null && !line.IsEmptyLine())
-                    .Select(line => line.TrimEnd('\r', '\n')));
+            var result = string.Join("", _physicalLines.Where(line => line != null).Select(line => line));
 
             var lastLine = _physicalLines.LastOrDefault(line => line != null);
 
@@ -27,19 +23,7 @@ namespace SpiceSharpParser.Lexers
                 return null;
             }
 
-            if (lastLine.EndsWith("\r\n"))
-            {
-                return $"{result}\r\n";
-            }
-            else
-            {
-                if (lastLine.EndsWith("\r"))
-                {
-                    return $"{result}\r";
-                }
-            }
-
-            return $"{result}\n";
+            return result;
         }
     }
 }

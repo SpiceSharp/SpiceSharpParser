@@ -14,6 +14,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
@@ -418,7 +419,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(parameter));
             }
 
-            string expression = parameter.Image;
+            string expression = null;
+
+            if (parameter is SingleParameter sp)
+            {
+                expression = sp.Image;
+            }
+
+            if (parameter is AssignmentParameter asg)
+            {
+                expression = asg.Value;
+            }
 
             IEqualityComparer<string> comparer = StringComparerProvider.Get(CaseSensitivity.IsEntityParameterNameCaseSensitive);
 
@@ -440,7 +451,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             catch (Exception ex)
             {
                 throw new GeneralReaderException(
-                    $"Exception during evaluation of parameter with expression: `{expression}` at line={parameter.LineNumber}", ex);
+                    $"Exception during evaluation of parameter with expression: `{expression}` at line={parameter.LineNumber}", ex) { LineNumber = parameter.LineNumber };
             }
         }
 

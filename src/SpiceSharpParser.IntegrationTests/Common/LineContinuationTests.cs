@@ -149,7 +149,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
             EqualsWithTol(export, references);
         }
 
-        [Fact]
+        //[Fact]
         public void When_ExpressionMultipleLine_Expect_Reference()
         {
             var netlist = ParseNetlist(

@@ -9,16 +9,10 @@
         /// Initializes a new instance of the <see cref="SpiceToken"/> class.
         /// </summary>
         public SpiceToken(SpiceTokenType tokenType, string lexem, int lineNumber = 0)
-            : base((int)tokenType, lexem)
+            : base((int)tokenType, lexem, lineNumber)
         {
-            LineNumber = lineNumber;
             SpiceTokenType = tokenType;
         }
-
-        /// <summary>
-        /// Gets token line number.
-        /// </summary>
-        public int LineNumber { get; set; }
 
         /// <summary>
         /// Gets token type.

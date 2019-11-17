@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using Xunit;
 
@@ -41,5 +42,32 @@ namespace SpiceSharpParser.IntegrationTests.Common
             Assert.True(netlist.Statements[4].LineNumber == 8);
         }
 
+        [Fact]
+        public void When_BugInExpression_Expect_Reference()
+        {
+            try
+            {
+                ParseNetlistToModel(
+                    false,
+                    true,
+                    "Line numbers test circuit",
+                    "* test1",
+                    "* test2",
+                    "",
+                    "R1 OUT 0",
+                    "",
+                    " + {1/a}",
+                    "* test 3",
+                    "V1 OUT 0 0 $  test3.3 ; test4 $ test5",
+                    ".END");
+            }
+            catch (GeneralReaderException ex)
+            {
+                Assert.Equal(7, ex.LineNumber);
+                return;
+            }
+
+            Assert.False(true);
+        }
     }
 }

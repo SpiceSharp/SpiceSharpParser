@@ -385,6 +385,8 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
 
             if (currentToken.Is(SpiceTokenType.DOT)
                 || currentToken.Is(SpiceTokenType.WORD)
+                || currentToken.Is(SpiceTokenType.MODEL)
+                || currentToken.Is(SpiceTokenType.IDENTIFIER)
                 || currentToken.Is(SpiceTokenType.COMMENT)
                 || currentToken.Is(SpiceTokenType.ENDL)
                 || currentToken.Is(SpiceTokenType.IF)
@@ -418,7 +420,8 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             }
             else
             {
-                throw new ParseException("Error during parsing statements. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+                throw new ParseException(
+                    $"Error during parsing statements. Unexpected token: '{currentToken.Lexem}' of type {currentToken.SpiceTokenType}, line={currentToken.LineNumber}", currentToken.LineNumber);
             }
         }
 
@@ -435,7 +438,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
 
-            if (currentToken.Is(SpiceTokenType.WORD))
+            if (currentToken.Is(SpiceTokenType.WORD) || currentToken.Is(SpiceTokenType.IDENTIFIER))
             {
                 PushProductionExpression(
                     stack,
@@ -444,20 +447,13 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             }
             else if (currentToken.Is(SpiceTokenType.DOT))
             {
-                if (nextToken.Is(SpiceTokenType.WORD))
+                if (nextToken.Is(SpiceTokenType.WORD) || nextToken.Is(SpiceTokenType.IDENTIFIER))
                 {
                     if (nextToken.Equal("SUBCKT", IsDotStatementNameCaseSensitive))
                     {
                         PushProductionExpression(
                             stack,
                             CreateNonTerminalNode(Symbols.Subckt, current),
-                            CreateTerminalNode(SpiceTokenType.NEWLINE, current));
-                    }
-                    else if (nextToken.Equal("MODEL", IsDotStatementNameCaseSensitive))
-                    {
-                        PushProductionExpression(
-                            stack,
-                            CreateNonTerminalNode(Symbols.Model, current),
                             CreateTerminalNode(SpiceTokenType.NEWLINE, current));
                     }
                     else if (nextToken.Equal("DISTRIBUTION", IsDotStatementNameCaseSensitive))
@@ -485,6 +481,13 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
                 PushProductionExpression(
                     stack,
                     CreateNonTerminalNode(Symbols.CommentLine, current),
+                    CreateTerminalNode(SpiceTokenType.NEWLINE, current));
+            }
+            else if (currentToken.Is(SpiceTokenType.MODEL))
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateNonTerminalNode(Symbols.Model, current),
                     CreateTerminalNode(SpiceTokenType.NEWLINE, current));
             }
             else
@@ -773,7 +776,8 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             var nextNextToken = tokens[currentTokenIndex + 2];
 
             if (currentToken.Is(SpiceTokenType.DOT)
-                && (nextToken.Is(SpiceTokenType.WORD) && nextToken.Equal("SUBCKT", IsDotStatementNameCaseSensitive))
+                && ((nextToken.Is(SpiceTokenType.WORD) && nextToken.Equal("SUBCKT", IsDotStatementNameCaseSensitive)
+                    || (nextToken.Is(SpiceTokenType.IDENTIFIER) && nextToken.Equal("SUBCKT", IsDotStatementNameCaseSensitive))))
                 && (nextNextToken.Is(SpiceTokenType.WORD) || nextNextToken.Is(SpiceTokenType.IDENTIFIER)))
             {
                 PushProductionExpression(
@@ -992,11 +996,22 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
         /// <param name="currentTokenIndex">A index of the current token.</param>
         private void ReadParameterEqualSingle(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
-            PushProductionExpression(
-                stack,
-                CreateTerminalNode(SpiceTokenType.WORD, current),
-                CreateTerminalNode(SpiceTokenType.EQUAL, current),
-                CreateNonTerminalNode(Symbols.ParameterSingle, current));
+            if (tokens[currentTokenIndex].SpiceTokenType == SpiceTokenType.WORD)
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(SpiceTokenType.WORD, current),
+                    CreateTerminalNode(SpiceTokenType.EQUAL, current),
+                    CreateNonTerminalNode(Symbols.ParameterSingle, current));
+            }
+            else
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(SpiceTokenType.IDENTIFIER, current),
+                    CreateTerminalNode(SpiceTokenType.EQUAL, current),
+                    CreateNonTerminalNode(Symbols.ParameterSingle, current));
+            }
         }
 
         /// <summary>
@@ -1213,18 +1228,13 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
         {
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
-            var nextNextToken = tokens[currentTokenIndex + 2];
 
-            if (currentToken.Is(SpiceTokenType.DOT)
-                && nextToken.Is(SpiceTokenType.WORD)
-                && nextToken.Equal("MODEL", IsDotStatementNameCaseSensitive)
-                && (nextNextToken.Is(SpiceTokenType.WORD) || nextNextToken.Is(SpiceTokenType.IDENTIFIER)))
+            if (currentToken.Is(SpiceTokenType.MODEL) && (nextToken.Is(SpiceTokenType.WORD) || nextToken.Is(SpiceTokenType.IDENTIFIER)))
             {
                 PushProductionExpression(
                     stack,
                     CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
                     CreateTerminalNode(nextToken.SpiceTokenType, currentNode),
-                    CreateTerminalNode(nextNextToken.SpiceTokenType, currentNode),
                     CreateNonTerminalNode(Symbols.Parameters, currentNode));
             }
             else
@@ -1340,7 +1350,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
         {
             var currentToken = tokens[currentTokenIndex];
 
-            if (currentToken.Is(SpiceTokenType.WORD))
+            if (currentToken.Is(SpiceTokenType.WORD) || currentToken.Is(SpiceTokenType.IDENTIFIER))
             {
                 PushProductionExpression(
                     stack,

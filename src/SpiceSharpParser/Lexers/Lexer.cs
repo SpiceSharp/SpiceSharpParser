@@ -40,6 +40,7 @@ namespace SpiceSharpParser.Lexers
         /// <returns>An enumerable of tokens.</returns>
         public IEnumerable<Token> GetTokens(string text, TLexerState state = null)
         {
+            // TODO: Refactor this please
             if (text == null)
             {
                 throw new ArgumentNullException(nameof(text));
@@ -54,21 +55,34 @@ namespace SpiceSharpParser.Lexers
                 Options.NextLineContinuationCharacter,
                 Options.CurrentLineContinuationCharacter);
 
-            int lines = 0;
+            var lineProvider = new LexerLineNumberProvider(text);
+
+            if (state != null)
+            {
+                state.NewLine = true;
+            }
+
             while (currentTokenIndex < text.Length)
             {
-                if (getNextTextToLex)
+                if (state != null)
                 {
-                    if (state != null)
+                    var currentLineIndex = lineProvider.GetLineForIndex(currentTokenIndex);
+                    if (state.LineNumber != currentLineIndex)
                     {
-                        state.LineNumber += lines;
+                        state.NewLine = true;
                     }
 
-                    textToLex = GetTextToLex(strReader, out lines);
+                    state.LineNumber = currentLineIndex;
+                }
+
+                if (getNextTextToLex)
+                {
+                    textToLex = GetTextToLex(strReader);
+                    if (state != null) state.NewLine = true;
                     getNextTextToLex = false;
                 }
 
-                if (string.IsNullOrEmpty(textToLex))
+                if (textToLex == null)
                 {
                     break;
                 }
@@ -78,15 +92,17 @@ namespace SpiceSharpParser.Lexers
                     var tokenActionResult = bestTokenRule.ReturnDecisionProvider(state, bestMatch.Value);
                     if (tokenActionResult == LexerRuleReturnDecision.ReturnToken)
                     {
-                        yield return new Token(bestTokenRule.TokenType, bestMatch.Value);
                         if (state != null)
                         {
                             state.PreviousReturnedTokenType = bestTokenRule.TokenType;
                         }
+
+                        yield return new Token(bestTokenRule.TokenType, bestMatch.Value, state?.LineNumber ?? 0);
+                       
                     }
                     currentTokenIndex += bestMatch.Length;
 
-                    UpdateTextToLex(ref textToLex, ref getNextTextToLex, bestMatch.Length);
+                    UpdateTextToLex(ref textToLex, ref getNextTextToLex, bestMatch.Length, state);
                 }
                 else
                 {
@@ -98,10 +114,10 @@ namespace SpiceSharpParser.Lexers
                         {
                             var dynamicResult = dynamicRule.Action(textToLex);
 
-                            yield return new Token(dynamicRule.TokenType, dynamicResult);
+                            yield return new Token(dynamicRule.TokenType, dynamicResult, state?.LineNumber ?? 0);
 
                             currentTokenIndex += dynamicResult.Length;
-                            UpdateTextToLex(ref textToLex, ref getNextTextToLex, dynamicResult.Length);
+                            UpdateTextToLex(ref textToLex, ref getNextTextToLex, dynamicResult.Length, state);
                             matched = true;
                         }
                     }
@@ -114,15 +130,20 @@ namespace SpiceSharpParser.Lexers
             }
 
             // yield EOF token
-            yield return new Token(-1, "EOF");
+            yield return new Token(-1, "EOF", state?.LineNumber ?? 0);
         }
 
         /// <summary>
         /// Updates a text to lex by skipping characters which are part of a generated token.
         /// </summary>
-        private void UpdateTextToLex(ref string textToLex, ref bool getNextTextToLex, int tokenLength)
+        private void UpdateTextToLex(ref string textToLex, ref bool getNextTextToLex, int tokenLength, TLexerState state = null)
         {
             textToLex = textToLex.Substring(tokenLength);
+
+            if (state != null)
+            {
+                state.NewLine = false;
+            }
 
             if (string.IsNullOrEmpty(textToLex))
             {
@@ -133,18 +154,16 @@ namespace SpiceSharpParser.Lexers
         /// <summary>
         /// Gets a text from which the tokens will be generated.
         /// </summary>
-        private string GetTextToLex(LexerStringReader strReader, out int lines)
+        private string GetTextToLex(LexerStringReader strReader)
         {
             if (Options.MultipleLineTokens)
             {
                 var logicalLine = strReader.ReadLogicalLine();
-                lines = logicalLine.PhysicalLinesCount;
                 var result = logicalLine.GetLine();
                 return result;
             }
             else
             {
-                lines = 1;
                 var line = strReader.ReadLine();
                 return line;
             }
@@ -170,11 +189,12 @@ namespace SpiceSharpParser.Lexers
 
                     if (tokenRule.CanUse(state, tokenMatch.Value))
                     {
-                        if (bestMatch == null || tokenMatch.Length > bestMatch.Length)
+                        if (bestMatch == null || tokenMatch.Length > bestMatch.Length || tokenRule.TopRule)
                         {
                             bestMatch = tokenMatch;
                             bestMatchTokenRule = tokenRule;
-                            if (state.FullMatch)
+
+                            if (state.FullMatch || tokenRule.TopRule)
                             {
                                 break;
                             }

@@ -20,5 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
             : base(message, innerException)
         {
         }
+
+        public int LineNumber { get; set; }
     }
 }
