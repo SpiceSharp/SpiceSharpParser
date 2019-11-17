@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using SpiceSharp.Components;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
@@ -15,14 +14,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     /// </summary>
     public class CurrentSourceGenerator : SourceGenerator
     {
-        /// <summary>
-        /// Gets generated types.
-        /// </summary>
-        /// <returns>
-        /// Generated types.
-        /// </returns>
-        public override IEnumerable<string> GeneratedTypes => new List<string>() { "I", "G", "F" };
-
         public override Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             switch (type.ToLower())

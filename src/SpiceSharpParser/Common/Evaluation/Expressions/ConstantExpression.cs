@@ -6,7 +6,8 @@
         /// Initializes a new instance of the <see cref="ConstantExpression"/> class.
         /// </summary>
         /// <param name="value">Value.</param>
-        public ConstantExpression(double value) : base(string.Empty)
+        public ConstantExpression(double value) 
+            : base(string.Empty)
         {
             Value = value;
         }

@@ -3,7 +3,7 @@
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
 {
     /// <summary>
-    /// General reader exception
+    /// General reader exception.
     /// </summary>
     public class GeneralReaderException : Exception
     {

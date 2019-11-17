@@ -2,16 +2,6 @@
 {
     public static class StringExtensions
     {
-        public static bool StartsWithCharacter(this string @string, char startCharacter)
-        {
-            if (string.IsNullOrEmpty(@string))
-            {
-                return false;
-            }
-
-            return @string[0] == startCharacter;
-        }
-
         public static bool StartsWithCharacterAfterWhitespace(this string @string, char startCharacter)
         {
             if (@string == null)

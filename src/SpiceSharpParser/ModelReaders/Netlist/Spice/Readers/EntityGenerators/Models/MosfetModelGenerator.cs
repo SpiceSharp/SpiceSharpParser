@@ -50,14 +50,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
         }
 
         /// <summary>
-        /// Gets generated Spice types by generator.
-        /// </summary>
-        /// <returns>
-        /// Generated Spice types.
-        /// </returns>
-        public override IEnumerable<string> GeneratedTypes => new List<string>() { "nmos", "pmos" };
-
-        /// <summary>
         /// Gets available model generators indexed by their LEVEL.
         /// The parameters passed are name, type (nmos or pmos) and the version.
         /// </summary>

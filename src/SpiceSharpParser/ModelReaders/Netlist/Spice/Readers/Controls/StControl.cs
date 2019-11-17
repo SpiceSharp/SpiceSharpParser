@@ -105,7 +105,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 });
         }
 
-        private void ReadLin(ParameterCollection parameters, IReadingContext context)
+        private static void ReadLin(ParameterCollection parameters, IReadingContext context)
         {
             var variableParameter = parameters[0];
             var pSweep = new ParameterSweep()

@@ -6,27 +6,11 @@ using SpiceSharpBehavioral.Parsers;
 using SpiceSharpBehavioral.Parsers.Helper;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 
 namespace SpiceSharpParser.Parsers.Expression
 {
     public class ExpressionParser : SimpleDerivativeParser
     {
-        /// <summary>
-        /// The default functions.
-        /// </summary>
-        protected static ConcurrentDictionary<string, SimpleDerivativeParserHelper.DoubleDerivativesFunction> DefaultFunctionsCaseSensitive
-        {
-            get;
-            set;
-        }
-
-        protected static ConcurrentDictionary<string, SimpleDerivativeParserHelper.DoubleDerivativesFunction> DefaultFunctionsCaseInSensitive
-        {
-            get;
-            set;
-        }
-
         static ExpressionParser()
         {
             DefaultFunctionsCaseSensitive =
@@ -37,25 +21,24 @@ namespace SpiceSharpParser.Parsers.Expression
                 new ConcurrentDictionary<string, SimpleDerivativeParserHelper.DoubleDerivativesFunction>(
                     StringComparerProvider.Get(false));
 
-
             var dict = new Dictionary<string, SimpleDerivativeParserHelper.DoubleDerivativesFunction>()
             {
-                    { "Exp", SimpleDerivativeParserHelper.ApplyExp },
-                    { "Log", SimpleDerivativeParserHelper.ApplyLog },
-                    { "Pow", SimpleDerivativeParserHelper.ApplyPow },
-                    { "Log10", SimpleDerivativeParserHelper.ApplyLog10 },
-                    { "Sqrt", SimpleDerivativeParserHelper.ApplySqrt },
-                    { "Sin", SimpleDerivativeParserHelper.ApplySin },
-                    { "Cos", ApplyCos },
-                    { "Tan", ApplyTan },
-                    { "Asin", SimpleDerivativeParserHelper.ApplyAsin },
-                    { "Acos", SimpleDerivativeParserHelper.ApplyAcos },
-                    { "Atan", SimpleDerivativeParserHelper.ApplyAtan },
-                    { "Abs", SimpleDerivativeParserHelper.ApplyAbs },
-                    { "Round", SimpleDerivativeParserHelper.ApplyRound },
-                    { "Min", SimpleDerivativeParserHelper.ApplyMin },
-                    { "Max", SimpleDerivativeParserHelper.ApplyMax }
-                };
+                { "Exp", SimpleDerivativeParserHelper.ApplyExp },
+                { "Log", SimpleDerivativeParserHelper.ApplyLog },
+                { "Pow", SimpleDerivativeParserHelper.ApplyPow },
+                { "Log10", SimpleDerivativeParserHelper.ApplyLog10 },
+                { "Sqrt", SimpleDerivativeParserHelper.ApplySqrt },
+                { "Sin", SimpleDerivativeParserHelper.ApplySin },
+                { "Cos", ApplyCos },
+                { "Tan", ApplyTan },
+                { "Asin", SimpleDerivativeParserHelper.ApplyAsin },
+                { "Acos", SimpleDerivativeParserHelper.ApplyAcos },
+                { "Atan", SimpleDerivativeParserHelper.ApplyAtan },
+                { "Abs", SimpleDerivativeParserHelper.ApplyAbs },
+                { "Round", SimpleDerivativeParserHelper.ApplyRound },
+                { "Min", SimpleDerivativeParserHelper.ApplyMin },
+                { "Max", SimpleDerivativeParserHelper.ApplyMax },
+            };
 
             foreach (var function in dict)
             {
@@ -64,10 +47,22 @@ namespace SpiceSharpParser.Parsers.Expression
             }
         }
 
+        /// <summary>
+        /// The default functions.
+        /// </summary>
+        protected static ConcurrentDictionary<string, SimpleDerivativeParserHelper.DoubleDerivativesFunction> DefaultFunctionsCaseSensitive
+        {
+            get;
+        }
+
+        protected static ConcurrentDictionary<string, SimpleDerivativeParserHelper.DoubleDerivativesFunction> DefaultFunctionsCaseInSensitive
+        {
+            get;
+        }
+
         protected ConcurrentDictionary<string, SimpleDerivativeParserHelper.DoubleDerivativesFunction> DefaultFunctions
         {
             get;
-            set;
         }
 
         public ExpressionParser(SpiceNetlistCaseSensitivitySettings caseSensitivitySettings)
@@ -77,13 +72,16 @@ namespace SpiceSharpParser.Parsers.Expression
             FunctionFound += ExpressionParser_FunctionFound;
         }
 
-        private void ExpressionParser_FunctionFound(object sender, FunctionFoundEventArgs<Derivatives<System.Func<double>>> e)
+        private void ExpressionParser_FunctionFound(object sender, FunctionFoundEventArgs<Derivatives<Func<double>>> e)
         {
             if (DefaultFunctions.TryGetValue(e.Name, out var function))
             {
                 var arguments = new Derivatives<Func<double>>[e.ArgumentCount];
                 for (var i = 0; i < e.ArgumentCount; i++)
+                {
                     arguments[i] = e[i];
+                }
+
                 e.Result = function?.Invoke(arguments);
             }
         }

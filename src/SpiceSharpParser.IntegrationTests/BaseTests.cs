@@ -10,19 +10,15 @@ namespace SpiceSharpParser.IntegrationTests
 {
     public class BaseTests
     {
-        public BaseTests()
-        {
-        }
-
         /// <summary>
         /// Absolute tolerance used
         /// </summary>
-        public double AbsTol = 1e-12;
+        private double AbsTol = 1e-12;
 
         /// <summary>
         /// Relative tolerance used
         /// </summary>
-        public double RelTol = 1e-3;
+        private double RelTol = 1e-3;
 
         public static SpiceNetlistReaderResult ParseNetlistInWorkingDirectory(string workingDirectory, params string[] lines)
         {

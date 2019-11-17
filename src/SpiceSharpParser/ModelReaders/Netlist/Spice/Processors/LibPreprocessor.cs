@@ -43,11 +43,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             LexerSettings = lexerSettings ?? throw new ArgumentNullException(nameof(lexerSettings));
         }
 
-        public SingleSpiceNetlistParserSettings ParserSettings { get; set; }
+        public SpiceLexerSettings LexerSettings { get; }
 
-        public SpiceLexerSettings LexerSettings { get; set; }
-
-        public ISpiceTokenProviderPool TokenProviderPool { get; set; }
+        public ISpiceTokenProviderPool TokenProviderPool { get; }
 
         public SpiceNetlistReaderSettings ReaderSettings { get; }
 

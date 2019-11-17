@@ -31,22 +31,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 Utility.Separator = ".";
             }
 
-            public CustomComponentInstanceData(Circuit subcircuit) : base(subcircuit)
+            public CustomComponentInstanceData(Circuit subcircuit)
+                : base(subcircuit)
             {
             }
 
-            public CustomComponentInstanceData(Circuit subckt, string name) : base(subckt, name)
+            public CustomComponentInstanceData(Circuit subckt, string name)
+                : base(subckt, name)
             {
             }
         }
-
-        /// <summary>
-        /// Gets generated types.
-        /// </summary>
-        /// <returns>
-        /// Generated types.
-        /// </returns>
-        public override IEnumerable<string> GeneratedTypes => new List<string>() { "X" };
 
         public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
@@ -277,6 +271,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <param name="subcktParameters">Subcircuit parameters.</param>
         /// <param name="caseSettings">Case settings.</param>
         /// <param name="evaluator">Evaluator.</param>
+        /// <param name="readingContext">Reading context.</param>
         /// <returns>
         /// A dictionary of parameters.
         /// </returns>

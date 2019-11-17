@@ -14,7 +14,7 @@ namespace SpiceSharpParser.Lexers
 
         public string GetLine()
         {
-            var result = string.Join("", _physicalLines.Where(line => line != null).Select(line => line));
+            var result = string.Join(string.Empty, _physicalLines.Where(line => line != null).Select(line => line));
 
             var lastLine = _physicalLines.LastOrDefault(line => line != null);
 

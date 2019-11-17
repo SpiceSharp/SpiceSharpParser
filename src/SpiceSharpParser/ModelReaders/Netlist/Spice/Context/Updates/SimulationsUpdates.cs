@@ -28,6 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             {
                 throw new ArgumentNullException(nameof(simulation));
             }
+
             // Apply common updates
             simulation.BeforeSetup += (object sender, EventArgs args) =>
             {

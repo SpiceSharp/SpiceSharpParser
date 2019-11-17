@@ -4,7 +4,8 @@ namespace SpiceSharpParser.Common.Evaluation.Expressions
 {
     public class FunctionExpression : Expression
     {
-        public FunctionExpression(Func<double> val) : base(string.Empty)
+        public FunctionExpression(Func<double> val) 
+            : base(string.Empty)
         {
             Value = val;
         }

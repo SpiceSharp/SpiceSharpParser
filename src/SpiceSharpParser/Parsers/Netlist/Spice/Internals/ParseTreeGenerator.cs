@@ -67,7 +67,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
         /// <returns>
         /// A parse tree.
         /// </returns>
-        public ParseTreeNonTerminalNode GetParseTree(SpiceToken[] tokens, string rootSymbol = Symbols.Netlist)
+        public ParseTreeNonTerminalNode GetParseTree(SpiceToken[] tokens, string rootSymbol)
         {
             if (tokens == null)
             {

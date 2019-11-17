@@ -26,7 +26,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             {
                 var pointX = args[i];
                 var pointY = args[i + 1];
-                points.Add(new Point() {X = pointX, Y = pointY});
+                points.Add(new Point { X = pointX, Y = pointY });
 
                 if (pointX == parameterValue)
                 {

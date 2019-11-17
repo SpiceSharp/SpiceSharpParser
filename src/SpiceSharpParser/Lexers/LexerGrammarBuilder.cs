@@ -36,6 +36,7 @@ namespace SpiceSharpParser.Lexers
             {
                 throw new ArgumentNullException(nameof(rule));
             }
+
             _regexRules.Add(rule);
         }
 

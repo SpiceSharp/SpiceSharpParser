@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using SpiceSharp.Components;
-using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -10,16 +8,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class ArbitraryBehavioralGenerator : SourceGenerator
     {
-        /// <summary>
-        /// Gets generated types.
-        /// </summary>
-        /// <returns>
-        /// Generated types.
-        /// </returns>
-        public override IEnumerable<string> GeneratedTypes => new List<string>() {"B"};
-
         public override SpiceSharp.Components.Component Generate(
-            string componentIdentifier, 
+            string componentIdentifier,
             string originalName,
             string type,
             ParameterCollection parameters,
@@ -33,13 +23,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var expressionParameter = (AssignmentParameter)parameters.First(p => p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "v");
                 var baseParameters = entity.ParameterSets.Get<SpiceSharpBehavioral.Components.BehavioralBehaviors.BaseParameters>();
                 baseParameters.Expression = expressionParameter.Value;
-                baseParameters.Parser = (Simulation sim) => CreateParser(context, sim);
+                baseParameters.Parser = (sim) => CreateParser(context, sim);
                 return entity;
             }
 
             if (parameters.Any(p => p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "i"))
             {
-              
                 var entity = new BehavioralCurrentSource(componentIdentifier);
                 context.CreateNodes(entity, parameters);
 
@@ -48,7 +37,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 var baseParameters = entity.ParameterSets.Get<SpiceSharpBehavioral.Components.BehavioralBehaviors.BaseParameters>();
                 baseParameters.Expression = expressionParameter.Value;
-                baseParameters.Parser = (Simulation sim) => CreateParser(context, sim);
+                baseParameters.Parser = (sim) => CreateParser(context, sim);
 
                 return entity;
             }

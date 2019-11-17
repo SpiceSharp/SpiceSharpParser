@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Evaluation.Expressions;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 

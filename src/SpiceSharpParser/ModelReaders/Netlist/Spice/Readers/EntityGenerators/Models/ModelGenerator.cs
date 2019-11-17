@@ -8,8 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 {
     public abstract class ModelGenerator : IModelGenerator
     {
-        public abstract IEnumerable<string> GeneratedTypes { get; }
-
         public abstract SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context);
 
         protected void SetParameters(IReadingContext context, Entity entity, ParameterCollection parameters, bool onload = true)

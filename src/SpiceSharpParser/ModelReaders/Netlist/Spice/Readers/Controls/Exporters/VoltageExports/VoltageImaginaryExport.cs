@@ -26,11 +26,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         }
 
         /// <summary>
-        /// Gets the type name
-        /// </summary>
-        public override string TypeName => "voltage";
-
-        /// <summary>
         /// Gets the quantity unit
         /// </summary>
         public override string QuantityUnit => "Voltage (V)";

@@ -10,7 +10,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
     /// </summary>
     public class Statements : SpiceObject, IEnumerable<Statement>
     {
-        private List<Statement> _list = null;
+        private readonly List<Statement> _list = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Statements"/> class.

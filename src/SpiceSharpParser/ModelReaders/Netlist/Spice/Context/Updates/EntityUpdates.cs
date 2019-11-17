@@ -295,12 +295,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
             if (beforeLoad)
             {
-                SimulationSpecificUpdates[simulation][entity].ParameterUpdatesBeforeLoad.Add(new EntityParameterDoubleValueUpdate() { ParameterName = parameterName, Value = value });
+                SimulationSpecificUpdates[simulation][entity].ParameterUpdatesBeforeLoad.Add(new EntityParameterDoubleValueUpdate { ParameterName = parameterName, Value = value });
             }
 
             if (beforeTemperature)
             {
-                SimulationSpecificUpdates[simulation][entity].ParameterUpdatesBeforeTemperature.Add(new EntityParameterDoubleValueUpdate() { ParameterName = parameterName, Value = value });
+                SimulationSpecificUpdates[simulation][entity].ParameterUpdatesBeforeTemperature.Add(new EntityParameterDoubleValueUpdate { ParameterName = parameterName, Value = value });
             }
         }
 

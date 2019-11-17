@@ -23,7 +23,7 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
             Assert.Equal(4, result.Exports.Count);
             Assert.Equal(2, result.Simulations.Count);
 
-            var exports = RunSimulationsAndReturnExports(result);
+            RunSimulationsAndReturnExports(result);
         }
 
         [Fact]
@@ -85,8 +85,8 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
 
             Assert.NotEqual(resultsSeed2224[0], resultsSeed2223[0]);
 
-            Assert.Equal(2223, parseResult2223.Seed);
-            Assert.Equal(2224, parseResult2224.Seed);
+            Assert.Equal(2223, parseResult2223?.Seed);
+            Assert.Equal(2224, parseResult2224?.Seed);
         }
 
         [Fact]
@@ -150,8 +150,8 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
 
             Assert.NotEqual(resultsSeed2224[0], resultsSeed2223[0]);
 
-            Assert.Equal(2223, parseResult2223.Seed);
-            Assert.Equal(2224, parseResult2224.Seed);
+            Assert.Equal(2223, parseResult2223?.Seed);
+            Assert.Equal(2224, parseResult2224?.Seed);
         }
 
         [Fact]
@@ -215,8 +215,8 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
 
                 Assert.NotEqual(resultsSeed2224[0], resultsSeed2223[0]);
 
-                Assert.Equal(2223, parseResult2223.Seed);
-                Assert.Equal(2224, parseResult2224.Seed);
+                Assert.Equal(2223, parseResult2223?.Seed);
+                Assert.Equal(2224, parseResult2224?.Seed);
             }
         }
     }

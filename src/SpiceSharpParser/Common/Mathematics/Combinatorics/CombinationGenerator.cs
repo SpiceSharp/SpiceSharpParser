@@ -36,7 +36,8 @@ namespace SpiceSharpParser.Common.Mathematics.Combinatorics
             }
 
             bool generate = true;
-            for (int k = 1; generate; k++)
+            int k = 1;
+            while (generate)
             {
                 var combination = GenerateFirstCombination(k);
                 result.Add(combination);
@@ -57,6 +58,8 @@ namespace SpiceSharpParser.Common.Mathematics.Combinatorics
                         break;
                     }
                 }
+
+                k++;
             }
 
             return result;

@@ -13,8 +13,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modify</param>
+        /// <param name="statement">A statement to process.</param>
+        /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
             if (statement.Parameters.Count == 0)

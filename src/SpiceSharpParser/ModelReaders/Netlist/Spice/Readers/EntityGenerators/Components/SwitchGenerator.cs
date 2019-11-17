@@ -14,14 +14,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class SwitchGenerator : ComponentGenerator
     {
-        /// <summary>
-        /// Gets generated types.
-        /// </summary>
-        /// <returns>
-        /// Generated types.
-        /// </returns>
-        public override IEnumerable<string> GeneratedTypes => new List<string> { "s", "w" };
-
         public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             switch (type.ToLower())

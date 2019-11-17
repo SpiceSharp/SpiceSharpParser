@@ -6,6 +6,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using Component = SpiceSharp.Components.Component;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {
@@ -17,11 +18,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return parser;
         }
 
-        protected SpiceSharp.Components.Component SetSourceParameters(
-           string name,
-           ParameterCollection parameters,
-           IReadingContext context,
-           SpiceSharp.Components.Component component)
+        protected void SetSourceParameters(string name,
+            ParameterCollection parameters,
+            IReadingContext context,
+            Component component)
         {
             var originalParameters = parameters;
             parameters = parameters.Skip(VoltageSource.VoltageSourcePinCount);
@@ -132,7 +132,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             context.CreateNodes(component, originalParameters);
-            return component;
         }
 
         protected string CreatePolyExpression(int dimension, ParameterCollection parameters, bool isVoltageControlled)

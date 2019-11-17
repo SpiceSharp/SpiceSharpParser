@@ -8,8 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 {
     public class SwitchModelGenerator : ModelGenerator
     {
-        public override IEnumerable<string> GeneratedTypes => new List<string>() { "sw", "csw", "vswitch", "iswitch" };
-
         public override SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context)
         {
             SpiceSharp.Components.Model model = null;

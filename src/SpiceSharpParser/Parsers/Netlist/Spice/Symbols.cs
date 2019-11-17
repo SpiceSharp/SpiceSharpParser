@@ -5,35 +5,35 @@
     /// </summary>
     public class Symbols
     {
-        public const string Netlist = "NETLIST";
-        public const string NetlistWithoutTitle = "NETLIST-WITHOUT-TITLE";
-        public const string NetlistEnding = "NETLIST-ENDING";
-        public const string Statements = "STATEMENTS";
-        public const string Statement = "STATEMENT";
-        public const string Component = "COMPONENT";
-        public const string Subckt = "SUBCKT";
-        public const string SubcktEnding = "SUBCKT-ENDING";
-        public const string Model = "MODEL";
-        public const string Control = "CONTROL";
-        public const string CommentLine = "COMMENT-LINE";
-        public const string Parameters = "PARAMETERS";
-        public const string ParametersSeparator = "PARAMETERS-SEPARATOR";
-        public const string Parameter = "PARAMETER";
-        public const string ParameterSingle = "PARAMETER-SINGLE";
-        public const string Vector = "VECTOR";
-        public const string VectorContinue = "VECTOR-CONTINUE";
-        public const string ParameterEqual = "PARAMETER-EQUAL";
-        public const string ParameterEqualSingle = "PARAMETER-EQUAL-SINGLE";
-        public const string ParameterBracket = "PARAMETER-BRACKET";
-        public const string ParameterBracketContent = "PARAMETER-BRACKET-CONTENT";
-        public const string NewLine = "NEW-LINE";
-        public const string NewLines = "NEW-LINES";
-        public const string Points = "POINTS";
-        public const string PointsContinue = "POINTS-CONTINUE";
-        public const string Point = "POINT";
-        public const string PointValue = "POINT-VALUE";
-        public const string PointValues = "POINT-VALUES";
-        public const string ExpressionEqual = "EXPRESSION-EQUAL";
-        public const string Distribution = "DISTRIBUTION";
+        public static readonly string Netlist = "NETLIST";
+        public static readonly string NetlistWithoutTitle = "NETLIST-WITHOUT-TITLE";
+        public static readonly string NetlistEnding = "NETLIST-ENDING";
+        public static readonly string Statements = "STATEMENTS";
+        public static readonly string Statement = "STATEMENT";
+        public static readonly string Component = "COMPONENT";
+        public static readonly string Subckt = "SUBCKT";
+        public static readonly string SubcktEnding = "SUBCKT-ENDING";
+        public static readonly string Model = "MODEL";
+        public static readonly string Control = "CONTROL";
+        public static readonly string CommentLine = "COMMENT-LINE";
+        public static readonly string Parameters = "PARAMETERS";
+        public static readonly string ParametersSeparator = "PARAMETERS-SEPARATOR";
+        public static readonly string Parameter = "PARAMETER";
+        public static readonly string ParameterSingle = "PARAMETER-SINGLE";
+        public static readonly string Vector = "VECTOR";
+        public static readonly string VectorContinue = "VECTOR-CONTINUE";
+        public static readonly string ParameterEqual = "PARAMETER-EQUAL";
+        public static readonly string ParameterEqualSingle = "PARAMETER-EQUAL-SINGLE";
+        public static readonly string ParameterBracket = "PARAMETER-BRACKET";
+        public static readonly string ParameterBracketContent = "PARAMETER-BRACKET-CONTENT";
+        public static readonly string NewLine = "NEW-LINE";
+        public static readonly string NewLines = "NEW-LINES";
+        public static readonly string Points = "POINTS";
+        public static readonly string PointsContinue = "POINTS-CONTINUE";
+        public static readonly string Point = "POINT";
+        public static readonly string PointValue = "POINT-VALUE";
+        public static readonly string PointValues = "POINT-VALUES";
+        public static readonly string ExpressionEqual = "EXPRESSION-EQUAL";
+        public static readonly string Distribution = "DISTRIBUTION";
     }
 }

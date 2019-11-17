@@ -58,30 +58,6 @@ namespace SpiceSharpParser.Common.Evaluation
         protected Dictionary<string, List<Expression>> ParametersExpressionsDependencies { get; }
 
         /// <summary>
-        /// Gets expressions that depend on given parameter.
-        /// </summary>
-        /// <param name="parameterName">A parameter name.</param>
-        /// <returns>
-        /// An enumerable of expressions.
-        /// </returns>
-        public IEnumerable<Expression> GetDependentExpressions(string parameterName)
-        {
-            if (parameterName == null)
-            {
-                throw new ArgumentNullException(nameof(parameterName));
-            }
-
-            if (ParametersExpressionsDependencies.ContainsKey(parameterName))
-            {
-                return ParametersExpressionsDependencies[parameterName];
-            }
-            else
-            {
-                return new List<Expression>();
-            }
-        }
-
-        /// <summary>
         /// Gets expression names.
         /// </summary>
         /// <returns>

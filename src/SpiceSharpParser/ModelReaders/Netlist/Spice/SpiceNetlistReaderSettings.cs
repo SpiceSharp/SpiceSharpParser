@@ -11,7 +11,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         private readonly Func<string> _workingDirectoryProvider;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpiceNetlistReaderSettings"/> class. 
+        /// Initializes a new instance of the <see cref="SpiceNetlistReaderSettings"/> class.
         /// </summary>
         /// <param name="caseSensitivitySettings">
         /// Case sensitivity settings.

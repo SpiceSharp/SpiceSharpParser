@@ -1,6 +1,5 @@
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
-using SpiceSharpParser.Parsers.Expression;
 using System;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 using Xunit;
@@ -522,7 +521,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation
             var p = new Evaluator();
             c.AddFunction("fib",
                 functionFactory.Create("fib",
-                new System.Collections.Generic.List<string>() { "x" },
+                new System.Collections.Generic.List<string> { "x" },
                 "x <= 0 ? 0 : (x == 1 ? 1 : (fib(x-1) + fib(x-2)))"));
 
             Assert.Equal(0, p.Evaluate("fib(0)", c, null, null));

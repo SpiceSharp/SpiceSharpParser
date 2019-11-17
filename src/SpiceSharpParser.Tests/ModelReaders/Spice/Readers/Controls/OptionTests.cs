@@ -24,14 +24,14 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             var control = new Control()
             {
                 Name = "options",
-                Parameters = new ParameterCollection()
+                Parameters = new ParameterCollection
                 {
-                    new AssignmentParameter()
+                    new AssignmentParameter
                     {
                         Name = "temp",
                         Value = "12.2"
                     },
-                    new AssignmentParameter()
+                    new AssignmentParameter
                     {
                         Name = "tnom",
                         Value = "12.3"
@@ -79,12 +79,12 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
         public void Seed()
         {
             // arrange
-            var control = new Control()
+            var control = new Control
             {
                 Name = "options",
-                Parameters = new ParameterCollection()
+                Parameters = new ParameterCollection
                 {
-                    new AssignmentParameter()
+                    new AssignmentParameter
                     {
                         Name = "seed",
                         Value = "1234"
