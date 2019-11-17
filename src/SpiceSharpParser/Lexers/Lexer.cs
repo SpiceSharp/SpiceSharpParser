@@ -78,7 +78,10 @@ namespace SpiceSharpParser.Lexers
                 if (getNextTextToLex)
                 {
                     textToLex = GetTextToLex(strReader);
-                    if (state != null) state.NewLine = true;
+                    if (state != null)
+                    {
+                        state.NewLine = true;
+                    }
                     getNextTextToLex = false;
                 }
 

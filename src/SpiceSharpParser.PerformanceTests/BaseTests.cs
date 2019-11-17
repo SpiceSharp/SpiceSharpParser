@@ -10,10 +10,6 @@ namespace SpiceSharpParser.PerformanceTests
 {
     public class BaseTests
     {
-        public BaseTests()
-        {
-        }
-
         /// <summary>
         /// Absolute tolerance used
         /// </summary>

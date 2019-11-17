@@ -8,6 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
         ExpressionContext ExpressionContext { get; set; }
 
-        SpiceNetlistCaseSensitivitySettings CaseSettings { set; }
+        SpiceNetlistCaseSensitivitySettings CaseSettings { get; set; }
     }
 }

@@ -20,12 +20,12 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// <summary>
         /// Default number of CDF points.
         /// </summary>
-        public const int DefaultCdfPoints = 1000;
+        public static readonly int DefaultCdfPoints = 1000;
 
         /// <summary>
         /// Default limit of normal distribution.
         /// </summary>
-        public const int DefaultNormalLimit = 3;
+        public static readonly int DefaultNormalLimit = 3;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Randomizer"/> class.
@@ -63,12 +63,12 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// Gets or sets current pdf name.
         /// </summary>
         public string CurrentPdfName { get; set; }
-        
+
         /// <summary>
         /// Gets or sets number of CDF points.
         /// </summary>
         public int CdfPoints
-        { 
+        {
             get => _cdfPoints;
             set
             {
@@ -127,6 +127,8 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// </returns>
         public IRandomNumberProvider GetRandomProvider(int? seed, string pdfName = null)
         {
+            string workingPdfName = null;
+
             if (pdfName == null)
             {
                 if (CurrentPdfName == null)
@@ -135,33 +137,36 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
                 }
                 else
                 {
-                    pdfName = CurrentPdfName;
+                    workingPdfName = CurrentPdfName;
                 }
-            }
-
-            if (_pdfDictionary.ContainsKey(pdfName))
-            {
-
-                if (!_pdfInstancesDictionary.ContainsKey(pdfName))
-                {
-                    _pdfInstancesDictionary[pdfName] = _pdfDictionary[pdfName]();
-                }
-
-                if (!_cdfDictionary.ContainsKey(pdfName))
-                {
-                    _cdfDictionary[pdfName] = new Cdf(_pdfInstancesDictionary[pdfName], CdfPoints);
-                }
-
-                if (!_customRandomNumberProviderFactories.ContainsKey(pdfName))
-                {
-                    _customRandomNumberProviderFactories[pdfName] = new CustomRandomNumberProviderFactory(_cdfDictionary[pdfName]);
-                }
-
-                return _customRandomNumberProviderFactories[pdfName].GetRandom(seed);
             }
             else
             {
-                throw new ArgumentException("Unknown pdf", nameof(pdfName));
+                workingPdfName = pdfName;
+            }
+
+            if (_pdfDictionary.ContainsKey(workingPdfName))
+            {
+                if (!_pdfInstancesDictionary.ContainsKey(workingPdfName))
+                {
+                    _pdfInstancesDictionary[workingPdfName] = _pdfDictionary[workingPdfName]();
+                }
+
+                if (!_cdfDictionary.ContainsKey(workingPdfName))
+                {
+                    _cdfDictionary[workingPdfName] = new Cdf(_pdfInstancesDictionary[workingPdfName], CdfPoints);
+                }
+
+                if (!_customRandomNumberProviderFactories.ContainsKey(workingPdfName))
+                {
+                    _customRandomNumberProviderFactories[workingPdfName] = new CustomRandomNumberProviderFactory(_cdfDictionary[workingPdfName]);
+                }
+
+                return _customRandomNumberProviderFactories[workingPdfName].GetRandom(seed);
+            }
+            else
+            {
+                throw new ArgumentException("Unknown pdf", nameof(workingPdfName));
             }
         }
 

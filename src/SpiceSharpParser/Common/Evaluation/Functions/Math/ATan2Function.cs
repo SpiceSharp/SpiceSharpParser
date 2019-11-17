@@ -22,7 +22,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions.Math
             double x = args[0];
             double y = args[1];
 
-            return System.Math.Atan2(x, y);
+            return System.Math.Atan2(y, x);
         }
     }
 }

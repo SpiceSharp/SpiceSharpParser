@@ -74,7 +74,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                             GetSweepParameterValues(context, sweeps, system, indexes);
                         string suffix = GetSimulationNameSuffix(parameterValues);
 
-                        var simulation = createSimulation(name + " (" + suffix + ")", control, modifiedContext);
+                        var simulation = createSimulation($"{name} ({suffix})", control, modifiedContext);
                         SetSweepSimulation(context, parameterValues, simulation);
 
                         return simulation;
@@ -95,7 +95,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             for (var i = 0; i < parameterValues.Count; i++)
             {
-                result += parameterValues[i].Key.Image + "=" + parameterValues[i].Value;
+                result += $"{parameterValues[i].Key.Image}={parameterValues[i].Value}";
 
                 if (i != parameterValues.Count - 1)
                 {

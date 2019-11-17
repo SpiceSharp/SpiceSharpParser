@@ -18,7 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="mapper">The exporter mapper.</param>
         /// <param name="exportFactory">Export factory.</param>
-        public ExportControl(IMapper<Exporter> mapper, IExportFactory exportFactory)
+        protected ExportControl(IMapper<Exporter> mapper, IExportFactory exportFactory)
         {
             Mapper = mapper ?? throw new System.ArgumentNullException(nameof(mapper));
             ExportFactory = exportFactory ?? throw new System.ArgumentNullException(nameof(exportFactory));

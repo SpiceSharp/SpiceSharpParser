@@ -18,7 +18,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return parser;
         }
 
-        protected void SetSourceParameters(string name,
+        protected void SetSourceParameters(
+            string name,
             ParameterCollection parameters,
             IReadingContext context,
             Component component)
@@ -113,12 +114,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         }
                     }
                 }
-            }
 
-            // 4. Value = { }, Value { }
-            if (parameters.Count > 0)
-            {
-                if (parameters[0] is AssignmentParameter ap && ap.Name.ToLower() == "value")
+                if (firstParameter is AssignmentParameter ap && ap.Name.ToLower() == "value")
                 {
                     context.SetParameter(component, "dc", ap.Value);
                 }
