@@ -18,24 +18,32 @@ namespace SpiceSharpParser.Lexers
         /// <param name="returnDecisionProvider">A token rule return decision provider.</param>
         /// <param name="useDecisionProvider">A token rule use decision provider.</param>
         /// <param name="ignoreCase">Ignore case.</param>
+        /// <param name="topRule">Is most important rule.</param>
         public LexerTokenRule(
             int tokenType,
             string ruleName,
             string regularExpressionPattern,
             Func<TLexerState, string, LexerRuleReturnDecision> returnDecisionProvider = null,
             Func<TLexerState, string, LexerRuleUseDecision> useDecisionProvider = null,
-            bool ignoreCase = true)
+            bool ignoreCase = true,
+            bool topRule = false)
             : base(ruleName, regularExpressionPattern, ignoreCase)
         {
             TokenType = tokenType;
             ReturnDecisionProvider = returnDecisionProvider ?? ((state, lexem) => LexerRuleReturnDecision.ReturnToken);
             UseDecisionProvider = useDecisionProvider ?? ((state, lexem) => LexerRuleUseDecision.Use);
+            TopRule = topRule;
         }
 
         /// <summary>
         ///  Gets the type of a generated token.
         /// </summary>
         public int TokenType { get; }
+
+        /// <summary>
+        /// Gets the value indicating whether rule is most important.
+        /// </summary>
+        public bool TopRule { get; }
 
         /// <summary>
         /// Gets the provider that tells whether the rule should be returned.

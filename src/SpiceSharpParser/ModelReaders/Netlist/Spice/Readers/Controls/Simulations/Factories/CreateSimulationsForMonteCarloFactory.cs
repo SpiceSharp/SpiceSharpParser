@@ -79,19 +79,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             {
                Export export = context.Result.Exports.FirstOrDefault(e => e.Simulation == simulation && e.Name == exportParam.Image);
 
-                if (export == null)
-                {
-                    export = ExportFactory.Create(exportParam, context, simulation, MapperExporter);
-                }
+               if (export == null)
+               {
+                   export = ExportFactory.Create(exportParam, context, simulation, MapperExporter);
+               }
 
-                simulation.ExportSimulationData += (exportSender, exportArgs) =>
-                {
-                    if (export != null)
-                    {
-                        var value = export.Extract();
-                        context.Result.MonteCarlo.Collect(simulation, value);
-                    }
-                };
+               simulation.ExportSimulationData += (exportSender, exportArgs) =>
+               {
+                   if (export != null)
+                   {
+                       var value = export.Extract();
+                       context.Result.MonteCarlo.Collect(simulation, value);
+                   }
+               };
             };
         }
     }

@@ -76,7 +76,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 {
                     foreach (var simulation in context.Result.Simulations)
                     {
-                        if (simulation is OP) continue;
+                        if (simulation is OP)
+                        {
+                            continue;
+                        }
 
                         CreatePlot(plotImage, statement.Parameters, context, simulation, false);
                     }

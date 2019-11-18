@@ -11,7 +11,8 @@ namespace SpiceSharpParser.Common.Evaluation
     /// </summary>
     public class Evaluator : IEvaluator
     {
-        public Evaluator() : this(string.Empty)
+        public Evaluator()
+            : this(string.Empty)
         {
         }
 
@@ -27,7 +28,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Gets or sets the name of the evaluator.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; }
 
         /// <summary>
         /// Evaluates a specific expression to double.
@@ -50,6 +51,7 @@ namespace SpiceSharpParser.Common.Evaluation
             {
                 throw new ArgumentNullException(nameof(context));
             }
+
             return ExpressionParserHelpers.GetExpressionValue(expression, context, this, simulation, readingContext, false);
         }
 
@@ -70,12 +72,10 @@ namespace SpiceSharpParser.Common.Evaluation
                 return ce.Value;
             }
 
-
             if (expression is FunctionExpression fe)
             {
                 return fe.Value();
             }
-
 
             return Evaluate(expression.ValueExpression, context, simulation, readingContext);
         }

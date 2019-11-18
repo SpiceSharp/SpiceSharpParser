@@ -19,7 +19,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".LET VOUT_db {add(decibels_plus_param(V(OUT),1), -0.5)}",
                 ".END");
 
-            double[] export = RunOpSimulation(netlist, new string[] { "VOUT_db", "V(OUT)" });
+            double[] export = RunOpSimulation(netlist, "VOUT_db", "V(OUT)");
 
             Assert.Equal(2.5, export[0]);
             Assert.Equal(10, export[1]);
@@ -39,7 +39,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".PARAM X = { V(1) }",
                 ".END");
 
-            double[] export = RunOpSimulation(netlist, new string[] { "V(OUT)" });
+            double[] export = RunOpSimulation(netlist, new [] { "V(OUT)" });
 
             Assert.Equal(10, export[0]);
         }
@@ -58,9 +58,9 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".LET some_output_vector {somemagicfunction(1,2,3,4,5,6,7,8,9,10,11,12,13)}",
                 ".END");
 
-            double[] export = RunOpSimulation(netlist, new string[] { "some_output_vector" });
+            double[] export = RunOpSimulation(netlist, new [] { "some_output_vector" });
 
-            Assert.Equal(13 * (13+1)/2, export[0]);
+            Assert.Equal(13 * (13 + 1) / 2.0, export[0]);
         }
 
         [Fact]
@@ -75,7 +75,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".PARAM somefunction() = {17}",
                 ".END");
 
-            double[] export = RunOpSimulation(netlist, new string[] { "V(OUT)", "@R1[i]" });
+            double[] export = RunOpSimulation(netlist, "V(OUT)", "@R1[i]");
 
             Assert.Equal(10.0, export[0]);
             Assert.Equal(10.0 / 17.0, export[1]);
@@ -117,7 +117,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".PARAM fact(x) = {x == 0 ? 1: x * fact(x -1)}",
                 ".END");
 
-            double[] export = RunOpSimulation(netlist, new string[] { "V(OUT)", "@R1[i]" });
+            double[] export = RunOpSimulation(netlist, "V(OUT)", "@R1[i]");
 
             Assert.Equal(60.0, export[0]);
             Assert.Equal(60.0 / 6, export[1]);

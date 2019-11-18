@@ -35,14 +35,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         }
 
         /// <summary>
-        /// Gets generated types.
-        /// </summary>
-        /// <returns>
-        /// Generated types.
-        /// </returns>
-        public override IEnumerable<string> GeneratedTypes => new List<string>() { "M" };
-
-        /// <summary>
         /// Generate a mosfet instance based on a model.
         /// The generator is passed the arguments name and model.
         /// </summary>

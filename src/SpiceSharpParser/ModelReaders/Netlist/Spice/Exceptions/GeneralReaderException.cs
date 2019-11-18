@@ -3,7 +3,7 @@
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
 {
     /// <summary>
-    /// General reader exception
+    /// General reader exception.
     /// </summary>
     public class GeneralReaderException : Exception
     {
@@ -20,5 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
             : base(message, innerException)
         {
         }
+
+        public int LineNumber { get; set; }
     }
 }

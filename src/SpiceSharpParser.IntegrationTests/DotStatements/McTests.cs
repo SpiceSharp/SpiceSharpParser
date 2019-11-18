@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.DotStatements
@@ -47,7 +48,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             var mcResult = result.MonteCarloResult;
             var histPlot = mcResult.GetPlot(10);
 
-            Assert.Equal(1, histPlot.Bins.Count);
+            Assert.Single(histPlot.Bins);
             Assert.Equal("V(1)", histPlot.XUnit);
         }
 
@@ -95,14 +96,8 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             RunSimulations(result);
 
             var mcResult = result.MonteCarloResult;
-            try
-            {
-                var histPlot = mcResult.GetPlot(10);
-                Assert.False(true, "There should be an exception");
-            }
-            catch
-            {
-            }
+
+            Assert.Throws<Exception>(() => mcResult.GetPlot(10));
         }
 
         [Fact]

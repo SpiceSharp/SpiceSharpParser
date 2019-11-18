@@ -12,8 +12,13 @@ namespace SpiceSharpParser.Common.Evaluation
 
     public interface IDerivativeFunction<TInputArgumentType, out TOutputType> : IFunction<TInputArgumentType, TOutputType>
     {
-        Derivatives<Func<double>> Derivative(string image, Func<TInputArgumentType>[] args, IEvaluator evaluator,
-            ExpressionContext context, Simulation simulation = null, IReadingContext readingContext = null);
+        Derivatives<Func<double>> Derivative(
+            string image,
+            Func<TInputArgumentType>[] args,
+            IEvaluator evaluator,
+            ExpressionContext context,
+            Simulation simulation = null,
+            IReadingContext readingContext = null);
     }
 
     public interface IFunction

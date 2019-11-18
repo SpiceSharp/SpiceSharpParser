@@ -58,6 +58,17 @@ namespace SpiceSharpParser.Common.Evaluation
         protected Dictionary<string, List<Expression>> ParametersExpressionsDependencies { get; }
 
         /// <summary>
+        /// Gets expression names.
+        /// </summary>
+        /// <returns>
+        /// Enumerable of expression names.
+        /// </returns>
+        public HashSet<string> GetExpressionNames()
+        {
+            return new HashSet<string>(NamedExpressions.Keys, StringComparerProvider.Get(IsExpressionNameCaseSensitive));
+        }
+
+        /// <summary>
         /// Gets expressions that depend on given parameter.
         /// </summary>
         /// <param name="parameterName">A parameter name.</param>
@@ -79,17 +90,6 @@ namespace SpiceSharpParser.Common.Evaluation
             {
                 return new List<Expression>();
             }
-        }
-
-        /// <summary>
-        /// Gets expression names.
-        /// </summary>
-        /// <returns>
-        /// Enumerable of expression names.
-        /// </returns>
-        public HashSet<string> GetExpressionNames()
-        {
-            return new HashSet<string>(NamedExpressions.Keys, StringComparerProvider.Get(IsExpressionNameCaseSensitive));
         }
 
         /// <summary>

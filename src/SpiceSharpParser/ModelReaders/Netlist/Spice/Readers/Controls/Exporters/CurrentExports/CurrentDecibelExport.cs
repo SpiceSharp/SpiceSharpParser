@@ -29,11 +29,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         public string Source { get; }
 
         /// <summary>
-        /// Gets the type name.
-        /// </summary>
-        public override string TypeName => "none";
-
-        /// <summary>
         /// Gets the quantity unit.
         /// </summary>
         public override string QuantityUnit => "Current (db A)";

@@ -12,7 +12,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
         }
 
         public WrongParameterException(string componentName, string message)
-            : base(componentName + "-" + message)
+            : base($"{componentName}-{message}")
         {
         }
 

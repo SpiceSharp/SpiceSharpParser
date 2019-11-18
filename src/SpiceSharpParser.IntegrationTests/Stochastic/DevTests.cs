@@ -286,7 +286,8 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
                 ".DC V1 -1 1 0.1",
                 ".SAVE i(V1)",
                 ".END");
-            var export = RunDCSimulation(netlist, "i(V1)");
+            
+            RunDCSimulation(netlist, "i(V1)");
         }
 
         [Fact]

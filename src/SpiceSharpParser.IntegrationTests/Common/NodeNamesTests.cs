@@ -16,7 +16,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".SAVE i(V1_a) v(1_a,0)",
                 ".END");
 
-            var export = RunDCSimulation(netlist, "v(1_a,0)");
+            RunDCSimulation(netlist, "v(1_a,0)");
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".SAVE i(V1_a) v(+1_a,0)",
                 ".END");
 
-            var export = RunDCSimulation(netlist, "v(+1_a,0)");
+            RunDCSimulation(netlist, "v(+1_a,0)");
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".SAVE i(V1_a) v(-1_a,0)",
                 ".END");
 
-            var export = RunDCSimulation(netlist, "v(-1_a,0)");
+            RunDCSimulation(netlist, "v(-1_a,0)");
         }
     }
 }

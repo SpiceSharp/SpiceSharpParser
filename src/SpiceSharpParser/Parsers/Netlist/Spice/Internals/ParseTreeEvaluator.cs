@@ -17,12 +17,12 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// <summary>
         /// The dictionary with tree node values.
         /// </summary>
-        private Dictionary<ParseTreeNode, ParseTreeNodeEvaluationValue> treeNodesValues = new Dictionary<ParseTreeNode, ParseTreeNodeEvaluationValue>();
+        private readonly Dictionary<ParseTreeNode, ParseTreeNodeEvaluationValue> treeNodesValues = new Dictionary<ParseTreeNode, ParseTreeNodeEvaluationValue>();
 
         /// <summary>
         /// The dictionary with non-terminal nodes evaluators.
         /// </summary>
-        private Dictionary<string, Func<ParseTreeNodeEvaluationValues, SpiceObject>> evaluators = new Dictionary<string, Func<ParseTreeNodeEvaluationValues, SpiceObject>>();
+        private readonly Dictionary<string, Func<ParseTreeNodeEvaluationValues, SpiceObject>> evaluators = new Dictionary<string, Func<ParseTreeNodeEvaluationValues, SpiceObject>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ParseTreeEvaluator"/> class.
@@ -562,9 +562,9 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         private SpiceObject CreateModel(ParseTreeNodeEvaluationValues values)
         {
             var model = new Model();
-            model.Name = values.GetLexem(2);
-            model.Parameters = values.GetSpiceObject<ParameterCollection>(3);
-            model.LineNumber = values.GetLexemLineNumber(2);
+            model.Name = values.GetLexem(1);
+            model.Parameters = values.GetSpiceObject<ParameterCollection>(2);
+            model.LineNumber = values.GetLexemLineNumber(1);
             return model;
         }
 

@@ -227,6 +227,27 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         }
 
         [Fact]
+        public void LineNumbersTest()
+        {
+            var tokensStr = "Example of title\n*comment1\nseq.part1\n+seq.part2\n+seq.part3\n";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = true });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.Equal(9, tokens.Length);
+
+            Assert.Equal(1, tokens[0].LineNumber); // title
+            Assert.Equal(1, tokens[1].LineNumber); // \n
+            Assert.Equal(2, tokens[2].LineNumber); // comment1
+            Assert.Equal(2, tokens[3].LineNumber); // \n
+            Assert.Equal(3, tokens[4].LineNumber); // seq.part1
+            Assert.Equal(4, tokens[5].LineNumber); // seq.part2
+            Assert.Equal(5, tokens[6].LineNumber); // seq.part3
+            Assert.Equal(5, tokens[7].LineNumber); // \n
+            Assert.Equal(5, tokens[8].LineNumber); // EOF
+            Assert.Equal(SpiceTokenType.EOF, tokens[8].SpiceTokenType);
+        }
+
+        [Fact]
         public void LineContinuationWithSpacesTest()
         {
             var tokensStr = "Example of title\nseq.part1\n     \t    +seq.part2\n  +seq.part3\n";
@@ -239,7 +260,7 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         [Fact]
         public void LineContinuationCurrentLineTest()
         {
-            var tokensStr = "seq.part1\\\nseq.part2\n";
+            var tokensStr = "seq.part1 \\\\\nseq.part2\n";
             SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
             var tokens = lexer.GetTokens(tokensStr).ToArray();
 
@@ -343,6 +364,18 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         }
 
         [Fact]
+        public void PathTest()
+        {
+            var tokensStr = "Resources\\pwl_comma.txt";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.True(tokens.Length == 2);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.WORD);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
         public void CommentPSpiceTest()
         {
             var tokensStr = "V12 ; test";
@@ -402,6 +435,17 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         }
 
         [Fact]
+        public void Distribution()
+        {
+            var tokensStr = "DEV/gauss";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+            Assert.True(tokens.Length == 2);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.WORD);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
         public void PercentSimpleTest()
         {
             var tokensStr = "5%";
@@ -409,6 +453,18 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
             var tokens = lexer.GetTokens(tokensStr).ToArray();
             Assert.True(tokens.Length == 2);
             Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.PERCENT);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+
+        [Fact]
+        public void WordTest()
+        {
+            var tokensStr = "aaaa \\\\\n";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+            Assert.True(tokens.Length == 2);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.WORD);
             Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
         }
 

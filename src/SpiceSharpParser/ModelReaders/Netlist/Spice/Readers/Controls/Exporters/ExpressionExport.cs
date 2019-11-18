@@ -54,11 +54,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         public Expression Expression { get; }
 
         /// <summary>
-        /// Gets the type name.
-        /// </summary>
-        public override string TypeName => Expression.ValueExpression;
-
-        /// <summary>
         /// Gets the export unit.
         /// </summary>
         public override string QuantityUnit => string.Empty;

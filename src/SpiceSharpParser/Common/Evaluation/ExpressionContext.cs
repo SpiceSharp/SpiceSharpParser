@@ -245,6 +245,7 @@ namespace SpiceSharpParser.Common.Evaluation
             {
                 throw new ArgumentNullException(nameof(name));
             }
+
             var child = new ExpressionContext(name, _isParameterNameCaseSensitive, _isFunctionNameCaseSensitive, _isExpressionNameCaseSensitive, Randomizer);
 
             child.Parameters = new Dictionary<string, Expression>(Parameters, StringComparerProvider.Get(_isParameterNameCaseSensitive));

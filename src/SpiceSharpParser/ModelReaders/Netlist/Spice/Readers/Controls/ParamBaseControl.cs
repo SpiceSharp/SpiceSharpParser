@@ -29,11 +29,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <param name="caseSettings">Case settings.</param>
         /// <param name="evaluator">Evaluator.</param>
         /// <param name="readingContext">Reading context.</param>
+        /// <param name="validate"></param>
         public void Read(Control statement, ExpressionContext expressionContext, SpiceNetlistCaseSensitivitySettings caseSettings, IEvaluator evaluator, IReadingContext readingContext, bool validate)
         {
             if (statement.Parameters == null)
             {
-                throw new System.ArgumentNullException(nameof(statement.Parameters));
+                throw new ArgumentNullException(nameof(statement.Parameters));
             }
 
             foreach (var param in statement.Parameters)

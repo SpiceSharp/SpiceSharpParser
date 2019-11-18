@@ -20,7 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <returns>
         /// A list of supported voltage exports.
         /// </returns>
-        public virtual ICollection<string> CreatedTypes => new List<string>() { "v", "vr", "vi", "vm", "vdb", "vp", "vph" };
+        public virtual ICollection<string> CreatedTypes => new List<string> { "v", "vr", "vi", "vm", "vdb", "vp", "vph" };
 
         /// <summary>
         /// Creates a new voltage export

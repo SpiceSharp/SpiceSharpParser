@@ -13,17 +13,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <param name="simulation">
         /// The simulation.
         /// </param>
-        public Export(Simulation simulation)
+        protected Export(Simulation simulation)
         {
             Simulation = simulation;
         }
 
         public Simulation Simulation { get; }
-
-        /// <summary>
-        /// Gets the type name.
-        /// </summary>
-        public abstract string TypeName { get; }
 
         /// <summary>
         /// Gets or sets the name.

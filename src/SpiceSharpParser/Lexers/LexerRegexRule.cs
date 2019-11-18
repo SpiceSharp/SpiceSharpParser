@@ -64,7 +64,7 @@ namespace SpiceSharpParser.Lexers
                         options |= RegexOptions.IgnoreCase;
                     }
 
-                    regex = new Regex("^" + RegularExpressionPattern, options);
+                    regex = new Regex($"^{RegularExpressionPattern}", options);
                 }
 
                 return regex;

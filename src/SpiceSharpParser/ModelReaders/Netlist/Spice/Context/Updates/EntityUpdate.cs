@@ -13,8 +13,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
         public Entity Entity { get; set; }
 
-        public List<EntityParameterUpdate> ParameterUpdatesBeforeLoad { get; protected set; }
+        public List<EntityParameterUpdate> ParameterUpdatesBeforeLoad { get; }
 
-        public List<EntityParameterUpdate> ParameterUpdatesBeforeTemperature { get; protected set; }
+        public List<EntityParameterUpdate> ParameterUpdatesBeforeTemperature { get; }
     }
 }

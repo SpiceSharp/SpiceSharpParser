@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using SpiceSharp.Components;
+﻿using SpiceSharp.Components;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -9,8 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class LosslessTransmissionLineGenerator : ComponentGenerator
     {
-        public override IEnumerable<string> GeneratedTypes => new List<string> { "t" };
-
         public override SpiceSharp.Components.Component Generate(string name, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             var losslessLine = new LosslessTransmissionLine(name);

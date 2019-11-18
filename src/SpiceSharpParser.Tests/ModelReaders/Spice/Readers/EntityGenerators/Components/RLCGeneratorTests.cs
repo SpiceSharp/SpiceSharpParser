@@ -34,7 +34,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             var resistor = generator.Generate("r1", "R1", "r", parameters, context);
 
             Assert.NotNull(resistor);
-            context.Received().SetParameter(resistor, "resistance", "1.2", true, onload: false);
+            context.Received().SetParameter(resistor, "resistance", parameters[2], true, onload: false);
         }
 
         [Fact]

@@ -179,5 +179,20 @@
         /// percent token
         /// </summary>
         PERCENT = 34,
+
+        /// <summary>
+        ///  continuation current line
+        /// </summary>
+        CONTINUATION_CURRENT_LINE = 35,
+
+        /// <summary>
+        /// continuation next line
+        /// </summary>
+        CONTINUATION_NEXT_LINE = 36,
+
+        /// <summary>
+        /// model token
+        /// </summary>
+        MODEL = 37
     }
 }

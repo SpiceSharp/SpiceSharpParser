@@ -14,14 +14,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     /// </summary>
     public class RLCKGenerator : ComponentGenerator
     {
-        /// <summary>
-        /// Gets generated types.
-        /// </summary>
-        /// <returns>
-        /// Generated types.
-        /// </returns>
-        public override IEnumerable<string> GeneratedTypes => new List<string> { "R", "L", "C", "K" };
-
         public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             switch (type.ToLower())
@@ -278,11 +270,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // Set resistance
                 if (something is AssignmentParameter asp)
                 {
-                    context.SetParameter(res, "resistance", asp.Value, true, isDynamic);
+                    context.SetParameter(res, "resistance", asp, true, isDynamic);
                 }
                 else
                 {
-                    context.SetParameter(res, "resistance", something.Image, true, isDynamic);
+                    context.SetParameter(res, "resistance", something, true, isDynamic);
                 }
             }
             else
@@ -321,7 +313,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     var modelName = resistorParameters[0].Image;
 
                     // Ignore tc parameter on resistor ...
-
                     context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                     {
                         context.ModelsRegistry.SetModel(

@@ -25,7 +25,7 @@ namespace SpiceSharpParser.Parsers.Expression
         {
             var parser = GetDeriveParser(context, readingContext, null, null, caseSettings, @throw);
             var parameters = new List<string>();
-            parser.VariableFound += (sender, e) => 
+            parser.VariableFound += (sender, e) =>
             {
                 if (!parameters.Contains(e.Name))
                 {
@@ -41,14 +41,14 @@ namespace SpiceSharpParser.Parsers.Expression
         public static ExpressionParser GetDeriveParser(ExpressionContext expressionContext, IReadingContext readingContext, IEvaluator evaluator, Simulation simulation, SpiceNetlistCaseSensitivitySettings caseSettings,  bool @throw = true)
         {
             var parser = new ExpressionParser(caseSettings);
-            
+
             parser.VariableFound += OnVariableFound(expressionContext, readingContext, evaluator, simulation, @throw);
             parser.FunctionFound += OnFunctionFound(expressionContext, readingContext, evaluator, simulation);
             parser.SpicePropertyFound += OnSpicePropertyFound(expressionContext, readingContext, evaluator, simulation);
-            
+
             return parser;
         }
-      
+
         public static bool HaveSpiceProperties(string expression, ExpressionContext context, ReadingContext readingContext, bool b)
         {
             bool present = false;
@@ -166,13 +166,13 @@ namespace SpiceSharpParser.Parsers.Expression
                 {
                     var expression = context.Arguments[argumentName];
                     var argumentValue = evaluator.Evaluate(expression, context, simulation, readingContext);
-                    vectorParameter.Elements.Add(new ValueParameter(((int) argumentValue).ToString()));
+                    vectorParameter.Elements.Add(new ValueParameter(((int)argumentValue).ToString()));
                 }
                 else if (context.Parameters.ContainsKey(argumentName))
                 {
                     var expression = context.Parameters[argumentName];
                     var argumentValue = evaluator.Evaluate(expression, context, simulation, readingContext);
-                    vectorParameter.Elements.Add(new ValueParameter(((int) argumentValue).ToString()));
+                    vectorParameter.Elements.Add(new ValueParameter(((int)argumentValue).ToString()));
                 }
                 else
                 {
@@ -198,7 +198,7 @@ namespace SpiceSharpParser.Parsers.Expression
                             var value = evaluator.Evaluate(expression, context, simulation, readingContext);
                             return value;
                         },
-                        [1] = () => 1
+                        [1] = () => 1,
                     };
                     args.Result = d;
                     return;
@@ -214,7 +214,7 @@ namespace SpiceSharpParser.Parsers.Expression
                             var value = evaluator.Evaluate(parameter, context, simulation, readingContext);
                             return value;
                         },
-                        [1] = () => 0
+                        [1] = () => 0,
                     };
                     args.Result = d;
                     return;
@@ -234,7 +234,7 @@ namespace SpiceSharpParser.Parsers.Expression
                                 var value = evaluator.Evaluate(expression, context, simulation, readingContext);
                                 return value;
                             },
-                            [1] = () => 0
+                            [1] = () => 0,
                         };
                         args.Result = d;
                         return;

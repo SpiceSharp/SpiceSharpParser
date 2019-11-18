@@ -6,11 +6,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
     public class SpiceStatementsOrderer : ISpiceStatementsOrderer
     {
-        protected List<string> TopControls { get; set; } = new List<string>() { "st_r", "step_r", "param", "sparam", "func", "options", "distribution" };
+        protected List<string> TopControls { get; set; } = new List<string> { "st_r", "step_r", "param", "sparam", "func", "options", "distribution" };
 
-        protected List<string> ControlsAfterComponents { get; set; } = new List<string>() { "plot", "print", "save" };
+        protected List<string> ControlsAfterComponents { get; set; } = new List<string> { "plot", "print", "save" };
 
-        protected List<string> Controls { get; set; } = new List<string>() { "temp", "step", "st", "nodeset", "ic", "mc", "op", "ac", "tran", "dc" };
+        protected List<string> Controls { get; set; } = new List<string> { "temp", "step", "st", "nodeset", "ic", "mc", "op", "ac", "tran", "dc" };
 
         /// <summary>
         /// Orders statements for reading.

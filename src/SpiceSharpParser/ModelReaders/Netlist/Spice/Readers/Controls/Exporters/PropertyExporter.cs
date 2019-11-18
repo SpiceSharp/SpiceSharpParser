@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
@@ -14,14 +13,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
     /// </summary>
     public class PropertyExporter : Exporter
     {
-        /// <summary>
-        /// Gets supported property exports.
-        /// </summary>
-        /// <returns>
-        /// A list of supported property exports.
-        /// </returns>
-        public virtual ICollection<string> CreatedTypes => new List<string>() { "@" };
-
         /// <summary>
         /// Creates a new current export.
         /// </summary>

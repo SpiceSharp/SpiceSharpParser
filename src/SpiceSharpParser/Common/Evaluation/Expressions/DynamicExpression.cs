@@ -2,7 +2,8 @@
 {
     public class DynamicExpression : Expression
     {
-        public DynamicExpression(string expression) : base(expression)
+        public DynamicExpression(string expression)
+            : base(expression)
         {
         }
 

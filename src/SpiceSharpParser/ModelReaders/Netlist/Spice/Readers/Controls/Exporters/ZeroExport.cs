@@ -7,8 +7,6 @@
         {
         }
 
-        public override string TypeName { get; }
-
         public override string QuantityUnit { get; }
 
         public override double Extract()

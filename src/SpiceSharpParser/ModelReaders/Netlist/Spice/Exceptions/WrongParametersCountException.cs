@@ -12,7 +12,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
         }
 
         public WrongParametersCountException(string componentName, string message)
-            : base(componentName.ToString() + ":" + message)
+            : base($"{componentName}:{message}")
         {
         }
 

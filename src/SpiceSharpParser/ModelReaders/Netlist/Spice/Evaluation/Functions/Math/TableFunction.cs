@@ -8,7 +8,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
 {
-    public class TableFunction : Function<double, double>, IDerivativeFunction<double, double>
+    public class TableFunction : Function<double, double>
     {
         public TableFunction()
         {
@@ -26,7 +26,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             {
                 var pointX = args[i];
                 var pointY = args[i + 1];
-                points.Add(new Point() {X = pointX, Y = pointY});
+                points.Add(new Point { X = pointX, Y = pointY });
 
                 if (pointX == parameterValue)
                 {
@@ -84,8 +84,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
                 });
             }
 
-            result.Insert(0, result[0]);
-            result.Add(result[result.Count - 1]);
+            result.Insert(0, new LineDefinition() { A = 0, B = points[0].Y });
+            result.Add(new LineDefinition() { A = 0, B = points[points.Count - 1].Y });
             return result.ToArray();
         }
 
@@ -101,80 +101,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             public double X { get; set; }
 
             public double Y { get; set; }
-        }
-
-        public Derivatives<Func<double>> Derivative(
-            string image,
-            Func<double>[] args,
-            IEvaluator evaluator,
-            ExpressionContext context,
-            Simulation simulation = null,
-            IReadingContext readingContext = null)
-        {
-            Derivatives<Func<double>> derivatives = GetDerivatives(args);
-
-            return derivatives;
-        }
-
-        private static Derivatives<Func<double>> GetDerivatives(Func<double>[] args)
-        {
-            Derivatives<Func<double>> derivatives = new DoubleDerivatives(2);
-
-
-            var parameterValue = args[0];
-            var points = new List<Point>();
-            var value = parameterValue();
-
-            for (var i = 1; i < args.Length - 1; i += 2)
-            {
-                var pointX = args[i]();
-                var pointY = args[i + 1]();
-
-                points.Add(new Point() {X = pointX, Y = pointY});
-
-                if (pointX == value)
-                {
-                    derivatives[0] = () => pointY;
-                    return derivatives;
-                }
-            }
-
-            points.Sort((p1, p2) => p1.X.CompareTo(p2.X));
-            if (points.Count == 1)
-            {
-                throw new Exception("There is only one point for table interpolation.");
-            }
-
-            // Get point + 1 line parameters for each segment of line
-            LineDefinition[] linesDefinition = CreateLineParameters(points);
-
-            int index = 0;
-
-            while (index < points.Count && points[index].X < value)
-            {
-                index++;
-            }
-
-            if (index == points.Count)
-            {
-                derivatives[0] = () => points[points.Count - 1].Y;
-                derivatives[1] = () => linesDefinition.Last().A;
-
-                return derivatives;
-            }
-
-            if (index == 0 && points[0].X > value)
-            {
-                derivatives[0] = () => points[0].Y;
-                derivatives[1] = () => linesDefinition.First().A;
-
-                return derivatives;
-            }
-
-            derivatives[0] = () => (linesDefinition[index].A * value) + linesDefinition[index].B;
-            derivatives[1] = () => linesDefinition[index].A;
-
-            return derivatives;
         }
     }
 }

@@ -5,7 +5,7 @@
     /// </summary>
     public abstract class SingleParameter : Parameter
     {
-        private string _rawString;
+        private readonly string _rawString;
 
         protected SingleParameter(string rawString)
         {
