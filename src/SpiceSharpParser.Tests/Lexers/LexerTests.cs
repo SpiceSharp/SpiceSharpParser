@@ -11,7 +11,7 @@ namespace SpiceSharpParser.Tests.Lexers
         public void EmptyGrammarEmptyText()
         {
             LexerGrammar<LexerTestState> grammar = new LexerGrammar<LexerTestState>(new List<LexerTokenRule<LexerTestState>>(), new List<LexerDynamicRule>());
-            Lexer<LexerTestState> lexer = new Lexer<LexerTestState>(grammar, new LexerOptions(false, null, null));
+            Lexer<LexerTestState> lexer = new Lexer<LexerTestState>(grammar);
             var tokens = lexer.GetTokens(string.Empty);
             Assert.Single(tokens);
         }
@@ -20,7 +20,7 @@ namespace SpiceSharpParser.Tests.Lexers
         public void EmptyGrammarNonEmptyText()
         {
             LexerGrammar<LexerTestState> grammar = new LexerGrammar<LexerTestState>(new List<LexerTokenRule<LexerTestState>>(), new List<LexerDynamicRule>());
-            Lexer<LexerTestState> lexer = new Lexer<LexerTestState>(grammar, new LexerOptions(false, null, null));
+            Lexer<LexerTestState> lexer = new Lexer<LexerTestState>(grammar);
             Assert.Throws<LexerException>(() => lexer.GetTokens("Line1\nLine2\n").Count());
         }
 
@@ -41,7 +41,7 @@ namespace SpiceSharpParser.Tests.Lexers
                         })
                 }, new List<LexerDynamicRule>());
 
-            Lexer<LexerTestState> lexer = new Lexer<LexerTestState>(grammar, new LexerOptions(false, null, null));
+            Lexer<LexerTestState> lexer = new Lexer<LexerTestState>(grammar);
             var s = new LexerTestState();
             var tokens = lexer.GetTokens("Line1\nLine2\n", s).ToArray();
             Assert.Equal(5, tokens.Count());

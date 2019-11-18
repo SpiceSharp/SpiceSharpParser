@@ -16,10 +16,9 @@ namespace SpiceSharpParser.Lexers
         /// </summary>
         /// <param name="grammar">Lexer grammar.</param>
         /// <param name="options">Lexer options.</param>
-        public Lexer(LexerGrammar<TLexerState> grammar, LexerOptions options)
+        public Lexer(LexerGrammar<TLexerState> grammar)
         {
             Grammar = grammar ?? throw new ArgumentNullException(nameof(grammar));
-            Options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
         /// <summary>
@@ -27,10 +26,6 @@ namespace SpiceSharpParser.Lexers
         /// </summary>
         protected LexerGrammar<TLexerState> Grammar { get; }
 
-        /// <summary>
-        /// Gets lexer options.
-        /// </summary>
-        protected LexerOptions Options { get; }
 
         /// <summary>
         /// Gets tokens for grammar.

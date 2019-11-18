@@ -36,8 +36,8 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 throw new ArgumentNullException(nameof(netlistText));
             }
 
-            var state = new SpiceLexerState() { LexerOptions = new LexerOptions(true, '+', '\\') };
-            var lexer = new Lexer<SpiceLexerState>(_grammar, state.LexerOptions);
+            var state = new SpiceLexerState();
+            var lexer = new Lexer<SpiceLexerState>(_grammar);
 
             foreach (var token in lexer.GetTokens(netlistText, state))
             {
@@ -403,9 +403,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 null,
                 (SpiceLexerState state, string lexem) =>
                 {
-                    if (state.LexerOptions.CurrentLineContinuationCharacter.HasValue
-                        && lexem.EndsWith(state.LexerOptions.CurrentLineContinuationCharacter.Value.ToString(), StringComparison.Ordinal)
-                        && state.BeforeLineBreak)
+                    if (lexem.EndsWith("\\", StringComparison.Ordinal) && state.BeforeLineBreak)
                     {
                         return LexerRuleUseDecision.Next;
                     }
