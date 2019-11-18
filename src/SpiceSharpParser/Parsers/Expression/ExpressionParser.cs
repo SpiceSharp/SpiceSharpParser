@@ -11,6 +11,8 @@ namespace SpiceSharpParser.Parsers.Expression
 {
     public class ExpressionParser : SimpleDerivativeParser
     {
+        public int CurrentIndex => Index;
+
         static ExpressionParser()
         {
             DefaultFunctionsCaseSensitive =

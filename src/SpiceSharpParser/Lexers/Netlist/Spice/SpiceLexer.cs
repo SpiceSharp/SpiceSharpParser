@@ -56,7 +56,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
             builder.AddRegexRule(new LexerInternalRule("DIGIT", "[0-9]"));
             builder.AddRegexRule(new LexerInternalRule("SPECIAL", @"[\/\\_\.:%!\#\-;\<\>\^\*\[\]]"));
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
-                (int)SpiceTokenType.WHITESPACE,
+                (int) SpiceTokenType.WHITESPACE,
                 "A whitespace characters that will be ignored",
                 @"[\t 	]+",
                 (SpiceLexerState state, string lexem) => LexerRuleReturnDecision.IgnoreToken));
@@ -65,10 +65,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 (int)SpiceTokenType.CONTINUATION_CURRENT_LINE,
                 "A current line continuation character that is ignored",
                 @"(\\\\)(\r\n|\r|\n)",
-                (SpiceLexerState state, string lexem) =>
-                {
-                    return LexerRuleReturnDecision.IgnoreToken;
-                }, 
+                (SpiceLexerState state, string lexem) => LexerRuleReturnDecision.IgnoreToken, 
                 topRule:true));
 
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(

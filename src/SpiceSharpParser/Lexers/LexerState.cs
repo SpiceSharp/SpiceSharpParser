@@ -8,7 +8,7 @@
         /// <summary>
         /// Gets or sets type of previously returned token by lexer.
         /// </summary>
-        public int PreviousReturnedTokenType { get; set; } = 0;
+        public int PreviousReturnedTokenType { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether lexem is a full match.
@@ -28,6 +28,6 @@
         /// <summary>
         /// Gets or sets a value indicating lexer is lexing new line.
         /// </summary>
-        public bool NewLine { get; set; }
+        public bool NewLine { get; set; } = true;
     }
 }

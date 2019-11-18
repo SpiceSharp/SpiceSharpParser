@@ -247,7 +247,6 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
             Assert.Equal(SpiceTokenType.EOF, tokens[8].SpiceTokenType);
         }
 
-
         [Fact]
         public void LineContinuationWithSpacesTest()
         {
