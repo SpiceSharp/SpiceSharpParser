@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
     {
         public Export Create(
             Parameter exportParameter,
-            IReadingContext context,
+            ICircuitContext context,
             Simulation simulation,
             IMapper<Exporter> mapper)
         {
@@ -29,10 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                         type,
                         bp.Parameters,
                         simulation,
-                        context.NodeNameGenerator,
-                        context.ComponentNameGenerator,
-                        context.ModelNameGenerator,
-                        context.Result,
+                        context.NameGenerator,
                         context.CaseSensitivity);
                 }
             }
@@ -49,10 +46,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                         type,
                         parameters,
                         simulation,
-                        context.NodeNameGenerator,
-                        context.ComponentNameGenerator,
-                        context.ModelNameGenerator,
-                        context.Result,
+                        context.NameGenerator,
                         context.CaseSensitivity);
                 }
             }
@@ -60,19 +54,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
             if (exportParameter is SingleParameter s)
             {
                 string expressionName = s.Image;
-                var expressionNames = context.ReadingExpressionContext.GetExpressionNames();
+                var expressionNames = context.CircuitEvaluator.GetExpressionNames();
 
-                if (expressionNames.Contains(expressionName))
+                if (expressionNames.Any(e => e == expressionName))
                 {
-                    var evaluator = context.SimulationEvaluators.GetEvaluator(simulation);
                     var export = new ExpressionExport(
                         simulation.Name,
                         expressionName,
-                        context.ReadingExpressionContext.GetExpression(expressionName),
-                        evaluator,
-                        context.SimulationExpressionContexts,
-                        simulation,
-                        context);
+                        context.CircuitEvaluator.GetContext(simulation));
 
                     return export;
                 }

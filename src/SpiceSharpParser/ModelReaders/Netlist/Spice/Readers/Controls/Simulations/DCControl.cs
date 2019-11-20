@@ -24,12 +24,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, IReadingContext context)
+        public override void Read(Control statement, ICircuitContext context)
         {
             CreateSimulations(statement, context, CreateDCSimulation);
         }
 
-        private DC CreateDCSimulation(string name, Control statement, IReadingContext context)
+        private DC CreateDCSimulation(string name, Control statement, ICircuitContext context)
         {
             int count = statement.Parameters.Count / 4;
             switch (statement.Parameters.Count - (4 * count))
@@ -54,9 +54,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             {
                 SweepConfiguration sweep = new SweepConfiguration(
                     statement.Parameters.Get(4 * i).Image,
-                    context.EvaluateDouble(statement.Parameters.Get((4 * i) + 1)),
-                    context.EvaluateDouble(statement.Parameters.Get((4 * i) + 2)),
-                    context.EvaluateDouble(statement.Parameters.Get((4 * i) + 3)));
+                    context.CircuitEvaluator.EvaluateDouble(statement.Parameters.Get((4 * i) + 1)),
+                    context.CircuitEvaluator.EvaluateDouble(statement.Parameters.Get((4 * i) + 2)),
+                    context.CircuitEvaluator.EvaluateDouble(statement.Parameters.Get((4 * i) + 3)));
 
                 sweeps.Add(sweep);
             }
@@ -65,10 +65,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             dc.OnParameterSearch += (sender, e) =>
             {
                 string sweepParameterName = e.Name;
-                if (context.SimulationExpressionContexts.GetContext(dc).Parameters.ContainsKey(sweepParameterName))
+                if (context.CircuitEvaluator.HaveParameter(dc, sweepParameterName))
                 {
                     e.TemperatureNeeded = true;
-                    e.Result = new EvaluationParameter(context.SimulationExpressionContexts.GetContext(dc), sweepParameterName);
+                    e.Result = new EvaluationParameter(context.CircuitEvaluator.GetContext(dc), sweepParameterName);
                 }
             };
 
@@ -80,7 +80,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             return dc;
         }
 
-        private void ConfigureDcSettings(DCConfiguration dCConfiguration, IReadingContext context)
+        private void ConfigureDcSettings(DCConfiguration dCConfiguration, ICircuitContext context)
         {
             if (context.Result.SimulationConfiguration.SweepMaxIterations.HasValue)
             {

@@ -1,6 +1,4 @@
 ﻿using System;
-using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.Common.Evaluation.Functions.Math
 {
@@ -12,7 +10,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions.Math
             ArgumentsCount = 2;
         }
 
-        public override double Logic(string image, double[] args, IEvaluator evaluator, ExpressionContext context, Simulation simulation = null, IReadingContext readingContext = null)
+        public override double Logic(string image, double[] args, ExpressionContext context)
         {
             if (args.Length != 2)
             {

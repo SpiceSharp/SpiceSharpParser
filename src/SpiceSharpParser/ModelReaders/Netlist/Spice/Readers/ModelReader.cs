@@ -39,7 +39,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Model statement, IReadingContext context)
+        public override void Read(Model statement, ICircuitContext context)
         {
             if (statement == null)
             {
@@ -66,7 +66,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                     var model = ModelsGenerator.GenerateModel(
                         generator,
-                        context.ModelNameGenerator.Generate(name),
+                        context.NameGenerator.GenerateObjectName(name),
                         name,
                         type,
                         b.Parameters,
@@ -89,7 +89,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                     var model = ModelsGenerator.GenerateModel(
                         generator,
-                        context.ModelNameGenerator.Generate(name),
+                        context.NameGenerator.GenerateObjectName(name),
                         name,
                         type,
                         statement.Parameters.Skip(1),

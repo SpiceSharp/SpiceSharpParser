@@ -15,7 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, IReadingContext context)
+        public override void Read(Control statement, ICircuitContext context)
         {
             if (statement.Parameters.Count != 2)
             {

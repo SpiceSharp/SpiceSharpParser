@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, IReadingContext context)
+        public override void Read(Control statement, ICircuitContext context)
         {
             foreach (var param in statement.Parameters)
             {
@@ -23,7 +23,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         || sp is Models.Netlist.Spice.Objects.Parameters.IdentifierParameter
                         || sp is Models.Netlist.Spice.Objects.Parameters.ValueParameter)
                     {
-                        context.NodeNameGenerator.SetGlobal(sp.Image);
+                        context.NameGenerator.SetGlobal(sp.Image);
                     }
                 }
             }

@@ -8,6 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 {
     public interface ICreateSimulationsForMonteCarloFactory
     {
-        List<BaseSimulation> Create(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation);
+        List<BaseSimulation> Create(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, BaseSimulation> createSimulation);
     }
 }

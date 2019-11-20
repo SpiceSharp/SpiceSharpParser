@@ -35,7 +35,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, IReadingContext context)
+        public override void Read(Control statement, ICircuitContext context)
         {
             Type simulationType = null;
 
@@ -82,7 +82,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             CreatePlotsForAcParameterSweeps(context);
         }
 
-        private void CreatePlotsForTranParameterSweeps(IReadingContext context)
+        private void CreatePlotsForTranParameterSweeps(ICircuitContext context)
         {
             if (context.Result.SimulationConfiguration.ParameterSweeps.Count > 0)
             {
@@ -109,7 +109,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void CreatePlotsForAcParameterSweeps(IReadingContext context)
+        private void CreatePlotsForAcParameterSweeps(ICircuitContext context)
         {
             if (context.Result.SimulationConfiguration.ParameterSweeps.Count > 0)
             {
@@ -136,7 +136,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void CreatePlotsForOpParameterSweeps(IReadingContext context)
+        private void CreatePlotsForOpParameterSweeps(ICircuitContext context)
         {
             if (context.Result.SimulationConfiguration.ParameterSweeps.Count > 0)
             {
@@ -166,7 +166,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void CreateOpSweepPlot(ParameterSweep firstParameterSweep, string variableName, List<Export> exports, IReadingContext context)
+        private void CreateOpSweepPlot(ParameterSweep firstParameterSweep, string variableName, List<Export> exports, ICircuitContext context)
         {
             var plot = new XyPlot("OP - Parameter sweep: " + variableName);
 
@@ -181,7 +181,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             context.Result.AddPlot(plot);
         }
 
-        private void CreateTranSweepPlot(string variableName, List<Export> exports, IReadingContext context)
+        private void CreateTranSweepPlot(string variableName, List<Export> exports, ICircuitContext context)
         {
             var plot = new XyPlot("Tran - Parameter sweep: " + variableName);
 
@@ -196,7 +196,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             context.Result.AddPlot(plot);
         }
 
-        private void CreateAcSweepPlot(string variableName, List<Export> exports, IReadingContext context)
+        private void CreateAcSweepPlot(string variableName, List<Export> exports, ICircuitContext context)
         {
             var plot = new XyPlot("AC - Parameter sweep: " + variableName);
 
@@ -211,15 +211,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             context.Result.AddPlot(plot);
         }
 
-        private void AddOpPointToSeries(ParameterSweep firstParameterSweep, Export export, IReadingContext context, Series series)
+        private void AddOpPointToSeries(ParameterSweep firstParameterSweep, Export export, ICircuitContext context, Series series)
         {
             export.Simulation.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
-                var expressionContext = context.SimulationExpressionContexts.GetContext(export.Simulation);
+                var expressionContext = context.CircuitEvaluator.GetContext(export.Simulation);
                 var firstParameterSweepParameter = expressionContext.Parameters[firstParameterSweep.Parameter.Image];
-                var evaluator = context.SimulationEvaluators.GetEvaluator(export.Simulation);
                 
-                var value = evaluator.Evaluate(firstParameterSweepParameter, expressionContext, export.Simulation, context);
+                var value = context.CircuitEvaluator.GetContext(export.Simulation).Evaluate(firstParameterSweepParameter);
                 series.Points.Add(new Point() { X = value, Y = export.Extract() });
             };
         }
@@ -240,7 +239,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             };
         }
 
-        private void CreateExportsForAllVoltageAndCurrents(IReadingContext context)
+        private void CreateExportsForAllVoltageAndCurrents(ICircuitContext context)
         {
             // For all simulations add exports for current and voltages
             foreach (var simulation in context.Result.Simulations)
@@ -273,10 +272,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                                 "i",
                                 @params,
                                 simulation,
-                                context.NodeNameGenerator,
-                                context.ComponentNameGenerator,
-                                context.ModelNameGenerator,
-                                context.Result,
+                                context.NameGenerator,
                                 context.CaseSensitivity));
                     }
                 }
@@ -294,16 +290,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             "v",
                             @params,
                             simulation,
-                            context.NodeNameGenerator,
-                            context.ComponentNameGenerator,
-                            context.ModelNameGenerator,
-                            context.Result,
+                            context.NameGenerator,
                             context.CaseSensitivity));
                 }
             }
         }
 
-        private void AddCommonExport(IReadingContext context, Type simulationType, Parameter parameter)
+        private void AddCommonExport(ICircuitContext context, Type simulationType, Parameter parameter)
         {
             foreach (var simulation in Filter(context.Result.Simulations, simulationType))
             {
@@ -311,25 +304,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void AddLetExport(IReadingContext context, Type simulationType, SingleParameter s)
+        private void AddLetExport(ICircuitContext context, Type simulationType, SingleParameter s)
         {
             string expressionName = s.Image;
-            var expressionNames = context.ReadingExpressionContext.GetExpressionNames();
+            var expressionNames = context.CircuitEvaluator.GetExpressionNames();
 
             if (expressionNames.Contains(expressionName))
             {
                 var simulations = Filter(context.Result.Simulations, simulationType);
                 foreach (var simulation in simulations)
                 {
-                    var evaluator = context.SimulationEvaluators.GetEvaluator(simulation);
-                    var export = new ExpressionExport(
-                            simulation.Name,
-                            expressionName,
-                            context.ReadingExpressionContext.GetExpression(expressionName),
-                            evaluator,
-                            context.SimulationExpressionContexts,
-                            simulation, context);
-
+                    var export = new ExpressionExport(simulation.Name, expressionName, context.CircuitEvaluator.GetContext(simulation));
                     context.Result.AddExport(export);
                 }
             }

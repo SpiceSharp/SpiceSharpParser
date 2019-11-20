@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -13,7 +12,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
     {
         public virtual ICollection<string> CreatedTypes => new List<string> { "i", "ir", "ii", "im", "idb", "ip" };
 
-        public override Export CreateExport(string name, string type, ParameterCollection parameters, Simulation simulation, INodeNameGenerator nodeNameGenerator, IObjectNameGenerator componentNameGenerator, IObjectNameGenerator modelNameGenerator, IResultService result, SpiceNetlistCaseSensitivitySettings caseSettings)
+        public override Export CreateExport(string name, string type, ParameterCollection parameters, Simulation simulation, INameGenerator nameGenerator,  ISpiceNetlistCaseSensitivitySettings caseSettings)
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
             {
@@ -29,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                     case 0:
                         throw new Exception("Node expected");
                     case 1:
-                        componentIdentifier = componentNameGenerator.Generate(vector.Elements[0].Image);
+                        componentIdentifier = nameGenerator.GenerateObjectName(vector.Elements[0].Image);
                         break;
                     default:
                         throw new Exception("Too many nodes specified");
@@ -37,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             }
             else
             {
-                componentIdentifier = componentNameGenerator.Generate(parameters.Get(0).Image);
+                componentIdentifier = nameGenerator.GenerateObjectName(parameters.Get(0).Image);
             }
 
             Export export = null;

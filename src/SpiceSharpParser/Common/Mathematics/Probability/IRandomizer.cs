@@ -23,6 +23,11 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         double NormalLimit { get; set; }
 
         /// <summary>
+        /// Gets or sets the random seed.
+        /// </summary>
+        int? Seed { get; set; }
+
+        /// <summary>
         /// Registers a Pdf in the randomizer.
         /// </summary>
         /// <param name="name">Name of Pdf.</param>
@@ -32,31 +37,29 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// <summary>
         /// Gets a random number provider for a given seed and pdf.
         /// </summary>
-        /// <param name="seed">Seed.</param>
         /// <param name="pdfName">Name of PDF.</param>
         /// <returns>
         /// A random number provider.
         /// </returns>
-        IRandomNumberProvider GetRandomProvider(int? seed, string pdfName = null);
+        IRandomNumberProvider GetRandomProvider(string pdfName = null);
 
         /// <summary>
         /// Gets a random double provider for a given seed and pdf.
         /// </summary>
-        /// <param name="seed">Seed.</param>
         /// <param name="pdfName">Name of PDF.</param>
         /// <returns>
         /// A random double provider.
         /// </returns>
-        IRandomDoubleProvider GetRandomDoubleProvider(int? seed, string pdfName = null);
+        IRandomDoubleProvider GetRandomDoubleProvider(string pdfName = null);
 
         /// <summary>
         /// Gets a random integer provider for a given seed and pdf.
         /// </summary>
-        /// <param name="seed">Seed.</param>
         /// <param name="pdfName">Name of PDF.</param>
         /// <returns>
         /// A random integer provider.
         /// </returns>
-        IRandomIntegerProvider GetRandomIntegerProvider(int? seed, string pdfName = null);
+        IRandomIntegerProvider GetRandomIntegerProvider(string pdfName = null);
+
     }
 }

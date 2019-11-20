@@ -6,7 +6,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 {
     public class RLCModelGenerator : ModelGenerator
     {
-        public override SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context)
+        public override SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, ICircuitContext context)
         {
             SpiceSharp.Components.Model model = null;
 

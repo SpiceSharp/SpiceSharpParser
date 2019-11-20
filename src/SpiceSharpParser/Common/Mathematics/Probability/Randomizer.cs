@@ -33,7 +33,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// <param name="isDistributionNameCaseSensitive">Is distribution name case-sensitive</param>
         /// <param name="cdfPoints">Number of cdf points.</param>
         /// <param name="normalLimit">Normal limit.</param>
-        public Randomizer(bool isDistributionNameCaseSensitive = false, int? cdfPoints = null, double? normalLimit = null)
+        public Randomizer(bool isDistributionNameCaseSensitive = false, int? cdfPoints = null, double? normalLimit = null, int? seed = null)
         {
             _pdfDictionary = new Dictionary<string, Func<Pdf>>(StringComparerProvider.Get(isDistributionNameCaseSensitive));
             _pdfInstancesDictionary = new Dictionary<string, Pdf>(StringComparerProvider.Get(isDistributionNameCaseSensitive));
@@ -43,7 +43,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
             CurrentPdfName = null;
             CdfPoints = cdfPoints ?? DefaultCdfPoints;
             NormalLimit = normalLimit ?? DefaultNormalLimit;
-
+            Seed = seed;
             RegisterDefaultPdfs();
         }
 
@@ -94,38 +94,37 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// <summary>
         /// Gets a random double provider for a given seed and pdf.
         /// </summary>
-        /// <param name="seed">Seed.</param>
         /// <param name="pdfName">Name of PDF.</param>
         /// <returns>
         /// A random double provider.
         /// </returns>
-        public IRandomDoubleProvider GetRandomDoubleProvider(int? seed, string pdfName = null)
+        public IRandomDoubleProvider GetRandomDoubleProvider(string pdfName = null)
         {
-            return GetRandomProvider(seed, pdfName);
+            return GetRandomProvider(pdfName);
         }
 
         /// <summary>
         /// Gets a random integer provider for a given seed and pdf.
         /// </summary>
-        /// <param name="seed">Seed.</param>
         /// <param name="pdfName">Name of PDF.</param>
         /// <returns>
         /// A random integer provider.
         /// </returns>
-        public IRandomIntegerProvider GetRandomIntegerProvider(int? seed, string pdfName = null)
+        public IRandomIntegerProvider GetRandomIntegerProvider(string pdfName = null)
         {
-            return GetRandomProvider(seed, pdfName);
+            return GetRandomProvider(pdfName);
         }
+
+        public int? Seed { get; set; }
 
         /// <summary>
         /// Gets a random number provider for a given seed and pdf.
         /// </summary>
-        /// <param name="seed">Seed.</param>
         /// <param name="pdfName">Name of PDF.</param>
         /// <returns>
         /// A random number provider.
         /// </returns>
-        public IRandomNumberProvider GetRandomProvider(int? seed, string pdfName = null)
+        public IRandomNumberProvider GetRandomProvider(string pdfName = null)
         {
             string workingPdfName = null;
 
@@ -133,7 +132,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
             {
                 if (CurrentPdfName == null)
                 {
-                    return _defaultRandomNumberProviderFactory.GetRandom(seed);
+                    return _defaultRandomNumberProviderFactory.GetRandom(Seed);
                 }
                 else
                 {
@@ -162,7 +161,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
                     _customRandomNumberProviderFactories[workingPdfName] = new CustomRandomNumberProviderFactory(_cdfDictionary[workingPdfName]);
                 }
 
-                return _customRandomNumberProviderFactories[workingPdfName].GetRandom(seed);
+                return _customRandomNumberProviderFactories[workingPdfName].GetRandom(Seed);
             }
             else
             {

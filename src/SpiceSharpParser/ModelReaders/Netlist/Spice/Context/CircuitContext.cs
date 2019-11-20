@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
-using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
@@ -22,67 +17,46 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
     /// <summary>
     /// Reading context.
     /// </summary>
-    public class ReadingContext : IReadingContext
+    public class CircuitContext : ICircuitContext
     {
-
-        public ReadingContext()
-        {
-
-        }
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReadingContext"/> class.
+        /// Initializes a new instance of the <see cref="CircuitContext"/> class.
         /// </summary>
         /// <param name="contextName">Name of the context.</param>
-        /// <param name="simulationPreparations">Parameters.</param>
-        /// <param name="simulationEvaluators">Evaluator for the context.</param>
-        /// <param name="contexts">Context. </param>
+        /// <param name="expressionParser">Expression parser.</param>
+        /// <param name="circuitEvaluator">Circuit evaluator.</param>
+        /// <param name="simulationPreparations">Simulation preparations.</param>
         /// <param name="resultService">SpiceSharpModel service for the context.</param>
-        /// <param name="nodeNameGenerator">Name generator for the nodes.</param>
-        /// <param name="componentNameGenerator">Name generator for the components.</param>
-        /// <param name="modelNameGenerator">Name generator for the models.</param>
+        /// <param name="nameGenerator">Name generator for the models.</param>
         /// <param name="statementsReader">Statements reader.</param>
         /// <param name="waveformReader">Waveform reader.</param>
-        /// <param name="readingEvaluator">Reading evaluator.</param>
-        /// <param name="readingExpressionContext">Reading expression context.</param>
         /// <param name="caseSettings">Case settings.</param>
         /// <param name="parent">Parent of th context.</param>
         /// <param name="exporters">Exporters.</param>
         /// <param name="workingDirectory">Working directory.</param>
-        public ReadingContext(
+        public CircuitContext(
             string contextName,
+            ICircuitContext parent,
+            ICircuitEvaluator circuitEvaluator,
             ISimulationPreparations simulationPreparations,
-            ISimulationEvaluators simulationEvaluators,
-            SimulationExpressionContexts contexts,
             IResultService resultService,
-            INodeNameGenerator nodeNameGenerator,
-            IObjectNameGenerator componentNameGenerator,
-            IObjectNameGenerator modelNameGenerator,
+            INameGenerator nameGenerator,
             ISpiceStatementsReader statementsReader,
             IWaveformReader waveformReader,
-            IEvaluator readingEvaluator,
-            ExpressionContext readingExpressionContext,
             SpiceNetlistCaseSensitivitySettings caseSettings,
-            IReadingContext parent,
             IMapper<Exporter> exporters,
             string workingDirectory = null)
         {
             Name = contextName ?? throw new ArgumentNullException(nameof(contextName));
-            Result = resultService ?? throw new ArgumentNullException(nameof(resultService));
-            NodeNameGenerator = nodeNameGenerator ?? throw new ArgumentNullException(nameof(nodeNameGenerator));
-            ComponentNameGenerator = componentNameGenerator ?? throw new ArgumentNullException(nameof(componentNameGenerator));
-            ModelNameGenerator = modelNameGenerator ?? throw new ArgumentNullException(nameof(componentNameGenerator));
-            Parent = parent;
-            Children = new List<IReadingContext>();
-            CaseSensitivity = caseSettings;
-            SimulationExpressionContexts = contexts;
-            ReadingExpressionContext = readingExpressionContext;
+            CircuitEvaluator = circuitEvaluator;
             SimulationPreparations = simulationPreparations;
-            SimulationEvaluators = simulationEvaluators;
+            Result = resultService ?? throw new ArgumentNullException(nameof(resultService));
+            NameGenerator  = nameGenerator ?? throw new ArgumentNullException(nameof(nameGenerator));
+            Parent = parent;
+            Children = new List<ICircuitContext>();
+            CaseSensitivity = caseSettings;
             StatementsReader = statementsReader;
             WaveformReader = waveformReader;
-            ReadingEvaluator = readingEvaluator;
-
             AvailableSubcircuits = CreateAvailableSubcircuitsCollection();
             ModelsRegistry = CreateModelsRegistry();
             Exporters = exporters;
@@ -94,43 +68,27 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         public string WorkingDirectory { get; }
 
+        /// <summary>
+        /// Gets or sets instance data.
+        /// </summary>
         public InstanceData InstanceData { get; set; }
-        public ConcurrentDictionary<string, Export> ExporterInstances { get; set; } = new ConcurrentDictionary<string, Export>();
 
         /// <summary>
         /// Gets or sets the name of context.
         /// </summary>
-        public string Name { get; protected set; }
+        public string Name { get; }
 
         /// <summary>
         /// Gets or sets the parent of context.
         /// </summary>
-        public IReadingContext Parent { get; protected set; }
-
-        /// <summary>
-        /// Gets the simulationEvaluators for the context.
-        /// </summary>
-        public ISimulationEvaluators SimulationEvaluators { get; }
-
-        /// <summary>
-        /// Gets the reading evaluator.
-        /// </summary>
-        public IEvaluator ReadingEvaluator { get; }
+        public ICircuitContext Parent { get; }
 
         /// <summary>
         /// Gets or sets exporter mapper.
         /// </summary>
-        public IMapper<Exporter> Exporters { get; set; }
+        public IMapper<Exporter> Exporters { get; }
 
-        /// <summary>
-        /// Gets the simulation expression contexts.
-        /// </summary>
-        public SimulationExpressionContexts SimulationExpressionContexts { get; }
-
-        /// <summary>
-        /// Gets or sets the reading expression context.
-        /// </summary>
-        public ExpressionContext ReadingExpressionContext { get; set; }
+        public ICircuitEvaluator CircuitEvaluator { get; set; }
 
         /// <summary>
         /// Gets simulation parameters.
@@ -140,37 +98,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets or sets available subcircuits in context.
         /// </summary>
-        public ICollection<SubCircuit> AvailableSubcircuits { get; protected set; }
+        public ICollection<SubCircuit> AvailableSubcircuits { get;  }
 
         /// <summary>
-        /// Gets or sets the result service.
+        /// Gets the result service.
         /// </summary>
-        public IResultService Result { get; protected set; }
+        public IResultService Result { get; }
+
+
+        public INameGenerator NameGenerator { get; set; }
 
         /// <summary>
-        /// Gets or sets the node name generator.
+        /// Gets the children of the reading context.
         /// </summary>
-        public INodeNameGenerator NodeNameGenerator { get; protected set; }
+        public ICollection<ICircuitContext> Children { get; }
 
         /// <summary>
-        /// Gets or sets the component name generator.
+        /// Gets the stochastic models registry.
         /// </summary>
-        public IObjectNameGenerator ComponentNameGenerator { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the model name generator.
-        /// </summary>
-        public IObjectNameGenerator ModelNameGenerator { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the children of the reading context.
-        /// </summary>
-        public ICollection<IReadingContext> Children { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the stochastic models registry.
-        /// </summary>
-        public IModelsRegistry ModelsRegistry { get; protected set; }
+        public IModelsRegistry ModelsRegistry { get; }
 
         /// <summary>
         /// Gets or sets statements reader.
@@ -201,78 +147,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            var nodeId = NodeNameGenerator.Generate(nodeName);
+            var nodeId = NameGenerator.GenerateNodeName(nodeName);
             SimulationPreparations.SetICVoltage(nodeId, expression, this);
         }
 
-        /// <summary>
-        /// Parses an expression to double.
-        /// </summary>
-        /// <param name="expression">Expression to parse.</param>
-        /// <returns>
-        /// A value of expression..
-        /// </returns>
-        public double EvaluateDouble(string expression)
-        {
-            if (expression == null)
-            {
-                throw new ArgumentNullException(nameof(expression));
-            }
-            try
-            {
-                return ReadingEvaluator.Evaluate(new DynamicExpression(expression), ReadingExpressionContext, null, this);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Exception during evaluation of expression: " + expression, ex);
-            }
-        }
-
-        public double EvaluateDouble(Parameter parameter)
-        {
-            if (parameter == null)
-            {
-                throw new ArgumentNullException(nameof(parameter));
-            }
-
-            try
-            {
-                return ReadingEvaluator.Evaluate(new DynamicExpression(parameter.Image), ReadingExpressionContext, null, this);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(
-                    $"Exception during evaluation of expression: `{parameter.Image}` at line={parameter.LineNumber}", ex);
-            }
-
-        }
-
-        /// <summary>
-        /// Sets the parameter.
-        /// </summary>
-        /// <param name="parameterName">Parameter name.</param>
-        /// <param name="value">Parameter value.</param>
-        public void SetParameter(string parameterName, double value)
-        {
-            if (parameterName == null)
-            {
-                throw new ArgumentNullException(nameof(parameterName));
-            }
-
-            ReadingExpressionContext.SetParameter(parameterName, value);
-        }
-
-        public void SetParameter(string parameterName, Parameter parameter)
-        {
-
-            if (parameterName == null)
-            {
-                throw new ArgumentNullException(nameof(parameterName));
-            }
-
-            ReadingExpressionContext.SetParameter(parameterName, parameter);
-        }
-
+      
         /// <summary>
         /// Creates nodes for a component.
         /// </summary>
@@ -300,7 +179,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             for (var i = 0; i < component.PinCount; i++)
             {
                 string pinName = parameters.Get(i).Image;
-                nodes[i] = NodeNameGenerator.Generate(pinName);
+                nodes[i] = NameGenerator.GenerateNodeName(pinName);
             }
 
             component.Connect(nodes);
@@ -325,41 +204,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        public void AddFunction(string functionName, List<string> arguments, string body)
-        {
-            if (functionName == null)
-            {
-                throw new ArgumentNullException(nameof(functionName));
-            }
-
-            if (arguments == null)
-            {
-                throw new ArgumentNullException(nameof(arguments));
-            }
-
-            if (body == null)
-            {
-                throw new ArgumentNullException(nameof(body));
-            }
-            IFunctionFactory factory = new FunctionFactory();
-            ReadingExpressionContext.AddFunction(functionName, factory.Create(functionName, arguments, body));
-        }
-
-        public void SetNamedExpression(string expressionName, string expression)
-        {
-            if (expressionName == null)
-            {
-                throw new ArgumentNullException(nameof(expressionName));
-            }
-
-            if (expression == null)
-            {
-                throw new ArgumentNullException(nameof(expression));
-            }
-
-            var parameters = ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, CaseSensitivity, false);
-            ReadingExpressionContext.SetNamedExpression(expressionName, expression, parameters);
-        }
 
         public void SetParameter(Entity entity, string parameterName, string expression, bool beforeTemperature = true, bool onload = true)
         {
@@ -380,15 +224,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             IEqualityComparer<string> comparer = StringComparerProvider.Get(CaseSensitivity.IsEntityParameterNameCaseSensitive);
 
-            double value = ReadingEvaluator.Evaluate(new DynamicExpression(expression), ReadingExpressionContext, null, this);
+            double value = CircuitEvaluator.EvaluateDouble(expression);
 
             try
             {
                 entity.SetParameter(parameterName, value, comparer);
+                var context = CircuitEvaluator.GetContext();
 
-                bool isDynamic = ExpressionParserHelpers.HaveSpiceProperties(expression, ReadingExpressionContext, this, false)
-                                 || ExpressionParserHelpers.HaveFunctions(expression, ReadingExpressionContext, this)
-                                 || ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, CaseSensitivity, false).Any();
+                bool isDynamic = context.HaveSpiceProperties(expression)
+                                 || context.HaveFunctions(expression)
+                                 || context.GetExpressionParameters(expression, false).Any();
 
                 if (isDynamic)
                 {
@@ -435,14 +280,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             try
             {
-                double value = ReadingEvaluator.Evaluate(new DynamicExpression(expression), ReadingExpressionContext, null, this);
+                double value = CircuitEvaluator.EvaluateDouble(expression);
 
                 entity.SetParameter(parameterName, value, comparer);
 
-                bool isDynamic = ExpressionParserHelpers.HaveSpiceProperties(expression, ReadingExpressionContext, this, false)
-                                 || ExpressionParserHelpers.HaveFunctions(expression, ReadingExpressionContext, this)
-                                 || ExpressionParserHelpers.GetExpressionParameters(expression, ReadingExpressionContext, this, CaseSensitivity, false).Any();
+                var context = CircuitEvaluator.GetContext();
 
+                bool isDynamic = context.HaveSpiceProperties(expression)
+                                 || context.HaveFunctions(expression)
+                                 || context.GetExpressionParameters(expression, false).Any();
                 if (isDynamic)
                 {
                     SimulationPreparations.SetParameter(entity, parameterName, expression, beforeTemperature, onload, this);
@@ -471,11 +317,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         {
             if (Parent != null)
             {
-                var generators = new List<IObjectNameGenerator>();
-                IReadingContext current = this;
+                var generators = new List<INameGenerator>();
+                ICircuitContext current = this;
                 while (current != null)
                 {
-                    generators.Add(current.ModelNameGenerator);
+                    generators.Add(current.NameGenerator);
                     current = current.Parent;
                 }
 
@@ -483,8 +329,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             else
             {
-                var generators = new List<IObjectNameGenerator>();
-                generators.Add(ModelNameGenerator);
+                var generators = new List<INameGenerator>();
+                generators.Add(NameGenerator);
                 return new StochasticModelsRegistry(generators, CaseSensitivity.IsEntityNameCaseSensitive);
             }
         }

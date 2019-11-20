@@ -5,9 +5,12 @@ using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.Common.Mathematics.Probability;
 using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Processors;
 using SpiceSharpParser.Models.Netlist.Spice;
+using SpiceSharpParser.Parsers.Expression;
 using SpiceSharpParser.Parsers.Netlist.Spice;
 
 namespace SpiceSharpParser
@@ -101,21 +104,28 @@ namespace SpiceSharpParser
 
             // Preprocessing
             SpiceNetlist preprocessedNetListModel = (SpiceNetlist)originalNetlistModel.Clone();
-            Evaluator preprocessorEvaluator = CreatePreprocessorEvaluator();
+            var nodeNameGenerator = new MainCircuitNodeNameGenerator(
+                new string[] { "0" },
+                Settings.Reading.CaseSensitivity.IsNodeNameCaseSensitive);
+
+            var objectNameGenerator = new ObjectNameGenerator(string.Empty);
+            INameGenerator nameGenerator = new NameGenerator(nodeNameGenerator, objectNameGenerator);
 
             ExpressionContext preprocessorContext = new SpiceExpressionContext(
                 string.Empty,
                 Settings.Reading.EvaluatorMode,
-                Settings.Reading.CaseSensitivity.IsParameterNameCaseSensitive,
-                Settings.Reading.CaseSensitivity.IsFunctionNameCaseSensitive,
-                Settings.Reading.CaseSensitivity.IsExpressionNameCaseSensitive,
-                new Randomizer(Settings.Reading.CaseSensitivity.IsDistributionNameCaseSensitive));
+                Settings.Reading.CaseSensitivity,
+                new Randomizer(
+                    Settings.Reading.CaseSensitivity.IsDistributionNameCaseSensitive,
+                    seed: Settings.Reading.Seed
+                ),
+                new ExpressionParser(Settings.Reading.CaseSensitivity),
+                nameGenerator);
 
             foreach (var preprocessor in Preprocessors)
             {
                 if (preprocessor is IEvaluatorConsumer consumer)
                 {
-                    consumer.Evaluator = preprocessorEvaluator;
                     consumer.ExpressionContext = preprocessorContext;
                     consumer.CaseSettings = Settings.Reading?.CaseSensitivity;
                 }
@@ -133,12 +143,6 @@ namespace SpiceSharpParser
                 PreprocessedInputModel = preprocessedNetListModel,
                 SpiceSharpModel = readerResult,
             };
-        }
-
-        private Evaluator CreatePreprocessorEvaluator()
-        {
-            Evaluator preprocessorEvaluator = new Evaluator("Preprocessors evaluator");
-            return preprocessorEvaluator;
         }
     }
 }

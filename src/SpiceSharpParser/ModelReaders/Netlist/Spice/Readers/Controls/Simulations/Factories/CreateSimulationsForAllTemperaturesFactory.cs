@@ -11,7 +11,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 {
     public class CreateSimulationsForAllTemperaturesFactory : ICreateSimulationsForAllTemperaturesFactory
     {
-        public List<BaseSimulation> CreateSimulations(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
+        public List<BaseSimulation> CreateSimulations(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, BaseSimulation> createSimulation)
         {
             var result = new List<BaseSimulation>();
 
@@ -30,7 +30,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             return result;
         }
 
-        protected BaseSimulation CreateSimulationForTemperature(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation, double? temp)
+        protected BaseSimulation CreateSimulationForTemperature(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, BaseSimulation> createSimulation, double? temp)
         {
             var simulation = createSimulation(GetSimulationName(context, statement, temp), statement, context);
 
@@ -40,7 +40,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             return simulation;
         }
 
-        protected void SetTempVariable(IReadingContext context, double? operatingTemperatureInKelvins, BaseSimulation simulation)
+        protected void SetTempVariable(ICircuitContext context, double? operatingTemperatureInKelvins, BaseSimulation simulation)
         {
             double temp = 0;
             if (operatingTemperatureInKelvins.HasValue)
@@ -54,8 +54,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             simulation.BeforeTemperature += (object sender, LoadStateEventArgs e) =>
             {
-                var expressionContext = context.SimulationExpressionContexts.GetContext(simulation);
-                expressionContext.SetParameter("TEMP", temp);
+                context.CircuitEvaluator.SetParameter(simulation, "TEMP", temp);
             };
         }
 
@@ -74,7 +73,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             }
         }
 
-        protected string GetSimulationName(IReadingContext context, Control statement, double? temperatureInKelvin = null)
+        protected string GetSimulationName(ICircuitContext context, Control statement, double? temperatureInKelvin = null)
         {
             if (temperatureInKelvin.HasValue)
             {

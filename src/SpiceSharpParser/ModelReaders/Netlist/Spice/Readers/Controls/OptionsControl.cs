@@ -16,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
-        public override void Read(Control statement, IReadingContext context)
+        public override void Read(Control statement, ICircuitContext context)
         {
             foreach (var param in statement.Parameters)
             {
@@ -28,26 +28,26 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     switch (name)
                     {
                         case "abstol":
-                            context.Result.SimulationConfiguration.AbsoluteTolerance = context.EvaluateDouble(value); break;
+                            context.Result.SimulationConfiguration.AbsoluteTolerance = context.CircuitEvaluator.EvaluateDouble(value); break;
                         case "reltol":
-                            context.Result.SimulationConfiguration.RelTolerance = context.EvaluateDouble(value); break;
+                            context.Result.SimulationConfiguration.RelTolerance = context.CircuitEvaluator.EvaluateDouble(value); break;
                         case "gmin":
-                            context.Result.SimulationConfiguration.Gmin = context.EvaluateDouble(value); break;
+                            context.Result.SimulationConfiguration.Gmin = context.CircuitEvaluator.EvaluateDouble(value); break;
                         case "itl1":
-                            context.Result.SimulationConfiguration.DCMaxIterations = (int)context.EvaluateDouble(value); break;
+                            context.Result.SimulationConfiguration.DCMaxIterations = (int)context.CircuitEvaluator.EvaluateDouble(value); break;
                         case "itl2":
-                            context.Result.SimulationConfiguration.SweepMaxIterations = (int)context.EvaluateDouble(value); break;
+                            context.Result.SimulationConfiguration.SweepMaxIterations = (int)context.CircuitEvaluator.EvaluateDouble(value); break;
                         case "itl4":
-                            context.Result.SimulationConfiguration.TranMaxIterations = (int)context.EvaluateDouble(value); break;
+                            context.Result.SimulationConfiguration.TranMaxIterations = (int)context.CircuitEvaluator.EvaluateDouble(value); break;
                         case "itl5":
                             // TODO: ????
                             break;
                         case "temp":
-                            double temp = context.EvaluateDouble(value) + Constants.CelsiusKelvin;
+                            double temp = context.CircuitEvaluator.EvaluateDouble(value) + Constants.CelsiusKelvin;
                             context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions = temp;
                             context.Result.SimulationConfiguration.TemperaturesInKelvins.Add(temp); break;
                         case "tnom":
-                            context.Result.SimulationConfiguration.NominalTemperatureInKelvins = context.EvaluateDouble(value) + Constants.CelsiusKelvin; break;
+                            context.Result.SimulationConfiguration.NominalTemperatureInKelvins = context.CircuitEvaluator.EvaluateDouble(value) + Constants.CelsiusKelvin; break;
                         case "method":
                             switch (value.ToLower())
                             {
@@ -67,23 +67,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         case "seed":
                             var seed = int.Parse(value);
                             context.Result.SimulationConfiguration.Seed = seed;
-                            context.ReadingExpressionContext.Seed = seed;
+                            context.CircuitEvaluator.Seed = seed;
                             break;
                         case "distribution":
-                            context.ReadingExpressionContext.Randomizer.CurrentPdfName = value;
+                            context.CircuitEvaluator.GetContext().Randomizer.CurrentPdfName = value;
                             break;
                         case "cdfpoints":
-                            var points = (int)context.EvaluateDouble(value);
+                            var points = (int)context.CircuitEvaluator.EvaluateDouble(value);
 
                             if (points < 4)
                             {
                                 throw new GeneralReaderException("cdfpoints needs to be greater than 3");
                             }
 
-                            context.ReadingExpressionContext.Randomizer.CdfPoints = points;
+                            context.CircuitEvaluator.GetContext().Randomizer.CdfPoints = points;
                             break;
                         case "normallimit":
-                            context.ReadingExpressionContext.Randomizer.NormalLimit = context.EvaluateDouble(value);
+                            context.CircuitEvaluator.GetContext().Randomizer.NormalLimit = context.CircuitEvaluator.EvaluateDouble(value);
                             break;
                         default:
                             context.Result.AddWarning("Unsupported option: " + name);

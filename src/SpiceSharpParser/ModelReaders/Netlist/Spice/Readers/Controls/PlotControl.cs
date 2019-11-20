@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A reading context.</param>
-        public override void Read(Control statement, IReadingContext context)
+        public override void Read(Control statement, ICircuitContext context)
         {
             if (context == null)
             {
@@ -102,7 +102,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void CreatePlot(string plotImage, ParameterCollection parameters, IReadingContext context, Simulation simulation, bool filterSpecified)
+        private void CreatePlot(string plotImage, ParameterCollection parameters, ICircuitContext context, Simulation simulation, bool filterSpecified)
         {
             var plot = new XyPlot(simulation.Name);
             List<Export> exports = GenerateExports(parameters, simulation, context);
@@ -117,7 +117,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             simulation.AfterExecute += (sender, args) => AddPlotToResultIfValid(plotImage, context, plot, simulation, filterSpecified);
         }
 
-        private void CreatePlot(string plotImage, ParameterCollection parameters, IReadingContext context, IEnumerable<Simulation> simulations, bool filterSpecified)
+        private void CreatePlot(string plotImage, ParameterCollection parameters, ICircuitContext context, IEnumerable<Simulation> simulations, bool filterSpecified)
         {
             var plot = new XyPlot($"Merged: {plotImage}");
             foreach (var simulation in simulations)
@@ -138,7 +138,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             context.Result.AddPlot(plot);
         }
 
-        private void AddPlotToResultIfValid(string plotImage, IReadingContext context, XyPlot plot, Simulation simulation, bool filterSpecified)
+        private void AddPlotToResultIfValid(string plotImage, ICircuitContext context, XyPlot plot, Simulation simulation, bool filterSpecified)
         {
             for (int i = plot.Series.Count - 1; i >= 0; i--)
             {

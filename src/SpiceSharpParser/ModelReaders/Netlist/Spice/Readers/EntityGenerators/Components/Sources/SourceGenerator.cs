@@ -12,16 +12,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public abstract class SourceGenerator : ComponentGenerator
     {
-        protected SimpleDerivativeParser CreateParser(IReadingContext context, Simulation simulation)
+        protected SimpleDerivativeParser CreateParser(ICircuitContext context, Simulation simulation)
         {
-            var parser = Parsers.Expression.ExpressionParserHelpers.GetDeriveParser(context.SimulationExpressionContexts.GetContext(simulation), context, context.ReadingEvaluator, simulation, context.CaseSensitivity);
+            var simulationContext = context.CircuitEvaluator.GetContext(simulation);
+            var parser = simulationContext.GetDeriveParser(); 
             return parser;
         }
 
         protected void SetSourceParameters(
             string name,
             ParameterCollection parameters,
-            IReadingContext context,
+            ICircuitContext context,
             Component component)
         {
             var originalParameters = parameters;

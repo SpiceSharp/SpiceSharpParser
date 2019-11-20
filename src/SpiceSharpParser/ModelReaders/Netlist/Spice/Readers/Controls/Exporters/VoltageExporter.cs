@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -13,7 +12,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
     /// Generates voltage <see cref="Export"/>.
     /// </summary>
     public class VoltageExporter : Exporter
-    {
+    {  
         /// <summary>
         /// Gets supported voltage exports.
         /// </summary>
@@ -22,31 +21,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// </returns>
         public virtual ICollection<string> CreatedTypes => new List<string> { "v", "vr", "vi", "vm", "vdb", "vp", "vph" };
 
-        /// <summary>
-        /// Creates a new voltage export
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="type">A type of export</param>
-        /// <param name="parameters">A parameters of export</param>
-        /// <param name="simulation">A simulation for export</param>
-        /// <param name="nodeNameGenerator"></param>
-        /// <param name="componentNameGenerator"></param>
-        /// <param name="modelNameGenerator"></param>
-        /// <param name="result"></param>
-        /// <param name="caseSettings"></param>
-        /// <returns>
-        /// A new export
-        /// </returns>
         public override Export CreateExport(
             string name,
             string type,
             ParameterCollection parameters,
             Simulation simulation,
-            INodeNameGenerator nodeNameGenerator,
-            IObjectNameGenerator componentNameGenerator,
-            IObjectNameGenerator modelNameGenerator,
-            IResultService result,
-            SpiceNetlistCaseSensitivitySettings caseSettings)
+            INameGenerator nameGenerator,
+            ISpiceNetlistCaseSensitivitySettings caseSettings)
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
             {
@@ -65,11 +46,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                         throw new WrongParametersCountException("No nodes for voltage export. Node expected");
                     case 2:
                         referencePath = vector.Elements[1].Image;
-                        reference = nodeNameGenerator.Parse(referencePath);
+                        reference = nameGenerator.ParseNodeName(referencePath);
                         goto case 1;
                     case 1:
                         nodePath = vector.Elements[0].Image;
-                        node = nodeNameGenerator.Parse(nodePath);
+                        node = nameGenerator.ParseNodeName(nodePath);
                         break;
                     default:
                         throw new WrongParametersCountException("Too many nodes specified for voltage export");
@@ -78,7 +59,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             else
             {
                 nodePath = parameters.Get(0).Image;
-                node = nodeNameGenerator.Parse(nodePath);
+                node = nameGenerator.ParseNodeName(nodePath);
             }
 
             Export ve = null;

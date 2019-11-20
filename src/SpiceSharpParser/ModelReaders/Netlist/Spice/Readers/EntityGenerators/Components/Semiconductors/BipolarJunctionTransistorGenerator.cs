@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using SpiceSharp.Components;
+﻿using SpiceSharp.Components;
 using SpiceSharp.Components.BipolarBehaviors;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
@@ -10,15 +9,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class BipolarJunctionTransistorGenerator : IComponentGenerator
     {
-        /// <summary>
-        /// Gets generated types.
-        /// </summary>
-        /// <returns>
-        /// Generated types.
-        /// </returns>
-        public IEnumerable<string> GeneratedTypes => new List<string> { "Q" };
-
-        public SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
         {
             BipolarJunctionTransistor bjt = new BipolarJunctionTransistor(componentIdentifier);
 
@@ -73,12 +64,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         BaseParameters bp = bjt.ParameterSets.Get<BaseParameters>();
                         if (!bp.Area.Given)
                         {
-                            bp.Area.Value = context.EvaluateDouble(s.Image);
+                            bp.Area.Value = context.CircuitEvaluator.EvaluateDouble(s.Image);
                         }
 
                         if (!bp.Temperature.Given)
                         {
-                            bp.Temperature.Value = context.EvaluateDouble(s.Image);
+                            bp.Temperature.Value = context.CircuitEvaluator.EvaluateDouble(s.Image);
                         }
                     }
                 }

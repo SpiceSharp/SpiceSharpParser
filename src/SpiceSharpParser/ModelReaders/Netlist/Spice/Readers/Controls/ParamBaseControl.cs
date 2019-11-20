@@ -16,21 +16,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, IReadingContext context)
+        public override void Read(Control statement, ICircuitContext context)
         {
-            Read(statement, context.ReadingExpressionContext, context.CaseSensitivity, context.ReadingEvaluator, context, true);
+            Read(statement, context.CircuitEvaluator.GetContext(), true);
+        }
+
+        public void Read(Control statement, ExpressionContext context)
+        {
+            Read(statement, context, true);
         }
 
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
         /// <param name="statement">A statement to process.</param>
-        /// <param name="expressionContext">Context.</param>
-        /// <param name="caseSettings">Case settings.</param>
-        /// <param name="evaluator">Evaluator.</param>
-        /// <param name="readingContext">Reading context.</param>
-        /// <param name="validate"></param>
-        public void Read(Control statement, ExpressionContext expressionContext, SpiceNetlistCaseSensitivitySettings caseSettings, IEvaluator evaluator, IReadingContext readingContext, bool validate)
+        /// <param name="context">Expression context.</param>
+        /// <param name="validate">Validate.</param>
+        public void Read(Control statement, ExpressionContext context, bool validate)
         {
             if (statement.Parameters == null)
             {
@@ -48,7 +50,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                         try
                         {
-                            SetParameter(parameterName, parameterExpression, expressionContext, evaluator, caseSettings, readingContext);
+                            SetParameter(parameterName, parameterExpression, context);
                         }
                         catch (Exception e)
                         {
@@ -64,7 +66,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     {
                         FunctionFactory factory = new FunctionFactory();
 
-                        expressionContext.AddFunction(
+                        context.AddFunction(
                             assignmentParameter.Name,
                             factory.Create(
                                 assignmentParameter.Name,
@@ -79,12 +81,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        protected abstract void SetParameter(
-            string parameterName,
-            string parameterExpression,
-            ExpressionContext expressionContext,
-            IEvaluator evaluator,
-            SpiceNetlistCaseSensitivitySettings caseSettings,
-            IReadingContext readingContext);
+        protected abstract void SetParameter(string parameterName, string parameterExpression, ExpressionContext context);
     }
 }

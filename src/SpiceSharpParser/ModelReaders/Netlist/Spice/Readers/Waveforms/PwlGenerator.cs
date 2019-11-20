@@ -24,7 +24,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
         /// <returns>
         /// A new waveform.
         /// </returns>
-        public override Waveform Generate(ParameterCollection parameters, IReadingContext context)
+        public override Waveform Generate(ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters == null)
             {
@@ -53,7 +53,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             }
         }
 
-        private static Waveform CreatePwlFromSequence(ParameterCollection parameters, IReadingContext context)
+        private static Waveform CreatePwlFromSequence(ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters.Count % 2 != 0)
             {
@@ -65,15 +65,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 
             for (var i = 0; i < parameters.Count / 2; i++)
             {
-                times[i] = context.EvaluateDouble(parameters.Get(2 * i));
-                voltages[i] = context.EvaluateDouble(parameters.Get((2 * i) + 1));
+                times[i] = context.CircuitEvaluator.EvaluateDouble(parameters.Get(2 * i));
+                voltages[i] = context.CircuitEvaluator.EvaluateDouble(parameters.Get((2 * i) + 1));
             }
 
             var pwl = new Pwl(times, voltages);
             return pwl;
         }
 
-        private static Waveform CreatePwlFromVector(ParameterCollection parameters, IReadingContext context)
+        private static Waveform CreatePwlFromVector(ParameterCollection parameters, ICircuitContext context)
         {
             List<double> values = new List<double>();
 
@@ -81,12 +81,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             {
                 if (parameters[i] is VectorParameter vp2 && vp2.Elements.Count == 2)
                 {
-                    values.Add(context.EvaluateDouble(vp2.Elements[0].Image));
-                    values.Add(context.EvaluateDouble(vp2.Elements[1].Image));
+                    values.Add(context.CircuitEvaluator.EvaluateDouble(vp2.Elements[0].Image));
+                    values.Add(context.CircuitEvaluator.EvaluateDouble(vp2.Elements[1].Image));
                 }
                 else
                 {
-                    values.Add(context.EvaluateDouble(parameters[i].Image));
+                    values.Add(context.CircuitEvaluator.EvaluateDouble(parameters[i].Image));
                 }
             }
 
@@ -104,7 +104,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             return pwl;
         }
 
-        private static Waveform CreatePwlFromFile(ParameterCollection parameters, IReadingContext context)
+        private static Waveform CreatePwlFromFile(ParameterCollection parameters, ICircuitContext context)
         {
             var fileParameter = (AssignmentParameter)parameters.First(p => p is AssignmentParameter ap && ap.Name.ToLower() == "file");
             var filePath = PathConverter.Convert(fileParameter.Value);

@@ -17,7 +17,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, IReadingContext context)
+        public override void Read(Control statement, ICircuitContext context)
         {
             if (statement.Parameters == null)
             {
@@ -35,7 +35,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         throw new System.Exception("User function needs to be a function");
                     }
 
-                    context.AddFunction(assignmentParameter.Name, assignmentParameter.Arguments, assignmentParameter.Value);
+                    context.CircuitEvaluator.AddFunction(assignmentParameter.Name, assignmentParameter.Arguments, assignmentParameter.Value);
                 }
                 else
                 {
@@ -55,7 +55,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             }
                         }
 
-                        context.AddFunction(
+                        context.CircuitEvaluator.AddFunction(
                             bracketParameter.Name,
                             arguments,
                             statement.Parameters[i + 1].Image);

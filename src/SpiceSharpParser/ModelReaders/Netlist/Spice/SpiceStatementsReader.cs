@@ -39,22 +39,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// Reads a statement.
         /// </summary>
         /// <param name="statement">A statement.</param>
-        /// <param name="readingContext">A reading context.</param>
-        public void Read(Statement statement, IReadingContext readingContext)
+        /// <param name="circuitContext">A reading context.</param>
+        public void Read(Statement statement, ICircuitContext circuitContext)
         {
             if (statement == null)
             {
                 throw new ArgumentNullException(nameof(statement));
             }
 
-            if (readingContext == null)
+            if (circuitContext == null)
             {
-                throw new ArgumentNullException(nameof(readingContext));
+                throw new ArgumentNullException(nameof(circuitContext));
             }
 
             if (Readers.ContainsKey(statement.GetType()))
             {
-                Readers[statement.GetType()].Read(statement, readingContext);
+                Readers[statement.GetType()].Read(statement, circuitContext);
             }
             else
             {

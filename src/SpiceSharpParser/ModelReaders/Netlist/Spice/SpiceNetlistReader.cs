@@ -8,6 +8,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.Models.Netlist.Spice;
+using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
@@ -49,71 +50,63 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 new Circuit(StringComparerProvider.Get(Settings.CaseSensitivity.IsEntityNameCaseSensitive)),
                 netlist.Title);
 
+
+            IExpressionParser expressionParser = new ExpressionParser(Settings.CaseSensitivity);
+
             // Get reading context
             var resultService = new ResultService(result);
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(new string[] { "0" }, Settings.CaseSensitivity.IsNodeNameCaseSensitive);
-            var componentNameGenerator = new ObjectNameGenerator(string.Empty);
-            var modelNameGenerator = new ObjectNameGenerator(string.Empty);
+            var objectNameGenerator = new ObjectNameGenerator(string.Empty);
+            INameGenerator nameGenerator = new NameGenerator(nodeNameGenerator, objectNameGenerator);
+            IRandomizer randomizer = new Randomizer(
+                Settings.CaseSensitivity.IsDistributionNameCaseSensitive,
+                seed: Settings.Seed);
 
-            IEvaluator readingEvaluator = CreateReadingEvaluator();
-            ISimulationEvaluators simulationEvaluators = new SimulationEvaluators(readingEvaluator);
-            var readingExpressionContext = CreateExpressionContext();
+            var readingExpressionContext = CreateExpressionContext(expressionParser, nameGenerator, randomizer);
             var simulationContexts = new SimulationExpressionContexts(readingExpressionContext);
 
-            SimulationPreparations simulationPreparations = new SimulationPreparations(
-               new EntityUpdates(Settings.CaseSensitivity.IsParameterNameCaseSensitive, simulationEvaluators, simulationContexts),
-               new SimulationsUpdates(simulationEvaluators, simulationContexts));
+            ISimulationPreparations simulationPreparations = new SimulationPreparations(new EntityUpdates(Settings.CaseSensitivity.IsParameterNameCaseSensitive, simulationContexts), new SimulationsUpdates(simulationContexts));
 
+            ICircuitEvaluator circuitEvaluator = new CircuitEvaluator(simulationContexts, readingExpressionContext, randomizer);
             ISpiceStatementsReader statementsReader = new SpiceStatementsReader(Settings.Mappings.Controls, Settings.Mappings.Models, Settings.Mappings.Components);
             IWaveformReader waveformReader = new WaveformReader(Settings.Mappings.Waveforms);
 
-            IReadingContext readingContext = new ReadingContext(
+            ICircuitContext circuitContext = new CircuitContext(
                 "Netlist reading context",
+                null,
+                circuitEvaluator,
                 simulationPreparations,
-                simulationEvaluators,
-                simulationContexts,
                 resultService,
-                nodeNameGenerator,
-                componentNameGenerator,
-                modelNameGenerator,
+                nameGenerator,
                 statementsReader,
                 waveformReader,
-                readingEvaluator,
-                readingExpressionContext,
                 Settings.CaseSensitivity,
-                null,
                 Settings.Mappings.Exporters,
                 Settings.WorkingDirectory);
 
             // Set initial seed
-            readingContext.ReadingExpressionContext.Seed = Settings.Seed;
+            circuitContext.CircuitEvaluator.GetContext().Randomizer.Seed = Settings.Seed;
 
             // Read statements form input netlist using created context
-            readingContext.Read(netlist.Statements, Settings.Orderer);
+            circuitContext.Read(netlist.Statements, Settings.Orderer);
 
             // Set final seed
-            result.Seed = readingContext.ReadingExpressionContext.Seed;
+            result.Seed = circuitContext.CircuitEvaluator.GetContext().Randomizer.Seed;
 
             return result;
         }
 
-        private ExpressionContext CreateExpressionContext()
+        private ExpressionContext CreateExpressionContext(IExpressionParser parser, INameGenerator nameGenerator, IRandomizer randomizer)
         {
             ExpressionContext rootContext = new SpiceExpressionContext(
                 string.Empty,
                 Settings.EvaluatorMode,
-                Settings.CaseSensitivity.IsParameterNameCaseSensitive,
-                Settings.CaseSensitivity.IsFunctionNameCaseSensitive,
-                Settings.CaseSensitivity.IsExpressionNameCaseSensitive,
-                new Randomizer(Settings.CaseSensitivity.IsDistributionNameCaseSensitive));
+                Settings.CaseSensitivity,
+                randomizer,
+                parser,
+                nameGenerator);
 
             return rootContext;
-        }
-
-        private Evaluator CreateReadingEvaluator()
-        {
-            var readingEvaluator = new Evaluator("Netlist reading evaluator");
-            return readingEvaluator;
         }
     }
 }

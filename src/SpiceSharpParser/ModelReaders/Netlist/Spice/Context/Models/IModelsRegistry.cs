@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 {
@@ -17,6 +16,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 
         void RegisterModelInstance(Model model);
 
-        IModelsRegistry CreateChildRegistry(List<IObjectNameGenerator> generators);
+        IModelsRegistry CreateChildRegistry(List<INameGenerator> generators);
     }
 }

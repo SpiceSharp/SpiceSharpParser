@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     /// </summary>
     public class RLCKGenerator : ComponentGenerator
     {
-        public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
         {
             switch (type.ToLower())
             {
@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of mutual inductance.
         /// </returns>
-        protected SpiceSharp.Components.Component GenerateMut(string name, ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateMut(string name, ParameterCollection parameters, ICircuitContext context)
         {
             var mut = new MutualInductance(name);
 
@@ -74,7 +74,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of capacitor.
         /// </returns>
-        protected SpiceSharp.Components.Component GenerateCap(string name, ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateCap(string name, ParameterCollection parameters, ICircuitContext context)
         {
             var capacitor = new Capacitor(name);
             context.CreateNodes(capacitor, parameters);
@@ -201,7 +201,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of inductor.
         /// </returns>
-        protected SpiceSharp.Components.Component GenerateInd(string name, ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateInd(string name, ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters.Count != 3)
             {
@@ -225,7 +225,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of resistor.
         /// </returns>
-        protected SpiceSharp.Components.Component GenerateRes(string name, ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateRes(string name, ParameterCollection parameters, ICircuitContext context)
         {
             Resistor res = new Resistor(name);
 

@@ -4,26 +4,23 @@ using SpiceSharp;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.Common.Mathematics.Probability;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions;
+using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 {
     public class SpiceExpressionContext : ExpressionContext
     {
-        public SpiceExpressionContext(SpiceExpressionMode mode)
-            : this(string.Empty, mode, false, false, false, new Randomizer())
-        {
-        }
-
         public SpiceExpressionContext(
             string name,
             SpiceExpressionMode mode,
-            bool isParameterNameCaseSensitive,
-            bool isFunctionNameCaseSensitive,
-            bool isExpressionNameCaseSensitive,
-            IRandomizer randomizer)
+            ISpiceNetlistCaseSensitivitySettings caseSetting,
+            IRandomizer randomizer,
+            IExpressionParser parser,
+            INameGenerator nameGenerator)
 
-        : base(name, isParameterNameCaseSensitive, isFunctionNameCaseSensitive, isExpressionNameCaseSensitive, randomizer)
+        : base(name, caseSetting, randomizer, parser, nameGenerator)
         {
             Mode = mode;
             CreateCommonFunctions();

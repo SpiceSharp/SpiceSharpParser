@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class SwitchGenerator : ComponentGenerator
     {
-        public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
         {
             switch (type.ToLower())
             {
@@ -34,7 +34,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new voltage switch.
         /// </returns>
-        protected SpiceSharp.Components.Component GenerateVoltageSwitch(string name, ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateVoltageSwitch(string name, ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters.Count < 5)
             {
@@ -121,7 +121,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of current switch.
         /// </returns>
-        protected SpiceSharp.Components.Component GenerateCurrentSwitch(string name, ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateCurrentSwitch(string name, ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters.Count < 4)
             {
@@ -166,7 +166,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // Get the controlling voltage source
                 if (parameters[2] is WordParameter || parameters[2] is IdentifierParameter)
                 {
-                    csw.ControllingName = context.ComponentNameGenerator.Generate(parameters.Get(2).Image);
+                    csw.ControllingName = context.NameGenerator.GenerateObjectName(parameters.Get(2).Image);
                 }
                 else
                 {

@@ -15,7 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, IReadingContext context)
+        public override void Read(Control statement, ICircuitContext context)
         {
             if (statement.Parameters == null)
             {
@@ -49,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void ReadOtherCases(ParameterCollection parameters, IReadingContext context)
+        private void ReadOtherCases(ParameterCollection parameters, ICircuitContext context)
         {
             bool list = false;
             for (var i = 0; i <= 2; i++)
@@ -85,7 +85,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void ReadOct(ParameterCollection parameters, IReadingContext context)
+        private void ReadOct(ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters[1] is BracketParameter bp)
             {
@@ -97,7 +97,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void ReadDec(ParameterCollection parameters, IReadingContext context)
+        private void ReadDec(ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters[1] is BracketParameter bp)
             {
@@ -109,7 +109,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void ReadLin(ParameterCollection parameters, IReadingContext context)
+        private void ReadLin(ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters[1] is BracketParameter bp)
             {
@@ -121,9 +121,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void RegisterParameter(Parameter variableParameter, IReadingContext context)
+        private void RegisterParameter(Parameter variableParameter, ICircuitContext context)
         {
-            context.SetParameter(variableParameter.Image, 0);
+            context.CircuitEvaluator.SetParameter(variableParameter.Image, 0);
         }
     }
 }

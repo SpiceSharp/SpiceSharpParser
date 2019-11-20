@@ -30,7 +30,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("1.2")
             };
 
-            var context = Substitute.For<IReadingContext>();
+            var context = Substitute.For<ICircuitContext>();
             var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
@@ -52,7 +52,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("1.2") // dc-value
             };
 
-            var context = Substitute.For<IReadingContext>();
+            var context = Substitute.For<ICircuitContext>();
             var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
@@ -73,7 +73,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new WordParameter("Dc"), // dc
             };
 
-            var context = Substitute.For<IReadingContext>();
+            var context = Substitute.For<ICircuitContext>();
             var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
@@ -96,7 +96,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("0"), // ac-phase
             };
 
-            var context = Substitute.For<IReadingContext>();
+            var context = Substitute.For<ICircuitContext>();
             var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
@@ -122,7 +122,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("12"), // ac-magnitude
             };
 
-            var context = Substitute.For<IReadingContext>();
+            var context = Substitute.For<ICircuitContext>();
             var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
@@ -145,7 +145,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("12"), // ac-magnitude
             };
 
-            var context = Substitute.For<IReadingContext>();
+            var context = Substitute.For<ICircuitContext>();
             var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
@@ -177,12 +177,12 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 }
             };
 
-            var context = Substitute.For<IReadingContext>();
+            var context = Substitute.For<ICircuitContext>();
             context.StatementsReader = new SpiceStatementsReader(Substitute.For<IMapper<BaseControl>>(), Substitute.For<IMapper<IModelGenerator>>(), Substitute.For<IMapper<IComponentGenerator>>());
 
             context.WaveformReader = Substitute.For<IWaveformReader>();
             context.WaveformReader.Supports("sine", context).Returns(true);
-            context.WaveformReader.Generate(Arg.Any<string>(), Arg.Any<ParameterCollection>(), Arg.Any<IReadingContext>()).Returns(sine);
+            context.WaveformReader.Generate(Arg.Any<string>(), Arg.Any<ParameterCollection>(), Arg.Any<ICircuitContext>()).Returns(sine);
 
 
             var entity = generator.Generate("i1", "i1", "i", parameters, context);
@@ -215,7 +215,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 }
             };
 
-            var context = Substitute.For<IReadingContext>();
+            var context = Substitute.For<ICircuitContext>();
             context.StatementsReader = new SpiceStatementsReader(
                 Substitute.For<IMapper<BaseControl>>(),
                 Substitute.For<IMapper<IModelGenerator>>(),
@@ -223,7 +223,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             context.WaveformReader = Substitute.For<IWaveformReader>();
             context.WaveformReader.Supports("sine", context).Returns(true);
 
-            context.WaveformReader.Generate(Arg.Any<string>(), Arg.Any<ParameterCollection>(), Arg.Any<IReadingContext>()).Returns(sine);
+            context.WaveformReader.Generate(Arg.Any<string>(), Arg.Any<ParameterCollection>(), Arg.Any<ICircuitContext>()).Returns(sine);
 
             var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
@@ -244,7 +244,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("13") // ac-magnitude
             };
 
-            var context = Substitute.For<IReadingContext>();
+            var context = Substitute.For<ICircuitContext>();
             var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
@@ -267,7 +267,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("2") // ac-phase
             };
 
-            var context = Substitute.For<IReadingContext>();
+            var context = Substitute.For<ICircuitContext>();
             var entity = generator.Generate("i1", "i1", "i", parameters, context);
 
             Assert.NotNull(entity);
@@ -290,11 +290,11 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("3"), // gain
             };
 
-            var context = Substitute.For<IReadingContext>();
-            context.ComponentNameGenerator.Generate(Arg.Any<string>()).Returns("v1");
+            var context = Substitute.For<ICircuitContext>();
+            context.NameGenerator = Substitute.For<INameGenerator>();
+            context.NameGenerator.GenerateObjectName(Arg.Any<string>()).Returns(x => x[0].ToString());
 
             var entity = generator.Generate("f1", "f1", "f", parameters, context);
-
             Assert.NotNull(entity);
             Assert.IsType<CurrentControlledCurrentSource>(entity);
             Assert.Equal("v1", ((CurrentControlledCurrentSource)entity).ControllingName);
@@ -315,7 +315,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("1.3"), // gain
             };
 
-            var context = Substitute.For<IReadingContext>();
+            var context = Substitute.For<ICircuitContext>();
             var entity = generator.Generate("g1", "g1", "g", parameters, context);
 
             Assert.NotNull(entity);

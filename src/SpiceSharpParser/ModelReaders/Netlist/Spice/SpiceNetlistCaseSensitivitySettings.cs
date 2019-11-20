@@ -6,7 +6,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
     /// <summary>
     /// Case-sensitivity settings for netlist reader.
     /// </summary>
-    public class SpiceNetlistCaseSensitivitySettings
+    public class SpiceNetlistCaseSensitivitySettings : ISpiceNetlistCaseSensitivitySettings
     {
         private readonly SpiceLexerSettings _lexerSettings;
 

@@ -5,6 +5,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
 {
     public interface IModelGenerator
     {
-        SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context);
+        SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, ICircuitContext context);
     }
 }

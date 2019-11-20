@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
         /// <returns>
         /// A new waveform.
         /// </returns>
-        public override Waveform Generate(ParameterCollection parameters, IReadingContext context)
+        public override Waveform Generate(ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters == null)
             {
@@ -37,13 +37,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             }
 
             var w = new Pulse();
-            w.InitialValue.Value = context.EvaluateDouble(parameters.Get(0));
-            w.PulsedValue.Value = context.EvaluateDouble(parameters.Get(1));
-            w.Delay.Value = context.EvaluateDouble(parameters.Get(2));
-            w.RiseTime.Value = context.EvaluateDouble(parameters.Get(3));
-            w.FallTime.Value = context.EvaluateDouble(parameters.Get(4));
-            w.PulseWidth.Value = context.EvaluateDouble(parameters.Get(5));
-            w.Period.Value = context.EvaluateDouble(parameters.Get(6));
+            w.InitialValue.Value = context.CircuitEvaluator.EvaluateDouble(parameters.Get(0));
+            w.PulsedValue.Value = context.CircuitEvaluator.EvaluateDouble(parameters.Get(1));
+            w.Delay.Value = context.CircuitEvaluator.EvaluateDouble(parameters.Get(2));
+            w.RiseTime.Value = context.CircuitEvaluator.EvaluateDouble(parameters.Get(3));
+            w.FallTime.Value = context.CircuitEvaluator.EvaluateDouble(parameters.Get(4));
+            w.PulseWidth.Value = context.CircuitEvaluator.EvaluateDouble(parameters.Get(5));
+            w.Period.Value = context.CircuitEvaluator.EvaluateDouble(parameters.Get(6));
 
             return w;
         }
