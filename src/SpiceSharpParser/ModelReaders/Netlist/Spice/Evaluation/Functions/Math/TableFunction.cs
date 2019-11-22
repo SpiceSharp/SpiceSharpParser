@@ -46,16 +46,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
                 index++;
             }
 
-            if (index == points.Count)
-            {
-                return points[points.Count - 1].Y;
-            }
-
-            if (index == 0 && points[0].X > parameterValue)
-            {
-                return points[0].Y;
-            }
-
             return (linesDefinition[index].A * parameterValue) + linesDefinition[index].B;
         }
 
@@ -78,8 +68,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
                     B = y1 - (a * x1),
                 });
             }
-            result.Insert(0, result[0]);
-            result.Add(result[result.Count - 1]);
+
+            result.Insert(0, new LineDefinition() { A = 0, B = points[0].Y });
+            result.Add(new LineDefinition() { A = 0, B = points[points.Count - 1].Y });
             return result.ToArray();
         }
 
@@ -88,6 +79,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             public double A { get; set; }
 
             public double B { get; set; }
+
         }
 
         public class Point

@@ -21,5 +21,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         void ExecuteTemperatureBehaviorBeforeLoad(Entity @object);
 
         void ExecuteActionBeforeSetup(Action<BaseSimulation> action);
+
+        void ExecuteActionAfterSetup(Action<BaseSimulation> action);
     }
 }

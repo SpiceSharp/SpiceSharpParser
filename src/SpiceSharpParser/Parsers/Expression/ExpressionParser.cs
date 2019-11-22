@@ -111,7 +111,7 @@ namespace SpiceSharpParser.Parsers.Expression
 
             var propertyName = arg.Property.Identifier.ToLower();
 
-            string key = $"{propertyName}_{parameters}_{context.Simulation.Name}";
+            string key = $"{context.Name}_{propertyName}_{parameters}_{context.Simulation?.Name}";
 
             if (_exporterInstances.TryGetValue(key, out Export cachedExport))
             {
@@ -145,15 +145,15 @@ namespace SpiceSharpParser.Parsers.Expression
                 }
 
                 var export = factory.CreateExport(
-                    string.Empty,
+                    propertyName + "_" + parameters.ToString(),
                     propertyName,
                     parameters,
                     context,
                     _caseSettings);
 
-                arg.Apply(() => export.Extract());
-
                 _exporterInstances[key] = export;
+
+                arg.Apply(() => export.Extract());
             }
         }
 

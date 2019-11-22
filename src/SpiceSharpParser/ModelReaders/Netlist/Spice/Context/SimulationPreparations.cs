@@ -13,14 +13,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         {
             EntityUpdates = entityUpdates ?? throw new ArgumentNullException(nameof(entityUpdates));
             SimulationUpdates = simulationUpdates ?? throw new ArgumentNullException(nameof(simulationUpdates));
-            BeforeExecute = new List<Action<BaseSimulation>>();
+            BeforeSetup = new List<Action<BaseSimulation>>();
+            AfterSetup = new List<Action<BaseSimulation>>();
         }
 
         protected EntityUpdates EntityUpdates { get; }
 
         protected SimulationsUpdates SimulationUpdates { get; }
 
-        protected List<Action<BaseSimulation>> BeforeExecute { get; }
+        protected List<Action<BaseSimulation>> BeforeSetup { get; }
+
+        protected List<Action<BaseSimulation>> AfterSetup { get; }
 
         public void Prepare(BaseSimulation simulation)
         {
@@ -31,7 +34,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             simulation.BeforeSetup += (obj, args) =>
             {
-                foreach (var action in BeforeExecute)
+                foreach (var action in BeforeSetup)
+                {
+                    action(simulation);
+                }
+            };
+
+            simulation.AfterSetup += (obj, args) =>
+            {
+                foreach (var action in AfterSetup)
                 {
                     action(simulation);
                 }
@@ -108,7 +119,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public void ExecuteActionBeforeSetup(Action<BaseSimulation> action)
         {
-            BeforeExecute.Add(action);
+            BeforeSetup.Add(action);
+        }
+
+        public void ExecuteActionAfterSetup(Action<BaseSimulation> action)
+        {
+            AfterSetup.Add(action);
         }
 
         public void SetParameter(Entity @object, string paramName, string expression, bool beforeTemperature, bool onload)
