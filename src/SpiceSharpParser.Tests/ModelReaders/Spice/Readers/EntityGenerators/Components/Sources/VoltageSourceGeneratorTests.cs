@@ -217,7 +217,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             };
 
             var context = Substitute.For<ICircuitContext>();
-            context.NameGenerator = Substitute.For<INameGenerator>();
             context.NameGenerator.GenerateObjectName(Arg.Any<string>()).Returns(x => x[0].ToString());
 
             var entity = generator.Generate("x1.h1", "h1", "h", parameters, context);

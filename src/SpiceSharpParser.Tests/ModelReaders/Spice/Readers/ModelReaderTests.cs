@@ -29,7 +29,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
                     });
 
             var readingContext = Substitute.For<ICircuitContext>();
-            readingContext.NameGenerator = Substitute.For<INameGenerator>();
             readingContext.NameGenerator.GenerateObjectName(Arg.Any<string>()).Returns(x => x[0].ToString());
             readingContext.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
 

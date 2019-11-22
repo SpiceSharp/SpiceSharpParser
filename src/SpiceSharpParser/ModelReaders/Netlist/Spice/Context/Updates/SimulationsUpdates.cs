@@ -6,14 +6,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 {
     public class SimulationsUpdates
     {
-        public SimulationsUpdates(SimulationExpressionContexts contexts)
+        public SimulationsUpdates(SimulationEvaluationContexts contexts)
         {
             Contexts = contexts;
             SpecificUpdates = new ConcurrentDictionary<BaseSimulation, SimulationUpdates>();
             CommonUpdates = new SimulationUpdates();
         }
 
-        protected SimulationExpressionContexts Contexts { get; set; }
+        protected SimulationEvaluationContexts Contexts { get; set; }
 
         protected ConcurrentDictionary<BaseSimulation, SimulationUpdates> SpecificUpdates { get; set; }
 
@@ -74,7 +74,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             }
         }
 
-        public void AddBeforeSetup(BaseSimulation simulation, Action<BaseSimulation, SimulationExpressionContexts> update)
+        public void AddBeforeSetup(BaseSimulation simulation, Action<BaseSimulation, SimulationEvaluationContexts> update)
         {
             if (simulation == null)
             {
@@ -89,7 +89,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             SpecificUpdates[simulation].ParameterUpdatesBeforeSetup.Add(new SimulationUpdate() { Simulation = simulation, Update = update });
         }
 
-        public void AddBeforeTemperature(BaseSimulation simulation, Action<BaseSimulation, SimulationExpressionContexts> update)
+        public void AddBeforeTemperature(BaseSimulation simulation, Action<BaseSimulation, SimulationEvaluationContexts> update)
         {
             if (simulation == null)
             {
@@ -104,7 +104,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             SpecificUpdates[simulation].ParameterUpdatesBeforeSetup.Add(new SimulationUpdate() { Simulation = simulation, Update = update });
         }
 
-        public void AddBeforeSetup(Action<BaseSimulation, SimulationExpressionContexts> update)
+        public void AddBeforeSetup(Action<BaseSimulation, SimulationEvaluationContexts> update)
         {
             if (update == null)
             {
@@ -114,7 +114,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             CommonUpdates.ParameterUpdatesBeforeSetup.Add(new SimulationUpdate() { Simulation = null, Update = update });
         }
 
-        public void AddBeforeLoad(Action<BaseSimulation, SimulationExpressionContexts> update)
+        public void AddBeforeLoad(Action<BaseSimulation, SimulationEvaluationContexts> update)
         {
             if (update == null)
             {
@@ -124,7 +124,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             CommonUpdates.ParameterUpdatesBeforeLoad.Add(new SimulationUpdate() { Update = update });
         }
 
-        public void AddBeforeTemperature(Action<BaseSimulation, SimulationExpressionContexts> update)
+        public void AddBeforeTemperature(Action<BaseSimulation, SimulationEvaluationContexts> update)
         {
             if (update == null)
             {

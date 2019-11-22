@@ -28,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets or set circuit evaluator.
         /// </summary>
-        ICircuitEvaluator CircuitEvaluator { get; set; }
+        ICircuitEvaluator CircuitEvaluator { get; }
 
         /// <summary>
         /// Gets the children of the reading context.
@@ -48,7 +48,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets or set name generator.
         /// </summary>
-        INameGenerator NameGenerator { get; set; }
+        INameGenerator NameGenerator { get; }
 
         /// <summary>
         /// Gets the stochastic models registry.
@@ -58,17 +58,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets or sets the statements reader.
         /// </summary>
-        ISpiceStatementsReader StatementsReader { get; set; }
+        ISpiceStatementsReader StatementsReader { get; }
 
         /// <summary>
         /// Gets or sets the waveform reader.
         /// </summary>
-        IWaveformReader WaveformReader { get; set; }
+        IWaveformReader WaveformReader { get; }
 
         /// <summary>
         /// Gets or sets case-sensitivity settings.
         /// </summary>
-        ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; set; }
+        ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
 
         /// <summary>
         /// Gets or sets working directory.
@@ -78,7 +78,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets or sets instance data.
         /// </summary>
-        InstanceData InstanceData { get; set; }
+        InstanceData InstanceData { get; }
 
         /// <summary>
         /// Sets parameter of entity to value of expression.

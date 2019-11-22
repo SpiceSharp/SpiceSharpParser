@@ -32,6 +32,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="caseSettings">Case settings.</param>
         /// <param name="exporters">Exporters.</param>
         /// <param name="workingDirectory">Working directory.</param>
+        /// <param name="instanceData">Instance data.</param>
         public CircuitContext(
             string contextName,
             ICircuitContext parent,
@@ -43,7 +44,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             IWaveformReader waveformReader,
             ISpiceNetlistCaseSensitivitySettings caseSettings,
             IMapper<Exporter> exporters,
-            string workingDirectory = null)
+            string workingDirectory,
+            InstanceData instanceData)
         {
             Name = contextName ?? throw new ArgumentNullException(nameof(contextName));
             CircuitEvaluator = circuitEvaluator;
@@ -59,6 +61,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             ModelsRegistry = CreateModelsRegistry();
             Exporters = exporters;
             WorkingDirectory = workingDirectory;
+            InstanceData = instanceData;
         }
 
         /// <summary>
@@ -69,7 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets or sets instance data.
         /// </summary>
-        public InstanceData InstanceData { get; set; }
+        public InstanceData InstanceData { get; }
 
         /// <summary>
         /// Gets or sets the name of context.
@@ -86,7 +89,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         public IMapper<Exporter> Exporters { get; }
 
-        public ICircuitEvaluator CircuitEvaluator { get; set; }
+        public ICircuitEvaluator CircuitEvaluator { get; }
 
         /// <summary>
         /// Gets simulation parameters.
@@ -103,7 +106,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         public IResultService Result { get; }
 
-        public INameGenerator NameGenerator { get; set; }
+        public INameGenerator NameGenerator { get;  }
 
         /// <summary>
         /// Gets the children of the reading context.
@@ -118,17 +121,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets or sets statements reader.
         /// </summary>
-        public ISpiceStatementsReader StatementsReader { get; set; }
+        public ISpiceStatementsReader StatementsReader { get; }
 
         /// <summary>
         /// Gets or sets waveform reader.
         /// </summary>
-        public IWaveformReader WaveformReader { get; set; }
+        public IWaveformReader WaveformReader { get;  }
 
         /// <summary>
         /// Gets or sets the case sensitivity settings.
         /// </summary>
-        public ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; set; }
+        public ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
 
         /// <summary>
         /// Sets voltage initial condition for node.
@@ -148,7 +151,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
 
             var nodeId = NameGenerator.GenerateNodeName(nodeName);
-            SimulationPreparations.SetICVoltage(nodeId, expression, this);
+            SimulationPreparations.SetICVoltage(nodeId, expression);
         }
 
         /// <summary>
@@ -235,7 +238,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
                 if (isDynamic)
                 {
-                    SimulationPreparations.SetParameter(entity, parameterName, expression, beforeTemperature, onload, this);
+                    SimulationPreparations.SetParameter(entity, parameterName, expression, beforeTemperature, onload);
                 }
             }
             catch (Exception e)
@@ -288,7 +291,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                                  || context.GetExpressionParameters(expression, false).Any();
                 if (isDynamic)
                 {
-                    SimulationPreparations.SetParameter(entity, parameterName, expression, beforeTemperature, onload, this);
+                    SimulationPreparations.SetParameter(entity, parameterName, expression, beforeTemperature, onload);
                 }
             }
             catch (Exception ex)

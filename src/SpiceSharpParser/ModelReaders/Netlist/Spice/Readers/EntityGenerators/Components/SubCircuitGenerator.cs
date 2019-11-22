@@ -21,24 +21,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     /// </summary>
     public class SubCircuitGenerator : ComponentGenerator
     {
-        public class CustomComponentInstanceData : ComponentInstanceData
-        {
-            static CustomComponentInstanceData()
-            {
-                Utility.Separator = ".";
-            }
-
-            public CustomComponentInstanceData(Circuit subcircuit)
-                : base(subcircuit)
-            {
-            }
-
-            public CustomComponentInstanceData(Circuit subckt, string name)
-                : base(subckt, name)
-            {
-            }
-        }
-
         public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
         {
             SubCircuit subCircuitDefinition = FindSubcircuitDefinition(parameters, context);
@@ -123,11 +105,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <summary>
         /// Creates models for subcircuit.
         /// </summary>
-        /// <param name="subCircuitDefiniton">A subcircuit definition.</param>
+        /// <param name="subCircuitDefinition">A subcircuit definition.</param>
         /// <param name="subCircuitContext">A subcircuit reading context.</param>
-        private void CreateSubcircuitModels(SubCircuit subCircuitDefiniton, ICircuitContext subCircuitContext)
+        private void CreateSubcircuitModels(SubCircuit subCircuitDefinition, ICircuitContext subCircuitContext)
         {
-            foreach (Statement statement in subCircuitDefiniton.Statements.Where(s => s is Model))
+            foreach (Statement statement in subCircuitDefinition.Statements.Where(s => s is Model))
             {
                 subCircuitContext.StatementsReader.Read(statement, subCircuitContext);
             }
@@ -166,13 +148,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </summary>
         /// <param name="subcircuitFullName">Subcircuit full name.</param>
         /// <param name="subcircuitName">Subcircuit name.</param>
-        /// <param name="subCircuitDefiniton">Subcircuit definition.</param>
+        /// <param name="subCircuitDefinition">Subcircuit definition.</param>
         /// <param name="parameters">Parameters and pins for subcircuit.</param>
         /// <param name="context">Parent reading context.</param>
         /// <returns>
         /// A new instance of reading context.
         /// </returns>
-        private CircuitContext CreateSubcircuitContext(string subcircuitFullName, string subcircuitName, SubCircuit subCircuitDefiniton, ParameterCollection parameters, ICircuitContext context)
+        private CircuitContext CreateSubcircuitContext(string subcircuitFullName, string subcircuitName, SubCircuit subCircuitDefinition, ParameterCollection parameters, ICircuitContext context)
         {
             int parameterParameters = 0;
 
@@ -196,10 +178,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
             }
 
-            var subCircuitExpressionContext = context.CircuitEvaluator.CreateChildContext(subcircuitFullName, true);
 
-            var subcircuitParameters = CreateSubcircuitParameters(subCircuitDefiniton, subCktParameters, context);
-            subCircuitExpressionContext.SetParameters(subcircuitParameters);
+            var subcircuitParameters = CreateSubcircuitParameters(subCircuitDefinition, subCktParameters, context);
+
+
+
 
             // setting node name generator
             var pinInstanceIdentifiers = new List<string>();
@@ -210,21 +193,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 pinInstanceIdentifiers.Add(pinInstanceName);
             }
 
-            var subcircuitNodeNameGenerator = new SubcircuitNodeNameGenerator(subcircuitFullName, subcircuitName, subCircuitDefiniton, pinInstanceIdentifiers, context.NameGenerator.Globals, context.CaseSensitivity.IsNodeNameCaseSensitive);
+            var subcircuitNodeNameGenerator = new SubcircuitNodeNameGenerator(subcircuitFullName, subcircuitName, subCircuitDefinition, pinInstanceIdentifiers, context.NameGenerator.Globals, context.CaseSensitivity.IsNodeNameCaseSensitive);
             var subcircuitObjectNameGenerator = context.NameGenerator.CreateChildNameGenerator(subcircuitName);
             var subcircuitNameGenerator = new NameGenerator(subcircuitNodeNameGenerator, subcircuitObjectNameGenerator);
-            subCircuitExpressionContext.NameGenerator = subcircuitNameGenerator;
-
             context.NameGenerator.AddChild(subcircuitNodeNameGenerator);
-
             ComponentInstanceData instanceData = new CustomComponentInstanceData(context.Result.Circuit, subcircuitFullName);
 
-            foreach (var pin in subCircuitDefiniton.Pins)
+            foreach (var pin in subCircuitDefinition.Pins)
             {
                 instanceData.NodeMap[pin] = subcircuitNodeNameGenerator.Generate(pin);
             }
 
-            var subcircuitEvaluator = context.CircuitEvaluator.GetEvaluator(subCircuitExpressionContext);
+            var subcircuitEvaluationContext = context.CircuitEvaluator.CreateChildContext(subcircuitFullName, true);
+            subcircuitEvaluationContext.SetParameters(subcircuitParameters);
+            subcircuitEvaluationContext.NameGenerator = subcircuitNameGenerator;
+
+            var subcircuitEvaluator = new CircuitEvaluator(new SimulationEvaluationContexts(subcircuitEvaluationContext), subcircuitEvaluationContext);
 
             var subcircuitContext = new CircuitContext(
                 subcircuitName,
@@ -237,9 +221,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.WaveformReader,
                 context.CaseSensitivity,
                 context.Exporters,
-                context.WorkingDirectory);
-
-            subcircuitContext.InstanceData = instanceData;
+                context.WorkingDirectory,
+                instanceData);
 
             return subcircuitContext;
         }
@@ -276,6 +259,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             return result;
+        }
+
+        public class CustomComponentInstanceData : ComponentInstanceData
+        {
+            static CustomComponentInstanceData()
+            {
+                Utility.Separator = ".";
+            }
+
+            public CustomComponentInstanceData(Circuit subcircuit)
+                : base(subcircuit)
+            {
+            }
+
+            public CustomComponentInstanceData(Circuit subckt, string name)
+                : base(subckt, name)
+            {
+            }
         }
     }
 }

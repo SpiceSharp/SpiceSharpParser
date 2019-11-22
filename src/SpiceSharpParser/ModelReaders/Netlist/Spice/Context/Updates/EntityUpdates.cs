@@ -11,7 +11,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 {
     public class EntityUpdates
     {
-        public EntityUpdates(bool isParameterNameCaseSensitive, SimulationExpressionContexts contexts)
+        public EntityUpdates(bool isParameterNameCaseSensitive, SimulationEvaluationContexts contexts)
         {
             IsParameterNameCaseSensitive = isParameterNameCaseSensitive;
             Contexts = contexts ?? throw new ArgumentNullException(nameof(contexts));
@@ -22,7 +22,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
         protected bool IsParameterNameCaseSensitive { get; }
 
-        protected SimulationExpressionContexts Contexts { get; set; }
+        protected SimulationEvaluationContexts Contexts { get; set; }
 
         protected Dictionary<Entity, EntityUpdate> CommonUpdates { get; set; }
 
@@ -135,49 +135,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             };
         }
 
-        public void Add(Entity entity, string parameterName, string expression, bool beforeTemperature, bool beforeLoad, ICircuitContext circuitContext)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
-            if (parameterName == null)
-            {
-                throw new ArgumentNullException(nameof(parameterName));
-            }
-
-            if (expression == null)
-            {
-                throw new ArgumentNullException(nameof(expression));
-            }
-
-            if (CommonUpdates.ContainsKey(entity) == false)
-            {
-                CommonUpdates[entity] = new EntityUpdate();
-            }
-
-            if (beforeLoad)
-            {
-                CommonUpdates[entity].ParameterUpdatesBeforeLoad.Add(
-                    new EntityParameterExpressionValueUpdate()
-                    {
-                        ParameterName = parameterName,
-                        Expression = new DynamicExpression(expression),
-                    });
-            }
-
-            if (beforeTemperature)
-            {
-                CommonUpdates[entity].ParameterUpdatesBeforeTemperature.Add(new EntityParameterExpressionValueUpdate()
-                {
-                    Expression = new DynamicExpression(expression),
-                    ParameterName = parameterName
-                });
-            }
-        }
-
-        public void Add(Entity entity, Simulation simulation, string parameterName, string expression, bool beforeTemperature, bool beforeLoad, ICircuitContext circuitContext)
+        public void Add(Entity entity, Simulation simulation, string parameterName, string expression, bool beforeTemperature, bool beforeLoad)
         {
             if (entity == null)
             {
@@ -255,6 +213,48 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             {
                 CommonUpdates[entity].ParameterUpdatesBeforeTemperature.Add(
                     new EntityParameterDoubleValueUpdate() { ParameterName = parameterName, Value = value });
+            }
+        }
+
+        public void Add(Entity entity, string parameterName, string expression, bool beforeTemperature, bool beforeLoad)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
+            if (CommonUpdates.ContainsKey(entity) == false)
+            {
+                CommonUpdates[entity] = new EntityUpdate();
+            }
+
+            if (beforeLoad)
+            {
+                CommonUpdates[entity].ParameterUpdatesBeforeLoad.Add(
+                    new EntityParameterExpressionValueUpdate()
+                    {
+                        ParameterName = parameterName,
+                        Expression = new DynamicExpression(expression),
+                    });
+            }
+
+            if (beforeTemperature)
+            {
+                CommonUpdates[entity].ParameterUpdatesBeforeTemperature.Add(new EntityParameterExpressionValueUpdate()
+                {
+                    Expression = new DynamicExpression(expression),
+                    ParameterName = parameterName
+                });
             }
         }
 

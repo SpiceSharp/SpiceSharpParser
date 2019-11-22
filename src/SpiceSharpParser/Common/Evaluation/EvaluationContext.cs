@@ -15,6 +15,7 @@ namespace SpiceSharpParser.Common.Evaluation
     public class EvaluationContext
     {
         private readonly ISpiceNetlistCaseSensitivitySettings _caseSettings;
+        private Simulation _simulation;
 
         public EvaluationContext(
             string name,
@@ -42,8 +43,6 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Gets the name of the context.
         /// </summary>
         public string Name { get; }
-
-        protected IExpressionParser Parser { get; }
 
         /// <summary>
         /// Gets or sets the random seed for the evaluator.
@@ -73,7 +72,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Gets or sets the parameters.
         /// </summary>
-        public Dictionary<string, Expression> Arguments { get; protected set; }
+        public Dictionary<string, Expression> Arguments { get; }
 
         /// <summary>
         /// Gets or sets custom functions.
@@ -90,11 +89,9 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         public List<EvaluationContext> Children { get; set; }
 
-        private Simulation _simulation;
-
         public Simulation Simulation
         {
-            get { return _simulation; }
+            get => _simulation;
             set
             {
                 _simulation = value;
@@ -106,7 +103,10 @@ namespace SpiceSharpParser.Common.Evaluation
         }
 
         public INameGenerator NameGenerator { get; set; }
+
         public IResultService ResultService { get; }
+
+        protected IExpressionParser Parser { get; }
 
         /// <summary>
         /// Sets the parameter.
@@ -381,6 +381,7 @@ namespace SpiceSharpParser.Common.Evaluation
             {
                 throw new ArgumentNullException(nameof(expression));
             }
+
             if (expression.CanProvideValueDirectly)
             {
                 return expression.GetValue();

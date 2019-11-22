@@ -61,12 +61,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 Settings.CaseSensitivity.IsDistributionNameCaseSensitive,
                 seed: Settings.Seed);
 
-            var readingExpressionContext = CreateExpressionContext(expressionParser, nameGenerator, randomizer, resultService);
-            var simulationContexts = new SimulationExpressionContexts(readingExpressionContext);
+            var parsingEvaluationContext = CreateExpressionContext(expressionParser, nameGenerator, randomizer, resultService);
+            var simulationEvaluationContexts = new SimulationEvaluationContexts(parsingEvaluationContext);
+            ISimulationPreparations simulationPreparations = new SimulationPreparations(new EntityUpdates(Settings.CaseSensitivity.IsParameterNameCaseSensitive, simulationEvaluationContexts), new SimulationsUpdates(simulationEvaluationContexts));
 
-            ISimulationPreparations simulationPreparations = new SimulationPreparations(new EntityUpdates(Settings.CaseSensitivity.IsParameterNameCaseSensitive, simulationContexts), new SimulationsUpdates(simulationContexts));
-
-            ICircuitEvaluator circuitEvaluator = new CircuitEvaluator(simulationContexts, readingExpressionContext, randomizer);
+            ICircuitEvaluator circuitEvaluator = new CircuitEvaluator(simulationEvaluationContexts, parsingEvaluationContext);
             ISpiceStatementsReader statementsReader = new SpiceStatementsReader(Settings.Mappings.Controls, Settings.Mappings.Models, Settings.Mappings.Components);
             IWaveformReader waveformReader = new WaveformReader(Settings.Mappings.Waveforms);
 
@@ -81,7 +80,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 waveformReader,
                 Settings.CaseSensitivity,
                 Settings.Mappings.Exporters,
-                Settings.WorkingDirectory);
+                Settings.WorkingDirectory,
+                null);
 
             // Set initial seed
             circuitContext.CircuitEvaluator.Seed = Settings.Seed;

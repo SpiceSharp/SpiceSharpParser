@@ -34,8 +34,4 @@
     <PackageReference Include="SpiceSharp" Version="2.8.0" />
     <PackageReference Include="SpiceSharpBehavioral" Version="1.1.5" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ModelReaders\Netlist\Spice\Evaluation\Functions\Control\" />
-  </ItemGroup>
 </Project>

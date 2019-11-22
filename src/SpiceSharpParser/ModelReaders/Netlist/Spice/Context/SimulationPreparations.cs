@@ -41,7 +41,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             EntityUpdates.Apply(simulation);
         }
 
-        public void SetNodeSetVoltage(string nodeId, string expression, ICircuitContext circuitContext)
+        public void SetNodeSetVoltage(string nodeId, string expression)
         {
             if (nodeId == null)
             {
@@ -62,7 +62,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             });
         }
 
-        public void SetICVoltage(string nodeId, string expression, ICircuitContext circuitContext)
+        public void SetICVoltage(string nodeId, string expression)
         {
             if (nodeId == null)
             {
@@ -111,7 +111,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             BeforeExecute.Add(action);
         }
 
-        public void SetParameter(Entity @object, string paramName, string expression, bool beforeTemperature, bool onload, ICircuitContext circuitContext)
+        public void SetParameter(Entity @object, string paramName, string expression, bool beforeTemperature, bool onload)
         {
             if (@object == null)
             {
@@ -127,7 +127,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new ArgumentNullException(nameof(expression));
             }
-            EntityUpdates.Add(@object, paramName, expression, beforeTemperature, onload, circuitContext);
+            EntityUpdates.Add(@object, paramName, expression, beforeTemperature, onload);
         }
 
         public void SetParameter(Entity @object, string paramName, double value, bool beforeTemperature, bool onload)

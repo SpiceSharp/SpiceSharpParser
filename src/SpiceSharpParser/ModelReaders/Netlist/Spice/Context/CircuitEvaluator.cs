@@ -1,6 +1,5 @@
 ﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.Common.Mathematics.Probability;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Collections.Generic;
@@ -9,23 +8,29 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public class CircuitEvaluator : ICircuitEvaluator
     {
+        private int? _seed;
+
         public CircuitEvaluator(
-            SimulationExpressionContexts simulationContexts,
-            EvaluationContext parsingContext,
-            IRandomizer randomizer)
+            SimulationEvaluationContexts simulationContexts,
+            EvaluationContext parsingContext)
         {
             SimulationContexts = simulationContexts;
             ParsingContext = parsingContext;
-            Randomizer = randomizer;
         }
 
-        public ICircuitEvaluator GetEvaluator(EvaluationContext parsingContext)
+        public int? Seed
         {
-            return new CircuitEvaluator(new SimulationExpressionContexts(parsingContext), parsingContext, Randomizer);
+            get => _seed;
+
+            set
+            {
+                _seed = value;
+
+                ParsingContext.Seed = value;
+            }
         }
 
-        public IRandomizer Randomizer { get; }
-        protected SimulationExpressionContexts SimulationContexts { get; }
+        protected SimulationEvaluationContexts SimulationContexts { get; }
 
         protected EvaluationContext ParsingContext { get; }
 
@@ -36,7 +41,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// A value of expression..
         /// </returns>
-        public double EvaluateDouble(string expression, Simulation sim)
+        public double EvaluateDouble(string expression, Simulation simulation)
         {
             if (expression == null)
             {
@@ -44,12 +49,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             try
             {
-                if (sim == null)
+                if (simulation == null)
                 {
                     return ParsingContext.Evaluate(expression);
                 }
 
-                return SimulationContexts.GetContext(sim).Evaluate(expression);
+                return SimulationContexts.GetContext(simulation).Evaluate(expression);
             }
             catch (Exception ex)
             {
@@ -164,9 +169,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return GetContext(simulation).Parameters.ContainsKey(parameterName);
         }
 
-        public EvaluationContext CreateChildContext(string name, bool b)
+        public EvaluationContext CreateChildContext(string name, bool addToChildren)
         {
-            return ParsingContext.CreateChildContext(name, b);
+            return ParsingContext.CreateChildContext(name, addToChildren);
         }
 
         public int? GetSeed(Simulation sim)
@@ -182,20 +187,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public IEnumerable<string> GetExpressionNames()
         {
             return ParsingContext.GetExpressionNames();
-        }
-
-        private int? _seed;
-
-        public int? Seed
-        {
-            get { return _seed; }
-
-            set
-            {
-                _seed = value;
-
-                ParsingContext.Seed = value;
-            }
         }
     }
 }

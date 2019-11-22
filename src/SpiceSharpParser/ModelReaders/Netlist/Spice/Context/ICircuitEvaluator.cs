@@ -7,21 +7,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public interface ICircuitEvaluator
     {
-        ICircuitEvaluator GetEvaluator(EvaluationContext parsingContext);
+        int? Seed { get; set; }
 
         /// <summary>
         /// Parses an expression to double.
         /// </summary>
-        /// <param name="expression">Expression to parse</param>
+        /// <param name="expression">Expression.</param>
+        /// <param name="simulation">Simulation.</param>
         /// <returns>
         /// A value of expression.
         /// </returns>
-        double EvaluateDouble(string expression, Simulation sim);
+        double EvaluateDouble(string expression, Simulation simulation);
 
         /// <summary>
         /// Parses an expression to double.
         /// </summary>
-        /// <param name="expression">Expression to parse</param>
+        /// <param name="expression">Expression.</param>
         /// <returns>
         /// A value of expression.
         /// </returns>
@@ -30,7 +31,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Parses an expression to double.
         /// </summary>
-        /// <param name="parameter">Parameter to parse</param>
+        /// <param name="parameter">Parameter.</param>
         /// <returns>
         /// A value of expression.
         /// </returns>
@@ -62,7 +63,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Sets a parameter.
         /// </summary>
         /// <param name="parameterName">Parameter name.</param>
-        void SetParameter(string parameterName, string parameterExpression);
+        /// <param name="expression">Expression.</param>
+        void SetParameter(string parameterName, string expression);
 
         void AddFunction(string functionName, List<string> arguments, string body);
 
@@ -81,7 +83,5 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         Expression GetExpression(string expressionName);
 
         IEnumerable<string> GetExpressionNames();
-
-        int? Seed { get; set; }
     }
 }
