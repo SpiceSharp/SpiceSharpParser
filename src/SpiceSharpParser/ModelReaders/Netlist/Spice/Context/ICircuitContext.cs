@@ -68,7 +68,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets or sets case-sensitivity settings.
         /// </summary>
-        SpiceNetlistCaseSensitivitySettings CaseSensitivity { get; set; }
+        ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; set; }
 
         /// <summary>
         /// Gets or sets working directory.

@@ -62,7 +62,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 Settings.CaseSensitivity.IsDistributionNameCaseSensitive,
                 seed: Settings.Seed);
 
-            var readingExpressionContext = CreateExpressionContext(expressionParser, nameGenerator, randomizer);
+            var readingExpressionContext = CreateExpressionContext(expressionParser, nameGenerator, randomizer, resultService);
             var simulationContexts = new SimulationExpressionContexts(readingExpressionContext);
 
             ISimulationPreparations simulationPreparations = new SimulationPreparations(new EntityUpdates(Settings.CaseSensitivity.IsParameterNameCaseSensitive, simulationContexts), new SimulationsUpdates(simulationContexts));
@@ -85,26 +85,27 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 Settings.WorkingDirectory);
 
             // Set initial seed
-            circuitContext.CircuitEvaluator.GetContext().Randomizer.Seed = Settings.Seed;
+            circuitContext.CircuitEvaluator.Seed = Settings.Seed;
 
             // Read statements form input netlist using created context
             circuitContext.Read(netlist.Statements, Settings.Orderer);
 
             // Set final seed
-            result.Seed = circuitContext.CircuitEvaluator.GetContext().Randomizer.Seed;
+            result.Seed = circuitContext.CircuitEvaluator.Seed;
 
             return result;
         }
 
-        private ExpressionContext CreateExpressionContext(IExpressionParser parser, INameGenerator nameGenerator, IRandomizer randomizer)
+        private EvaluationContext CreateExpressionContext(IExpressionParser parser, INameGenerator nameGenerator, IRandomizer randomizer, IResultService resultService)
         {
-            ExpressionContext rootContext = new SpiceExpressionContext(
+            EvaluationContext rootContext = new SpiceEvaluationContext(
                 string.Empty,
                 Settings.EvaluatorMode,
                 Settings.CaseSensitivity,
                 randomizer,
                 parser,
-                nameGenerator);
+                nameGenerator,
+                resultService);
 
             return rootContext;
         }

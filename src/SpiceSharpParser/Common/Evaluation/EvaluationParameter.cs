@@ -15,9 +15,9 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </summary>
         /// <param name="context">An expression context.</param>
         /// <param name="parameterName">A parameter name.</param>
-        public EvaluationParameter(ExpressionContext context, string parameterName)
+        public EvaluationParameter(EvaluationContext context, string parameterName)
         {
-            ExpressionContext = context ?? throw new ArgumentNullException(nameof(context));
+            EvaluationContext = context ?? throw new ArgumentNullException(nameof(context));
             ParameterName = parameterName ?? throw new ArgumentNullException(nameof(parameterName));
         }
 
@@ -31,14 +31,14 @@ namespace SpiceSharpParser.Common.Evaluation
             set
             {
                 _rawValue = value;
-                ExpressionContext.SetParameter(ParameterName, value);
+                EvaluationContext.SetParameter(ParameterName, value);
             }
         }
 
         /// <summary>
         /// Gets the evaluator.
         /// </summary>
-        protected ExpressionContext ExpressionContext { get; }
+        protected EvaluationContext EvaluationContext { get; }
 
         /// <summary>
         /// Gets the parameter name.
@@ -53,7 +53,7 @@ namespace SpiceSharpParser.Common.Evaluation
         /// </returns>
         public override Parameter<double> Clone()
         {
-            return new EvaluationParameter(ExpressionContext, ParameterName);
+            return new EvaluationParameter(EvaluationContext, ParameterName);
         }
     }
 }

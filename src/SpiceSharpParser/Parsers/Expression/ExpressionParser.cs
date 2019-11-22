@@ -2,11 +2,9 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using SpiceSharp.Simulations;
 using SpiceSharpBehavioral.Parsers;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -23,14 +21,14 @@ namespace SpiceSharpParser.Parsers.Expression
             _caseSettings = caseSettings;
         }
 
-        public double GetExpressionValue(string expression, ExpressionContext context, bool @throw = true)
+        public double GetExpressionValue(string expression, EvaluationContext context, bool @throw = true)
         {
             var parser = GetDeriveParser(context, @throw);
             var derivatives = parser.Parse(expression);
             return derivatives[0]();
         }
 
-        public List<string> GetExpressionParameters(string expression, ExpressionContext context, bool @throw = true)
+        public List<string> GetExpressionParameters(string expression, EvaluationContext context, bool @throw = true)
         {
             var parser = GetDeriveParser(context, @throw);
             var parameters = new List<string>();
@@ -47,7 +45,7 @@ namespace SpiceSharpParser.Parsers.Expression
             return parameters;
         }
 
-        public SimpleDerivativeParser GetDeriveParser(ExpressionContext context, bool @throw = true)
+        public SimpleDerivativeParser GetDeriveParser(EvaluationContext context, bool @throw = true)
         {
             var parser = new SimpleDerivativeParserExtended(_caseSettings);
 
@@ -58,7 +56,7 @@ namespace SpiceSharpParser.Parsers.Expression
             return parser;
         }
 
-        public bool HaveSpiceProperties(string expression, ExpressionContext context)
+        public bool HaveSpiceProperties(string expression, EvaluationContext context)
         {
             bool present = false;
             var parser = GetDeriveParser(context);
@@ -72,7 +70,7 @@ namespace SpiceSharpParser.Parsers.Expression
             return present;
         }
 
-        public bool HaveFunctions(string expression, ExpressionContext context)
+        public bool HaveFunctions(string expression, EvaluationContext context)
         {
             bool present = false;
             var parser = GetDeriveParser(context);
@@ -85,7 +83,7 @@ namespace SpiceSharpParser.Parsers.Expression
             return present;
         }
 
-        private EventHandler<SpicePropertyFoundEventArgs<double>> OnSpicePropertyFound(ExpressionContext context)
+        private EventHandler<SpicePropertyFoundEventArgs<double>> OnSpicePropertyFound(EvaluationContext context)
         {
             return (sender, arg) =>
             {
@@ -107,7 +105,7 @@ namespace SpiceSharpParser.Parsers.Expression
             };
         }
 
-        private void ApplySpiceProperty(ExpressionContext context, SpicePropertyFoundEventArgs<double> arg)
+        private void ApplySpiceProperty(EvaluationContext context, SpicePropertyFoundEventArgs<double> arg)
         {
             var parameters = GetSpicePropertyParameters(context, arg);
 
@@ -150,8 +148,7 @@ namespace SpiceSharpParser.Parsers.Expression
                     string.Empty,
                     propertyName,
                     parameters,
-                    context.Simulation,
-                    context.NameGenerator,
+                    context,
                     _caseSettings);
 
                 arg.Apply(() => export.Extract());
@@ -160,7 +157,7 @@ namespace SpiceSharpParser.Parsers.Expression
             }
         }
 
-        private ParameterCollection GetSpicePropertyParameters(ExpressionContext context, SpicePropertyFoundEventArgs<double> arg)
+        private ParameterCollection GetSpicePropertyParameters(EvaluationContext context, SpicePropertyFoundEventArgs<double> arg)
         {
             var vectorParameter = new VectorParameter();
             for (var i = 0; i < arg.Property.ArgumentCount; i++)
@@ -181,7 +178,7 @@ namespace SpiceSharpParser.Parsers.Expression
             return parameters;
         }
 
-        private EventHandler<VariableFoundEventArgs<Derivatives<Func<double>>>> OnVariableFound(ExpressionContext context, bool @throw)
+        private EventHandler<VariableFoundEventArgs<Derivatives<Func<double>>>> OnVariableFound(EvaluationContext context, bool @throw)
         {
             return (sender, args) =>
             {
@@ -229,7 +226,7 @@ namespace SpiceSharpParser.Parsers.Expression
             };
         }
 
-        private EventHandler<FunctionFoundEventArgs<Derivatives<Func<double>>>> OnFunctionFound(ExpressionContext context)
+        private EventHandler<FunctionFoundEventArgs<Derivatives<Func<double>>>> OnFunctionFound(EvaluationContext context)
         {
             return (sender, args) =>
             {
@@ -260,7 +257,7 @@ namespace SpiceSharpParser.Parsers.Expression
             };
         }
 
-        private void SetResult(ExpressionContext context, FunctionFoundEventArgs<Derivatives<Func<double>>> args, IFunction<double, double> doubleFunction)
+        private void SetResult(EvaluationContext context, FunctionFoundEventArgs<Derivatives<Func<double>>> args, IFunction<double, double> doubleFunction)
         {
             var argumentCount = args.ArgumentCount;
 

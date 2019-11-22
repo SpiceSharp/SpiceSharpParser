@@ -10,7 +10,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions.Math
             ArgumentsCount = 1;
         }
 
-        public override double Logic(string image, double[] args, ExpressionContext context)
+        public override double Logic(string image, double[] args, EvaluationContext context)
         {
             if (args.Length != 1)
             {

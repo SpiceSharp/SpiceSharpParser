@@ -12,12 +12,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
     /// </summary>
     public class IfPreprocessor : IProcessor, IEvaluatorConsumer
     {
-        public ExpressionContext ExpressionContext { get; set; }
+        public EvaluationContext EvaluationContext { get; set; }
 
         /// <summary>
         /// Gets or sets the evaluator.
         /// </summary>
-        public SpiceNetlistCaseSensitivitySettings CaseSettings { get; set; }
+        public ISpiceNetlistCaseSensitivitySettings CaseSettings { get; set; }
 
         public Statements Process(Statements statements)
         {
@@ -29,7 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             ParamControl paramControl = new ParamControl();
             foreach (Control param in statements.Where(statement => statement is Control c && c.Name.ToLower() == "param").Cast<Control>())
             {
-                paramControl.Read(param, ExpressionContext);
+                paramControl.Read(param, EvaluationContext);
             }
 
             return ReadIfs(statements);
@@ -114,7 +114,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                 elseIfControl = result[elseIfControlIndex] as Control;
             }
 
-            if (ExpressionContext.Evaluate(ifCondition.Image) >= 1.0)
+            if (EvaluationContext.Evaluate(ifCondition.Image) >= 1.0)
             {
                 if (elseIfControl != null)
                 {

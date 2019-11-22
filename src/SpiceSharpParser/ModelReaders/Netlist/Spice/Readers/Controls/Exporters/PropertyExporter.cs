@@ -1,6 +1,7 @@
 ﻿using System;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -19,13 +20,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <param name="name"></param>
         /// <param name="type">A type of export.</param>
         /// <param name="parameters">A parameters of export.</param>
-        /// <param name="simulation">A simulation for export.</param>
-        /// <param name="nameGenerator">Name generator.</param>
+        /// <param name="context">Expression context.</param>
         /// <param name="caseSettings"></param>
         /// <returns>
         /// A new export.
         /// </returns>
-        public override Export CreateExport(string name, string type, ParameterCollection parameters, Simulation simulation, INameGenerator nameGenerator,  ISpiceNetlistCaseSensitivitySettings caseSettings)
+        public override Export CreateExport(string name, string type, ParameterCollection parameters, EvaluationContext context, ISpiceNetlistCaseSensitivitySettings caseSettings)
         {
             if (name == null)
             {
@@ -42,9 +42,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 throw new ArgumentNullException(nameof(parameters));
             }
 
-            if (simulation == null)
+            if (context == null)
             {
-                throw new ArgumentNullException(nameof(simulation));
+                throw new ArgumentNullException(nameof(context));
             }
 
             var comparer = StringComparerProvider.Get(caseSettings.IsEntityParameterNameCaseSensitive);
@@ -56,13 +56,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             {
                 if (entityName.Contains("#"))
                 {
-                    string objectName = $"{nameGenerator.GenerateObjectName(entityName)}_{simulation.Name}";
-                    return new PropertyExport(name, simulation, objectName, propertyName, comparer);
+                    string objectName = $"{context.NameGenerator.GenerateObjectName(entityName)}_{context.Simulation.Name}";
+                    return new PropertyExport(name, context.Simulation, objectName, propertyName, comparer);
                 }
                 else
                 {
-                    string objectName = nameGenerator.GenerateObjectName(entityName);
-                    return new PropertyExport(name, simulation, objectName, propertyName, comparer);
+                    string objectName = context.NameGenerator.GenerateObjectName(entityName);
+
+                    if (context.ResultService.FindObject(objectName, out _))
+                    {
+                        return new PropertyExport(name, context.Simulation, objectName, propertyName, comparer);
+                    }
+                    else
+                    {
+                        return new PropertyExport(name, context.Simulation, entityName, propertyName, comparer);
+                    }
                 }
             }
 

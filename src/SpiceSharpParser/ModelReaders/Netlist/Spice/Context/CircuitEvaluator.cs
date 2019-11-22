@@ -11,7 +11,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
     {
         public CircuitEvaluator(
             SimulationExpressionContexts simulationContexts,
-            ExpressionContext parsingContext,
+            EvaluationContext parsingContext,
             IRandomizer randomizer)
         {
             SimulationContexts = simulationContexts;
@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             Randomizer = randomizer;
         }
 
-        public ICircuitEvaluator GetEvaluator(ExpressionContext parsingContext)
+        public ICircuitEvaluator GetEvaluator(EvaluationContext parsingContext)
         {
             return new CircuitEvaluator(new SimulationExpressionContexts(parsingContext), parsingContext, Randomizer);
         }
@@ -27,7 +27,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public IRandomizer Randomizer { get; }
         protected SimulationExpressionContexts SimulationContexts { get; }
 
-        protected ExpressionContext ParsingContext { get; }
+        protected EvaluationContext ParsingContext { get; }
 
         /// <summary>
         /// Parses an expression to double.
@@ -149,7 +149,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             ParsingContext.SetNamedExpression(expressionName, expression);
         }
 
-        public ExpressionContext GetContext(Simulation simulation)
+        public EvaluationContext GetContext(Simulation simulation)
         {
             if (simulation != null)
             {
@@ -164,7 +164,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return GetContext(simulation).Parameters.ContainsKey(parameterName);
         }
 
-        public ExpressionContext CreateChildContext(string name, bool b)
+        public EvaluationContext CreateChildContext(string name, bool b)
         {
             return ParsingContext.CreateChildContext(name, b);
         }

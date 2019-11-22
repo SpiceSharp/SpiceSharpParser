@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <param name="name">Name of export.</param>
         /// <param name="expressionName">Name of expression.</param>
         /// <param name="context"></param>
-        public ExpressionExport(string name, string expressionName, ExpressionContext context)
+        public ExpressionExport(string name, string expressionName, EvaluationContext context)
             : base(context.Simulation)
         {
             Name = name;
@@ -27,7 +27,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// </summary>
         public string ExpressionName { get; }
 
-        public ExpressionContext Context { get; }
+        public EvaluationContext Context { get; }
 
         /// <summary>
         /// Gets the export unit.

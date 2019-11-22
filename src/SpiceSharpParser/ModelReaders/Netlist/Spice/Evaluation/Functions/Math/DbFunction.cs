@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
 
         public SpiceExpressionMode Mode { get; }
 
-        public override double Logic(string image, double[] args, ExpressionContext context)
+        public override double Logic(string image, double[] args, EvaluationContext context)
         {
             if (args.Length != 1)
             {

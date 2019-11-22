@@ -10,15 +10,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
     {
         private readonly ReaderWriterLockSlim _cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
 
-        public SimulationExpressionContexts(ExpressionContext sourceContext)
+        public SimulationExpressionContexts(EvaluationContext sourceContext)
         {
             SourceContext = sourceContext ?? throw new ArgumentNullException(nameof(sourceContext));
-            Contexts = new Dictionary<Simulation, ExpressionContext>();
+            Contexts = new Dictionary<Simulation, EvaluationContext>();
         }
 
-        protected ExpressionContext SourceContext { get; }
+        protected EvaluationContext SourceContext { get; }
 
-        protected Dictionary<Simulation, ExpressionContext> Contexts { get; }
+        protected Dictionary<Simulation, EvaluationContext> Contexts { get; }
 
         /// <summary>
         /// Gets the expression context for simulation.
@@ -27,7 +27,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// Expression context.
         /// </returns>
-        public ExpressionContext GetContext(Simulation simulation)
+        public EvaluationContext GetContext(Simulation simulation)
         {
             if (simulation == null)
             {

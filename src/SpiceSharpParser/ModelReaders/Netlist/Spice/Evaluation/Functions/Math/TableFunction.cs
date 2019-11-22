@@ -12,7 +12,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             ArgumentsCount = -1;
         }
 
-        public override double Logic(string image, double[] args, ExpressionContext context)
+        public override double Logic(string image, double[] args, EvaluationContext context)
         {
             var parameterValue = args[0];
 
@@ -79,9 +79,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
                     B = y1 - (a * x1),
                 });
             }
-
-            result.Insert(0, new LineDefinition() { A = 0, B = points[0].Y });
-            result.Add(new LineDefinition() { A = 0, B = points[points.Count - 1].Y });
+            result.Insert(0, result[0]);
+            result.Add(result[result.Count - 1]);
             return result.ToArray();
         }
 

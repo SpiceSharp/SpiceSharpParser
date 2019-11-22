@@ -21,7 +21,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             Read(statement, context.CircuitEvaluator.GetContext(), true);
         }
 
-        public void Read(Control statement, ExpressionContext context)
+        public void Read(Control statement, EvaluationContext context)
         {
             Read(statement, context, true);
         }
@@ -32,7 +32,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">Expression context.</param>
         /// <param name="validate">Validate.</param>
-        public void Read(Control statement, ExpressionContext context, bool validate)
+        public void Read(Control statement, EvaluationContext context, bool validate)
         {
             if (statement.Parameters == null)
             {
@@ -81,6 +81,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        protected abstract void SetParameter(string parameterName, string parameterExpression, ExpressionContext context);
+        protected abstract void SetParameter(string parameterName, string parameterExpression, EvaluationContext context);
     }
 }

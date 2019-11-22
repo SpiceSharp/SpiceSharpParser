@@ -110,8 +110,7 @@ namespace SpiceSharpParser
 
             var objectNameGenerator = new ObjectNameGenerator(string.Empty);
             INameGenerator nameGenerator = new NameGenerator(nodeNameGenerator, objectNameGenerator);
-
-            ExpressionContext preprocessorContext = new SpiceExpressionContext(
+            EvaluationContext preprocessorContext = new SpiceEvaluationContext(
                 string.Empty,
                 Settings.Reading.EvaluatorMode,
                 Settings.Reading.CaseSensitivity,
@@ -120,13 +119,14 @@ namespace SpiceSharpParser
                     seed: Settings.Reading.Seed
                 ),
                 new ExpressionParser(Settings.Reading.CaseSensitivity),
-                nameGenerator);
+                nameGenerator,
+                null);
 
             foreach (var preprocessor in Preprocessors)
             {
                 if (preprocessor is IEvaluatorConsumer consumer)
                 {
-                    consumer.ExpressionContext = preprocessorContext;
+                    consumer.EvaluationContext = preprocessorContext;
                     consumer.CaseSettings = Settings.Reading?.CaseSensitivity;
                 }
 

@@ -103,14 +103,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             }
         }
 
-        private double GetValueForLotParameter(ExpressionContext expressionContext, Entity baseModel, string parameterName, double currentValue, double percentValue, string distributionName, IEqualityComparer<string> comparer)
+        private double GetValueForLotParameter(EvaluationContext evaluationContext, Entity baseModel, string parameterName, double currentValue, double percentValue, string distributionName, IEqualityComparer<string> comparer)
         {
             if (LotValues.ContainsKey(baseModel) && LotValues[baseModel].ContainsKey(parameterName))
             {
                 return LotValues[baseModel][parameterName];
             }
 
-            var random = expressionContext.Randomizer.GetRandomProvider(distributionName);
+            var random = evaluationContext.Randomizer.GetRandomProvider(distributionName);
             double newValue = currentValue + (percentValue / 100.0) * currentValue * random.NextSignedDouble();
 
             if (!LotValues.ContainsKey(baseModel))

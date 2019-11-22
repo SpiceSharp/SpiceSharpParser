@@ -7,7 +7,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
     { 
         public Expression Expression { get; set; }
 
-        public override double GetValue(ExpressionContext context)
+        public override double GetValue(EvaluationContext context)
         {
             if (context == null)
             {

@@ -7,6 +7,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
     {
         public string ParameterName { get; set; }
 
-        public abstract double GetValue(ExpressionContext context);
+        public abstract double GetValue(EvaluationContext context);
     }
 }

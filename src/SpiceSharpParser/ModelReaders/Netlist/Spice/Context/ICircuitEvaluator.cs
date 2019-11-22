@@ -7,7 +7,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public interface ICircuitEvaluator
     {
-        ICircuitEvaluator GetEvaluator(ExpressionContext parsingContext);
+        ICircuitEvaluator GetEvaluator(EvaluationContext parsingContext);
 
         /// <summary>
         /// Parses an expression to double.
@@ -70,11 +70,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         void SetNamedExpression(string expressionName, string expression);
 
-        ExpressionContext GetContext(Simulation simulation = null);
+        EvaluationContext GetContext(Simulation simulation = null);
 
         bool HaveParameter(Simulation simulation, string parameterName);
         
-        ExpressionContext CreateChildContext(string subcircuitFullName, bool b);
+        EvaluationContext CreateChildContext(string subcircuitFullName, bool b);
         
         int? GetSeed(Simulation sim);
         Expression GetExpression(string expressionName);

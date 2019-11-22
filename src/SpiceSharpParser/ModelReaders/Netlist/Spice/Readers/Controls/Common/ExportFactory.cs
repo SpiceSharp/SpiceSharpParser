@@ -28,8 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                         exportParameter.Image,
                         type,
                         bp.Parameters,
-                        simulation,
-                        context.NameGenerator,
+                        context.CircuitEvaluator.GetContext(simulation),
                         context.CaseSensitivity);
                 }
             }
@@ -45,8 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                         exportParameter.Image,
                         type,
                         parameters,
-                        simulation,
-                        context.NameGenerator,
+                        context.CircuitEvaluator.GetContext(simulation),
                         context.CaseSensitivity);
                 }
             }

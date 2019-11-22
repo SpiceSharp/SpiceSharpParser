@@ -19,7 +19,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
 
         public string Expression { get; }
 
-        public override double Logic(string image, double[] args, ExpressionContext context)
+        public override double Logic(string image, double[] args, EvaluationContext context)
         {
             if (image == null)
             {
@@ -46,7 +46,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
             return @value;
         }
 
-        public Derivatives<Func<double>> Derivative(string image, Func<double>[] args, ExpressionContext context)
+        public Derivatives<Func<double>> Derivative(string image, Func<double>[] args, EvaluationContext context)
         {
             if (image == null)
             {

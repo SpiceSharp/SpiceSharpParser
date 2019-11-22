@@ -4,19 +4,7 @@ using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
-{
-    public class RealPropertyExportModified : RealPropertyExport
-    {
-        public RealPropertyExportModified(Simulation simulation, string entityName, string propertyName, IEqualityComparer<string> comparer = null) : base(simulation, entityName, propertyName, comparer)
-        {
-        }
-
-        protected override void Initialize(object sender, EventArgs e)
-        {
-            base.Initialize(sender, e);
-        }
-    }
-
+{ 
     /// <summary>
     /// Property export.
     /// </summary>
@@ -40,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             }
 
             Source = source ?? throw new NullReferenceException(nameof(source));
-            ExportRealImpl = new RealPropertyExportModified(simulation, source, property, comparer);
+            ExportRealImpl = new RealPropertyExport(simulation, source, property, comparer);
         }
 
         /// <summary>

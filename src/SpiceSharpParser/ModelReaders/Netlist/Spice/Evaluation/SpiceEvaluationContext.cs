@@ -10,17 +10,18 @@ using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 {
-    public class SpiceExpressionContext : ExpressionContext
+    public class SpiceEvaluationContext : EvaluationContext
     {
-        public SpiceExpressionContext(
+        public SpiceEvaluationContext(
             string name,
             SpiceExpressionMode mode,
             ISpiceNetlistCaseSensitivitySettings caseSetting,
             IRandomizer randomizer,
             IExpressionParser parser,
-            INameGenerator nameGenerator)
+            INameGenerator nameGenerator,
+            IResultService resultService)
 
-        : base(name, caseSetting, randomizer, parser, nameGenerator)
+        : base(name, caseSetting, randomizer, parser, nameGenerator, resultService)
         {
             Mode = mode;
             CreateCommonFunctions();

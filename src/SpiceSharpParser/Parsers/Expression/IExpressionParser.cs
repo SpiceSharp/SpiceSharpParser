@@ -6,14 +6,14 @@ namespace SpiceSharpParser.Parsers.Expression
 {
     public interface IExpressionParser
     {
-        double GetExpressionValue(string expression, ExpressionContext context, bool @throw = true);
+        double GetExpressionValue(string expression, EvaluationContext context, bool @throw = true);
 
-        List<string> GetExpressionParameters(string expression, ExpressionContext context, bool @throw = true);
+        List<string> GetExpressionParameters(string expression, EvaluationContext context, bool @throw = true);
 
-        SimpleDerivativeParser GetDeriveParser(ExpressionContext context, bool @throw = true);
+        SimpleDerivativeParser GetDeriveParser(EvaluationContext context, bool @throw = true);
 
-        bool HaveSpiceProperties(string expression, ExpressionContext context);
+        bool HaveSpiceProperties(string expression, EvaluationContext context);
 
-        bool HaveFunctions(string expression, ExpressionContext context);
+        bool HaveFunctions(string expression, EvaluationContext context);
     }
 }

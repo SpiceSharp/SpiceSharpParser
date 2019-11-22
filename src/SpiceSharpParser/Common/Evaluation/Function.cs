@@ -15,6 +15,6 @@
         /// <summary>
         /// Computes the value of the function for given arguments.
         /// </summary>
-        public abstract TOutputType Logic(string image, TInputArgumentType[] args, ExpressionContext context);
+        public abstract TOutputType Logic(string image, TInputArgumentType[] args, EvaluationContext context);
     }
 }

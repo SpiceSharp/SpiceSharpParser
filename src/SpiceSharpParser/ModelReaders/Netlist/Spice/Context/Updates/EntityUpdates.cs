@@ -49,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
                         if (parameter != null)
                         {
-                            Common.Evaluation.ExpressionContext context = GetEntityContext(simulation, entity);
+                            Common.Evaluation.EvaluationContext context = GetEntityContext(simulation, entity);
 
                             var value = entityUpdate.GetValue(context);
 
@@ -73,7 +73,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
                             if (parameter != null)
                             {
-                                Common.Evaluation.ExpressionContext context = GetEntityContext(simulation, entityPair.Key);
+                                Common.Evaluation.EvaluationContext context = GetEntityContext(simulation, entityPair.Key);
 
                                 var value = entityUpdate.GetValue(context);
                                 if (!double.IsNaN(value))
@@ -98,7 +98,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
                         if (parameter != null)
                         {
-                            Common.Evaluation.ExpressionContext context = GetEntityContext(simulation, entity);
+                            Common.Evaluation.EvaluationContext context = GetEntityContext(simulation, entity);
                             var value = entityUpdate.GetValue(context);
 
                             if (!double.IsNaN(value))
@@ -121,7 +121,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
                             if (parameter != null)
                             {
-                                Common.Evaluation.ExpressionContext context = GetEntityContext(simulation, entityPair.Key);
+                                Common.Evaluation.EvaluationContext context = GetEntityContext(simulation, entityPair.Key);
 
                                 var value = entityUpdate.GetValue(context);
                                 if (!double.IsNaN(value))
@@ -296,7 +296,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             }
         }
 
-        private Common.Evaluation.ExpressionContext GetEntityContext(BaseSimulation simulation, Entity entity)
+        private Common.Evaluation.EvaluationContext GetEntityContext(BaseSimulation simulation, Entity entity)
         {
             var contextName = string.Empty;
             var dotIndex = entity.Name.LastIndexOf('.');

@@ -49,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             var ifPreprocessor = new IfPreprocessor();
             ifPreprocessor.CaseSettings = subCircuitContext.CaseSensitivity;
-            ifPreprocessor.ExpressionContext = subCircuitContext.CircuitEvaluator.GetContext();
+            ifPreprocessor.EvaluationContext = subCircuitContext.CircuitEvaluator.GetContext();
             subCircuitDefinition.Statements = ifPreprocessor.Process(subCircuitDefinition.Statements);
 
             ReadParamControl(subCircuitDefinition, subCircuitContext);
@@ -216,6 +216,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var subcircuitNodeNameGenerator = new SubcircuitNodeNameGenerator(subcircuitFullName, subcircuitName, subCircuitDefiniton, pinInstanceIdentifiers, context.NameGenerator.Globals, context.CaseSensitivity.IsNodeNameCaseSensitive);
             var subcircuitObjectNameGenerator = context.NameGenerator.CreateChildNameGenerator(subcircuitName);
             var subcircuitNameGenerator = new NameGenerator(subcircuitNodeNameGenerator, subcircuitObjectNameGenerator);
+            subCircuitExpressionContext.NameGenerator = subcircuitNameGenerator;
 
             context.NameGenerator.AddChild(subcircuitNodeNameGenerator);
 

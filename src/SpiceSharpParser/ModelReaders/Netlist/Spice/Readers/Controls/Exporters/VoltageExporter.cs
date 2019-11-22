@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -25,8 +24,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             string name,
             string type,
             ParameterCollection parameters,
-            Simulation simulation,
-            INameGenerator nameGenerator,
+            EvaluationContext context,
             ISpiceNetlistCaseSensitivitySettings caseSettings)
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
@@ -46,11 +44,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                         throw new WrongParametersCountException("No nodes for voltage export. Node expected");
                     case 2:
                         referencePath = vector.Elements[1].Image;
-                        reference = nameGenerator.ParseNodeName(referencePath);
+                        reference = context.NameGenerator.ParseNodeName(referencePath);
                         goto case 1;
                     case 1:
                         nodePath = vector.Elements[0].Image;
-                        node = nameGenerator.ParseNodeName(nodePath);
+                        node = context.NameGenerator.ParseNodeName(nodePath);
                         break;
                     default:
                         throw new WrongParametersCountException("Too many nodes specified for voltage export");
@@ -59,30 +57,30 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             else
             {
                 nodePath = parameters.Get(0).Image;
-                node = nameGenerator.ParseNodeName(nodePath);
+                node = context.NameGenerator.ParseNodeName(nodePath);
             }
 
             Export ve = null;
             switch (type.ToLower())
             {
                 case "v":
-                    ve = new VoltageExport(name, simulation, node, reference);
+                    ve = new VoltageExport(name, context.Simulation, node, reference);
                     break;
                 case "vr":
-                    ve = new VoltageRealExport(name, simulation, node, reference);
+                    ve = new VoltageRealExport(name, context.Simulation, node, reference);
                     break;
                 case "vi":
-                    ve = new VoltageImaginaryExport(name, simulation, node, reference);
+                    ve = new VoltageImaginaryExport(name, context.Simulation, node, reference);
                     break;
                 case "vm":
-                    ve = new VoltageMagnitudeExport(name, simulation, node, reference);
+                    ve = new VoltageMagnitudeExport(name, context.Simulation, node, reference);
                     break;
                 case "vdb":
-                    ve = new VoltageDecibelExport(name, simulation, node, reference);
+                    ve = new VoltageDecibelExport(name, context.Simulation, node, reference);
                     break;
                 case "vph":
                 case "vp":
-                    ve = new VoltagePhaseExport(name, simulation, node, reference);
+                    ve = new VoltagePhaseExport(name, context.Simulation, node, reference);
                     break;
             }
 

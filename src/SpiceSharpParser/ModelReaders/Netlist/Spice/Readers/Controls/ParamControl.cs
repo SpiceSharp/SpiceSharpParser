@@ -9,7 +9,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
     /// </summary>
     public class ParamControl : ParamBaseControl
     {
-        protected override void SetParameter(string parameterName, string parameterExpression, ExpressionContext context)
+        protected override void SetParameter(string parameterName, string parameterExpression, EvaluationContext context)
         {
             context.SetParameter(parameterName, parameterExpression);
         }

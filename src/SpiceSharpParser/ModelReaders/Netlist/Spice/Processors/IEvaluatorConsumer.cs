@@ -4,8 +4,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
     public interface IEvaluatorConsumer
     {
-        ExpressionContext ExpressionContext { get; set; }
+        EvaluationContext EvaluationContext { get; set; }
 
-        SpiceNetlistCaseSensitivitySettings CaseSettings { get; set; }
+        ISpiceNetlistCaseSensitivitySettings CaseSettings { get; set; }
     }
 }

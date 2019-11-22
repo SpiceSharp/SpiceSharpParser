@@ -72,8 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             "I(" + componentName + ")",
                             "i",
                             @params,
-                            simulation,
-                            context.NameGenerator,
+                            context.CircuitEvaluator.GetContext(simulation),
                             context.CaseSensitivity));
                 }
             }
@@ -90,8 +89,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         "V(" + node + ")",
                         "v",
                         @params,
-                        simulation,
-                        context.NameGenerator,
+                        context.CircuitEvaluator.GetContext(simulation),
                         context.CaseSensitivity));
             }
 

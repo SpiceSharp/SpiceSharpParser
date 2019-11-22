@@ -23,7 +23,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Initializes a new instance of the <see cref="CircuitContext"/> class.
         /// </summary>
         /// <param name="contextName">Name of the context.</param>
-        /// <param name="expressionParser">Expression parser.</param>
+        /// <param name="parent">Parent of the context.</param>
         /// <param name="circuitEvaluator">Circuit evaluator.</param>
         /// <param name="simulationPreparations">Simulation preparations.</param>
         /// <param name="resultService">SpiceSharpModel service for the context.</param>
@@ -31,7 +31,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="statementsReader">Statements reader.</param>
         /// <param name="waveformReader">Waveform reader.</param>
         /// <param name="caseSettings">Case settings.</param>
-        /// <param name="parent">Parent of th context.</param>
         /// <param name="exporters">Exporters.</param>
         /// <param name="workingDirectory">Working directory.</param>
         public CircuitContext(
@@ -43,7 +42,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             INameGenerator nameGenerator,
             ISpiceStatementsReader statementsReader,
             IWaveformReader waveformReader,
-            SpiceNetlistCaseSensitivitySettings caseSettings,
+            ISpiceNetlistCaseSensitivitySettings caseSettings,
             IMapper<Exporter> exporters,
             string workingDirectory = null)
         {
@@ -128,7 +127,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         public IWaveformReader WaveformReader { get; set; }
 
-        public SpiceNetlistCaseSensitivitySettings CaseSensitivity { get; set; }
+        /// <summary>
+        /// Gets or sets the case sensitivity settings.
+        /// </summary>
+        public ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; set; }
 
         /// <summary>
         /// Sets voltage initial condition for node.
