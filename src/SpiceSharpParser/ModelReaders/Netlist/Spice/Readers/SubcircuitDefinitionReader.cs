@@ -1,6 +1,6 @@
-﻿using System;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {

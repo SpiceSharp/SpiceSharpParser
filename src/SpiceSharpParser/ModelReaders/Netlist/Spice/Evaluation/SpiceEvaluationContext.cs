@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using SpiceSharp;
+﻿using SpiceSharp;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.Common.Mathematics.Probability;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions;
 using SpiceSharpParser.Parsers.Expression;
+using System;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 {
@@ -72,7 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
             foreach (var function in functions)
             {
-               AddFunction(function.Name, function);
+                AddFunction(function.Name, function);
             }
         }
 

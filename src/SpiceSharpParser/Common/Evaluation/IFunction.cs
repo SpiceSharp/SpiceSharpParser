@@ -1,5 +1,5 @@
-﻿using System;
-using SpiceSharpBehavioral.Parsers;
+﻿using SpiceSharpBehavioral.Parsers;
+using System;
 
 namespace SpiceSharpParser.Common.Evaluation
 {

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using SpiceSharp.Components;
+﻿using SpiceSharp.Components;
 using SpiceSharp.Simulations;
+using System;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 {

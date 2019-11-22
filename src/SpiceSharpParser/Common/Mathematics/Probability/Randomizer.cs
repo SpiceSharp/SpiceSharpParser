@@ -1,6 +1,6 @@
-﻿using System;
+﻿using SpiceSharpParser.Common.Mathematics.Probability.Pdfs;
+using System;
 using System.Collections.Generic;
-using SpiceSharpParser.Common.Mathematics.Probability.Pdfs;
 
 namespace SpiceSharpParser.Common.Mathematics.Probability
 {

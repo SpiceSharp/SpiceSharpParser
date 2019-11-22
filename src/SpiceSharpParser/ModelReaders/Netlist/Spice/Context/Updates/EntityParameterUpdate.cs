@@ -1,5 +1,4 @@
-﻿using SpiceSharp.Simulations;
-using SpiceSharpParser.Common.Evaluation;
+﻿using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 {

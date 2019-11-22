@@ -77,7 +77,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         {
             double dcVoltage = 10;
             double resistorResistance = 10e3; // 10000;
-            double capacitance = 1e-6 * ( 1 + 1.0* 3.0 + 3.0 * 3.0 * 2.1); // 0.000001;
+            double capacitance = 1e-6 * (1 + 1.0 * 3.0 + 3.0 * 3.0 * 2.1); // 0.000001;
             double tau = resistorResistance * capacitance;
 
             var netlist = ParseNetlist(

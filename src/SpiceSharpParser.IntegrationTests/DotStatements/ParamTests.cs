@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.DotStatements
@@ -39,7 +38,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".PARAM X = { V(1) }",
                 ".END");
 
-            double[] export = RunOpSimulation(netlist, new [] { "V(OUT)" });
+            double[] export = RunOpSimulation(netlist, new[] { "V(OUT)" });
 
             Assert.Equal(10, export[0]);
         }
@@ -58,7 +57,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".LET some_output_vector {somemagicfunction(1,2,3,4,5,6,7,8,9,10,11,12,13)}",
                 ".END");
 
-            double[] export = RunOpSimulation(netlist, new [] { "some_output_vector" });
+            double[] export = RunOpSimulation(netlist, new[] { "some_output_vector" });
 
             Assert.Equal(13 * (13 + 1) / 2.0, export[0]);
         }

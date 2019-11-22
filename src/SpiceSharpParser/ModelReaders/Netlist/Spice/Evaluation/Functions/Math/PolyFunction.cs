@@ -1,7 +1,7 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Common.Mathematics.Combinatorics;
 using System;
 using System.Collections.Generic;
-using SpiceSharpParser.Common.Mathematics.Combinatorics;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
 {

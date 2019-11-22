@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using SpiceSharp.Components;
+﻿using SpiceSharp.Components;
 using SpiceSharp.Components.Waveforms;
 using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 {

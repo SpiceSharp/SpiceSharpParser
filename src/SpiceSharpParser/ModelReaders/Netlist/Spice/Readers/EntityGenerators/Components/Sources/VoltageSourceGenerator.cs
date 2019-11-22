@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using SpiceSharp.Components;
+﻿using SpiceSharp.Components;
 using SpiceSharpBehavioral.Components.BehavioralBehaviors;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System.Linq;
 using Component = SpiceSharp.Components.Component;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
@@ -16,7 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     /// </summary>
     public class VoltageSourceGenerator : SourceGenerator
     {
-        public override  Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
+        public override Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
         {
             switch (type.ToLower())
             {
@@ -211,7 +210,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     var entity = new BehavioralVoltageSource(name);
                     context.CreateNodes(entity, parameters);
-                    
+
                     var baseParameters = entity.ParameterSets.Get<BaseParameters>();
                     baseParameters.Parser = (sim) => CreateParser(context, sim);
                     baseParameters.Expression = ExpressionFactory.CreateTableExpression(eep.Expression, eep.Points);

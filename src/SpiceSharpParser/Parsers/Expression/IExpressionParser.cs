@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using SpiceSharpBehavioral.Parsers;
+﻿using SpiceSharpBehavioral.Parsers;
 using SpiceSharpParser.Common.Evaluation;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.Parsers.Expression
 {

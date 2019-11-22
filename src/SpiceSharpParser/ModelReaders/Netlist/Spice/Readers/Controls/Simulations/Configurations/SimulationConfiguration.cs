@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using SpiceSharp.IntegrationMethods;
+﻿using SpiceSharp.IntegrationMethods;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations
 {

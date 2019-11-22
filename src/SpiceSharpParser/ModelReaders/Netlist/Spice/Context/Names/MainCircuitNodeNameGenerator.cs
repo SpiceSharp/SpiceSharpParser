@@ -1,7 +1,7 @@
-﻿using System;
+﻿using SpiceSharpParser.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
 {

@@ -1,19 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using SpiceSharp;
+﻿using SpiceSharp;
 using SpiceSharp.Components;
 using SpiceSharpBehavioral.Components.BehavioralBehaviors;
 using SpiceSharpParser.Common;
-using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Processors;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.Parsers.Expression;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using Component = SpiceSharpParser.Models.Netlist.Spice.Objects.Component;
 using Model = SpiceSharpParser.Models.Netlist.Spice.Objects.Model;
 

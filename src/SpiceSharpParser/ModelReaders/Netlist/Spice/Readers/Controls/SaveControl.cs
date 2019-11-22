@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using SpiceSharp.Circuits;
+﻿using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps;
@@ -12,6 +8,10 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -55,12 +55,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         case "op":
                             simulationType = typeof(OP);
                             break;
+
                         case "tran":
                             simulationType = typeof(Transient);
                             break;
+
                         case "ac":
                             simulationType = typeof(AC);
                             break;
+
                         case "dc":
                             simulationType = typeof(DC);
                             break;
@@ -217,7 +220,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 var expressionContext = context.CircuitEvaluator.GetContext(export.Simulation);
                 var firstParameterSweepParameter = expressionContext.Parameters[firstParameterSweep.Parameter.Image];
-                
+
                 var value = context.CircuitEvaluator.GetContext(export.Simulation).Evaluate(firstParameterSweepParameter);
                 series.Points.Add(new Point() { X = value, Y = export.Extract() });
             };

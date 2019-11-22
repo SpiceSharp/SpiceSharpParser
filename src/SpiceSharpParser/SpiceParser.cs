@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using SpiceSharpParser.Common.Evaluation;
+﻿using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.Common.Mathematics.Probability;
 using SpiceSharpParser.Lexers.Netlist.Spice;
@@ -12,6 +10,8 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Processors;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Parsers.Expression;
 using SpiceSharpParser.Parsers.Netlist.Spice;
+using System;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser
 {

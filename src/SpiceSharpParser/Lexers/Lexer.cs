@@ -26,7 +26,6 @@ namespace SpiceSharpParser.Lexers
         /// </summary>
         protected LexerGrammar<TLexerState> Grammar { get; }
 
-
         /// <summary>
         /// Gets tokens for grammar.
         /// </summary>
@@ -47,7 +46,6 @@ namespace SpiceSharpParser.Lexers
             {
                 state.LineNumber = 0;
             }
-
 
             while (currentTokenIndex < text.Length)
             {
@@ -109,7 +107,6 @@ namespace SpiceSharpParser.Lexers
 
             // yield EOF token
             yield return new Token(-1, "EOF", state?.LineNumber ?? 0);
-
         }
 
         /// <summary>
@@ -120,17 +117,17 @@ namespace SpiceSharpParser.Lexers
         /// </returns>
         private bool FindBestTokenRule(
             string textToLex,
-            int startIndex, 
+            int startIndex,
             TLexerState state,
-            out LexerTokenRule<TLexerState> bestMatchTokenRule, 
+            out LexerTokenRule<TLexerState> bestMatchTokenRule,
             out Match bestMatch)
         {
             bestMatchTokenRule = null;
             bestMatch = null;
             foreach (LexerTokenRule<TLexerState> tokenRule in Grammar.RegexRules)
             {
-                Match tokenMatch = tokenRule.RegularExpression.Match(textToLex, startIndex,textToLex.Length - startIndex);
-                if (tokenMatch.Success && tokenMatch.Length > 0 && tokenMatch.Index == startIndex) 
+                Match tokenMatch = tokenRule.RegularExpression.Match(textToLex, startIndex, textToLex.Length - startIndex);
+                if (tokenMatch.Success && tokenMatch.Length > 0 && tokenMatch.Index == startIndex)
                 {
                     state.FullMatch = tokenMatch.Length == (textToLex.Length - startIndex);
 

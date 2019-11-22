@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using SpiceSharpBehavioral.Parsers;
+﻿using SpiceSharpBehavioral.Parsers;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpiceSharpParser.Parsers.Expression
 {
@@ -334,6 +334,5 @@ namespace SpiceSharpParser.Parsers.Expression
 
             return result;
         }
-
     }
 }

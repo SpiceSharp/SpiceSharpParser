@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {

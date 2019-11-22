@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace SpiceSharpParser.IntegrationTests.Common
+﻿namespace SpiceSharpParser.IntegrationTests.Common
 {
     public class ExpressionTests : BaseTests
     {
@@ -28,7 +26,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
             EqualsWithTol(export, references);
         }
 
-//        [Fact]
+        //        [Fact]
         public void When_ExpressionHasNestedBracketsMultipleLines_Expect_Reference()
         {
             var netlist = ParseNetlist(

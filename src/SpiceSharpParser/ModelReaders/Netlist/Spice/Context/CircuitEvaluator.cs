@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using SpiceSharp.Simulations;
+﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Mathematics.Probability;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using System;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -188,7 +188,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public int? Seed
         {
-
             get { return _seed; }
 
             set
@@ -196,7 +195,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 _seed = value;
 
                 ParsingContext.Seed = value;
-
             }
         }
     }

@@ -34,15 +34,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 case "param":
                     RegisterParameter(statement.Parameters.Skip(1)[0], context);
                     break;
+
                 case "lin":
                     ReadLin(statement.Parameters.Skip(1), context);
                     break;
+
                 case "dec":
                     ReadDec(statement.Parameters.Skip(1), context);
                     break;
+
                 case "oct":
                     ReadOct(statement.Parameters.Skip(1), context);
                     break;
+
                 default:
                     ReadOtherCases(statement.Parameters, context);
                     break;
@@ -64,7 +68,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 if (parameters[1] is BracketParameter bp)
                 {
-                    RegisterParameter(bp,  context); // model parameter
+                    RegisterParameter(bp, context); // model parameter
                 }
                 else
                 {

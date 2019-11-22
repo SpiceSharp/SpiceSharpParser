@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SpiceSharp.Circuits;
+﻿using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
@@ -10,7 +7,9 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.Parsers.Expression;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -50,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             CircuitEvaluator = circuitEvaluator;
             SimulationPreparations = simulationPreparations;
             Result = resultService ?? throw new ArgumentNullException(nameof(resultService));
-            NameGenerator  = nameGenerator ?? throw new ArgumentNullException(nameof(nameGenerator));
+            NameGenerator = nameGenerator ?? throw new ArgumentNullException(nameof(nameGenerator));
             Parent = parent;
             Children = new List<ICircuitContext>();
             CaseSensitivity = caseSettings;
@@ -97,13 +96,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets or sets available subcircuits in context.
         /// </summary>
-        public ICollection<SubCircuit> AvailableSubcircuits { get;  }
+        public ICollection<SubCircuit> AvailableSubcircuits { get; }
 
         /// <summary>
         /// Gets the result service.
         /// </summary>
         public IResultService Result { get; }
-
 
         public INameGenerator NameGenerator { get; set; }
 
@@ -153,7 +151,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             SimulationPreparations.SetICVoltage(nodeId, expression, this);
         }
 
-      
         /// <summary>
         /// Creates nodes for a component.
         /// </summary>
@@ -206,7 +203,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-
         public void SetParameter(Entity entity, string parameterName, string expression, bool beforeTemperature = true, bool onload = true)
         {
             if (entity == null)
@@ -246,7 +242,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new GeneralReaderException($"Problem with setting parameter = {parameterName} with value = {value}", e);
             }
-
         }
 
         public void SetParameter(Entity entity, string parameterName, Parameter parameter, bool beforeTemperature = true, bool onload = true)
@@ -299,7 +294,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             catch (Exception ex)
             {
                 throw new GeneralReaderException(
-                    $"Exception during evaluation of parameter with expression: `{expression}` at line={parameter.LineNumber}", ex) { LineNumber = parameter.LineNumber };
+                    $"Exception during evaluation of parameter with expression: `{expression}` at line={parameter.LineNumber}", ex)
+                { LineNumber = parameter.LineNumber };
             }
         }
 

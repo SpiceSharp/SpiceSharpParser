@@ -10,11 +10,11 @@ namespace SpiceSharpParser.IntegrationTests.Components
         {
             Assert.Throws<WrongParametersCountException>(
                 () => ParseNetlist(
-                    "Resistor circuit", 
-                    "V1 1 0 150", 
-                    "R1 1 0", 
+                    "Resistor circuit",
+                    "V1 1 0 150",
+                    "R1 1 0",
                     ".SAVE I(R1)",
-                    ".OP", 
+                    ".OP",
                     ".END"));
         }
 

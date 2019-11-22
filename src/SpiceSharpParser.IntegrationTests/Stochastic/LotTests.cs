@@ -21,7 +21,7 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
 
             var exports = RunSimulationsAndReturnExports(netlist);
 
-            for  (var i = 2; i < exports.Count; i++)
+            for (var i = 2; i < exports.Count; i++)
             {
                 Assert.Equal(exports[1], exports[i]);
             }

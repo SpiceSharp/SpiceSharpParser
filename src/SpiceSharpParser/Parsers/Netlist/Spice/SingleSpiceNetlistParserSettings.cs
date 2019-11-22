@@ -1,5 +1,5 @@
-﻿using System;
-using SpiceSharpParser.Lexers.Netlist.Spice;
+﻿using SpiceSharpParser.Lexers.Netlist.Spice;
+using System;
 
 namespace SpiceSharpParser.Parsers.Netlist.Spice
 {

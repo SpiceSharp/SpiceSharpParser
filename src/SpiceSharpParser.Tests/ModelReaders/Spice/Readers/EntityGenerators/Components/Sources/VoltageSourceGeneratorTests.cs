@@ -1,11 +1,9 @@
 ﻿using NSubstitute;
+using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharp.Components;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Components.Sources
@@ -223,7 +221,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             context.NameGenerator.GenerateObjectName(Arg.Any<string>()).Returns(x => x[0].ToString());
 
             var entity = generator.Generate("x1.h1", "h1", "h", parameters, context);
-
 
             Assert.NotNull(entity);
             Assert.IsType<CurrentControlledVoltageSource>(entity);

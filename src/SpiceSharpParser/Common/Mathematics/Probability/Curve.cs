@@ -116,12 +116,12 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
 
             for (var j = 1; j < i + 1; j++)
             {
-                result += (Points[j].X - Points[j-1].X) * (Points[j].Y + Points[j-1].Y) / 2.0;
+                result += (Points[j].X - Points[j - 1].X) * (Points[j].Y + Points[j - 1].Y) / 2.0;
             }
 
             if (i < Points.Count - 1)
             {
-                var nextPoint = Points.Skip(i+1).SkipWhile(r => r.X == Points[i].X).FirstOrDefault();
+                var nextPoint = Points.Skip(i + 1).SkipWhile(r => r.X == Points[i].X).FirstOrDefault();
 
                 if (nextPoint != null)
                 {

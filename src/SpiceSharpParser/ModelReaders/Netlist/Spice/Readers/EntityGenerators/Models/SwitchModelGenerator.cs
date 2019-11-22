@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using SpiceSharp.Components;
+﻿using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Custom;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;

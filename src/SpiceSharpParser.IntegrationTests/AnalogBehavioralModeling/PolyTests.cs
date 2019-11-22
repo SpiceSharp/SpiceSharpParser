@@ -6,7 +6,6 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
 {
     public class PolyTests : BaseTests
     {
-
         [Fact]
         public void When_OnlyPoly_Expect_Exception()
         {
@@ -246,7 +245,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 "R1 1 0 100",
                 "R2 1 0 200",
                 "I1 1 0 2",
-                "FSource 2 0 POLY(1) I1 2 1", // I(I1) + 2 
+                "FSource 2 0 POLY(1) I1 2 1", // I(I1) + 2
                 ".OP",
                 ".SAVE I(FSource)",
                 ".END");
@@ -264,7 +263,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 "R1 1 0 100",
                 "R2 1 0 200",
                 "I1 1 0 2",
-                "FSource 2 0 POLY I1 2 1", // I(I1) + 2 
+                "FSource 2 0 POLY I1 2 1", // I(I1) + 2
                 ".OP",
                 ".SAVE I(FSource)",
                 ".END");
@@ -281,7 +280,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 "Poly(1) H test circuit",
                 "R1 1 0 100",
                 "I1 1 0 2",
-                "HSource 2 0 POLY(1) I1 2 1", // I(I1) + 2 
+                "HSource 2 0 POLY(1) I1 2 1", // I(I1) + 2
                 ".OP",
                 ".SAVE V(2,0)",
                 ".END");
@@ -298,7 +297,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 "Poly(1) H test circuit",
                 "R1 1 0 100",
                 "I1 1 0 2",
-                "HSource 2 0 POLY I1 2 1", // I(I1) + 2 
+                "HSource 2 0 POLY I1 2 1", // I(I1) + 2
                 ".OP",
                 ".SAVE V(2,0)",
                 ".END");

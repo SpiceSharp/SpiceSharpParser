@@ -4,7 +4,6 @@ namespace SpiceSharpParser.Common.Evaluation
 {
     public class UnknownParameterException : Exception
     {
-
         public UnknownParameterException(string name)
             : base($"Unknown parameter {name}")
         {

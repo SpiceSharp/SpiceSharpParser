@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using SpiceSharp.Components;
+﻿using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Custom;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System;
+using System.Globalization;
 using Model = SpiceSharp.Components.Model;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
@@ -96,9 +95,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         case "on":
                             vsw.ParameterSets.SetParameter("on");
                             break;
+
                         case "off":
                             vsw.ParameterSets.SetParameter("off");
                             break;
+
                         default:
                             throw new Exception("ON or OFF expected");
                     }
@@ -193,9 +194,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         case "on":
                             csw.ParameterSets.SetParameter("on");
                             break;
+
                         case "off":
                             csw.ParameterSets.SetParameter("off");
                             break;
+
                         default:
                             throw new GeneralReaderException("ON or OFF expected");
                     }

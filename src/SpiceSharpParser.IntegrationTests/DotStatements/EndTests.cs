@@ -1,5 +1,3 @@
-using System;
-
 using SpiceSharpParser.Parsers.Netlist;
 
 using Xunit;

@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {

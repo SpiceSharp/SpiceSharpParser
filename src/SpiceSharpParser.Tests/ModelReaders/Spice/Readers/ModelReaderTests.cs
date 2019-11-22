@@ -1,15 +1,14 @@
 using NSubstitute;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
-using Xunit;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
 {
@@ -28,7 +27,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
                         x[2] = null;
                         return true;
                     });
-
 
             var readingContext = Substitute.For<ICircuitContext>();
             readingContext.NameGenerator = Substitute.For<INameGenerator>();

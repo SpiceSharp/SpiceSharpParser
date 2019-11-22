@@ -1,5 +1,5 @@
-﻿using System;
-using SpiceSharpParser.Common.FileSystem;
+﻿using SpiceSharpParser.Common.FileSystem;
+using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints
 {

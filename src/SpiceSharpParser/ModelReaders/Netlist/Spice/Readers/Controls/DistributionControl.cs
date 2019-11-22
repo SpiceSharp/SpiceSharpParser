@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using SpiceSharpParser.Common.Mathematics.Probability;
+﻿using SpiceSharpParser.Common.Mathematics.Probability;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {

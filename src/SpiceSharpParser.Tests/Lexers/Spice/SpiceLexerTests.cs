@@ -456,7 +456,6 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
             Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.EOF);
         }
 
-
         [Fact]
         public void WordTest()
         {

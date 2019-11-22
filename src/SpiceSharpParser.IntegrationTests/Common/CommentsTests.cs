@@ -1,5 +1,5 @@
-using System.Linq;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using System.Linq;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Common

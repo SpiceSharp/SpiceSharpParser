@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using SpiceSharp.Circuits;
+﻿using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using System;
+using System.Collections.Generic;
 using Model = SpiceSharp.Components.Model;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
@@ -117,9 +117,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// <param name="tolerance">A tolerance (value of lot).</param>
         /// <param name="distributionName">Distribution name.</param>
         public void RegisterModelLot(
-            Model model, 
-            Func<string, Model> generator, 
-            Parameter parameter, 
+            Model model,
+            Func<string, Model> generator,
+            Parameter parameter,
             Parameter tolerance,
             string distributionName)
         {
@@ -240,7 +240,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
                 throw new ModelNotFoundException(exceptionMessage);
             }
 
-            var stochasticModel = (T) ProvideStochasticModel(entity.Name, simulation, model);
+            var stochasticModel = (T)ProvideStochasticModel(entity.Name, simulation, model);
             setModelAction(stochasticModel);
 
             if (stochasticModel != null)

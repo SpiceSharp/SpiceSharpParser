@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using SpiceSharpParser.Common.StringComparers;
+﻿using SpiceSharpParser.Common.StringComparers;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.Common
 {

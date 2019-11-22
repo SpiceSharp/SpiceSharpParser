@@ -16,6 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
                 case "r":
                     model = new ResistorModel(id);
                     break;
+
                 case "c":
                     model = new CapacitorModel(id);
                     break;

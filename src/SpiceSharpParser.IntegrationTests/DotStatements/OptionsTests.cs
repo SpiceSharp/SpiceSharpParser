@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
-using SpiceSharp.IntegrationMethods;
+﻿using SpiceSharp.IntegrationMethods;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using System;
+using System.Linq;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.DotStatements

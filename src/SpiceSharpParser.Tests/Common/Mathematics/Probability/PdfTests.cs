@@ -1,5 +1,5 @@
-﻿using System;
-using SpiceSharpParser.Common.Mathematics.Probability;
+﻿using SpiceSharpParser.Common.Mathematics.Probability;
+using System;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.Common.Mathematics.Probability

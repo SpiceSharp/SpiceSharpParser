@@ -1,18 +1,15 @@
 ﻿using NSubstitute;
+using SpiceSharp.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharp.Components;
 using Xunit;
-using SpiceSharpParser.ModelReaders.Netlist.Spice;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models;
-using SpiceSharp;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Components.Sources
 {
@@ -183,7 +180,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             context.WaveformReader = Substitute.For<IWaveformReader>();
             context.WaveformReader.Supports("sine", context).Returns(true);
             context.WaveformReader.Generate(Arg.Any<string>(), Arg.Any<ParameterCollection>(), Arg.Any<ICircuitContext>()).Returns(sine);
-
 
             var entity = generator.Generate("i1", "i1", "i", parameters, context);
 

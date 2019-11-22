@@ -1,5 +1,4 @@
-﻿using System;
-using SpiceSharp.Simulations;
+﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
@@ -7,6 +6,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
@@ -28,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <summary>
         /// Gets the simulations factory that creates simulations for Monte Carol simulation.
         /// </summary>
-        protected ICreateSimulationsForMonteCarloFactory CreateSimulationsForMonteCarloFactory { get; }     
+        protected ICreateSimulationsForMonteCarloFactory CreateSimulationsForMonteCarloFactory { get; }
 
         /// <summary>
         /// Creates simulations.

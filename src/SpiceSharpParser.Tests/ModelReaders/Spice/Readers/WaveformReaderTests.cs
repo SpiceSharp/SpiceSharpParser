@@ -1,17 +1,15 @@
 using NSubstitute;
+using SpiceSharp.Components;
+using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharp.Components;
 using System;
-using SpiceSharpParser.ModelReaders.Netlist.Spice;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
 {
-    using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
     using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
     public class WaveformReaderTests

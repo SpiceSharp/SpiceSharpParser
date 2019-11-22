@@ -1,5 +1,3 @@
-using SpiceSharp.Simulations;
-using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -67,7 +65,6 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(8, exports.Length);
         }
 
-
         [Fact]
         public void SaveWithFilterOPBasic()
         {
@@ -112,7 +109,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         }
 
         [Fact]
-        public void SaveDCFromLetAdvanced() //TODO: Better test names :( 
+        public void SaveDCFromLetAdvanced() //TODO: Better test names :(
         {
             var netlist = ParseNetlist(
                "Save - Diode circuit",
@@ -391,7 +388,6 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             // Verify
             EqualsWithTol(exports, new double[] { 4, 1 });
         }
-
 
         [Fact]
         public void CurrentByAmpersandInNestedSubcircuit()

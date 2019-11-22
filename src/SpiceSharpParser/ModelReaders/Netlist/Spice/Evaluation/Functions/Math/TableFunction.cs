@@ -59,7 +59,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             return (linesDefinition[index].A * parameterValue) + linesDefinition[index].B;
         }
 
-
         private static LineDefinition[] CreateLineParameters(List<Point> points)
         {
             List<LineDefinition> result = new List<LineDefinition>();

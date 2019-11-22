@@ -42,6 +42,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         case "itl5":
                             // TODO: ????
                             break;
+
                         case "temp":
                             double temp = context.CircuitEvaluator.EvaluateDouble(value) + Constants.CelsiusKelvin;
                             context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions = temp;
@@ -55,23 +56,28 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                                 case "trapezoidal":
                                     context.Result.SimulationConfiguration.Method = new Trapezoidal();
                                     break;
+
                                 case "gear":
                                     context.Result.SimulationConfiguration.Method = new Gear();
                                     break;
+
                                 case "euler":
                                     context.Result.SimulationConfiguration.Method = new FixedEuler();
                                     break;
                             }
 
                             break;
+
                         case "seed":
                             var seed = int.Parse(value);
                             context.Result.SimulationConfiguration.Seed = seed;
                             context.CircuitEvaluator.Seed = seed;
                             break;
+
                         case "distribution":
                             context.CircuitEvaluator.GetContext().Randomizer.CurrentPdfName = value;
                             break;
+
                         case "cdfpoints":
                             var points = (int)context.CircuitEvaluator.EvaluateDouble(value);
 
@@ -82,9 +88,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                             context.CircuitEvaluator.GetContext().Randomizer.CdfPoints = points;
                             break;
+
                         case "normallimit":
                             context.CircuitEvaluator.GetContext().Randomizer.NormalLimit = context.CircuitEvaluator.EvaluateDouble(value);
                             break;
+
                         default:
                             context.Result.AddWarning("Unsupported option: " + name);
                             break;

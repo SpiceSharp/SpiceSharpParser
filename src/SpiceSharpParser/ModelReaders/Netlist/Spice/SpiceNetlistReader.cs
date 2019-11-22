@@ -50,7 +50,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 new Circuit(StringComparerProvider.Get(Settings.CaseSensitivity.IsEntityNameCaseSensitive)),
                 netlist.Title);
 
-
             IExpressionParser expressionParser = new ExpressionParser(Settings.CaseSensitivity);
 
             // Get reading context

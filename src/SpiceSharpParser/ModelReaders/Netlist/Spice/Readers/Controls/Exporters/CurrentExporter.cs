@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using SpiceSharp.Simulations;
-using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+﻿using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
@@ -31,6 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                     case 1:
                         componentIdentifier = context.NameGenerator.GenerateObjectName(vector.Elements[0].Image);
                         break;
+
                     default:
                         throw new Exception("Too many nodes specified");
                 }

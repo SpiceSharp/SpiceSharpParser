@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SpiceSharpParser.Common.Evaluation;
+﻿using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
@@ -118,7 +118,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             {
                 if (elseIfControl != null)
                 {
-                   return result.Skip(ifIndex + 1).Take(elseIfControlIndex - ifIndex - 1).ToList();
+                    return result.Skip(ifIndex + 1).Take(elseIfControlIndex - ifIndex - 1).ToList();
                 }
                 else
                 {

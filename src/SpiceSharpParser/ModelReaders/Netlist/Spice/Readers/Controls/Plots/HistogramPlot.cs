@@ -43,7 +43,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots
         /// <summary>
         /// Gets the name of the plot.
         /// </summary>
-        public string Name { get;  }
+        public string Name { get; }
 
         /// <summary>
         /// Gets the histogram x-unit.

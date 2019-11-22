@@ -1,8 +1,8 @@
-﻿using System;
+﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common.Evaluation;
+using System;
 using System.Collections.Generic;
 using System.Threading;
-using SpiceSharp.Simulations;
-using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {

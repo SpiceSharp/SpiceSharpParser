@@ -212,7 +212,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double export = RunOpSimulation(netlist, "V(OUT)");
 
             // Get references
-            double[] references = { (1.0 / ( 10.0 + 20.0 + 1.0)) * 4.0};
+            double[] references = { (1.0 / (10.0 + 20.0 + 1.0)) * 4.0 };
 
             EqualsWithTol(new double[] { export }, references);
         }

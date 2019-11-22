@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using SpiceSharp.Simulations;
+﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -37,15 +37,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 case "param":
                     ReadParam(statement.Parameters.Skip(1), context);
                     break;
+
                 case "lin":
                     ReadLin(statement.Parameters.Skip(1), context);
                     break;
+
                 case "dec":
                     ReadDec(statement.Parameters.Skip(1), context);
                     break;
+
                 case "oct":
                     ReadOct(statement.Parameters.Skip(1), context);
                     break;
+
                 default:
                     ReadOtherCases(statement.Parameters, context);
                     break;
@@ -62,15 +66,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 case "dec":
                     ReadDec(variableParameter, parameters.Skip(2), context);
                     break;
+
                 case "oct":
                     ReadOct(variableParameter, parameters.Skip(2), context);
                     break;
+
                 case "list":
                     ReadList(variableParameter, parameters.Skip(2), context);
                     break;
+
                 case "lin":
                     ReadLin(variableParameter, parameters.Skip(2), context);
                     break;
+
                 default:
                     ReadLin(variableParameter, parameters.Skip(1), context);
                     break;

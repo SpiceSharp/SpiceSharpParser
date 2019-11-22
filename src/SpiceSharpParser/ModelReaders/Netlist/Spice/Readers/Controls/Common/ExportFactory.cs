@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SpiceSharp.Simulations;
+﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
 {
@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
             if (exportParameter is ReferenceParameter rp)
             {
                 string type = "@";
-                var parameters = new ParameterCollection { new VectorParameter() { Elements = new List<SingleParameter>() { new WordParameter(rp.Name), new WordParameter(rp.Argument) }}};
+                var parameters = new ParameterCollection { new VectorParameter() { Elements = new List<SingleParameter>() { new WordParameter(rp.Name), new WordParameter(rp.Argument) } } };
 
                 if (mapper.TryGetValue(type, true, out var exporter))
                 {

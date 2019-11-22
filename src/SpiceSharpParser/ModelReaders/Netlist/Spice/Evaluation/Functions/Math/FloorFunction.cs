@@ -1,7 +1,5 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
 using System;
-using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
 {

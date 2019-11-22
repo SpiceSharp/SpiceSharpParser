@@ -2,7 +2,7 @@
 {
     public class ZeroExport : Export
     {
-        public ZeroExport() 
+        public ZeroExport()
             : base(null)
         {
         }

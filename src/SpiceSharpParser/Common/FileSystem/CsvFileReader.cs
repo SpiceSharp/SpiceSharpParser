@@ -35,7 +35,7 @@ namespace SpiceSharpParser.Common.FileSystem
                 if (double.TryParse(parts[0].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out var time)
                     && double.TryParse(parts[1].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out var value))
                 {
-                    yield return new [] { time, value };
+                    yield return new[] { time, value };
                 }
             }
         }

@@ -88,6 +88,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                             }
 
                             break;
+
                         default:
                             throw new WrongParameterException("1 or 2 nodes expected");
                     }

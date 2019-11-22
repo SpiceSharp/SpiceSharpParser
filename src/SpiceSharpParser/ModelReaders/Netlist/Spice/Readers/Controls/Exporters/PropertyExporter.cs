@@ -1,10 +1,8 @@
-﻿using System;
-using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
+﻿using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {

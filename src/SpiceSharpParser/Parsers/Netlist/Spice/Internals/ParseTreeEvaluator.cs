@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SpiceSharpParser.Lexers.Netlist.Spice;
+﻿using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.Parsers.Netlist.Spice.Internals;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpiceSharpParser.Parsers.Netlist.Spice
 {
@@ -97,18 +97,18 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
                     var treeNodeResult = evaluators[nt.Name](items);
                     treeNodesValues[treeNode] = new ParseTreeNonTerminalEvaluationValue
-                                                    {
-                                                        SpiceObject = treeNodeResult,
-                                                        Node = treeNode,
-                                                    };
+                    {
+                        SpiceObject = treeNodeResult,
+                        Node = treeNode,
+                    };
                 }
                 else
                 {
                     treeNodesValues[treeNode] = new ParseTreeNodeTerminalEvaluationValue()
-                                                    {
-                                                        Node = treeNode,
-                                                        Token = ((ParseTreeTerminalNode)treeNode).Token,
-                                                    };
+                    {
+                        Node = treeNode,
+                        Token = ((ParseTreeTerminalNode)treeNode).Token,
+                    };
                 }
             }
 
@@ -317,21 +317,29 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 switch (t.Token.SpiceTokenType)
                 {
                     case SpiceTokenType.REFERENCE:
-                        return new ReferenceParameter(lexemValue) {LineNumber = t.Token.LineNumber};
+                        return new ReferenceParameter(lexemValue) { LineNumber = t.Token.LineNumber };
+
                     case SpiceTokenType.DOUBLE_QUOTED_STRING:
                         return new StringParameter(lexemValue.Trim('"')) { LineNumber = t.Token.LineNumber };
+
                     case SpiceTokenType.SINGLE_QUOTED_STRING:
                         return new StringParameter(lexemValue.Trim('\'')) { LineNumber = t.Token.LineNumber };
+
                     case SpiceTokenType.VALUE:
                         return new ValueParameter(lexemValue) { LineNumber = t.Token.LineNumber };
+
                     case SpiceTokenType.WORD:
                         return new WordParameter(lexemValue) { LineNumber = t.Token.LineNumber };
+
                     case SpiceTokenType.IDENTIFIER:
                         return new IdentifierParameter(lexemValue) { LineNumber = t.Token.LineNumber };
+
                     case SpiceTokenType.EXPRESSION_BRACKET:
                         return new ExpressionParameter(lexemValue.Trim('{', '}')) { LineNumber = t.Token.LineNumber };
+
                     case SpiceTokenType.EXPRESSION_SINGLE_QUOTES:
                         return new ExpressionParameter(lexemValue.Trim('\'')) { LineNumber = t.Token.LineNumber };
+
                     case SpiceTokenType.PERCENT:
                         return new PercentParameter(lexemValue.TrimEnd('%')) { LineNumber = t.Token.LineNumber };
                 }
@@ -405,26 +413,31 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     control.Parameters = new ParameterCollection(); // TODO: fix it, endl can have a parameter
                     control.LineNumber = values.GetLexemLineNumber(0);
                     break;
+
                 case ".if":
                     control.Name = "if";
                     control.Parameters = new ParameterCollection() { new ExpressionParameter(values.GetLexem(1)) };
                     control.LineNumber = values.GetLexemLineNumber(0);
                     break;
+
                 case ".elseif":
                     control.Name = "elseif";
                     control.Parameters = new ParameterCollection() { new ExpressionParameter(values.GetLexem(1)) };
                     control.LineNumber = values.GetLexemLineNumber(0);
                     break;
+
                 case ".else":
                     control.Name = "else";
                     control.Parameters = new ParameterCollection();
                     control.LineNumber = values.GetLexemLineNumber(0);
                     break;
+
                 case ".endif":
                     control.Name = "endif";
                     control.Parameters = new ParameterCollection();
                     control.LineNumber = values.GetLexemLineNumber(0);
                     break;
+
                 default:
                     control.Name = values.GetLexem(1);
                     control.Parameters = values.GetSpiceObject<ParameterCollection>(2);
@@ -585,7 +598,6 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             return model;
         }
 
-
         /// <summary>
         /// Returns new instance of <see cref="VectorParameter"/>
         /// from the values of children nodes of <see cref="Symbols.Vector"/> parse tree node.
@@ -695,7 +707,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 {
                     Name = values.GetLexem(0),
                     LineNumber = singleParameter.LineNumber,
-                    Values = new List<string>() {singleParameter.Image}
+                    Values = new List<string>() { singleParameter.Image }
                 };
                 return assignmentParameter;
             }

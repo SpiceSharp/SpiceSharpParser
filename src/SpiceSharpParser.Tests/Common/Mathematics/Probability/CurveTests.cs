@@ -98,7 +98,7 @@ namespace SpiceSharpParser.Tests.Common.Mathematics.Probability
             var curve = new Curve();
 
             // act
-            curve.Add(new Point(0,  1.0));
+            curve.Add(new Point(0, 1.0));
             curve.Add(new Point(1, 1.0));
 
             // assert

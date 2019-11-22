@@ -36,6 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 case "lin":
                     RegisterParameter(statement.Parameters.Skip(1), context);
                     break;
+
                 default:
                     RegisterParameter(statement.Parameters, context);
                     break;

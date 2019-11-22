@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using SpiceSharp;
+﻿using SpiceSharp;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation.Expressions;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 {
@@ -218,7 +218,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             {
                 SimulationSpecificUpdates[simulation][entity].ParameterUpdatesBeforeTemperature.Add(new EntityParameterExpressionValueUpdate()
                 {
-                    Expression = new DynamicExpression(expression), 
+                    Expression = new DynamicExpression(expression),
                     ParameterName = parameterName
                 });
             }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SpiceSharp.Simulations;
+﻿using SpiceSharp.Simulations;
 using SpiceSharpBehavioral.Parsers;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.Common.Evaluation.Functions;
@@ -9,17 +6,20 @@ using SpiceSharpParser.Common.Mathematics.Probability;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Parsers.Expression;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
     public class EvaluationContext
     {
         private readonly ISpiceNetlistCaseSensitivitySettings _caseSettings;
-        
+
         public EvaluationContext(
-            string name, 
-            ISpiceNetlistCaseSensitivitySettings caseSettings, 
-            IRandomizer randomizer, 
+            string name,
+            ISpiceNetlistCaseSensitivitySettings caseSettings,
+            IRandomizer randomizer,
             IExpressionParser parser,
             INameGenerator nameGenerator,
             IResultService resultService)
@@ -102,7 +102,6 @@ namespace SpiceSharpParser.Common.Evaluation
                 {
                     child.Simulation = value;
                 }
-
             }
         }
 
@@ -172,7 +171,6 @@ namespace SpiceSharpParser.Common.Evaluation
                 throw new ArgumentNullException(nameof(expression));
             }
 
-
             var parameter = new DynamicExpression(expression);
             SetParameter(parameterName, expression, parameter);
         }
@@ -206,7 +204,7 @@ namespace SpiceSharpParser.Common.Evaluation
             }
 
             var parameters = Parser.GetExpressionParameters(expression, this, false);
-         
+
             ExpressionRegistry.Add(new NamedExpression(expressionName, expression), parameters);
         }
 

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using SpiceSharp.Simulations;
+﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -73,12 +73,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         EvaluationContext GetContext(Simulation simulation = null);
 
         bool HaveParameter(Simulation simulation, string parameterName);
-        
+
         EvaluationContext CreateChildContext(string subcircuitFullName, bool b);
-        
+
         int? GetSeed(Simulation sim);
+
         Expression GetExpression(string expressionName);
+
         IEnumerable<string> GetExpressionNames();
+
         int? Seed { get; set; }
     }
 }

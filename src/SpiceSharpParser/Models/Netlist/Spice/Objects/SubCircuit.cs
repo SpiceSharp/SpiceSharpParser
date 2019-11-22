@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+﻿using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 {

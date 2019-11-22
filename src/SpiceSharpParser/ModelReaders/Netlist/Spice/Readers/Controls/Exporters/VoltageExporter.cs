@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using SpiceSharpParser.Common.Evaluation;
+﻿using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
@@ -11,7 +11,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
     /// Generates voltage <see cref="Export"/>.
     /// </summary>
     public class VoltageExporter : Exporter
-    {  
+    {
         /// <summary>
         /// Gets supported voltage exports.
         /// </summary>
@@ -50,6 +50,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                         nodePath = vector.Elements[0].Image;
                         node = context.NameGenerator.ParseNodeName(nodePath);
                         break;
+
                     default:
                         throw new WrongParametersCountException("Too many nodes specified for voltage export");
                 }
@@ -66,18 +67,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 case "v":
                     ve = new VoltageExport(name, context.Simulation, node, reference);
                     break;
+
                 case "vr":
                     ve = new VoltageRealExport(name, context.Simulation, node, reference);
                     break;
+
                 case "vi":
                     ve = new VoltageImaginaryExport(name, context.Simulation, node, reference);
                     break;
+
                 case "vm":
                     ve = new VoltageMagnitudeExport(name, context.Simulation, node, reference);
                     break;
+
                 case "vdb":
                     ve = new VoltageDecibelExport(name, context.Simulation, node, reference);
                     break;
+
                 case "vph":
                 case "vp":
                     ve = new VoltagePhaseExport(name, context.Simulation, node, reference);

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SpiceSharp.Simulations;
+﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
 {
@@ -77,21 +77,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             simulation.BeforeSetup += (sender, args) =>
             {
-               Export export = context.Result.Exports.FirstOrDefault(e => e.Simulation == simulation && e.Name == exportParam.Image);
+                Export export = context.Result.Exports.FirstOrDefault(e => e.Simulation == simulation && e.Name == exportParam.Image);
 
-               if (export == null)
-               {
-                   export = ExportFactory.Create(exportParam, context, simulation, MapperExporter);
-               }
+                if (export == null)
+                {
+                    export = ExportFactory.Create(exportParam, context, simulation, MapperExporter);
+                }
 
-               simulation.ExportSimulationData += (exportSender, exportArgs) =>
-               {
-                   if (export != null)
-                   {
-                       var value = export.Extract();
-                       context.Result.MonteCarlo.Collect(simulation, value);
-                   }
-               };
+                simulation.ExportSimulationData += (exportSender, exportArgs) =>
+                {
+                    if (export != null)
+                    {
+                        var value = export.Extract();
+                        context.Result.MonteCarlo.Collect(simulation, value);
+                    }
+                };
             };
         }
     }

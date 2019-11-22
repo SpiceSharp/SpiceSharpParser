@@ -246,7 +246,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
 
             for (var i = 0; i < exports.Count; i++)
             {
-                EqualsWithTol(-1.0 * (i+1) / 100.0, (double)exports[i]);
+                EqualsWithTol(-1.0 * (i + 1) / 100.0, (double)exports[i]);
             }
         }
 

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using SpiceSharp;
+﻿using SpiceSharp;
 using SpiceSharpBehavioral.Parsers;
 using SpiceSharpBehavioral.Parsers.Helper;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.Parsers.Expression
 {
@@ -110,7 +110,6 @@ namespace SpiceSharpParser.Parsers.Expression
             }
             return result;
         }
-
 
         /// <summary>
         /// Applies the tangent.

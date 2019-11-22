@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using SpiceSharp.Simulations;
+﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using System;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
-{ 
+{
     /// <summary>
     /// Property export.
     /// </summary>

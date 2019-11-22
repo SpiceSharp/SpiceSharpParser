@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using SpiceSharp.Components;
+﻿using SpiceSharp.Components;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System.Linq;
 using Component = SpiceSharp.Components.Component;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
@@ -35,7 +35,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of current controlled current source.
         /// </returns>
-        protected Component GenerateCurrentControlledCurrentSource(string name,  ParameterCollection parameters, ICircuitContext context)
+        protected Component GenerateCurrentControlledCurrentSource(string name, ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters.Count == 4
                 && parameters.IsValueString(0)
@@ -111,7 +111,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of current source.
         /// </returns>
-        protected Component GenerateCurrentSource(string name,  ParameterCollection parameters, ICircuitContext context)
+        protected Component GenerateCurrentSource(string name, ParameterCollection parameters, ICircuitContext context)
         {
             CurrentSource cs = new CurrentSource(name);
             context.CreateNodes(cs, parameters);
@@ -127,7 +127,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 var entity = new BehavioralCurrentSource(name);
                 context.CreateNodes(entity, parameters);
-                
+
                 var baseParameters = entity.ParameterSets.Get<SpiceSharpBehavioral.Components.BehavioralBehaviors.BaseParameters>();
                 baseParameters.Expression = valueParameter.Value;
                 baseParameters.SpicePropertyComparer = StringComparerProvider.Get(context.CaseSensitivity.IsFunctionNameCaseSensitive);
@@ -197,7 +197,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     var entity = new BehavioralCurrentSource(name);
                     context.CreateNodes(entity, parameters);
-                    
+
                     var baseParameters = entity.ParameterSets.Get<SpiceSharpBehavioral.Components.BehavioralBehaviors.BaseParameters>();
                     baseParameters.Expression = ExpressionFactory.CreateTableExpression(eep.Expression, eep.Points);
                     baseParameters.SpicePropertyComparer = StringComparerProvider.Get(context.CaseSensitivity.IsFunctionNameCaseSensitive);

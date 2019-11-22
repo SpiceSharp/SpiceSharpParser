@@ -57,7 +57,6 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal("* Comment 1", ((CommentLine)netlist.Statements[0]).Text);
         }
 
-
         [Fact]
         public void MissingEndIf()
         {
@@ -76,7 +75,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
 
                 Assert.False(true);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
             }
         }
@@ -126,6 +125,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
 
             Assert.True(netlist.Statements[1] is Control);
         }
+
         [Fact]
         public void ManyIfElseIfElse()
         {
@@ -222,7 +222,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         public void BasicFalse()
         {
             var netlist = ParseNetlistToModel(
-                false, 
+                false,
                 true,
                "Simplest netlist with if",
                ".IF (a == 0)",
@@ -294,6 +294,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.True(netlist.Statements[2] is Control);
             Assert.True(netlist.Statements[3] is Control);
         }
+
         [Fact]
         public void AdvancedSecondExampleTrue()
         {

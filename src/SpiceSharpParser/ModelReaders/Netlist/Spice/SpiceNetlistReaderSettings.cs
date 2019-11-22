@@ -1,5 +1,5 @@
-﻿using System;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
+using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
