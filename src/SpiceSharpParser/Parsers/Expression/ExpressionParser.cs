@@ -8,6 +8,9 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharp.Components;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports;
 
 namespace SpiceSharpParser.Parsers.Expression
 {
@@ -15,7 +18,7 @@ namespace SpiceSharpParser.Parsers.Expression
     {
         private readonly ISpiceNetlistCaseSensitivitySettings _caseSettings;
         private readonly ConcurrentDictionary<string, Export> _exporterInstances = new ConcurrentDictionary<string, Export>();
-
+        private readonly Dictionary<int, int> _map = new Dictionary<int, int>();
         public ExpressionParser(ISpiceNetlistCaseSensitivitySettings caseSettings)
         {
             _caseSettings = caseSettings;
@@ -25,7 +28,9 @@ namespace SpiceSharpParser.Parsers.Expression
         {
             var parser = GetDeriveParser(context, @throw);
             var derivatives = parser.Parse(expression);
-            return derivatives[0]();
+            var result = derivatives[0]();
+
+            return result;
         }
 
         public List<string> GetExpressionParameters(string expression, EvaluationContext context, bool @throw = true)
@@ -113,9 +118,13 @@ namespace SpiceSharpParser.Parsers.Expression
 
             string key = $"{context.Name}_{propertyName}_{parameters}_{context.Simulation?.Name}";
 
+            var variables = context.Simulation.Variables;
+
+            // We want to keep track of derivatives, and which column they map to
+
             if (_exporterInstances.TryGetValue(key, out Export cachedExport))
             {
-                arg.Apply(() => cachedExport.Extract());
+                ApplyExport(arg, cachedExport, variables);
             }
             else
             {
@@ -153,8 +162,50 @@ namespace SpiceSharpParser.Parsers.Expression
 
                 _exporterInstances[key] = export;
 
-                arg.Apply(() => export.Extract());
+                ApplyExport(arg, export, variables);
             }
+        }
+
+        private void ApplyExport(SpicePropertyFoundEventArgs<double> arg, Export export, VariableSet variables)
+        {
+            if (export is VoltageExport ve)
+            {
+                var index = variables.MapNode(ve.Node).Index;
+                var refIndex = ve.Reference != null ? variables.MapNode(ve.Reference).Index : -1;
+
+                if (index >= 0 && refIndex > 0)
+                {
+                    arg.Apply(null, MapDerivative(index), 1.0);
+                    arg.Apply(() => export.Extract(), MapDerivative(refIndex), -1.0);
+                }
+                else if (index > 0)
+                {
+                    arg.Apply(() => export.Extract(), MapDerivative(index), 1.0);
+                }
+                else if (refIndex > 0)
+                {
+                    arg.Apply(() => -export.Extract(), MapDerivative(refIndex), -1.0);
+                }
+            }
+            else
+            {
+                arg.Apply(() => export.Extract(), 0, 0);
+            }
+        }
+
+        private int MapDerivative(int index)
+        {
+            if (index <= 0)
+            {
+                return -1;
+            }
+
+            if (!_map.TryGetValue(index, out var d))
+            {
+                _map.Add(index, d = _map.Count + 1);
+            }
+
+            return d;
         }
 
         private ParameterCollection GetSpicePropertyParameters(EvaluationContext context, SpicePropertyFoundEventArgs<double> arg)
@@ -286,7 +337,7 @@ namespace SpiceSharpParser.Parsers.Expression
             if (doubleFunction is IDerivativeFunction<double, double> derivativeFunction)
             {
                 var derivatives = new Lazy<Derivatives<Func<double>>>(() =>
-                    derivativeFunction.Derivative(string.Empty, arguments, context));
+                    derivativeFunction.Derivative(string.Empty, args, context));
 
                 for (var i = 1; i <= variableCount; i++)
                 {

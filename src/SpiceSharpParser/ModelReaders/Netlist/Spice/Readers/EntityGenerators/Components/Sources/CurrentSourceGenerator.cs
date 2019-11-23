@@ -157,7 +157,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.CreateNodes(entity, parameters);
                 parameters = parameters.Skip(CurrentSource.CurrentSourcePinCount);
                 var dimension = 1;
-                var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled);
+                var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled, context.Evaluator.GetEvaluationContext());
                 context.SetParameter(entity, "dc", expression);
                 return entity;
             }
@@ -176,7 +176,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
 
                 var dimension = (int)context.Evaluator.EvaluateDouble(polyParameter.Parameters[0].Image);
-                var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled);
+                var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled, context.Evaluator.GetEvaluationContext());
 
                 context.SetParameter(entity, "dc", expression);
                 return entity;

@@ -3,6 +3,8 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {
@@ -14,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return expression;
         }
 
-        public static string CreatePolyVoltageExpression(int dimension, ParameterCollection polyArguments)
+        public static string CreatePolyVoltageExpression(int dimension, ParameterCollection polyArguments, EvaluationContext evaluationContext)
         {
             if (polyArguments.Count == 0)
             {
@@ -37,10 +39,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     throw new WrongParameterTypeException("Wrong parameter type for poly expression");
                 }
 
-                var variablesString = string.Join(",", variables.Select(v => $"v({((PointParameter)v).Values.Items[0].Image},{((PointParameter)v).Values.Items[1].Image})"));
+                var variablesList = variables.Select(v =>
+                        $"v({((PointParameter) v).Values.Items[0].Image},{((PointParameter) v).Values.Items[1].Image})")
+                    .ToList();
 
                 var coefficients = polyArguments.Skip(dimension);
-                return CreatePolyExpression(dimension, coefficients, variablesString);
+                return CreatePolyExpression(dimension, coefficients, variablesList, evaluationContext);
             }
             else
             {
@@ -57,21 +61,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
 
                 var voltages = new List<string>();
-
                 for (var i = 0; i < dimension; i++)
                 {
                     string voltage = $"v({variables[2 * i].Image},{variables[(2 * i) + 1].Image})";
                     voltages.Add(voltage);
                 }
 
-                var variablesString = string.Join(",", voltages.ToArray());
-                var coefficients = polyArguments.Skip(2 * dimension);
+                ParameterCollection coefficients = polyArguments.Skip(2 * dimension);
 
-                return CreatePolyExpression(dimension, coefficients, variablesString);
+                return CreatePolyExpression(dimension, coefficients, voltages, evaluationContext);
             }
         }
 
-        public static string CreatePolyCurrentExpression(int dimension, ParameterCollection polyArguments)
+        public static string CreatePolyCurrentExpression(int dimension, ParameterCollection polyArguments, EvaluationContext context)
         {
             var variables = polyArguments.Take(dimension);
             var voltages = new List<string>();
@@ -81,28 +83,33 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 voltages.Add(voltage);
             }
 
-            var variablesString = string.Join(",", voltages.ToArray());
-            var coefficients = polyArguments.Skip(dimension);
+            ParameterCollection coefficients = polyArguments.Skip(dimension);
 
-            return CreatePolyExpression(dimension, coefficients, variablesString);
+            return CreatePolyExpression(dimension, coefficients, voltages, context);
         }
 
         private static string CreatePolyExpression(
             int dimension,
             ParameterCollection coefficients,
-            string variablesString)
+            List<string> variables,
+            EvaluationContext context)
         {
             if (coefficients.Count == 1 && coefficients[0] is PointParameter pp)
             {
-                var coefficientsString = string.Join(",", pp.Values.Select(c => c.Image).ToArray());
-                var expression = $"poly({dimension}, {variablesString}, {coefficientsString})";
-                return expression;
+                var result = PolyFunction.GetExpression(
+                    dimension,
+                    pp.Values.Items.Select(c => context.Evaluate(c.Image)).ToList(),
+                    variables);
+                return result;
             }
             else
             {
-                var coefficientsString = string.Join(",", coefficients.Select(c => c.Image).ToArray());
-                var expression = $"poly({dimension}, {variablesString}, {coefficientsString})";
-                return expression;
+                var result = PolyFunction.GetExpression(
+                    dimension,
+                    coefficients.Select(c => context.Evaluate(c.Image)).ToList(),
+                    variables);
+
+                return result;
             }
         }
     }

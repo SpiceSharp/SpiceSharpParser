@@ -63,10 +63,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             }
                         }
 
-                        double rOff = resistorModel.ParameterSets.GetParameter<double>("roff");
-
                         string resExpression =
-                            $"pos(table(v({parameters.Get(2)}, {parameters.Get(3)}), @{resistorModel.Name}[voff], @{resistorModel.Name}[roff] , @{resistorModel.Name}[von], @{resistorModel.Name}[ron]), {rOff.ToString(CultureInfo.InvariantCulture)})";
+                            $"table(v({parameters.Get(2)}, {parameters.Get(3)}), @{resistorModel.Name}[voff], @{resistorModel.Name}[roff] , @{resistorModel.Name}[von], @{resistorModel.Name}[ron])";
                         context.SetParameter(resistor, "resistance", resExpression, beforeTemperature: true, onload: true);
                     });
                 return resistor;
