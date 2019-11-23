@@ -1,0 +1,1370 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.Curve
+  id: Curve
+  parent: SpiceSharpParser.Common.Mathematics.Probability
+  children:
+  - SpiceSharpParser.Common.Mathematics.Probability.Curve.#ctor
+  - SpiceSharpParser.Common.Mathematics.Probability.Curve.Add(SpiceSharpParser.Common.Mathematics.Probability.Point)
+  - SpiceSharpParser.Common.Mathematics.Probability.Curve.Clear
+  - SpiceSharpParser.Common.Mathematics.Probability.Curve.Clone
+  - SpiceSharpParser.Common.Mathematics.Probability.Curve.ComputeAreaUnderCurve
+  - SpiceSharpParser.Common.Mathematics.Probability.Curve.ComputeAreaUnderCurve(System.Double)
+  - SpiceSharpParser.Common.Mathematics.Probability.Curve.ComputeAreaUnderCurve(System.Int32)
+  - SpiceSharpParser.Common.Mathematics.Probability.Curve.GetEnumerator
+  - SpiceSharpParser.Common.Mathematics.Probability.Curve.GetFirstPoint
+  - SpiceSharpParser.Common.Mathematics.Probability.Curve.GetLastPoint
+  - SpiceSharpParser.Common.Mathematics.Probability.Curve.Item(System.Int32)
+  - SpiceSharpParser.Common.Mathematics.Probability.Curve.Points
+  - SpiceSharpParser.Common.Mathematics.Probability.Curve.PointsCount
+  - SpiceSharpParser.Common.Mathematics.Probability.Curve.ScaleY(System.Double)
+  - SpiceSharpParser.Common.Mathematics.Probability.Curve.System#Collections#IEnumerable#GetEnumerator
+  langs:
+  - csharp
+  - vb
+  name: Curve
+  nameWithType: Curve
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Curve
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+    startLine: 10
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nCurve.\n"
+  example: []
+  syntax:
+    content: 'public class Curve : IEnumerable<Point>, IEnumerable'
+    content.vb: >-
+      Public Class Curve
+          Implements IEnumerable(Of Point), IEnumerable
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - SpiceSharpParser.Common.Mathematics.Probability.Cdf
+  - SpiceSharpParser.Common.Mathematics.Probability.Pdf
+  implements:
+  - System.Collections.Generic.IEnumerable{SpiceSharpParser.Common.Mathematics.Probability.Point}
+  - System.Collections.IEnumerable
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.#ctor
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.Curve.#ctor
+  id: '#ctor'
+  parent: SpiceSharpParser.Common.Mathematics.Probability.Curve
+  langs:
+  - csharp
+  - vb
+  name: Curve()
+  nameWithType: Curve.Curve()
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.Curve()
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+    startLine: 15
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nInitializes a new instance of the <xref href=\"SpiceSharpParser.Common.Mathematics.Probability.Curve\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
+  example: []
+  syntax:
+    content: public Curve()
+    content.vb: Public Sub New
+  overload: SpiceSharpParser.Common.Mathematics.Probability.Curve.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.Points
+  commentId: P:SpiceSharpParser.Common.Mathematics.Probability.Curve.Points
+  id: Points
+  parent: SpiceSharpParser.Common.Mathematics.Probability.Curve
+  langs:
+  - csharp
+  - vb
+  name: Points
+  nameWithType: Curve.Points
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.Points
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Points
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+    startLine: 20
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  syntax:
+    content: public List<Point> Points { get; protected set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{SpiceSharpParser.Common.Mathematics.Probability.Point}
+    content.vb: Public Property Points As List(Of Point)
+  overload: SpiceSharpParser.Common.Mathematics.Probability.Curve.Points*
+  modifiers.csharp:
+  - public
+  - get
+  - protected set
+  modifiers.vb:
+  - Public
+  - Get
+  - Protected Set
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.PointsCount
+  commentId: P:SpiceSharpParser.Common.Mathematics.Probability.Curve.PointsCount
+  id: PointsCount
+  parent: SpiceSharpParser.Common.Mathematics.Probability.Curve
+  langs:
+  - csharp
+  - vb
+  name: PointsCount
+  nameWithType: Curve.PointsCount
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.PointsCount
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: PointsCount
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+    startLine: 25
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nGets the count of points.\n"
+  example: []
+  syntax:
+    content: public int PointsCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property PointsCount As Integer
+  overload: SpiceSharpParser.Common.Mathematics.Probability.Curve.PointsCount*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.Item(System.Int32)
+  commentId: P:SpiceSharpParser.Common.Mathematics.Probability.Curve.Item(System.Int32)
+  id: Item(System.Int32)
+  parent: SpiceSharpParser.Common.Mathematics.Probability.Curve
+  langs:
+  - csharp
+  - vb
+  name: Item[Int32]
+  nameWithType: Curve.Item[Int32]
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.Item[System.Int32]
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: this[]
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+    startLine: 34
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nGets or sets a point.\n"
+  example: []
+  syntax:
+    content: public Point this[int index] { get; }
+    parameters:
+    - id: index
+      type: System.Int32
+      description: Point index.
+    return:
+      type: SpiceSharpParser.Common.Mathematics.Probability.Point
+      description: "\nA curve&apos;s point.\n"
+    content.vb: Public ReadOnly Property Item(index As Integer) As Point
+  overload: SpiceSharpParser.Common.Mathematics.Probability.Curve.Item*
+  nameWithType.vb: Curve.Item(Int32)
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+  fullName.vb: SpiceSharpParser.Common.Mathematics.Probability.Curve.Item(System.Int32)
+  name.vb: Item(Int32)
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.Add(SpiceSharpParser.Common.Mathematics.Probability.Point)
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.Curve.Add(SpiceSharpParser.Common.Mathematics.Probability.Point)
+  id: Add(SpiceSharpParser.Common.Mathematics.Probability.Point)
+  parent: SpiceSharpParser.Common.Mathematics.Probability.Curve
+  langs:
+  - csharp
+  - vb
+  name: Add(Point)
+  nameWithType: Curve.Add(Point)
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.Add(SpiceSharpParser.Common.Mathematics.Probability.Point)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Add
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+    startLine: 40
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nAdds a point to the curve.\n"
+  example: []
+  syntax:
+    content: public void Add(Point point)
+    parameters:
+    - id: point
+      type: SpiceSharpParser.Common.Mathematics.Probability.Point
+      description: A point.
+    content.vb: Public Sub Add(point As Point)
+  overload: SpiceSharpParser.Common.Mathematics.Probability.Curve.Add*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.ComputeAreaUnderCurve
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.Curve.ComputeAreaUnderCurve
+  id: ComputeAreaUnderCurve
+  parent: SpiceSharpParser.Common.Mathematics.Probability.Curve
+  langs:
+  - csharp
+  - vb
+  name: ComputeAreaUnderCurve()
+  nameWithType: Curve.ComputeAreaUnderCurve()
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.ComputeAreaUnderCurve()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ComputeAreaUnderCurve
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+    startLine: 65
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nComputes the area under the curve.\n"
+  example: []
+  syntax:
+    content: public double ComputeAreaUnderCurve()
+    return:
+      type: System.Double
+      description: "\nThe area under curve.\n"
+    content.vb: Public Function ComputeAreaUnderCurve As Double
+  overload: SpiceSharpParser.Common.Mathematics.Probability.Curve.ComputeAreaUnderCurve*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.ComputeAreaUnderCurve(System.Int32)
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.Curve.ComputeAreaUnderCurve(System.Int32)
+  id: ComputeAreaUnderCurve(System.Int32)
+  parent: SpiceSharpParser.Common.Mathematics.Probability.Curve
+  langs:
+  - csharp
+  - vb
+  name: ComputeAreaUnderCurve(Int32)
+  nameWithType: Curve.ComputeAreaUnderCurve(Int32)
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.ComputeAreaUnderCurve(System.Int32)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ComputeAreaUnderCurve
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+    startLine: 77
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nComputes the area under the curve.\n"
+  example: []
+  syntax:
+    content: public double ComputeAreaUnderCurve(int limitPointIndex)
+    parameters:
+    - id: limitPointIndex
+      type: System.Int32
+      description: Index of last point.
+    return:
+      type: System.Double
+      description: "\nThe area under curve.\n"
+    content.vb: Public Function ComputeAreaUnderCurve(limitPointIndex As Integer) As Double
+  overload: SpiceSharpParser.Common.Mathematics.Probability.Curve.ComputeAreaUnderCurve*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.ComputeAreaUnderCurve(System.Double)
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.Curve.ComputeAreaUnderCurve(System.Double)
+  id: ComputeAreaUnderCurve(System.Double)
+  parent: SpiceSharpParser.Common.Mathematics.Probability.Curve
+  langs:
+  - csharp
+  - vb
+  name: ComputeAreaUnderCurve(Double)
+  nameWithType: Curve.ComputeAreaUnderCurve(Double)
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.ComputeAreaUnderCurve(System.Double)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ComputeAreaUnderCurve
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+    startLine: 101
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nComputes the area under the curve.\n"
+  example: []
+  syntax:
+    content: public double ComputeAreaUnderCurve(double x)
+    parameters:
+    - id: x
+      type: System.Double
+      description: X value of last point.
+    return:
+      type: System.Double
+      description: "\nThe area under curve.\n"
+    content.vb: Public Function ComputeAreaUnderCurve(x As Double) As Double
+  overload: SpiceSharpParser.Common.Mathematics.Probability.Curve.ComputeAreaUnderCurve*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.ScaleY(System.Double)
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.Curve.ScaleY(System.Double)
+  id: ScaleY(System.Double)
+  parent: SpiceSharpParser.Common.Mathematics.Probability.Curve
+  langs:
+  - csharp
+  - vb
+  name: ScaleY(Double)
+  nameWithType: Curve.ScaleY(Double)
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.ScaleY(System.Double)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ScaleY
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+    startLine: 141
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nScales the curve.\n"
+  example: []
+  syntax:
+    content: public void ScaleY(double scaleFactor)
+    parameters:
+    - id: scaleFactor
+      type: System.Double
+      description: Scaling factor.
+    content.vb: Public Sub ScaleY(scaleFactor As Double)
+  overload: SpiceSharpParser.Common.Mathematics.Probability.Curve.ScaleY*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.GetFirstPoint
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.Curve.GetFirstPoint
+  id: GetFirstPoint
+  parent: SpiceSharpParser.Common.Mathematics.Probability.Curve
+  langs:
+  - csharp
+  - vb
+  name: GetFirstPoint()
+  nameWithType: Curve.GetFirstPoint()
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.GetFirstPoint()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetFirstPoint
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+    startLine: 152
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nGets the first point.\n"
+  example: []
+  syntax:
+    content: public Point GetFirstPoint()
+    return:
+      type: SpiceSharpParser.Common.Mathematics.Probability.Point
+      description: "\nThe first point.\n"
+    content.vb: Public Function GetFirstPoint As Point
+  overload: SpiceSharpParser.Common.Mathematics.Probability.Curve.GetFirstPoint*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.GetLastPoint
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.Curve.GetLastPoint
+  id: GetLastPoint
+  parent: SpiceSharpParser.Common.Mathematics.Probability.Curve
+  langs:
+  - csharp
+  - vb
+  name: GetLastPoint()
+  nameWithType: Curve.GetLastPoint()
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.GetLastPoint()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetLastPoint
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+    startLine: 163
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nGets the last point.\n"
+  example: []
+  syntax:
+    content: public Point GetLastPoint()
+    return:
+      type: SpiceSharpParser.Common.Mathematics.Probability.Point
+      description: "\nThe last point.\n"
+    content.vb: Public Function GetLastPoint As Point
+  overload: SpiceSharpParser.Common.Mathematics.Probability.Curve.GetLastPoint*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.Clear
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.Curve.Clear
+  id: Clear
+  parent: SpiceSharpParser.Common.Mathematics.Probability.Curve
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: Curve.Clear()
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.Clear()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Clear
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+    startLine: 171
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nClears the points.\n"
+  example: []
+  syntax:
+    content: public void Clear()
+    content.vb: Public Sub Clear
+  overload: SpiceSharpParser.Common.Mathematics.Probability.Curve.Clear*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.GetEnumerator
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.Curve.GetEnumerator
+  id: GetEnumerator
+  parent: SpiceSharpParser.Common.Mathematics.Probability.Curve
+  langs:
+  - csharp
+  - vb
+  name: GetEnumerator()
+  nameWithType: Curve.GetEnumerator()
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.GetEnumerator()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetEnumerator
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+    startLine: 182
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nGets the enumerator.\n"
+  example: []
+  syntax:
+    content: public IEnumerator<Point> GetEnumerator()
+    return:
+      type: System.Collections.Generic.IEnumerator{SpiceSharpParser.Common.Mathematics.Probability.Point}
+      description: "\nThe enumerator of points.\n"
+    content.vb: Public Function GetEnumerator As IEnumerator(Of Point)
+  overload: SpiceSharpParser.Common.Mathematics.Probability.Curve.GetEnumerator*
+  implements:
+  - System.Collections.Generic.IEnumerable{SpiceSharpParser.Common.Mathematics.Probability.Point}.GetEnumerator
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.System#Collections#IEnumerable#GetEnumerator
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.Curve.System#Collections#IEnumerable#GetEnumerator
+  id: System#Collections#IEnumerable#GetEnumerator
+  isEii: true
+  parent: SpiceSharpParser.Common.Mathematics.Probability.Curve
+  langs:
+  - csharp
+  - vb
+  name: IEnumerable.GetEnumerator()
+  nameWithType: Curve.IEnumerable.GetEnumerator()
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.System.Collections.IEnumerable.GetEnumerator()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: System.Collections.IEnumerable.GetEnumerator
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+    startLine: 193
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nGets the enumerator.\n"
+  example: []
+  syntax:
+    content: IEnumerator IEnumerable.GetEnumerator()
+    return:
+      type: System.Collections.IEnumerator
+      description: "\nThe enumerator.\n"
+    content.vb: Function System.Collections.IEnumerable.GetEnumerator As IEnumerator Implements IEnumerable.GetEnumerator
+  overload: SpiceSharpParser.Common.Mathematics.Probability.Curve.System#Collections#IEnumerable#GetEnumerator*
+  implements:
+  - System.Collections.IEnumerable.GetEnumerator
+  nameWithType.vb: Curve.System.Collections.IEnumerable.GetEnumerator()
+  name.vb: System.Collections.IEnumerable.GetEnumerator()
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.Clone
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.Curve.Clone
+  id: Clone
+  parent: SpiceSharpParser.Common.Mathematics.Probability.Curve
+  langs:
+  - csharp
+  - vb
+  name: Clone()
+  nameWithType: Curve.Clone()
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.Clone()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Clone
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Curve.cs
+    startLine: 204
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nClones the curve.\n"
+  example: []
+  syntax:
+    content: public Curve Clone()
+    return:
+      type: SpiceSharpParser.Common.Mathematics.Probability.Curve
+      description: "\nA cloned curve.\n"
+    content.vb: Public Function Clone As Curve
+  overload: SpiceSharpParser.Common.Mathematics.Probability.Curve.Clone*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: SpiceSharpParser.Common.Mathematics.Probability
+  commentId: N:SpiceSharpParser.Common.Mathematics.Probability
+  name: SpiceSharpParser.Common.Mathematics.Probability
+  nameWithType: SpiceSharpParser.Common.Mathematics.Probability
+  fullName: SpiceSharpParser.Common.Mathematics.Probability
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Collections.Generic.IEnumerable{SpiceSharpParser.Common.Mathematics.Probability.Point}
+  commentId: T:System.Collections.Generic.IEnumerable{SpiceSharpParser.Common.Mathematics.Probability.Point}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<Point>
+  nameWithType: IEnumerable<Point>
+  fullName: System.Collections.Generic.IEnumerable<SpiceSharpParser.Common.Mathematics.Probability.Point>
+  nameWithType.vb: IEnumerable(Of Point)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of SpiceSharpParser.Common.Mathematics.Probability.Point)
+  name.vb: IEnumerable(Of Point)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.Point
+    name: Point
+    nameWithType: Point
+    fullName: SpiceSharpParser.Common.Mathematics.Probability.Point
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.Point
+    name: Point
+    nameWithType: Point
+    fullName: SpiceSharpParser.Common.Mathematics.Probability.Point
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.IEnumerable
+  commentId: T:System.Collections.IEnumerable
+  parent: System.Collections
+  isExternal: true
+  name: IEnumerable
+  nameWithType: IEnumerable
+  fullName: System.Collections.IEnumerable
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: System.Collections
+  commentId: N:System.Collections
+  isExternal: true
+  name: System.Collections
+  nameWithType: System.Collections
+  fullName: System.Collections
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.Curve
+  parent: SpiceSharpParser.Common.Mathematics.Probability
+  name: Curve
+  nameWithType: Curve
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.#ctor*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.Curve.#ctor
+  name: Curve
+  nameWithType: Curve.Curve
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.Curve
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.Points*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.Curve.Points
+  name: Points
+  nameWithType: Curve.Points
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.Points
+- uid: System.Collections.Generic.List{SpiceSharpParser.Common.Mathematics.Probability.Point}
+  commentId: T:System.Collections.Generic.List{SpiceSharpParser.Common.Mathematics.Probability.Point}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<Point>
+  nameWithType: List<Point>
+  fullName: System.Collections.Generic.List<SpiceSharpParser.Common.Mathematics.Probability.Point>
+  nameWithType.vb: List(Of Point)
+  fullName.vb: System.Collections.Generic.List(Of SpiceSharpParser.Common.Mathematics.Probability.Point)
+  name.vb: List(Of Point)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.Point
+    name: Point
+    nameWithType: Point
+    fullName: SpiceSharpParser.Common.Mathematics.Probability.Point
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.Point
+    name: Point
+    nameWithType: Point
+    fullName: SpiceSharpParser.Common.Mathematics.Probability.Point
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.PointsCount*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.Curve.PointsCount
+  name: PointsCount
+  nameWithType: Curve.PointsCount
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.PointsCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.Item*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.Curve.Item
+  name: Item
+  nameWithType: Curve.Item
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.Item
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Point
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.Point
+  parent: SpiceSharpParser.Common.Mathematics.Probability
+  name: Point
+  nameWithType: Point
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Point
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.Add*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.Curve.Add
+  name: Add
+  nameWithType: Curve.Add
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.Add
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.ComputeAreaUnderCurve*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.Curve.ComputeAreaUnderCurve
+  name: ComputeAreaUnderCurve
+  nameWithType: Curve.ComputeAreaUnderCurve
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.ComputeAreaUnderCurve
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  name: Double
+  nameWithType: Double
+  fullName: System.Double
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.ScaleY*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.Curve.ScaleY
+  name: ScaleY
+  nameWithType: Curve.ScaleY
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.ScaleY
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.GetFirstPoint*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.Curve.GetFirstPoint
+  name: GetFirstPoint
+  nameWithType: Curve.GetFirstPoint
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.GetFirstPoint
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.GetLastPoint*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.Curve.GetLastPoint
+  name: GetLastPoint
+  nameWithType: Curve.GetLastPoint
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.GetLastPoint
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.Clear*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.Curve.Clear
+  name: Clear
+  nameWithType: Curve.Clear
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.Clear
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.GetEnumerator*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.Curve.GetEnumerator
+  name: GetEnumerator
+  nameWithType: Curve.GetEnumerator
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.GetEnumerator
+- uid: System.Collections.Generic.IEnumerable{SpiceSharpParser.Common.Mathematics.Probability.Point}.GetEnumerator
+  commentId: M:System.Collections.Generic.IEnumerable{SpiceSharpParser.Common.Mathematics.Probability.Point}.GetEnumerator
+  parent: System.Collections.Generic.IEnumerable{SpiceSharpParser.Common.Mathematics.Probability.Point}
+  definition: System.Collections.Generic.IEnumerable`1.GetEnumerator
+  name: GetEnumerator()
+  nameWithType: IEnumerable<Point>.GetEnumerator()
+  fullName: System.Collections.Generic.IEnumerable<SpiceSharpParser.Common.Mathematics.Probability.Point>.GetEnumerator()
+  nameWithType.vb: IEnumerable(Of Point).GetEnumerator()
+  fullName.vb: System.Collections.Generic.IEnumerable(Of SpiceSharpParser.Common.Mathematics.Probability.Point).GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable<Point>.GetEnumerator
+    fullName: System.Collections.Generic.IEnumerable<SpiceSharpParser.Common.Mathematics.Probability.Point>.GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable(Of Point).GetEnumerator
+    fullName: System.Collections.Generic.IEnumerable(Of SpiceSharpParser.Common.Mathematics.Probability.Point).GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerator{SpiceSharpParser.Common.Mathematics.Probability.Point}
+  commentId: T:System.Collections.Generic.IEnumerator{SpiceSharpParser.Common.Mathematics.Probability.Point}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerator`1
+  name: IEnumerator<Point>
+  nameWithType: IEnumerator<Point>
+  fullName: System.Collections.Generic.IEnumerator<SpiceSharpParser.Common.Mathematics.Probability.Point>
+  nameWithType.vb: IEnumerator(Of Point)
+  fullName.vb: System.Collections.Generic.IEnumerator(Of SpiceSharpParser.Common.Mathematics.Probability.Point)
+  name.vb: IEnumerator(Of Point)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    nameWithType: IEnumerator
+    fullName: System.Collections.Generic.IEnumerator
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.Point
+    name: Point
+    nameWithType: Point
+    fullName: SpiceSharpParser.Common.Mathematics.Probability.Point
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    nameWithType: IEnumerator
+    fullName: System.Collections.Generic.IEnumerator
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.Point
+    name: Point
+    nameWithType: Point
+    fullName: SpiceSharpParser.Common.Mathematics.Probability.Point
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+  commentId: M:System.Collections.Generic.IEnumerable`1.GetEnumerator
+  isExternal: true
+  name: GetEnumerator()
+  nameWithType: IEnumerable<T>.GetEnumerator()
+  fullName: System.Collections.Generic.IEnumerable<T>.GetEnumerator()
+  nameWithType.vb: IEnumerable(Of T).GetEnumerator()
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T).GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable<T>.GetEnumerator
+    fullName: System.Collections.Generic.IEnumerable<T>.GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable(Of T).GetEnumerator
+    fullName: System.Collections.Generic.IEnumerable(Of T).GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerator`1
+  commentId: T:System.Collections.Generic.IEnumerator`1
+  isExternal: true
+  name: IEnumerator<T>
+  nameWithType: IEnumerator<T>
+  fullName: System.Collections.Generic.IEnumerator<T>
+  nameWithType.vb: IEnumerator(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerator(Of T)
+  name.vb: IEnumerator(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    nameWithType: IEnumerator
+    fullName: System.Collections.Generic.IEnumerator
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    nameWithType: IEnumerator
+    fullName: System.Collections.Generic.IEnumerator
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.System#Collections#IEnumerable#GetEnumerator*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.Curve.System#Collections#IEnumerable#GetEnumerator
+  name: IEnumerable.GetEnumerator
+  nameWithType: Curve.IEnumerable.GetEnumerator
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.System.Collections.IEnumerable.GetEnumerator
+  nameWithType.vb: Curve.System.Collections.IEnumerable.GetEnumerator
+  name.vb: System.Collections.IEnumerable.GetEnumerator
+- uid: System.Collections.IEnumerable.GetEnumerator
+  commentId: M:System.Collections.IEnumerable.GetEnumerator
+  parent: System.Collections.IEnumerable
+  isExternal: true
+  name: GetEnumerator()
+  nameWithType: IEnumerable.GetEnumerator()
+  fullName: System.Collections.IEnumerable.GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.IEnumerable.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable.GetEnumerator
+    fullName: System.Collections.IEnumerable.GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.IEnumerable.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable.GetEnumerator
+    fullName: System.Collections.IEnumerable.GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.IEnumerator
+  commentId: T:System.Collections.IEnumerator
+  parent: System.Collections
+  isExternal: true
+  name: IEnumerator
+  nameWithType: IEnumerator
+  fullName: System.Collections.IEnumerator
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Curve.Clone*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.Curve.Clone
+  name: Clone
+  nameWithType: Curve.Clone
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Curve.Clone

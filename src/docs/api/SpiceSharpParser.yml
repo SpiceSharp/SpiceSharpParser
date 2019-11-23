@@ -1,0 +1,41 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser
+  commentId: N:SpiceSharpParser
+  id: SpiceSharpParser
+  children:
+  - SpiceSharpParser.SpiceParser
+  - SpiceSharpParser.SpiceParserResult
+  - SpiceSharpParser.SpiceParserSettings
+  langs:
+  - csharp
+  - vb
+  name: SpiceSharpParser
+  nameWithType: SpiceSharpParser
+  fullName: SpiceSharpParser
+  type: Namespace
+  assemblies:
+  - SpiceSharpParser
+references:
+- uid: SpiceSharpParser.SpiceParser
+  commentId: T:SpiceSharpParser.SpiceParser
+  name: SpiceParser
+  nameWithType: SpiceParser
+  fullName: SpiceSharpParser.SpiceParser
+- uid: SpiceSharpParser.SpiceParserResult
+  commentId: T:SpiceSharpParser.SpiceParserResult
+  parent: SpiceSharpParser
+  name: SpiceParserResult
+  nameWithType: SpiceParserResult
+  fullName: SpiceSharpParser.SpiceParserResult
+- uid: SpiceSharpParser.SpiceParserSettings
+  commentId: T:SpiceSharpParser.SpiceParserSettings
+  parent: SpiceSharpParser
+  name: SpiceParserSettings
+  nameWithType: SpiceParserSettings
+  fullName: SpiceSharpParser.SpiceParserSettings
+- uid: SpiceSharpParser
+  commentId: N:SpiceSharpParser
+  name: SpiceSharpParser
+  nameWithType: SpiceSharpParser
+  fullName: SpiceSharpParser

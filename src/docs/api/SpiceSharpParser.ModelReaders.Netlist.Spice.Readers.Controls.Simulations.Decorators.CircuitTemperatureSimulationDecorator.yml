@@ -1,0 +1,498 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator
+  id: CircuitTemperatureSimulationDecorator
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator.#ctor(System.Double)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator.Decorate(SpiceSharp.Simulations.BaseSimulation)
+  langs:
+  - csharp
+  - vb
+  name: CircuitTemperatureSimulationDecorator
+  nameWithType: CircuitTemperatureSimulationDecorator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Decorators/CircuitTemperatureSimulationDecorator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CircuitTemperatureSimulationDecorator
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Decorators/CircuitTemperatureSimulationDecorator.cs
+    startLine: 5
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+  syntax:
+    content: 'public class CircuitTemperatureSimulationDecorator : ISimulationDecorator'
+    content.vb: >-
+      Public Class CircuitTemperatureSimulationDecorator
+          Implements ISimulationDecorator
+  inheritance:
+  - System.Object
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ISimulationDecorator
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator.#ctor(System.Double)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator.#ctor(System.Double)
+  id: '#ctor(System.Double)'
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator
+  langs:
+  - csharp
+  - vb
+  name: CircuitTemperatureSimulationDecorator(Double)
+  nameWithType: CircuitTemperatureSimulationDecorator.CircuitTemperatureSimulationDecorator(Double)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator.CircuitTemperatureSimulationDecorator(System.Double)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Decorators/CircuitTemperatureSimulationDecorator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Decorators/CircuitTemperatureSimulationDecorator.cs
+    startLine: 9
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+  syntax:
+    content: public CircuitTemperatureSimulationDecorator(double circuitTemperature)
+    parameters:
+    - id: circuitTemperature
+      type: System.Double
+    content.vb: Public Sub New(circuitTemperature As Double)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator.Decorate(SpiceSharp.Simulations.BaseSimulation)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator.Decorate(SpiceSharp.Simulations.BaseSimulation)
+  id: Decorate(SpiceSharp.Simulations.BaseSimulation)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator
+  langs:
+  - csharp
+  - vb
+  name: Decorate(BaseSimulation)
+  nameWithType: CircuitTemperatureSimulationDecorator.Decorate(BaseSimulation)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator.Decorate(SpiceSharp.Simulations.BaseSimulation)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Decorators/CircuitTemperatureSimulationDecorator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Decorate
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Decorators/CircuitTemperatureSimulationDecorator.cs
+    startLine: 14
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+  syntax:
+    content: public BaseSimulation Decorate(BaseSimulation simulation)
+    parameters:
+    - id: simulation
+      type: SpiceSharp.Simulations.BaseSimulation
+    return:
+      type: SpiceSharp.Simulations.BaseSimulation
+    content.vb: Public Function Decorate(simulation As BaseSimulation) As BaseSimulation
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator.Decorate*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ISimulationDecorator.Decorate(SpiceSharp.Simulations.BaseSimulation)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ISimulationDecorator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ISimulationDecorator
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  name: ISimulationDecorator
+  nameWithType: ISimulationDecorator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ISimulationDecorator
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator.#ctor*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator.#ctor
+  name: CircuitTemperatureSimulationDecorator
+  nameWithType: CircuitTemperatureSimulationDecorator.CircuitTemperatureSimulationDecorator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator.CircuitTemperatureSimulationDecorator
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  name: Double
+  nameWithType: Double
+  fullName: System.Double
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator.Decorate*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator.Decorate
+  name: Decorate
+  nameWithType: CircuitTemperatureSimulationDecorator.Decorate
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator.Decorate
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ISimulationDecorator.Decorate(SpiceSharp.Simulations.BaseSimulation)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ISimulationDecorator.Decorate(SpiceSharp.Simulations.BaseSimulation)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ISimulationDecorator
+  isExternal: true
+  name: Decorate(BaseSimulation)
+  nameWithType: ISimulationDecorator.Decorate(BaseSimulation)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ISimulationDecorator.Decorate(SpiceSharp.Simulations.BaseSimulation)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ISimulationDecorator.Decorate(SpiceSharp.Simulations.BaseSimulation)
+    name: Decorate
+    nameWithType: ISimulationDecorator.Decorate
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ISimulationDecorator.Decorate
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ISimulationDecorator.Decorate(SpiceSharp.Simulations.BaseSimulation)
+    name: Decorate
+    nameWithType: ISimulationDecorator.Decorate
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ISimulationDecorator.Decorate
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Simulations.BaseSimulation
+  commentId: T:SpiceSharp.Simulations.BaseSimulation
+  parent: SpiceSharp.Simulations
+  isExternal: true
+  name: BaseSimulation
+  nameWithType: BaseSimulation
+  fullName: SpiceSharp.Simulations.BaseSimulation
+- uid: SpiceSharp.Simulations
+  commentId: N:SpiceSharp.Simulations
+  isExternal: true
+  name: SpiceSharp.Simulations
+  nameWithType: SpiceSharp.Simulations
+  fullName: SpiceSharp.Simulations

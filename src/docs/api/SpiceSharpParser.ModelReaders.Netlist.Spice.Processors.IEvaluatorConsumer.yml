@@ -1,0 +1,138 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer
+  id: IEvaluatorConsumer
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.CaseSettings
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.EvaluationContext
+  langs:
+  - csharp
+  - vb
+  name: IEvaluatorConsumer
+  nameWithType: IEvaluatorConsumer
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer
+  type: Interface
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IEvaluatorConsumer.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IEvaluatorConsumer
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IEvaluatorConsumer.cs
+    startLine: 4
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  syntax:
+    content: public interface IEvaluatorConsumer
+    content.vb: Public Interface IEvaluatorConsumer
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.EvaluationContext
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.EvaluationContext
+  id: EvaluationContext
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer
+  langs:
+  - csharp
+  - vb
+  name: EvaluationContext
+  nameWithType: IEvaluatorConsumer.EvaluationContext
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.EvaluationContext
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IEvaluatorConsumer.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: EvaluationContext
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IEvaluatorConsumer.cs
+    startLine: 6
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  syntax:
+    content: EvaluationContext EvaluationContext { get; set; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    content.vb: Property EvaluationContext As EvaluationContext
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.EvaluationContext*
+  modifiers.csharp:
+  - get
+  - set
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.CaseSettings
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.CaseSettings
+  id: CaseSettings
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer
+  langs:
+  - csharp
+  - vb
+  name: CaseSettings
+  nameWithType: IEvaluatorConsumer.CaseSettings
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.CaseSettings
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IEvaluatorConsumer.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CaseSettings
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IEvaluatorConsumer.cs
+    startLine: 8
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  syntax:
+    content: ISpiceNetlistCaseSensitivitySettings CaseSettings { get; set; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+    content.vb: Property CaseSettings As ISpiceNetlistCaseSensitivitySettings
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.CaseSettings*
+  modifiers.csharp:
+  - get
+  - set
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.EvaluationContext*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.EvaluationContext
+  name: EvaluationContext
+  nameWithType: IEvaluatorConsumer.EvaluationContext
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.EvaluationContext
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  commentId: T:SpiceSharpParser.Common.Evaluation.EvaluationContext
+  parent: SpiceSharpParser.Common.Evaluation
+  name: EvaluationContext
+  nameWithType: EvaluationContext
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+- uid: SpiceSharpParser.Common.Evaluation
+  commentId: N:SpiceSharpParser.Common.Evaluation
+  name: SpiceSharpParser.Common.Evaluation
+  nameWithType: SpiceSharpParser.Common.Evaluation
+  fullName: SpiceSharpParser.Common.Evaluation
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.CaseSettings*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.CaseSettings
+  name: CaseSettings
+  nameWithType: IEvaluatorConsumer.CaseSettings
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.CaseSettings
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice
+  name: ISpiceNetlistCaseSensitivitySettings
+  nameWithType: ISpiceNetlistCaseSensitivitySettings
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice

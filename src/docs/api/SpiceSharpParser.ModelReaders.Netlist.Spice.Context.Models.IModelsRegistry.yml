@@ -1,0 +1,456 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+  id: IModelsRegistry
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.CreateChildRegistry(System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator})
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.FindModel``1(System.String)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.RegisterModelInstance(SpiceSharp.Components.Model)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel``1(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,System.String,System.String,System.Action{``0},SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  langs:
+  - csharp
+  - vb
+  name: IModelsRegistry
+  nameWithType: IModelsRegistry
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+  type: Interface
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/IModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IModelsRegistry
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/IModelsRegistry.cs
+    startLine: 8
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  syntax:
+    content: public interface IModelsRegistry
+    content.vb: Public Interface IModelsRegistry
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel``1(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,System.String,System.String,System.Action{``0},SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel``1(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,System.String,System.String,System.Action{``0},SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  id: SetModel``1(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,System.String,System.String,System.Action{``0},SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: SetModel<T>(Entity, BaseSimulation, String, String, Action<T>, IResultService)
+  nameWithType: IModelsRegistry.SetModel<T>(Entity, BaseSimulation, String, String, Action<T>, IResultService)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel<T>(SpiceSharp.Circuits.Entity, SpiceSharp.Simulations.BaseSimulation, System.String, System.String, System.Action<T>, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/IModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SetModel
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/IModelsRegistry.cs
+    startLine: 10
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  syntax:
+    content: >-
+      void SetModel<T>(Entity entity, BaseSimulation simulation, string modelName, string exceptionMessage, Action<T> setModelAction, IResultService result)
+          where T : Model
+    parameters:
+    - id: entity
+      type: SpiceSharp.Circuits.Entity
+    - id: simulation
+      type: SpiceSharp.Simulations.BaseSimulation
+    - id: modelName
+      type: System.String
+    - id: exceptionMessage
+      type: System.String
+    - id: setModelAction
+      type: System.Action{{T}}
+    - id: result
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+    typeParameters:
+    - id: T
+    content.vb: Sub SetModel(Of T As Model)(entity As Entity, simulation As BaseSimulation, modelName As String, exceptionMessage As String, setModelAction As Action(Of T), result As IResultService)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel*
+  nameWithType.vb: IModelsRegistry.SetModel(Of T)(Entity, BaseSimulation, String, String, Action(Of T), IResultService)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel(Of T)(SpiceSharp.Circuits.Entity, SpiceSharp.Simulations.BaseSimulation, System.String, System.String, System.Action(Of T), SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  name.vb: SetModel(Of T)(Entity, BaseSimulation, String, String, Action(Of T), IResultService)
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.FindModel``1(System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.FindModel``1(System.String)
+  id: FindModel``1(System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: FindModel<T>(String)
+  nameWithType: IModelsRegistry.FindModel<T>(String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.FindModel<T>(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/IModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: FindModel
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/IModelsRegistry.cs
+    startLine: 13
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  syntax:
+    content: >-
+      T FindModel<T>(string modelName)
+          where T : Model
+    parameters:
+    - id: modelName
+      type: System.String
+    typeParameters:
+    - id: T
+    return:
+      type: '{T}'
+    content.vb: Function FindModel(Of T As Model)(modelName As String) As T
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.FindModel*
+  nameWithType.vb: IModelsRegistry.FindModel(Of T)(String)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.FindModel(Of T)(System.String)
+  name.vb: FindModel(Of T)(String)
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.RegisterModelInstance(SpiceSharp.Components.Model)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.RegisterModelInstance(SpiceSharp.Components.Model)
+  id: RegisterModelInstance(SpiceSharp.Components.Model)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: RegisterModelInstance(Model)
+  nameWithType: IModelsRegistry.RegisterModelInstance(Model)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.RegisterModelInstance(SpiceSharp.Components.Model)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/IModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: RegisterModelInstance
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/IModelsRegistry.cs
+    startLine: 16
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  syntax:
+    content: void RegisterModelInstance(Model model)
+    parameters:
+    - id: model
+      type: SpiceSharp.Components.Model
+    content.vb: Sub RegisterModelInstance(model As Model)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.RegisterModelInstance*
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.CreateChildRegistry(System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator})
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.CreateChildRegistry(System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator})
+  id: CreateChildRegistry(System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator})
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: CreateChildRegistry(List<INameGenerator>)
+  nameWithType: IModelsRegistry.CreateChildRegistry(List<INameGenerator>)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.CreateChildRegistry(System.Collections.Generic.List<SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator>)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/IModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CreateChildRegistry
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/IModelsRegistry.cs
+    startLine: 18
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  syntax:
+    content: IModelsRegistry CreateChildRegistry(List<INameGenerator> generators)
+    parameters:
+    - id: generators
+      type: System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator}
+    return:
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+    content.vb: Function CreateChildRegistry(generators As List(Of INameGenerator)) As IModelsRegistry
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.CreateChildRegistry*
+  nameWithType.vb: IModelsRegistry.CreateChildRegistry(List(Of INameGenerator))
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.CreateChildRegistry(System.Collections.Generic.List(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator))
+  name.vb: CreateChildRegistry(List(Of INameGenerator))
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel
+  name: SetModel
+  nameWithType: IModelsRegistry.SetModel
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel
+- uid: SpiceSharp.Circuits.Entity
+  commentId: T:SpiceSharp.Circuits.Entity
+  parent: SpiceSharp.Circuits
+  isExternal: true
+  name: Entity
+  nameWithType: Entity
+  fullName: SpiceSharp.Circuits.Entity
+- uid: SpiceSharp.Simulations.BaseSimulation
+  commentId: T:SpiceSharp.Simulations.BaseSimulation
+  parent: SpiceSharp.Simulations
+  isExternal: true
+  name: BaseSimulation
+  nameWithType: BaseSimulation
+  fullName: SpiceSharp.Simulations.BaseSimulation
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.Action{{T}}
+  commentId: T:System.Action{``0}
+  parent: System
+  definition: System.Action`1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: IResultService
+  nameWithType: IResultService
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+- uid: SpiceSharp.Circuits
+  commentId: N:SpiceSharp.Circuits
+  isExternal: true
+  name: SpiceSharp.Circuits
+  nameWithType: SpiceSharp.Circuits
+  fullName: SpiceSharp.Circuits
+- uid: SpiceSharp.Simulations
+  commentId: N:SpiceSharp.Simulations
+  isExternal: true
+  name: SpiceSharp.Simulations
+  nameWithType: SpiceSharp.Simulations
+  fullName: SpiceSharp.Simulations
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.FindModel*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.FindModel
+  name: FindModel
+  nameWithType: IModelsRegistry.FindModel
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.FindModel
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.RegisterModelInstance*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.RegisterModelInstance
+  name: RegisterModelInstance
+  nameWithType: IModelsRegistry.RegisterModelInstance
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.RegisterModelInstance
+- uid: SpiceSharp.Components.Model
+  commentId: T:SpiceSharp.Components.Model
+  parent: SpiceSharp.Components
+  isExternal: true
+  name: Model
+  nameWithType: Model
+  fullName: SpiceSharp.Components.Model
+- uid: SpiceSharp.Components
+  commentId: N:SpiceSharp.Components
+  isExternal: true
+  name: SpiceSharp.Components
+  nameWithType: SpiceSharp.Components
+  fullName: SpiceSharp.Components
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.CreateChildRegistry*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.CreateChildRegistry
+  name: CreateChildRegistry
+  nameWithType: IModelsRegistry.CreateChildRegistry
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.CreateChildRegistry
+- uid: System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator}
+  commentId: T:System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<INameGenerator>
+  nameWithType: List<INameGenerator>
+  fullName: System.Collections.Generic.List<SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator>
+  nameWithType.vb: List(Of INameGenerator)
+  fullName.vb: System.Collections.Generic.List(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator)
+  name.vb: List(Of INameGenerator)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+    name: INameGenerator
+    nameWithType: INameGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+    name: INameGenerator
+    nameWithType: INameGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  name: IModelsRegistry
+  nameWithType: IModelsRegistry
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic

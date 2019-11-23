@@ -1,0 +1,1047 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl
+  id: NoiseControl
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.#ctor(SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter})
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  langs:
+  - csharp
+  - vb
+  name: NoiseControl
+  nameWithType: NoiseControl
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/NoiseControl.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: NoiseControl
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/NoiseControl.cs
+    startLine: 13
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  summary: "\nReads .NOISE <xref href=\"SpiceSharpParser.Models.Netlist.Spice.Objects.Control\" data-throw-if-not-resolved=\"false\"></xref> from SPICE netlist object model.\n"
+  example: []
+  syntax:
+    content: 'public class NoiseControl : SimulationControl, IStatementReader'
+    content.vb: >-
+      Public Class NoiseControl
+          Inherits SimulationControl
+          Implements IStatementReader
+  inheritance:
+  - System.Object
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader{SpiceSharpParser.Models.Netlist.Spice.Objects.Control}
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.BaseControl
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IStatementReader
+  inheritedMembers:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.BaseSimulation})
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.ConfigureCommonSettings(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader{SpiceSharpParser.Models.Netlist.Spice.Objects.Control}.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.#ctor(SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter})
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.#ctor(SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter})
+  id: '#ctor(SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter})'
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl
+  langs:
+  - csharp
+  - vb
+  name: NoiseControl(IMapper<Exporter>)
+  nameWithType: NoiseControl.NoiseControl(IMapper<Exporter>)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.NoiseControl(SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter>)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/NoiseControl.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/NoiseControl.cs
+    startLine: 15
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  syntax:
+    content: public NoiseControl(IMapper<Exporter> mapper)
+    parameters:
+    - id: mapper
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter}
+    content.vb: Public Sub New(mapper As IMapper(Of Exporter))
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.#ctor*
+  nameWithType.vb: NoiseControl.NoiseControl(IMapper(Of Exporter))
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.NoiseControl(SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter))
+  name.vb: NoiseControl(IMapper(Of Exporter))
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  id: Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl
+  langs:
+  - csharp
+  - vb
+  name: Read(Control, ICircuitContext)
+  nameWithType: NoiseControl.Read(Control, ICircuitContext)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Control, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/NoiseControl.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Read
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/NoiseControl.cs
+    startLine: 25
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  summary: "\nReads <xref href=\"SpiceSharpParser.Models.Netlist.Spice.Objects.Control\" data-throw-if-not-resolved=\"false\"></xref> statement and modifies the context\n"
+  example: []
+  syntax:
+    content: public override void Read(Control statement, ICircuitContext context)
+    parameters:
+    - id: statement
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+      description: A statement to process
+    - id: context
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+      description: A context to modify
+    content.vb: Public Overrides Sub Read(statement As Control, context As ICircuitContext)
+  overridden: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader{SpiceSharpParser.Models.Netlist.Spice.Objects.Control}.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.Read*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+references:
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: Control
+  nameWithType: Control
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader{SpiceSharpParser.Models.Netlist.Spice.Objects.Control}
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader{SpiceSharpParser.Models.Netlist.Spice.Objects.Control}
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
+  definition: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1
+  name: StatementReader<Control>
+  nameWithType: StatementReader<Control>
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader<SpiceSharpParser.Models.Netlist.Spice.Objects.Control>
+  nameWithType.vb: StatementReader(Of Control)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Control)
+  name.vb: StatementReader(Of Control)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1
+    name: StatementReader
+    nameWithType: StatementReader
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+    name: Control
+    nameWithType: Control
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1
+    name: StatementReader
+    nameWithType: StatementReader
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+    name: Control
+    nameWithType: Control
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.BaseControl
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.BaseControl
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
+  name: BaseControl
+  nameWithType: BaseControl
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.BaseControl
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  name: SimulationControl
+  nameWithType: SimulationControl
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IStatementReader
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IStatementReader
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
+  name: IStatementReader
+  nameWithType: IStatementReader
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IStatementReader
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.BaseSimulation})
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.BaseSimulation})
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl
+  isExternal: true
+  name: CreateSimulations(Control, ICircuitContext, Func<String, Control, ICircuitContext, BaseSimulation>)
+  nameWithType: SimulationControl.CreateSimulations(Control, ICircuitContext, Func<String, Control, ICircuitContext, BaseSimulation>)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Func<System.String, SpiceSharpParser.Models.Netlist.Spice.Objects.Control, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, SpiceSharp.Simulations.BaseSimulation>)
+  nameWithType.vb: SimulationControl.CreateSimulations(Control, ICircuitContext, Func(Of String, Control, ICircuitContext, BaseSimulation))
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Func(Of System.String, SpiceSharpParser.Models.Netlist.Spice.Objects.Control, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, SpiceSharp.Simulations.BaseSimulation))
+  name.vb: CreateSimulations(Control, ICircuitContext, Func(Of String, Control, ICircuitContext, BaseSimulation))
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.BaseSimulation})
+    name: CreateSimulations
+    nameWithType: SimulationControl.CreateSimulations
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulations
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+    name: Control
+    nameWithType: Control
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Func`4
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+    name: Control
+    nameWithType: Control
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.BaseSimulation})
+    name: CreateSimulations
+    nameWithType: SimulationControl.CreateSimulations
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.CreateSimulations
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+    name: Control
+    nameWithType: Control
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Func`4
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+    name: Control
+    nameWithType: Control
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.ConfigureCommonSettings(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.ConfigureCommonSettings(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl
+  isExternal: true
+  name: ConfigureCommonSettings(BaseSimulation, ICircuitContext)
+  nameWithType: SimulationControl.ConfigureCommonSettings(BaseSimulation, ICircuitContext)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.ConfigureCommonSettings(SpiceSharp.Simulations.BaseSimulation, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.ConfigureCommonSettings(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+    name: ConfigureCommonSettings
+    nameWithType: SimulationControl.ConfigureCommonSettings
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.ConfigureCommonSettings
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.ConfigureCommonSettings(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+    name: ConfigureCommonSettings
+    nameWithType: SimulationControl.ConfigureCommonSettings
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.ConfigureCommonSettings
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader{SpiceSharpParser.Models.Netlist.Spice.Objects.Control}.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader{SpiceSharpParser.Models.Netlist.Spice.Objects.Control}.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader{SpiceSharpParser.Models.Netlist.Spice.Objects.Control}
+  definition: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  name: Read(Statement, ICircuitContext)
+  nameWithType: StatementReader<Control>.Read(Statement, ICircuitContext)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader<SpiceSharpParser.Models.Netlist.Spice.Objects.Control>.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  nameWithType.vb: StatementReader(Of Control).Read(Statement, ICircuitContext)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Control).Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+    name: Read
+    nameWithType: StatementReader<Control>.Read
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader<SpiceSharpParser.Models.Netlist.Spice.Objects.Control>.Read
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+    name: Statement
+    nameWithType: Statement
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+    name: Read
+    nameWithType: StatementReader(Of Control).Read
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Control).Read
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+    name: Statement
+    nameWithType: Statement
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: SpiceSharpParser.Models.Netlist.Spice.Objects
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice.Objects
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1
+  name: StatementReader<TStatement>
+  nameWithType: StatementReader<TStatement>
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader<TStatement>
+  nameWithType.vb: StatementReader(Of TStatement)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader(Of TStatement)
+  name.vb: StatementReader(Of TStatement)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1
+    name: StatementReader
+    nameWithType: StatementReader
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TStatement
+    nameWithType: TStatement
+    fullName: TStatement
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1
+    name: StatementReader
+    nameWithType: StatementReader
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TStatement
+    nameWithType: TStatement
+    fullName: TStatement
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  name: Read(Statement, ICircuitContext)
+  nameWithType: StatementReader<TStatement>.Read(Statement, ICircuitContext)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader<TStatement>.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  nameWithType.vb: StatementReader(Of TStatement).Read(Statement, ICircuitContext)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader(Of TStatement).Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+    name: Read
+    nameWithType: StatementReader<TStatement>.Read
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader<TStatement>.Read
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+    name: Statement
+    nameWithType: Statement
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+    name: Read
+    nameWithType: StatementReader(Of TStatement).Read
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader(Of TStatement).Read
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+    name: Statement
+    nameWithType: Statement
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.#ctor*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.#ctor
+  name: NoiseControl
+  nameWithType: NoiseControl.NoiseControl
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.NoiseControl
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter}
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter}
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  definition: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+  name: IMapper<Exporter>
+  nameWithType: IMapper<Exporter>
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter>
+  nameWithType.vb: IMapper(Of Exporter)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter)
+  name.vb: IMapper(Of Exporter)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+    name: IMapper
+    nameWithType: IMapper
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter
+    name: Exporter
+    nameWithType: Exporter
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+    name: IMapper
+    nameWithType: IMapper
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter
+    name: Exporter
+    nameWithType: Exporter
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+  name: IMapper<TElement>
+  nameWithType: IMapper<TElement>
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper<TElement>
+  nameWithType.vb: IMapper(Of TElement)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper(Of TElement)
+  name.vb: IMapper(Of TElement)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+    name: IMapper
+    nameWithType: IMapper
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TElement
+    nameWithType: TElement
+    fullName: TElement
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+    name: IMapper
+    nameWithType: IMapper
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TElement
+    nameWithType: TElement
+    fullName: TElement
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader{SpiceSharpParser.Models.Netlist.Spice.Objects.Control}.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader{SpiceSharpParser.Models.Netlist.Spice.Objects.Control}.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader{SpiceSharpParser.Models.Netlist.Spice.Objects.Control}
+  definition: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1.Read(`0,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  name: Read(Control, ICircuitContext)
+  nameWithType: StatementReader<Control>.Read(Control, ICircuitContext)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader<SpiceSharpParser.Models.Netlist.Spice.Objects.Control>.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Control, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  nameWithType.vb: StatementReader(Of Control).Read(Control, ICircuitContext)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Control).Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Control, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1.Read(`0,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+    name: Read
+    nameWithType: StatementReader<Control>.Read
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader<SpiceSharpParser.Models.Netlist.Spice.Objects.Control>.Read
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+    name: Control
+    nameWithType: Control
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1.Read(`0,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+    name: Read
+    nameWithType: StatementReader(Of Control).Read
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Control).Read
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+    name: Control
+    nameWithType: Control
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.Read*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.Read
+  name: Read
+  nameWithType: NoiseControl.Read
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.Read
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: ICircuitContext
+  nameWithType: ICircuitContext
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1.Read(`0,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1.Read(`0,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  name: Read(TStatement, ICircuitContext)
+  nameWithType: StatementReader<TStatement>.Read(TStatement, ICircuitContext)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader<TStatement>.Read(TStatement, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  nameWithType.vb: StatementReader(Of TStatement).Read(TStatement, ICircuitContext)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader(Of TStatement).Read(TStatement, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1.Read(`0,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+    name: Read
+    nameWithType: StatementReader<TStatement>.Read
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader<TStatement>.Read
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: TStatement
+    nameWithType: TStatement
+    fullName: TStatement
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1.Read(`0,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+    name: Read
+    nameWithType: StatementReader(Of TStatement).Read
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader(Of TStatement).Read
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: TStatement
+    nameWithType: TStatement
+    fullName: TStatement
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context

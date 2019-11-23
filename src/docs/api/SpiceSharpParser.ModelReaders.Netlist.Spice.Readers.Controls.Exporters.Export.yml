@@ -1,0 +1,704 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+  id: Export
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.#ctor(SpiceSharp.Simulations.Simulation)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.ExceptionsEnabled
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Extract
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Name
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.QuantityUnit
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Simulation
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.ToString
+  langs:
+  - csharp
+  - vb
+  name: Export
+  nameWithType: Export
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Export.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Export
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Export.cs
+    startLine: 7
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  summary: "\nDescribes a quantity that can be exported using simulated data.\n"
+  example: []
+  syntax:
+    content: public abstract class Export
+    content.vb: Public MustInherit Class Export
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentDecibelExport
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentExport
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentImaginaryExport
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentMagnitudeExport
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentPhaseExport
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentRealExport
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.PropertyExport
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageDecibelExport
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageExport
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageImaginaryExport
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageMagnitudeExport
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltagePhaseExport
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageRealExport
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ZeroExport
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - abstract
+  - class
+  modifiers.vb:
+  - Public
+  - MustInherit
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.#ctor(SpiceSharp.Simulations.Simulation)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.#ctor(SpiceSharp.Simulations.Simulation)
+  id: '#ctor(SpiceSharp.Simulations.Simulation)'
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+  langs:
+  - csharp
+  - vb
+  name: Export(Simulation)
+  nameWithType: Export.Export(Simulation)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Export(SpiceSharp.Simulations.Simulation)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Export.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Export.cs
+    startLine: 15
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  summary: "\nInitializes a new instance of the <xref href=\"SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
+  example: []
+  syntax:
+    content: protected Export(Simulation simulation)
+    parameters:
+    - id: simulation
+      type: SpiceSharp.Simulations.Simulation
+      description: "\nThe simulation.\n"
+    content.vb: Protected Sub New(simulation As Simulation)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.#ctor*
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Simulation
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Simulation
+  id: Simulation
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+  langs:
+  - csharp
+  - vb
+  name: Simulation
+  nameWithType: Export.Simulation
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Simulation
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Export.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Simulation
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Export.cs
+    startLine: 20
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  syntax:
+    content: public Simulation Simulation { get; }
+    parameters: []
+    return:
+      type: SpiceSharp.Simulations.Simulation
+    content.vb: Public ReadOnly Property Simulation As Simulation
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Simulation*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Name
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Name
+  id: Name
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: Export.Name
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Name
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Export.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Name
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Export.cs
+    startLine: 25
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  summary: "\nGets or sets the name.\n"
+  example: []
+  syntax:
+    content: public string Name { get; protected set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Name As String
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Name*
+  modifiers.csharp:
+  - public
+  - get
+  - protected set
+  modifiers.vb:
+  - Public
+  - Get
+  - Protected Set
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.QuantityUnit
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.QuantityUnit
+  id: QuantityUnit
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+  langs:
+  - csharp
+  - vb
+  name: QuantityUnit
+  nameWithType: Export.QuantityUnit
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.QuantityUnit
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Export.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: QuantityUnit
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Export.cs
+    startLine: 30
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  summary: "\nGets the export unit.\n"
+  example: []
+  syntax:
+    content: public abstract string QuantityUnit { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public MustOverride ReadOnly Property QuantityUnit As String
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.QuantityUnit*
+  modifiers.csharp:
+  - public
+  - abstract
+  - get
+  modifiers.vb:
+  - Public
+  - MustOverride
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.ExceptionsEnabled
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.ExceptionsEnabled
+  id: ExceptionsEnabled
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+  langs:
+  - csharp
+  - vb
+  name: ExceptionsEnabled
+  nameWithType: Export.ExceptionsEnabled
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.ExceptionsEnabled
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Export.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ExceptionsEnabled
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Export.cs
+    startLine: 35
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  summary: "\nGets or sets a value indicating whether exceptions are enabled.\n"
+  example: []
+  syntax:
+    content: protected bool ExceptionsEnabled { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Protected Property ExceptionsEnabled As Boolean
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.ExceptionsEnabled*
+  modifiers.csharp:
+  - protected
+  - get
+  - set
+  modifiers.vb:
+  - Protected
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Extract
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Extract
+  id: Extract
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+  langs:
+  - csharp
+  - vb
+  name: Extract()
+  nameWithType: Export.Extract()
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Extract()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Export.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Extract
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Export.cs
+    startLine: 43
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  summary: "\nExtract the quantity from simulated data.\n"
+  example: []
+  syntax:
+    content: public abstract double Extract()
+    return:
+      type: System.Double
+      description: "\nA quantity.\n"
+    content.vb: Public MustOverride Function Extract As Double
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Extract*
+  modifiers.csharp:
+  - public
+  - abstract
+  modifiers.vb:
+  - Public
+  - MustOverride
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.ToString
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.ToString
+  id: ToString
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: Export.ToString()
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.ToString()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Export.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ToString
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Export.cs
+    startLine: 51
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  summary: "\nOverride string representation.\n"
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: "\nA string representation of export.\n"
+    content.vb: Public Overrides Function ToString As String
+  overridden: System.Object.ToString
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.ToString*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  name: Export
+  nameWithType: Export
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.#ctor*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.#ctor
+  name: Export
+  nameWithType: Export.Export
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Export
+- uid: SpiceSharp.Simulations.Simulation
+  commentId: T:SpiceSharp.Simulations.Simulation
+  parent: SpiceSharp.Simulations
+  isExternal: true
+  name: Simulation
+  nameWithType: Simulation
+  fullName: SpiceSharp.Simulations.Simulation
+- uid: SpiceSharp.Simulations
+  commentId: N:SpiceSharp.Simulations
+  isExternal: true
+  name: SpiceSharp.Simulations
+  nameWithType: SpiceSharp.Simulations
+  fullName: SpiceSharp.Simulations
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Simulation*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Simulation
+  name: Simulation
+  nameWithType: Export.Simulation
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Simulation
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Name*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Name
+  name: Name
+  nameWithType: Export.Name
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Name
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.QuantityUnit*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.QuantityUnit
+  name: QuantityUnit
+  nameWithType: Export.QuantityUnit
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.QuantityUnit
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.ExceptionsEnabled*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.ExceptionsEnabled
+  name: ExceptionsEnabled
+  nameWithType: Export.ExceptionsEnabled
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.ExceptionsEnabled
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Extract*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Extract
+  name: Extract
+  nameWithType: Export.Extract
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.Extract
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  name: Double
+  nameWithType: Double
+  fullName: System.Double
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.ToString*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.ToString
+  name: ToString
+  nameWithType: Export.ToString
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.ToString

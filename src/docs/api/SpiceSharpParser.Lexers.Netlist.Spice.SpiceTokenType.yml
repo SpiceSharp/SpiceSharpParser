@@ -1,0 +1,1378 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  commentId: T:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  id: SpiceTokenType
+  parent: SpiceSharpParser.Lexers.Netlist.Spice
+  children:
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ASTERIKS
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.BOOLEAN_EXPRESSION
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COM_CONTENT
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COM_END
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COM_START
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COMMA
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COMMENT
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COMMENT_HSPICE
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COMMENT_PSPICE
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.CONTINUATION_CURRENT_LINE
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.CONTINUATION_NEXT_LINE
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.DELIMITER
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.DOT
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.DOUBLE_QUOTED_STRING
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ELSE
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ELSE_IF
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.END
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ENDIF
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ENDL
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ENDS
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.EOF
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.EQUAL
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.EXPRESSION_BRACKET
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.EXPRESSION_SINGLE_QUOTES
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.IDENTIFIER
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.IF
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.MINUS
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.MODEL
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.NEWLINE
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.PERCENT
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.PLUS
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.REFERENCE
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.SINGLE_QUOTED_STRING
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.START
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.TITLE
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.VALUE
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.WHITESPACE
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.WORD
+  langs:
+  - csharp
+  - vb
+  name: SpiceTokenType
+  nameWithType: SpiceTokenType
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  type: Enum
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SpiceTokenType
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 5
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\nTypes of terminals in SPICE grammar.\n"
+  example: []
+  syntax:
+    content: public enum SpiceTokenType
+    content.vb: Public Enum SpiceTokenType
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.EOF
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.EOF
+  id: EOF
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: EOF
+  nameWithType: SpiceTokenType.EOF
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.EOF
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: EOF
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 10
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\nEnd of file token\n"
+  example: []
+  syntax:
+    content: EOF = -1
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.START
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.START
+  id: START
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: START
+  nameWithType: SpiceTokenType.START
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.START
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: START
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 15
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\nStart token (hidden)\n"
+  example: []
+  syntax:
+    content: START = 0
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ASTERIKS
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ASTERIKS
+  id: ASTERIKS
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: ASTERIKS
+  nameWithType: SpiceTokenType.ASTERIKS
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ASTERIKS
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ASTERIKS
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 20
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\n* character token\n"
+  example: []
+  syntax:
+    content: ASTERIKS = 1
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.MINUS
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.MINUS
+  id: MINUS
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: MINUS
+  nameWithType: SpiceTokenType.MINUS
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.MINUS
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: MINUS
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 25
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\n- character token\n"
+  example: []
+  syntax:
+    content: MINUS = 2
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.DOT
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.DOT
+  id: DOT
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: DOT
+  nameWithType: SpiceTokenType.DOT
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.DOT
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: DOT
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 30
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\n. character token\n"
+  example: []
+  syntax:
+    content: DOT = 3
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COMMA
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COMMA
+  id: COMMA
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: COMMA
+  nameWithType: SpiceTokenType.COMMA
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COMMA
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: COMMA
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 35
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\n, character token\n"
+  example: []
+  syntax:
+    content: COMMA = 4
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.DELIMITER
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.DELIMITER
+  id: DELIMITER
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: DELIMITER
+  nameWithType: SpiceTokenType.DELIMITER
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.DELIMITER
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: DELIMITER
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 40
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\nDelimiter characters token\n"
+  example: []
+  syntax:
+    content: DELIMITER = 5
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.NEWLINE
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.NEWLINE
+  id: NEWLINE
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: NEWLINE
+  nameWithType: SpiceTokenType.NEWLINE
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.NEWLINE
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: NEWLINE
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 45
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\nnew line token\n"
+  example: []
+  syntax:
+    content: NEWLINE = 6
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ENDS
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ENDS
+  id: ENDS
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: ENDS
+  nameWithType: SpiceTokenType.ENDS
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ENDS
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ENDS
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 50
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\n.ENDS token\n"
+  example: []
+  syntax:
+    content: ENDS = 7
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.END
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.END
+  id: END
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: END
+  nameWithType: SpiceTokenType.END
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.END
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: END
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 55
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\n.END token\n"
+  example: []
+  syntax:
+    content: END = 8
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.VALUE
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.VALUE
+  id: VALUE
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: VALUE
+  nameWithType: SpiceTokenType.VALUE
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.VALUE
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: VALUE
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 60
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\nvalue token\n"
+  example: []
+  syntax:
+    content: VALUE = 9
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COMMENT
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COMMENT
+  id: COMMENT
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: COMMENT
+  nameWithType: SpiceTokenType.COMMENT
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COMMENT
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: COMMENT
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 65
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\ntoken with comment line\n"
+  example: []
+  syntax:
+    content: COMMENT = 10
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.EXPRESSION_BRACKET
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.EXPRESSION_BRACKET
+  id: EXPRESSION_BRACKET
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: EXPRESSION_BRACKET
+  nameWithType: SpiceTokenType.EXPRESSION_BRACKET
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.EXPRESSION_BRACKET
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: EXPRESSION_BRACKET
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 70
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\nexpression token\n"
+  example: []
+  syntax:
+    content: EXPRESSION_BRACKET = 11
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.REFERENCE
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.REFERENCE
+  id: REFERENCE
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: REFERENCE
+  nameWithType: SpiceTokenType.REFERENCE
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.REFERENCE
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: REFERENCE
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 75
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\nreference token\n"
+  example: []
+  syntax:
+    content: REFERENCE = 12
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.WORD
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.WORD
+  id: WORD
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: WORD
+  nameWithType: SpiceTokenType.WORD
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.WORD
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: WORD
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 80
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\nword token\n"
+  example: []
+  syntax:
+    content: WORD = 13
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.WHITESPACE
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.WHITESPACE
+  id: WHITESPACE
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: WHITESPACE
+  nameWithType: SpiceTokenType.WHITESPACE
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.WHITESPACE
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: WHITESPACE
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 85
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\nwhitespace token\n"
+  example: []
+  syntax:
+    content: WHITESPACE = 14
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.PLUS
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.PLUS
+  id: PLUS
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: PLUS
+  nameWithType: SpiceTokenType.PLUS
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.PLUS
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: PLUS
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 90
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\n+ character token\n"
+  example: []
+  syntax:
+    content: PLUS = 15
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.IDENTIFIER
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.IDENTIFIER
+  id: IDENTIFIER
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: IDENTIFIER
+  nameWithType: SpiceTokenType.IDENTIFIER
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.IDENTIFIER
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IDENTIFIER
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 95
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\nidentifier token\n"
+  example: []
+  syntax:
+    content: IDENTIFIER = 16
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.DOUBLE_QUOTED_STRING
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.DOUBLE_QUOTED_STRING
+  id: DOUBLE_QUOTED_STRING
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: DOUBLE_QUOTED_STRING
+  nameWithType: SpiceTokenType.DOUBLE_QUOTED_STRING
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.DOUBLE_QUOTED_STRING
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: DOUBLE_QUOTED_STRING
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 100
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\ndouble quoted sting token\n"
+  example: []
+  syntax:
+    content: DOUBLE_QUOTED_STRING = 17
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.SINGLE_QUOTED_STRING
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.SINGLE_QUOTED_STRING
+  id: SINGLE_QUOTED_STRING
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: SINGLE_QUOTED_STRING
+  nameWithType: SpiceTokenType.SINGLE_QUOTED_STRING
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.SINGLE_QUOTED_STRING
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SINGLE_QUOTED_STRING
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 105
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\ndouble quoted sting token\n"
+  example: []
+  syntax:
+    content: SINGLE_QUOTED_STRING = 18
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.TITLE
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.TITLE
+  id: TITLE
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: TITLE
+  nameWithType: SpiceTokenType.TITLE
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.TITLE
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: TITLE
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 110
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\ntitle token\n"
+  example: []
+  syntax:
+    content: TITLE = 19
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.EQUAL
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.EQUAL
+  id: EQUAL
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: EQUAL
+  nameWithType: SpiceTokenType.EQUAL
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.EQUAL
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: EQUAL
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 115
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\n= character\n"
+  example: []
+  syntax:
+    content: EQUAL = 21
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COMMENT_PSPICE
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COMMENT_PSPICE
+  id: COMMENT_PSPICE
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: COMMENT_PSPICE
+  nameWithType: SpiceTokenType.COMMENT_PSPICE
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COMMENT_PSPICE
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: COMMENT_PSPICE
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 120
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\n; style comment\n"
+  example: []
+  syntax:
+    content: COMMENT_PSPICE = 22
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COMMENT_HSPICE
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COMMENT_HSPICE
+  id: COMMENT_HSPICE
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: COMMENT_HSPICE
+  nameWithType: SpiceTokenType.COMMENT_HSPICE
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COMMENT_HSPICE
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: COMMENT_HSPICE
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 125
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\n$ style comment\n"
+  example: []
+  syntax:
+    content: COMMENT_HSPICE = 23
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ENDL
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ENDL
+  id: ENDL
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: ENDL
+  nameWithType: SpiceTokenType.ENDL
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ENDL
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ENDL
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 130
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\n.ENDL token\n"
+  example: []
+  syntax:
+    content: ENDL = 24
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COM_START
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COM_START
+  id: COM_START
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: COM_START
+  nameWithType: SpiceTokenType.COM_START
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COM_START
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: COM_START
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 135
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\n#COM token - start of a block comment in SmartSpice\n"
+  example: []
+  syntax:
+    content: COM_START = 25
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COM_END
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COM_END
+  id: COM_END
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: COM_END
+  nameWithType: SpiceTokenType.COM_END
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COM_END
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: COM_END
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 140
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\n#ENDCOM token - end of a block comment in SmartSpice\n"
+  example: []
+  syntax:
+    content: COM_END = 26
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COM_CONTENT
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COM_CONTENT
+  id: COM_CONTENT
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: COM_CONTENT
+  nameWithType: SpiceTokenType.COM_CONTENT
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.COM_CONTENT
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: COM_CONTENT
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 145
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\nContent of a block comment in SmartSpice\n"
+  example: []
+  syntax:
+    content: COM_CONTENT = 27
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.IF
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.IF
+  id: IF
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: IF
+  nameWithType: SpiceTokenType.IF
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.IF
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IF
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 150
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\n.IF token\n"
+  example: []
+  syntax:
+    content: IF = 28
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ELSE
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ELSE
+  id: ELSE
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: ELSE
+  nameWithType: SpiceTokenType.ELSE
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ELSE
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ELSE
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 155
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\n.ELSE token\n"
+  example: []
+  syntax:
+    content: ELSE = 29
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ELSE_IF
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ELSE_IF
+  id: ELSE_IF
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: ELSE_IF
+  nameWithType: SpiceTokenType.ELSE_IF
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ELSE_IF
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ELSE_IF
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 160
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\n.ELSEIF token\n"
+  example: []
+  syntax:
+    content: ELSE_IF = 30
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ENDIF
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ENDIF
+  id: ENDIF
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: ENDIF
+  nameWithType: SpiceTokenType.ENDIF
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.ENDIF
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ENDIF
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 165
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\n.ENDIF token\n"
+  example: []
+  syntax:
+    content: ENDIF = 31
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.BOOLEAN_EXPRESSION
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.BOOLEAN_EXPRESSION
+  id: BOOLEAN_EXPRESSION
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: BOOLEAN_EXPRESSION
+  nameWithType: SpiceTokenType.BOOLEAN_EXPRESSION
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.BOOLEAN_EXPRESSION
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: BOOLEAN_EXPRESSION
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 170
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\nBoolean expression token with delimiters\n"
+  example: []
+  syntax:
+    content: BOOLEAN_EXPRESSION = 32
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.EXPRESSION_SINGLE_QUOTES
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.EXPRESSION_SINGLE_QUOTES
+  id: EXPRESSION_SINGLE_QUOTES
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: EXPRESSION_SINGLE_QUOTES
+  nameWithType: SpiceTokenType.EXPRESSION_SINGLE_QUOTES
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.EXPRESSION_SINGLE_QUOTES
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: EXPRESSION_SINGLE_QUOTES
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 175
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\nexpression token\n"
+  example: []
+  syntax:
+    content: EXPRESSION_SINGLE_QUOTES = 33
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.PERCENT
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.PERCENT
+  id: PERCENT
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: PERCENT
+  nameWithType: SpiceTokenType.PERCENT
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.PERCENT
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: PERCENT
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 180
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\npercent token\n"
+  example: []
+  syntax:
+    content: PERCENT = 34
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.CONTINUATION_CURRENT_LINE
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.CONTINUATION_CURRENT_LINE
+  id: CONTINUATION_CURRENT_LINE
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: CONTINUATION_CURRENT_LINE
+  nameWithType: SpiceTokenType.CONTINUATION_CURRENT_LINE
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.CONTINUATION_CURRENT_LINE
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CONTINUATION_CURRENT_LINE
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 185
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\ncontinuation current line\n"
+  example: []
+  syntax:
+    content: CONTINUATION_CURRENT_LINE = 35
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.CONTINUATION_NEXT_LINE
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.CONTINUATION_NEXT_LINE
+  id: CONTINUATION_NEXT_LINE
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: CONTINUATION_NEXT_LINE
+  nameWithType: SpiceTokenType.CONTINUATION_NEXT_LINE
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.CONTINUATION_NEXT_LINE
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CONTINUATION_NEXT_LINE
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 190
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\ncontinuation next line\n"
+  example: []
+  syntax:
+    content: CONTINUATION_NEXT_LINE = 36
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.MODEL
+  commentId: F:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.MODEL
+  id: MODEL
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  langs:
+  - csharp
+  - vb
+  name: MODEL
+  nameWithType: SpiceTokenType.MODEL
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.MODEL
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: MODEL
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenType.cs
+    startLine: 195
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  summary: "\nmodel token\n"
+  example: []
+  syntax:
+    content: MODEL = 37
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: SpiceSharpParser.Lexers.Netlist.Spice
+  commentId: N:SpiceSharpParser.Lexers.Netlist.Spice
+  name: SpiceSharpParser.Lexers.Netlist.Spice
+  nameWithType: SpiceSharpParser.Lexers.Netlist.Spice
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  commentId: T:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+  parent: SpiceSharpParser.Lexers.Netlist.Spice
+  name: SpiceTokenType
+  nameWithType: SpiceTokenType
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType

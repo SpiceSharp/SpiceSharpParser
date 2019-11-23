@@ -1,0 +1,167 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser
+  commentId: T:SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser
+  id: ISingleSpiceNetlistParser
+  parent: SpiceSharpParser.Parsers.Netlist.Spice
+  children:
+  - SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser.Parse(SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken[])
+  - SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser.Settings
+  langs:
+  - csharp
+  - vb
+  name: ISingleSpiceNetlistParser
+  nameWithType: ISingleSpiceNetlistParser
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser
+  type: Interface
+  source:
+    remote:
+      path: src/SpiceSharpParser/Parsers/Netlist/Spice/ISingleSpiceNetlistParser.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ISingleSpiceNetlistParser
+    path: ../SpiceSharpParser/Parsers/Netlist/Spice/ISingleSpiceNetlistParser.cs
+    startLine: 8
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Parsers.Netlist.Spice
+  summary: "\nInterface for all SPICE netlist parsers.\n"
+  example: []
+  syntax:
+    content: public interface ISingleSpiceNetlistParser
+    content.vb: Public Interface ISingleSpiceNetlistParser
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser.Settings
+  commentId: P:SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser.Settings
+  id: Settings
+  parent: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser
+  langs:
+  - csharp
+  - vb
+  name: Settings
+  nameWithType: ISingleSpiceNetlistParser.Settings
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser.Settings
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Parsers/Netlist/Spice/ISingleSpiceNetlistParser.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Settings
+    path: ../SpiceSharpParser/Parsers/Netlist/Spice/ISingleSpiceNetlistParser.cs
+    startLine: 13
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Parsers.Netlist.Spice
+  summary: "\nGets or sets the parser settings.\n"
+  example: []
+  syntax:
+    content: SingleSpiceNetlistParserSettings Settings { get; set; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings
+    content.vb: Property Settings As SingleSpiceNetlistParserSettings
+  overload: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser.Settings*
+  modifiers.csharp:
+  - get
+  - set
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser.Parse(SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken[])
+  commentId: M:SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser.Parse(SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken[])
+  id: Parse(SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken[])
+  parent: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser
+  langs:
+  - csharp
+  - vb
+  name: Parse(SpiceToken[])
+  nameWithType: ISingleSpiceNetlistParser.Parse(SpiceToken[])
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser.Parse(SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken[])
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Parsers/Netlist/Spice/ISingleSpiceNetlistParser.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Parse
+    path: ../SpiceSharpParser/Parsers/Netlist/Spice/ISingleSpiceNetlistParser.cs
+    startLine: 22
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Parsers.Netlist.Spice
+  summary: "\nParses a SPICE netlist and returns a SPICE netlist model.\n"
+  example: []
+  syntax:
+    content: SpiceNetlist Parse(SpiceToken[] tokens)
+    parameters:
+    - id: tokens
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken[]
+      description: SPICE netlist tokens.
+    return:
+      type: SpiceSharpParser.Models.Netlist.Spice.SpiceNetlist
+      description: "\nA SPICE netlist model.\n"
+    content.vb: Function Parse(tokens As SpiceToken()) As SpiceNetlist
+  overload: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser.Parse*
+  nameWithType.vb: ISingleSpiceNetlistParser.Parse(SpiceToken())
+  fullName.vb: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser.Parse(SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken())
+  name.vb: Parse(SpiceToken())
+references:
+- uid: SpiceSharpParser.Parsers.Netlist.Spice
+  commentId: N:SpiceSharpParser.Parsers.Netlist.Spice
+  name: SpiceSharpParser.Parsers.Netlist.Spice
+  nameWithType: SpiceSharpParser.Parsers.Netlist.Spice
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser.Settings*
+  commentId: Overload:SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser.Settings
+  name: Settings
+  nameWithType: ISingleSpiceNetlistParser.Settings
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser.Settings
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings
+  commentId: T:SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings
+  parent: SpiceSharpParser.Parsers.Netlist.Spice
+  name: SingleSpiceNetlistParserSettings
+  nameWithType: SingleSpiceNetlistParserSettings
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser.Parse*
+  commentId: Overload:SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser.Parse
+  name: Parse
+  nameWithType: ISingleSpiceNetlistParser.Parse
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser.Parse
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken[]
+  isExternal: true
+  name: SpiceToken[]
+  nameWithType: SpiceToken[]
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken[]
+  nameWithType.vb: SpiceToken()
+  fullName.vb: SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken()
+  name.vb: SpiceToken()
+  spec.csharp:
+  - uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken
+    name: SpiceToken
+    nameWithType: SpiceToken
+    fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken
+    name: SpiceToken
+    nameWithType: SpiceToken
+    fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: SpiceSharpParser.Models.Netlist.Spice.SpiceNetlist
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.SpiceNetlist
+  parent: SpiceSharpParser.Models.Netlist.Spice
+  name: SpiceNetlist
+  nameWithType: SpiceNetlist
+  fullName: SpiceSharpParser.Models.Netlist.Spice.SpiceNetlist
+- uid: SpiceSharpParser.Models.Netlist.Spice
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice
+  name: SpiceSharpParser.Models.Netlist.Spice
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice
+  fullName: SpiceSharpParser.Models.Netlist.Spice

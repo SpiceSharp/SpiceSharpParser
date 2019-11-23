@@ -1,0 +1,516 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Common.FileSystem.FileReader
+  commentId: T:SpiceSharpParser.Common.FileSystem.FileReader
+  id: FileReader
+  parent: SpiceSharpParser.Common.FileSystem
+  children:
+  - SpiceSharpParser.Common.FileSystem.FileReader.ReadAll(System.String)
+  - SpiceSharpParser.Common.FileSystem.FileReader.ReadAllLines(System.String)
+  langs:
+  - csharp
+  - vb
+  name: FileReader
+  nameWithType: FileReader
+  fullName: SpiceSharpParser.Common.FileSystem.FileReader
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/FileSystem/FileReader.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: FileReader
+    path: ../SpiceSharpParser/Common/FileSystem/FileReader.cs
+    startLine: 4
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.FileSystem
+  syntax:
+    content: 'public class FileReader : IFileReader'
+    content.vb: >-
+      Public Class FileReader
+          Implements IFileReader
+  inheritance:
+  - System.Object
+  implements:
+  - SpiceSharpParser.Common.FileSystem.IFileReader
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.Common.FileSystem.FileReader.ReadAll(System.String)
+  commentId: M:SpiceSharpParser.Common.FileSystem.FileReader.ReadAll(System.String)
+  id: ReadAll(System.String)
+  parent: SpiceSharpParser.Common.FileSystem.FileReader
+  langs:
+  - csharp
+  - vb
+  name: ReadAll(String)
+  nameWithType: FileReader.ReadAll(String)
+  fullName: SpiceSharpParser.Common.FileSystem.FileReader.ReadAll(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/FileSystem/FileReader.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ReadAll
+    path: ../SpiceSharpParser/Common/FileSystem/FileReader.cs
+    startLine: 13
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.FileSystem
+  summary: "\nGets the content of the file located at the specified path.\n"
+  example: []
+  syntax:
+    content: public string ReadAll(string path)
+    parameters:
+    - id: path
+      type: System.String
+      description: System path to file (either absolute or relative).
+    return:
+      type: System.String
+      description: "\nThe content of the file.\n"
+    content.vb: Public Function ReadAll(path As String) As String
+  overload: SpiceSharpParser.Common.FileSystem.FileReader.ReadAll*
+  implements:
+  - SpiceSharpParser.Common.FileSystem.IFileReader.ReadAll(System.String)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Common.FileSystem.FileReader.ReadAllLines(System.String)
+  commentId: M:SpiceSharpParser.Common.FileSystem.FileReader.ReadAllLines(System.String)
+  id: ReadAllLines(System.String)
+  parent: SpiceSharpParser.Common.FileSystem.FileReader
+  langs:
+  - csharp
+  - vb
+  name: ReadAllLines(String)
+  nameWithType: FileReader.ReadAllLines(String)
+  fullName: SpiceSharpParser.Common.FileSystem.FileReader.ReadAllLines(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/FileSystem/FileReader.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ReadAllLines
+    path: ../SpiceSharpParser/Common/FileSystem/FileReader.cs
+    startLine: 35
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.FileSystem
+  summary: "\nGets the content of the file located at the specified path.\n"
+  example: []
+  syntax:
+    content: public string[] ReadAllLines(string path)
+    parameters:
+    - id: path
+      type: System.String
+      description: System path to file (either absolute or relative).
+    return:
+      type: System.String[]
+      description: "\nThe content of the file in lines.\n"
+    content.vb: Public Function ReadAllLines(path As String) As String()
+  overload: SpiceSharpParser.Common.FileSystem.FileReader.ReadAllLines*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: SpiceSharpParser.Common.FileSystem
+  commentId: N:SpiceSharpParser.Common.FileSystem
+  name: SpiceSharpParser.Common.FileSystem
+  nameWithType: SpiceSharpParser.Common.FileSystem
+  fullName: SpiceSharpParser.Common.FileSystem
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharpParser.Common.FileSystem.IFileReader
+  commentId: T:SpiceSharpParser.Common.FileSystem.IFileReader
+  parent: SpiceSharpParser.Common.FileSystem
+  name: IFileReader
+  nameWithType: IFileReader
+  fullName: SpiceSharpParser.Common.FileSystem.IFileReader
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.Common.FileSystem.FileReader.ReadAll*
+  commentId: Overload:SpiceSharpParser.Common.FileSystem.FileReader.ReadAll
+  name: ReadAll
+  nameWithType: FileReader.ReadAll
+  fullName: SpiceSharpParser.Common.FileSystem.FileReader.ReadAll
+- uid: SpiceSharpParser.Common.FileSystem.IFileReader.ReadAll(System.String)
+  commentId: M:SpiceSharpParser.Common.FileSystem.IFileReader.ReadAll(System.String)
+  parent: SpiceSharpParser.Common.FileSystem.IFileReader
+  isExternal: true
+  name: ReadAll(String)
+  nameWithType: IFileReader.ReadAll(String)
+  fullName: SpiceSharpParser.Common.FileSystem.IFileReader.ReadAll(System.String)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.FileSystem.IFileReader.ReadAll(System.String)
+    name: ReadAll
+    nameWithType: IFileReader.ReadAll
+    fullName: SpiceSharpParser.Common.FileSystem.IFileReader.ReadAll
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.FileSystem.IFileReader.ReadAll(System.String)
+    name: ReadAll
+    nameWithType: IFileReader.ReadAll
+    fullName: SpiceSharpParser.Common.FileSystem.IFileReader.ReadAll
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: SpiceSharpParser.Common.FileSystem.FileReader.ReadAllLines*
+  commentId: Overload:SpiceSharpParser.Common.FileSystem.FileReader.ReadAllLines
+  name: ReadAllLines
+  nameWithType: FileReader.ReadAllLines
+  fullName: SpiceSharpParser.Common.FileSystem.FileReader.ReadAllLines
+- uid: System.String[]
+  isExternal: true
+  name: String[]
+  nameWithType: String[]
+  fullName: System.String[]
+  nameWithType.vb: String()
+  fullName.vb: System.String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()

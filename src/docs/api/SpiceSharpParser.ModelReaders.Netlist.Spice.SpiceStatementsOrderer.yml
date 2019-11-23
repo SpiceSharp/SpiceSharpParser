@@ -1,0 +1,795 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer
+  id: SpiceStatementsOrderer
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.Controls
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.ControlsAfterComponents
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.GetOrder(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.Order(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.TopControls
+  langs:
+  - csharp
+  - vb
+  name: SpiceStatementsOrderer
+  nameWithType: SpiceStatementsOrderer
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceStatementsOrderer.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SpiceStatementsOrderer
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceStatementsOrderer.cs
+    startLine: 6
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  syntax:
+    content: 'public class SpiceStatementsOrderer : ISpiceStatementsOrderer'
+    content.vb: >-
+      Public Class SpiceStatementsOrderer
+          Implements ISpiceStatementsOrderer
+  inheritance:
+  - System.Object
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsOrderer
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.TopControls
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.TopControls
+  id: TopControls
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer
+  langs:
+  - csharp
+  - vb
+  name: TopControls
+  nameWithType: SpiceStatementsOrderer.TopControls
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.TopControls
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceStatementsOrderer.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: TopControls
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceStatementsOrderer.cs
+    startLine: 8
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  syntax:
+    content: protected List<string> TopControls { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{System.String}
+    content.vb: Protected Property TopControls As List(Of String)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.TopControls*
+  modifiers.csharp:
+  - protected
+  - get
+  - set
+  modifiers.vb:
+  - Protected
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.ControlsAfterComponents
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.ControlsAfterComponents
+  id: ControlsAfterComponents
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer
+  langs:
+  - csharp
+  - vb
+  name: ControlsAfterComponents
+  nameWithType: SpiceStatementsOrderer.ControlsAfterComponents
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.ControlsAfterComponents
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceStatementsOrderer.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ControlsAfterComponents
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceStatementsOrderer.cs
+    startLine: 10
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  syntax:
+    content: protected List<string> ControlsAfterComponents { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{System.String}
+    content.vb: Protected Property ControlsAfterComponents As List(Of String)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.ControlsAfterComponents*
+  modifiers.csharp:
+  - protected
+  - get
+  - set
+  modifiers.vb:
+  - Protected
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.Controls
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.Controls
+  id: Controls
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer
+  langs:
+  - csharp
+  - vb
+  name: Controls
+  nameWithType: SpiceStatementsOrderer.Controls
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.Controls
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceStatementsOrderer.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Controls
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceStatementsOrderer.cs
+    startLine: 12
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  syntax:
+    content: protected List<string> Controls { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{System.String}
+    content.vb: Protected Property Controls As List(Of String)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.Controls*
+  modifiers.csharp:
+  - protected
+  - get
+  - set
+  modifiers.vb:
+  - Protected
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.Order(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.Order(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  id: Order(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer
+  langs:
+  - csharp
+  - vb
+  name: Order(Statements)
+  nameWithType: SpiceStatementsOrderer.Order(Statements)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.Order(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceStatementsOrderer.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Order
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceStatementsOrderer.cs
+    startLine: 21
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nOrders statements for reading.\n"
+  example: []
+  syntax:
+    content: public IEnumerable<Statement> Order(Statements statements)
+    parameters:
+    - id: statements
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+      description: Statement to order.
+    return:
+      type: System.Collections.Generic.IEnumerable{SpiceSharpParser.Models.Netlist.Spice.Objects.Statement}
+      description: "\nOrdered statements.\n"
+    content.vb: Public Function Order(statements As Statements) As IEnumerable(Of Statement)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.Order*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsOrderer.Order(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.GetOrder(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.GetOrder(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement)
+  id: GetOrder(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer
+  langs:
+  - csharp
+  - vb
+  name: GetOrder(Statement)
+  nameWithType: SpiceStatementsOrderer.GetOrder(Statement)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.GetOrder(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceStatementsOrderer.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetOrder
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceStatementsOrderer.cs
+    startLine: 31
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  syntax:
+    content: protected virtual int GetOrder(Statement statement)
+    parameters:
+    - id: statement
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+    return:
+      type: System.Int32
+    content.vb: Protected Overridable Function GetOrder(statement As Statement) As Integer
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.GetOrder*
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsOrderer
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsOrderer
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice
+  name: ISpiceStatementsOrderer
+  nameWithType: ISpiceStatementsOrderer
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsOrderer
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.TopControls*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.TopControls
+  name: TopControls
+  nameWithType: SpiceStatementsOrderer.TopControls
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.TopControls
+- uid: System.Collections.Generic.List{System.String}
+  commentId: T:System.Collections.Generic.List{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<String>
+  nameWithType: List<String>
+  fullName: System.Collections.Generic.List<System.String>
+  nameWithType.vb: List(Of String)
+  fullName.vb: System.Collections.Generic.List(Of System.String)
+  name.vb: List(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.ControlsAfterComponents*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.ControlsAfterComponents
+  name: ControlsAfterComponents
+  nameWithType: SpiceStatementsOrderer.ControlsAfterComponents
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.ControlsAfterComponents
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.Controls*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.Controls
+  name: Controls
+  nameWithType: SpiceStatementsOrderer.Controls
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.Controls
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.Order*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.Order
+  name: Order
+  nameWithType: SpiceStatementsOrderer.Order
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.Order
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsOrderer.Order(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsOrderer.Order(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsOrderer
+  name: Order(Statements)
+  nameWithType: ISpiceStatementsOrderer.Order(Statements)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsOrderer.Order(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsOrderer.Order(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+    name: Order
+    nameWithType: ISpiceStatementsOrderer.Order
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsOrderer.Order
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+    name: Statements
+    nameWithType: Statements
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsOrderer.Order(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+    name: Order
+    nameWithType: ISpiceStatementsOrderer.Order
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsOrderer.Order
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+    name: Statements
+    nameWithType: Statements
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: Statements
+  nameWithType: Statements
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+- uid: System.Collections.Generic.IEnumerable{SpiceSharpParser.Models.Netlist.Spice.Objects.Statement}
+  commentId: T:System.Collections.Generic.IEnumerable{SpiceSharpParser.Models.Netlist.Spice.Objects.Statement}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<Statement>
+  nameWithType: IEnumerable<Statement>
+  fullName: System.Collections.Generic.IEnumerable<SpiceSharpParser.Models.Netlist.Spice.Objects.Statement>
+  nameWithType.vb: IEnumerable(Of Statement)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Statement)
+  name.vb: IEnumerable(Of Statement)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+    name: Statement
+    nameWithType: Statement
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+    name: Statement
+    nameWithType: Statement
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: SpiceSharpParser.Models.Netlist.Spice.Objects
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice.Objects
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.GetOrder*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.GetOrder
+  name: GetOrder
+  nameWithType: SpiceStatementsOrderer.GetOrder
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.GetOrder
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: Statement
+  nameWithType: Statement
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32

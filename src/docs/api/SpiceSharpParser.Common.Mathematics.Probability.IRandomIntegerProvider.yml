@@ -1,0 +1,92 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider
+  id: IRandomIntegerProvider
+  parent: SpiceSharpParser.Common.Mathematics.Probability
+  children:
+  - SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider.Next
+  langs:
+  - csharp
+  - vb
+  name: IRandomIntegerProvider
+  nameWithType: IRandomIntegerProvider
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider
+  type: Interface
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/IRandomNumberProvider.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IRandomIntegerProvider
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/IRandomNumberProvider.cs
+    startLine: 34
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nInterface for all random integer providers.\n"
+  example: []
+  syntax:
+    content: public interface IRandomIntegerProvider
+    content.vb: Public Interface IRandomIntegerProvider
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider.Next
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider.Next
+  id: Next
+  parent: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider
+  langs:
+  - csharp
+  - vb
+  name: Next()
+  nameWithType: IRandomIntegerProvider.Next()
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider.Next()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/IRandomNumberProvider.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Next
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/IRandomNumberProvider.cs
+    startLine: 42
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nComputes random integer.\n"
+  example: []
+  syntax:
+    content: int Next()
+    return:
+      type: System.Int32
+      description: "\nA new random integer.\n"
+    content.vb: Function Next As Integer
+  overload: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider.Next*
+references:
+- uid: SpiceSharpParser.Common.Mathematics.Probability
+  commentId: N:SpiceSharpParser.Common.Mathematics.Probability
+  name: SpiceSharpParser.Common.Mathematics.Probability
+  nameWithType: SpiceSharpParser.Common.Mathematics.Probability
+  fullName: SpiceSharpParser.Common.Mathematics.Probability
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider.Next*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider.Next
+  name: Next
+  nameWithType: IRandomIntegerProvider.Next
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider.Next
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System

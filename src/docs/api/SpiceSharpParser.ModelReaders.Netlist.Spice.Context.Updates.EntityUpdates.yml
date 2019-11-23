@@ -1,0 +1,1219 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates
+  id: EntityUpdates
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.#ctor(System.Boolean,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.Simulation,System.String,System.Double,System.Boolean,System.Boolean)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.Simulation,System.String,System.String,System.Boolean,System.Boolean)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add(SpiceSharp.Circuits.Entity,System.String,System.Double,System.Boolean,System.Boolean)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add(SpiceSharp.Circuits.Entity,System.String,System.String,System.Boolean,System.Boolean)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Apply(SpiceSharp.Simulations.BaseSimulation)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.CommonUpdates
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Contexts
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.IsParameterNameCaseSensitive
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.SimulationEntityParametersCache
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.SimulationSpecificUpdates
+  langs:
+  - csharp
+  - vb
+  name: EntityUpdates
+  nameWithType: EntityUpdates
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: EntityUpdates
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+    startLine: 11
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: public class EntityUpdates
+    content.vb: Public Class EntityUpdates
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.#ctor(System.Boolean,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.#ctor(System.Boolean,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts)
+  id: '#ctor(System.Boolean,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts)'
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates
+  langs:
+  - csharp
+  - vb
+  name: EntityUpdates(Boolean, SimulationEvaluationContexts)
+  nameWithType: EntityUpdates.EntityUpdates(Boolean, SimulationEvaluationContexts)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.EntityUpdates(System.Boolean, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+    startLine: 13
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: public EntityUpdates(bool isParameterNameCaseSensitive, SimulationEvaluationContexts contexts)
+    parameters:
+    - id: isParameterNameCaseSensitive
+      type: System.Boolean
+    - id: contexts
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts
+    content.vb: Public Sub New(isParameterNameCaseSensitive As Boolean, contexts As SimulationEvaluationContexts)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.IsParameterNameCaseSensitive
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.IsParameterNameCaseSensitive
+  id: IsParameterNameCaseSensitive
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates
+  langs:
+  - csharp
+  - vb
+  name: IsParameterNameCaseSensitive
+  nameWithType: EntityUpdates.IsParameterNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.IsParameterNameCaseSensitive
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IsParameterNameCaseSensitive
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+    startLine: 22
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: protected bool IsParameterNameCaseSensitive { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Protected ReadOnly Property IsParameterNameCaseSensitive As Boolean
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.IsParameterNameCaseSensitive*
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Contexts
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Contexts
+  id: Contexts
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates
+  langs:
+  - csharp
+  - vb
+  name: Contexts
+  nameWithType: EntityUpdates.Contexts
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Contexts
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Contexts
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+    startLine: 24
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: protected SimulationEvaluationContexts Contexts { get; set; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts
+    content.vb: Protected Property Contexts As SimulationEvaluationContexts
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Contexts*
+  modifiers.csharp:
+  - protected
+  - get
+  - set
+  modifiers.vb:
+  - Protected
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.CommonUpdates
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.CommonUpdates
+  id: CommonUpdates
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates
+  langs:
+  - csharp
+  - vb
+  name: CommonUpdates
+  nameWithType: EntityUpdates.CommonUpdates
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.CommonUpdates
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CommonUpdates
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+    startLine: 26
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: protected Dictionary<Entity, EntityUpdate> CommonUpdates { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.Dictionary{SpiceSharp.Circuits.Entity,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate}
+    content.vb: Protected Property CommonUpdates As Dictionary(Of Entity, EntityUpdate)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.CommonUpdates*
+  modifiers.csharp:
+  - protected
+  - get
+  - set
+  modifiers.vb:
+  - Protected
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.SimulationSpecificUpdates
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.SimulationSpecificUpdates
+  id: SimulationSpecificUpdates
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates
+  langs:
+  - csharp
+  - vb
+  name: SimulationSpecificUpdates
+  nameWithType: EntityUpdates.SimulationSpecificUpdates
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.SimulationSpecificUpdates
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SimulationSpecificUpdates
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+    startLine: 28
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: protected Dictionary<Simulation, Dictionary<Entity, EntityUpdate>> SimulationSpecificUpdates { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.Dictionary{SpiceSharp.Simulations.Simulation,System.Collections.Generic.Dictionary{SpiceSharp.Circuits.Entity,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate}}
+    content.vb: Protected Property SimulationSpecificUpdates As Dictionary(Of Simulation, Dictionary(Of Entity, EntityUpdate))
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.SimulationSpecificUpdates*
+  modifiers.csharp:
+  - protected
+  - get
+  - set
+  modifiers.vb:
+  - Protected
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.SimulationEntityParametersCache
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.SimulationEntityParametersCache
+  id: SimulationEntityParametersCache
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates
+  langs:
+  - csharp
+  - vb
+  name: SimulationEntityParametersCache
+  nameWithType: EntityUpdates.SimulationEntityParametersCache
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.SimulationEntityParametersCache
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SimulationEntityParametersCache
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+    startLine: 30
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: protected ConcurrentDictionary<string, Parameter<double>> SimulationEntityParametersCache { get; }
+    parameters: []
+    return:
+      type: System.Collections.Concurrent.ConcurrentDictionary{System.String,SpiceSharp.Parameter{System.Double}}
+    content.vb: Protected ReadOnly Property SimulationEntityParametersCache As ConcurrentDictionary(Of String, Parameter(Of Double))
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.SimulationEntityParametersCache*
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Apply(SpiceSharp.Simulations.BaseSimulation)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Apply(SpiceSharp.Simulations.BaseSimulation)
+  id: Apply(SpiceSharp.Simulations.BaseSimulation)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates
+  langs:
+  - csharp
+  - vb
+  name: Apply(BaseSimulation)
+  nameWithType: EntityUpdates.Apply(BaseSimulation)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Apply(SpiceSharp.Simulations.BaseSimulation)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Apply
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+    startLine: 32
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: public void Apply(BaseSimulation simulation)
+    parameters:
+    - id: simulation
+      type: SpiceSharp.Simulations.BaseSimulation
+    content.vb: Public Sub Apply(simulation As BaseSimulation)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Apply*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.Simulation,System.String,System.String,System.Boolean,System.Boolean)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.Simulation,System.String,System.String,System.Boolean,System.Boolean)
+  id: Add(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.Simulation,System.String,System.String,System.Boolean,System.Boolean)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates
+  langs:
+  - csharp
+  - vb
+  name: Add(Entity, Simulation, String, String, Boolean, Boolean)
+  nameWithType: EntityUpdates.Add(Entity, Simulation, String, String, Boolean, Boolean)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add(SpiceSharp.Circuits.Entity, SpiceSharp.Simulations.Simulation, System.String, System.String, System.Boolean, System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Add
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+    startLine: 137
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: public void Add(Entity entity, Simulation simulation, string parameterName, string expression, bool beforeTemperature, bool beforeLoad)
+    parameters:
+    - id: entity
+      type: SpiceSharp.Circuits.Entity
+    - id: simulation
+      type: SpiceSharp.Simulations.Simulation
+    - id: parameterName
+      type: System.String
+    - id: expression
+      type: System.String
+    - id: beforeTemperature
+      type: System.Boolean
+    - id: beforeLoad
+      type: System.Boolean
+    content.vb: Public Sub Add(entity As Entity, simulation As Simulation, parameterName As String, expression As String, beforeTemperature As Boolean, beforeLoad As Boolean)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add(SpiceSharp.Circuits.Entity,System.String,System.Double,System.Boolean,System.Boolean)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add(SpiceSharp.Circuits.Entity,System.String,System.Double,System.Boolean,System.Boolean)
+  id: Add(SpiceSharp.Circuits.Entity,System.String,System.Double,System.Boolean,System.Boolean)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates
+  langs:
+  - csharp
+  - vb
+  name: Add(Entity, String, Double, Boolean, Boolean)
+  nameWithType: EntityUpdates.Add(Entity, String, Double, Boolean, Boolean)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add(SpiceSharp.Circuits.Entity, System.String, System.Double, System.Boolean, System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Add
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+    startLine: 184
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: public void Add(Entity entity, string parameterName, double value, bool beforeTemperature, bool beforeLoad)
+    parameters:
+    - id: entity
+      type: SpiceSharp.Circuits.Entity
+    - id: parameterName
+      type: System.String
+    - id: value
+      type: System.Double
+    - id: beforeTemperature
+      type: System.Boolean
+    - id: beforeLoad
+      type: System.Boolean
+    content.vb: Public Sub Add(entity As Entity, parameterName As String, value As Double, beforeTemperature As Boolean, beforeLoad As Boolean)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add(SpiceSharp.Circuits.Entity,System.String,System.String,System.Boolean,System.Boolean)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add(SpiceSharp.Circuits.Entity,System.String,System.String,System.Boolean,System.Boolean)
+  id: Add(SpiceSharp.Circuits.Entity,System.String,System.String,System.Boolean,System.Boolean)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates
+  langs:
+  - csharp
+  - vb
+  name: Add(Entity, String, String, Boolean, Boolean)
+  nameWithType: EntityUpdates.Add(Entity, String, String, Boolean, Boolean)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add(SpiceSharp.Circuits.Entity, System.String, System.String, System.Boolean, System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Add
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+    startLine: 218
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: public void Add(Entity entity, string parameterName, string expression, bool beforeTemperature, bool beforeLoad)
+    parameters:
+    - id: entity
+      type: SpiceSharp.Circuits.Entity
+    - id: parameterName
+      type: System.String
+    - id: expression
+      type: System.String
+    - id: beforeTemperature
+      type: System.Boolean
+    - id: beforeLoad
+      type: System.Boolean
+    content.vb: Public Sub Add(entity As Entity, parameterName As String, expression As String, beforeTemperature As Boolean, beforeLoad As Boolean)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.Simulation,System.String,System.Double,System.Boolean,System.Boolean)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.Simulation,System.String,System.Double,System.Boolean,System.Boolean)
+  id: Add(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.Simulation,System.String,System.Double,System.Boolean,System.Boolean)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates
+  langs:
+  - csharp
+  - vb
+  name: Add(Entity, Simulation, String, Double, Boolean, Boolean)
+  nameWithType: EntityUpdates.Add(Entity, Simulation, String, Double, Boolean, Boolean)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add(SpiceSharp.Circuits.Entity, SpiceSharp.Simulations.Simulation, System.String, System.Double, System.Boolean, System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Add
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdates.cs
+    startLine: 260
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: public void Add(Entity entity, Simulation simulation, string parameterName, double value, bool beforeTemperature, bool beforeLoad)
+    parameters:
+    - id: entity
+      type: SpiceSharp.Circuits.Entity
+    - id: simulation
+      type: SpiceSharp.Simulations.Simulation
+    - id: parameterName
+      type: System.String
+    - id: value
+      type: System.Double
+    - id: beforeTemperature
+      type: System.Boolean
+    - id: beforeLoad
+      type: System.Boolean
+    content.vb: Public Sub Add(entity As Entity, simulation As Simulation, parameterName As String, value As Double, beforeTemperature As Boolean, beforeLoad As Boolean)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.#ctor*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.#ctor
+  name: EntityUpdates
+  nameWithType: EntityUpdates.EntityUpdates
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.EntityUpdates
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: SimulationEvaluationContexts
+  nameWithType: SimulationEvaluationContexts
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.IsParameterNameCaseSensitive*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.IsParameterNameCaseSensitive
+  name: IsParameterNameCaseSensitive
+  nameWithType: EntityUpdates.IsParameterNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.IsParameterNameCaseSensitive
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Contexts*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Contexts
+  name: Contexts
+  nameWithType: EntityUpdates.Contexts
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Contexts
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.CommonUpdates*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.CommonUpdates
+  name: CommonUpdates
+  nameWithType: EntityUpdates.CommonUpdates
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.CommonUpdates
+- uid: System.Collections.Generic.Dictionary{SpiceSharp.Circuits.Entity,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate}
+  commentId: T:System.Collections.Generic.Dictionary{SpiceSharp.Circuits.Entity,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  name: Dictionary<Entity, EntityUpdate>
+  nameWithType: Dictionary<Entity, EntityUpdate>
+  fullName: System.Collections.Generic.Dictionary<SpiceSharp.Circuits.Entity, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate>
+  nameWithType.vb: Dictionary(Of Entity, EntityUpdate)
+  fullName.vb: System.Collections.Generic.Dictionary(Of SpiceSharp.Circuits.Entity, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate)
+  name.vb: Dictionary(Of Entity, EntityUpdate)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharp.Circuits.Entity
+    name: Entity
+    nameWithType: Entity
+    fullName: SpiceSharp.Circuits.Entity
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate
+    name: EntityUpdate
+    nameWithType: EntityUpdate
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharp.Circuits.Entity
+    name: Entity
+    nameWithType: Entity
+    fullName: SpiceSharp.Circuits.Entity
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate
+    name: EntityUpdate
+    nameWithType: EntityUpdate
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.SimulationSpecificUpdates*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.SimulationSpecificUpdates
+  name: SimulationSpecificUpdates
+  nameWithType: EntityUpdates.SimulationSpecificUpdates
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.SimulationSpecificUpdates
+- uid: System.Collections.Generic.Dictionary{SpiceSharp.Simulations.Simulation,System.Collections.Generic.Dictionary{SpiceSharp.Circuits.Entity,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate}}
+  commentId: T:System.Collections.Generic.Dictionary{SpiceSharp.Simulations.Simulation,System.Collections.Generic.Dictionary{SpiceSharp.Circuits.Entity,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  name: Dictionary<Simulation, Dictionary<Entity, EntityUpdate>>
+  nameWithType: Dictionary<Simulation, Dictionary<Entity, EntityUpdate>>
+  fullName: System.Collections.Generic.Dictionary<SpiceSharp.Simulations.Simulation, System.Collections.Generic.Dictionary<SpiceSharp.Circuits.Entity, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate>>
+  nameWithType.vb: Dictionary(Of Simulation, Dictionary(Of Entity, EntityUpdate))
+  fullName.vb: System.Collections.Generic.Dictionary(Of SpiceSharp.Simulations.Simulation, System.Collections.Generic.Dictionary(Of SpiceSharp.Circuits.Entity, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate))
+  name.vb: Dictionary(Of Simulation, Dictionary(Of Entity, EntityUpdate))
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharp.Simulations.Simulation
+    name: Simulation
+    nameWithType: Simulation
+    fullName: SpiceSharp.Simulations.Simulation
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharp.Circuits.Entity
+    name: Entity
+    nameWithType: Entity
+    fullName: SpiceSharp.Circuits.Entity
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate
+    name: EntityUpdate
+    nameWithType: EntityUpdate
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharp.Simulations.Simulation
+    name: Simulation
+    nameWithType: Simulation
+    fullName: SpiceSharp.Simulations.Simulation
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharp.Circuits.Entity
+    name: Entity
+    nameWithType: Entity
+    fullName: SpiceSharp.Circuits.Entity
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate
+    name: EntityUpdate
+    nameWithType: EntityUpdate
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.SimulationEntityParametersCache*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.SimulationEntityParametersCache
+  name: SimulationEntityParametersCache
+  nameWithType: EntityUpdates.SimulationEntityParametersCache
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.SimulationEntityParametersCache
+- uid: System.Collections.Concurrent.ConcurrentDictionary{System.String,SpiceSharp.Parameter{System.Double}}
+  commentId: T:System.Collections.Concurrent.ConcurrentDictionary{System.String,SpiceSharp.Parameter{System.Double}}
+  parent: System.Collections.Concurrent
+  definition: System.Collections.Concurrent.ConcurrentDictionary`2
+  name: ConcurrentDictionary<String, Parameter<Double>>
+  nameWithType: ConcurrentDictionary<String, Parameter<Double>>
+  fullName: System.Collections.Concurrent.ConcurrentDictionary<System.String, SpiceSharp.Parameter<System.Double>>
+  nameWithType.vb: ConcurrentDictionary(Of String, Parameter(Of Double))
+  fullName.vb: System.Collections.Concurrent.ConcurrentDictionary(Of System.String, SpiceSharp.Parameter(Of System.Double))
+  name.vb: ConcurrentDictionary(Of String, Parameter(Of Double))
+  spec.csharp:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    nameWithType: ConcurrentDictionary
+    fullName: System.Collections.Concurrent.ConcurrentDictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Parameter`1
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharp.Parameter
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    nameWithType: ConcurrentDictionary
+    fullName: System.Collections.Concurrent.ConcurrentDictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Parameter`1
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharp.Parameter
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Concurrent.ConcurrentDictionary`2
+  commentId: T:System.Collections.Concurrent.ConcurrentDictionary`2
+  isExternal: true
+  name: ConcurrentDictionary<TKey, TValue>
+  nameWithType: ConcurrentDictionary<TKey, TValue>
+  fullName: System.Collections.Concurrent.ConcurrentDictionary<TKey, TValue>
+  nameWithType.vb: ConcurrentDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Concurrent.ConcurrentDictionary(Of TKey, TValue)
+  name.vb: ConcurrentDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    nameWithType: ConcurrentDictionary
+    fullName: System.Collections.Concurrent.ConcurrentDictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    nameWithType: ConcurrentDictionary
+    fullName: System.Collections.Concurrent.ConcurrentDictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Concurrent
+  commentId: N:System.Collections.Concurrent
+  isExternal: true
+  name: System.Collections.Concurrent
+  nameWithType: System.Collections.Concurrent
+  fullName: System.Collections.Concurrent
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Apply*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Apply
+  name: Apply
+  nameWithType: EntityUpdates.Apply
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Apply
+- uid: SpiceSharp.Simulations.BaseSimulation
+  commentId: T:SpiceSharp.Simulations.BaseSimulation
+  parent: SpiceSharp.Simulations
+  isExternal: true
+  name: BaseSimulation
+  nameWithType: BaseSimulation
+  fullName: SpiceSharp.Simulations.BaseSimulation
+- uid: SpiceSharp.Simulations
+  commentId: N:SpiceSharp.Simulations
+  isExternal: true
+  name: SpiceSharp.Simulations
+  nameWithType: SpiceSharp.Simulations
+  fullName: SpiceSharp.Simulations
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add
+  name: Add
+  nameWithType: EntityUpdates.Add
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.Add
+- uid: SpiceSharp.Circuits.Entity
+  commentId: T:SpiceSharp.Circuits.Entity
+  parent: SpiceSharp.Circuits
+  isExternal: true
+  name: Entity
+  nameWithType: Entity
+  fullName: SpiceSharp.Circuits.Entity
+- uid: SpiceSharp.Simulations.Simulation
+  commentId: T:SpiceSharp.Simulations.Simulation
+  parent: SpiceSharp.Simulations
+  isExternal: true
+  name: Simulation
+  nameWithType: Simulation
+  fullName: SpiceSharp.Simulations.Simulation
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: SpiceSharp.Circuits
+  commentId: N:SpiceSharp.Circuits
+  isExternal: true
+  name: SpiceSharp.Circuits
+  nameWithType: SpiceSharp.Circuits
+  fullName: SpiceSharp.Circuits
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  name: Double
+  nameWithType: Double
+  fullName: System.Double

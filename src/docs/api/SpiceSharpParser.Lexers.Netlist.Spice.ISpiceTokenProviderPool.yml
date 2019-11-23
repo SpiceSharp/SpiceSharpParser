@@ -1,0 +1,89 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool
+  commentId: T:SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool
+  id: ISpiceTokenProviderPool
+  parent: SpiceSharpParser.Lexers.Netlist.Spice
+  children:
+  - SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool.GetSpiceTokenProvider(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  langs:
+  - csharp
+  - vb
+  name: ISpiceTokenProviderPool
+  nameWithType: ISpiceTokenProviderPool
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool
+  type: Interface
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/ISpiceTokenProviderPool.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ISpiceTokenProviderPool
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/ISpiceTokenProviderPool.cs
+    startLine: 2
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  syntax:
+    content: public interface ISpiceTokenProviderPool
+    content.vb: Public Interface ISpiceTokenProviderPool
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool.GetSpiceTokenProvider(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  commentId: M:SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool.GetSpiceTokenProvider(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  id: GetSpiceTokenProvider(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool
+  langs:
+  - csharp
+  - vb
+  name: GetSpiceTokenProvider(SpiceLexerSettings)
+  nameWithType: ISpiceTokenProviderPool.GetSpiceTokenProvider(SpiceLexerSettings)
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool.GetSpiceTokenProvider(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/ISpiceTokenProviderPool.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetSpiceTokenProvider
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/ISpiceTokenProviderPool.cs
+    startLine: 4
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  syntax:
+    content: ISpiceTokenProvider GetSpiceTokenProvider(SpiceLexerSettings settings)
+    parameters:
+    - id: settings
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProvider
+    content.vb: Function GetSpiceTokenProvider(settings As SpiceLexerSettings) As ISpiceTokenProvider
+  overload: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool.GetSpiceTokenProvider*
+references:
+- uid: SpiceSharpParser.Lexers.Netlist.Spice
+  commentId: N:SpiceSharpParser.Lexers.Netlist.Spice
+  name: SpiceSharpParser.Lexers.Netlist.Spice
+  nameWithType: SpiceSharpParser.Lexers.Netlist.Spice
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool.GetSpiceTokenProvider*
+  commentId: Overload:SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool.GetSpiceTokenProvider
+  name: GetSpiceTokenProvider
+  nameWithType: ISpiceTokenProviderPool.GetSpiceTokenProvider
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool.GetSpiceTokenProvider
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+  commentId: T:SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+  parent: SpiceSharpParser.Lexers.Netlist.Spice
+  name: SpiceLexerSettings
+  nameWithType: SpiceLexerSettings
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProvider
+  commentId: T:SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProvider
+  parent: SpiceSharpParser.Lexers.Netlist.Spice
+  name: ISpiceTokenProvider
+  nameWithType: ISpiceTokenProvider
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProvider

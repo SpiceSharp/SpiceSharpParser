@@ -80,6 +80,7 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.html">ComponentGenerator</a></div>
     <div class="level2"><span class="xref">SourceGenerator</span></div>
+      <div class="level3"><a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.ArbitraryBehavioralGenerator.html">ArbitraryBehavioralGenerator</a></div>
       <div class="level3"><a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.CurrentSourceGenerator.html">CurrentSourceGenerator</a></div>
       <div class="level3"><a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.html">VoltageSourceGenerator</a></div>
   </div>
@@ -90,13 +91,10 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.html#SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_ComponentGenerator_GeneratedTypes">ComponentGenerator.GeneratedTypes</a>
+      <a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.html#SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_ComponentGenerator_Generate_System_String_System_String_System_String_SpiceSharpParser_Models_Netlist_Spice_Objects_ParameterCollection_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_ICircuitContext_">ComponentGenerator.Generate(String, String, String, ParameterCollection, ICircuitContext)</a>
     </div>
     <div>
-      <a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.html#SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_ComponentGenerator_Generate_System_String_System_String_System_String_SpiceSharpParser_Models_Netlist_Spice_Objects_ParameterCollection_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_IReadingContext_">ComponentGenerator.Generate(String, String, String, ParameterCollection, IReadingContext)</a>
-    </div>
-    <div>
-      <a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.html#SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_ComponentGenerator_SetParameters_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_IReadingContext_SpiceSharp_Circuits_Entity_SpiceSharpParser_Models_Netlist_Spice_Objects_ParameterCollection_System_Boolean_">ComponentGenerator.SetParameters(IReadingContext, Entity, ParameterCollection, Boolean)</a>
+      <a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.html#SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_ComponentGenerator_SetParameters_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_ICircuitContext_SpiceSharp_Circuits_Entity_SpiceSharpParser_Models_Netlist_Spice_Objects_ParameterCollection_System_Boolean_">ComponentGenerator.SetParameters(ICircuitContext, Entity, ParameterCollection, Boolean)</a>
     </div>
     <div>
       <span class="xref">System.Object.ToString()</span>
@@ -130,10 +128,62 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_Sources_SourceGenerator_CreateParser_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_ICircuitContext_SpiceSharp_Simulations_Simulation_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreateParser(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext%2CSpiceSharp.Simulations.Simulation)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/SourceGenerator.cs/#L15">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_Sources_SourceGenerator_CreateParser_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreateParser*"></a>
+  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_Sources_SourceGenerator_CreateParser_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_ICircuitContext_SpiceSharp_Simulations_Simulation_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreateParser(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.Simulation)">CreateParser(ICircuitContext, Simulation)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected SimpleDerivativeParser CreateParser(ICircuitContext context, Simulation simulation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext.html">ICircuitContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SpiceSharp.Simulations.Simulation</span></td>
+        <td><span class="parametername">simulation</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SpiceSharpBehavioral.Parsers.SimpleDerivativeParser</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_Sources_SourceGenerator_CreatePolyExpression_System_Int32_SpiceSharpParser_Models_Netlist_Spice_Objects_ParameterCollection_System_Boolean_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreatePolyExpression(System.Int32%2CSpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/SourceGenerator.cs/#L131">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/SourceGenerator.cs/#L135">View Source</a>
   </span>
   <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_Sources_SourceGenerator_CreatePolyExpression_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreatePolyExpression*"></a>
   <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_Sources_SourceGenerator_CreatePolyExpression_System_Int32_SpiceSharpParser_Models_Netlist_Spice_Objects_ParameterCollection_System_Boolean_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreatePolyExpression(System.Int32,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,System.Boolean)">CreatePolyExpression(Int32, ParameterCollection, Boolean)</h4>
@@ -187,70 +237,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_Sources_SourceGenerator_SetControlledSourceParameters_System_String_SpiceSharpParser_Models_Netlist_Spice_Objects_ParameterCollection_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_IReadingContext_SpiceSharp_Circuits_Entity_System_Boolean_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.SetControlledSourceParameters(System.String%2CSpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection%2CSpiceSharpParser.ModelReaders.Netlist.Spice.Context.IReadingContext%2CSpiceSharp.Circuits.Entity%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_Sources_SourceGenerator_SetSourceParameters_System_String_SpiceSharpParser_Models_Netlist_Spice_Objects_ParameterCollection_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_ICircuitContext_SpiceSharp_Components_Component_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.SetSourceParameters(System.String%2CSpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection%2CSpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext%2CSpiceSharp.Components.Component)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/SourceGenerator.cs/#L141">View Source</a>
-  </span>
-  <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_Sources_SourceGenerator_SetControlledSourceParameters_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.SetControlledSourceParameters*"></a>
-  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_Sources_SourceGenerator_SetControlledSourceParameters_System_String_SpiceSharpParser_Models_Netlist_Spice_Objects_ParameterCollection_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_IReadingContext_SpiceSharp_Circuits_Entity_System_Boolean_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.SetControlledSourceParameters(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IReadingContext,SpiceSharp.Circuits.Entity,System.Boolean)">SetControlledSourceParameters(String, ParameterCollection, IReadingContext, Entity, Boolean)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void SetControlledSourceParameters(string name, ParameterCollection parameters, IReadingContext context, Entity entity, bool isVoltageControlled)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">name</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.html">ParameterCollection</a></td>
-        <td><span class="parametername">parameters</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IReadingContext.html">IReadingContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">SpiceSharp.Circuits.Entity</span></td>
-        <td><span class="parametername">entity</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">isVoltageControlled</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_Sources_SourceGenerator_SetSourceParameters_System_String_SpiceSharpParser_Models_Netlist_Spice_Objects_ParameterCollection_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_IReadingContext_SpiceSharp_Components_Component_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.SetSourceParameters(System.String%2CSpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection%2CSpiceSharpParser.ModelReaders.Netlist.Spice.Context.IReadingContext%2CSpiceSharp.Components.Component)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/SourceGenerator.cs/#L13">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/SourceGenerator.cs/#L22">View Source</a>
   </span>
   <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_Sources_SourceGenerator_SetSourceParameters_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.SetSourceParameters*"></a>
-  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_Sources_SourceGenerator_SetSourceParameters_System_String_SpiceSharpParser_Models_Netlist_Spice_Objects_ParameterCollection_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_IReadingContext_SpiceSharp_Components_Component_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.SetSourceParameters(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IReadingContext,SpiceSharp.Components.Component)">SetSourceParameters(String, ParameterCollection, IReadingContext, Component)</h4>
+  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_Sources_SourceGenerator_SetSourceParameters_System_String_SpiceSharpParser_Models_Netlist_Spice_Objects_ParameterCollection_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_ICircuitContext_SpiceSharp_Components_Component_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.SetSourceParameters(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Components.Component)">SetSourceParameters(String, ParameterCollection, ICircuitContext, Component)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Component SetSourceParameters(string name, ParameterCollection parameters, IReadingContext context, Component component)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void SetSourceParameters(string name, ParameterCollection parameters, ICircuitContext context, Component component)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -273,28 +271,13 @@
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IReadingContext.html">IReadingContext</a></td>
+        <td><a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext.html">ICircuitContext</a></td>
         <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
       <tr>
         <td><span class="xref">SpiceSharp.Components.Component</span></td>
         <td><span class="parametername">component</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">SpiceSharp.Components.Component</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -314,7 +297,7 @@
                     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Readers_EntityGenerators_Components_Sources_SourceGenerator.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/SourceGenerator.cs/#L11" class="contribution-link">View Source</a>
+                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/SourceGenerator.cs/#L13" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

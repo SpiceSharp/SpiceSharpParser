@@ -1,0 +1,617 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData
+  id: SubCircuitGenerator.CustomComponentInstanceData
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData.#ctor(SpiceSharp.Circuit)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData.#ctor(SpiceSharp.Circuit,System.String)
+  langs:
+  - csharp
+  - vb
+  name: SubCircuitGenerator.CustomComponentInstanceData
+  nameWithType: SubCircuitGenerator.CustomComponentInstanceData
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/SubCircuitGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CustomComponentInstanceData
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/SubCircuitGenerator.cs
+    startLine: 259
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
+  syntax:
+    content: 'public class CustomComponentInstanceData : ComponentInstanceData'
+    content.vb: >-
+      Public Class CustomComponentInstanceData
+          Inherits ComponentInstanceData
+  inheritance:
+  - System.Object
+  - SpiceSharp.Circuits.InstanceData
+  - SpiceSharp.Components.ComponentInstanceData
+  inheritedMembers:
+  - SpiceSharp.Components.ComponentInstanceData.GenerateNodeName(System.String)
+  - SpiceSharp.Components.ComponentInstanceData.GenerateModelName(System.String)
+  - SpiceSharp.Components.ComponentInstanceData.NodeMap
+  - SpiceSharp.Circuits.InstanceData.GenerateIdentifier(System.String)
+  - SpiceSharp.Circuits.InstanceData.Name
+  - SpiceSharp.Circuits.InstanceData.Subcircuit
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData.#ctor(SpiceSharp.Circuit)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData.#ctor(SpiceSharp.Circuit)
+  id: '#ctor(SpiceSharp.Circuit)'
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData
+  langs:
+  - csharp
+  - vb
+  name: CustomComponentInstanceData(Circuit)
+  nameWithType: SubCircuitGenerator.CustomComponentInstanceData.CustomComponentInstanceData(Circuit)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData.CustomComponentInstanceData(SpiceSharp.Circuit)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/SubCircuitGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/SubCircuitGenerator.cs
+    startLine: 266
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
+  syntax:
+    content: public CustomComponentInstanceData(Circuit subcircuit)
+    parameters:
+    - id: subcircuit
+      type: SpiceSharp.Circuit
+    content.vb: Public Sub New(subcircuit As Circuit)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData.#ctor(SpiceSharp.Circuit,System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData.#ctor(SpiceSharp.Circuit,System.String)
+  id: '#ctor(SpiceSharp.Circuit,System.String)'
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData
+  langs:
+  - csharp
+  - vb
+  name: CustomComponentInstanceData(Circuit, String)
+  nameWithType: SubCircuitGenerator.CustomComponentInstanceData.CustomComponentInstanceData(Circuit, String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData.CustomComponentInstanceData(SpiceSharp.Circuit, System.String)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/SubCircuitGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/SubCircuitGenerator.cs
+    startLine: 271
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
+  syntax:
+    content: public CustomComponentInstanceData(Circuit subckt, string name)
+    parameters:
+    - id: subckt
+      type: SpiceSharp.Circuit
+    - id: name
+      type: System.String
+    content.vb: Public Sub New(subckt As Circuit, name As String)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharp.Circuits.InstanceData
+  commentId: T:SpiceSharp.Circuits.InstanceData
+  parent: SpiceSharp.Circuits
+  isExternal: true
+  name: InstanceData
+  nameWithType: InstanceData
+  fullName: SpiceSharp.Circuits.InstanceData
+- uid: SpiceSharp.Components.ComponentInstanceData
+  commentId: T:SpiceSharp.Components.ComponentInstanceData
+  parent: SpiceSharp.Components
+  isExternal: true
+  name: ComponentInstanceData
+  nameWithType: ComponentInstanceData
+  fullName: SpiceSharp.Components.ComponentInstanceData
+- uid: SpiceSharp.Components.ComponentInstanceData.GenerateNodeName(System.String)
+  commentId: M:SpiceSharp.Components.ComponentInstanceData.GenerateNodeName(System.String)
+  parent: SpiceSharp.Components.ComponentInstanceData
+  isExternal: true
+  name: GenerateNodeName(String)
+  nameWithType: ComponentInstanceData.GenerateNodeName(String)
+  fullName: SpiceSharp.Components.ComponentInstanceData.GenerateNodeName(System.String)
+  spec.csharp:
+  - uid: SpiceSharp.Components.ComponentInstanceData.GenerateNodeName(System.String)
+    name: GenerateNodeName
+    nameWithType: ComponentInstanceData.GenerateNodeName
+    fullName: SpiceSharp.Components.ComponentInstanceData.GenerateNodeName
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharp.Components.ComponentInstanceData.GenerateNodeName(System.String)
+    name: GenerateNodeName
+    nameWithType: ComponentInstanceData.GenerateNodeName
+    fullName: SpiceSharp.Components.ComponentInstanceData.GenerateNodeName
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Components.ComponentInstanceData.GenerateModelName(System.String)
+  commentId: M:SpiceSharp.Components.ComponentInstanceData.GenerateModelName(System.String)
+  parent: SpiceSharp.Components.ComponentInstanceData
+  isExternal: true
+  name: GenerateModelName(String)
+  nameWithType: ComponentInstanceData.GenerateModelName(String)
+  fullName: SpiceSharp.Components.ComponentInstanceData.GenerateModelName(System.String)
+  spec.csharp:
+  - uid: SpiceSharp.Components.ComponentInstanceData.GenerateModelName(System.String)
+    name: GenerateModelName
+    nameWithType: ComponentInstanceData.GenerateModelName
+    fullName: SpiceSharp.Components.ComponentInstanceData.GenerateModelName
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharp.Components.ComponentInstanceData.GenerateModelName(System.String)
+    name: GenerateModelName
+    nameWithType: ComponentInstanceData.GenerateModelName
+    fullName: SpiceSharp.Components.ComponentInstanceData.GenerateModelName
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Components.ComponentInstanceData.NodeMap
+  commentId: P:SpiceSharp.Components.ComponentInstanceData.NodeMap
+  parent: SpiceSharp.Components.ComponentInstanceData
+  isExternal: true
+  name: NodeMap
+  nameWithType: ComponentInstanceData.NodeMap
+  fullName: SpiceSharp.Components.ComponentInstanceData.NodeMap
+- uid: SpiceSharp.Circuits.InstanceData.GenerateIdentifier(System.String)
+  commentId: M:SpiceSharp.Circuits.InstanceData.GenerateIdentifier(System.String)
+  parent: SpiceSharp.Circuits.InstanceData
+  isExternal: true
+  name: GenerateIdentifier(String)
+  nameWithType: InstanceData.GenerateIdentifier(String)
+  fullName: SpiceSharp.Circuits.InstanceData.GenerateIdentifier(System.String)
+  spec.csharp:
+  - uid: SpiceSharp.Circuits.InstanceData.GenerateIdentifier(System.String)
+    name: GenerateIdentifier
+    nameWithType: InstanceData.GenerateIdentifier
+    fullName: SpiceSharp.Circuits.InstanceData.GenerateIdentifier
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharp.Circuits.InstanceData.GenerateIdentifier(System.String)
+    name: GenerateIdentifier
+    nameWithType: InstanceData.GenerateIdentifier
+    fullName: SpiceSharp.Circuits.InstanceData.GenerateIdentifier
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Circuits.InstanceData.Name
+  commentId: P:SpiceSharp.Circuits.InstanceData.Name
+  parent: SpiceSharp.Circuits.InstanceData
+  isExternal: true
+  name: Name
+  nameWithType: InstanceData.Name
+  fullName: SpiceSharp.Circuits.InstanceData.Name
+- uid: SpiceSharp.Circuits.InstanceData.Subcircuit
+  commentId: P:SpiceSharp.Circuits.InstanceData.Subcircuit
+  parent: SpiceSharp.Circuits.InstanceData
+  isExternal: true
+  name: Subcircuit
+  nameWithType: InstanceData.Subcircuit
+  fullName: SpiceSharp.Circuits.InstanceData.Subcircuit
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharp.Circuits
+  commentId: N:SpiceSharp.Circuits
+  isExternal: true
+  name: SpiceSharp.Circuits
+  nameWithType: SpiceSharp.Circuits
+  fullName: SpiceSharp.Circuits
+- uid: SpiceSharp.Components
+  commentId: N:SpiceSharp.Components
+  isExternal: true
+  name: SpiceSharp.Components
+  nameWithType: SpiceSharp.Components
+  fullName: SpiceSharp.Components
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData.#ctor*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData.#ctor
+  name: CustomComponentInstanceData
+  nameWithType: SubCircuitGenerator.CustomComponentInstanceData.CustomComponentInstanceData
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData.CustomComponentInstanceData
+- uid: SpiceSharp.Circuit
+  commentId: T:SpiceSharp.Circuit
+  parent: SpiceSharp
+  isExternal: true
+  name: Circuit
+  nameWithType: Circuit
+  fullName: SpiceSharp.Circuit
+- uid: SpiceSharp
+  commentId: N:SpiceSharp
+  isExternal: true
+  name: SpiceSharp
+  nameWithType: SpiceSharp
+  fullName: SpiceSharp
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String

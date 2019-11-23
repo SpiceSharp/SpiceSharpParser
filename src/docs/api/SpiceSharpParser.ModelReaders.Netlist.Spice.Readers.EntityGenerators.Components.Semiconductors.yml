@@ -1,0 +1,46 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
+  id: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.BipolarJunctionTransistorGenerator
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.DiodeGenerator
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.JFETGenerator
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.MosfetGenerator
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.MosfetGenerator.MosfetDetails
+  langs:
+  - csharp
+  - vb
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
+  type: Namespace
+  assemblies:
+  - SpiceSharpParser
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.BipolarJunctionTransistorGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.BipolarJunctionTransistorGenerator
+  name: BipolarJunctionTransistorGenerator
+  nameWithType: BipolarJunctionTransistorGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.BipolarJunctionTransistorGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.DiodeGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.DiodeGenerator
+  name: DiodeGenerator
+  nameWithType: DiodeGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.DiodeGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.JFETGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.JFETGenerator
+  name: JFETGenerator
+  nameWithType: JFETGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.JFETGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.MosfetGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.MosfetGenerator
+  name: MosfetGenerator
+  nameWithType: MosfetGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.MosfetGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.MosfetGenerator.MosfetDetails
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.MosfetGenerator.MosfetDetails
+  name: MosfetGenerator.MosfetDetails
+  nameWithType: MosfetGenerator.MosfetDetails
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.MosfetGenerator.MosfetDetails

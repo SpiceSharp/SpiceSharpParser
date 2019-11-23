@@ -1,0 +1,454 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator
+  commentId: T:SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator
+  id: ParseTreeEvaluator
+  parent: SpiceSharpParser.Parsers.Netlist.Spice
+  children:
+  - SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator.#ctor
+  - SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator.Evaluate(SpiceSharpParser.Parsers.Netlist.ParseTreeNode)
+  langs:
+  - csharp
+  - vb
+  name: ParseTreeEvaluator
+  nameWithType: ParseTreeEvaluator
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/Parsers/Netlist/Spice/Internals/ParseTreeEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ParseTreeEvaluator
+    path: ../SpiceSharpParser/Parsers/Netlist/Spice/Internals/ParseTreeEvaluator.cs
+    startLine: 14
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Parsers.Netlist.Spice
+  summary: "\nTranslates a parse tree (<xref href=\"SpiceSharpParser.Parsers.Netlist.ParseTreeNode\" data-throw-if-not-resolved=\"false\"></xref> to SPICE object model.\n"
+  example: []
+  syntax:
+    content: public class ParseTreeEvaluator
+    content.vb: Public Class ParseTreeEvaluator
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator.#ctor
+  commentId: M:SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator.#ctor
+  id: '#ctor'
+  parent: SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator
+  langs:
+  - csharp
+  - vb
+  name: ParseTreeEvaluator()
+  nameWithType: ParseTreeEvaluator.ParseTreeEvaluator()
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator.ParseTreeEvaluator()
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/Parsers/Netlist/Spice/Internals/ParseTreeEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/Parsers/Netlist/Spice/Internals/ParseTreeEvaluator.cs
+    startLine: 29
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Parsers.Netlist.Spice
+  summary: "\nInitializes a new instance of the <xref href=\"SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
+  example: []
+  syntax:
+    content: public ParseTreeEvaluator()
+    content.vb: Public Sub New
+  overload: SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator.Evaluate(SpiceSharpParser.Parsers.Netlist.ParseTreeNode)
+  commentId: M:SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator.Evaluate(SpiceSharpParser.Parsers.Netlist.ParseTreeNode)
+  id: Evaluate(SpiceSharpParser.Parsers.Netlist.ParseTreeNode)
+  parent: SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator
+  langs:
+  - csharp
+  - vb
+  name: Evaluate(ParseTreeNode)
+  nameWithType: ParseTreeEvaluator.Evaluate(ParseTreeNode)
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator.Evaluate(SpiceSharpParser.Parsers.Netlist.ParseTreeNode)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Parsers/Netlist/Spice/Internals/ParseTreeEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Evaluate
+    path: ../SpiceSharpParser/Parsers/Netlist/Spice/Internals/ParseTreeEvaluator.cs
+    startLine: 68
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Parsers.Netlist.Spice
+  summary: "\nTranslates a SPICE parse tree to a context.\n"
+  example: []
+  syntax:
+    content: public SpiceObject Evaluate(ParseTreeNode root)
+    parameters:
+    - id: root
+      type: SpiceSharpParser.Parsers.Netlist.ParseTreeNode
+      description: A parse tree root.
+    return:
+      type: SpiceSharpParser.Models.Netlist.Spice.SpiceObject
+      description: A netlist.
+    content.vb: Public Function Evaluate(root As ParseTreeNode) As SpiceObject
+  overload: SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator.Evaluate*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: SpiceSharpParser.Parsers.Netlist.ParseTreeNode
+  commentId: T:SpiceSharpParser.Parsers.Netlist.ParseTreeNode
+  parent: SpiceSharpParser.Parsers.Netlist
+  name: ParseTreeNode
+  nameWithType: ParseTreeNode
+  fullName: SpiceSharpParser.Parsers.Netlist.ParseTreeNode
+- uid: SpiceSharpParser.Parsers.Netlist.Spice
+  commentId: N:SpiceSharpParser.Parsers.Netlist.Spice
+  name: SpiceSharpParser.Parsers.Netlist.Spice
+  nameWithType: SpiceSharpParser.Parsers.Netlist.Spice
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Parsers.Netlist
+  commentId: N:SpiceSharpParser.Parsers.Netlist
+  name: SpiceSharpParser.Parsers.Netlist
+  nameWithType: SpiceSharpParser.Parsers.Netlist
+  fullName: SpiceSharpParser.Parsers.Netlist
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator
+  commentId: T:SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator
+  name: ParseTreeEvaluator
+  nameWithType: ParseTreeEvaluator
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator.#ctor*
+  commentId: Overload:SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator.#ctor
+  name: ParseTreeEvaluator
+  nameWithType: ParseTreeEvaluator.ParseTreeEvaluator
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator.ParseTreeEvaluator
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator.Evaluate*
+  commentId: Overload:SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator.Evaluate
+  name: Evaluate
+  nameWithType: ParseTreeEvaluator.Evaluate
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator.Evaluate
+- uid: SpiceSharpParser.Models.Netlist.Spice.SpiceObject
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.SpiceObject
+  parent: SpiceSharpParser.Models.Netlist.Spice
+  name: SpiceObject
+  nameWithType: SpiceObject
+  fullName: SpiceSharpParser.Models.Netlist.Spice.SpiceObject
+- uid: SpiceSharpParser.Models.Netlist.Spice
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice
+  name: SpiceSharpParser.Models.Netlist.Spice
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice
+  fullName: SpiceSharpParser.Models.Netlist.Spice

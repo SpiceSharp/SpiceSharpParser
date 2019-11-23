@@ -1,0 +1,53 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Parsers.Netlist.Spice
+  commentId: N:SpiceSharpParser.Parsers.Netlist.Spice
+  id: SpiceSharpParser.Parsers.Netlist.Spice
+  children:
+  - SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser
+  - SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator
+  - SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParser
+  - SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings
+  - SpiceSharpParser.Parsers.Netlist.Spice.Symbols
+  langs:
+  - csharp
+  - vb
+  name: SpiceSharpParser.Parsers.Netlist.Spice
+  nameWithType: SpiceSharpParser.Parsers.Netlist.Spice
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice
+  type: Namespace
+  assemblies:
+  - SpiceSharpParser
+references:
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator
+  commentId: T:SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator
+  name: ParseTreeEvaluator
+  nameWithType: ParseTreeEvaluator
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser
+  commentId: T:SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser
+  parent: SpiceSharpParser.Parsers.Netlist.Spice
+  name: ISingleSpiceNetlistParser
+  nameWithType: ISingleSpiceNetlistParser
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParser
+  commentId: T:SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParser
+  name: SingleSpiceNetlistParser
+  nameWithType: SingleSpiceNetlistParser
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParser
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings
+  commentId: T:SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings
+  parent: SpiceSharpParser.Parsers.Netlist.Spice
+  name: SingleSpiceNetlistParserSettings
+  nameWithType: SingleSpiceNetlistParserSettings
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.Symbols
+  commentId: T:SpiceSharpParser.Parsers.Netlist.Spice.Symbols
+  name: Symbols
+  nameWithType: Symbols
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.Symbols
+- uid: SpiceSharpParser.Parsers.Netlist.Spice
+  commentId: N:SpiceSharpParser.Parsers.Netlist.Spice
+  name: SpiceSharpParser.Parsers.Netlist.Spice
+  nameWithType: SpiceSharpParser.Parsers.Netlist.Spice
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice

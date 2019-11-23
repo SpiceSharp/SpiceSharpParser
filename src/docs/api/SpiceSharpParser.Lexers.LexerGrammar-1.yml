@@ -1,0 +1,679 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Lexers.LexerGrammar`1
+  commentId: T:SpiceSharpParser.Lexers.LexerGrammar`1
+  id: LexerGrammar`1
+  parent: SpiceSharpParser.Lexers
+  children:
+  - SpiceSharpParser.Lexers.LexerGrammar`1.#ctor(System.Collections.Generic.ICollection{SpiceSharpParser.Lexers.LexerTokenRule{`0}},System.Collections.Generic.ICollection{SpiceSharpParser.Lexers.LexerDynamicRule})
+  - SpiceSharpParser.Lexers.LexerGrammar`1.DynamicRules
+  - SpiceSharpParser.Lexers.LexerGrammar`1.RegexRules
+  langs:
+  - csharp
+  - vb
+  name: LexerGrammar<TLexerState>
+  nameWithType: LexerGrammar<TLexerState>
+  fullName: SpiceSharpParser.Lexers.LexerGrammar<TLexerState>
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/LexerGrammar.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: LexerGrammar
+    path: ../SpiceSharpParser/Lexers/LexerGrammar.cs
+    startLine: 9
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers
+  summary: "\nLexer grammar. It contains a collection of lexer token rules.\n"
+  example: []
+  syntax:
+    content: >-
+      public class LexerGrammar<TLexerState>
+          where TLexerState : LexerState
+    typeParameters:
+    - id: TLexerState
+      description: A type of lexer state.
+    content.vb: Public Class LexerGrammar(Of TLexerState As LexerState)
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  nameWithType.vb: LexerGrammar(Of TLexerState)
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammar(Of TLexerState)
+  name.vb: LexerGrammar(Of TLexerState)
+- uid: SpiceSharpParser.Lexers.LexerGrammar`1.#ctor(System.Collections.Generic.ICollection{SpiceSharpParser.Lexers.LexerTokenRule{`0}},System.Collections.Generic.ICollection{SpiceSharpParser.Lexers.LexerDynamicRule})
+  commentId: M:SpiceSharpParser.Lexers.LexerGrammar`1.#ctor(System.Collections.Generic.ICollection{SpiceSharpParser.Lexers.LexerTokenRule{`0}},System.Collections.Generic.ICollection{SpiceSharpParser.Lexers.LexerDynamicRule})
+  id: '#ctor(System.Collections.Generic.ICollection{SpiceSharpParser.Lexers.LexerTokenRule{`0}},System.Collections.Generic.ICollection{SpiceSharpParser.Lexers.LexerDynamicRule})'
+  parent: SpiceSharpParser.Lexers.LexerGrammar`1
+  langs:
+  - csharp
+  - vb
+  name: LexerGrammar(ICollection<LexerTokenRule<TLexerState>>, ICollection<LexerDynamicRule>)
+  nameWithType: LexerGrammar<TLexerState>.LexerGrammar(ICollection<LexerTokenRule<TLexerState>>, ICollection<LexerDynamicRule>)
+  fullName: SpiceSharpParser.Lexers.LexerGrammar<TLexerState>.LexerGrammar(System.Collections.Generic.ICollection<SpiceSharpParser.Lexers.LexerTokenRule<TLexerState>>, System.Collections.Generic.ICollection<SpiceSharpParser.Lexers.LexerDynamicRule>)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/LexerGrammar.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/Lexers/LexerGrammar.cs
+    startLine: 17
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers
+  summary: "\nInitializes a new instance of the <xref href=\"SpiceSharpParser.Lexers.LexerGrammar%601\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
+  example: []
+  syntax:
+    content: public LexerGrammar(ICollection<LexerTokenRule<TLexerState>> lexerRules, ICollection<LexerDynamicRule> dynamicRules)
+    parameters:
+    - id: lexerRules
+      type: System.Collections.Generic.ICollection{SpiceSharpParser.Lexers.LexerTokenRule{{TLexerState}}}
+      description: A collection of lexer rules.
+    - id: dynamicRules
+      type: System.Collections.Generic.ICollection{SpiceSharpParser.Lexers.LexerDynamicRule}
+      description: A collection of dynamic lexer rules.
+    content.vb: Public Sub New(lexerRules As ICollection(Of LexerTokenRule(Of TLexerState)), dynamicRules As ICollection(Of LexerDynamicRule))
+  overload: SpiceSharpParser.Lexers.LexerGrammar`1.#ctor*
+  nameWithType.vb: LexerGrammar(Of TLexerState).LexerGrammar(ICollection(Of LexerTokenRule(Of TLexerState)), ICollection(Of LexerDynamicRule))
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammar(Of TLexerState).LexerGrammar(System.Collections.Generic.ICollection(Of SpiceSharpParser.Lexers.LexerTokenRule(Of TLexerState)), System.Collections.Generic.ICollection(Of SpiceSharpParser.Lexers.LexerDynamicRule))
+  name.vb: LexerGrammar(ICollection(Of LexerTokenRule(Of TLexerState)), ICollection(Of LexerDynamicRule))
+- uid: SpiceSharpParser.Lexers.LexerGrammar`1.RegexRules
+  commentId: P:SpiceSharpParser.Lexers.LexerGrammar`1.RegexRules
+  id: RegexRules
+  parent: SpiceSharpParser.Lexers.LexerGrammar`1
+  langs:
+  - csharp
+  - vb
+  name: RegexRules
+  nameWithType: LexerGrammar<TLexerState>.RegexRules
+  fullName: SpiceSharpParser.Lexers.LexerGrammar<TLexerState>.RegexRules
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/LexerGrammar.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: RegexRules
+    path: ../SpiceSharpParser/Lexers/LexerGrammar.cs
+    startLine: 26
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers
+  summary: "\nGets lexer regex rules.\n"
+  example: []
+  syntax:
+    content: public ICollection<LexerTokenRule<TLexerState>> RegexRules { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.ICollection{SpiceSharpParser.Lexers.LexerTokenRule{{TLexerState}}}
+    content.vb: Public ReadOnly Property RegexRules As ICollection(Of LexerTokenRule(Of TLexerState))
+  overload: SpiceSharpParser.Lexers.LexerGrammar`1.RegexRules*
+  nameWithType.vb: LexerGrammar(Of TLexerState).RegexRules
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammar(Of TLexerState).RegexRules
+- uid: SpiceSharpParser.Lexers.LexerGrammar`1.DynamicRules
+  commentId: P:SpiceSharpParser.Lexers.LexerGrammar`1.DynamicRules
+  id: DynamicRules
+  parent: SpiceSharpParser.Lexers.LexerGrammar`1
+  langs:
+  - csharp
+  - vb
+  name: DynamicRules
+  nameWithType: LexerGrammar<TLexerState>.DynamicRules
+  fullName: SpiceSharpParser.Lexers.LexerGrammar<TLexerState>.DynamicRules
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/LexerGrammar.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: DynamicRules
+    path: ../SpiceSharpParser/Lexers/LexerGrammar.cs
+    startLine: 31
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers
+  summary: "\nGets lexer dynamic rules.\n"
+  example: []
+  syntax:
+    content: public ICollection<LexerDynamicRule> DynamicRules { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.ICollection{SpiceSharpParser.Lexers.LexerDynamicRule}
+    content.vb: Public ReadOnly Property DynamicRules As ICollection(Of LexerDynamicRule)
+  overload: SpiceSharpParser.Lexers.LexerGrammar`1.DynamicRules*
+  nameWithType.vb: LexerGrammar(Of TLexerState).DynamicRules
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammar(Of TLexerState).DynamicRules
+references:
+- uid: SpiceSharpParser.Lexers
+  commentId: N:SpiceSharpParser.Lexers
+  name: SpiceSharpParser.Lexers
+  nameWithType: SpiceSharpParser.Lexers
+  fullName: SpiceSharpParser.Lexers
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.Lexers.LexerGrammar`1
+  commentId: T:SpiceSharpParser.Lexers.LexerGrammar`1
+  name: LexerGrammar<TLexerState>
+  nameWithType: LexerGrammar<TLexerState>
+  fullName: SpiceSharpParser.Lexers.LexerGrammar<TLexerState>
+  nameWithType.vb: LexerGrammar(Of TLexerState)
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammar(Of TLexerState)
+  name.vb: LexerGrammar(Of TLexerState)
+  spec.csharp:
+  - uid: SpiceSharpParser.Lexers.LexerGrammar`1
+    name: LexerGrammar
+    nameWithType: LexerGrammar
+    fullName: SpiceSharpParser.Lexers.LexerGrammar
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TLexerState
+    nameWithType: TLexerState
+    fullName: TLexerState
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.Lexers.LexerGrammar`1
+    name: LexerGrammar
+    nameWithType: LexerGrammar
+    fullName: SpiceSharpParser.Lexers.LexerGrammar
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TLexerState
+    nameWithType: TLexerState
+    fullName: TLexerState
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Lexers.LexerGrammar`1.#ctor*
+  commentId: Overload:SpiceSharpParser.Lexers.LexerGrammar`1.#ctor
+  name: LexerGrammar
+  nameWithType: LexerGrammar<TLexerState>.LexerGrammar
+  fullName: SpiceSharpParser.Lexers.LexerGrammar<TLexerState>.LexerGrammar
+  nameWithType.vb: LexerGrammar(Of TLexerState).LexerGrammar
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammar(Of TLexerState).LexerGrammar
+- uid: System.Collections.Generic.ICollection{SpiceSharpParser.Lexers.LexerTokenRule{{TLexerState}}}
+  commentId: T:System.Collections.Generic.ICollection{SpiceSharpParser.Lexers.LexerTokenRule{`0}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.ICollection`1
+  name: ICollection<LexerTokenRule<TLexerState>>
+  nameWithType: ICollection<LexerTokenRule<TLexerState>>
+  fullName: System.Collections.Generic.ICollection<SpiceSharpParser.Lexers.LexerTokenRule<TLexerState>>
+  nameWithType.vb: ICollection(Of LexerTokenRule(Of TLexerState))
+  fullName.vb: System.Collections.Generic.ICollection(Of SpiceSharpParser.Lexers.LexerTokenRule(Of TLexerState))
+  name.vb: ICollection(Of LexerTokenRule(Of TLexerState))
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    nameWithType: ICollection
+    fullName: System.Collections.Generic.ICollection
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.Lexers.LexerTokenRule`1
+    name: LexerTokenRule
+    nameWithType: LexerTokenRule
+    fullName: SpiceSharpParser.Lexers.LexerTokenRule
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TLexerState
+    nameWithType: TLexerState
+    fullName: TLexerState
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    nameWithType: ICollection
+    fullName: System.Collections.Generic.ICollection
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.Lexers.LexerTokenRule`1
+    name: LexerTokenRule
+    nameWithType: LexerTokenRule
+    fullName: SpiceSharpParser.Lexers.LexerTokenRule
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TLexerState
+    nameWithType: TLexerState
+    fullName: TLexerState
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.ICollection{SpiceSharpParser.Lexers.LexerDynamicRule}
+  commentId: T:System.Collections.Generic.ICollection{SpiceSharpParser.Lexers.LexerDynamicRule}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.ICollection`1
+  name: ICollection<LexerDynamicRule>
+  nameWithType: ICollection<LexerDynamicRule>
+  fullName: System.Collections.Generic.ICollection<SpiceSharpParser.Lexers.LexerDynamicRule>
+  nameWithType.vb: ICollection(Of LexerDynamicRule)
+  fullName.vb: System.Collections.Generic.ICollection(Of SpiceSharpParser.Lexers.LexerDynamicRule)
+  name.vb: ICollection(Of LexerDynamicRule)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    nameWithType: ICollection
+    fullName: System.Collections.Generic.ICollection
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.Lexers.LexerDynamicRule
+    name: LexerDynamicRule
+    nameWithType: LexerDynamicRule
+    fullName: SpiceSharpParser.Lexers.LexerDynamicRule
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    nameWithType: ICollection
+    fullName: System.Collections.Generic.ICollection
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.Lexers.LexerDynamicRule
+    name: LexerDynamicRule
+    nameWithType: LexerDynamicRule
+    fullName: SpiceSharpParser.Lexers.LexerDynamicRule
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.ICollection`1
+  commentId: T:System.Collections.Generic.ICollection`1
+  isExternal: true
+  name: ICollection<T>
+  nameWithType: ICollection<T>
+  fullName: System.Collections.Generic.ICollection<T>
+  nameWithType.vb: ICollection(Of T)
+  fullName.vb: System.Collections.Generic.ICollection(Of T)
+  name.vb: ICollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    nameWithType: ICollection
+    fullName: System.Collections.Generic.ICollection
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    nameWithType: ICollection
+    fullName: System.Collections.Generic.ICollection
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: SpiceSharpParser.Lexers.LexerGrammar`1.RegexRules*
+  commentId: Overload:SpiceSharpParser.Lexers.LexerGrammar`1.RegexRules
+  name: RegexRules
+  nameWithType: LexerGrammar<TLexerState>.RegexRules
+  fullName: SpiceSharpParser.Lexers.LexerGrammar<TLexerState>.RegexRules
+  nameWithType.vb: LexerGrammar(Of TLexerState).RegexRules
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammar(Of TLexerState).RegexRules
+- uid: SpiceSharpParser.Lexers.LexerGrammar`1.DynamicRules*
+  commentId: Overload:SpiceSharpParser.Lexers.LexerGrammar`1.DynamicRules
+  name: DynamicRules
+  nameWithType: LexerGrammar<TLexerState>.DynamicRules
+  fullName: SpiceSharpParser.Lexers.LexerGrammar<TLexerState>.DynamicRules
+  nameWithType.vb: LexerGrammar(Of TLexerState).DynamicRules
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammar(Of TLexerState).DynamicRules

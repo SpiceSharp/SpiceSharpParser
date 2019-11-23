@@ -1,0 +1,1331 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  id: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.#ctor(SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllTemperaturesFactory)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.AllTemperaturesFactory
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.BaseSimulation})
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSimulationNameSuffix(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}})
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSweepParameterValues(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.List{System.Double}},System.Int32[],System.Int32[])
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ParameterUpdater
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ProcessTempParameterSweep(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.SetSweepSimulation(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}},SpiceSharp.Simulations.BaseSimulation)
+  langs:
+  - csharp
+  - vb
+  name: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  nameWithType: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Factories/CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Factories/CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.cs
+    startLine: 12
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
+  syntax:
+    content: 'public class CreateSimulationsForAllParameterSweepsAndTemperaturesFactory : ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory'
+    content.vb: >-
+      Public Class CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+          Implements ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  inheritance:
+  - System.Object
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.#ctor(SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllTemperaturesFactory)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.#ctor(SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllTemperaturesFactory)
+  id: '#ctor(SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllTemperaturesFactory)'
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  langs:
+  - csharp
+  - vb
+  name: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory(ICreateSimulationsForAllTemperaturesFactory)
+  nameWithType: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory(ICreateSimulationsForAllTemperaturesFactory)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory(SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllTemperaturesFactory)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Factories/CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Factories/CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.cs
+    startLine: 14
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
+  syntax:
+    content: public CreateSimulationsForAllParameterSweepsAndTemperaturesFactory(ICreateSimulationsForAllTemperaturesFactory allTemperaturesFactory)
+    parameters:
+    - id: allTemperaturesFactory
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllTemperaturesFactory
+    content.vb: Public Sub New(allTemperaturesFactory As ICreateSimulationsForAllTemperaturesFactory)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.AllTemperaturesFactory
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.AllTemperaturesFactory
+  id: AllTemperaturesFactory
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  langs:
+  - csharp
+  - vb
+  name: AllTemperaturesFactory
+  nameWithType: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.AllTemperaturesFactory
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.AllTemperaturesFactory
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Factories/CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: AllTemperaturesFactory
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Factories/CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.cs
+    startLine: 23
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
+  summary: "\nGets the simulations factory.\n"
+  example: []
+  syntax:
+    content: public ICreateSimulationsForAllTemperaturesFactory AllTemperaturesFactory { get; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllTemperaturesFactory
+    content.vb: Public ReadOnly Property AllTemperaturesFactory As ICreateSimulationsForAllTemperaturesFactory
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.AllTemperaturesFactory*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ParameterUpdater
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ParameterUpdater
+  id: ParameterUpdater
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  langs:
+  - csharp
+  - vb
+  name: ParameterUpdater
+  nameWithType: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ParameterUpdater
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ParameterUpdater
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Factories/CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ParameterUpdater
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Factories/CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.cs
+    startLine: 28
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
+  summary: "\nGets the parameter updater.\n"
+  example: []
+  syntax:
+    content: protected IParameterSweepUpdater ParameterUpdater { get; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater
+    content.vb: Protected ReadOnly Property ParameterUpdater As IParameterSweepUpdater
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ParameterUpdater*
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.BaseSimulation})
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.BaseSimulation})
+  id: CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.BaseSimulation})
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  langs:
+  - csharp
+  - vb
+  name: CreateSimulations(Control, ICircuitContext, Func<String, Control, ICircuitContext, BaseSimulation>)
+  nameWithType: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(Control, ICircuitContext, Func<String, Control, ICircuitContext, BaseSimulation>)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Func<System.String, SpiceSharpParser.Models.Netlist.Spice.Objects.Control, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, SpiceSharp.Simulations.BaseSimulation>)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Factories/CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CreateSimulations
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Factories/CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.cs
+    startLine: 37
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
+  summary: "\nCreates simulations for all parameter and temperature sweeps.\n"
+  example: []
+  syntax:
+    content: public List<BaseSimulation> CreateSimulations(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, BaseSimulation> createSimulation)
+    parameters:
+    - id: statement
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+      description: Statement.
+    - id: context
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+      description: Context.
+    - id: createSimulation
+      type: System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.BaseSimulation}
+      description: Create simulation factory.
+    return:
+      type: System.Collections.Generic.List{SpiceSharp.Simulations.BaseSimulation}
+      description: ''
+    content.vb: Public Function CreateSimulations(statement As Control, context As ICircuitContext, createSimulation As Func(Of String, Control, ICircuitContext, BaseSimulation)) As List(Of BaseSimulation)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.BaseSimulation})
+  nameWithType.vb: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(Control, ICircuitContext, Func(Of String, Control, ICircuitContext, BaseSimulation))
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Func(Of System.String, SpiceSharpParser.Models.Netlist.Spice.Objects.Control, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, SpiceSharp.Simulations.BaseSimulation))
+  name.vb: CreateSimulations(Control, ICircuitContext, Func(Of String, Control, ICircuitContext, BaseSimulation))
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSimulationNameSuffix(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}})
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSimulationNameSuffix(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}})
+  id: GetSimulationNameSuffix(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}})
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  langs:
+  - csharp
+  - vb
+  name: GetSimulationNameSuffix(List<KeyValuePair<Parameter, Double>>)
+  nameWithType: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSimulationNameSuffix(List<KeyValuePair<Parameter, Double>>)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSimulationNameSuffix(System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double>>)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Factories/CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetSimulationNameSuffix
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Factories/CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.cs
+    startLine: 91
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
+  syntax:
+    content: protected string GetSimulationNameSuffix(List<KeyValuePair<Parameter, double>> parameterValues)
+    parameters:
+    - id: parameterValues
+      type: System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}}
+    return:
+      type: System.String
+    content.vb: Protected Function GetSimulationNameSuffix(parameterValues As List(Of KeyValuePair(Of Parameter, Double))) As String
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSimulationNameSuffix*
+  nameWithType.vb: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSimulationNameSuffix(List(Of KeyValuePair(Of Parameter, Double)))
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSimulationNameSuffix(System.Collections.Generic.List(Of System.Collections.Generic.KeyValuePair(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double)))
+  name.vb: GetSimulationNameSuffix(List(Of KeyValuePair(Of Parameter, Double)))
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSweepParameterValues(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.List{System.Double}},System.Int32[],System.Int32[])
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSweepParameterValues(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.List{System.Double}},System.Int32[],System.Int32[])
+  id: GetSweepParameterValues(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.List{System.Double}},System.Int32[],System.Int32[])
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  langs:
+  - csharp
+  - vb
+  name: GetSweepParameterValues(ICircuitContext, List<List<Double>>, Int32[], Int32[])
+  nameWithType: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSweepParameterValues(ICircuitContext, List<List<Double>>, Int32[], Int32[])
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSweepParameterValues(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Collections.Generic.List<System.Collections.Generic.List<System.Double>>, System.Int32[], System.Int32[])
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Factories/CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetSweepParameterValues
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Factories/CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.cs
+    startLine: 108
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
+  syntax:
+    content: protected List<KeyValuePair<Parameter, double>> GetSweepParameterValues(ICircuitContext context, List<List<double>> sweeps, int[] system, int[] indexes)
+    parameters:
+    - id: context
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    - id: sweeps
+      type: System.Collections.Generic.List{System.Collections.Generic.List{System.Double}}
+    - id: system
+      type: System.Int32[]
+    - id: indexes
+      type: System.Int32[]
+    return:
+      type: System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}}
+    content.vb: Protected Function GetSweepParameterValues(context As ICircuitContext, sweeps As List(Of List(Of Double)), system As Integer(), indexes As Integer()) As List(Of KeyValuePair(Of Parameter, Double))
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSweepParameterValues*
+  nameWithType.vb: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSweepParameterValues(ICircuitContext, List(Of List(Of Double)), Int32(), Int32())
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSweepParameterValues(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Collections.Generic.List(Of System.Collections.Generic.List(Of System.Double)), System.Int32(), System.Int32())
+  name.vb: GetSweepParameterValues(ICircuitContext, List(Of List(Of Double)), Int32(), Int32())
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ProcessTempParameterSweep(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ProcessTempParameterSweep(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  id: ProcessTempParameterSweep(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  langs:
+  - csharp
+  - vb
+  name: ProcessTempParameterSweep(ICircuitContext)
+  nameWithType: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ProcessTempParameterSweep(ICircuitContext)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ProcessTempParameterSweep(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Factories/CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ProcessTempParameterSweep
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Factories/CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.cs
+    startLine: 123
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
+  syntax:
+    content: protected void ProcessTempParameterSweep(ICircuitContext context)
+    parameters:
+    - id: context
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    content.vb: Protected Sub ProcessTempParameterSweep(context As ICircuitContext)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ProcessTempParameterSweep*
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.SetSweepSimulation(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}},SpiceSharp.Simulations.BaseSimulation)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.SetSweepSimulation(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}},SpiceSharp.Simulations.BaseSimulation)
+  id: SetSweepSimulation(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}},SpiceSharp.Simulations.BaseSimulation)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  langs:
+  - csharp
+  - vb
+  name: SetSweepSimulation(ICircuitContext, List<KeyValuePair<Parameter, Double>>, BaseSimulation)
+  nameWithType: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.SetSweepSimulation(ICircuitContext, List<KeyValuePair<Parameter, Double>>, BaseSimulation)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.SetSweepSimulation(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double>>, SpiceSharp.Simulations.BaseSimulation)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Factories/CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SetSweepSimulation
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Factories/CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.cs
+    startLine: 146
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
+  syntax:
+    content: protected void SetSweepSimulation(ICircuitContext context, List<KeyValuePair<Parameter, double>> parameterValues, BaseSimulation simulation)
+    parameters:
+    - id: context
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    - id: parameterValues
+      type: System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}}
+    - id: simulation
+      type: SpiceSharp.Simulations.BaseSimulation
+    content.vb: Protected Sub SetSweepSimulation(context As ICircuitContext, parameterValues As List(Of KeyValuePair(Of Parameter, Double)), simulation As BaseSimulation)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.SetSweepSimulation*
+  nameWithType.vb: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.SetSweepSimulation(ICircuitContext, List(Of KeyValuePair(Of Parameter, Double)), BaseSimulation)
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.SetSweepSimulation(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Collections.Generic.List(Of System.Collections.Generic.KeyValuePair(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double)), SpiceSharp.Simulations.BaseSimulation)
+  name.vb: SetSweepSimulation(ICircuitContext, List(Of KeyValuePair(Of Parameter, Double)), BaseSimulation)
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
+  name: ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  nameWithType: ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.#ctor*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.#ctor
+  name: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  nameWithType: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllTemperaturesFactory
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllTemperaturesFactory
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
+  name: ICreateSimulationsForAllTemperaturesFactory
+  nameWithType: ICreateSimulationsForAllTemperaturesFactory
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllTemperaturesFactory
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.AllTemperaturesFactory*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.AllTemperaturesFactory
+  name: AllTemperaturesFactory
+  nameWithType: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.AllTemperaturesFactory
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.AllTemperaturesFactory
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ParameterUpdater*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ParameterUpdater
+  name: ParameterUpdater
+  nameWithType: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ParameterUpdater
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ParameterUpdater
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  name: IParameterSweepUpdater
+  nameWithType: IParameterSweepUpdater
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations
+  name: CreateSimulations
+  nameWithType: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.BaseSimulation})
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.BaseSimulation})
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  isExternal: true
+  name: CreateSimulations(Control, ICircuitContext, Func<String, Control, ICircuitContext, BaseSimulation>)
+  nameWithType: ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(Control, ICircuitContext, Func<String, Control, ICircuitContext, BaseSimulation>)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Func<System.String, SpiceSharpParser.Models.Netlist.Spice.Objects.Control, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, SpiceSharp.Simulations.BaseSimulation>)
+  nameWithType.vb: ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(Control, ICircuitContext, Func(Of String, Control, ICircuitContext, BaseSimulation))
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Func(Of System.String, SpiceSharpParser.Models.Netlist.Spice.Objects.Control, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, SpiceSharp.Simulations.BaseSimulation))
+  name.vb: CreateSimulations(Control, ICircuitContext, Func(Of String, Control, ICircuitContext, BaseSimulation))
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.BaseSimulation})
+    name: CreateSimulations
+    nameWithType: ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+    name: Control
+    nameWithType: Control
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Func`4
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+    name: Control
+    nameWithType: Control
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.BaseSimulation})
+    name: CreateSimulations
+    nameWithType: ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+    name: Control
+    nameWithType: Control
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Func`4
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+    name: Control
+    nameWithType: Control
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: Control
+  nameWithType: Control
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: ICircuitContext
+  nameWithType: ICircuitContext
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+- uid: System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.BaseSimulation}
+  commentId: T:System.Func{System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Control,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.BaseSimulation}
+  parent: System
+  definition: System.Func`4
+  name: Func<String, Control, ICircuitContext, BaseSimulation>
+  nameWithType: Func<String, Control, ICircuitContext, BaseSimulation>
+  fullName: System.Func<System.String, SpiceSharpParser.Models.Netlist.Spice.Objects.Control, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, SpiceSharp.Simulations.BaseSimulation>
+  nameWithType.vb: Func(Of String, Control, ICircuitContext, BaseSimulation)
+  fullName.vb: System.Func(Of System.String, SpiceSharpParser.Models.Netlist.Spice.Objects.Control, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, SpiceSharp.Simulations.BaseSimulation)
+  name.vb: Func(Of String, Control, ICircuitContext, BaseSimulation)
+  spec.csharp:
+  - uid: System.Func`4
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+    name: Control
+    nameWithType: Control
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`4
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+    name: Control
+    nameWithType: Control
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.List{SpiceSharp.Simulations.BaseSimulation}
+  commentId: T:System.Collections.Generic.List{SpiceSharp.Simulations.BaseSimulation}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<BaseSimulation>
+  nameWithType: List<BaseSimulation>
+  fullName: System.Collections.Generic.List<SpiceSharp.Simulations.BaseSimulation>
+  nameWithType.vb: List(Of BaseSimulation)
+  fullName.vb: System.Collections.Generic.List(Of SpiceSharp.Simulations.BaseSimulation)
+  name.vb: List(Of BaseSimulation)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: SpiceSharpParser.Models.Netlist.Spice.Objects
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice.Objects
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+- uid: System.Func`4
+  commentId: T:System.Func`4
+  isExternal: true
+  name: Func<T1, T2, T3, TResult>
+  nameWithType: Func<T1, T2, T3, TResult>
+  fullName: System.Func<T1, T2, T3, TResult>
+  nameWithType.vb: Func(Of T1, T2, T3, TResult)
+  fullName.vb: System.Func(Of T1, T2, T3, TResult)
+  name.vb: Func(Of T1, T2, T3, TResult)
+  spec.csharp:
+  - uid: System.Func`4
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T1
+    nameWithType: T1
+    fullName: T1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T2
+    nameWithType: T2
+    fullName: T2
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T3
+    nameWithType: T3
+    fullName: T3
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`4
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T1
+    nameWithType: T1
+    fullName: T1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T2
+    nameWithType: T2
+    fullName: T2
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T3
+    nameWithType: T3
+    fullName: T3
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSimulationNameSuffix*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSimulationNameSuffix
+  name: GetSimulationNameSuffix
+  nameWithType: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSimulationNameSuffix
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSimulationNameSuffix
+- uid: System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}}
+  commentId: T:System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<KeyValuePair<Parameter, Double>>
+  nameWithType: List<KeyValuePair<Parameter, Double>>
+  fullName: System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double>>
+  nameWithType.vb: List(Of KeyValuePair(Of Parameter, Double))
+  fullName.vb: System.Collections.Generic.List(Of System.Collections.Generic.KeyValuePair(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double))
+  name.vb: List(Of KeyValuePair(Of Parameter, Double))
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    nameWithType: KeyValuePair
+    fullName: System.Collections.Generic.KeyValuePair
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    nameWithType: KeyValuePair
+    fullName: System.Collections.Generic.KeyValuePair
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSweepParameterValues*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSweepParameterValues
+  name: GetSweepParameterValues
+  nameWithType: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSweepParameterValues
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.GetSweepParameterValues
+- uid: System.Collections.Generic.List{System.Collections.Generic.List{System.Double}}
+  commentId: T:System.Collections.Generic.List{System.Collections.Generic.List{System.Double}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<List<Double>>
+  nameWithType: List<List<Double>>
+  fullName: System.Collections.Generic.List<System.Collections.Generic.List<System.Double>>
+  nameWithType.vb: List(Of List(Of Double))
+  fullName.vb: System.Collections.Generic.List(Of System.Collections.Generic.List(Of System.Double))
+  name.vb: List(Of List(Of Double))
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Int32[]
+  isExternal: true
+  name: Int32[]
+  nameWithType: Int32[]
+  fullName: System.Int32[]
+  nameWithType.vb: Int32()
+  fullName.vb: System.Int32()
+  name.vb: Int32()
+  spec.csharp:
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ProcessTempParameterSweep*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ProcessTempParameterSweep
+  name: ProcessTempParameterSweep
+  nameWithType: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ProcessTempParameterSweep
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.ProcessTempParameterSweep
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.SetSweepSimulation*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.SetSweepSimulation
+  name: SetSweepSimulation
+  nameWithType: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.SetSweepSimulation
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.SetSweepSimulation
+- uid: SpiceSharp.Simulations.BaseSimulation
+  commentId: T:SpiceSharp.Simulations.BaseSimulation
+  parent: SpiceSharp.Simulations
+  isExternal: true
+  name: BaseSimulation
+  nameWithType: BaseSimulation
+  fullName: SpiceSharp.Simulations.BaseSimulation
+- uid: SpiceSharp.Simulations
+  commentId: N:SpiceSharp.Simulations
+  isExternal: true
+  name: SpiceSharp.Simulations
+  nameWithType: SpiceSharp.Simulations
+  fullName: SpiceSharp.Simulations

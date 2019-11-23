@@ -1,0 +1,539 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings
+  commentId: T:SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings
+  id: SingleSpiceNetlistParserSettings
+  parent: SpiceSharpParser.Parsers.Netlist.Spice
+  children:
+  - SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.#ctor(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  - SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.IsEndRequired
+  - SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.IsNewlineRequired
+  - SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.Lexer
+  langs:
+  - csharp
+  - vb
+  name: SingleSpiceNetlistParserSettings
+  nameWithType: SingleSpiceNetlistParserSettings
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/Parsers/Netlist/Spice/SingleSpiceNetlistParserSettings.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SingleSpiceNetlistParserSettings
+    path: ../SpiceSharpParser/Parsers/Netlist/Spice/SingleSpiceNetlistParserSettings.cs
+    startLine: 8
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Parsers.Netlist.Spice
+  summary: "\nSettings for the SPICE netlist parser.\n"
+  example: []
+  syntax:
+    content: public class SingleSpiceNetlistParserSettings
+    content.vb: Public Class SingleSpiceNetlistParserSettings
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.#ctor(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  commentId: M:SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.#ctor(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  id: '#ctor(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)'
+  parent: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings
+  langs:
+  - csharp
+  - vb
+  name: SingleSpiceNetlistParserSettings(SpiceLexerSettings)
+  nameWithType: SingleSpiceNetlistParserSettings.SingleSpiceNetlistParserSettings(SpiceLexerSettings)
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.SingleSpiceNetlistParserSettings(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/Parsers/Netlist/Spice/SingleSpiceNetlistParserSettings.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/Parsers/Netlist/Spice/SingleSpiceNetlistParserSettings.cs
+    startLine: 14
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Parsers.Netlist.Spice
+  summary: "\nInitializes a new instance of the <xref href=\"SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
+  example: []
+  syntax:
+    content: public SingleSpiceNetlistParserSettings(SpiceLexerSettings lexerSettings)
+    parameters:
+    - id: lexerSettings
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+      description: Lexer settings.
+    content.vb: Public Sub New(lexerSettings As SpiceLexerSettings)
+  overload: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.Lexer
+  commentId: P:SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.Lexer
+  id: Lexer
+  parent: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings
+  langs:
+  - csharp
+  - vb
+  name: Lexer
+  nameWithType: SingleSpiceNetlistParserSettings.Lexer
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.Lexer
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Parsers/Netlist/Spice/SingleSpiceNetlistParserSettings.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Lexer
+    path: ../SpiceSharpParser/Parsers/Netlist/Spice/SingleSpiceNetlistParserSettings.cs
+    startLine: 22
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Parsers.Netlist.Spice
+  summary: "\nGets the lexer settings.\n"
+  example: []
+  syntax:
+    content: public SpiceLexerSettings Lexer { get; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+    content.vb: Public ReadOnly Property Lexer As SpiceLexerSettings
+  overload: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.Lexer*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.IsEndRequired
+  commentId: P:SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.IsEndRequired
+  id: IsEndRequired
+  parent: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings
+  langs:
+  - csharp
+  - vb
+  name: IsEndRequired
+  nameWithType: SingleSpiceNetlistParserSettings.IsEndRequired
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.IsEndRequired
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Parsers/Netlist/Spice/SingleSpiceNetlistParserSettings.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IsEndRequired
+    path: ../SpiceSharpParser/Parsers/Netlist/Spice/SingleSpiceNetlistParserSettings.cs
+    startLine: 27
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Parsers.Netlist.Spice
+  summary: "\nGets or sets a value indicating whether .END token is required at the end.\n"
+  example: []
+  syntax:
+    content: public bool IsEndRequired { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsEndRequired As Boolean
+  overload: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.IsEndRequired*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.IsNewlineRequired
+  commentId: P:SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.IsNewlineRequired
+  id: IsNewlineRequired
+  parent: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings
+  langs:
+  - csharp
+  - vb
+  name: IsNewlineRequired
+  nameWithType: SingleSpiceNetlistParserSettings.IsNewlineRequired
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.IsNewlineRequired
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Parsers/Netlist/Spice/SingleSpiceNetlistParserSettings.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IsNewlineRequired
+    path: ../SpiceSharpParser/Parsers/Netlist/Spice/SingleSpiceNetlistParserSettings.cs
+    startLine: 32
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Parsers.Netlist.Spice
+  summary: "\nGets or sets a value indicating whether new line characters are required at the end of the netlist.\n"
+  example: []
+  syntax:
+    content: public bool IsNewlineRequired { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsNewlineRequired As Boolean
+  overload: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.IsNewlineRequired*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+references:
+- uid: SpiceSharpParser.Parsers.Netlist.Spice
+  commentId: N:SpiceSharpParser.Parsers.Netlist.Spice
+  name: SpiceSharpParser.Parsers.Netlist.Spice
+  nameWithType: SpiceSharpParser.Parsers.Netlist.Spice
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings
+  commentId: T:SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings
+  parent: SpiceSharpParser.Parsers.Netlist.Spice
+  name: SingleSpiceNetlistParserSettings
+  nameWithType: SingleSpiceNetlistParserSettings
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.#ctor*
+  commentId: Overload:SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.#ctor
+  name: SingleSpiceNetlistParserSettings
+  nameWithType: SingleSpiceNetlistParserSettings.SingleSpiceNetlistParserSettings
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.SingleSpiceNetlistParserSettings
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+  commentId: T:SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+  parent: SpiceSharpParser.Lexers.Netlist.Spice
+  name: SpiceLexerSettings
+  nameWithType: SpiceLexerSettings
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+- uid: SpiceSharpParser.Lexers.Netlist.Spice
+  commentId: N:SpiceSharpParser.Lexers.Netlist.Spice
+  name: SpiceSharpParser.Lexers.Netlist.Spice
+  nameWithType: SpiceSharpParser.Lexers.Netlist.Spice
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.Lexer*
+  commentId: Overload:SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.Lexer
+  name: Lexer
+  nameWithType: SingleSpiceNetlistParserSettings.Lexer
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.Lexer
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.IsEndRequired*
+  commentId: Overload:SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.IsEndRequired
+  name: IsEndRequired
+  nameWithType: SingleSpiceNetlistParserSettings.IsEndRequired
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.IsEndRequired
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.IsNewlineRequired*
+  commentId: Overload:SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.IsNewlineRequired
+  name: IsNewlineRequired
+  nameWithType: SingleSpiceNetlistParserSettings.IsNewlineRequired
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings.IsNewlineRequired

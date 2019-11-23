@@ -1,0 +1,516 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Point
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.Point
+  id: Point
+  parent: SpiceSharpParser.Common.Mathematics.Probability
+  children:
+  - SpiceSharpParser.Common.Mathematics.Probability.Point.#ctor(System.Double,System.Double)
+  - SpiceSharpParser.Common.Mathematics.Probability.Point.Clone
+  - SpiceSharpParser.Common.Mathematics.Probability.Point.X
+  - SpiceSharpParser.Common.Mathematics.Probability.Point.Y
+  langs:
+  - csharp
+  - vb
+  name: Point
+  nameWithType: Point
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Point
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Point.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Point
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Point.cs
+    startLine: 2
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  syntax:
+    content: public class Point
+    content.vb: Public Class Point
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Point.#ctor(System.Double,System.Double)
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.Point.#ctor(System.Double,System.Double)
+  id: '#ctor(System.Double,System.Double)'
+  parent: SpiceSharpParser.Common.Mathematics.Probability.Point
+  langs:
+  - csharp
+  - vb
+  name: Point(Double, Double)
+  nameWithType: Point.Point(Double, Double)
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Point.Point(System.Double, System.Double)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Point.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Point.cs
+    startLine: 4
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  syntax:
+    content: public Point(double x, double y)
+    parameters:
+    - id: x
+      type: System.Double
+    - id: y
+      type: System.Double
+    content.vb: Public Sub New(x As Double, y As Double)
+  overload: SpiceSharpParser.Common.Mathematics.Probability.Point.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Point.X
+  commentId: P:SpiceSharpParser.Common.Mathematics.Probability.Point.X
+  id: X
+  parent: SpiceSharpParser.Common.Mathematics.Probability.Point
+  langs:
+  - csharp
+  - vb
+  name: X
+  nameWithType: Point.X
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Point.X
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Point.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: X
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Point.cs
+    startLine: 10
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  syntax:
+    content: public double X { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property X As Double
+  overload: SpiceSharpParser.Common.Mathematics.Probability.Point.X*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Point.Y
+  commentId: P:SpiceSharpParser.Common.Mathematics.Probability.Point.Y
+  id: Y
+  parent: SpiceSharpParser.Common.Mathematics.Probability.Point
+  langs:
+  - csharp
+  - vb
+  name: Y
+  nameWithType: Point.Y
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Point.Y
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Point.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Y
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Point.cs
+    startLine: 12
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  syntax:
+    content: public double Y { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property Y As Double
+  overload: SpiceSharpParser.Common.Mathematics.Probability.Point.Y*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Point.Clone
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.Point.Clone
+  id: Clone
+  parent: SpiceSharpParser.Common.Mathematics.Probability.Point
+  langs:
+  - csharp
+  - vb
+  name: Clone()
+  nameWithType: Point.Clone()
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Point.Clone()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/Point.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Clone
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/Point.cs
+    startLine: 14
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  syntax:
+    content: public Point Clone()
+    return:
+      type: SpiceSharpParser.Common.Mathematics.Probability.Point
+    content.vb: Public Function Clone As Point
+  overload: SpiceSharpParser.Common.Mathematics.Probability.Point.Clone*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: SpiceSharpParser.Common.Mathematics.Probability
+  commentId: N:SpiceSharpParser.Common.Mathematics.Probability
+  name: SpiceSharpParser.Common.Mathematics.Probability
+  nameWithType: SpiceSharpParser.Common.Mathematics.Probability
+  fullName: SpiceSharpParser.Common.Mathematics.Probability
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Point.#ctor*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.Point.#ctor
+  name: Point
+  nameWithType: Point.Point
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Point.Point
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  name: Double
+  nameWithType: Double
+  fullName: System.Double
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Point.X*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.Point.X
+  name: X
+  nameWithType: Point.X
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Point.X
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Point.Y*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.Point.Y
+  name: Y
+  nameWithType: Point.Y
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Point.Y
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Point.Clone*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.Point.Clone
+  name: Clone
+  nameWithType: Point.Clone
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Point.Clone
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Point
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.Point
+  parent: SpiceSharpParser.Common.Mathematics.Probability
+  name: Point
+  nameWithType: Point
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Point

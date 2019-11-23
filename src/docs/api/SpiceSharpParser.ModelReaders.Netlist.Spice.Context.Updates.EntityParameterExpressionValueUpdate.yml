@@ -1,0 +1,503 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate
+  id: EntityParameterExpressionValueUpdate
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate.Expression
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate.GetValue(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  langs:
+  - csharp
+  - vb
+  name: EntityParameterExpressionValueUpdate
+  nameWithType: EntityParameterExpressionValueUpdate
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityParameterExpressionValueUpdate.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: EntityParameterExpressionValueUpdate
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityParameterExpressionValueUpdate.cs
+    startLine: 5
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: 'public class EntityParameterExpressionValueUpdate : EntityParameterUpdate'
+    content.vb: >-
+      Public Class EntityParameterExpressionValueUpdate
+          Inherits EntityParameterUpdate
+  inheritance:
+  - System.Object
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate
+  inheritedMembers:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate.ParameterName
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate.Expression
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate.Expression
+  id: Expression
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate
+  langs:
+  - csharp
+  - vb
+  name: Expression
+  nameWithType: EntityParameterExpressionValueUpdate.Expression
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate.Expression
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityParameterExpressionValueUpdate.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Expression
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityParameterExpressionValueUpdate.cs
+    startLine: 7
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: public Expression Expression { get; set; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.Common.Evaluation.Expression
+    content.vb: Public Property Expression As Expression
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate.Expression*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate.GetValue(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate.GetValue(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  id: GetValue(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate
+  langs:
+  - csharp
+  - vb
+  name: GetValue(EvaluationContext)
+  nameWithType: EntityParameterExpressionValueUpdate.GetValue(EvaluationContext)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate.GetValue(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityParameterExpressionValueUpdate.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetValue
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityParameterExpressionValueUpdate.cs
+    startLine: 9
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: public override double GetValue(EvaluationContext context)
+    parameters:
+    - id: context
+      type: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    return:
+      type: System.Double
+    content.vb: Public Overrides Function GetValue(context As EvaluationContext) As Double
+  overridden: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate.GetValue(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate.GetValue*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  name: EntityParameterUpdate
+  nameWithType: EntityParameterUpdate
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate.ParameterName
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate.ParameterName
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate
+  name: ParameterName
+  nameWithType: EntityParameterUpdate.ParameterName
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate.ParameterName
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate.Expression*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate.Expression
+  name: Expression
+  nameWithType: EntityParameterExpressionValueUpdate.Expression
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate.Expression
+- uid: SpiceSharpParser.Common.Evaluation.Expression
+  commentId: T:SpiceSharpParser.Common.Evaluation.Expression
+  parent: SpiceSharpParser.Common.Evaluation
+  name: Expression
+  nameWithType: Expression
+  fullName: SpiceSharpParser.Common.Evaluation.Expression
+- uid: SpiceSharpParser.Common.Evaluation
+  commentId: N:SpiceSharpParser.Common.Evaluation
+  name: SpiceSharpParser.Common.Evaluation
+  nameWithType: SpiceSharpParser.Common.Evaluation
+  fullName: SpiceSharpParser.Common.Evaluation
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate.GetValue(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate.GetValue(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate
+  name: GetValue(EvaluationContext)
+  nameWithType: EntityParameterUpdate.GetValue(EvaluationContext)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate.GetValue(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate.GetValue(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+    name: GetValue
+    nameWithType: EntityParameterUpdate.GetValue
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate.GetValue
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    name: EvaluationContext
+    nameWithType: EvaluationContext
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate.GetValue(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+    name: GetValue
+    nameWithType: EntityParameterUpdate.GetValue
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate.GetValue
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    name: EvaluationContext
+    nameWithType: EvaluationContext
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate.GetValue*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate.GetValue
+  name: GetValue
+  nameWithType: EntityParameterExpressionValueUpdate.GetValue
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate.GetValue
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  commentId: T:SpiceSharpParser.Common.Evaluation.EvaluationContext
+  parent: SpiceSharpParser.Common.Evaluation
+  name: EvaluationContext
+  nameWithType: EvaluationContext
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  name: Double
+  nameWithType: Double
+  fullName: System.Double

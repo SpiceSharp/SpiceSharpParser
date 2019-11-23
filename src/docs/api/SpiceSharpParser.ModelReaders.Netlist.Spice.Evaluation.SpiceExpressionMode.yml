@@ -1,0 +1,178 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode
+  id: SpiceExpressionMode
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode.HSpice
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode.LtSpice
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode.SmartSpice
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode.Spice3f5
+  langs:
+  - csharp
+  - vb
+  name: SpiceExpressionMode
+  nameWithType: SpiceExpressionMode
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode
+  type: Enum
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceExpressionMode.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SpiceExpressionMode
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceExpressionMode.cs
+    startLine: 2
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  syntax:
+    content: public enum SpiceExpressionMode
+    content.vb: Public Enum SpiceExpressionMode
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode.Spice3f5
+  commentId: F:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode.Spice3f5
+  id: Spice3f5
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode
+  langs:
+  - csharp
+  - vb
+  name: Spice3f5
+  nameWithType: SpiceExpressionMode.Spice3f5
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode.Spice3f5
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceExpressionMode.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Spice3f5
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceExpressionMode.cs
+    startLine: 4
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  syntax:
+    content: Spice3f5 = 0
+    return:
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode.SmartSpice
+  commentId: F:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode.SmartSpice
+  id: SmartSpice
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode
+  langs:
+  - csharp
+  - vb
+  name: SmartSpice
+  nameWithType: SpiceExpressionMode.SmartSpice
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode.SmartSpice
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceExpressionMode.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SmartSpice
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceExpressionMode.cs
+    startLine: 5
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  syntax:
+    content: SmartSpice = 1
+    return:
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode.HSpice
+  commentId: F:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode.HSpice
+  id: HSpice
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode
+  langs:
+  - csharp
+  - vb
+  name: HSpice
+  nameWithType: SpiceExpressionMode.HSpice
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode.HSpice
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceExpressionMode.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: HSpice
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceExpressionMode.cs
+    startLine: 6
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  syntax:
+    content: HSpice = 2
+    return:
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode.LtSpice
+  commentId: F:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode.LtSpice
+  id: LtSpice
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode
+  langs:
+  - csharp
+  - vb
+  name: LtSpice
+  nameWithType: SpiceExpressionMode.LtSpice
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode.LtSpice
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceExpressionMode.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: LtSpice
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceExpressionMode.cs
+    startLine: 7
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  syntax:
+    content: LtSpice = 3
+    return:
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  name: SpiceExpressionMode
+  nameWithType: SpiceExpressionMode
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode

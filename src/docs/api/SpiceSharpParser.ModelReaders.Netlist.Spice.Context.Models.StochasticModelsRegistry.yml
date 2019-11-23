@@ -1,0 +1,3110 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  id: StochasticModelsRegistry
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.#ctor(System.Collections.Generic.IEnumerable{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator},System.Boolean)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.AllModels
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.CreateChildRegistry(System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator})
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.FindModel``1(System.String)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModelDevParameters(SpiceSharp.Components.Model)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModelLotParameters(SpiceSharp.Components.Model)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModels(SpiceSharp.Simulations.BaseSimulation)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.IsModelNameCaseSensitive
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsGenerators
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsWithDev
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsWithLot
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.NamesGenerators
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ProvideStochasticModel(System.String,SpiceSharp.Simulations.BaseSimulation,SpiceSharp.Components.Model)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelDev(SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.String)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelInstance(SpiceSharp.Components.Model)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelLot(SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.String)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.SetModel``1(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,System.String,System.String,System.Action{``0},SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.StochasticModels
+  langs:
+  - csharp
+  - vb
+  name: StochasticModelsRegistry
+  nameWithType: StochasticModelsRegistry
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: StochasticModelsRegistry
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+    startLine: 11
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  syntax:
+    content: 'public class StochasticModelsRegistry : IStochasticModelsRegistry, IModelsRegistry'
+    content.vb: >-
+      Public Class StochasticModelsRegistry
+          Implements IStochasticModelsRegistry, IModelsRegistry
+  inheritance:
+  - System.Object
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.#ctor(System.Collections.Generic.IEnumerable{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator},System.Boolean)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.#ctor(System.Collections.Generic.IEnumerable{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator},System.Boolean)
+  id: '#ctor(System.Collections.Generic.IEnumerable{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator},System.Boolean)'
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: StochasticModelsRegistry(IEnumerable<INameGenerator>, Boolean)
+  nameWithType: StochasticModelsRegistry.StochasticModelsRegistry(IEnumerable<INameGenerator>, Boolean)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.StochasticModelsRegistry(System.Collections.Generic.IEnumerable<SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator>, System.Boolean)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+    startLine: 18
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  summary: "\nInitializes a new instance of the <xref href=\"SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
+  example: []
+  syntax:
+    content: public StochasticModelsRegistry(IEnumerable<INameGenerator> modelNamesGenerators, bool isModelNameCaseSensitive)
+    parameters:
+    - id: modelNamesGenerators
+      type: System.Collections.Generic.IEnumerable{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator}
+      description: The enumerable of model name generators.
+    - id: isModelNameCaseSensitive
+      type: System.Boolean
+      description: Is model names case sensitive.
+    content.vb: Public Sub New(modelNamesGenerators As IEnumerable(Of INameGenerator), isModelNameCaseSensitive As Boolean)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.#ctor*
+  nameWithType.vb: StochasticModelsRegistry.StochasticModelsRegistry(IEnumerable(Of INameGenerator), Boolean)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.StochasticModelsRegistry(System.Collections.Generic.IEnumerable(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator), System.Boolean)
+  name.vb: StochasticModelsRegistry(IEnumerable(Of INameGenerator), Boolean)
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.IsModelNameCaseSensitive
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.IsModelNameCaseSensitive
+  id: IsModelNameCaseSensitive
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: IsModelNameCaseSensitive
+  nameWithType: StochasticModelsRegistry.IsModelNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.IsModelNameCaseSensitive
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IsModelNameCaseSensitive
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+    startLine: 26
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  syntax:
+    content: public bool IsModelNameCaseSensitive { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsModelNameCaseSensitive As Boolean
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.IsModelNameCaseSensitive*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsWithDev
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsWithDev
+  id: ModelsWithDev
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: ModelsWithDev
+  nameWithType: StochasticModelsRegistry.ModelsWithDev
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsWithDev
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ModelsWithDev
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+    startLine: 31
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  summary: "\nGets or sets the dictionary of stochastic models with dev parameters.\n"
+  example: []
+  syntax:
+    content: protected Dictionary<Model, Dictionary<Parameter, ParameterRandomness>> ModelsWithDev { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.Dictionary{SpiceSharp.Components.Model,System.Collections.Generic.Dictionary{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness}}
+    content.vb: Protected Property ModelsWithDev As Dictionary(Of Model, Dictionary(Of Parameter, ParameterRandomness))
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsWithDev*
+  modifiers.csharp:
+  - protected
+  - get
+  - set
+  modifiers.vb:
+  - Protected
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsWithLot
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsWithLot
+  id: ModelsWithLot
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: ModelsWithLot
+  nameWithType: StochasticModelsRegistry.ModelsWithLot
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsWithLot
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ModelsWithLot
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+    startLine: 36
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  summary: "\nGets or sets the dictionary of stochastic models with lot parameters.\n"
+  example: []
+  syntax:
+    content: protected Dictionary<Model, Dictionary<Parameter, ParameterRandomness>> ModelsWithLot { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.Dictionary{SpiceSharp.Components.Model,System.Collections.Generic.Dictionary{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness}}
+    content.vb: Protected Property ModelsWithLot As Dictionary(Of Model, Dictionary(Of Parameter, ParameterRandomness))
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsWithLot*
+  modifiers.csharp:
+  - protected
+  - get
+  - set
+  modifiers.vb:
+  - Protected
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsGenerators
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsGenerators
+  id: ModelsGenerators
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: ModelsGenerators
+  nameWithType: StochasticModelsRegistry.ModelsGenerators
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsGenerators
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ModelsGenerators
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+    startLine: 41
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  summary: "\nGets or sets the dictionary of models generators.\n"
+  example: []
+  syntax:
+    content: protected Dictionary<Model, Func<string, Model>> ModelsGenerators { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.Dictionary{SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model}}
+    content.vb: Protected Property ModelsGenerators As Dictionary(Of Model, Func(Of String, Model))
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsGenerators*
+  modifiers.csharp:
+  - protected
+  - get
+  - set
+  modifiers.vb:
+  - Protected
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.StochasticModels
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.StochasticModels
+  id: StochasticModels
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: StochasticModels
+  nameWithType: StochasticModelsRegistry.StochasticModels
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.StochasticModels
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: StochasticModels
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+    startLine: 46
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  summary: "\nGets or sets the dictionary of stochastic models.\n"
+  example: []
+  syntax:
+    content: protected Dictionary<BaseSimulation, Dictionary<Model, List<Model>>> StochasticModels { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.Dictionary{SpiceSharp.Simulations.BaseSimulation,System.Collections.Generic.Dictionary{SpiceSharp.Components.Model,System.Collections.Generic.List{SpiceSharp.Components.Model}}}
+    content.vb: Protected Property StochasticModels As Dictionary(Of BaseSimulation, Dictionary(Of Model, List(Of Model)))
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.StochasticModels*
+  modifiers.csharp:
+  - protected
+  - get
+  - set
+  modifiers.vb:
+  - Protected
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.AllModels
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.AllModels
+  id: AllModels
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: AllModels
+  nameWithType: StochasticModelsRegistry.AllModels
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.AllModels
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: AllModels
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+    startLine: 51
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  summary: "\nGets or sets the list of all models in the registry.\n"
+  example: []
+  syntax:
+    content: protected Dictionary<string, Entity> AllModels { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.Dictionary{System.String,SpiceSharp.Circuits.Entity}
+    content.vb: Protected Property AllModels As Dictionary(Of String, Entity)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.AllModels*
+  modifiers.csharp:
+  - protected
+  - get
+  - set
+  modifiers.vb:
+  - Protected
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.NamesGenerators
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.NamesGenerators
+  id: NamesGenerators
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: NamesGenerators
+  nameWithType: StochasticModelsRegistry.NamesGenerators
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.NamesGenerators
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: NamesGenerators
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+    startLine: 56
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  summary: "\nGets the object model name generators.\n"
+  example: []
+  syntax:
+    content: protected IEnumerable<INameGenerator> NamesGenerators { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator}
+    content.vb: Protected ReadOnly Property NamesGenerators As IEnumerable(Of INameGenerator)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.NamesGenerators*
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelDev(SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelDev(SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.String)
+  id: RegisterModelDev(SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: RegisterModelDev(Model, Func<String, Model>, Parameter, Parameter, String)
+  nameWithType: StochasticModelsRegistry.RegisterModelDev(Model, Func<String, Model>, Parameter, Parameter, String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelDev(SpiceSharp.Components.Model, System.Func<System.String, SpiceSharp.Components.Model>, SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: RegisterModelDev
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+    startLine: 66
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  summary: "\nRegisters that a model has a dev parameter.\n"
+  example: []
+  syntax:
+    content: public void RegisterModelDev(Model model, Func<string, Model> generator, Parameter parameter, Parameter tolerance, string distribution)
+    parameters:
+    - id: model
+      type: SpiceSharp.Components.Model
+      description: A model.
+    - id: generator
+      type: System.Func{System.String,SpiceSharp.Components.Model}
+      description: A model generator.
+    - id: parameter
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+      description: A parameter.
+    - id: tolerance
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+      description: A tolerance (value of dev).
+    - id: distribution
+      type: System.String
+      description: Distribution name.
+    content.vb: Public Sub RegisterModelDev(model As Model, generator As Func(Of String, Model), parameter As Parameter, tolerance As Parameter, distribution As String)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelDev*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.RegisterModelDev(SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.String)
+  nameWithType.vb: StochasticModelsRegistry.RegisterModelDev(Model, Func(Of String, Model), Parameter, Parameter, String)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelDev(SpiceSharp.Components.Model, System.Func(Of System.String, SpiceSharp.Components.Model), SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.String)
+  name.vb: RegisterModelDev(Model, Func(Of String, Model), Parameter, Parameter, String)
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelLot(SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelLot(SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.String)
+  id: RegisterModelLot(SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: RegisterModelLot(Model, Func<String, Model>, Parameter, Parameter, String)
+  nameWithType: StochasticModelsRegistry.RegisterModelLot(Model, Func<String, Model>, Parameter, Parameter, String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelLot(SpiceSharp.Components.Model, System.Func<System.String, SpiceSharp.Components.Model>, SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: RegisterModelLot
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+    startLine: 118
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  summary: "\nRegisters that a model has a lot parameter.\n"
+  example: []
+  syntax:
+    content: public void RegisterModelLot(Model model, Func<string, Model> generator, Parameter parameter, Parameter tolerance, string distributionName)
+    parameters:
+    - id: model
+      type: SpiceSharp.Components.Model
+      description: A model.
+    - id: generator
+      type: System.Func{System.String,SpiceSharp.Components.Model}
+      description: A model generator.
+    - id: parameter
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+      description: A parameter.
+    - id: tolerance
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+      description: A tolerance (value of lot).
+    - id: distributionName
+      type: System.String
+      description: Distribution name.
+    content.vb: Public Sub RegisterModelLot(model As Model, generator As Func(Of String, Model), parameter As Parameter, tolerance As Parameter, distributionName As String)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelLot*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.RegisterModelLot(SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.String)
+  nameWithType.vb: StochasticModelsRegistry.RegisterModelLot(Model, Func(Of String, Model), Parameter, Parameter, String)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelLot(SpiceSharp.Components.Model, System.Func(Of System.String, SpiceSharp.Components.Model), SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.String)
+  name.vb: RegisterModelLot(Model, Func(Of String, Model), Parameter, Parameter, String)
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ProvideStochasticModel(System.String,SpiceSharp.Simulations.BaseSimulation,SpiceSharp.Components.Model)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ProvideStochasticModel(System.String,SpiceSharp.Simulations.BaseSimulation,SpiceSharp.Components.Model)
+  id: ProvideStochasticModel(System.String,SpiceSharp.Simulations.BaseSimulation,SpiceSharp.Components.Model)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: ProvideStochasticModel(String, BaseSimulation, Model)
+  nameWithType: StochasticModelsRegistry.ProvideStochasticModel(String, BaseSimulation, Model)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ProvideStochasticModel(System.String, SpiceSharp.Simulations.BaseSimulation, SpiceSharp.Components.Model)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ProvideStochasticModel
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+    startLine: 152
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  summary: "\nProvides a model for component.\n"
+  example: []
+  syntax:
+    content: public Model ProvideStochasticModel(string componentName, BaseSimulation simulation, Model model)
+    parameters:
+    - id: componentName
+      type: System.String
+      description: A component name.
+    - id: simulation
+      type: SpiceSharp.Simulations.BaseSimulation
+      description: ''
+    - id: model
+      type: SpiceSharp.Components.Model
+      description: A model for component.
+    return:
+      type: SpiceSharp.Components.Model
+      description: "\nIf a model is stochastic (dev, lot) then a copy of model with be returned.\nIf a model is not stochastic then a raw model is returned.\n"
+    content.vb: Public Function ProvideStochasticModel(componentName As String, simulation As BaseSimulation, model As Model) As Model
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ProvideStochasticModel*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.ProvideStochasticModel(System.String,SpiceSharp.Simulations.BaseSimulation,SpiceSharp.Components.Model)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModels(SpiceSharp.Simulations.BaseSimulation)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModels(SpiceSharp.Simulations.BaseSimulation)
+  id: GetStochasticModels(SpiceSharp.Simulations.BaseSimulation)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: GetStochasticModels(BaseSimulation)
+  nameWithType: StochasticModelsRegistry.GetStochasticModels(BaseSimulation)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModels(SpiceSharp.Simulations.BaseSimulation)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetStochasticModels
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+    startLine: 182
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  summary: "\nGets the stochastic models.\n"
+  example: []
+  syntax:
+    content: public Dictionary<Model, List<Model>> GetStochasticModels(BaseSimulation simulation)
+    parameters:
+    - id: simulation
+      type: SpiceSharp.Simulations.BaseSimulation
+    return:
+      type: System.Collections.Generic.Dictionary{SpiceSharp.Components.Model,System.Collections.Generic.List{SpiceSharp.Components.Model}}
+      description: "\nA dictionary of base models and their stochastic models.\n"
+    content.vb: Public Function GetStochasticModels(simulation As BaseSimulation) As Dictionary(Of Model, List(Of Model))
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModels*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModels(SpiceSharp.Simulations.BaseSimulation)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModelDevParameters(SpiceSharp.Components.Model)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModelDevParameters(SpiceSharp.Components.Model)
+  id: GetStochasticModelDevParameters(SpiceSharp.Components.Model)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: GetStochasticModelDevParameters(Model)
+  nameWithType: StochasticModelsRegistry.GetStochasticModelDevParameters(Model)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModelDevParameters(SpiceSharp.Components.Model)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetStochasticModelDevParameters
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+    startLine: 196
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  summary: "\nGets the stochastic model DEV parameters.\n"
+  example: []
+  syntax:
+    content: public Dictionary<Parameter, ParameterRandomness> GetStochasticModelDevParameters(Model baseModel)
+    parameters:
+    - id: baseModel
+      type: SpiceSharp.Components.Model
+      description: A base model.
+    return:
+      type: System.Collections.Generic.Dictionary{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness}
+      description: "\nA dictionary of DEV parameters and their tolerance value.\n"
+    content.vb: Public Function GetStochasticModelDevParameters(baseModel As Model) As Dictionary(Of Parameter, ParameterRandomness)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModelDevParameters*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModelDevParameters(SpiceSharp.Components.Model)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelInstance(SpiceSharp.Components.Model)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelInstance(SpiceSharp.Components.Model)
+  id: RegisterModelInstance(SpiceSharp.Components.Model)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: RegisterModelInstance(Model)
+  nameWithType: StochasticModelsRegistry.RegisterModelInstance(Model)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelInstance(SpiceSharp.Components.Model)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: RegisterModelInstance
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+    startLine: 210
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  summary: "\nRegisters a model in the registry.\n"
+  example: []
+  syntax:
+    content: public void RegisterModelInstance(Model model)
+    parameters:
+    - id: model
+      type: SpiceSharp.Components.Model
+      description: A model to register.
+    content.vb: Public Sub RegisterModelInstance(model As Model)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelInstance*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.RegisterModelInstance(SpiceSharp.Components.Model)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModelLotParameters(SpiceSharp.Components.Model)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModelLotParameters(SpiceSharp.Components.Model)
+  id: GetStochasticModelLotParameters(SpiceSharp.Components.Model)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: GetStochasticModelLotParameters(Model)
+  nameWithType: StochasticModelsRegistry.GetStochasticModelLotParameters(Model)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModelLotParameters(SpiceSharp.Components.Model)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetStochasticModelLotParameters
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+    startLine: 222
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  summary: "\nGets the stochastic model LOT parameters.\n"
+  example: []
+  syntax:
+    content: public Dictionary<Parameter, ParameterRandomness> GetStochasticModelLotParameters(Model baseModel)
+    parameters:
+    - id: baseModel
+      type: SpiceSharp.Components.Model
+      description: A base model.
+    return:
+      type: System.Collections.Generic.Dictionary{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness}
+      description: "\nA dictionary of LOT parameters and their tolerance value.\n"
+    content.vb: Public Function GetStochasticModelLotParameters(baseModel As Model) As Dictionary(Of Parameter, ParameterRandomness)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModelLotParameters*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModelLotParameters(SpiceSharp.Components.Model)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.SetModel``1(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,System.String,System.String,System.Action{``0},SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.SetModel``1(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,System.String,System.String,System.Action{``0},SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  id: SetModel``1(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,System.String,System.String,System.Action{``0},SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: SetModel<T>(Entity, BaseSimulation, String, String, Action<T>, IResultService)
+  nameWithType: StochasticModelsRegistry.SetModel<T>(Entity, BaseSimulation, String, String, Action<T>, IResultService)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.SetModel<T>(SpiceSharp.Circuits.Entity, SpiceSharp.Simulations.BaseSimulation, System.String, System.String, System.Action<T>, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SetModel
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+    startLine: 232
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  syntax:
+    content: >-
+      public void SetModel<T>(Entity entity, BaseSimulation simulation, string modelName, string exceptionMessage, Action<T> setModelAction, IResultService result)
+          where T : Model
+    parameters:
+    - id: entity
+      type: SpiceSharp.Circuits.Entity
+    - id: simulation
+      type: SpiceSharp.Simulations.BaseSimulation
+    - id: modelName
+      type: System.String
+    - id: exceptionMessage
+      type: System.String
+    - id: setModelAction
+      type: System.Action{{T}}
+    - id: result
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+    typeParameters:
+    - id: T
+    content.vb: Public Sub SetModel(Of T As Model)(entity As Entity, simulation As BaseSimulation, modelName As String, exceptionMessage As String, setModelAction As Action(Of T), result As IResultService)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.SetModel*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel``1(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,System.String,System.String,System.Action{{T}},SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  nameWithType.vb: StochasticModelsRegistry.SetModel(Of T)(Entity, BaseSimulation, String, String, Action(Of T), IResultService)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.SetModel(Of T)(SpiceSharp.Circuits.Entity, SpiceSharp.Simulations.BaseSimulation, System.String, System.String, System.Action(Of T), SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  name.vb: SetModel(Of T)(Entity, BaseSimulation, String, String, Action(Of T), IResultService)
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.FindModel``1(System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.FindModel``1(System.String)
+  id: FindModel``1(System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: FindModel<T>(String)
+  nameWithType: StochasticModelsRegistry.FindModel<T>(String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.FindModel<T>(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: FindModel
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+    startLine: 254
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  syntax:
+    content: >-
+      public T FindModel<T>(string modelName)
+          where T : Model
+    parameters:
+    - id: modelName
+      type: System.String
+    typeParameters:
+    - id: T
+    return:
+      type: '{T}'
+    content.vb: Public Function FindModel(Of T As Model)(modelName As String) As T
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.FindModel*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.FindModel``1(System.String)
+  nameWithType.vb: StochasticModelsRegistry.FindModel(Of T)(String)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.FindModel(Of T)(System.String)
+  name.vb: FindModel(Of T)(String)
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.CreateChildRegistry(System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator})
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.CreateChildRegistry(System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator})
+  id: CreateChildRegistry(System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator})
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  langs:
+  - csharp
+  - vb
+  name: CreateChildRegistry(List<INameGenerator>)
+  nameWithType: StochasticModelsRegistry.CreateChildRegistry(List<INameGenerator>)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.CreateChildRegistry(System.Collections.Generic.List<SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator>)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CreateChildRegistry
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Models/StochasticModelsRegistry.cs
+    startLine: 270
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  syntax:
+    content: public IModelsRegistry CreateChildRegistry(List<INameGenerator> generators)
+    parameters:
+    - id: generators
+      type: System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator}
+    return:
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+    content.vb: Public Function CreateChildRegistry(generators As List(Of INameGenerator)) As IModelsRegistry
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.CreateChildRegistry*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.CreateChildRegistry(System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator})
+  nameWithType.vb: StochasticModelsRegistry.CreateChildRegistry(List(Of INameGenerator))
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.CreateChildRegistry(System.Collections.Generic.List(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator))
+  name.vb: CreateChildRegistry(List(Of INameGenerator))
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  name: IStochasticModelsRegistry
+  nameWithType: IStochasticModelsRegistry
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  name: IModelsRegistry
+  nameWithType: IModelsRegistry
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+  name: StochasticModelsRegistry
+  nameWithType: StochasticModelsRegistry
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.#ctor*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.#ctor
+  name: StochasticModelsRegistry
+  nameWithType: StochasticModelsRegistry.StochasticModelsRegistry
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.StochasticModelsRegistry
+- uid: System.Collections.Generic.IEnumerable{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator}
+  commentId: T:System.Collections.Generic.IEnumerable{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<INameGenerator>
+  nameWithType: IEnumerable<INameGenerator>
+  fullName: System.Collections.Generic.IEnumerable<SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator>
+  nameWithType.vb: IEnumerable(Of INameGenerator)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator)
+  name.vb: IEnumerable(Of INameGenerator)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+    name: INameGenerator
+    nameWithType: INameGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+    name: INameGenerator
+    nameWithType: INameGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.IsModelNameCaseSensitive*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.IsModelNameCaseSensitive
+  name: IsModelNameCaseSensitive
+  nameWithType: StochasticModelsRegistry.IsModelNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.IsModelNameCaseSensitive
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsWithDev*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsWithDev
+  name: ModelsWithDev
+  nameWithType: StochasticModelsRegistry.ModelsWithDev
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsWithDev
+- uid: System.Collections.Generic.Dictionary{SpiceSharp.Components.Model,System.Collections.Generic.Dictionary{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness}}
+  commentId: T:System.Collections.Generic.Dictionary{SpiceSharp.Components.Model,System.Collections.Generic.Dictionary{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  name: Dictionary<Model, Dictionary<Parameter, ParameterRandomness>>
+  nameWithType: Dictionary<Model, Dictionary<Parameter, ParameterRandomness>>
+  fullName: System.Collections.Generic.Dictionary<SpiceSharp.Components.Model, System.Collections.Generic.Dictionary<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness>>
+  nameWithType.vb: Dictionary(Of Model, Dictionary(Of Parameter, ParameterRandomness))
+  fullName.vb: System.Collections.Generic.Dictionary(Of SpiceSharp.Components.Model, System.Collections.Generic.Dictionary(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness))
+  name.vb: Dictionary(Of Model, Dictionary(Of Parameter, ParameterRandomness))
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness
+    name: ParameterRandomness
+    nameWithType: ParameterRandomness
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness
+    name: ParameterRandomness
+    nameWithType: ParameterRandomness
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsWithLot*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsWithLot
+  name: ModelsWithLot
+  nameWithType: StochasticModelsRegistry.ModelsWithLot
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsWithLot
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsGenerators*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsGenerators
+  name: ModelsGenerators
+  nameWithType: StochasticModelsRegistry.ModelsGenerators
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ModelsGenerators
+- uid: System.Collections.Generic.Dictionary{SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model}}
+  commentId: T:System.Collections.Generic.Dictionary{SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  name: Dictionary<Model, Func<String, Model>>
+  nameWithType: Dictionary<Model, Func<String, Model>>
+  fullName: System.Collections.Generic.Dictionary<SpiceSharp.Components.Model, System.Func<System.String, SpiceSharp.Components.Model>>
+  nameWithType.vb: Dictionary(Of Model, Func(Of String, Model))
+  fullName.vb: System.Collections.Generic.Dictionary(Of SpiceSharp.Components.Model, System.Func(Of System.String, SpiceSharp.Components.Model))
+  name.vb: Dictionary(Of Model, Func(Of String, Model))
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.StochasticModels*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.StochasticModels
+  name: StochasticModels
+  nameWithType: StochasticModelsRegistry.StochasticModels
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.StochasticModels
+- uid: System.Collections.Generic.Dictionary{SpiceSharp.Simulations.BaseSimulation,System.Collections.Generic.Dictionary{SpiceSharp.Components.Model,System.Collections.Generic.List{SpiceSharp.Components.Model}}}
+  commentId: T:System.Collections.Generic.Dictionary{SpiceSharp.Simulations.BaseSimulation,System.Collections.Generic.Dictionary{SpiceSharp.Components.Model,System.Collections.Generic.List{SpiceSharp.Components.Model}}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  name: Dictionary<BaseSimulation, Dictionary<Model, List<Model>>>
+  nameWithType: Dictionary<BaseSimulation, Dictionary<Model, List<Model>>>
+  fullName: System.Collections.Generic.Dictionary<SpiceSharp.Simulations.BaseSimulation, System.Collections.Generic.Dictionary<SpiceSharp.Components.Model, System.Collections.Generic.List<SpiceSharp.Components.Model>>>
+  nameWithType.vb: Dictionary(Of BaseSimulation, Dictionary(Of Model, List(Of Model)))
+  fullName.vb: System.Collections.Generic.Dictionary(Of SpiceSharp.Simulations.BaseSimulation, System.Collections.Generic.Dictionary(Of SpiceSharp.Components.Model, System.Collections.Generic.List(Of SpiceSharp.Components.Model)))
+  name.vb: Dictionary(Of BaseSimulation, Dictionary(Of Model, List(Of Model)))
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.AllModels*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.AllModels
+  name: AllModels
+  nameWithType: StochasticModelsRegistry.AllModels
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.AllModels
+- uid: System.Collections.Generic.Dictionary{System.String,SpiceSharp.Circuits.Entity}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,SpiceSharp.Circuits.Entity}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  name: Dictionary<String, Entity>
+  nameWithType: Dictionary<String, Entity>
+  fullName: System.Collections.Generic.Dictionary<System.String, SpiceSharp.Circuits.Entity>
+  nameWithType.vb: Dictionary(Of String, Entity)
+  fullName.vb: System.Collections.Generic.Dictionary(Of System.String, SpiceSharp.Circuits.Entity)
+  name.vb: Dictionary(Of String, Entity)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Circuits.Entity
+    name: Entity
+    nameWithType: Entity
+    fullName: SpiceSharp.Circuits.Entity
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Circuits.Entity
+    name: Entity
+    nameWithType: Entity
+    fullName: SpiceSharp.Circuits.Entity
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.NamesGenerators*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.NamesGenerators
+  name: NamesGenerators
+  nameWithType: StochasticModelsRegistry.NamesGenerators
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.NamesGenerators
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelDev*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelDev
+  name: RegisterModelDev
+  nameWithType: StochasticModelsRegistry.RegisterModelDev
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelDev
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.RegisterModelDev(SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.RegisterModelDev(SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry
+  isExternal: true
+  name: RegisterModelDev(Model, Func<String, Model>, Parameter, Parameter, String)
+  nameWithType: IStochasticModelsRegistry.RegisterModelDev(Model, Func<String, Model>, Parameter, Parameter, String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.RegisterModelDev(SpiceSharp.Components.Model, System.Func<System.String, SpiceSharp.Components.Model>, SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.String)
+  nameWithType.vb: IStochasticModelsRegistry.RegisterModelDev(Model, Func(Of String, Model), Parameter, Parameter, String)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.RegisterModelDev(SpiceSharp.Components.Model, System.Func(Of System.String, SpiceSharp.Components.Model), SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.String)
+  name.vb: RegisterModelDev(Model, Func(Of String, Model), Parameter, Parameter, String)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.RegisterModelDev(SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.String)
+    name: RegisterModelDev
+    nameWithType: IStochasticModelsRegistry.RegisterModelDev
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.RegisterModelDev
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.RegisterModelDev(SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.String)
+    name: RegisterModelDev
+    nameWithType: IStochasticModelsRegistry.RegisterModelDev
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.RegisterModelDev
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Components.Model
+  commentId: T:SpiceSharp.Components.Model
+  parent: SpiceSharp.Components
+  isExternal: true
+  name: Model
+  nameWithType: Model
+  fullName: SpiceSharp.Components.Model
+- uid: System.Func{System.String,SpiceSharp.Components.Model}
+  commentId: T:System.Func{System.String,SpiceSharp.Components.Model}
+  parent: System
+  definition: System.Func`2
+  name: Func<String, Model>
+  nameWithType: Func<String, Model>
+  fullName: System.Func<System.String, SpiceSharp.Components.Model>
+  nameWithType.vb: Func(Of String, Model)
+  fullName.vb: System.Func(Of System.String, SpiceSharp.Components.Model)
+  name.vb: Func(Of String, Model)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: Parameter
+  nameWithType: Parameter
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: SpiceSharp.Components
+  commentId: N:SpiceSharp.Components
+  isExternal: true
+  name: SpiceSharp.Components
+  nameWithType: SpiceSharp.Components
+  fullName: SpiceSharp.Components
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: SpiceSharpParser.Models.Netlist.Spice.Objects
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice.Objects
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelLot*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelLot
+  name: RegisterModelLot
+  nameWithType: StochasticModelsRegistry.RegisterModelLot
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelLot
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.RegisterModelLot(SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.RegisterModelLot(SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry
+  isExternal: true
+  name: RegisterModelLot(Model, Func<String, Model>, Parameter, Parameter, String)
+  nameWithType: IStochasticModelsRegistry.RegisterModelLot(Model, Func<String, Model>, Parameter, Parameter, String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.RegisterModelLot(SpiceSharp.Components.Model, System.Func<System.String, SpiceSharp.Components.Model>, SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.String)
+  nameWithType.vb: IStochasticModelsRegistry.RegisterModelLot(Model, Func(Of String, Model), Parameter, Parameter, String)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.RegisterModelLot(SpiceSharp.Components.Model, System.Func(Of System.String, SpiceSharp.Components.Model), SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.String)
+  name.vb: RegisterModelLot(Model, Func(Of String, Model), Parameter, Parameter, String)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.RegisterModelLot(SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.String)
+    name: RegisterModelLot
+    nameWithType: IStochasticModelsRegistry.RegisterModelLot
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.RegisterModelLot
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.RegisterModelLot(SpiceSharp.Components.Model,System.Func{System.String,SpiceSharp.Components.Model},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.String)
+    name: RegisterModelLot
+    nameWithType: IStochasticModelsRegistry.RegisterModelLot
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.RegisterModelLot
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ProvideStochasticModel*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ProvideStochasticModel
+  name: ProvideStochasticModel
+  nameWithType: StochasticModelsRegistry.ProvideStochasticModel
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.ProvideStochasticModel
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.ProvideStochasticModel(System.String,SpiceSharp.Simulations.BaseSimulation,SpiceSharp.Components.Model)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.ProvideStochasticModel(System.String,SpiceSharp.Simulations.BaseSimulation,SpiceSharp.Components.Model)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry
+  isExternal: true
+  name: ProvideStochasticModel(String, BaseSimulation, Model)
+  nameWithType: IStochasticModelsRegistry.ProvideStochasticModel(String, BaseSimulation, Model)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.ProvideStochasticModel(System.String, SpiceSharp.Simulations.BaseSimulation, SpiceSharp.Components.Model)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.ProvideStochasticModel(System.String,SpiceSharp.Simulations.BaseSimulation,SpiceSharp.Components.Model)
+    name: ProvideStochasticModel
+    nameWithType: IStochasticModelsRegistry.ProvideStochasticModel
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.ProvideStochasticModel
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.ProvideStochasticModel(System.String,SpiceSharp.Simulations.BaseSimulation,SpiceSharp.Components.Model)
+    name: ProvideStochasticModel
+    nameWithType: IStochasticModelsRegistry.ProvideStochasticModel
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.ProvideStochasticModel
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Simulations.BaseSimulation
+  commentId: T:SpiceSharp.Simulations.BaseSimulation
+  parent: SpiceSharp.Simulations
+  isExternal: true
+  name: BaseSimulation
+  nameWithType: BaseSimulation
+  fullName: SpiceSharp.Simulations.BaseSimulation
+- uid: SpiceSharp.Simulations
+  commentId: N:SpiceSharp.Simulations
+  isExternal: true
+  name: SpiceSharp.Simulations
+  nameWithType: SpiceSharp.Simulations
+  fullName: SpiceSharp.Simulations
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModels*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModels
+  name: GetStochasticModels
+  nameWithType: StochasticModelsRegistry.GetStochasticModels
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModels
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModels(SpiceSharp.Simulations.BaseSimulation)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModels(SpiceSharp.Simulations.BaseSimulation)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry
+  isExternal: true
+  name: GetStochasticModels(BaseSimulation)
+  nameWithType: IStochasticModelsRegistry.GetStochasticModels(BaseSimulation)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModels(SpiceSharp.Simulations.BaseSimulation)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModels(SpiceSharp.Simulations.BaseSimulation)
+    name: GetStochasticModels
+    nameWithType: IStochasticModelsRegistry.GetStochasticModels
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModels
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModels(SpiceSharp.Simulations.BaseSimulation)
+    name: GetStochasticModels
+    nameWithType: IStochasticModelsRegistry.GetStochasticModels
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModels
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.Dictionary{SpiceSharp.Components.Model,System.Collections.Generic.List{SpiceSharp.Components.Model}}
+  commentId: T:System.Collections.Generic.Dictionary{SpiceSharp.Components.Model,System.Collections.Generic.List{SpiceSharp.Components.Model}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  name: Dictionary<Model, List<Model>>
+  nameWithType: Dictionary<Model, List<Model>>
+  fullName: System.Collections.Generic.Dictionary<SpiceSharp.Components.Model, System.Collections.Generic.List<SpiceSharp.Components.Model>>
+  nameWithType.vb: Dictionary(Of Model, List(Of Model))
+  fullName.vb: System.Collections.Generic.Dictionary(Of SpiceSharp.Components.Model, System.Collections.Generic.List(Of SpiceSharp.Components.Model))
+  name.vb: Dictionary(Of Model, List(Of Model))
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModelDevParameters*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModelDevParameters
+  name: GetStochasticModelDevParameters
+  nameWithType: StochasticModelsRegistry.GetStochasticModelDevParameters
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModelDevParameters
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModelDevParameters(SpiceSharp.Components.Model)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModelDevParameters(SpiceSharp.Components.Model)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry
+  isExternal: true
+  name: GetStochasticModelDevParameters(Model)
+  nameWithType: IStochasticModelsRegistry.GetStochasticModelDevParameters(Model)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModelDevParameters(SpiceSharp.Components.Model)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModelDevParameters(SpiceSharp.Components.Model)
+    name: GetStochasticModelDevParameters
+    nameWithType: IStochasticModelsRegistry.GetStochasticModelDevParameters
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModelDevParameters
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModelDevParameters(SpiceSharp.Components.Model)
+    name: GetStochasticModelDevParameters
+    nameWithType: IStochasticModelsRegistry.GetStochasticModelDevParameters
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModelDevParameters
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.Dictionary{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness}
+  commentId: T:System.Collections.Generic.Dictionary{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  name: Dictionary<Parameter, ParameterRandomness>
+  nameWithType: Dictionary<Parameter, ParameterRandomness>
+  fullName: System.Collections.Generic.Dictionary<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness>
+  nameWithType.vb: Dictionary(Of Parameter, ParameterRandomness)
+  fullName.vb: System.Collections.Generic.Dictionary(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness)
+  name.vb: Dictionary(Of Parameter, ParameterRandomness)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness
+    name: ParameterRandomness
+    nameWithType: ParameterRandomness
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness
+    name: ParameterRandomness
+    nameWithType: ParameterRandomness
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelInstance*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelInstance
+  name: RegisterModelInstance
+  nameWithType: StochasticModelsRegistry.RegisterModelInstance
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.RegisterModelInstance
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.RegisterModelInstance(SpiceSharp.Components.Model)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.RegisterModelInstance(SpiceSharp.Components.Model)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+  isExternal: true
+  name: RegisterModelInstance(Model)
+  nameWithType: IModelsRegistry.RegisterModelInstance(Model)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.RegisterModelInstance(SpiceSharp.Components.Model)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.RegisterModelInstance(SpiceSharp.Components.Model)
+    name: RegisterModelInstance
+    nameWithType: IModelsRegistry.RegisterModelInstance
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.RegisterModelInstance
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.RegisterModelInstance(SpiceSharp.Components.Model)
+    name: RegisterModelInstance
+    nameWithType: IModelsRegistry.RegisterModelInstance
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.RegisterModelInstance
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModelLotParameters*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModelLotParameters
+  name: GetStochasticModelLotParameters
+  nameWithType: StochasticModelsRegistry.GetStochasticModelLotParameters
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.GetStochasticModelLotParameters
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModelLotParameters(SpiceSharp.Components.Model)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModelLotParameters(SpiceSharp.Components.Model)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry
+  isExternal: true
+  name: GetStochasticModelLotParameters(Model)
+  nameWithType: IStochasticModelsRegistry.GetStochasticModelLotParameters(Model)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModelLotParameters(SpiceSharp.Components.Model)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModelLotParameters(SpiceSharp.Components.Model)
+    name: GetStochasticModelLotParameters
+    nameWithType: IStochasticModelsRegistry.GetStochasticModelLotParameters
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModelLotParameters
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModelLotParameters(SpiceSharp.Components.Model)
+    name: GetStochasticModelLotParameters
+    nameWithType: IStochasticModelsRegistry.GetStochasticModelLotParameters
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.GetStochasticModelLotParameters
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Components.Model
+    name: Model
+    nameWithType: Model
+    fullName: SpiceSharp.Components.Model
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.SetModel*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.SetModel
+  name: SetModel
+  nameWithType: StochasticModelsRegistry.SetModel
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.SetModel
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel``1(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,System.String,System.String,System.Action{{T}},SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel``1(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,System.String,System.String,System.Action{``0},SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+  definition: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel``1(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,System.String,System.String,System.Action{``0},SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  name: SetModel<T>(Entity, BaseSimulation, String, String, Action<T>, IResultService)
+  nameWithType: IModelsRegistry.SetModel<T>(Entity, BaseSimulation, String, String, Action<T>, IResultService)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel<T>(SpiceSharp.Circuits.Entity, SpiceSharp.Simulations.BaseSimulation, System.String, System.String, System.Action<T>, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  nameWithType.vb: IModelsRegistry.SetModel(Of T)(Entity, BaseSimulation, String, String, Action(Of T), IResultService)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel(Of T)(SpiceSharp.Circuits.Entity, SpiceSharp.Simulations.BaseSimulation, System.String, System.String, System.Action(Of T), SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  name.vb: SetModel(Of T)(Entity, BaseSimulation, String, String, Action(Of T), IResultService)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel``1(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,System.String,System.String,System.Action{``0},SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+    name: SetModel<T>
+    nameWithType: IModelsRegistry.SetModel<T>
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel<T>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Circuits.Entity
+    name: Entity
+    nameWithType: Entity
+    fullName: SpiceSharp.Circuits.Entity
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+    name: IResultService
+    nameWithType: IResultService
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel``1(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,System.String,System.String,System.Action{``0},SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+    name: SetModel(Of T)
+    nameWithType: IModelsRegistry.SetModel(Of T)
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel(Of T)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Circuits.Entity
+    name: Entity
+    nameWithType: Entity
+    fullName: SpiceSharp.Circuits.Entity
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+    name: IResultService
+    nameWithType: IResultService
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Circuits.Entity
+  commentId: T:SpiceSharp.Circuits.Entity
+  parent: SpiceSharp.Circuits
+  isExternal: true
+  name: Entity
+  nameWithType: Entity
+  fullName: SpiceSharp.Circuits.Entity
+- uid: System.Action{{T}}
+  commentId: T:System.Action{``0}
+  parent: System
+  definition: System.Action`1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: IResultService
+  nameWithType: IResultService
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel``1(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,System.String,System.String,System.Action{``0},SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel``1(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,System.String,System.String,System.Action{``0},SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  isExternal: true
+  name: SetModel<T>(Entity, BaseSimulation, String, String, Action<T>, IResultService)
+  nameWithType: IModelsRegistry.SetModel<T>(Entity, BaseSimulation, String, String, Action<T>, IResultService)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel<T>(SpiceSharp.Circuits.Entity, SpiceSharp.Simulations.BaseSimulation, System.String, System.String, System.Action<T>, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  nameWithType.vb: IModelsRegistry.SetModel(Of T)(Entity, BaseSimulation, String, String, Action(Of T), IResultService)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel(Of T)(SpiceSharp.Circuits.Entity, SpiceSharp.Simulations.BaseSimulation, System.String, System.String, System.Action(Of T), SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  name.vb: SetModel(Of T)(Entity, BaseSimulation, String, String, Action(Of T), IResultService)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel``1(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,System.String,System.String,System.Action{``0},SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+    name: SetModel<T>
+    nameWithType: IModelsRegistry.SetModel<T>
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel<T>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Circuits.Entity
+    name: Entity
+    nameWithType: Entity
+    fullName: SpiceSharp.Circuits.Entity
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+    name: IResultService
+    nameWithType: IResultService
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel``1(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,System.String,System.String,System.Action{``0},SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+    name: SetModel(Of T)
+    nameWithType: IModelsRegistry.SetModel(Of T)
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.SetModel(Of T)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Circuits.Entity
+    name: Entity
+    nameWithType: Entity
+    fullName: SpiceSharp.Circuits.Entity
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+    name: IResultService
+    nameWithType: IResultService
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Circuits
+  commentId: N:SpiceSharp.Circuits
+  isExternal: true
+  name: SpiceSharp.Circuits
+  nameWithType: SpiceSharp.Circuits
+  fullName: SpiceSharp.Circuits
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.FindModel*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.FindModel
+  name: FindModel
+  nameWithType: StochasticModelsRegistry.FindModel
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.FindModel
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.FindModel``1(System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.FindModel``1(System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+  isExternal: true
+  name: FindModel<T>(String)
+  nameWithType: IModelsRegistry.FindModel<T>(String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.FindModel<T>(System.String)
+  nameWithType.vb: IModelsRegistry.FindModel(Of T)(String)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.FindModel(Of T)(System.String)
+  name.vb: FindModel(Of T)(String)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.FindModel``1(System.String)
+    name: FindModel<T>
+    nameWithType: IModelsRegistry.FindModel<T>
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.FindModel<T>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.FindModel``1(System.String)
+    name: FindModel(Of T)
+    nameWithType: IModelsRegistry.FindModel(Of T)
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.FindModel(Of T)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.CreateChildRegistry*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.CreateChildRegistry
+  name: CreateChildRegistry
+  nameWithType: StochasticModelsRegistry.CreateChildRegistry
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.CreateChildRegistry
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.CreateChildRegistry(System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator})
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.CreateChildRegistry(System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator})
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+  isExternal: true
+  name: CreateChildRegistry(List<INameGenerator>)
+  nameWithType: IModelsRegistry.CreateChildRegistry(List<INameGenerator>)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.CreateChildRegistry(System.Collections.Generic.List<SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator>)
+  nameWithType.vb: IModelsRegistry.CreateChildRegistry(List(Of INameGenerator))
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.CreateChildRegistry(System.Collections.Generic.List(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator))
+  name.vb: CreateChildRegistry(List(Of INameGenerator))
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.CreateChildRegistry(System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator})
+    name: CreateChildRegistry
+    nameWithType: IModelsRegistry.CreateChildRegistry
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.CreateChildRegistry
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+    name: INameGenerator
+    nameWithType: INameGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.CreateChildRegistry(System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator})
+    name: CreateChildRegistry
+    nameWithType: IModelsRegistry.CreateChildRegistry
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.CreateChildRegistry
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+    name: INameGenerator
+    nameWithType: INameGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator}
+  commentId: T:System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<INameGenerator>
+  nameWithType: List<INameGenerator>
+  fullName: System.Collections.Generic.List<SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator>
+  nameWithType.vb: List(Of INameGenerator)
+  fullName.vb: System.Collections.Generic.List(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator)
+  name.vb: List(Of INameGenerator)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+    name: INameGenerator
+    nameWithType: INameGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+    name: INameGenerator
+    nameWithType: INameGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )

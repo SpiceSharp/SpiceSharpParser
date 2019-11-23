@@ -5,14 +5,14 @@
   "files": [
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.EvaluatedArgs.yml",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.EvaluationContext.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Evaluation.EvaluatedArgs.html",
-          "hash": "ttxX4iNxfSRhguaH0sbC6A=="
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.EvaluationContext.html",
+          "hash": "iNm8ks3okE44euJS+6Nvlg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -21,22 +21,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.EvaluationParameter.html",
-          "hash": "rvRxeuCi3YJ6KT5XVgupQA=="
+          "hash": "ZGiQS9Iu+7ZU6BmFusGP8A=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.Evaluator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Evaluation.Evaluator.html",
-          "hash": "82KbzXSo2u8PijHizkZm9Q=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -45,70 +33,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.Expression.html",
-          "hash": "uUod2o+lK3rDPFmiJIYgjw=="
+          "hash": "kztTulHd6VYJIc3XQFlQQg=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.ExpressionContext.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Evaluation.ExpressionContext.html",
-          "hash": "rFHVCIIoBPQaswlFzrQ5ng=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.ExpressionEvaluationContext.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Evaluation.ExpressionEvaluationContext.html",
-          "hash": "IRud1A7KgsARl8XJUOIp1Q=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.ExpressionParseResult.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Evaluation.ExpressionParseResult.html",
-          "hash": "Rf6EfRXnhR/6B0ntALqkRA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.ExpressionParserContext.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Evaluation.ExpressionParserContext.html",
-          "hash": "4IuLMPizgdlsNhTYE1ZcyQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.ExpressionParserWithCache.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Evaluation.ExpressionParserWithCache.html",
-          "hash": "4VY/eWnn8lp0wXrcJjpkig=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -117,22 +45,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.ExpressionRegistry.html",
-          "hash": "PnAkJ231iwT7Kpqc4j+b/Q=="
+          "hash": "+MaeGe2dWUVyrOQTNYDMeQ=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.Expressions.CachedExpression.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Evaluation.Expressions.CachedExpression.html",
-          "hash": "z849m8FlaXg4rXDQc26Jtg=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -141,10 +57,34 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.Expressions.ConstantExpression.html",
-          "hash": "JpYKDE4ZWnKM/us0PbyzaQ=="
+          "hash": "RI+fSyXTOF+LCf2DA+UkeQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.Expressions.DynamicExpression.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.Expressions.DynamicExpression.html",
+          "hash": "W75jyy1iAJVjlOjLTT6Ypw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.Expressions.FunctionExpression.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.Expressions.FunctionExpression.html",
+          "hash": "u8xUYMPJombs+UZPZOJolQ=="
+        }
+      },
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -153,10 +93,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.Expressions.NamedExpression.html",
-          "hash": "UhxWOtk+UgpRoE4omqUY5Q=="
+          "hash": "ldZCypUKBpLnDd2bYZq3eg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -165,10 +105,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.Expressions.html",
-          "hash": "u3CuZJhdj50lWVrHAn4q6A=="
+          "hash": "B0dCu0y3WtBC+S2WPjlIJQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -177,10 +117,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.Function-2.html",
-          "hash": "9DJmmEzYejqkh9Q6JLrAIQ=="
+          "hash": "K/1WcTQGfT/W1MUzUAQHdA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -192,7 +132,7 @@
           "hash": "ZvJu1rhhvTFPIEN1GCMFtQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -201,34 +141,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.ExpressionFunction.html",
-          "hash": "2HjuDbgFmk5SCsafVZHdaA=="
+          "hash": "hL+O6PUBweM/SZ6ITjdhxQ=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.Math.ACosFunction.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.Math.ACosFunction.html",
-          "hash": "4V/j5NGXz3ZU+NPvf2UQdw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.Math.ASinFunction.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.Math.ASinFunction.html",
-          "hash": "lUA68CDwUGwfNeptUX+qMQ=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -237,34 +153,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.Math.ATan2Function.html",
-          "hash": "aRNZQny+w7USxv2TiSQBWA=="
+          "hash": "hF0cadhvk4RTYQPurEttIg=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.Math.ATanFunction.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.Math.ATanFunction.html",
-          "hash": "/OigOgIDnIG8viWH2xVtaw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.Math.CosFunction.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.Math.CosFunction.html",
-          "hash": "CKT9JdwYlx5PPLFOTMeDMg=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -273,22 +165,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.Math.CoshFunction.html",
-          "hash": "HWNoKpginnci4f7VX9DiFA=="
+          "hash": "Qyp7TIALS5rebeLcgRzrWQ=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.Math.SinFunction.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.Math.SinFunction.html",
-          "hash": "laZZnJQ+ACG+KYfcnoejzg=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -297,22 +177,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.Math.SinhFunction.html",
-          "hash": "DaHpM00W9VyyM6bsBMG4Bw=="
+          "hash": "oMKcoUyhdoPlpwX4t2R/MQ=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.Math.TanFunction.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.Math.TanFunction.html",
-          "hash": "n25o67ARN7O9ZcEtZR4KcA=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -321,10 +189,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.Math.TanhFunction.html",
-          "hash": "z1r3MTYcJhGROgr9eoJTXQ=="
+          "hash": "VlUVyn3U5KGWghvm414WVQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -333,10 +201,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.Math.html",
-          "hash": "Qu4mcFpdBGapBN4RUe0b9Q=="
+          "hash": "2XdnjWJBCrblzhy3yXp7qA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -345,10 +213,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.html",
-          "hash": "clnyXpJM6ZVRH46E2vWoVg=="
+          "hash": "bz1FELX/cb6l4dNWyv7UhQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -360,31 +228,19 @@
           "hash": "kVRs8IrRBy2YTol9aT6Gyg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.IEvaluator.yml",
+      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.IDerivativeFunction-2.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Evaluation.IEvaluator.html",
-          "hash": "CYuHSsMLlCZk/ewr+hWdpw=="
+          "relative_path": "api/SpiceSharpParser.Common.Evaluation.IDerivativeFunction-2.html",
+          "hash": "t4KsVzKGYXdE8yc0mmesvA=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Common.Evaluation.IExpressionParser.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.Common.Evaluation.IExpressionParser.html",
-          "hash": "N5y7vscDHSzcvq2A9Y7oww=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -393,10 +249,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.IFunction-2.html",
-          "hash": "mbnWl9u64mYB1V8Ak25hgg=="
+          "hash": "Rmb1y7apI+TyiJo4SsoMfw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -405,10 +261,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.IFunction.html",
-          "hash": "7sMPreCl9EoNlvOOVZLqPg=="
+          "hash": "W0/NRAjbNFLPgODCLH86FQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -420,7 +276,7 @@
           "hash": "kPGtaHZTTzeIJ+DhSLZTpg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -429,10 +285,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.UnknownParameterException.html",
-          "hash": "hqekVFEKN9kvza1SjfqtKQ=="
+          "hash": "hGr9KhgVTeYLweYELJ4Svg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -441,10 +297,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Evaluation.html",
-          "hash": "8n3SUp+yzp+82XO1uLxrcQ=="
+          "hash": "za5mLx7x18zAE3oPyEaf4A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -456,7 +312,7 @@
           "hash": "DsP+LcbWPD6c/N9KAri98g=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -468,7 +324,7 @@
           "hash": "S5YWQspYIzw+GPi41Rshog=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -480,7 +336,7 @@
           "hash": "9Vknh194GUBVLKH9dB5Mzw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -492,7 +348,7 @@
           "hash": "qrsjGdqHrUB0mcFMmGe7lw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -501,10 +357,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.FileSystem.PathConverter.html",
-          "hash": "jN33hXQb0y0g1+VkuXP/9w=="
+          "hash": "CKvYk5HOEkw2NyggcY8r2Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -516,7 +372,7 @@
           "hash": "aQvgDgKaf/x8RI/BYvJQfQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -525,10 +381,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationCache.html",
-          "hash": "DzSk0tYNdaBhm0r6zdZBhg=="
+          "hash": "ArxdSRjC4VA55g5+pnm9tg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -537,10 +393,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.html",
-          "hash": "/UWRLaZruZOYwfbsQ1A7rQ=="
+          "hash": "l04BuJZ7znFVAukEKEsE6g=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -552,7 +408,7 @@
           "hash": "1vS8/ji6eGR/V1gchAVWAA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -564,7 +420,7 @@
           "hash": "S6jiZhHBgSZaWtICpLqHDg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -576,7 +432,7 @@
           "hash": "C2eTARspyVt2+Ptx5fBYLQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -585,10 +441,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Mathematics.Probability.CustomRandomNumberProvider.html",
-          "hash": "AWMAypRBrTvUtUyieFXrRg=="
+          "hash": "PMxxM0bMcN+RSkYBGsfB9w=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -600,7 +456,7 @@
           "hash": "L2lQ6O0PpKmpwHzMwVvdfw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -612,7 +468,7 @@
           "hash": "jIEboYfjw9USbGp8ZzvdRA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -624,7 +480,7 @@
           "hash": "6BP6Lxh0PjwLHi7S0UxuSg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -636,7 +492,7 @@
           "hash": "OrZbGHNGDrEm929lOn4ODA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -648,7 +504,7 @@
           "hash": "Ro8X+JJTJUHCSGi86EZSCA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -660,7 +516,7 @@
           "hash": "FFKUhbbRFsLKlpKghP+G5Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -672,7 +528,7 @@
           "hash": "ZUdLrn1T2+z3n9/yHiB+uQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -684,7 +540,7 @@
           "hash": "EvAAztqk+nh36q/qcFO4pw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -696,7 +552,7 @@
           "hash": "CjP10/9/FCTWjocI9y91AA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -705,10 +561,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.html",
-          "hash": "rzmvFV5tRwYi0mkMq7sysw=="
+          "hash": "lc+36WOo0c+ziF1UglwRwQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -720,7 +576,7 @@
           "hash": "n7extfUOtiQXkkivE56DTg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -732,7 +588,7 @@
           "hash": "4L2/LFbjIo7hFXpvDCuSlQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -744,7 +600,7 @@
           "hash": "h7DBE50XAMu7TU0SC89XwA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -756,7 +612,7 @@
           "hash": "p9IzKCEXgMZY6jiVkSnzYg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -768,7 +624,7 @@
           "hash": "lBAG++t6vaQq0wc5CE/WjA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -777,10 +633,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.Mathematics.Probability.Randomizer.html",
-          "hash": "2JZjYOyLM2ui8ibcu4AwLA=="
+          "hash": "ekLKEIDRvEz//8B7hGj+gw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -792,7 +648,7 @@
           "hash": "Pj4BSp/Ot/t+wkdKjZotIw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -804,7 +660,7 @@
           "hash": "E7hZvZx63h+FwVpLoJWulA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -813,10 +669,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.StringComparerProvider.html",
-          "hash": "kgnCPW9nskHRsrbUbtjCCA=="
+          "hash": "kY+uqJ3zdr+HN0zAaBUdWA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -825,10 +681,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.StringComparers.CaseInsensitiveComparer.html",
-          "hash": "DiEQuJb5vTAcidO/Ndpu8g=="
+          "hash": "g0MfsSPiFNPa54BuJYkWmQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -837,10 +693,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.StringComparers.CaseSensitiveComparer.html",
-          "hash": "cks1alDboqJTSasht57cRA=="
+          "hash": "/rT0G32aJ2allLdi2TZA7Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -852,7 +708,7 @@
           "hash": "u3YFibB9Kg7XDfIMT1Zk/Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -861,10 +717,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Common.StringExtensions.html",
-          "hash": "mFgjAQILoW2iPa3h2Q151A=="
+          "hash": "yeW6A6kjftQixVXs13tOtw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -876,7 +732,7 @@
           "hash": "K32cjntZv/si+P/PpB82oA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -885,10 +741,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.Lexer-1.html",
-          "hash": "NClNpB+vRuY8/5aGNsxR4g=="
+          "hash": "jvNbQgd862RaQ7gIurIZ9g=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -897,10 +753,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.LexerDynamicRule.html",
-          "hash": "zu9pyiDerAt+MulREE4qYg=="
+          "hash": "RRAp7ENDcvoFomRIqdFk5Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -909,10 +765,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.LexerException.html",
-          "hash": "vQcIQbnX4qwjHqLgEz1QIQ=="
+          "hash": "n2B/Mtj5P+Hiq1xj022nSQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -921,10 +777,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.LexerGrammar-1.html",
-          "hash": "if9+iSLMD+rvgWnlr6FTTw=="
+          "hash": "sAtvnQztwzf50pHNn0kp1A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -933,10 +789,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.LexerGrammarBuilder-1.html",
-          "hash": "tlkRbRGzADn46QTY85orKg=="
+          "hash": "XxuwYjK/JDmLSPQYm2gatw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -948,19 +804,31 @@
           "hash": "/OMC7AhPlXVMsVUroydoqQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Lexers.LexerOptions.yml",
+      "source_relative_path": "api/SpiceSharpParser.Lexers.LexerLineNumberProvider.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Lexers.LexerOptions.html",
-          "hash": "IlrABxKj3OI3NrREgAB/3w=="
+          "relative_path": "api/SpiceSharpParser.Lexers.LexerLineNumberProvider.html",
+          "hash": "JCQS8bEh9g4TnQx8YN0OIg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Lexers.LexerLineRange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Lexers.LexerLineRange.html",
+          "hash": "j+OQYeOok4okW0+ISILN5w=="
+        }
+      },
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -972,7 +840,7 @@
           "hash": "6RLmKvickQBpanw34mQ8iA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -984,7 +852,7 @@
           "hash": "ysafZFze+Xs+vOIH4xD7mA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -996,7 +864,7 @@
           "hash": "K/KnsL0L9h+4OT/oxRNjMA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1005,22 +873,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.LexerState.html",
-          "hash": "Zm5EFZGJhYBm3/thgqfNjg=="
+          "hash": "b/Z0ogq9iH+Z9i41orplkQ=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Lexers.LexerStringReader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.Lexers.LexerStringReader.html",
-          "hash": "LXuTzt4GvX1QXoS/iId3tQ=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1029,10 +885,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.LexerTokenRule-1.html",
-          "hash": "/k4MqZeRQJFGdog0A7+9Ow=="
+          "hash": "vVlE0njLFgUBcrQ+iAckqw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1044,7 +900,7 @@
           "hash": "J3XfYYNnHteng/wHeGooJw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1056,7 +912,7 @@
           "hash": "ixYmB6wVdgd8YGn6V+PNcw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1065,10 +921,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexer.html",
-          "hash": "K4yD0JRz+nTrXh3us7amzA=="
+          "hash": "K+lB4brk6Ns0LmihhHI+HQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1080,7 +936,7 @@
           "hash": "RN8q4NZhnB/FDoAr5lnKJw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1089,10 +945,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerState.html",
-          "hash": "p14iaGwhZHCjrqSTx1PlHA=="
+          "hash": "rmPoGsVDPzwuFUKwEk5G7A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1101,10 +957,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken.html",
-          "hash": "/kmQHDTNrStmSTpLRJ8kOA=="
+          "hash": "X6GBQEwb2bbW4n/UrgG6ng=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1116,7 +972,7 @@
           "hash": "+n2g/3rBTE1DtEocYfpaEA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1128,7 +984,7 @@
           "hash": "ahboh9Vvky9EyeNwk9SzmA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1140,7 +996,7 @@
           "hash": "nErzhjlg+et7bXo2cuPgCw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1149,10 +1005,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType.html",
-          "hash": "gtWfjsA+7swiP5FbUc5VEA=="
+          "hash": "9uY7EtnbasVhHzL8kdFg/g=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1164,7 +1020,19 @@
           "hash": "fqZau5HJojjCnllOsss5gw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Lexers.StringExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Lexers.StringExtensions.html",
+          "hash": "sgeDTUvtqyNoELVQjE1WPQ=="
+        }
+      },
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1173,22 +1041,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.Token.html",
-          "hash": "jTf8iWTEnhy+V6ZCOv8NfQ=="
+          "hash": "GVaZxSKiuvNhcfMuDXvgew=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Lexers.TokenType.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.Lexers.TokenType.html",
-          "hash": "41uYIXb/hw1Ut9jcQmSZxA=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1197,22 +1053,70 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Lexers.html",
-          "hash": "le7JzEtBjaX3s8DSl0jjjQ=="
+          "hash": "3HKOuzWsMbGyqJo0U+1npw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IReadingContext.yml",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.CircuitContext.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IReadingContext.html",
-          "hash": "UetafXGiWZu71Nh3LTXgDA=="
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.CircuitContext.html",
+          "hash": "LiKd465s+M9ln2c8dVd9gQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.CircuitEvaluator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.CircuitEvaluator.html",
+          "hash": "Ns8jCVR51V/VUyVT7lOnig=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext.html",
+          "hash": "ERlEF4tn333D1ztyA6qKTA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.html",
+          "hash": "Av4ILzo89Fq2ShTeFqrNbg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator.html",
+          "hash": "glfPW96HgqN5oGHwR04h9A=="
+        }
+      },
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1224,19 +1128,7 @@
           "hash": "JWNngxzaufAfrS7tPtYb4Q=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ISimulationEvaluators.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ISimulationEvaluators.html",
-          "hash": "RV4mn0PRSJ4TPucVMPT2HQ=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1245,22 +1137,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ISimulationPreparations.html",
-          "hash": "4VtMpk1AYvWJAJbVK5XMRg=="
+          "hash": "yACFJRO849FRFEQI4sdNew=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ISimulationsParameters.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ISimulationsParameters.html",
-          "hash": "buNYXtD9JZNskh9ZhDDUmQ=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1269,10 +1149,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry.html",
-          "hash": "bLEG0NBjwd+lCj+rBBXSEQ=="
+          "hash": "Ql6qWJK8CCfXqHX/+AGRFA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1281,10 +1161,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.html",
-          "hash": "6Zng/bSIPf+YqP6S+uGLKA=="
+          "hash": "WcITzfBU1FfuasbOh4hyxQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1296,7 +1176,7 @@
           "hash": "2u5cHGDufd4MRMFV77CEFQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1305,10 +1185,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry.html",
-          "hash": "0ZyTklzpajgXcSgFd6Xwbw=="
+          "hash": "wAdo2SNJJfXl27RjCy1xwg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1320,7 +1200,19 @@
           "hash": "craE+VgnGgj6yzEv97LzRg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.NameGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.NameGenerator.html",
+          "hash": "H3A/aH5ZjZomrI6jCvU9RQ=="
+        }
+      },
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1332,7 +1224,7 @@
           "hash": "UEebqUB72M1F+TS9XUqvgw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1344,7 +1236,7 @@
           "hash": "LcGSEDW2LrR6fQ3nnXbgOA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1356,7 +1248,7 @@
           "hash": "pHnPRFMTTjOoQlkHChRgBA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1368,7 +1260,7 @@
           "hash": "2Q3hhthfXWAQd+R/hyBjoA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1380,7 +1272,7 @@
           "hash": "r2sE6vxwQC0yl7BSsLfTbw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1392,19 +1284,7 @@
           "hash": "kVVQ9hoqw1LZ4/VK0M3urA=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ReadingContext.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ReadingContext.html",
-          "hash": "UBYADO0cUsjdkhI4jz25ng=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1416,31 +1296,19 @@
           "hash": "3S5Ssiek/7F2iCsl5t3aCA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluators.yml",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluators.html",
-          "hash": "0a6QTW9DWncA9Dp0QfdgUQ=="
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.html",
+          "hash": "FVnoRmJGy0fKlXq25ADWxQ=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationExpressionContexts.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationExpressionContexts.html",
-          "hash": "LX0GY8hwZE8kxu0ti41suA=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1449,10 +1317,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationPreparations.html",
-          "hash": "nJZWBIF4y4G6wCpPr3kqHg=="
+          "hash": "WI0uh+LaGwjd8Ag+nxRlXA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1461,10 +1329,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater.html",
-          "hash": "OFJIdxdZ3b6ab3/eMO6W5Q=="
+          "hash": "HdDIWarjzGCmLwIgv00gsQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1476,7 +1344,7 @@
           "hash": "06Vg41LeoBI6xej1yY125Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1488,7 +1356,7 @@
           "hash": "AaNdp/7/vdccMhc0lnVuMg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1497,10 +1365,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.html",
-          "hash": "wlkNtYasvejLqSRTEhlhjg=="
+          "hash": "mrZxnWF3dmCXkrbtTUTOtg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1512,7 +1380,7 @@
           "hash": "QFjcuXhmGAqoU7Y1MmhYDA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1521,10 +1389,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterDoubleValueUpdate.html",
-          "hash": "l9hcFC3zTjAdaXM63FXciA=="
+          "hash": "QIty11QvGJe4h+7L/c5hMA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1533,10 +1401,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate.html",
-          "hash": "fzW08JqngMV9dbFtjxnFQQ=="
+          "hash": "Rln0Ov8gzgvGRvQhPdKxyQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1545,10 +1413,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate.html",
-          "hash": "8bS40rr9hUhOTizvc5T+Bg=="
+          "hash": "5yllpj7dj0yEHif6awNiaw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1557,10 +1425,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.html",
-          "hash": "cDsw/mI0AVsynFtGYVcVQA=="
+          "hash": "Am1Q00DYYjhmrJsNorY9Cg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1569,10 +1437,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates.html",
-          "hash": "9RhhSztuJiPPi7bXovEtDw=="
+          "hash": "fi+QBiAvpwfT68RB5NLYVA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1581,10 +1449,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.SimulationUpdate.html",
-          "hash": "3Ji319aW+H2EQOrO0rvc8Q=="
+          "hash": "/fuOJdLsCJQMOrnFvEm/3Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1596,7 +1464,7 @@
           "hash": "mL0IpdhaXpavEEevro7Tsg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1605,10 +1473,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.SimulationsUpdates.html",
-          "hash": "sYpjst4yU/krDuxdBHnBIA=="
+          "hash": "hE+wOB4L2kEXNSj9AhLpzQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1620,7 +1488,7 @@
           "hash": "elg/smmD78wuvpKJHE3a4g=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1629,10 +1497,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Context.html",
-          "hash": "D+SAP0ovLUtQuWWhyuuYag=="
+          "hash": "OfeUhGcsueXWJXphTHl+Bw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1641,10 +1509,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.ISwitchModel.html",
-          "hash": "VFBMTwbLYHTaGNqZAwRQ6w=="
+          "hash": "pq5FWyLjPgGIEkSRtMLTiw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1656,7 +1524,7 @@
           "hash": "pEsAsEt70lmO69UBarMtxw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1665,10 +1533,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModel.html",
-          "hash": "y7QIt2ogdnmoc63QjiYgQQ=="
+          "hash": "G6EJn2cbwvI+KPfmhDBy9A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1680,7 +1548,7 @@
           "hash": "9hCfq3TnBBlLnwJ/oU/BMw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1692,7 +1560,7 @@
           "hash": "gUEr9KxclF+9K/0XcRldvw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1701,10 +1569,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Control.DefFunction.html",
-          "hash": "j7atCzC+7X1pOvFImDy+MQ=="
+          "hash": "+rGUAU+YFC7EF8cB/+OWHQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1713,10 +1581,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Control.IfFunction.html",
-          "hash": "6xlzUmFJEzjuH/HXESYueA=="
+          "hash": "cSB6te0mKd+xdiV2bphc+g=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1728,7 +1596,7 @@
           "hash": "oPYlNNEQouKYbNa/z4OdCA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1737,70 +1605,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.ControlFunctions.html",
-          "hash": "/L9zM08eRdaXNCkF8xtCWw=="
+          "hash": "THwvvFYXpqUaIzyzgFPrJg=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Export.AtExportFunction.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Export.AtExportFunction.html",
-          "hash": "C3ydLgvH6E2VY4iBEPFZqA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Export.OrdinaryExportFunction.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Export.OrdinaryExportFunction.html",
-          "hash": "D4sSXWeGtkDDRqI8hYaL0g=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Export.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Export.html",
-          "hash": "WIhU4msRj7JOz+2usIhyPQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.ExportFunctions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.ExportFunctions.html",
-          "hash": "UfRcOfUMpSse+p+tEfOy7A=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.AbsFunction.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.AbsFunction.html",
-          "hash": "O8q1RYpgVWQu2k6VLF9nMQ=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1809,10 +1617,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.BufFunction.html",
-          "hash": "HAXtP7Fimjoi5WsPN89b/g=="
+          "hash": "gRBys6RBNDbzYbS+bEDIVg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1821,10 +1629,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.CbrtFunction.html",
-          "hash": "qlP59qTmuFuySlLzxwyTqQ=="
+          "hash": "m4r1X1Trm/JM9pZ4jXMRlg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1833,10 +1641,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.CeilFunction.html",
-          "hash": "N27IBqDQyOOS5LkUChtRwA=="
+          "hash": "X2kBoDQ8tKUH0PIECxqaOQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1845,34 +1653,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.DbFunction.html",
-          "hash": "rPXsVlzTYY3+i4ps+I3trQ=="
+          "hash": "78YQePYhTFS7coUYMB78uQ=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.ExpFunction.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.ExpFunction.html",
-          "hash": "dHfw4LGv+8NdkQQLA/tnqQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.FAbsFunction.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.FAbsFunction.html",
-          "hash": "VluEacf8RupCcU3JZOpjgg=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1881,10 +1665,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.FloorFunction.html",
-          "hash": "yCMDegwVb0cIqTU8nrTdSg=="
+          "hash": "VNKdm26UZCOEUrMFsAK0yw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1893,10 +1677,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.HypotFunction.html",
-          "hash": "SMPEh5bsnl1CX6ZBqm4iKQ=="
+          "hash": "lR+3sPwHQ9t+4OsY8IInxw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1905,10 +1689,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.IntFunction.html",
-          "hash": "8BLF9QT3Pyty/J6BhUxqpQ=="
+          "hash": "Rf2SBI21c7dRE1+L0NxfWg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1917,10 +1701,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.InvFunction.html",
-          "hash": "t5camG3ArAk513r29PX6Ow=="
+          "hash": "ycVis5QD0ctsI7Ag1uKuDQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1929,10 +1713,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.LimitFunction.html",
-          "hash": "dKqy37fVmMHJbNrjdo4TMw=="
+          "hash": "CjLfJjYAkUNrHZgDq20k9w=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1941,34 +1725,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.LnFunction.html",
-          "hash": "A5L24fCgVXokL7hVb0l9WQ=="
+          "hash": "buNgmUFgkwCayp2BGnyviw=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.Log10Function.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.Log10Function.html",
-          "hash": "XvC33lrCTe0TusC4rO67Yg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.LogFunction.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.LogFunction.html",
-          "hash": "AINkZX5ob68dRtEJbjZuFg=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1977,10 +1737,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.MaxFunction.html",
-          "hash": "zcYlWNhi7xAT/bPmXgCaKw=="
+          "hash": "JTRaAf5KQIlvbv1jtu9Muw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -1989,10 +1749,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.MinFunction.html",
-          "hash": "YY5CoXMvEzbh9T0BtkyCFw=="
+          "hash": "rMZzhFLQ2dkQlGHRhrRGDA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2001,10 +1761,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.NintFunction.html",
-          "hash": "AAGUbKmS9u/VeX39G9Pj6A=="
+          "hash": "H+YmVWmyL5xWByBMoG9A6Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2013,10 +1773,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.PolyFunction.html",
-          "hash": "k0euUIfx6b5IFhguPZZMxQ=="
+          "hash": "0ET8oU1wGMRvjJ0fRyD+6Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2025,34 +1785,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.PosFunction.html",
-          "hash": "TIRWvKoloe1IDDBnZyefgw=="
+          "hash": "jKfg5cmrvPVYCK0tM5IWDg=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.PowFunction.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.PowFunction.html",
-          "hash": "hwIzJApyyAz1r6MvgGkUdQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.PowInfixFunction.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.PowInfixFunction.html",
-          "hash": "VDtxk172SRqtzzf/SiDwOQ=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2061,10 +1797,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.PwrFunction.html",
-          "hash": "mYgdnrq5sGhCVhL09NK4EQ=="
+          "hash": "nli51QHTQDWPM6qnJBckew=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2073,10 +1809,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.PwrsFunction.html",
-          "hash": "/CrLFcjD/kSKXrVNKrRcWA=="
+          "hash": "i29we8C/vvOXe0csfIAHHw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2085,10 +1821,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.RoundFunction.html",
-          "hash": "fJ2fF81c+q10dpuB6kMYKA=="
+          "hash": "eLLoTC3QVqR+2/60mbnzJA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2097,22 +1833,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.SgnFunction.html",
-          "hash": "FkWZUnCYXg7MdT1eUP5S2g=="
+          "hash": "8AC/W1ZlAAugrfkADZHD1A=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.SqrtFunction.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.SqrtFunction.html",
-          "hash": "0VN7NLmuBwmzaaYa5DvCWg=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2121,10 +1845,22 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition.html",
-          "hash": "EQwg8dSSkKvafNBoWg3hJA=="
+          "hash": "102yDtsYpE960JAM8zUESA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.Point.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.Point.html",
+          "hash": "p92XXrXSd5yxRs2IxUTxJA=="
+        }
+      },
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2133,10 +1869,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.html",
-          "hash": "AmrwQUzyCVleXktW/ct7Zg=="
+          "hash": "KwK5QA53KB2nMNS7pBDkvA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2145,10 +1881,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.UFunction.html",
-          "hash": "4AwBiQJ+aiWCCcFTGDqPbg=="
+          "hash": "qe7+5ET85hw1hmVtZ8KQig=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2157,10 +1893,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.URampFunction.html",
-          "hash": "kUwKZ+PAmVRJgiYFkk+R3w=="
+          "hash": "bOr8lbUZHwuZ4xABCn5a0A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2169,10 +1905,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.html",
-          "hash": "80O9qCK+AM7BO0JuQb38rw=="
+          "hash": "Yb+0U0n9RIYRg8EKvNDn3w=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2181,10 +1917,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.MathFunctions.html",
-          "hash": "ijfCL/ZZN+4x1Qaabh+n5Q=="
+          "hash": "mbzkQGOUckmkrQFVHOJJ7g=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2193,10 +1929,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.AGaussFunction.html",
-          "hash": "lzjEc+/n0dTEc+XPMoRH6Q=="
+          "hash": "kpfvCdDp4egaLQA26z2fNA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2205,10 +1941,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.AUnifFunction.html",
-          "hash": "ZAumvHo4tRUstrZt7botOA=="
+          "hash": "oBgSVXYd3lKE/Ml8un4+qA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2217,10 +1953,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.ExtendedGaussFunction.html",
-          "hash": "hezt2HJoDxGoCBjXe/4vwg=="
+          "hash": "BVSgldFLl1dPtcrEl0vkYA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2229,10 +1965,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.FlatFunction.html",
-          "hash": "j6R2OUctlEoyWJfCgqHaMg=="
+          "hash": "8T+FJew8rJghaWPUEO6mwg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2241,10 +1977,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.GaussFunction.html",
-          "hash": "6DvAV2VzueNjWh+0/3yRHA=="
+          "hash": "hULD2443qeVemInopz/sKA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2253,10 +1989,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.LimitFunction.html",
-          "hash": "Z/VFODtWc/PJc1L8B0GYzA=="
+          "hash": "Bbcut3SB4qLCLMiVO4zv+w=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2265,10 +2001,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.McFunction.html",
-          "hash": "ZGwrjTnqzsUPwEn5qyt6TA=="
+          "hash": "WjKlOc3MtTLG9nZQR6Sl7w=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2277,10 +2013,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.RandomFunction.html",
-          "hash": "H6lPrIo64AWP6vUCTF+EIQ=="
+          "hash": "+314DuYI1JB047sf+BsijA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2289,10 +2025,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.UnifFunction.html",
-          "hash": "GLVwvt3S0lSxXVKAbjss4Q=="
+          "hash": "cyquzkRcpTAUT1IdVn1CiA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2304,7 +2040,7 @@
           "hash": "Ychif8T/l+ejARnO0zMw9A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2313,10 +2049,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions.html",
-          "hash": "YgsaaQdWPXlCo1YzYPBjDQ=="
+          "hash": "IXAOZBUkpwZ0QppzbApXgw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2325,34 +2061,22 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.html",
-          "hash": "tRZB+u6zBf58f3Swldaa7w=="
+          "hash": "24rBmuZShVSY8fqTkFxEmA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluator.yml",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluator.html",
-          "hash": "pvlZlWyDJR0G94Jzr9gUZg=="
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.html",
+          "hash": "7hD60ri6AGBsdDXKR+x7Aw=="
         }
       },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionContext.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionContext.html",
-          "hash": "Nc+ex7WhoTgqv9h1hdJVsw=="
-        }
-      },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2364,7 +2088,7 @@
           "hash": "uA3GiHM8VBOgUAy5LbznBQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2373,10 +2097,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.html",
-          "hash": "ljI19tParJZsYIA0XYfEfA=="
+          "hash": "IWFhKrYeK/KNFIvjyo+PTw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2385,10 +2109,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.GeneralReaderException.html",
-          "hash": "MlTqagMxDP38zf0T8r7FHA=="
+          "hash": "nZBjdVQ0nelnuPvfP14hsQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2400,7 +2124,19 @@
           "hash": "X5HxRwp+fiYp7uKvbeeJZg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.UnknownComponentException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.UnknownComponentException.html",
+          "hash": "D1Eynm4vWHP3/v7l4yhMxg=="
+        }
+      },
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2412,7 +2148,7 @@
           "hash": "KsPEH9++bu5ehkMDw6MmuA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2424,7 +2160,7 @@
           "hash": "FFCQT51UAGIZ9RMXDodG1Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2436,7 +2172,7 @@
           "hash": "f31s/hw44jNNVJg1Gp4bmQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2445,10 +2181,22 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.html",
-          "hash": "VDAEVunwnJgF4M1GO5hJNA=="
+          "hash": "ctwAK7Qrm/4jqi0t2h9Gzw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.html",
+          "hash": "ToIryAyzlyQ9coNu3UAbJg=="
+        }
+      },
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2460,7 +2208,7 @@
           "hash": "TakJu7uI359ToFSLQx16ug=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2472,7 +2220,7 @@
           "hash": "PmwGV2oJpvCeY7wKjFE6oA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2481,10 +2229,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsReader.html",
-          "hash": "HdzlpXODJO2xT/BNPZWpMg=="
+          "hash": "NVbjVIIEw4/9u48hFZqyxQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2496,7 +2244,7 @@
           "hash": "bYpa4163jiPFABVXyclbig=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2505,10 +2253,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ControlMapper.html",
-          "hash": "P+Xel/r8de6siQYLKjc7Bw=="
+          "hash": "th01OHk9uPVrUf9Q/jKtKA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2517,10 +2265,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.EntityGeneratorMapper.html",
-          "hash": "GqN4mt7B+Fr7F+lhkNpYpA=="
+          "hash": "K++uKGRU7P1ocLDoUCxo5w=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2529,10 +2277,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ExporterMapper.html",
-          "hash": "/YZCjcKH0frUsEhbzZoGMQ=="
+          "hash": "2BXGdowC2ymbo9rXgY5vOw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2544,7 +2292,7 @@
           "hash": "teMtqYSzFZvg7lkArGgIWA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2553,10 +2301,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ModelGeneratorMapper.html",
-          "hash": "SFkOQekQKz8RSxLD2aAUcQ=="
+          "hash": "e7kCiTKNzFPwdYmOfjYLtw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2565,10 +2313,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.WaveformMapper.html",
-          "hash": "7Dcj1jw1M7C8E2l4BdY40g=="
+          "hash": "mmbxE5KqfamM+Lj7DBq9+Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2580,7 +2328,7 @@
           "hash": "rxV+Ja1WmtNOUgcvBipMOg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2592,7 +2340,7 @@
           "hash": "fiau2XjL6N+Z68mDKdUxhQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2601,10 +2349,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.html",
-          "hash": "bStI95Y4TuTWCA5DRhGwMQ=="
+          "hash": "4QY4Vd0HqDsnjgy181Fl4g=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2616,7 +2364,7 @@
           "hash": "UA/ZYXvyWc/DJFoq1E40Tw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2625,10 +2373,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.html",
-          "hash": "Fn605SbF0mupcqPLWi2r6w=="
+          "hash": "6b+8txgbb+JiE8IQa7rfiw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2637,10 +2385,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.html",
-          "hash": "Udpz2nM2nCGAc9mTsXULEw=="
+          "hash": "sIbZaunMo/MIIms9urrXgw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2649,10 +2397,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.LibPreprocessor.html",
-          "hash": "Jnd1m9+v4L5lgoY00Jx0dQ=="
+          "hash": "cglcc3O1l2lOr+AbxRTjnw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2664,7 +2412,7 @@
           "hash": "HtFNAzkFveu+z0avX7PSIQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2676,7 +2424,7 @@
           "hash": "kWc/4rWkG2ji3M9HZkEekw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2685,10 +2433,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.CommentReader.html",
-          "hash": "IcbXatT7ySmxmK8xJqgJkA=="
+          "hash": "h9tytEnKg+W8rif+ADrqtA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2697,10 +2445,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ComponentReader.html",
-          "hash": "Qx1Aah88oifj9hdeKQqdaA=="
+          "hash": "zUM4az61xsdGDipmSLkKLw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2709,10 +2457,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ControlReader.html",
-          "hash": "SoQx23ds11AWsTZc8ZyIVA=="
+          "hash": "D2zK+c6EvI4PwnQUNCuQKA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2721,10 +2469,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.BaseControl.html",
-          "hash": "7E9sc/3Vlq75648wFUhp8g=="
+          "hash": "FQIpWt4Py+dFOWmnEf3uqA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2733,10 +2481,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common.ExportFactory.html",
-          "hash": "0PeIXfRzgmGggwYLtGdWZA=="
+          "hash": "OKEUoNlOp1LcyBRsqvvWqw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2745,10 +2493,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common.IExportFactory.html",
-          "hash": "CvzhJ30UU+fFZCIOyXjmOg=="
+          "hash": "VWkJOVYbTARlp/ssVqw2cg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2760,7 +2508,7 @@
           "hash": "w1wV5Q2PWszqn1XZtE2bjA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2769,10 +2517,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.ConnectControl.html",
-          "hash": "Q1CP49xMcZTtzdFu4hwu/w=="
+          "hash": "U8X56g+jw2MfFyEiuaTg0w=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2781,10 +2529,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.DistributionControl.html",
-          "hash": "LyvXzTcGCJVg9JeY+4o1Cg=="
+          "hash": "iPLSvasQ3uUNlgmDmQLD9A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2793,10 +2541,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.ExportControl.html",
-          "hash": "XghEqsS8UIGd9skQBA4N/g=="
+          "hash": "tHCy9wl4WlfqQ7Vgnf/9yA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2805,10 +2553,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExporter.html",
-          "hash": "rqkpMaOkWV52w0c0FAk2HA=="
+          "hash": "6qdU30fWMIjN5iTloG0Q+g=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2817,10 +2565,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentDecibelExport.html",
-          "hash": "o8cOTvrt+bBBjP2vUDT7/A=="
+          "hash": "u5KUSTzMZFHflEOcCfqM9A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2829,10 +2577,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentExport.html",
-          "hash": "1LuXFT6ryjMQJ228zENIwg=="
+          "hash": "OTwxByjz4qM8eiFpS4bQyw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2841,10 +2589,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentImaginaryExport.html",
-          "hash": "gY0bF/JCSy7pPav+Zjjwvw=="
+          "hash": "DzOViOA7n2vcbJ2qkywzZg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2853,10 +2601,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentMagnitudeExport.html",
-          "hash": "ZOhXAfSglyTW7vV/KA4caA=="
+          "hash": "HxYLPSRmqAtRXkSrfnzagQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2865,10 +2613,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentPhaseExport.html",
-          "hash": "DHYYBo0aeReLqvj3jq9zqA=="
+          "hash": "82VIeXyXpE9B5X6AIlzixw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2877,10 +2625,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentRealExport.html",
-          "hash": "EbsU1ElnBoZSvSqE5D4PyQ=="
+          "hash": "w5hSaUYAYDipmWtWwuUqzg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2892,7 +2640,7 @@
           "hash": "LYYff/LqlTZocj3vRxGOKw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2901,10 +2649,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export.html",
-          "hash": "K+VK0X7cZw2Wp1SmbGAigQ=="
+          "hash": "wP/OliQgMg9lc+r7gz2Zvw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2913,10 +2661,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter.html",
-          "hash": "HPAjcbb87VBlMqmGC7EM1Q=="
+          "hash": "XEZkXnuAokDVHQl2DW3zGw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2925,10 +2673,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport.html",
-          "hash": "mYMxGNhL8WwatrPWBszHKA=="
+          "hash": "dB5oRw0opRunIAN1e5gVkA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2937,10 +2685,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.PropertyExport.html",
-          "hash": "8krsknNhwot9KYVfIpe3mQ=="
+          "hash": "JlCI4VQL5QPBO3+CTPI51A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2949,10 +2697,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.PropertyExporter.html",
-          "hash": "V8JZfuNfpHLBLhwufs++vw=="
+          "hash": "auYuL4uwpM8elxLCiMUylg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2961,10 +2709,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExporter.html",
-          "hash": "c9YCQztlwEId0jXwZXTHYw=="
+          "hash": "slQIuF1Q4z4+Fiiji1viEw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2973,10 +2721,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageDecibelExport.html",
-          "hash": "CYE59EqYxnqCbvZSL9F+VQ=="
+          "hash": "ikLhPT2JQX81qDmhJWGlPQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2985,10 +2733,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageExport.html",
-          "hash": "C4Y5wdjj0yStTIOzQt8uYg=="
+          "hash": "TDQyGItWF7YRBM4mNLHQgw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -2997,10 +2745,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageImaginaryExport.html",
-          "hash": "Jl6vq6n3Z6l15XeosU8S0g=="
+          "hash": "iTlEl+ovL0YktuzyBvnBUg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3009,10 +2757,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageMagnitudeExport.html",
-          "hash": "bcc6gzRA/lahxxrJks92dA=="
+          "hash": "nvBuApvMLq01UrfPteSj4Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3021,10 +2769,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltagePhaseExport.html",
-          "hash": "OxPeFL+r7ZzHIgm0pX1vjQ=="
+          "hash": "KSjrWn/t+mlKCpQyeAleiQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3033,10 +2781,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageRealExport.html",
-          "hash": "HXM65U1nLMyjknxsZvx4LA=="
+          "hash": "krL4pT2N20mDzDW52RoMYg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3048,7 +2796,7 @@
           "hash": "DeoFYp5/DvGWbb4/a1nyQg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3057,10 +2805,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ZeroExport.html",
-          "hash": "zMe+bTDcyRmv395en6Qeow=="
+          "hash": "WLuS7vfOvnO0illnbBRqFA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3069,10 +2817,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.html",
-          "hash": "FTw+rBPpW8A2Xc1HfniKiA=="
+          "hash": "ncuU/4Ct9m9G+gzzLswkPg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3081,10 +2829,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.FuncControl.html",
-          "hash": "UNbT5ZxP3HRy03+V2cwaFQ=="
+          "hash": "/5nNF2ud8KeLyRUZQ30Ibg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3093,10 +2841,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.GlobalControl.html",
-          "hash": "ydIJE1RoeGZ0ioTn5m44LA=="
+          "hash": "x1mIi0iJ8Wlm+Q3PcHQh5Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3105,10 +2853,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.ICControl.html",
-          "hash": "OiY59kdVhsuxCcmN6WLitg=="
+          "hash": "FqMTyyx+8Hio88sTKGAI8A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3117,10 +2865,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.LetControl.html",
-          "hash": "i+48ZhWU3fFExT3Vs1AkQw=="
+          "hash": "/O7VoZEE6A3RZlNttWwblA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3129,10 +2877,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.McControl.html",
-          "hash": "uDpASo4YAgJ7bahLzbDGwg=="
+          "hash": "tx8PAHwuOe3XPt9Q4SRqOQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3141,10 +2889,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.NodeSetControl.html",
-          "hash": "ZWBPKX2XobcWZQPIpQauEw=="
+          "hash": "6WXY41LQ0rbCwYTRwMEdYg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3153,10 +2901,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.OptionsControl.html",
-          "hash": "loMsYs3Kbm3njTafjvB2YA=="
+          "hash": "k4lgFLO/o35d5jF7ToEiZQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3165,10 +2913,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.ParamBaseControl.html",
-          "hash": "coaex7Z/dLehAp4IieEMhw=="
+          "hash": "0SnsJDz0FYYS2yQ2chzlEw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3177,10 +2925,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.ParamControl.html",
-          "hash": "anGx/D6RFXHc5fB0ZI7xtQ=="
+          "hash": "wgM93+OZzCR47or+KUmeoA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3189,10 +2937,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.PlotControl.html",
-          "hash": "wupU/L4ndNXsOKfTXofy0w=="
+          "hash": "49ceacVJbuhbeIiTYFm3Zw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3204,7 +2952,7 @@
           "hash": "XRHLGjt/adI7d8ugo4154w=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3216,7 +2964,7 @@
           "hash": "vpaha6Yhak+34Aq7fgeCSQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3228,7 +2976,7 @@
           "hash": "bGyttv6n1FS3i2THrOVn3A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3240,7 +2988,7 @@
           "hash": "3JQnQ9X/7u4FIInqL7t1RA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3252,7 +3000,7 @@
           "hash": "oXagU1RcabvRuJFn4T9xhg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3264,7 +3012,7 @@
           "hash": "8jFUZuzsK+kBpapQq+mXNw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3273,10 +3021,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.PrintControl.html",
-          "hash": "5vs1JRPQ8OKgG8b7AFBR2A=="
+          "hash": "/3kRfTigQANhl7lVQq05LQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3288,7 +3036,7 @@
           "hash": "U5zLq7f8oMwJTzYLmXcnxQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3300,7 +3048,7 @@
           "hash": "xbSUPLXejBdb13jHX76Q0A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3312,7 +3060,7 @@
           "hash": "lZEycdUxtEBmyRkeKMdFoA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3324,7 +3072,7 @@
           "hash": "JyTX0MrfqtFUnRKlj4IWuA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3333,10 +3081,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.SParamControl.html",
-          "hash": "3rGsDeUSDNdBiCHaqsV0Mg=="
+          "hash": "3X1/cwX7a4qtbDJYDrv6bA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3345,10 +3093,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.SaveControl.html",
-          "hash": "mloV31+QV2w+7APKCaEYMQ=="
+          "hash": "u2re4KcP0iKcyVo89Vzu6w=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3357,10 +3105,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ACControl.html",
-          "hash": "MyNb8ENmoS1coG1zqsD1Fg=="
+          "hash": "kp7w1Ds8g29+s5KOdqOAdg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3372,7 +3120,7 @@
           "hash": "s/5gWwYwb4GbX3sOu3B2tQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3384,7 +3132,7 @@
           "hash": "kGECN5c9IUPjjftAv1v38g=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3396,7 +3144,7 @@
           "hash": "aZfu/8VaBzouIlomCS7SeA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3405,10 +3153,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.DCControl.html",
-          "hash": "5keX4VWR64V4hxQO9grKAQ=="
+          "hash": "M6dDf0JFm7cRBXmeOCTUrw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3420,7 +3168,7 @@
           "hash": "K/qymIb79PU7EarWz3JV7g=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3429,10 +3177,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator.html",
-          "hash": "WBRZF+GuAu99NyYIMBsWVg=="
+          "hash": "URNkbTi2rOMCJgg0AgWI3g=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3444,7 +3192,7 @@
           "hash": "E9wTZGkiFAXJ0AjnmgGfsQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3456,7 +3204,7 @@
           "hash": "6zXz5zmVk6gnU9U57YMHaw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3465,10 +3213,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.html",
-          "hash": "hmBLdlOV0RoeZZtCkpqsng=="
+          "hash": "pxceyd5ucysW9/zNuP4nKg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3477,10 +3225,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllTemperaturesFactory.html",
-          "hash": "X4lfQSoLLnuCSZcYzmCNIg=="
+          "hash": "Yt4dKukyK8FdDoeoceW53A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3489,10 +3237,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForMonteCarloFactory.html",
-          "hash": "kx6k9zqFHO7RZPHgbAx8Dw=="
+          "hash": "lai/mA8p83mdFRqDTAqNqg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3501,10 +3249,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory.html",
-          "hash": "L4QxAJMe8nq78TKa6KVWeg=="
+          "hash": "HK0gkp8V5rBSQWpEUPYU5A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3513,10 +3261,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllTemperaturesFactory.html",
-          "hash": "GG7wriB8Cq2EpE712x7nAw=="
+          "hash": "hiuEmEsyztDO+jN6KnjgOA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3525,10 +3273,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForMonteCarloFactory.html",
-          "hash": "guu3cmcSxyGi9N3E/H8lYA=="
+          "hash": "N3h41lFoZ/deMXXoix2p8g=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3540,7 +3288,7 @@
           "hash": "UnWyrZ8qsUfWeZdEtZJBIw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3552,7 +3300,7 @@
           "hash": "y3mBfq6vIkquv8eiy4ACvw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3561,10 +3309,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ISimulationsFactory.html",
-          "hash": "sbWKL0ZsVMl8CqqTWASxZg=="
+          "hash": "FkGMPkgfb8O0sHuEPCMLNw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3573,10 +3321,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.MonteCarloResult.html",
-          "hash": "lv+6sIDISNOdCye0ynfMFg=="
+          "hash": "jHc5S53xdUcu9VJtzxxj1w=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3585,10 +3333,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl.html",
-          "hash": "zxBJSC2Aqf9QCTJ2YothRQ=="
+          "hash": "JVUuDzNT/v0gxe5OhyIkvQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3597,10 +3345,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.OPControl.html",
-          "hash": "KVmOB+MiukINnpr09G2abw=="
+          "hash": "P41j9/W0KexxJkpJMiSRow=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3609,10 +3357,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl.html",
-          "hash": "iKtNlqjiNwB7GX2KHgDBKg=="
+          "hash": "Iylm6VfcixJPJ9zs35qzMQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3621,10 +3369,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationsFactory.html",
-          "hash": "svfCm6eKX/4q/gHFnvge9g=="
+          "hash": "N0YdqZ+2cE3mRMUaSzV5yA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3633,10 +3381,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.TransientControl.html",
-          "hash": "Trbf6sP2dwiHrQ9QP0LPyA=="
+          "hash": "aYMrMMpBWprxzzNIhUAKyQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3648,7 +3396,7 @@
           "hash": "8+HjbeLhQCEZj6aNKH3MRQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3657,10 +3405,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.StControl.html",
-          "hash": "c1DdwMh6h32i+NBgkzHuVA=="
+          "hash": "waYIf7l0byhar80/yJmDxw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3669,10 +3417,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.StRegisterControl.html",
-          "hash": "56Ps8gvG6ZGMEMyhusZHfg=="
+          "hash": "hlrcWC5LG9VcFVnDxMGRfQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3681,10 +3429,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.StepControl.html",
-          "hash": "9M5DLPEEOTE2ZUwsq8Nh6Q=="
+          "hash": "OYm0sPQ2jmM+/et2QP+wKA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3693,10 +3441,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.StepRegisterControl.html",
-          "hash": "ylJkwZI+eXDSI9gjhVzs6w=="
+          "hash": "HxLZHFRY8HyDD8SfdjT26Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3705,10 +3453,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.TempControl.html",
-          "hash": "rH4dmN5fnniKP8eKZPEHGg=="
+          "hash": "BnXIj7PEAGyLjWlkzIXvsQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3720,7 +3468,7 @@
           "hash": "VOgPbGQBJzN51vDIZwezcw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3729,10 +3477,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.html",
-          "hash": "eK2Qy371/WMqJpRd02IncA=="
+          "hash": "Sz9sDkhf+qG9KrhrU7iAzw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3741,10 +3489,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Distributed.LosslessTransmissionLineGenerator.html",
-          "hash": "PtlRrrqnuyt/3mJnCTLI9A=="
+          "hash": "1w2wzaUKtljxo6yynpcIAw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3753,10 +3501,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Distributed.VoltageDelayGenerator.html",
-          "hash": "M8CJjmprZc+GnQZ0p2VW0g=="
+          "hash": "hXIroaSx/2QDXpD355bSvA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3768,7 +3516,7 @@
           "hash": "FemJVZOKRCOIQM/uggkOaQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3777,10 +3525,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.RLCKGenerator.html",
-          "hash": "EY0DbV76Gl3S8VP2FWUl4A=="
+          "hash": "r5fDsuKMwRbKRNQBR0YOXQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3789,10 +3537,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.BipolarJunctionTransistorGenerator.html",
-          "hash": "dO+Z88ICPdwkWk3SNpirlQ=="
+          "hash": "bLqcfoLgrpBsf2AGalPavg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3801,10 +3549,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.DiodeGenerator.html",
-          "hash": "K2Evne43YT1mzHjrP5oq3Q=="
+          "hash": "HdJ/wKsZUIZyxDtPYmHgjQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3813,10 +3561,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.JFETGenerator.html",
-          "hash": "xh25X/1gYxCVEhOkpXZ11A=="
+          "hash": "8CK6UPtzZdjY6IZuA++sDw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3825,10 +3573,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.MosfetGenerator.MosfetDetails.html",
-          "hash": "HRxg01cKnHLA6FPsh7PQmw=="
+          "hash": "m57dHNVvUj3Re9D4BzGl2w=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3837,10 +3585,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.MosfetGenerator.html",
-          "hash": "E9bdo03V+qSCcYPsPmGB1Q=="
+          "hash": "srdSexoVl82wOod5it1RtQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3852,7 +3600,19 @@
           "hash": "+i5BeSU83Vcj+C9E0LcV8Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.ArbitraryBehavioralGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.ArbitraryBehavioralGenerator.html",
+          "hash": "hTM+XnRQnWgIw/akSHV1gg=="
+        }
+      },
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3861,10 +3621,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.CurrentSourceGenerator.html",
-          "hash": "QV7lBmqWSNz544Jpixh5Fw=="
+          "hash": "Z6QLt4v/biA0W10Razj4Dg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3876,7 +3636,7 @@
           "hash": "/3YR1b2+liRzQ1MUx6FsKg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3885,10 +3645,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.html",
-          "hash": "s4ifcH512zzYQw21YzPmHg=="
+          "hash": "HksW+URAwl+06Hc3VqFLaQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3897,10 +3657,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.html",
-          "hash": "2eZh8VeP/XwyNhfPA73lBw=="
+          "hash": "l+Ru9stNE3HHy6uTJct61A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3909,10 +3669,22 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.html",
-          "hash": "3AOs5pSIHLLIg07kHubFkw=="
+          "hash": "6VSddkgujWTMAsMsGCpDUw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData.html",
+          "hash": "U7PHCe+GRPWOxIbDam0hNw=="
+        }
+      },
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3921,10 +3693,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.html",
-          "hash": "y4OHjZk4+92wlSr++j+40w=="
+          "hash": "hgGqTAEMtJUyWhjbdmJNsQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3933,10 +3705,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SwitchGenerator.html",
-          "hash": "QjwOnEcKMvTvLNFce0KTYQ=="
+          "hash": "4gGnuv5R69g5UH6K2xFXTg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3945,10 +3717,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.html",
-          "hash": "T7PJae0JaR/AjPJMAd832Q=="
+          "hash": "LdsPQyC1zGtclDy0nnLmcA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3957,10 +3729,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IComponentGenerator.html",
-          "hash": "7FmyskaNFE6v7U95RbMNxQ=="
+          "hash": "gP/BU62EoqX2tvlWOFqnxA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3969,10 +3741,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator.html",
-          "hash": "62I/XUTbrOxI50qiZu1LTg=="
+          "hash": "QSSjA8YBNVcKfLw4oW29LQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3981,10 +3753,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelsGenerator.html",
-          "hash": "DGGzHIFbf1P5eoU18MGnBQ=="
+          "hash": "7t6fxbpuJ0dWi0jsNcY6YA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -3993,10 +3765,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.BipolarModelGenerator.html",
-          "hash": "lLoQrE8Bd0C1v8kuiWYAzg=="
+          "hash": "lLZ4YHj1jOd8ag6RHQDblw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4005,10 +3777,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.DiodeModelGenerator.html",
-          "hash": "Oxe9eDV78RYbTQEdb2sAUg=="
+          "hash": "6I5bjZrM/uuro4b5kDTtsw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4017,10 +3789,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.JFETModelGenerator.html",
-          "hash": "agSRJZ14nCswad3BtVCtUQ=="
+          "hash": "khbi2KBfvzLPIQoONHvnvQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4029,10 +3801,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.ModelGenerator.html",
-          "hash": "uZaVUsFtXZOV29zDsM14lQ=="
+          "hash": "6rD4hRw6qNinaKZFSWyZAA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4041,10 +3813,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.MosfetModelGenerator.html",
-          "hash": "BMFL+0rvnynMUvR87dxhXA=="
+          "hash": "rV3r5SuF2o/WiUni+V/vgA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4053,10 +3825,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.RLCModelGenerator.html",
-          "hash": "zpUDW/p0aR4s6JPUZxJ6HA=="
+          "hash": "a+N9685ZFDQYi7cQmYJG+w=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4065,10 +3837,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.SwitchModelGenerator.html",
-          "hash": "7so69aZGy+55hQ004fLICQ=="
+          "hash": "h01qHEUhagdZAAboo8vFNQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4080,7 +3852,7 @@
           "hash": "ZNn3MnEt5bBaZe+JE4C7SQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4089,10 +3861,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.StochasticModelsGenerator.html",
-          "hash": "U+r6zbQ+Ic/kShfKJ/ThSw=="
+          "hash": "Yqao5GBfwgPI3b6vDjGgAQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4104,7 +3876,7 @@
           "hash": "9zO87tktcZ1sUAL5wQHLqQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4113,10 +3885,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ICommentReader.html",
-          "hash": "TffeiBve7bG4Dx7Dr3nKOw=="
+          "hash": "9wZ79e7qvcwjD753sjIFpw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4125,10 +3897,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IComponentReader.html",
-          "hash": "3Sic0Y35teQaGWgib9NrEA=="
+          "hash": "GEVxIUYtSbOD14RFWgMC0Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4137,10 +3909,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IControlReader.html",
-          "hash": "CF+EdkU3NDeu7F5B1ocm/g=="
+          "hash": "FzJTWLhmN44yxl0JW27Bfg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4149,10 +3921,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IModelReader.html",
-          "hash": "a1gN7WpN2es2Gt9ktEvKjg=="
+          "hash": "uZd29fmBYRqMKSib0AC82g=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4161,10 +3933,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IStatementReader.html",
-          "hash": "DJ4vLICVNu5HaxggJp1ahg=="
+          "hash": "h8Cc7srYWSnlw8CEkGHxxQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4173,10 +3945,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ISubcircuitDefinitionReader.html",
-          "hash": "gH9QsFX3MYmcG05VkSH3Ig=="
+          "hash": "nTVIZrSfNCmGl/7t8gDfDQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4185,10 +3957,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IWaveformReader.html",
-          "hash": "8x9szDbtjC6Sh3vpxTv/cA=="
+          "hash": "6BICH88pOhugam+6Zi2iFg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4197,10 +3969,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ModelReader.html",
-          "hash": "uYNR8rTaNfrL+/+6F/EMrg=="
+          "hash": "JrutTa9JMBC54IJS+KLSGQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4209,10 +3981,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader-1.html",
-          "hash": "5D8yx5wl7EabZhAyvZFmhw=="
+          "hash": "2qQ/pYWvjovvE7vQiC21pw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4221,10 +3993,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.SubcircuitDefinitionReader.html",
-          "hash": "27ioDnapPO8OTOapigK8Vw=="
+          "hash": "MQOze61yZCOauDc45BY5nA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4233,10 +4005,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.WaveformReader.html",
-          "hash": "KtNGqSH4rcDItcq+1Jsqng=="
+          "hash": "E1UmjK/PHWhHTyL86hde1A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4245,10 +4017,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.PulseGenerator.html",
-          "hash": "LSETW24dBl57gHciKqjtIw=="
+          "hash": "ZEfFsMTtgVKbFB+22AGx7Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4257,10 +4029,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.PwlGenerator.html",
-          "hash": "j5a8h99gm7BvnlANp6+LOA=="
+          "hash": "PxVIIxjhC7RbDnb31e014w=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4269,10 +4041,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.SineGenerator.html",
-          "hash": "Iw4c+O4fWJE4j1v+98VaWQ=="
+          "hash": "zo+xgZNMxJWC7RGvv0rW7A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4281,10 +4053,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.WaveformGenerator.html",
-          "hash": "oOebDEhqpZLAbKwWCrbRJg=="
+          "hash": "mWXGmt76S7KKGmW7bf9ZnA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4296,7 +4068,7 @@
           "hash": "icwm0ihfaEib20iyHxbYXQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4308,7 +4080,7 @@
           "hash": "g7ngTeeHeLg6UljFid1uHw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4317,10 +4089,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistCaseSensitivitySettings.html",
-          "hash": "ilSsTzun4oP10M1HbxhzNA=="
+          "hash": "Bx1kQVanpvIUmG7MvehITg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4329,10 +4101,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReader.html",
-          "hash": "RStuAON70XrrWuZE6yMxRQ=="
+          "hash": "JYfBTN32LHQ7uRoI1jq6jA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4341,10 +4113,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.html",
-          "hash": "gyBznbyDCIuSJxOk2irB6A=="
+          "hash": "RRC2pIfeLgbjEezMYJsgeg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4353,10 +4125,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderSettings.html",
-          "hash": "jc8H3o4shjppBQcP2VoVig=="
+          "hash": "1Df69XxkdIobJFb8kUHnUA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4365,10 +4137,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceObjectMappings.html",
-          "hash": "jOo1xgyVuMbrlaD1vjAj9g=="
+          "hash": "bos6rE6TpYRBzoiv2A4A/A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4377,10 +4149,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer.html",
-          "hash": "sQ6Qxq9CFPTaonUuVxUrmA=="
+          "hash": "1WoElt6FUU0xkoNXJAcSBA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4389,10 +4161,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsReader.html",
-          "hash": "UBhI3FSOc9TClVs3bSa9dw=="
+          "hash": "o4LePKFLEb3Xym2fV0Sarg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4401,10 +4173,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.ModelReaders.Netlist.Spice.html",
-          "hash": "JxRCXZVaZiJmEyRCIDmGIQ=="
+          "hash": "bhxKX/aeZG3d4jKBKLNu1A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4416,7 +4188,7 @@
           "hash": "iHURAtgjIqXa3zEt5UQxEQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4428,7 +4200,7 @@
           "hash": "B/BY8sNFoH/kEC5YZpYGFw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4440,7 +4212,7 @@
           "hash": "VnaxL3+bQOb/Q0mKaJ+mkQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4452,7 +4224,7 @@
           "hash": "5XUrDKsfIBAYBHtCaw9ETw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4461,10 +4233,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.html",
-          "hash": "xH3BuS41pF1Th22cGF7p7Q=="
+          "hash": "YUoTobAvAXJfHzE9auFNkw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4473,10 +4245,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.html",
-          "hash": "7N8TTbxxsY7wuZCP/oa28g=="
+          "hash": "/huq2649XenoAWv4u+cAlA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4485,10 +4257,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.html",
-          "hash": "/TjLT1FE9w2hHlNtAZzCPw=="
+          "hash": "VKHoNM5qANv/ESG8IxaBjw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4497,10 +4269,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.BracketParameter.html",
-          "hash": "yBJIHL1tv6q6qiHHVm1cag=="
+          "hash": "1YmYIgv4c1SassUsm0+ZjA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4509,10 +4281,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ExpressionEqualParameter.html",
-          "hash": "ZwFSVW+a5DryWYB+suOV5A=="
+          "hash": "233MRAR0ktP4mfSkmZUZFw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4521,10 +4293,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ExpressionParameter.html",
-          "hash": "ek5+Ups11ooWDOlib5yMjg=="
+          "hash": "zAIbt90thywviQf8Dni2rg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4533,10 +4305,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.IdentifierParameter.html",
-          "hash": "J3qnBhQf+mSGXVhkb9EDoA=="
+          "hash": "VALNiG1vk0a8mAdLAINgaw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4545,10 +4317,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.PercentParameter.html",
-          "hash": "CyNpA/M5IUPL/187mx78Gg=="
+          "hash": "xkZuFCfaNw0Zw4jlUBBkQg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4557,10 +4329,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.PointParameter.html",
-          "hash": "WPGlfOlQxQATysW96LKNPg=="
+          "hash": "RTx1MlSmusrpLkYZfpUDqg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4572,7 +4344,7 @@
           "hash": "0ZEmDYRqRoIEiDE4C8PAGw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4584,7 +4356,7 @@
           "hash": "/Mo6q1w8pXhcmzU6OETPQw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4593,10 +4365,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ReferenceParameter.html",
-          "hash": "BIQoOnwdg9oP6UeOm+uzyg=="
+          "hash": "Hq/rC5sxJ3VPN+gAP95iqQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4605,10 +4377,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.SingleParameter.html",
-          "hash": "qd0bTEmAi0DOYC2oTYYspg=="
+          "hash": "iEcm9VIvA8gIgY0hRHFA+A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4617,10 +4389,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.StringParameter.html",
-          "hash": "Fgn1ScMnPiahjXmfjKx5vQ=="
+          "hash": "s7ptx4gldlGigOgPG2WFyg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4629,10 +4401,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ValueParameter.html",
-          "hash": "HHTKCkG74MPgxVERIczO5g=="
+          "hash": "oO4uLLDucFwRDzvqgPxxCA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4641,10 +4413,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.VectorParameter.html",
-          "hash": "UmGFXbJTTK0UiS060hvz6Q=="
+          "hash": "9pjxxKjttOZfSohd5Pp4OA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4653,10 +4425,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.WordParameter.html",
-          "hash": "GBiVmG8/Ul/sjWU/KRPV1w=="
+          "hash": "E2k2SA1Kbb1YC9KQ3kPVtw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4668,7 +4440,7 @@
           "hash": "jmMQLWRory413L0OITYNgA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4680,7 +4452,7 @@
           "hash": "hUBVWCj+OKLaHGdANWf6/A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4692,7 +4464,7 @@
           "hash": "7+6V4R5Nb+E+rV3w47/uvw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4704,7 +4476,7 @@
           "hash": "fbdGrrkyrHzF4DwsyAni7Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4716,7 +4488,7 @@
           "hash": "S7Azz6CgJWYs80xyRg4s9Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4728,7 +4500,7 @@
           "hash": "sbuQm/QE0RmH0bmcyDQiQQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4740,7 +4512,7 @@
           "hash": "pglFbjTDJZoI4lzFw5udtA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4752,31 +4524,43 @@
           "hash": "pLinsI2jJ0IoVB18uYCUig=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Parsers.Expression.FunctionNotFoundException.yml",
+      "source_relative_path": "api/SpiceSharpParser.Parsers.Expression.ExpressionParser.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Parsers.Expression.FunctionNotFoundException.html",
-          "hash": "ZppuLcD3BFaVkMCKHsv7gg=="
+          "relative_path": "api/SpiceSharpParser.Parsers.Expression.ExpressionParser.html",
+          "hash": "lLM/7LvFSzaKoyGJw1dHjw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/SpiceSharpParser.Parsers.Expression.SpiceExpressionParser.yml",
+      "source_relative_path": "api/SpiceSharpParser.Parsers.Expression.IExpressionParser.yml",
       "output": {
         ".html": {
-          "relative_path": "api/SpiceSharpParser.Parsers.Expression.SpiceExpressionParser.html",
-          "hash": "2EHHNrZFUyTDX22TQksuvA=="
+          "relative_path": "api/SpiceSharpParser.Parsers.Expression.IExpressionParser.html",
+          "hash": "4FhHOtjzhsbJzuU8tBYEzw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SpiceSharpParser.Parsers.Expression.SimpleDerivativeParserExtended.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SpiceSharpParser.Parsers.Expression.SimpleDerivativeParserExtended.html",
+          "hash": "2ic2EaeOGZjrFJZwAMwSFQ=="
+        }
+      },
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4785,10 +4569,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Parsers.Expression.html",
-          "hash": "rWEQX1G0anReaM5ztdIFHg=="
+          "hash": "xW23XbqERssUwvB0pOuBWQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4800,7 +4584,7 @@
           "hash": "8e5CB3VDOmWlE/BHm0CiiQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4812,7 +4596,7 @@
           "hash": "wBYCYdL4TNxmEnqIroXoAg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4824,7 +4608,7 @@
           "hash": "RVGIURofjjTKcoLE0ZBurQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4836,7 +4620,7 @@
           "hash": "shXIghrJKL0Btb0eB48VNQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4848,7 +4632,7 @@
           "hash": "OeLG/iTUgfi24kDO+h1Q7w=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4860,7 +4644,7 @@
           "hash": "mnLpypx8qkczLJT7MhLI8g=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4872,7 +4656,7 @@
           "hash": "84KebRobJZkEUl/9YqKBPQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4884,7 +4668,7 @@
           "hash": "b9ZrslpV+HexK0q4FMXXEw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4893,10 +4677,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.Internals.ParseTreeGenerator.html",
-          "hash": "ebz+tPKGr4vMXMPv+QmeHg=="
+          "hash": "Ly4Z5ECr8Q7NoT8jKsOn+Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4908,7 +4692,7 @@
           "hash": "wJem9tuqizQRUNkllKLIkw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4917,10 +4701,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.Internals.ParseTreeNodeEvaluationValues.html",
-          "hash": "FqMrKZH1R2hTzaEAi9pTtQ=="
+          "hash": "I4DXh6/bdKqLITaVUIQzYQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4932,7 +4716,7 @@
           "hash": "MQ735QdVlRxGndeLDnirrQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4944,7 +4728,7 @@
           "hash": "3qRtU1vbVAkefmHZG3xbZg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4956,7 +4740,7 @@
           "hash": "5gO3dXWaUpuJF9iKAio4pQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4968,7 +4752,7 @@
           "hash": "rj9FM1gB99rD+Xc+w2cZNw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4980,7 +4764,7 @@
           "hash": "vsc94GmBSn4JDln42gn9HA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -4992,7 +4776,7 @@
           "hash": "y1Ga5EeCkkY0qPB+QOAZ2w=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -5001,10 +4785,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.Parsers.Netlist.Spice.Symbols.html",
-          "hash": "oAg3/S8yBpF8OnsT6nZ1DQ=="
+          "hash": "kn3nqXpTkFa5o/PStBHMpQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -5016,7 +4800,7 @@
           "hash": "t964pRI+yqUDVWIKXjGfcw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -5028,7 +4812,7 @@
           "hash": "JkK7EB67uUCIE6/TtzwmJA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -5037,10 +4821,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.SpiceParser.html",
-          "hash": "XO+I1SZEEltV56CAk/8wiA=="
+          "hash": "aDt/heqdjfM2B9rkC9Rv6Q=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -5049,10 +4833,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.SpiceParserResult.html",
-          "hash": "/OhjpWxmDgPv5bYsmKeWxQ=="
+          "hash": "3YTT2HYik7jC/c+mD6FAgA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -5061,10 +4845,10 @@
       "output": {
         ".html": {
           "relative_path": "api/SpiceSharpParser.SpiceParserSettings.html",
-          "hash": "MRu+2zaFYiVphD3OOMH2Hw=="
+          "hash": "94dyqV77skjfx7YhULWKNg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -5076,7 +4860,7 @@
           "hash": "bt4Xn8KvwJ3H211L7xULAA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -5088,7 +4872,7 @@
           "hash": "NWgApiFZ9Pp4suL15GdESg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -5097,7 +4881,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "3EtYQzze50GiSmFnzgwGPA=="
+          "hash": "l/lo8inrA/WwITQSDG9chg=="
         }
       },
       "is_incremental": false,
@@ -5112,7 +4896,7 @@
           "hash": "A7ITs/daB0mQ1q4eEJzc6w=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -5136,7 +4920,7 @@
           "hash": "x+i8+aLXsmMK5F4wc+FtQQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -5155,8 +4939,7 @@
   "incremental_info": [
     {
       "status": {
-        "can_incremental": false,
-        "details": "Cannot build incrementally because last build info is missing.",
+        "can_incremental": true,
         "incrementalPhase": "build",
         "total_file_count": 0,
         "skipped_file_count": 0
@@ -5169,24 +4952,24 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build",
+          "total_file_count": 405,
+          "skipped_file_count": 405
+        },
         "ConceptualDocumentProcessor": {
-          "can_incremental": false,
+          "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 3,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 423,
-          "skipped_file_count": 0
+          "skipped_file_count": 3
         }
       }
     },
     {
       "status": {
-        "can_incremental": false,
-        "details": "Cannot support incremental post processing, the reason is: last post processor info is null.",
+        "can_incremental": true,
+        "details": "Can support incremental post processing.",
         "incrementalPhase": "postProcessing",
         "total_file_count": 0,
         "skipped_file_count": 0

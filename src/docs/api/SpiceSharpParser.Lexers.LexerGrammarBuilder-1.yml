@@ -1,0 +1,617 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Lexers.LexerGrammarBuilder`1
+  commentId: T:SpiceSharpParser.Lexers.LexerGrammarBuilder`1
+  id: LexerGrammarBuilder`1
+  parent: SpiceSharpParser.Lexers
+  children:
+  - SpiceSharpParser.Lexers.LexerGrammarBuilder`1.AddDynamicRule(SpiceSharpParser.Lexers.LexerDynamicRule)
+  - SpiceSharpParser.Lexers.LexerGrammarBuilder`1.AddRegexRule(SpiceSharpParser.Lexers.LexerRegexRule)
+  - SpiceSharpParser.Lexers.LexerGrammarBuilder`1.Clear
+  - SpiceSharpParser.Lexers.LexerGrammarBuilder`1.GetGrammar
+  langs:
+  - csharp
+  - vb
+  name: LexerGrammarBuilder<TLexerState>
+  nameWithType: LexerGrammarBuilder<TLexerState>
+  fullName: SpiceSharpParser.Lexers.LexerGrammarBuilder<TLexerState>
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/LexerGrammarBuilder.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: LexerGrammarBuilder
+    path: ../SpiceSharpParser/Lexers/LexerGrammarBuilder.cs
+    startLine: 11
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers
+  summary: "\nBuilder for LexerGrammar object from lexer rules either of type LexerTokenRole or LexerInternalRule.\n"
+  example: []
+  syntax:
+    content: >-
+      public class LexerGrammarBuilder<TLexerState>
+          where TLexerState : LexerState
+    typeParameters:
+    - id: TLexerState
+      description: A type of lexer state.
+    content.vb: Public Class LexerGrammarBuilder(Of TLexerState As LexerState)
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  nameWithType.vb: LexerGrammarBuilder(Of TLexerState)
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammarBuilder(Of TLexerState)
+  name.vb: LexerGrammarBuilder(Of TLexerState)
+- uid: SpiceSharpParser.Lexers.LexerGrammarBuilder`1.Clear
+  commentId: M:SpiceSharpParser.Lexers.LexerGrammarBuilder`1.Clear
+  id: Clear
+  parent: SpiceSharpParser.Lexers.LexerGrammarBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: LexerGrammarBuilder<TLexerState>.Clear()
+  fullName: SpiceSharpParser.Lexers.LexerGrammarBuilder<TLexerState>.Clear()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/LexerGrammarBuilder.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Clear
+    path: ../SpiceSharpParser/Lexers/LexerGrammarBuilder.cs
+    startLine: 20
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers
+  summary: "\nClears the builder.\n"
+  example: []
+  syntax:
+    content: public void Clear()
+    content.vb: Public Sub Clear
+  overload: SpiceSharpParser.Lexers.LexerGrammarBuilder`1.Clear*
+  nameWithType.vb: LexerGrammarBuilder(Of TLexerState).Clear()
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammarBuilder(Of TLexerState).Clear()
+- uid: SpiceSharpParser.Lexers.LexerGrammarBuilder`1.AddRegexRule(SpiceSharpParser.Lexers.LexerRegexRule)
+  commentId: M:SpiceSharpParser.Lexers.LexerGrammarBuilder`1.AddRegexRule(SpiceSharpParser.Lexers.LexerRegexRule)
+  id: AddRegexRule(SpiceSharpParser.Lexers.LexerRegexRule)
+  parent: SpiceSharpParser.Lexers.LexerGrammarBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: AddRegexRule(LexerRegexRule)
+  nameWithType: LexerGrammarBuilder<TLexerState>.AddRegexRule(LexerRegexRule)
+  fullName: SpiceSharpParser.Lexers.LexerGrammarBuilder<TLexerState>.AddRegexRule(SpiceSharpParser.Lexers.LexerRegexRule)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/LexerGrammarBuilder.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: AddRegexRule
+    path: ../SpiceSharpParser/Lexers/LexerGrammarBuilder.cs
+    startLine: 32
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers
+  summary: "\nAdds a rule to builder.\n"
+  example: []
+  syntax:
+    content: public void AddRegexRule(LexerRegexRule rule)
+    parameters:
+    - id: rule
+      type: SpiceSharpParser.Lexers.LexerRegexRule
+      description: "\nA lexer rule.\n"
+    content.vb: Public Sub AddRegexRule(rule As LexerRegexRule)
+  overload: SpiceSharpParser.Lexers.LexerGrammarBuilder`1.AddRegexRule*
+  nameWithType.vb: LexerGrammarBuilder(Of TLexerState).AddRegexRule(LexerRegexRule)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammarBuilder(Of TLexerState).AddRegexRule(SpiceSharpParser.Lexers.LexerRegexRule)
+- uid: SpiceSharpParser.Lexers.LexerGrammarBuilder`1.AddDynamicRule(SpiceSharpParser.Lexers.LexerDynamicRule)
+  commentId: M:SpiceSharpParser.Lexers.LexerGrammarBuilder`1.AddDynamicRule(SpiceSharpParser.Lexers.LexerDynamicRule)
+  id: AddDynamicRule(SpiceSharpParser.Lexers.LexerDynamicRule)
+  parent: SpiceSharpParser.Lexers.LexerGrammarBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: AddDynamicRule(LexerDynamicRule)
+  nameWithType: LexerGrammarBuilder<TLexerState>.AddDynamicRule(LexerDynamicRule)
+  fullName: SpiceSharpParser.Lexers.LexerGrammarBuilder<TLexerState>.AddDynamicRule(SpiceSharpParser.Lexers.LexerDynamicRule)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/LexerGrammarBuilder.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: AddDynamicRule
+    path: ../SpiceSharpParser/Lexers/LexerGrammarBuilder.cs
+    startLine: 48
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers
+  summary: "\nAdds a rule to builder.\n"
+  example: []
+  syntax:
+    content: public void AddDynamicRule(LexerDynamicRule rule)
+    parameters:
+    - id: rule
+      type: SpiceSharpParser.Lexers.LexerDynamicRule
+      description: "\nA lexer rule.\n"
+    content.vb: Public Sub AddDynamicRule(rule As LexerDynamicRule)
+  overload: SpiceSharpParser.Lexers.LexerGrammarBuilder`1.AddDynamicRule*
+  nameWithType.vb: LexerGrammarBuilder(Of TLexerState).AddDynamicRule(LexerDynamicRule)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammarBuilder(Of TLexerState).AddDynamicRule(SpiceSharpParser.Lexers.LexerDynamicRule)
+- uid: SpiceSharpParser.Lexers.LexerGrammarBuilder`1.GetGrammar
+  commentId: M:SpiceSharpParser.Lexers.LexerGrammarBuilder`1.GetGrammar
+  id: GetGrammar
+  parent: SpiceSharpParser.Lexers.LexerGrammarBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: GetGrammar()
+  nameWithType: LexerGrammarBuilder<TLexerState>.GetGrammar()
+  fullName: SpiceSharpParser.Lexers.LexerGrammarBuilder<TLexerState>.GetGrammar()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/LexerGrammarBuilder.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetGrammar
+    path: ../SpiceSharpParser/Lexers/LexerGrammarBuilder.cs
+    startLine: 64
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers
+  summary: "\nGets the generated grammar.\n"
+  example: []
+  syntax:
+    content: public LexerGrammar<TLexerState> GetGrammar()
+    return:
+      type: SpiceSharpParser.Lexers.LexerGrammar{{TLexerState}}
+      description: "\nA new grammar that contains rules that were added.\n"
+    content.vb: Public Function GetGrammar As LexerGrammar(Of TLexerState)
+  overload: SpiceSharpParser.Lexers.LexerGrammarBuilder`1.GetGrammar*
+  nameWithType.vb: LexerGrammarBuilder(Of TLexerState).GetGrammar()
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammarBuilder(Of TLexerState).GetGrammar()
+references:
+- uid: SpiceSharpParser.Lexers
+  commentId: N:SpiceSharpParser.Lexers
+  name: SpiceSharpParser.Lexers
+  nameWithType: SpiceSharpParser.Lexers
+  fullName: SpiceSharpParser.Lexers
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.Lexers.LexerGrammarBuilder`1.Clear*
+  commentId: Overload:SpiceSharpParser.Lexers.LexerGrammarBuilder`1.Clear
+  name: Clear
+  nameWithType: LexerGrammarBuilder<TLexerState>.Clear
+  fullName: SpiceSharpParser.Lexers.LexerGrammarBuilder<TLexerState>.Clear
+  nameWithType.vb: LexerGrammarBuilder(Of TLexerState).Clear
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammarBuilder(Of TLexerState).Clear
+- uid: SpiceSharpParser.Lexers.LexerGrammarBuilder`1.AddRegexRule*
+  commentId: Overload:SpiceSharpParser.Lexers.LexerGrammarBuilder`1.AddRegexRule
+  name: AddRegexRule
+  nameWithType: LexerGrammarBuilder<TLexerState>.AddRegexRule
+  fullName: SpiceSharpParser.Lexers.LexerGrammarBuilder<TLexerState>.AddRegexRule
+  nameWithType.vb: LexerGrammarBuilder(Of TLexerState).AddRegexRule
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammarBuilder(Of TLexerState).AddRegexRule
+- uid: SpiceSharpParser.Lexers.LexerRegexRule
+  commentId: T:SpiceSharpParser.Lexers.LexerRegexRule
+  parent: SpiceSharpParser.Lexers
+  name: LexerRegexRule
+  nameWithType: LexerRegexRule
+  fullName: SpiceSharpParser.Lexers.LexerRegexRule
+- uid: SpiceSharpParser.Lexers.LexerGrammarBuilder`1.AddDynamicRule*
+  commentId: Overload:SpiceSharpParser.Lexers.LexerGrammarBuilder`1.AddDynamicRule
+  name: AddDynamicRule
+  nameWithType: LexerGrammarBuilder<TLexerState>.AddDynamicRule
+  fullName: SpiceSharpParser.Lexers.LexerGrammarBuilder<TLexerState>.AddDynamicRule
+  nameWithType.vb: LexerGrammarBuilder(Of TLexerState).AddDynamicRule
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammarBuilder(Of TLexerState).AddDynamicRule
+- uid: SpiceSharpParser.Lexers.LexerDynamicRule
+  commentId: T:SpiceSharpParser.Lexers.LexerDynamicRule
+  parent: SpiceSharpParser.Lexers
+  name: LexerDynamicRule
+  nameWithType: LexerDynamicRule
+  fullName: SpiceSharpParser.Lexers.LexerDynamicRule
+- uid: SpiceSharpParser.Lexers.LexerGrammarBuilder`1.GetGrammar*
+  commentId: Overload:SpiceSharpParser.Lexers.LexerGrammarBuilder`1.GetGrammar
+  name: GetGrammar
+  nameWithType: LexerGrammarBuilder<TLexerState>.GetGrammar
+  fullName: SpiceSharpParser.Lexers.LexerGrammarBuilder<TLexerState>.GetGrammar
+  nameWithType.vb: LexerGrammarBuilder(Of TLexerState).GetGrammar
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammarBuilder(Of TLexerState).GetGrammar
+- uid: SpiceSharpParser.Lexers.LexerGrammar{{TLexerState}}
+  commentId: T:SpiceSharpParser.Lexers.LexerGrammar{`0}
+  parent: SpiceSharpParser.Lexers
+  definition: SpiceSharpParser.Lexers.LexerGrammar`1
+  name: LexerGrammar<TLexerState>
+  nameWithType: LexerGrammar<TLexerState>
+  fullName: SpiceSharpParser.Lexers.LexerGrammar<TLexerState>
+  nameWithType.vb: LexerGrammar(Of TLexerState)
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammar(Of TLexerState)
+  name.vb: LexerGrammar(Of TLexerState)
+  spec.csharp:
+  - uid: SpiceSharpParser.Lexers.LexerGrammar`1
+    name: LexerGrammar
+    nameWithType: LexerGrammar
+    fullName: SpiceSharpParser.Lexers.LexerGrammar
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TLexerState
+    nameWithType: TLexerState
+    fullName: TLexerState
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.Lexers.LexerGrammar`1
+    name: LexerGrammar
+    nameWithType: LexerGrammar
+    fullName: SpiceSharpParser.Lexers.LexerGrammar
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TLexerState
+    nameWithType: TLexerState
+    fullName: TLexerState
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Lexers.LexerGrammar`1
+  commentId: T:SpiceSharpParser.Lexers.LexerGrammar`1
+  name: LexerGrammar<TLexerState>
+  nameWithType: LexerGrammar<TLexerState>
+  fullName: SpiceSharpParser.Lexers.LexerGrammar<TLexerState>
+  nameWithType.vb: LexerGrammar(Of TLexerState)
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammar(Of TLexerState)
+  name.vb: LexerGrammar(Of TLexerState)
+  spec.csharp:
+  - uid: SpiceSharpParser.Lexers.LexerGrammar`1
+    name: LexerGrammar
+    nameWithType: LexerGrammar
+    fullName: SpiceSharpParser.Lexers.LexerGrammar
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TLexerState
+    nameWithType: TLexerState
+    fullName: TLexerState
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.Lexers.LexerGrammar`1
+    name: LexerGrammar
+    nameWithType: LexerGrammar
+    fullName: SpiceSharpParser.Lexers.LexerGrammar
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TLexerState
+    nameWithType: TLexerState
+    fullName: TLexerState
+  - name: )
+    nameWithType: )
+    fullName: )

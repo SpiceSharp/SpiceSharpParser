@@ -1,0 +1,431 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition
+  id: TableFunction.LineDefinition
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition.A
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition.B
+  langs:
+  - csharp
+  - vb
+  name: TableFunction.LineDefinition
+  nameWithType: TableFunction.LineDefinition
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/Math/TableFunction.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: LineDefinition
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/Math/TableFunction.cs
+    startLine: 76
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
+  syntax:
+    content: public class LineDefinition
+    content.vb: Public Class LineDefinition
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition.A
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition.A
+  id: A
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition
+  langs:
+  - csharp
+  - vb
+  name: A
+  nameWithType: TableFunction.LineDefinition.A
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition.A
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/Math/TableFunction.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: A
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/Math/TableFunction.cs
+    startLine: 78
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
+  syntax:
+    content: public double A { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property A As Double
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition.A*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition.B
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition.B
+  id: B
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition
+  langs:
+  - csharp
+  - vb
+  name: B
+  nameWithType: TableFunction.LineDefinition.B
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition.B
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/Math/TableFunction.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: B
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/Math/TableFunction.cs
+    startLine: 80
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
+  syntax:
+    content: public double B { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property B As Double
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition.B*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition.A*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition.A
+  name: A
+  nameWithType: TableFunction.LineDefinition.A
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition.A
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  name: Double
+  nameWithType: Double
+  fullName: System.Double
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition.B*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition.B
+  name: B
+  nameWithType: TableFunction.LineDefinition.B
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition.B

@@ -1,0 +1,1658 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  id: ParameterCollection
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects
+  children:
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.#ctor
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Add(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Clear
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Clone
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Count
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Get(System.Int32)
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.GetEnumerator
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.IndexOf(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Insert(System.Int32,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.IsValueString(System.Int32)
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Item(System.Int32)
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Merge(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection)
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Remove(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.RemoveAt(System.Int32)
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Set(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection)
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Skip(System.Int32)
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.System#Collections#Generic#IEnumerable{SpiceSharpParser#Models#Netlist#Spice#Objects#Parameter}#GetEnumerator
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Take(System.Int32)
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.ToString
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Values
+  langs:
+  - csharp
+  - vb
+  name: ParameterCollection
+  nameWithType: ParameterCollection
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ParameterCollection
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 11
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  summary: "\nA ordered collection of parameters.\n"
+  example: []
+  syntax:
+    content: 'public class ParameterCollection : SpiceObject, IEnumerable<Parameter>, IEnumerable'
+    content.vb: >-
+      Public Class ParameterCollection
+          Inherits SpiceObject
+          Implements IEnumerable(Of Parameter), IEnumerable
+  inheritance:
+  - System.Object
+  - SpiceSharpParser.Models.Netlist.Spice.SpiceObject
+  implements:
+  - System.Collections.Generic.IEnumerable{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter}
+  - System.Collections.IEnumerable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.#ctor
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.#ctor
+  id: '#ctor'
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: ParameterCollection()
+  nameWithType: ParameterCollection.ParameterCollection()
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.ParameterCollection()
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 16
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  summary: "\nInitializes a new instance of the <xref href=\"SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
+  example: []
+  syntax:
+    content: public ParameterCollection()
+    content.vb: Public Sub New
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Count
+  commentId: P:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Count
+  id: Count
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: Count
+  nameWithType: ParameterCollection.Count
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Count
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Count
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 24
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  summary: "\nGets the count of parameters in the collection.\n"
+  example: []
+  syntax:
+    content: public int Count { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property Count As Integer
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Count*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Values
+  commentId: P:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Values
+  id: Values
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: Values
+  nameWithType: ParameterCollection.Values
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Values
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Values
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 29
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  summary: "\nGets or sets the values of parameters.\n"
+  example: []
+  syntax:
+    content: protected List<Parameter> Values { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter}
+    content.vb: Protected Property Values As List(Of Parameter)
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Values*
+  modifiers.csharp:
+  - protected
+  - get
+  - set
+  modifiers.vb:
+  - Protected
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Item(System.Int32)
+  commentId: P:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Item(System.Int32)
+  id: Item(System.Int32)
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: Item[Int32]
+  nameWithType: ParameterCollection.Item[Int32]
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Item[System.Int32]
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: this[]
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 38
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  summary: "\nGets the parameter at specified index.\n"
+  example: []
+  syntax:
+    content: public Parameter this[int index] { get; }
+    parameters:
+    - id: index
+      type: System.Int32
+      description: The index of parameter.
+    return:
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+      description: "\nA reference to parameter.\n"
+    content.vb: Public ReadOnly Property Item(index As Integer) As Parameter
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Item*
+  nameWithType.vb: ParameterCollection.Item(Int32)
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+  fullName.vb: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Item(System.Int32)
+  name.vb: Item(Int32)
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Clear
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Clear
+  id: Clear
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: ParameterCollection.Clear()
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Clear()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Clear
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 43
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  summary: "\nClears the collection.\n"
+  example: []
+  syntax:
+    content: public void Clear()
+    content.vb: Public Sub Clear
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Clear*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Add(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Add(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  id: Add(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: Add(Parameter)
+  nameWithType: ParameterCollection.Add(Parameter)
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Add(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Add
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 52
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  summary: "\nAdds parameter to the collection.\n"
+  example: []
+  syntax:
+    content: public void Add(Parameter parameter)
+    parameters:
+    - id: parameter
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+      description: A parameter to add.
+    content.vb: Public Sub Add(parameter As Parameter)
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Add*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.GetEnumerator
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.GetEnumerator
+  id: GetEnumerator
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: GetEnumerator()
+  nameWithType: ParameterCollection.GetEnumerator()
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.GetEnumerator()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetEnumerator
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 68
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  summary: "\nGets an enumerator of parameters in collection.\n"
+  example: []
+  syntax:
+    content: public IEnumerator GetEnumerator()
+    return:
+      type: System.Collections.IEnumerator
+      description: "\nA new enumerator.\n"
+    content.vb: Public Function GetEnumerator As IEnumerator
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.GetEnumerator*
+  implements:
+  - System.Collections.IEnumerable.GetEnumerator
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.System#Collections#Generic#IEnumerable{SpiceSharpParser#Models#Netlist#Spice#Objects#Parameter}#GetEnumerator
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.System#Collections#Generic#IEnumerable{SpiceSharpParser#Models#Netlist#Spice#Objects#Parameter}#GetEnumerator
+  id: System#Collections#Generic#IEnumerable{SpiceSharpParser#Models#Netlist#Spice#Objects#Parameter}#GetEnumerator
+  isEii: true
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: IEnumerable<Parameter>.GetEnumerator()
+  nameWithType: ParameterCollection.IEnumerable<Parameter>.GetEnumerator()
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.System.Collections.Generic.IEnumerable<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter>.GetEnumerator()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: System.Collections.Generic.IEnumerable<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter>.GetEnumerator
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 79
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  summary: "\nGets typed enumerator of parameters in collection.\n"
+  example: []
+  syntax:
+    content: IEnumerator<Parameter> IEnumerable<Parameter>.GetEnumerator()
+    return:
+      type: System.Collections.Generic.IEnumerator{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter}
+      description: "\nA new enumerator.\n"
+    content.vb: Function System.Collections.Generic.IEnumerable<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter>.GetEnumerator As IEnumerator(Of Parameter) Implements IEnumerable(Of Parameter).GetEnumerator
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.System#Collections#Generic#IEnumerable{SpiceSharpParser#Models#Netlist#Spice#Objects#Parameter}#GetEnumerator*
+  implements:
+  - System.Collections.Generic.IEnumerable{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter}.GetEnumerator
+  nameWithType.vb: ParameterCollection.System.Collections.Generic.IEnumerable<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter>.GetEnumerator()
+  name.vb: System.Collections.Generic.IEnumerable<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter>.GetEnumerator()
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Insert(System.Int32,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Insert(System.Int32,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  id: Insert(System.Int32,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: Insert(Int32, Parameter)
+  nameWithType: ParameterCollection.Insert(Int32, Parameter)
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Insert(System.Int32, SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Insert
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 89
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  summary: "\nInserts a parameter at the specified index in the collection.\n"
+  example: []
+  syntax:
+    content: public void Insert(int index, Parameter parameter)
+    parameters:
+    - id: index
+      type: System.Int32
+      description: An index.
+    - id: parameter
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+      description: A parameter to insert.
+    content.vb: Public Sub Insert(index As Integer, parameter As Parameter)
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Insert*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Merge(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection)
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Merge(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection)
+  id: Merge(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection)
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: Merge(ParameterCollection)
+  nameWithType: ParameterCollection.Merge(ParameterCollection)
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Merge(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Merge
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 103
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  summary: "\nMerges a collection to the current collection.\n"
+  example: []
+  syntax:
+    content: public void Merge(ParameterCollection collection)
+    parameters:
+    - id: collection
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+      description: A collection to merge.
+    content.vb: Public Sub Merge(collection As ParameterCollection)
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Merge*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Set(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection)
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Set(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection)
+  id: Set(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection)
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: Set(ParameterCollection)
+  nameWithType: ParameterCollection.Set(ParameterCollection)
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Set(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Set
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 112
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  summary: "\nSet parameters from a collection to the current collection.\n"
+  example: []
+  syntax:
+    content: public void Set(ParameterCollection collection)
+    parameters:
+    - id: collection
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+      description: A collection to merge.
+    content.vb: Public Sub Set(collection As ParameterCollection)
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Set*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Skip(System.Int32)
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Skip(System.Int32)
+  id: Skip(System.Int32)
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: Skip(Int32)
+  nameWithType: ParameterCollection.Skip(Int32)
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Skip(System.Int32)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Skip
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 164
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  summary: "\nCreates a clone of the current collection without first &apos;count&apos; elements.\n"
+  example: []
+  syntax:
+    content: public ParameterCollection Skip(int count)
+    parameters:
+    - id: count
+      type: System.Int32
+      description: Number of parameters to skip.
+    return:
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+      description: "\nA new collection of parameters.\n"
+    content.vb: Public Function Skip(count As Integer) As ParameterCollection
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Skip*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Take(System.Int32)
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Take(System.Int32)
+  id: Take(System.Int32)
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: Take(Int32)
+  nameWithType: ParameterCollection.Take(Int32)
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Take(System.Int32)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Take
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 179
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  summary: "\nCreates a clone of the current collection with first &apos;count&apos; elements.\n"
+  example: []
+  syntax:
+    content: public ParameterCollection Take(int count)
+    parameters:
+    - id: count
+      type: System.Int32
+      description: Number of parameters to take.
+    return:
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+      description: "\nA new collection of parameters.\n"
+    content.vb: Public Function Take(count As Integer) As ParameterCollection
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Take*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Get(System.Int32)
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Get(System.Int32)
+  id: Get(System.Int32)
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: Get(Int32)
+  nameWithType: ParameterCollection.Get(Int32)
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Get(System.Int32)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Get
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 194
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  summary: "\nGets the string from parameter in the collection.\nThrows an exception if parameter is not <xref href=\"SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.SingleParameter\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: public Parameter Get(int parameterIndex)
+    parameters:
+    - id: parameterIndex
+      type: System.Int32
+      description: An index of parameter.
+    return:
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+      description: "\nA string from parameter.\n"
+    content.vb: Public Function Get(parameterIndex As Integer) As Parameter
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Get*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.IsValueString(System.Int32)
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.IsValueString(System.Int32)
+  id: IsValueString(System.Int32)
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: IsValueString(Int32)
+  nameWithType: ParameterCollection.IsValueString(Int32)
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.IsValueString(System.Int32)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IsValueString
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 212
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  summary: "\nGets the value string from parameter in the collection.\nThrows an exception if parameter is not a value type parameter.\n"
+  example: []
+  syntax:
+    content: public bool IsValueString(int parameterIndex)
+    parameters:
+    - id: parameterIndex
+      type: System.Int32
+      description: An index of parameter.
+    return:
+      type: System.Boolean
+      description: "\nA value from parameter.\n"
+    content.vb: Public Function IsValueString(parameterIndex As Integer) As Boolean
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.IsValueString*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Clone
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Clone
+  id: Clone
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: Clone()
+  nameWithType: ParameterCollection.Clone()
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Clone()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Clone
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 233
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  summary: "\nCreates a new clone of the collection.\n"
+  example: []
+  syntax:
+    content: public override SpiceObject Clone()
+    return:
+      type: SpiceSharpParser.Models.Netlist.Spice.SpiceObject
+      description: "\nA new collection of parameters.\n"
+    content.vb: Public Overrides Function Clone As SpiceObject
+  overridden: SpiceSharpParser.Models.Netlist.Spice.SpiceObject.Clone
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Clone*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.RemoveAt(System.Int32)
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.RemoveAt(System.Int32)
+  id: RemoveAt(System.Int32)
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: RemoveAt(Int32)
+  nameWithType: ParameterCollection.RemoveAt(Int32)
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.RemoveAt(System.Int32)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: RemoveAt
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 249
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  summary: "\nRemoves the parameter at the specified index.\n"
+  example: []
+  syntax:
+    content: public void RemoveAt(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+      description: An index of parameter to remove.
+    content.vb: Public Sub RemoveAt(index As Integer)
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.RemoveAt*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Remove(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Remove(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  id: Remove(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: Remove(Parameter)
+  nameWithType: ParameterCollection.Remove(Parameter)
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Remove(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Remove
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 258
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  summary: "\nRemoves the parameter at the specified index.\n"
+  example: []
+  syntax:
+    content: public void Remove(Parameter parameter)
+    parameters:
+    - id: parameter
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+      description: Parameter to remove.
+    content.vb: Public Sub Remove(parameter As Parameter)
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Remove*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.ToString
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.ToString
+  id: ToString
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: ParameterCollection.ToString()
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.ToString()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ToString
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 263
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+    content.vb: Public Overrides Function ToString As String
+  overridden: System.Object.ToString
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.ToString*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.IndexOf(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.IndexOf(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  id: IndexOf(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  langs:
+  - csharp
+  - vb
+  name: IndexOf(Parameter)
+  nameWithType: ParameterCollection.IndexOf(Parameter)
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.IndexOf(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IndexOf
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/ParameterCollection.cs
+    startLine: 268
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects
+  syntax:
+    content: public int IndexOf(Parameter parameter)
+    parameters:
+    - id: parameter
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    return:
+      type: System.Int32
+    content.vb: Public Function IndexOf(parameter As Parameter) As Integer
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.IndexOf*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: SpiceSharpParser.Models.Netlist.Spice.Objects
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice.Objects
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharpParser.Models.Netlist.Spice.SpiceObject
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.SpiceObject
+  parent: SpiceSharpParser.Models.Netlist.Spice
+  name: SpiceObject
+  nameWithType: SpiceObject
+  fullName: SpiceSharpParser.Models.Netlist.Spice.SpiceObject
+- uid: System.Collections.Generic.IEnumerable{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter}
+  commentId: T:System.Collections.Generic.IEnumerable{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<Parameter>
+  nameWithType: IEnumerable<Parameter>
+  fullName: System.Collections.Generic.IEnumerable<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter>
+  nameWithType.vb: IEnumerable(Of Parameter)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  name.vb: IEnumerable(Of Parameter)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.IEnumerable
+  commentId: T:System.Collections.IEnumerable
+  parent: System.Collections
+  isExternal: true
+  name: IEnumerable
+  nameWithType: IEnumerable
+  fullName: System.Collections.IEnumerable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.Models.Netlist.Spice
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice
+  name: SpiceSharpParser.Models.Netlist.Spice
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice
+  fullName: SpiceSharpParser.Models.Netlist.Spice
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: System.Collections
+  commentId: N:System.Collections
+  isExternal: true
+  name: System.Collections
+  nameWithType: System.Collections
+  fullName: System.Collections
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: ParameterCollection
+  nameWithType: ParameterCollection
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.#ctor*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.#ctor
+  name: ParameterCollection
+  nameWithType: ParameterCollection.ParameterCollection
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.ParameterCollection
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Count*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Count
+  name: Count
+  nameWithType: ParameterCollection.Count
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Count
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Values*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Values
+  name: Values
+  nameWithType: ParameterCollection.Values
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Values
+- uid: System.Collections.Generic.List{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter}
+  commentId: T:System.Collections.Generic.List{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<Parameter>
+  nameWithType: List<Parameter>
+  fullName: System.Collections.Generic.List<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter>
+  nameWithType.vb: List(Of Parameter)
+  fullName.vb: System.Collections.Generic.List(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  name.vb: List(Of Parameter)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Item*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Item
+  name: Item
+  nameWithType: ParameterCollection.Item
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Item
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: Parameter
+  nameWithType: Parameter
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Clear*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Clear
+  name: Clear
+  nameWithType: ParameterCollection.Clear
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Clear
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Add*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Add
+  name: Add
+  nameWithType: ParameterCollection.Add
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Add
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.GetEnumerator*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.GetEnumerator
+  name: GetEnumerator
+  nameWithType: ParameterCollection.GetEnumerator
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.GetEnumerator
+- uid: System.Collections.IEnumerable.GetEnumerator
+  commentId: M:System.Collections.IEnumerable.GetEnumerator
+  parent: System.Collections.IEnumerable
+  isExternal: true
+  name: GetEnumerator()
+  nameWithType: IEnumerable.GetEnumerator()
+  fullName: System.Collections.IEnumerable.GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.IEnumerable.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable.GetEnumerator
+    fullName: System.Collections.IEnumerable.GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.IEnumerable.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable.GetEnumerator
+    fullName: System.Collections.IEnumerable.GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.IEnumerator
+  commentId: T:System.Collections.IEnumerator
+  parent: System.Collections
+  isExternal: true
+  name: IEnumerator
+  nameWithType: IEnumerator
+  fullName: System.Collections.IEnumerator
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.System#Collections#Generic#IEnumerable{SpiceSharpParser#Models#Netlist#Spice#Objects#Parameter}#GetEnumerator*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.System#Collections#Generic#IEnumerable{SpiceSharpParser#Models#Netlist#Spice#Objects#Parameter}#GetEnumerator
+  name: IEnumerable<Parameter>.GetEnumerator
+  nameWithType: ParameterCollection.IEnumerable<Parameter>.GetEnumerator
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.System.Collections.Generic.IEnumerable<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter>.GetEnumerator
+  nameWithType.vb: ParameterCollection.System.Collections.Generic.IEnumerable<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter>.GetEnumerator
+  name.vb: System.Collections.Generic.IEnumerable<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter>.GetEnumerator
+- uid: System.Collections.Generic.IEnumerable{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter}.GetEnumerator
+  commentId: M:System.Collections.Generic.IEnumerable{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter}.GetEnumerator
+  parent: System.Collections.Generic.IEnumerable{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter}
+  definition: System.Collections.Generic.IEnumerable`1.GetEnumerator
+  name: GetEnumerator()
+  nameWithType: IEnumerable<Parameter>.GetEnumerator()
+  fullName: System.Collections.Generic.IEnumerable<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter>.GetEnumerator()
+  nameWithType.vb: IEnumerable(Of Parameter).GetEnumerator()
+  fullName.vb: System.Collections.Generic.IEnumerable(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter).GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable<Parameter>.GetEnumerator
+    fullName: System.Collections.Generic.IEnumerable<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter>.GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable(Of Parameter).GetEnumerator
+    fullName: System.Collections.Generic.IEnumerable(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter).GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerator{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter}
+  commentId: T:System.Collections.Generic.IEnumerator{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerator`1
+  name: IEnumerator<Parameter>
+  nameWithType: IEnumerator<Parameter>
+  fullName: System.Collections.Generic.IEnumerator<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter>
+  nameWithType.vb: IEnumerator(Of Parameter)
+  fullName.vb: System.Collections.Generic.IEnumerator(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  name.vb: IEnumerator(Of Parameter)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    nameWithType: IEnumerator
+    fullName: System.Collections.Generic.IEnumerator
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    nameWithType: IEnumerator
+    fullName: System.Collections.Generic.IEnumerator
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+  commentId: M:System.Collections.Generic.IEnumerable`1.GetEnumerator
+  isExternal: true
+  name: GetEnumerator()
+  nameWithType: IEnumerable<T>.GetEnumerator()
+  fullName: System.Collections.Generic.IEnumerable<T>.GetEnumerator()
+  nameWithType.vb: IEnumerable(Of T).GetEnumerator()
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T).GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable<T>.GetEnumerator
+    fullName: System.Collections.Generic.IEnumerable<T>.GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable(Of T).GetEnumerator
+    fullName: System.Collections.Generic.IEnumerable(Of T).GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerator`1
+  commentId: T:System.Collections.Generic.IEnumerator`1
+  isExternal: true
+  name: IEnumerator<T>
+  nameWithType: IEnumerator<T>
+  fullName: System.Collections.Generic.IEnumerator<T>
+  nameWithType.vb: IEnumerator(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerator(Of T)
+  name.vb: IEnumerator(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    nameWithType: IEnumerator
+    fullName: System.Collections.Generic.IEnumerator
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    nameWithType: IEnumerator
+    fullName: System.Collections.Generic.IEnumerator
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Insert*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Insert
+  name: Insert
+  nameWithType: ParameterCollection.Insert
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Insert
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Merge*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Merge
+  name: Merge
+  nameWithType: ParameterCollection.Merge
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Merge
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Set*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Set
+  name: Set
+  nameWithType: ParameterCollection.Set
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Set
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Skip*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Skip
+  name: Skip
+  nameWithType: ParameterCollection.Skip
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Skip
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Take*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Take
+  name: Take
+  nameWithType: ParameterCollection.Take
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Take
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.SingleParameter
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.SingleParameter
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  name: SingleParameter
+  nameWithType: SingleParameter
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.SingleParameter
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Get*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Get
+  name: Get
+  nameWithType: ParameterCollection.Get
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Get
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  name: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.IsValueString*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.IsValueString
+  name: IsValueString
+  nameWithType: ParameterCollection.IsValueString
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.IsValueString
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: SpiceSharpParser.Models.Netlist.Spice.SpiceObject.Clone
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.SpiceObject.Clone
+  parent: SpiceSharpParser.Models.Netlist.Spice.SpiceObject
+  name: Clone()
+  nameWithType: SpiceObject.Clone()
+  fullName: SpiceSharpParser.Models.Netlist.Spice.SpiceObject.Clone()
+  spec.csharp:
+  - uid: SpiceSharpParser.Models.Netlist.Spice.SpiceObject.Clone
+    name: Clone
+    nameWithType: SpiceObject.Clone
+    fullName: SpiceSharpParser.Models.Netlist.Spice.SpiceObject.Clone
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Models.Netlist.Spice.SpiceObject.Clone
+    name: Clone
+    nameWithType: SpiceObject.Clone
+    fullName: SpiceSharpParser.Models.Netlist.Spice.SpiceObject.Clone
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Clone*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Clone
+  name: Clone
+  nameWithType: ParameterCollection.Clone
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Clone
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.RemoveAt*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.RemoveAt
+  name: RemoveAt
+  nameWithType: ParameterCollection.RemoveAt
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.RemoveAt
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Remove*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Remove
+  name: Remove
+  nameWithType: ParameterCollection.Remove
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.Remove
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.ToString*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.ToString
+  name: ToString
+  nameWithType: ParameterCollection.ToString
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.IndexOf*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.IndexOf
+  name: IndexOf
+  nameWithType: ParameterCollection.IndexOf
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection.IndexOf

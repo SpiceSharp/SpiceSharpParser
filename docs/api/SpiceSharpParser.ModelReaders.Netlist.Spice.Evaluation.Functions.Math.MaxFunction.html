@@ -95,16 +95,7 @@
       <a class="xref" href="SpiceSharpParser.Common.Evaluation.Function-2.html#SpiceSharpParser_Common_Evaluation_Function_2_ArgumentsCount">Function&lt;Double, Double&gt;.ArgumentsCount</a>
     </div>
     <div>
-      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Function-2.html#SpiceSharpParser_Common_Evaluation_Function_2_Infix">Function&lt;Double, Double&gt;.Infix</a>
-    </div>
-    <div>
-      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Function-2.html#SpiceSharpParser_Common_Evaluation_Function_2_Logic_System_String__0___SpiceSharpParser_Common_Evaluation_IEvaluator_SpiceSharpParser_Common_Evaluation_ExpressionContext_">Function&lt;Double, Double&gt;.Logic(String, Double[], IEvaluator, ExpressionContext)</a>
-    </div>
-    <div>
-      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Function-2.html#SpiceSharpParser_Common_Evaluation_Function_2_SpiceSharpParser_Common_Evaluation_IFunction_ArgumentType">Function&lt;Double, Double&gt;.IFunction.ArgumentType</a>
-    </div>
-    <div>
-      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Function-2.html#SpiceSharpParser_Common_Evaluation_Function_2_SpiceSharpParser_Common_Evaluation_IFunction_OutputType">Function&lt;Double, Double&gt;.IFunction.OutputType</a>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.Function-2.html#SpiceSharpParser_Common_Evaluation_Function_2_Logic_System_String__0___SpiceSharpParser_Common_Evaluation_EvaluationContext_">Function&lt;Double, Double&gt;.Logic(String, Double[], EvaluationContext)</a>
     </div>
     <div>
       <span class="xref">System.Object.ToString()</span>
@@ -155,18 +146,18 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_Math_MaxFunction_Logic_System_String_System_Double___SpiceSharpParser_Common_Evaluation_IEvaluator_SpiceSharpParser_Common_Evaluation_ExpressionContext_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.MaxFunction.Logic(System.String%2CSystem.Double%5B%5D%2CSpiceSharpParser.Common.Evaluation.IEvaluator%2CSpiceSharpParser.Common.Evaluation.ExpressionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_Math_MaxFunction_Logic_System_String_System_Double___SpiceSharpParser_Common_Evaluation_EvaluationContext_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.MaxFunction.Logic(System.String%2CSystem.Double%5B%5D%2CSpiceSharpParser.Common.Evaluation.EvaluationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/Math/MaxFunction.cs/#L14">View Source</a>
   </span>
   <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_Math_MaxFunction_Logic_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.MaxFunction.Logic*"></a>
-  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_Math_MaxFunction_Logic_System_String_System_Double___SpiceSharpParser_Common_Evaluation_IEvaluator_SpiceSharpParser_Common_Evaluation_ExpressionContext_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.MaxFunction.Logic(System.String,System.Double[],SpiceSharpParser.Common.Evaluation.IEvaluator,SpiceSharpParser.Common.Evaluation.ExpressionContext)">Logic(String, Double[], IEvaluator, ExpressionContext)</h4>
+  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_Functions_Math_MaxFunction_Logic_System_String_System_Double___SpiceSharpParser_Common_Evaluation_EvaluationContext_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.MaxFunction.Logic(System.String,System.Double[],SpiceSharpParser.Common.Evaluation.EvaluationContext)">Logic(String, Double[], EvaluationContext)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override double Logic(string image, double[] args, IEvaluator evaluator, ExpressionContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public override double Logic(string image, double[] args, EvaluationContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -189,12 +180,7 @@
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.IEvaluator.html">IEvaluator</a></td>
-        <td><span class="parametername">evaluator</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.ExpressionContext.html">ExpressionContext</a></td>
+        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html">EvaluationContext</a></td>
         <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
@@ -216,7 +202,7 @@
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">SpiceSharpParser.Common.Evaluation.Function&lt;System.Double, System.Double&gt;.Logic(System.String, System.Double[], SpiceSharpParser.Common.Evaluation.IEvaluator, SpiceSharpParser.Common.Evaluation.ExpressionContext)</span></div>
+  <div><span class="xref">SpiceSharpParser.Common.Evaluation.Function&lt;System.Double, System.Double&gt;.Logic(System.String, System.Double[], SpiceSharpParser.Common.Evaluation.EvaluationContext)</span></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="SpiceSharpParser.Common.Evaluation.IFunction-2.html">IFunction&lt;TInputArgumentType, TOutputType&gt;</a>

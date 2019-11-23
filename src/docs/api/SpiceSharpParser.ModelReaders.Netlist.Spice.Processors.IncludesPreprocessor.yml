@@ -1,0 +1,936 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor
+  id: IncludesPreprocessor
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.#ctor(SpiceSharpParser.Common.FileSystem.IFileReader,SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool,SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser,System.Func{System.String},SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.FileReader
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.InitialDirectoryPath
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.InitialDirectoryPathProvider
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.LexerSettings
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements,System.String)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.SpiceNetlistParser
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.TokenProviderPool
+  langs:
+  - csharp
+  - vb
+  name: IncludesPreprocessor
+  nameWithType: IncludesPreprocessor
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IncludesPreprocessor
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+    startLine: 14
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  summary: "\nPreprocess .include statements from netlist file.\n"
+  example: []
+  syntax:
+    content: 'public class IncludesPreprocessor : IProcessor'
+    content.vb: >-
+      Public Class IncludesPreprocessor
+          Implements IProcessor
+  inheritance:
+  - System.Object
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.#ctor(SpiceSharpParser.Common.FileSystem.IFileReader,SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool,SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser,System.Func{System.String},SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.#ctor(SpiceSharpParser.Common.FileSystem.IFileReader,SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool,SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser,System.Func{System.String},SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  id: '#ctor(SpiceSharpParser.Common.FileSystem.IFileReader,SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool,SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser,System.Func{System.String},SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)'
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor
+  langs:
+  - csharp
+  - vb
+  name: IncludesPreprocessor(IFileReader, ISpiceTokenProviderPool, ISingleSpiceNetlistParser, Func<String>, SpiceLexerSettings)
+  nameWithType: IncludesPreprocessor.IncludesPreprocessor(IFileReader, ISpiceTokenProviderPool, ISingleSpiceNetlistParser, Func<String>, SpiceLexerSettings)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.IncludesPreprocessor(SpiceSharpParser.Common.FileSystem.IFileReader, SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool, SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser, System.Func<System.String>, SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+    startLine: 24
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  summary: "\nInitializes a new instance of the <xref href=\"SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
+  example: []
+  syntax:
+    content: public IncludesPreprocessor(IFileReader fileReader, ISpiceTokenProviderPool tokenProviderPool, ISingleSpiceNetlistParser spiceNetlistParser, Func<string> initialDirectoryPathProvider, SpiceLexerSettings lexerSettings)
+    parameters:
+    - id: fileReader
+      type: SpiceSharpParser.Common.FileSystem.IFileReader
+      description: File reader.
+    - id: tokenProviderPool
+      type: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool
+      description: Token provider pool.
+    - id: spiceNetlistParser
+      type: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser
+      description: Parser.
+    - id: initialDirectoryPathProvider
+      type: System.Func{System.String}
+      description: Directory provider.
+    - id: lexerSettings
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+      description: Lexer settings.
+    content.vb: Public Sub New(fileReader As IFileReader, tokenProviderPool As ISpiceTokenProviderPool, spiceNetlistParser As ISingleSpiceNetlistParser, initialDirectoryPathProvider As Func(Of String), lexerSettings As SpiceLexerSettings)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.#ctor*
+  nameWithType.vb: IncludesPreprocessor.IncludesPreprocessor(IFileReader, ISpiceTokenProviderPool, ISingleSpiceNetlistParser, Func(Of String), SpiceLexerSettings)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.IncludesPreprocessor(SpiceSharpParser.Common.FileSystem.IFileReader, SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool, SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser, System.Func(Of System.String), SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  name.vb: IncludesPreprocessor(IFileReader, ISpiceTokenProviderPool, ISingleSpiceNetlistParser, Func(Of String), SpiceLexerSettings)
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.LexerSettings
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.LexerSettings
+  id: LexerSettings
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor
+  langs:
+  - csharp
+  - vb
+  name: LexerSettings
+  nameWithType: IncludesPreprocessor.LexerSettings
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.LexerSettings
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: LexerSettings
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+    startLine: 36
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  summary: "\nGets the lexer settings.\n"
+  example: []
+  syntax:
+    content: public SpiceLexerSettings LexerSettings { get; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+    content.vb: Public ReadOnly Property LexerSettings As SpiceLexerSettings
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.LexerSettings*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.InitialDirectoryPath
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.InitialDirectoryPath
+  id: InitialDirectoryPath
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor
+  langs:
+  - csharp
+  - vb
+  name: InitialDirectoryPath
+  nameWithType: IncludesPreprocessor.InitialDirectoryPath
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.InitialDirectoryPath
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: InitialDirectoryPath
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+    startLine: 41
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  summary: "\nGets the initial directory path.\n"
+  example: []
+  syntax:
+    content: public string InitialDirectoryPath { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property InitialDirectoryPath As String
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.InitialDirectoryPath*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.FileReader
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.FileReader
+  id: FileReader
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor
+  langs:
+  - csharp
+  - vb
+  name: FileReader
+  nameWithType: IncludesPreprocessor.FileReader
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.FileReader
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: FileReader
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+    startLine: 46
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  summary: "\nGets the file reader.\n"
+  example: []
+  syntax:
+    content: public IFileReader FileReader { get; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.Common.FileSystem.IFileReader
+    content.vb: Public ReadOnly Property FileReader As IFileReader
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.FileReader*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.TokenProviderPool
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.TokenProviderPool
+  id: TokenProviderPool
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor
+  langs:
+  - csharp
+  - vb
+  name: TokenProviderPool
+  nameWithType: IncludesPreprocessor.TokenProviderPool
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.TokenProviderPool
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: TokenProviderPool
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+    startLine: 51
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  summary: "\nGets the token provider.\n"
+  example: []
+  syntax:
+    content: public ISpiceTokenProviderPool TokenProviderPool { get; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool
+    content.vb: Public ReadOnly Property TokenProviderPool As ISpiceTokenProviderPool
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.TokenProviderPool*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.SpiceNetlistParser
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.SpiceNetlistParser
+  id: SpiceNetlistParser
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor
+  langs:
+  - csharp
+  - vb
+  name: SpiceNetlistParser
+  nameWithType: IncludesPreprocessor.SpiceNetlistParser
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.SpiceNetlistParser
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SpiceNetlistParser
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+    startLine: 56
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  summary: "\nGets the SPICE netlist parser.\n"
+  example: []
+  syntax:
+    content: public ISingleSpiceNetlistParser SpiceNetlistParser { get; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser
+    content.vb: Public ReadOnly Property SpiceNetlistParser As ISingleSpiceNetlistParser
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.SpiceNetlistParser*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.InitialDirectoryPathProvider
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.InitialDirectoryPathProvider
+  id: InitialDirectoryPathProvider
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor
+  langs:
+  - csharp
+  - vb
+  name: InitialDirectoryPathProvider
+  nameWithType: IncludesPreprocessor.InitialDirectoryPathProvider
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.InitialDirectoryPathProvider
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: InitialDirectoryPathProvider
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+    startLine: 58
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  syntax:
+    content: protected Func<string> InitialDirectoryPathProvider { get; }
+    parameters: []
+    return:
+      type: System.Func{System.String}
+    content.vb: Protected ReadOnly Property InitialDirectoryPathProvider As Func(Of String)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.InitialDirectoryPathProvider*
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  id: Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor
+  langs:
+  - csharp
+  - vb
+  name: Process(Statements)
+  nameWithType: IncludesPreprocessor.Process(Statements)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Process
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+    startLine: 64
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  summary: "\nReads .include statements.\n"
+  example: []
+  syntax:
+    content: public Statements Process(Statements statements)
+    parameters:
+    - id: statements
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+      description: Statements
+    return:
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+    content.vb: Public Function Process(statements As Statements) As Statements
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.Process*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements,System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements,System.String)
+  id: Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements,System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor
+  langs:
+  - csharp
+  - vb
+  name: Process(Statements, String)
+  nameWithType: IncludesPreprocessor.Process(Statements, String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements, System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Process
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IncludesPreprocessor.cs
+    startLine: 79
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  summary: "\nReads .include statements.\n"
+  example: []
+  syntax:
+    content: protected Statements Process(Statements statements, string currentDirectoryPath)
+    parameters:
+    - id: statements
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+      description: Statements.
+    - id: currentDirectoryPath
+      type: System.String
+      description: Current directory path.
+    return:
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+    content.vb: Protected Function Process(statements As Statements, currentDirectoryPath As String) As Statements
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.Process*
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  name: IProcessor
+  nameWithType: IProcessor
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor
+  name: IncludesPreprocessor
+  nameWithType: IncludesPreprocessor
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.#ctor*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.#ctor
+  name: IncludesPreprocessor
+  nameWithType: IncludesPreprocessor.IncludesPreprocessor
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.IncludesPreprocessor
+- uid: SpiceSharpParser.Common.FileSystem.IFileReader
+  commentId: T:SpiceSharpParser.Common.FileSystem.IFileReader
+  parent: SpiceSharpParser.Common.FileSystem
+  name: IFileReader
+  nameWithType: IFileReader
+  fullName: SpiceSharpParser.Common.FileSystem.IFileReader
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool
+  commentId: T:SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool
+  parent: SpiceSharpParser.Lexers.Netlist.Spice
+  name: ISpiceTokenProviderPool
+  nameWithType: ISpiceTokenProviderPool
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser
+  commentId: T:SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser
+  parent: SpiceSharpParser.Parsers.Netlist.Spice
+  name: ISingleSpiceNetlistParser
+  nameWithType: ISingleSpiceNetlistParser
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser
+- uid: System.Func{System.String}
+  commentId: T:System.Func{System.String}
+  parent: System
+  definition: System.Func`1
+  name: Func<String>
+  nameWithType: Func<String>
+  fullName: System.Func<System.String>
+  nameWithType.vb: Func(Of String)
+  fullName.vb: System.Func(Of System.String)
+  name.vb: Func(Of String)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+  commentId: T:SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+  parent: SpiceSharpParser.Lexers.Netlist.Spice
+  name: SpiceLexerSettings
+  nameWithType: SpiceLexerSettings
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+- uid: SpiceSharpParser.Common.FileSystem
+  commentId: N:SpiceSharpParser.Common.FileSystem
+  name: SpiceSharpParser.Common.FileSystem
+  nameWithType: SpiceSharpParser.Common.FileSystem
+  fullName: SpiceSharpParser.Common.FileSystem
+- uid: SpiceSharpParser.Lexers.Netlist.Spice
+  commentId: N:SpiceSharpParser.Lexers.Netlist.Spice
+  name: SpiceSharpParser.Lexers.Netlist.Spice
+  nameWithType: SpiceSharpParser.Lexers.Netlist.Spice
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice
+- uid: SpiceSharpParser.Parsers.Netlist.Spice
+  commentId: N:SpiceSharpParser.Parsers.Netlist.Spice
+  name: SpiceSharpParser.Parsers.Netlist.Spice
+  nameWithType: SpiceSharpParser.Parsers.Netlist.Spice
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.LexerSettings*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.LexerSettings
+  name: LexerSettings
+  nameWithType: IncludesPreprocessor.LexerSettings
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.LexerSettings
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.InitialDirectoryPath*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.InitialDirectoryPath
+  name: InitialDirectoryPath
+  nameWithType: IncludesPreprocessor.InitialDirectoryPath
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.InitialDirectoryPath
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.FileReader*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.FileReader
+  name: FileReader
+  nameWithType: IncludesPreprocessor.FileReader
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.FileReader
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.TokenProviderPool*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.TokenProviderPool
+  name: TokenProviderPool
+  nameWithType: IncludesPreprocessor.TokenProviderPool
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.TokenProviderPool
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.SpiceNetlistParser*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.SpiceNetlistParser
+  name: SpiceNetlistParser
+  nameWithType: IncludesPreprocessor.SpiceNetlistParser
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.SpiceNetlistParser
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.InitialDirectoryPathProvider*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.InitialDirectoryPathProvider
+  name: InitialDirectoryPathProvider
+  nameWithType: IncludesPreprocessor.InitialDirectoryPathProvider
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.InitialDirectoryPathProvider
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.Process*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.Process
+  name: Process
+  nameWithType: IncludesPreprocessor.Process
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor.Process
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor
+  name: Process(Statements)
+  nameWithType: IProcessor.Process(Statements)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+    name: Process
+    nameWithType: IProcessor.Process
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+    name: Statements
+    nameWithType: Statements
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+    name: Process
+    nameWithType: IProcessor.Process
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+    name: Statements
+    nameWithType: Statements
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: Statements
+  nameWithType: Statements
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: SpiceSharpParser.Models.Netlist.Spice.Objects
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice.Objects
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects

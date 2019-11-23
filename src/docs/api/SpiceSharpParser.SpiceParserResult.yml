@@ -1,0 +1,495 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.SpiceParserResult
+  commentId: T:SpiceSharpParser.SpiceParserResult
+  id: SpiceParserResult
+  parent: SpiceSharpParser
+  children:
+  - SpiceSharpParser.SpiceParserResult.OriginalInputModel
+  - SpiceSharpParser.SpiceParserResult.PreprocessedInputModel
+  - SpiceSharpParser.SpiceParserResult.SpiceSharpModel
+  langs:
+  - csharp
+  - vb
+  name: SpiceParserResult
+  nameWithType: SpiceParserResult
+  fullName: SpiceSharpParser.SpiceParserResult
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/SpiceParserResult.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SpiceParserResult
+    path: ../SpiceSharpParser/SpiceParserResult.cs
+    startLine: 8
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser
+  summary: "\nA result of the SPICE netlist parser.\n"
+  example: []
+  syntax:
+    content: public class SpiceParserResult
+    content.vb: Public Class SpiceParserResult
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.SpiceParserResult.SpiceSharpModel
+  commentId: P:SpiceSharpParser.SpiceParserResult.SpiceSharpModel
+  id: SpiceSharpModel
+  parent: SpiceSharpParser.SpiceParserResult
+  langs:
+  - csharp
+  - vb
+  name: SpiceSharpModel
+  nameWithType: SpiceParserResult.SpiceSharpModel
+  fullName: SpiceSharpParser.SpiceParserResult.SpiceSharpModel
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/SpiceParserResult.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SpiceSharpModel
+    path: ../SpiceSharpParser/SpiceParserResult.cs
+    startLine: 13
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser
+  summary: "\nGets or sets the result of reading <xref href=\"SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult\" data-throw-if-not-resolved=\"false\"></xref> model.\n"
+  example: []
+  syntax:
+    content: public SpiceNetlistReaderResult SpiceSharpModel { get; set; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+    content.vb: Public Property SpiceSharpModel As SpiceNetlistReaderResult
+  overload: SpiceSharpParser.SpiceParserResult.SpiceSharpModel*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.SpiceParserResult.OriginalInputModel
+  commentId: P:SpiceSharpParser.SpiceParserResult.OriginalInputModel
+  id: OriginalInputModel
+  parent: SpiceSharpParser.SpiceParserResult
+  langs:
+  - csharp
+  - vb
+  name: OriginalInputModel
+  nameWithType: SpiceParserResult.OriginalInputModel
+  fullName: SpiceSharpParser.SpiceParserResult.OriginalInputModel
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/SpiceParserResult.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: OriginalInputModel
+    path: ../SpiceSharpParser/SpiceParserResult.cs
+    startLine: 18
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser
+  summary: "\nGets or sets the netlist model before preprocessing.\n"
+  example: []
+  syntax:
+    content: public SpiceNetlist OriginalInputModel { get; set; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.Models.Netlist.Spice.SpiceNetlist
+    content.vb: Public Property OriginalInputModel As SpiceNetlist
+  overload: SpiceSharpParser.SpiceParserResult.OriginalInputModel*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.SpiceParserResult.PreprocessedInputModel
+  commentId: P:SpiceSharpParser.SpiceParserResult.PreprocessedInputModel
+  id: PreprocessedInputModel
+  parent: SpiceSharpParser.SpiceParserResult
+  langs:
+  - csharp
+  - vb
+  name: PreprocessedInputModel
+  nameWithType: SpiceParserResult.PreprocessedInputModel
+  fullName: SpiceSharpParser.SpiceParserResult.PreprocessedInputModel
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/SpiceParserResult.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: PreprocessedInputModel
+    path: ../SpiceSharpParser/SpiceParserResult.cs
+    startLine: 23
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser
+  summary: "\nGets or sets the netlist model after preprocessing.\n"
+  example: []
+  syntax:
+    content: public SpiceNetlist PreprocessedInputModel { get; set; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.Models.Netlist.Spice.SpiceNetlist
+    content.vb: Public Property PreprocessedInputModel As SpiceNetlist
+  overload: SpiceSharpParser.SpiceParserResult.PreprocessedInputModel*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+references:
+- uid: SpiceSharpParser
+  commentId: N:SpiceSharpParser
+  name: SpiceSharpParser
+  nameWithType: SpiceSharpParser
+  fullName: SpiceSharpParser
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice
+  name: SpiceNetlistReaderResult
+  nameWithType: SpiceNetlistReaderResult
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+- uid: SpiceSharpParser.SpiceParserResult.SpiceSharpModel*
+  commentId: Overload:SpiceSharpParser.SpiceParserResult.SpiceSharpModel
+  name: SpiceSharpModel
+  nameWithType: SpiceParserResult.SpiceSharpModel
+  fullName: SpiceSharpParser.SpiceParserResult.SpiceSharpModel
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice
+- uid: SpiceSharpParser.SpiceParserResult.OriginalInputModel*
+  commentId: Overload:SpiceSharpParser.SpiceParserResult.OriginalInputModel
+  name: OriginalInputModel
+  nameWithType: SpiceParserResult.OriginalInputModel
+  fullName: SpiceSharpParser.SpiceParserResult.OriginalInputModel
+- uid: SpiceSharpParser.Models.Netlist.Spice.SpiceNetlist
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.SpiceNetlist
+  parent: SpiceSharpParser.Models.Netlist.Spice
+  name: SpiceNetlist
+  nameWithType: SpiceNetlist
+  fullName: SpiceSharpParser.Models.Netlist.Spice.SpiceNetlist
+- uid: SpiceSharpParser.Models.Netlist.Spice
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice
+  name: SpiceSharpParser.Models.Netlist.Spice
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice
+  fullName: SpiceSharpParser.Models.Netlist.Spice
+- uid: SpiceSharpParser.SpiceParserResult.PreprocessedInputModel*
+  commentId: Overload:SpiceSharpParser.SpiceParserResult.PreprocessedInputModel
+  name: PreprocessedInputModel
+  nameWithType: SpiceParserResult.PreprocessedInputModel
+  fullName: SpiceSharpParser.SpiceParserResult.PreprocessedInputModel

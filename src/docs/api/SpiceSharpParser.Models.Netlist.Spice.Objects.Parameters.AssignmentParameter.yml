@@ -1,0 +1,816 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter
+  id: AssignmentParameter
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  children:
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Arguments
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Clone
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.HasFunctionSyntax
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Image
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Name
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Value
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Values
+  langs:
+  - csharp
+  - vb
+  name: AssignmentParameter
+  nameWithType: AssignmentParameter
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/Parameters/AssignmentParameter.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: AssignmentParameter
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/Parameters/AssignmentParameter.cs
+    startLine: 7
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  summary: "\nAn assignment parameter.\n"
+  example: []
+  syntax:
+    content: 'public class AssignmentParameter : Parameter'
+    content.vb: >-
+      Public Class AssignmentParameter
+          Inherits Parameter
+  inheritance:
+  - System.Object
+  - SpiceSharpParser.Models.Netlist.Spice.SpiceObject
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  inheritedMembers:
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.LineNumber
+  - SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Name
+  commentId: P:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Name
+  id: Name
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: AssignmentParameter.Name
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Name
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/Parameters/AssignmentParameter.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Name
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/Parameters/AssignmentParameter.cs
+    startLine: 12
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  summary: "\nGets or sets the name of the assignment parameter.\n"
+  example: []
+  syntax:
+    content: public string Name { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Name As String
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Name*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Arguments
+  commentId: P:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Arguments
+  id: Arguments
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter
+  langs:
+  - csharp
+  - vb
+  name: Arguments
+  nameWithType: AssignmentParameter.Arguments
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Arguments
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/Parameters/AssignmentParameter.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Arguments
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/Parameters/AssignmentParameter.cs
+    startLine: 17
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  summary: "\nGets or sets the arguments of the assignment parameters.\n"
+  example: []
+  syntax:
+    content: public List<string> Arguments { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{System.String}
+    content.vb: Public Property Arguments As List(Of String)
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Arguments*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.HasFunctionSyntax
+  commentId: P:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.HasFunctionSyntax
+  id: HasFunctionSyntax
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter
+  langs:
+  - csharp
+  - vb
+  name: HasFunctionSyntax
+  nameWithType: AssignmentParameter.HasFunctionSyntax
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.HasFunctionSyntax
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/Parameters/AssignmentParameter.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: HasFunctionSyntax
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/Parameters/AssignmentParameter.cs
+    startLine: 22
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  summary: "\nGets or sets a value indicating whether the assignment parameter has &quot;()&quot; function syntax.\n"
+  example: []
+  syntax:
+    content: public bool HasFunctionSyntax { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property HasFunctionSyntax As Boolean
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.HasFunctionSyntax*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Values
+  commentId: P:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Values
+  id: Values
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter
+  langs:
+  - csharp
+  - vb
+  name: Values
+  nameWithType: AssignmentParameter.Values
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Values
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/Parameters/AssignmentParameter.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Values
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/Parameters/AssignmentParameter.cs
+    startLine: 27
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  summary: "\nGets or sets the values of assignment parameter.\n"
+  example: []
+  syntax:
+    content: public List<string> Values { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{System.String}
+    content.vb: Public Property Values As List(Of String)
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Values*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Value
+  commentId: P:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Value
+  id: Value
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter
+  langs:
+  - csharp
+  - vb
+  name: Value
+  nameWithType: AssignmentParameter.Value
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Value
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/Parameters/AssignmentParameter.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Value
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/Parameters/AssignmentParameter.cs
+    startLine: 32
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  summary: "\nGets or sets the value of assignment parameter.\n"
+  example: []
+  syntax:
+    content: public string Value { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Value As String
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Value*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Image
+  commentId: P:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Image
+  id: Image
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter
+  langs:
+  - csharp
+  - vb
+  name: Image
+  nameWithType: AssignmentParameter.Image
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Image
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/Parameters/AssignmentParameter.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Image
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/Parameters/AssignmentParameter.cs
+    startLine: 50
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  summary: "\nGets the string representation of the parameter.\n"
+  example: []
+  syntax:
+    content: public override string Image { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Overrides ReadOnly Property Image As String
+  overridden: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.Image
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Image*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
+  - ReadOnly
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Clone
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Clone
+  id: Clone
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter
+  langs:
+  - csharp
+  - vb
+  name: Clone()
+  nameWithType: AssignmentParameter.Clone()
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Clone()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Models/Netlist/Spice/Objects/Parameters/AssignmentParameter.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Clone
+    path: ../SpiceSharpParser/Models/Netlist/Spice/Objects/Parameters/AssignmentParameter.cs
+    startLine: 74
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  summary: "\nClones the object.\n"
+  example: []
+  syntax:
+    content: public override SpiceObject Clone()
+    return:
+      type: SpiceSharpParser.Models.Netlist.Spice.SpiceObject
+      description: A clone of the object.
+    content.vb: Public Overrides Function Clone As SpiceObject
+  overridden: SpiceSharpParser.Models.Netlist.Spice.SpiceObject.Clone
+  overload: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Clone*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+references:
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  name: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharpParser.Models.Netlist.Spice.SpiceObject
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.SpiceObject
+  parent: SpiceSharpParser.Models.Netlist.Spice
+  name: SpiceObject
+  nameWithType: SpiceObject
+  fullName: SpiceSharpParser.Models.Netlist.Spice.SpiceObject
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: Parameter
+  nameWithType: Parameter
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.LineNumber
+  commentId: P:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.LineNumber
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  name: LineNumber
+  nameWithType: Parameter.LineNumber
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.LineNumber
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.ToString
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.ToString
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  name: ToString()
+  nameWithType: Parameter.ToString()
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.ToString()
+  spec.csharp:
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.ToString
+    name: ToString
+    nameWithType: Parameter.ToString
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.ToString
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.ToString
+    name: ToString
+    nameWithType: Parameter.ToString
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.ToString
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.Models.Netlist.Spice
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice
+  name: SpiceSharpParser.Models.Netlist.Spice
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice
+  fullName: SpiceSharpParser.Models.Netlist.Spice
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: SpiceSharpParser.Models.Netlist.Spice.Objects
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice.Objects
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Name*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Name
+  name: Name
+  nameWithType: AssignmentParameter.Name
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Name
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Arguments*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Arguments
+  name: Arguments
+  nameWithType: AssignmentParameter.Arguments
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Arguments
+- uid: System.Collections.Generic.List{System.String}
+  commentId: T:System.Collections.Generic.List{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<String>
+  nameWithType: List<String>
+  fullName: System.Collections.Generic.List<System.String>
+  nameWithType.vb: List(Of String)
+  fullName.vb: System.Collections.Generic.List(Of System.String)
+  name.vb: List(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.HasFunctionSyntax*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.HasFunctionSyntax
+  name: HasFunctionSyntax
+  nameWithType: AssignmentParameter.HasFunctionSyntax
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.HasFunctionSyntax
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Values*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Values
+  name: Values
+  nameWithType: AssignmentParameter.Values
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Values
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Value*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Value
+  name: Value
+  nameWithType: AssignmentParameter.Value
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Value
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.Image
+  commentId: P:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.Image
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  name: Image
+  nameWithType: Parameter.Image
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter.Image
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Image*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Image
+  name: Image
+  nameWithType: AssignmentParameter.Image
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Image
+- uid: SpiceSharpParser.Models.Netlist.Spice.SpiceObject.Clone
+  commentId: M:SpiceSharpParser.Models.Netlist.Spice.SpiceObject.Clone
+  parent: SpiceSharpParser.Models.Netlist.Spice.SpiceObject
+  name: Clone()
+  nameWithType: SpiceObject.Clone()
+  fullName: SpiceSharpParser.Models.Netlist.Spice.SpiceObject.Clone()
+  spec.csharp:
+  - uid: SpiceSharpParser.Models.Netlist.Spice.SpiceObject.Clone
+    name: Clone
+    nameWithType: SpiceObject.Clone
+    fullName: SpiceSharpParser.Models.Netlist.Spice.SpiceObject.Clone
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Models.Netlist.Spice.SpiceObject.Clone
+    name: Clone
+    nameWithType: SpiceObject.Clone
+    fullName: SpiceSharpParser.Models.Netlist.Spice.SpiceObject.Clone
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Clone*
+  commentId: Overload:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Clone
+  name: Clone
+  nameWithType: AssignmentParameter.Clone
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter.Clone

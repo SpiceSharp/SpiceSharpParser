@@ -1,0 +1,414 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  id: ISpiceNetlistCaseSensitivitySettings
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsDistributionNameCaseSensitive
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsDotStatementNameCaseSensitive
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsEntityNameCaseSensitive
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsEntityParameterNameCaseSensitive
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsExpressionNameCaseSensitive
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsFunctionNameCaseSensitive
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsModelTypeCaseSensitive
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsNodeNameCaseSensitive
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsParameterNameCaseSensitive
+  langs:
+  - csharp
+  - vb
+  name: ISpiceNetlistCaseSensitivitySettings
+  nameWithType: ISpiceNetlistCaseSensitivitySettings
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  type: Interface
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ISpiceNetlistCaseSensitivitySettings
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+    startLine: 2
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  syntax:
+    content: public interface ISpiceNetlistCaseSensitivitySettings
+    content.vb: Public Interface ISpiceNetlistCaseSensitivitySettings
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsEntityNameCaseSensitive
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsEntityNameCaseSensitive
+  id: IsEntityNameCaseSensitive
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  langs:
+  - csharp
+  - vb
+  name: IsEntityNameCaseSensitive
+  nameWithType: ISpiceNetlistCaseSensitivitySettings.IsEntityNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsEntityNameCaseSensitive
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IsEntityNameCaseSensitive
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+    startLine: 7
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets or sets a value indicating whether entity names are case-sensitive.\n"
+  example: []
+  syntax:
+    content: bool IsEntityNameCaseSensitive { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Property IsEntityNameCaseSensitive As Boolean
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsEntityNameCaseSensitive*
+  modifiers.csharp:
+  - get
+  - set
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsEntityParameterNameCaseSensitive
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsEntityParameterNameCaseSensitive
+  id: IsEntityParameterNameCaseSensitive
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  langs:
+  - csharp
+  - vb
+  name: IsEntityParameterNameCaseSensitive
+  nameWithType: ISpiceNetlistCaseSensitivitySettings.IsEntityParameterNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsEntityParameterNameCaseSensitive
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IsEntityParameterNameCaseSensitive
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+    startLine: 12
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets or sets a value indicating whether entity parameter names are case-sensitive.\n"
+  example: []
+  syntax:
+    content: bool IsEntityParameterNameCaseSensitive { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Property IsEntityParameterNameCaseSensitive As Boolean
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsEntityParameterNameCaseSensitive*
+  modifiers.csharp:
+  - get
+  - set
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsDotStatementNameCaseSensitive
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsDotStatementNameCaseSensitive
+  id: IsDotStatementNameCaseSensitive
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  langs:
+  - csharp
+  - vb
+  name: IsDotStatementNameCaseSensitive
+  nameWithType: ISpiceNetlistCaseSensitivitySettings.IsDotStatementNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsDotStatementNameCaseSensitive
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IsDotStatementNameCaseSensitive
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+    startLine: 17
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets a value indicating whether dot statements names are case-sensitive.\n"
+  example: []
+  syntax:
+    content: bool IsDotStatementNameCaseSensitive { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property IsDotStatementNameCaseSensitive As Boolean
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsDotStatementNameCaseSensitive*
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsModelTypeCaseSensitive
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsModelTypeCaseSensitive
+  id: IsModelTypeCaseSensitive
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  langs:
+  - csharp
+  - vb
+  name: IsModelTypeCaseSensitive
+  nameWithType: ISpiceNetlistCaseSensitivitySettings.IsModelTypeCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsModelTypeCaseSensitive
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IsModelTypeCaseSensitive
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+    startLine: 22
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets or sets a value indicating whether model types names are case-sensitive.\n"
+  example: []
+  syntax:
+    content: bool IsModelTypeCaseSensitive { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Property IsModelTypeCaseSensitive As Boolean
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsModelTypeCaseSensitive*
+  modifiers.csharp:
+  - get
+  - set
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsNodeNameCaseSensitive
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsNodeNameCaseSensitive
+  id: IsNodeNameCaseSensitive
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  langs:
+  - csharp
+  - vb
+  name: IsNodeNameCaseSensitive
+  nameWithType: ISpiceNetlistCaseSensitivitySettings.IsNodeNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsNodeNameCaseSensitive
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IsNodeNameCaseSensitive
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+    startLine: 27
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets or sets a value indicating whether node names are case-sensitive.\n"
+  example: []
+  syntax:
+    content: bool IsNodeNameCaseSensitive { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Property IsNodeNameCaseSensitive As Boolean
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsNodeNameCaseSensitive*
+  modifiers.csharp:
+  - get
+  - set
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsFunctionNameCaseSensitive
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsFunctionNameCaseSensitive
+  id: IsFunctionNameCaseSensitive
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  langs:
+  - csharp
+  - vb
+  name: IsFunctionNameCaseSensitive
+  nameWithType: ISpiceNetlistCaseSensitivitySettings.IsFunctionNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsFunctionNameCaseSensitive
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IsFunctionNameCaseSensitive
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+    startLine: 32
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets or sets a value indicating whether function names are case-sensitive.\n"
+  example: []
+  syntax:
+    content: bool IsFunctionNameCaseSensitive { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Property IsFunctionNameCaseSensitive As Boolean
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsFunctionNameCaseSensitive*
+  modifiers.csharp:
+  - get
+  - set
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsDistributionNameCaseSensitive
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsDistributionNameCaseSensitive
+  id: IsDistributionNameCaseSensitive
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  langs:
+  - csharp
+  - vb
+  name: IsDistributionNameCaseSensitive
+  nameWithType: ISpiceNetlistCaseSensitivitySettings.IsDistributionNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsDistributionNameCaseSensitive
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IsDistributionNameCaseSensitive
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+    startLine: 37
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets or sets a value indicating whether random distribution names are case-sensitive.\n"
+  example: []
+  syntax:
+    content: bool IsDistributionNameCaseSensitive { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Property IsDistributionNameCaseSensitive As Boolean
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsDistributionNameCaseSensitive*
+  modifiers.csharp:
+  - get
+  - set
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsParameterNameCaseSensitive
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsParameterNameCaseSensitive
+  id: IsParameterNameCaseSensitive
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  langs:
+  - csharp
+  - vb
+  name: IsParameterNameCaseSensitive
+  nameWithType: ISpiceNetlistCaseSensitivitySettings.IsParameterNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsParameterNameCaseSensitive
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IsParameterNameCaseSensitive
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+    startLine: 42
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets or sets a value indicating whether parameter names are case-sensitive.\n"
+  example: []
+  syntax:
+    content: bool IsParameterNameCaseSensitive { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Property IsParameterNameCaseSensitive As Boolean
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsParameterNameCaseSensitive*
+  modifiers.csharp:
+  - get
+  - set
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsExpressionNameCaseSensitive
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsExpressionNameCaseSensitive
+  id: IsExpressionNameCaseSensitive
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  langs:
+  - csharp
+  - vb
+  name: IsExpressionNameCaseSensitive
+  nameWithType: ISpiceNetlistCaseSensitivitySettings.IsExpressionNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsExpressionNameCaseSensitive
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IsExpressionNameCaseSensitive
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceNetlistCaseSensitivitySettings.cs
+    startLine: 47
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets or sets a value indicating whether expression names are case-sensitive.\n"
+  example: []
+  syntax:
+    content: bool IsExpressionNameCaseSensitive { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Property IsExpressionNameCaseSensitive As Boolean
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsExpressionNameCaseSensitive*
+  modifiers.csharp:
+  - get
+  - set
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsEntityNameCaseSensitive*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsEntityNameCaseSensitive
+  name: IsEntityNameCaseSensitive
+  nameWithType: ISpiceNetlistCaseSensitivitySettings.IsEntityNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsEntityNameCaseSensitive
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsEntityParameterNameCaseSensitive*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsEntityParameterNameCaseSensitive
+  name: IsEntityParameterNameCaseSensitive
+  nameWithType: ISpiceNetlistCaseSensitivitySettings.IsEntityParameterNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsEntityParameterNameCaseSensitive
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsDotStatementNameCaseSensitive*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsDotStatementNameCaseSensitive
+  name: IsDotStatementNameCaseSensitive
+  nameWithType: ISpiceNetlistCaseSensitivitySettings.IsDotStatementNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsDotStatementNameCaseSensitive
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsModelTypeCaseSensitive*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsModelTypeCaseSensitive
+  name: IsModelTypeCaseSensitive
+  nameWithType: ISpiceNetlistCaseSensitivitySettings.IsModelTypeCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsModelTypeCaseSensitive
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsNodeNameCaseSensitive*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsNodeNameCaseSensitive
+  name: IsNodeNameCaseSensitive
+  nameWithType: ISpiceNetlistCaseSensitivitySettings.IsNodeNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsNodeNameCaseSensitive
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsFunctionNameCaseSensitive*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsFunctionNameCaseSensitive
+  name: IsFunctionNameCaseSensitive
+  nameWithType: ISpiceNetlistCaseSensitivitySettings.IsFunctionNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsFunctionNameCaseSensitive
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsDistributionNameCaseSensitive*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsDistributionNameCaseSensitive
+  name: IsDistributionNameCaseSensitive
+  nameWithType: ISpiceNetlistCaseSensitivitySettings.IsDistributionNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsDistributionNameCaseSensitive
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsParameterNameCaseSensitive*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsParameterNameCaseSensitive
+  name: IsParameterNameCaseSensitive
+  nameWithType: ISpiceNetlistCaseSensitivitySettings.IsParameterNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsParameterNameCaseSensitive
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsExpressionNameCaseSensitive*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsExpressionNameCaseSensitive
+  name: IsExpressionNameCaseSensitive
+  nameWithType: ISpiceNetlistCaseSensitivitySettings.IsExpressionNameCaseSensitive
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.IsExpressionNameCaseSensitive

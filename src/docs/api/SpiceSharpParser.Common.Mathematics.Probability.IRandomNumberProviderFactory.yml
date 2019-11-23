@@ -1,0 +1,185 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomNumberProviderFactory
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.IRandomNumberProviderFactory
+  id: IRandomNumberProviderFactory
+  parent: SpiceSharpParser.Common.Mathematics.Probability
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: IRandomNumberProviderFactory
+  nameWithType: IRandomNumberProviderFactory
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomNumberProviderFactory
+  type: Interface
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/IRandomNumberProviderFactory.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IRandomNumberProviderFactory
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/IRandomNumberProviderFactory.cs
+    startLine: 12
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  syntax:
+    content: 'public interface IRandomNumberProviderFactory : IRandomDoubleProviderFactory, IRandomIntegerProviderFactory'
+    content.vb: >-
+      Public Interface IRandomNumberProviderFactory
+          Inherits IRandomDoubleProviderFactory, IRandomIntegerProviderFactory
+  inheritedMembers:
+  - SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProviderFactory.GetRandomDouble(System.Nullable{System.Int32})
+  - SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory.GetRandomInteger(System.Nullable{System.Int32})
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+references:
+- uid: SpiceSharpParser.Common.Mathematics.Probability
+  commentId: N:SpiceSharpParser.Common.Mathematics.Probability
+  name: SpiceSharpParser.Common.Mathematics.Probability
+  nameWithType: SpiceSharpParser.Common.Mathematics.Probability
+  fullName: SpiceSharpParser.Common.Mathematics.Probability
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProviderFactory.GetRandomDouble(System.Nullable{System.Int32})
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProviderFactory.GetRandomDouble(System.Nullable{System.Int32})
+  parent: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProviderFactory
+  isExternal: true
+  name: GetRandomDouble(Nullable<Int32>)
+  nameWithType: IRandomDoubleProviderFactory.GetRandomDouble(Nullable<Int32>)
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProviderFactory.GetRandomDouble(System.Nullable<System.Int32>)
+  nameWithType.vb: IRandomDoubleProviderFactory.GetRandomDouble(Nullable(Of Int32))
+  fullName.vb: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProviderFactory.GetRandomDouble(System.Nullable(Of System.Int32))
+  name.vb: GetRandomDouble(Nullable(Of Int32))
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProviderFactory.GetRandomDouble(System.Nullable{System.Int32})
+    name: GetRandomDouble
+    nameWithType: IRandomDoubleProviderFactory.GetRandomDouble
+    fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProviderFactory.GetRandomDouble
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProviderFactory.GetRandomDouble(System.Nullable{System.Int32})
+    name: GetRandomDouble
+    nameWithType: IRandomDoubleProviderFactory.GetRandomDouble
+    fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProviderFactory.GetRandomDouble
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory.GetRandomInteger(System.Nullable{System.Int32})
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory.GetRandomInteger(System.Nullable{System.Int32})
+  parent: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory
+  isExternal: true
+  name: GetRandomInteger(Nullable<Int32>)
+  nameWithType: IRandomIntegerProviderFactory.GetRandomInteger(Nullable<Int32>)
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory.GetRandomInteger(System.Nullable<System.Int32>)
+  nameWithType.vb: IRandomIntegerProviderFactory.GetRandomInteger(Nullable(Of Int32))
+  fullName.vb: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory.GetRandomInteger(System.Nullable(Of System.Int32))
+  name.vb: GetRandomInteger(Nullable(Of Int32))
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory.GetRandomInteger(System.Nullable{System.Int32})
+    name: GetRandomInteger
+    nameWithType: IRandomIntegerProviderFactory.GetRandomInteger
+    fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory.GetRandomInteger
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory.GetRandomInteger(System.Nullable{System.Int32})
+    name: GetRandomInteger
+    nameWithType: IRandomIntegerProviderFactory.GetRandomInteger
+    fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory.GetRandomInteger
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProviderFactory
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProviderFactory
+  parent: SpiceSharpParser.Common.Mathematics.Probability
+  name: IRandomDoubleProviderFactory
+  nameWithType: IRandomDoubleProviderFactory
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProviderFactory
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory
+  parent: SpiceSharpParser.Common.Mathematics.Probability
+  name: IRandomIntegerProviderFactory
+  nameWithType: IRandomIntegerProviderFactory
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory

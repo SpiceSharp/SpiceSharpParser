@@ -116,19 +116,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_Token__ctor_System_Int32_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.Token.%23ctor(System.Int32%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_Token__ctor_System_Int32_System_String_System_Int32_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.Token.%23ctor(System.Int32%2CSystem.String%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/Token.cs/#L11">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_Token__ctor_" data-uid="SpiceSharpParser.Lexers.Token.#ctor*"></a>
-  <h4 id="SpiceSharpParser_Lexers_Token__ctor_System_Int32_System_String_" data-uid="SpiceSharpParser.Lexers.Token.#ctor(System.Int32,System.String)">Token(Int32, String)</h4>
+  <h4 id="SpiceSharpParser_Lexers_Token__ctor_System_Int32_System_String_System_Int32_" data-uid="SpiceSharpParser.Lexers.Token.#ctor(System.Int32,System.String,System.Int32)">Token(Int32, String, Int32)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="SpiceSharpParser.Lexers.Token.html">Token</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Token(int tokenType, string lexem)</code></pre>
+    <pre><code class="lang-csharp hljs">public Token(int tokenType, string lexem, int lineNumber)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -150,47 +150,21 @@
         <td><span class="parametername">lexem</span></td>
         <td></td>
       </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">lineNumber</span></td>
+        <td></td>
+      </tr>
     </tbody>
   </table>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_Token_Length.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.Token.Length%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/Token.cs/#L30">View Source</a>
-  </span>
-  <a id="SpiceSharpParser_Lexers_Token_Length_" data-uid="SpiceSharpParser.Lexers.Token.Length*"></a>
-  <h4 id="SpiceSharpParser_Lexers_Token_Length" data-uid="SpiceSharpParser.Lexers.Token.Length">Length</h4>
-  <div class="markdown level1 summary"><p>Gets th length of lexem.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int Length { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_Token_Lexem.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.Token.Lexem%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/Token.cs/#L25">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/Token.cs/#L31">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_Token_Lexem_" data-uid="SpiceSharpParser.Lexers.Token.Lexem*"></a>
   <h4 id="SpiceSharpParser_Lexers_Token_Lexem" data-uid="SpiceSharpParser.Lexers.Token.Lexem">Lexem</h4>
@@ -199,7 +173,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Lexem { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string Lexem { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -218,19 +192,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_Token_TokenType.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.Token.TokenType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_Token_LineNumber.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.Token.LineNumber%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/Token.cs/#L20">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/Token.cs/#L26">View Source</a>
   </span>
-  <a id="SpiceSharpParser_Lexers_Token_TokenType_" data-uid="SpiceSharpParser.Lexers.Token.TokenType*"></a>
-  <h4 id="SpiceSharpParser_Lexers_Token_TokenType" data-uid="SpiceSharpParser.Lexers.Token.TokenType">TokenType</h4>
-  <div class="markdown level1 summary"><p>Gets token type.</p>
+  <a id="SpiceSharpParser_Lexers_Token_LineNumber_" data-uid="SpiceSharpParser.Lexers.Token.LineNumber*"></a>
+  <h4 id="SpiceSharpParser_Lexers_Token_LineNumber" data-uid="SpiceSharpParser.Lexers.Token.LineNumber">LineNumber</h4>
+  <div class="markdown level1 summary"><p>Gets token line number.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int TokenType { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public int LineNumber { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -247,39 +221,34 @@
       </tr>
     </tbody>
   </table>
-  <h3 id="methods">Methods
-  </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_Token_UpdateLexem_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.Token.UpdateLexem(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_Token_Type.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.Token.Type%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/Token.cs/#L49">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/Token.cs/#L21">View Source</a>
   </span>
-  <a id="SpiceSharpParser_Lexers_Token_UpdateLexem_" data-uid="SpiceSharpParser.Lexers.Token.UpdateLexem*"></a>
-  <h4 id="SpiceSharpParser_Lexers_Token_UpdateLexem_System_String_" data-uid="SpiceSharpParser.Lexers.Token.UpdateLexem(System.String)">UpdateLexem(String)</h4>
-  <div class="markdown level1 summary"><p>Updates <a class="xref" href="SpiceSharpParser.Lexers.Token.html">Token</a>'s lexem.</p>
+  <a id="SpiceSharpParser_Lexers_Token_Type_" data-uid="SpiceSharpParser.Lexers.Token.Type*"></a>
+  <h4 id="SpiceSharpParser_Lexers_Token_Type" data-uid="SpiceSharpParser.Lexers.Token.Type">Type</h4>
+  <div class="markdown level1 summary"><p>Gets token type.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void UpdateLexem(string lexem)</code></pre>
+    <pre><code class="lang-csharp hljs">public int Type { get; }</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">lexem</span></td>
-        <td><p>A new value of lexem.</p>
-</td>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>

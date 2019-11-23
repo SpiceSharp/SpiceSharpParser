@@ -1,0 +1,1112 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  id: ICircuitEvaluator
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.AddFunction(System.String,SpiceSharpParser.Common.Evaluation.IFunction{System.Double,System.Double})
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.AddFunction(System.String,System.Collections.Generic.List{System.String},System.String)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.CreateChildContext(System.String,System.Boolean)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.EvaluateDouble(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.EvaluateDouble(System.String)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.EvaluateDouble(System.String,SpiceSharp.Simulations.Simulation)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetEvaluationContext(SpiceSharp.Simulations.Simulation)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetExpression(System.String)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetExpressionNames
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetSeed(SpiceSharp.Simulations.Simulation)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.HaveParameter(SpiceSharp.Simulations.Simulation,System.String)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.Seed
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetNamedExpression(System.String,System.String)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter(SpiceSharp.Simulations.Simulation,System.String,System.Double)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter(System.String,System.Double)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter(System.String,System.String)
+  langs:
+  - csharp
+  - vb
+  name: ICircuitEvaluator
+  nameWithType: ICircuitEvaluator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  type: Interface
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ICircuitEvaluator
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+    startLine: 7
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  syntax:
+    content: public interface ICircuitEvaluator
+    content.vb: Public Interface ICircuitEvaluator
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.Seed
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.Seed
+  id: Seed
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  langs:
+  - csharp
+  - vb
+  name: Seed
+  nameWithType: ICircuitEvaluator.Seed
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.Seed
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Seed
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+    startLine: 9
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  syntax:
+    content: int? Seed { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Int32}
+    content.vb: Property Seed As Integer?
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.Seed*
+  modifiers.csharp:
+  - get
+  - set
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.EvaluateDouble(System.String,SpiceSharp.Simulations.Simulation)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.EvaluateDouble(System.String,SpiceSharp.Simulations.Simulation)
+  id: EvaluateDouble(System.String,SpiceSharp.Simulations.Simulation)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  langs:
+  - csharp
+  - vb
+  name: EvaluateDouble(String, Simulation)
+  nameWithType: ICircuitEvaluator.EvaluateDouble(String, Simulation)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.EvaluateDouble(System.String, SpiceSharp.Simulations.Simulation)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: EvaluateDouble
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+    startLine: 19
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  summary: "\nParses an expression to double.\n"
+  example: []
+  syntax:
+    content: double EvaluateDouble(string expression, Simulation simulation)
+    parameters:
+    - id: expression
+      type: System.String
+      description: Expression.
+    - id: simulation
+      type: SpiceSharp.Simulations.Simulation
+      description: Simulation.
+    return:
+      type: System.Double
+      description: "\nA value of expression.\n"
+    content.vb: Function EvaluateDouble(expression As String, simulation As Simulation) As Double
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.EvaluateDouble*
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.EvaluateDouble(System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.EvaluateDouble(System.String)
+  id: EvaluateDouble(System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  langs:
+  - csharp
+  - vb
+  name: EvaluateDouble(String)
+  nameWithType: ICircuitEvaluator.EvaluateDouble(String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.EvaluateDouble(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: EvaluateDouble
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+    startLine: 28
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  summary: "\nParses an expression to double.\n"
+  example: []
+  syntax:
+    content: double EvaluateDouble(string expression)
+    parameters:
+    - id: expression
+      type: System.String
+      description: Expression.
+    return:
+      type: System.Double
+      description: "\nA value of expression.\n"
+    content.vb: Function EvaluateDouble(expression As String) As Double
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.EvaluateDouble*
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.EvaluateDouble(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.EvaluateDouble(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  id: EvaluateDouble(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  langs:
+  - csharp
+  - vb
+  name: EvaluateDouble(Parameter)
+  nameWithType: ICircuitEvaluator.EvaluateDouble(Parameter)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.EvaluateDouble(SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: EvaluateDouble
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+    startLine: 37
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  summary: "\nParses an expression to double.\n"
+  example: []
+  syntax:
+    content: double EvaluateDouble(Parameter parameter)
+    parameters:
+    - id: parameter
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+      description: Parameter.
+    return:
+      type: System.Double
+      description: "\nA value of expression.\n"
+    content.vb: Function EvaluateDouble(parameter As Parameter) As Double
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.EvaluateDouble*
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter(System.String,System.Double)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter(System.String,System.Double)
+  id: SetParameter(System.String,System.Double)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  langs:
+  - csharp
+  - vb
+  name: SetParameter(String, Double)
+  nameWithType: ICircuitEvaluator.SetParameter(String, Double)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter(System.String, System.Double)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SetParameter
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+    startLine: 44
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  summary: "\nSets a parameter.\n"
+  example: []
+  syntax:
+    content: void SetParameter(string parameterName, double value)
+    parameters:
+    - id: parameterName
+      type: System.String
+      description: Parameter name.
+    - id: value
+      type: System.Double
+      description: Parameter value.
+    content.vb: Sub SetParameter(parameterName As String, value As Double)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter*
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter(SpiceSharp.Simulations.Simulation,System.String,System.Double)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter(SpiceSharp.Simulations.Simulation,System.String,System.Double)
+  id: SetParameter(SpiceSharp.Simulations.Simulation,System.String,System.Double)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  langs:
+  - csharp
+  - vb
+  name: SetParameter(Simulation, String, Double)
+  nameWithType: ICircuitEvaluator.SetParameter(Simulation, String, Double)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter(SpiceSharp.Simulations.Simulation, System.String, System.Double)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SetParameter
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+    startLine: 52
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  summary: "\nSets a parameter.\n"
+  example: []
+  syntax:
+    content: void SetParameter(Simulation simulation, string parameterName, double value)
+    parameters:
+    - id: simulation
+      type: SpiceSharp.Simulations.Simulation
+      description: Simulation.
+    - id: parameterName
+      type: System.String
+      description: Parameter name.
+    - id: value
+      type: System.Double
+      description: Parameter value.
+    content.vb: Sub SetParameter(simulation As Simulation, parameterName As String, value As Double)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter*
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  id: SetParameter(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  langs:
+  - csharp
+  - vb
+  name: SetParameter(String, Parameter)
+  nameWithType: ICircuitEvaluator.SetParameter(String, Parameter)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter(System.String, SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SetParameter
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+    startLine: 59
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  summary: "\nSets a parameter.\n"
+  example: []
+  syntax:
+    content: void SetParameter(string parameterName, Parameter parameter)
+    parameters:
+    - id: parameterName
+      type: System.String
+      description: Parameter name.
+    - id: parameter
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+      description: Parameter value.
+    content.vb: Sub SetParameter(parameterName As String, parameter As Parameter)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter*
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter(System.String,System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter(System.String,System.String)
+  id: SetParameter(System.String,System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  langs:
+  - csharp
+  - vb
+  name: SetParameter(String, String)
+  nameWithType: ICircuitEvaluator.SetParameter(String, String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter(System.String, System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SetParameter
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+    startLine: 66
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  summary: "\nSets a parameter.\n"
+  example: []
+  syntax:
+    content: void SetParameter(string parameterName, string expression)
+    parameters:
+    - id: parameterName
+      type: System.String
+      description: Parameter name.
+    - id: expression
+      type: System.String
+      description: Expression.
+    content.vb: Sub SetParameter(parameterName As String, expression As String)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter*
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.AddFunction(System.String,System.Collections.Generic.List{System.String},System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.AddFunction(System.String,System.Collections.Generic.List{System.String},System.String)
+  id: AddFunction(System.String,System.Collections.Generic.List{System.String},System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  langs:
+  - csharp
+  - vb
+  name: AddFunction(String, List<String>, String)
+  nameWithType: ICircuitEvaluator.AddFunction(String, List<String>, String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.AddFunction(System.String, System.Collections.Generic.List<System.String>, System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: AddFunction
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+    startLine: 68
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  syntax:
+    content: void AddFunction(string functionName, List<string> arguments, string body)
+    parameters:
+    - id: functionName
+      type: System.String
+    - id: arguments
+      type: System.Collections.Generic.List{System.String}
+    - id: body
+      type: System.String
+    content.vb: Sub AddFunction(functionName As String, arguments As List(Of String), body As String)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.AddFunction*
+  nameWithType.vb: ICircuitEvaluator.AddFunction(String, List(Of String), String)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.AddFunction(System.String, System.Collections.Generic.List(Of System.String), System.String)
+  name.vb: AddFunction(String, List(Of String), String)
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.AddFunction(System.String,SpiceSharpParser.Common.Evaluation.IFunction{System.Double,System.Double})
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.AddFunction(System.String,SpiceSharpParser.Common.Evaluation.IFunction{System.Double,System.Double})
+  id: AddFunction(System.String,SpiceSharpParser.Common.Evaluation.IFunction{System.Double,System.Double})
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  langs:
+  - csharp
+  - vb
+  name: AddFunction(String, IFunction<Double, Double>)
+  nameWithType: ICircuitEvaluator.AddFunction(String, IFunction<Double, Double>)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.AddFunction(System.String, SpiceSharpParser.Common.Evaluation.IFunction<System.Double, System.Double>)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: AddFunction
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+    startLine: 70
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  syntax:
+    content: void AddFunction(string name, IFunction<double, double> function)
+    parameters:
+    - id: name
+      type: System.String
+    - id: function
+      type: SpiceSharpParser.Common.Evaluation.IFunction{System.Double,System.Double}
+    content.vb: Sub AddFunction(name As String, function As IFunction(Of Double, Double))
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.AddFunction*
+  nameWithType.vb: ICircuitEvaluator.AddFunction(String, IFunction(Of Double, Double))
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.AddFunction(System.String, SpiceSharpParser.Common.Evaluation.IFunction(Of System.Double, System.Double))
+  name.vb: AddFunction(String, IFunction(Of Double, Double))
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetNamedExpression(System.String,System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetNamedExpression(System.String,System.String)
+  id: SetNamedExpression(System.String,System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  langs:
+  - csharp
+  - vb
+  name: SetNamedExpression(String, String)
+  nameWithType: ICircuitEvaluator.SetNamedExpression(String, String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetNamedExpression(System.String, System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SetNamedExpression
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+    startLine: 72
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  syntax:
+    content: void SetNamedExpression(string expressionName, string expression)
+    parameters:
+    - id: expressionName
+      type: System.String
+    - id: expression
+      type: System.String
+    content.vb: Sub SetNamedExpression(expressionName As String, expression As String)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetNamedExpression*
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetEvaluationContext(SpiceSharp.Simulations.Simulation)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetEvaluationContext(SpiceSharp.Simulations.Simulation)
+  id: GetEvaluationContext(SpiceSharp.Simulations.Simulation)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  langs:
+  - csharp
+  - vb
+  name: GetEvaluationContext(Simulation)
+  nameWithType: ICircuitEvaluator.GetEvaluationContext(Simulation)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetEvaluationContext(SpiceSharp.Simulations.Simulation)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetEvaluationContext
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+    startLine: 74
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  syntax:
+    content: EvaluationContext GetEvaluationContext(Simulation simulation = null)
+    parameters:
+    - id: simulation
+      type: SpiceSharp.Simulations.Simulation
+    return:
+      type: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    content.vb: Function GetEvaluationContext(simulation As Simulation = Nothing) As EvaluationContext
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetEvaluationContext*
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.HaveParameter(SpiceSharp.Simulations.Simulation,System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.HaveParameter(SpiceSharp.Simulations.Simulation,System.String)
+  id: HaveParameter(SpiceSharp.Simulations.Simulation,System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  langs:
+  - csharp
+  - vb
+  name: HaveParameter(Simulation, String)
+  nameWithType: ICircuitEvaluator.HaveParameter(Simulation, String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.HaveParameter(SpiceSharp.Simulations.Simulation, System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: HaveParameter
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+    startLine: 76
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  syntax:
+    content: bool HaveParameter(Simulation simulation, string parameterName)
+    parameters:
+    - id: simulation
+      type: SpiceSharp.Simulations.Simulation
+    - id: parameterName
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Function HaveParameter(simulation As Simulation, parameterName As String) As Boolean
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.HaveParameter*
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.CreateChildContext(System.String,System.Boolean)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.CreateChildContext(System.String,System.Boolean)
+  id: CreateChildContext(System.String,System.Boolean)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  langs:
+  - csharp
+  - vb
+  name: CreateChildContext(String, Boolean)
+  nameWithType: ICircuitEvaluator.CreateChildContext(String, Boolean)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.CreateChildContext(System.String, System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CreateChildContext
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+    startLine: 78
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  syntax:
+    content: EvaluationContext CreateChildContext(string subcircuitFullName, bool b)
+    parameters:
+    - id: subcircuitFullName
+      type: System.String
+    - id: b
+      type: System.Boolean
+    return:
+      type: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    content.vb: Function CreateChildContext(subcircuitFullName As String, b As Boolean) As EvaluationContext
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.CreateChildContext*
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetSeed(SpiceSharp.Simulations.Simulation)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetSeed(SpiceSharp.Simulations.Simulation)
+  id: GetSeed(SpiceSharp.Simulations.Simulation)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  langs:
+  - csharp
+  - vb
+  name: GetSeed(Simulation)
+  nameWithType: ICircuitEvaluator.GetSeed(Simulation)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetSeed(SpiceSharp.Simulations.Simulation)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetSeed
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+    startLine: 80
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  syntax:
+    content: int? GetSeed(Simulation sim)
+    parameters:
+    - id: sim
+      type: SpiceSharp.Simulations.Simulation
+    return:
+      type: System.Nullable{System.Int32}
+    content.vb: Function GetSeed(sim As Simulation) As Integer?
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetSeed*
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetExpression(System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetExpression(System.String)
+  id: GetExpression(System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  langs:
+  - csharp
+  - vb
+  name: GetExpression(String)
+  nameWithType: ICircuitEvaluator.GetExpression(String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetExpression(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetExpression
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+    startLine: 82
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  syntax:
+    content: Expression GetExpression(string expressionName)
+    parameters:
+    - id: expressionName
+      type: System.String
+    return:
+      type: SpiceSharpParser.Common.Evaluation.Expression
+    content.vb: Function GetExpression(expressionName As String) As Expression
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetExpression*
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetExpressionNames
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetExpressionNames
+  id: GetExpressionNames
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+  langs:
+  - csharp
+  - vb
+  name: GetExpressionNames()
+  nameWithType: ICircuitEvaluator.GetExpressionNames()
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetExpressionNames()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetExpressionNames
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/ICircuitEvaluator.cs
+    startLine: 84
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  syntax:
+    content: IEnumerable<string> GetExpressionNames()
+    return:
+      type: System.Collections.Generic.IEnumerable{System.String}
+    content.vb: Function GetExpressionNames As IEnumerable(Of String)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetExpressionNames*
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.Seed*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.Seed
+  name: Seed
+  nameWithType: ICircuitEvaluator.Seed
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.Seed
+- uid: System.Nullable{System.Int32}
+  commentId: T:System.Nullable{System.Int32}
+  parent: System
+  definition: System.Nullable`1
+  name: Nullable<Int32>
+  nameWithType: Nullable<Int32>
+  fullName: System.Nullable<System.Int32>
+  nameWithType.vb: Nullable(Of Int32)
+  fullName.vb: System.Nullable(Of System.Int32)
+  name.vb: Nullable(Of Int32)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.EvaluateDouble*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.EvaluateDouble
+  name: EvaluateDouble
+  nameWithType: ICircuitEvaluator.EvaluateDouble
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.EvaluateDouble
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: SpiceSharp.Simulations.Simulation
+  commentId: T:SpiceSharp.Simulations.Simulation
+  parent: SpiceSharp.Simulations
+  isExternal: true
+  name: Simulation
+  nameWithType: Simulation
+  fullName: SpiceSharp.Simulations.Simulation
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  name: Double
+  nameWithType: Double
+  fullName: System.Double
+- uid: SpiceSharp.Simulations
+  commentId: N:SpiceSharp.Simulations
+  isExternal: true
+  name: SpiceSharp.Simulations
+  nameWithType: SpiceSharp.Simulations
+  fullName: SpiceSharp.Simulations
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: Parameter
+  nameWithType: Parameter
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: SpiceSharpParser.Models.Netlist.Spice.Objects
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice.Objects
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter
+  name: SetParameter
+  nameWithType: ICircuitEvaluator.SetParameter
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetParameter
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.AddFunction*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.AddFunction
+  name: AddFunction
+  nameWithType: ICircuitEvaluator.AddFunction
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.AddFunction
+- uid: System.Collections.Generic.List{System.String}
+  commentId: T:System.Collections.Generic.List{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<String>
+  nameWithType: List<String>
+  fullName: System.Collections.Generic.List<System.String>
+  nameWithType.vb: List(Of String)
+  fullName.vb: System.Collections.Generic.List(Of System.String)
+  name.vb: List(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: SpiceSharpParser.Common.Evaluation.IFunction{System.Double,System.Double}
+  commentId: T:SpiceSharpParser.Common.Evaluation.IFunction{System.Double,System.Double}
+  parent: SpiceSharpParser.Common.Evaluation
+  definition: SpiceSharpParser.Common.Evaluation.IFunction`2
+  name: IFunction<Double, Double>
+  nameWithType: IFunction<Double, Double>
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction<System.Double, System.Double>
+  nameWithType.vb: IFunction(Of Double, Double)
+  fullName.vb: SpiceSharpParser.Common.Evaluation.IFunction(Of System.Double, System.Double)
+  name.vb: IFunction(Of Double, Double)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+  commentId: T:SpiceSharpParser.Common.Evaluation.IFunction`2
+  name: IFunction<TInputArgumentType, TOutputType>
+  nameWithType: IFunction<TInputArgumentType, TOutputType>
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction<TInputArgumentType, TOutputType>
+  nameWithType.vb: IFunction(Of TInputArgumentType, TOutputType)
+  fullName.vb: SpiceSharpParser.Common.Evaluation.IFunction(Of TInputArgumentType, TOutputType)
+  name.vb: IFunction(Of TInputArgumentType, TOutputType)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TOutputType
+    nameWithType: TOutputType
+    fullName: TOutputType
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TOutputType
+    nameWithType: TOutputType
+    fullName: TOutputType
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation
+  commentId: N:SpiceSharpParser.Common.Evaluation
+  name: SpiceSharpParser.Common.Evaluation
+  nameWithType: SpiceSharpParser.Common.Evaluation
+  fullName: SpiceSharpParser.Common.Evaluation
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetNamedExpression*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetNamedExpression
+  name: SetNamedExpression
+  nameWithType: ICircuitEvaluator.SetNamedExpression
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.SetNamedExpression
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetEvaluationContext*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetEvaluationContext
+  name: GetEvaluationContext
+  nameWithType: ICircuitEvaluator.GetEvaluationContext
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetEvaluationContext
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  commentId: T:SpiceSharpParser.Common.Evaluation.EvaluationContext
+  parent: SpiceSharpParser.Common.Evaluation
+  name: EvaluationContext
+  nameWithType: EvaluationContext
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.HaveParameter*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.HaveParameter
+  name: HaveParameter
+  nameWithType: ICircuitEvaluator.HaveParameter
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.HaveParameter
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.CreateChildContext*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.CreateChildContext
+  name: CreateChildContext
+  nameWithType: ICircuitEvaluator.CreateChildContext
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.CreateChildContext
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetSeed*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetSeed
+  name: GetSeed
+  nameWithType: ICircuitEvaluator.GetSeed
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetSeed
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetExpression*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetExpression
+  name: GetExpression
+  nameWithType: ICircuitEvaluator.GetExpression
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetExpression
+- uid: SpiceSharpParser.Common.Evaluation.Expression
+  commentId: T:SpiceSharpParser.Common.Evaluation.Expression
+  parent: SpiceSharpParser.Common.Evaluation
+  name: Expression
+  nameWithType: Expression
+  fullName: SpiceSharpParser.Common.Evaluation.Expression
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetExpressionNames*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetExpressionNames
+  name: GetExpressionNames
+  nameWithType: ICircuitEvaluator.GetExpressionNames
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator.GetExpressionNames
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<String>
+  nameWithType: IEnumerable<String>
+  fullName: System.Collections.Generic.IEnumerable<System.String>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
