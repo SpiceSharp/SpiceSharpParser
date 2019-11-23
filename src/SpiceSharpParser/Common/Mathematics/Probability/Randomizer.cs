@@ -9,6 +9,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
     /// </summary>
     public class Randomizer : IRandomizer
     {
+        private readonly bool _isDistributionNameCaseSensitive;
         private readonly Dictionary<string, Func<Pdf>> _pdfDictionary = null;
         private readonly Dictionary<string, Pdf> _pdfInstancesDictionary = null;
         private readonly Dictionary<string, Cdf> _cdfDictionary = null;
@@ -33,12 +34,22 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// <param name="isDistributionNameCaseSensitive">Is distribution name case-sensitive</param>
         /// <param name="cdfPoints">Number of cdf points.</param>
         /// <param name="normalLimit">Normal limit.</param>
-        public Randomizer(bool isDistributionNameCaseSensitive = false, int? cdfPoints = null, double? normalLimit = null, int? seed = null)
+        /// <param name="seed">Seed.</param>
+        public Randomizer(
+            bool isDistributionNameCaseSensitive = false,
+            int? cdfPoints = null,
+            double? normalLimit = null,
+            int? seed = null,
+            Dictionary<string, Func<Pdf>> pdfDictionary = null,
+            Dictionary<string, Pdf> pdfInstances = null,
+            Dictionary<string, Cdf> cdfDictionary = null,
+            Dictionary<string, CustomRandomNumberProviderFactory> customRandomNumberProviderFactories = null)
         {
-            _pdfDictionary = new Dictionary<string, Func<Pdf>>(StringComparerProvider.Get(isDistributionNameCaseSensitive));
-            _pdfInstancesDictionary = new Dictionary<string, Pdf>(StringComparerProvider.Get(isDistributionNameCaseSensitive));
-            _cdfDictionary = new Dictionary<string, Cdf>(StringComparerProvider.Get(isDistributionNameCaseSensitive));
-            _customRandomNumberProviderFactories = new Dictionary<string, CustomRandomNumberProviderFactory>(StringComparerProvider.Get(isDistributionNameCaseSensitive));
+            _isDistributionNameCaseSensitive = isDistributionNameCaseSensitive;
+            _pdfDictionary = pdfDictionary ?? new Dictionary<string, Func<Pdf>>(StringComparerProvider.Get(isDistributionNameCaseSensitive));
+            _pdfInstancesDictionary = pdfInstances ?? new Dictionary<string, Pdf>(StringComparerProvider.Get(isDistributionNameCaseSensitive));
+            _cdfDictionary = cdfDictionary ?? new Dictionary<string, Cdf>(StringComparerProvider.Get(isDistributionNameCaseSensitive));
+            _customRandomNumberProviderFactories = customRandomNumberProviderFactories ?? new Dictionary<string, CustomRandomNumberProviderFactory>(StringComparerProvider.Get(isDistributionNameCaseSensitive));
 
             CurrentPdfName = null;
             CdfPoints = cdfPoints ?? DefaultCdfPoints;
@@ -113,6 +124,20 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         public IRandomIntegerProvider GetRandomIntegerProvider(string pdfName = null)
         {
             return GetRandomProvider(pdfName);
+        }
+
+        public IRandomizer Clone()
+        {
+            var randomizer = new Randomizer(
+                _isDistributionNameCaseSensitive,
+                CdfPoints,
+                NormalLimit,
+                Seed,
+                _pdfDictionary,
+                _pdfInstancesDictionary,
+                _cdfDictionary);
+
+            return randomizer;
         }
 
         public int? Seed { get; set; }

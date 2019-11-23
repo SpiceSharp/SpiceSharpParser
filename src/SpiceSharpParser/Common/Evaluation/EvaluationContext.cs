@@ -275,7 +275,7 @@ namespace SpiceSharpParser.Common.Evaluation
 
             context.Seed = Seed;
             context.Simulation = Simulation;
-            context.Randomizer = Randomizer;
+            context.Randomizer = Randomizer.Clone();
 
             return context;
         }

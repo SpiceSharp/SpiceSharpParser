@@ -28,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             var ifPreprocessor = new IfPreprocessor();
             ifPreprocessor.CaseSettings = subCircuitContext.CaseSensitivity;
-            ifPreprocessor.EvaluationContext = subCircuitContext.CircuitEvaluator.GetContext();
+            ifPreprocessor.EvaluationContext = subCircuitContext.Evaluator.GetEvaluationContext();
             subCircuitDefinition.Statements = ifPreprocessor.Process(subCircuitDefinition.Statements);
 
             ReadParamControl(subCircuitDefinition, subCircuitContext);
@@ -178,11 +178,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
             }
 
-
             var subcircuitParameters = CreateSubcircuitParameters(subCircuitDefinition, subCktParameters, context);
-
-
-
 
             // setting node name generator
             var pinInstanceIdentifiers = new List<string>();
@@ -204,7 +200,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 instanceData.NodeMap[pin] = subcircuitNodeNameGenerator.Generate(pin);
             }
 
-            var subcircuitEvaluationContext = context.CircuitEvaluator.CreateChildContext(subcircuitFullName, true);
+            var subcircuitEvaluationContext = context.Evaluator.CreateChildContext(subcircuitFullName, true);
             subcircuitEvaluationContext.SetParameters(subcircuitParameters);
             subcircuitEvaluationContext.NameGenerator = subcircuitNameGenerator;
 
@@ -254,7 +250,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 if (parameterName == result[parameterName])
                 {
-                    result[parameterName] = circuitContext.CircuitEvaluator.EvaluateDouble(parameterName).ToString(CultureInfo.InvariantCulture);
+                    result[parameterName] = circuitContext.Evaluator.EvaluateDouble(parameterName).ToString(CultureInfo.InvariantCulture);
                 }
             }
 

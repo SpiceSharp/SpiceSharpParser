@@ -163,9 +163,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 Parameter = variableParameter,
                 Sweep = new DecadeSweep(
-                    context.CircuitEvaluator.EvaluateDouble(parameters[0].Image),
-                    context.CircuitEvaluator.EvaluateDouble(parameters[1].Image),
-                    (int)context.CircuitEvaluator.EvaluateDouble(parameters[2].Image)),
+                    context.Evaluator.EvaluateDouble(parameters[0].Image),
+                    context.Evaluator.EvaluateDouble(parameters[1].Image),
+                    (int)context.Evaluator.EvaluateDouble(parameters[2].Image)),
             };
 
             context.Result.SimulationConfiguration.ParameterSweeps.Add(pSweep);
@@ -177,9 +177,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 Parameter = variableParameter,
                 Sweep = new OctaveSweep(
-                    context.CircuitEvaluator.EvaluateDouble(parameters[0].Image),
-                    context.CircuitEvaluator.EvaluateDouble(parameters[1].Image),
-                    (int)context.CircuitEvaluator.EvaluateDouble(parameters[2].Image)),
+                    context.Evaluator.EvaluateDouble(parameters[0].Image),
+                    context.Evaluator.EvaluateDouble(parameters[1].Image),
+                    (int)context.Evaluator.EvaluateDouble(parameters[2].Image)),
             };
 
             context.Result.SimulationConfiguration.ParameterSweeps.Add(pSweep);
@@ -196,7 +196,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     throw new WrongParameterTypeException();
                 }
 
-                values.Add(context.CircuitEvaluator.EvaluateDouble(parameter.Image));
+                values.Add(context.Evaluator.EvaluateDouble(parameter.Image));
             }
 
             context.Result.SimulationConfiguration.ParameterSweeps.Add(
@@ -213,9 +213,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 Parameter = variableParameter,
                 Sweep = new LinearSweep(
-                    context.CircuitEvaluator.EvaluateDouble(parameters[0].Image),
-                    context.CircuitEvaluator.EvaluateDouble(parameters[1].Image),
-                    context.CircuitEvaluator.EvaluateDouble(parameters[2].Image)),
+                    context.Evaluator.EvaluateDouble(parameters[0].Image),
+                    context.Evaluator.EvaluateDouble(parameters[1].Image),
+                    context.Evaluator.EvaluateDouble(parameters[2].Image)),
             };
 
             context.Result.SimulationConfiguration.ParameterSweeps.Add(pSweep);

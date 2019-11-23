@@ -72,7 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         void SetNamedExpression(string expressionName, string expression);
 
-        EvaluationContext GetContext(Simulation simulation = null);
+        EvaluationContext GetEvaluationContext(Simulation simulation = null);
 
         bool HaveParameter(Simulation simulation, string parameterName);
 

@@ -79,7 +79,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             public double A { get; set; }
 
             public double B { get; set; }
-
         }
 
         public class Point

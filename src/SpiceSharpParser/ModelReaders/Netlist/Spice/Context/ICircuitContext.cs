@@ -28,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets or set circuit evaluator.
         /// </summary>
-        ICircuitEvaluator CircuitEvaluator { get; }
+        ICircuitEvaluator Evaluator { get; }
 
         /// <summary>
         /// Gets the children of the reading context.

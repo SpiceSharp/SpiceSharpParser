@@ -69,7 +69,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
                     if (ap.Name.ToLower() == "level")
                     {
                         lindex = i;
-                        level = (int)Math.Round(context.CircuitEvaluator.EvaluateDouble(ap.Value));
+                        level = (int)Math.Round(context.Evaluator.EvaluateDouble(ap.Value));
                     }
 
                     if (ap.Name.ToLower() == "version")

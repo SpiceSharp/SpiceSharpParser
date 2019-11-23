@@ -96,7 +96,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
         {
             simulation.BeforeSetup += (object sender, EventArgs args) =>
             {
-                context.CircuitEvaluator.SetParameter(simulation, paramToSet.Key.Image, paramToSet.Value);
+                context.Evaluator.SetParameter(simulation, paramToSet.Key.Image, paramToSet.Value);
             };
         }
 

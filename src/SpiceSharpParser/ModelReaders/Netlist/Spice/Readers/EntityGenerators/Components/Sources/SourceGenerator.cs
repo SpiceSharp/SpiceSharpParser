@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     {
         protected SimpleDerivativeParser CreateParser(ICircuitContext context, Simulation simulation)
         {
-            var simulationContext = context.CircuitEvaluator.GetContext(simulation);
+            var simulationContext = context.Evaluator.GetEvaluationContext(simulation);
             var parser = simulationContext.GetDeriveParser();
             return parser;
         }

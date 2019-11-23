@@ -218,10 +218,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             export.Simulation.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
-                var expressionContext = context.CircuitEvaluator.GetContext(export.Simulation);
+                var expressionContext = context.Evaluator.GetEvaluationContext(export.Simulation);
                 var firstParameterSweepParameter = expressionContext.Parameters[firstParameterSweep.Parameter.Image];
 
-                var value = context.CircuitEvaluator.GetContext(export.Simulation).Evaluate(firstParameterSweepParameter);
+                var value = context.Evaluator.GetEvaluationContext(export.Simulation).Evaluate(firstParameterSweepParameter);
                 series.Points.Add(new Point() { X = value, Y = export.Extract() });
             };
         }
@@ -274,7 +274,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                                 "I(" + entity.Name + ")",
                                 "i",
                                 @params,
-                                context.CircuitEvaluator.GetContext(simulation),
+                                context.Evaluator.GetEvaluationContext(simulation),
                                 context.CaseSensitivity));
                     }
                 }
@@ -291,7 +291,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             "V(" + node + ")",
                             "v",
                             @params,
-                            context.CircuitEvaluator.GetContext(simulation),
+                            context.Evaluator.GetEvaluationContext(simulation),
                             context.CaseSensitivity));
                 }
             }
@@ -308,14 +308,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         private void AddLetExport(ICircuitContext context, Type simulationType, SingleParameter s)
         {
             string expressionName = s.Image;
-            var expressionNames = context.CircuitEvaluator.GetExpressionNames();
+            var expressionNames = context.Evaluator.GetExpressionNames();
 
             if (expressionNames.Contains(expressionName))
             {
                 var simulations = Filter(context.Result.Simulations, simulationType);
                 foreach (var simulation in simulations)
                 {
-                    var export = new ExpressionExport(simulation.Name, expressionName, context.CircuitEvaluator.GetContext(simulation));
+                    var export = new ExpressionExport(simulation.Name, expressionName, context.Evaluator.GetEvaluationContext(simulation));
                     context.Result.AddExport(export);
                 }
             }

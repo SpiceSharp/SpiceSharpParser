@@ -28,27 +28,27 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     switch (name)
                     {
                         case "abstol":
-                            context.Result.SimulationConfiguration.AbsoluteTolerance = context.CircuitEvaluator.EvaluateDouble(value); break;
+                            context.Result.SimulationConfiguration.AbsoluteTolerance = context.Evaluator.EvaluateDouble(value); break;
                         case "reltol":
-                            context.Result.SimulationConfiguration.RelTolerance = context.CircuitEvaluator.EvaluateDouble(value); break;
+                            context.Result.SimulationConfiguration.RelTolerance = context.Evaluator.EvaluateDouble(value); break;
                         case "gmin":
-                            context.Result.SimulationConfiguration.Gmin = context.CircuitEvaluator.EvaluateDouble(value); break;
+                            context.Result.SimulationConfiguration.Gmin = context.Evaluator.EvaluateDouble(value); break;
                         case "itl1":
-                            context.Result.SimulationConfiguration.DCMaxIterations = (int)context.CircuitEvaluator.EvaluateDouble(value); break;
+                            context.Result.SimulationConfiguration.DCMaxIterations = (int)context.Evaluator.EvaluateDouble(value); break;
                         case "itl2":
-                            context.Result.SimulationConfiguration.SweepMaxIterations = (int)context.CircuitEvaluator.EvaluateDouble(value); break;
+                            context.Result.SimulationConfiguration.SweepMaxIterations = (int)context.Evaluator.EvaluateDouble(value); break;
                         case "itl4":
-                            context.Result.SimulationConfiguration.TranMaxIterations = (int)context.CircuitEvaluator.EvaluateDouble(value); break;
+                            context.Result.SimulationConfiguration.TranMaxIterations = (int)context.Evaluator.EvaluateDouble(value); break;
                         case "itl5":
                             // TODO: ????
                             break;
 
                         case "temp":
-                            double temp = context.CircuitEvaluator.EvaluateDouble(value) + Constants.CelsiusKelvin;
+                            double temp = context.Evaluator.EvaluateDouble(value) + Constants.CelsiusKelvin;
                             context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions = temp;
                             context.Result.SimulationConfiguration.TemperaturesInKelvins.Add(temp); break;
                         case "tnom":
-                            context.Result.SimulationConfiguration.NominalTemperatureInKelvins = context.CircuitEvaluator.EvaluateDouble(value) + Constants.CelsiusKelvin; break;
+                            context.Result.SimulationConfiguration.NominalTemperatureInKelvins = context.Evaluator.EvaluateDouble(value) + Constants.CelsiusKelvin; break;
                         case "method":
                             switch (value.ToLower())
                             {
@@ -71,26 +71,26 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         case "seed":
                             var seed = int.Parse(value);
                             context.Result.SimulationConfiguration.Seed = seed;
-                            context.CircuitEvaluator.Seed = seed;
+                            context.Evaluator.Seed = seed;
                             break;
 
                         case "distribution":
-                            context.CircuitEvaluator.GetContext().Randomizer.CurrentPdfName = value;
+                            context.Evaluator.GetEvaluationContext().Randomizer.CurrentPdfName = value;
                             break;
 
                         case "cdfpoints":
-                            var points = (int)context.CircuitEvaluator.EvaluateDouble(value);
+                            var points = (int)context.Evaluator.EvaluateDouble(value);
 
                             if (points < 4)
                             {
                                 throw new GeneralReaderException("cdfpoints needs to be greater than 3");
                             }
 
-                            context.CircuitEvaluator.GetContext().Randomizer.CdfPoints = points;
+                            context.Evaluator.GetEvaluationContext().Randomizer.CdfPoints = points;
                             break;
 
                         case "normallimit":
-                            context.CircuitEvaluator.GetContext().Randomizer.NormalLimit = context.CircuitEvaluator.EvaluateDouble(value);
+                            context.Evaluator.GetEvaluationContext().Randomizer.NormalLimit = context.Evaluator.EvaluateDouble(value);
                             break;
 
                         default:

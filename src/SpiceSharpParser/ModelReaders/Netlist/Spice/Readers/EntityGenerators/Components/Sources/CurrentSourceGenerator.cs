@@ -175,7 +175,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     throw new WrongParametersCountException(name, "poly expects one argument => dimension");
                 }
 
-                var dimension = (int)context.CircuitEvaluator.EvaluateDouble(polyParameter.Parameters[0].Image);
+                var dimension = (int)context.Evaluator.EvaluateDouble(polyParameter.Parameters[0].Image);
                 var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled);
 
                 context.SetParameter(entity, "dc", expression);

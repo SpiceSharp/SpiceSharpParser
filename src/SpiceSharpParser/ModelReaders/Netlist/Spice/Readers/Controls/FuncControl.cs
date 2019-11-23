@@ -35,7 +35,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         throw new System.Exception("User function needs to be a function");
                     }
 
-                    context.CircuitEvaluator.AddFunction(assignmentParameter.Name, assignmentParameter.Arguments, assignmentParameter.Value);
+                    context.Evaluator.AddFunction(assignmentParameter.Name, assignmentParameter.Arguments, assignmentParameter.Value);
                 }
                 else
                 {
@@ -55,7 +55,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             }
                         }
 
-                        context.CircuitEvaluator.AddFunction(
+                        context.Evaluator.AddFunction(
                             bracketParameter.Name,
                             arguments,
                             statement.Parameters[i + 1].Image);

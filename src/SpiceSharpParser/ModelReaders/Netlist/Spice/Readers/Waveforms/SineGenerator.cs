@@ -39,23 +39,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 
             var sine = new Sine();
 
-            sine.Offset.Value = context.CircuitEvaluator.EvaluateDouble(parameters.Get(0));
-            sine.Amplitude.Value = context.CircuitEvaluator.EvaluateDouble(parameters.Get(1));
-            sine.Frequency.Value = context.CircuitEvaluator.EvaluateDouble(parameters.Get(2));
+            sine.Offset.Value = context.Evaluator.EvaluateDouble(parameters.Get(0));
+            sine.Amplitude.Value = context.Evaluator.EvaluateDouble(parameters.Get(1));
+            sine.Frequency.Value = context.Evaluator.EvaluateDouble(parameters.Get(2));
 
             if (parameters.Count >= 4)
             {
-                sine.Delay.Value = context.CircuitEvaluator.EvaluateDouble(parameters.Get(3));
+                sine.Delay.Value = context.Evaluator.EvaluateDouble(parameters.Get(3));
             }
 
             if (parameters.Count >= 5)
             {
-                sine.Theta.Value = context.CircuitEvaluator.EvaluateDouble(parameters.Get(4));
+                sine.Theta.Value = context.Evaluator.EvaluateDouble(parameters.Get(4));
             }
 
             if (parameters.Count == 6)
             {
-                sine.Phase.Value = context.CircuitEvaluator.EvaluateDouble(parameters.Get(5));
+                sine.Phase.Value = context.Evaluator.EvaluateDouble(parameters.Get(5));
             }
 
             return sine;

@@ -54,9 +54,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             {
                 SweepConfiguration sweep = new SweepConfiguration(
                     statement.Parameters.Get(4 * i).Image,
-                    context.CircuitEvaluator.EvaluateDouble(statement.Parameters.Get((4 * i) + 1)),
-                    context.CircuitEvaluator.EvaluateDouble(statement.Parameters.Get((4 * i) + 2)),
-                    context.CircuitEvaluator.EvaluateDouble(statement.Parameters.Get((4 * i) + 3)));
+                    context.Evaluator.EvaluateDouble(statement.Parameters.Get((4 * i) + 1)),
+                    context.Evaluator.EvaluateDouble(statement.Parameters.Get((4 * i) + 2)),
+                    context.Evaluator.EvaluateDouble(statement.Parameters.Get((4 * i) + 3)));
 
                 sweeps.Add(sweep);
             }
@@ -65,10 +65,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             dc.OnParameterSearch += (sender, e) =>
             {
                 string sweepParameterName = e.Name;
-                if (context.CircuitEvaluator.HaveParameter(dc, sweepParameterName))
+                if (context.Evaluator.HaveParameter(dc, sweepParameterName))
                 {
                     e.TemperatureNeeded = true;
-                    e.Result = new EvaluationParameter(context.CircuitEvaluator.GetContext(dc), sweepParameterName);
+                    e.Result = new EvaluationParameter(context.Evaluator.GetEvaluationContext(dc), sweepParameterName);
                 }
             };
 

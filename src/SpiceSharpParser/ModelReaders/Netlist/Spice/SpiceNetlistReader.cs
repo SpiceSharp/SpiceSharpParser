@@ -84,13 +84,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 null);
 
             // Set initial seed
-            circuitContext.CircuitEvaluator.Seed = Settings.Seed;
+            circuitContext.Evaluator.Seed = Settings.Seed;
 
             // Read statements form input netlist using created context
             circuitContext.Read(netlist.Statements, Settings.Orderer);
 
             // Set final seed
-            result.Seed = circuitContext.CircuitEvaluator.Seed;
+            result.Seed = circuitContext.Evaluator.Seed;
 
             return result;
         }

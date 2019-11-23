@@ -189,7 +189,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var entity = new VoltageSource(name);
                 context.CreateNodes(entity, parameters);
                 parameters = parameters.Skip(VoltageSource.VoltageSourcePinCount);
-                var dimension = (int)context.CircuitEvaluator.EvaluateDouble(polyParameter.Parameters[0].Image);
+                var dimension = (int)context.Evaluator.EvaluateDouble(polyParameter.Parameters[0].Image);
                 var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled);
                 context.SetParameter(entity, "dc", expression);
                 return entity;

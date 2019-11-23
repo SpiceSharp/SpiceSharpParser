@@ -52,25 +52,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 case 2:
                     tran = new Transient(
                         name,
-                        context.CircuitEvaluator.EvaluateDouble(clonedParameters[0].Image),
-                        context.CircuitEvaluator.EvaluateDouble(clonedParameters[1].Image));
+                        context.Evaluator.EvaluateDouble(clonedParameters[0].Image),
+                        context.Evaluator.EvaluateDouble(clonedParameters[1].Image));
                     break;
 
                 case 3:
                     tran = new Transient(
                         name,
-                        context.CircuitEvaluator.EvaluateDouble(clonedParameters[0].Image),
-                        context.CircuitEvaluator.EvaluateDouble(clonedParameters[1].Image),
-                        context.CircuitEvaluator.EvaluateDouble(clonedParameters[2].Image));
+                        context.Evaluator.EvaluateDouble(clonedParameters[0].Image),
+                        context.Evaluator.EvaluateDouble(clonedParameters[1].Image),
+                        context.Evaluator.EvaluateDouble(clonedParameters[2].Image));
                     break;
 
                 case 4:
                     tran = new Transient(
                         name,
-                        context.CircuitEvaluator.EvaluateDouble(clonedParameters[0].Image),
-                        context.CircuitEvaluator.EvaluateDouble(clonedParameters[1].Image),
-                        context.CircuitEvaluator.EvaluateDouble(clonedParameters[3].Image));
-                    tran.Configurations.SetParameter("init", context.CircuitEvaluator.EvaluateDouble(clonedParameters[2].Image));
+                        context.Evaluator.EvaluateDouble(clonedParameters[0].Image),
+                        context.Evaluator.EvaluateDouble(clonedParameters[1].Image),
+                        context.Evaluator.EvaluateDouble(clonedParameters[3].Image));
+                    tran.Configurations.SetParameter("init", context.Evaluator.EvaluateDouble(clonedParameters[2].Image));
 
                     break;
 
@@ -85,7 +85,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             {
                 tran.Method.TruncateProbe += (object sender2, SpiceSharp.IntegrationMethods.TruncateTimestepEventArgs args) =>
                 {
-                    context.CircuitEvaluator.SetParameter(tran, "TIME", tran.Method.Time + args.Delta);
+                    context.Evaluator.SetParameter(tran, "TIME", tran.Method.Time + args.Delta);
                 };
             };
             context.Result.AddSimulation(tran);

@@ -23,7 +23,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         /// <param name="contextName">Name of the context.</param>
         /// <param name="parent">Parent of the context.</param>
-        /// <param name="circuitEvaluator">Circuit evaluator.</param>
+        /// <param name="evaluator">Circuit evaluator.</param>
         /// <param name="simulationPreparations">Simulation preparations.</param>
         /// <param name="resultService">SpiceSharpModel service for the context.</param>
         /// <param name="nameGenerator">Name generator for the models.</param>
@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public CircuitContext(
             string contextName,
             ICircuitContext parent,
-            ICircuitEvaluator circuitEvaluator,
+            ICircuitEvaluator evaluator,
             ISimulationPreparations simulationPreparations,
             IResultService resultService,
             INameGenerator nameGenerator,
@@ -48,7 +48,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             InstanceData instanceData)
         {
             Name = contextName ?? throw new ArgumentNullException(nameof(contextName));
-            CircuitEvaluator = circuitEvaluator;
+            Evaluator = evaluator;
             SimulationPreparations = simulationPreparations;
             Result = resultService ?? throw new ArgumentNullException(nameof(resultService));
             NameGenerator = nameGenerator ?? throw new ArgumentNullException(nameof(nameGenerator));
@@ -89,7 +89,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         public IMapper<Exporter> Exporters { get; }
 
-        public ICircuitEvaluator CircuitEvaluator { get; }
+        /// <summary>
+        /// Gets the evaluator.
+        /// </summary>
+        public ICircuitEvaluator Evaluator { get; }
 
         /// <summary>
         /// Gets simulation parameters.
@@ -106,6 +109,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         public IResultService Result { get; }
 
+        /// <summary>
+        /// Get the name generator.
+        /// </summary>
         public INameGenerator NameGenerator { get;  }
 
         /// <summary>
@@ -225,12 +231,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             IEqualityComparer<string> comparer = StringComparerProvider.Get(CaseSensitivity.IsEntityParameterNameCaseSensitive);
 
-            double value = CircuitEvaluator.EvaluateDouble(expression);
+            double value = Evaluator.EvaluateDouble(expression);
 
             try
             {
                 entity.SetParameter(parameterName, value, comparer);
-                var context = CircuitEvaluator.GetContext();
+                var context = Evaluator.GetEvaluationContext();
 
                 bool isDynamic = context.HaveSpiceProperties(expression)
                                  || context.HaveFunctions(expression)
@@ -280,11 +286,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             try
             {
-                double value = CircuitEvaluator.EvaluateDouble(expression);
+                double value = Evaluator.EvaluateDouble(expression);
 
                 entity.SetParameter(parameterName, value, comparer);
 
-                var context = CircuitEvaluator.GetContext();
+                var context = Evaluator.GetEvaluationContext();
 
                 bool isDynamic = context.HaveSpiceProperties(expression)
                                  || context.HaveFunctions(expression)

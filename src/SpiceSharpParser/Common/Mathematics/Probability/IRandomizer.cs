@@ -60,5 +60,6 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// A random integer provider.
         /// </returns>
         IRandomIntegerProvider GetRandomIntegerProvider(string pdfName = null);
+        IRandomizer Clone();
     }
 }

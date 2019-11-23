@@ -65,8 +65,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 
             for (var i = 0; i < parameters.Count / 2; i++)
             {
-                times[i] = context.CircuitEvaluator.EvaluateDouble(parameters.Get(2 * i));
-                voltages[i] = context.CircuitEvaluator.EvaluateDouble(parameters.Get((2 * i) + 1));
+                times[i] = context.Evaluator.EvaluateDouble(parameters.Get(2 * i));
+                voltages[i] = context.Evaluator.EvaluateDouble(parameters.Get((2 * i) + 1));
             }
 
             var pwl = new Pwl(times, voltages);
@@ -81,12 +81,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             {
                 if (parameters[i] is VectorParameter vp2 && vp2.Elements.Count == 2)
                 {
-                    values.Add(context.CircuitEvaluator.EvaluateDouble(vp2.Elements[0].Image));
-                    values.Add(context.CircuitEvaluator.EvaluateDouble(vp2.Elements[1].Image));
+                    values.Add(context.Evaluator.EvaluateDouble(vp2.Elements[0].Image));
+                    values.Add(context.Evaluator.EvaluateDouble(vp2.Elements[1].Image));
                 }
                 else
                 {
-                    values.Add(context.CircuitEvaluator.EvaluateDouble(parameters[i].Image));
+                    values.Add(context.Evaluator.EvaluateDouble(parameters[i].Image));
                 }
             }
 

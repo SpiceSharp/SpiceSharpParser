@@ -127,7 +127,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
         private void RegisterParameter(Parameter variableParameter, ICircuitContext context)
         {
-            context.CircuitEvaluator.SetParameter(variableParameter.Image, 0);
+            context.Evaluator.SetParameter(variableParameter.Image, 0);
         }
     }
 }

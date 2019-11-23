@@ -8,26 +8,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public class CircuitEvaluator : ICircuitEvaluator
     {
-        private int? _seed;
-
         public CircuitEvaluator(
             SimulationEvaluationContexts simulationContexts,
             EvaluationContext parsingContext)
         {
-            SimulationContexts = simulationContexts;
-            ParsingContext = parsingContext;
+            SimulationContexts = simulationContexts ?? throw new ArgumentNullException(nameof(simulationContexts));
+            ParsingContext = parsingContext ?? throw new ArgumentNullException(nameof(parsingContext));
         }
 
         public int? Seed
         {
-            get => _seed;
+            get => ParsingContext.Seed;
 
-            set
-            {
-                _seed = value;
-
-                ParsingContext.Seed = value;
-            }
+            set => ParsingContext.Seed = value;
         }
 
         protected SimulationEvaluationContexts SimulationContexts { get; }
@@ -58,7 +51,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             catch (Exception ex)
             {
-                throw new Exception("Exception during evaluation of expression: " + expression, ex);
+                throw new Exception($"Exception during evaluation of expression: {expression}", ex);
             }
         }
 
@@ -74,7 +67,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             catch (Exception ex)
             {
-                throw new Exception("Exception during evaluation of expression: " + expression, ex);
+                throw new Exception($"Exception during evaluation of expression: {expression}", ex);
             }
         }
 
@@ -90,7 +83,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             catch (Exception ex)
             {
-                throw new Exception("Exception during evaluation of parameter: " + parameter.Image, ex);
+                throw new Exception($"Exception during evaluation of parameter: {parameter.Image}", ex);
             }
         }
 
@@ -154,7 +147,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             ParsingContext.SetNamedExpression(expressionName, expression);
         }
 
-        public EvaluationContext GetContext(Simulation simulation)
+        public EvaluationContext GetEvaluationContext(Simulation simulation)
         {
             if (simulation != null)
             {
@@ -166,7 +159,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public bool HaveParameter(Simulation simulation, string parameterName)
         {
-            return GetContext(simulation).Parameters.ContainsKey(parameterName);
+            return GetEvaluationContext(simulation).Parameters.ContainsKey(parameterName);
         }
 
         public EvaluationContext CreateChildContext(string name, bool addToChildren)
@@ -176,7 +169,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public int? GetSeed(Simulation sim)
         {
-            return SimulationContexts.GetContext(sim).Randomizer.Seed;
+            return SimulationContexts.GetContext(sim).Seed;
         }
 
         public Expression GetExpression(string expressionName)

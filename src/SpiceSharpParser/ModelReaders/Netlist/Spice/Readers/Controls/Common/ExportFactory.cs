@@ -28,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                         exportParameter.Image,
                         type,
                         bp.Parameters,
-                        context.CircuitEvaluator.GetContext(simulation),
+                        context.Evaluator.GetEvaluationContext(simulation),
                         context.CaseSensitivity);
                 }
             }
@@ -44,7 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                         exportParameter.Image,
                         type,
                         parameters,
-                        context.CircuitEvaluator.GetContext(simulation),
+                        context.Evaluator.GetEvaluationContext(simulation),
                         context.CaseSensitivity);
                 }
             }
@@ -52,14 +52,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
             if (exportParameter is SingleParameter s)
             {
                 string expressionName = s.Image;
-                var expressionNames = context.CircuitEvaluator.GetExpressionNames();
+                var expressionNames = context.Evaluator.GetExpressionNames();
 
                 if (expressionNames.Any(e => e == expressionName))
                 {
                     var export = new ExpressionExport(
                         simulation.Name,
                         expressionName,
-                        context.CircuitEvaluator.GetContext(simulation));
+                        context.Evaluator.GetEvaluationContext(simulation));
 
                     return export;
                 }

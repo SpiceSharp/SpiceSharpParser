@@ -64,12 +64,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         BaseParameters bp = bjt.ParameterSets.Get<BaseParameters>();
                         if (!bp.Area.Given)
                         {
-                            bp.Area.Value = context.CircuitEvaluator.EvaluateDouble(s.Image);
+                            bp.Area.Value = context.Evaluator.EvaluateDouble(s.Image);
                         }
 
                         if (!bp.Temperature.Given)
                         {
-                            bp.Temperature.Value = context.CircuitEvaluator.EvaluateDouble(s.Image);
+                            bp.Temperature.Value = context.Evaluator.EvaluateDouble(s.Image);
                         }
                     }
                 }

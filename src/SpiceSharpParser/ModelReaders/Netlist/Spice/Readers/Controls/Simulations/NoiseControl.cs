@@ -48,9 +48,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             }
 
             string type = statement.Parameters.Get(2).Image;
-            var numberSteps = context.CircuitEvaluator.EvaluateDouble(statement.Parameters.Get(3));
-            var start = context.CircuitEvaluator.EvaluateDouble(statement.Parameters.Get(4));
-            var stop = context.CircuitEvaluator.EvaluateDouble(statement.Parameters.Get(5));
+            var numberSteps = context.Evaluator.EvaluateDouble(statement.Parameters.Get(3));
+            var start = context.Evaluator.EvaluateDouble(statement.Parameters.Get(4));
+            var stop = context.Evaluator.EvaluateDouble(statement.Parameters.Get(5));
 
             Sweep<double> sweep;
 

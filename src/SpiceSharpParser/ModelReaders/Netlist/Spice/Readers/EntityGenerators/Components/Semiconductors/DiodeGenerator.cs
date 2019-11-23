@@ -61,13 +61,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     var bp = diode.ParameterSets.Get<SpiceSharp.Components.DiodeBehaviors.BaseParameters>();
                     if (!bp.Area.Given)
                     {
-                        bp.Area.Value = context.CircuitEvaluator.EvaluateDouble(parameters.Get(i));
+                        bp.Area.Value = context.Evaluator.EvaluateDouble(parameters.Get(i));
                     }
                     else
                     {
                         if (!bp.Temperature.Given)
                         {
-                            bp.Temperature.Value = context.CircuitEvaluator.EvaluateDouble(parameters.Get(i));
+                            bp.Temperature.Value = context.Evaluator.EvaluateDouble(parameters.Get(i));
                         }
                     }
                 }
