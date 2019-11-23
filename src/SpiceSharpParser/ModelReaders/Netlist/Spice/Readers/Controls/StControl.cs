@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using SpiceSharp.Simulations;
+﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -18,7 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, IReadingContext context)
+        public override void Read(Control statement, ICircuitContext context)
         {
             if (statement.Parameters == null)
             {
@@ -37,52 +37,56 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 case "dec":
                     ReadDec(statement.Parameters.Skip(1), context);
                     break;
+
                 case "oct":
                     ReadOct(statement.Parameters.Skip(1), context);
                     break;
+
                 case "list":
                     ReadList(statement.Parameters.Skip(1), context);
                     break;
+
                 case "lin":
                     ReadLin(statement.Parameters.Skip(1), context);
                     break;
+
                 default:
                     ReadLin(statement.Parameters, context);
                     break;
             }
         }
 
-        private void ReadDec(ParameterCollection parameters, IReadingContext context)
+        private void ReadDec(ParameterCollection parameters, ICircuitContext context)
         {
             var variableParameter = parameters[0];
             var pSweep = new ParameterSweep()
             {
                 Parameter = variableParameter,
                 Sweep = new DecadeSweep(
-                    context.EvaluateDouble(parameters[1].Image),
-                    context.EvaluateDouble(parameters[2].Image),
-                    (int)context.EvaluateDouble(parameters[3].Image)),
+                    context.Evaluator.EvaluateDouble(parameters[1].Image),
+                    context.Evaluator.EvaluateDouble(parameters[2].Image),
+                    (int)context.Evaluator.EvaluateDouble(parameters[3].Image)),
             };
 
             context.Result.SimulationConfiguration.ParameterSweeps.Add(pSweep);
         }
 
-        private void ReadOct(ParameterCollection parameters, IReadingContext context)
+        private void ReadOct(ParameterCollection parameters, ICircuitContext context)
         {
             var variableParameter = parameters[0];
             var pSweep = new ParameterSweep()
             {
                 Parameter = variableParameter,
                 Sweep = new OctaveSweep(
-                    context.EvaluateDouble(parameters[1].Image),
-                    context.EvaluateDouble(parameters[2].Image),
-                    (int)context.EvaluateDouble(parameters[3].Image)),
+                    context.Evaluator.EvaluateDouble(parameters[1].Image),
+                    context.Evaluator.EvaluateDouble(parameters[2].Image),
+                    (int)context.Evaluator.EvaluateDouble(parameters[3].Image)),
             };
 
             context.Result.SimulationConfiguration.ParameterSweeps.Add(pSweep);
         }
 
-        private void ReadList(ParameterCollection parameters, IReadingContext context)
+        private void ReadList(ParameterCollection parameters, ICircuitContext context)
         {
             var variableParameter = parameters[0];
             var values = new List<double>();
@@ -94,7 +98,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     throw new WrongParameterTypeException();
                 }
 
-                values.Add(context.EvaluateDouble(parameter.Image));
+                values.Add(context.Evaluator.EvaluateDouble(parameter.Image));
             }
 
             context.Result.SimulationConfiguration.ParameterSweeps.Add(
@@ -105,16 +109,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 });
         }
 
-        private static void ReadLin(ParameterCollection parameters, IReadingContext context)
+        private static void ReadLin(ParameterCollection parameters, ICircuitContext context)
         {
             var variableParameter = parameters[0];
             var pSweep = new ParameterSweep()
             {
                 Parameter = variableParameter,
                 Sweep = new LinearSweep(
-                    context.EvaluateDouble(parameters[1].Image),
-                    context.EvaluateDouble(parameters[2].Image),
-                    context.EvaluateDouble(parameters[3].Image)),
+                    context.Evaluator.EvaluateDouble(parameters[1].Image),
+                    context.Evaluator.EvaluateDouble(parameters[2].Image),
+                    context.Evaluator.EvaluateDouble(parameters[3].Image)),
             };
 
             context.Result.SimulationConfiguration.ParameterSweeps.Add(pSweep);

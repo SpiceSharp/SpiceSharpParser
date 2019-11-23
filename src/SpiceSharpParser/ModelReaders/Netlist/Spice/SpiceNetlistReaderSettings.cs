@@ -1,5 +1,5 @@
-﻿using System;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
+using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
@@ -19,7 +19,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <param name="workingDirectoryProvider">
         /// Working directory provider.
         /// </param>
-        public SpiceNetlistReaderSettings(SpiceNetlistCaseSensitivitySettings caseSensitivitySettings, Func<string> workingDirectoryProvider)
+        public SpiceNetlistReaderSettings(
+            ISpiceNetlistCaseSensitivitySettings caseSensitivitySettings,
+            Func<string> workingDirectoryProvider)
         {
             EvaluatorMode = SpiceExpressionMode.Spice3f5;
             Mappings = new SpiceObjectMappings();
@@ -52,7 +54,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <summary>
         /// Gets the case-sensitivity settings.
         /// </summary>
-        public SpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
+        public ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
 
         /// <summary>
         /// Gets working directory.

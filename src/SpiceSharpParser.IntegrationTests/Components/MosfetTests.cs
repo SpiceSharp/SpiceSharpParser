@@ -1,4 +1,3 @@
-using SpiceSharp;
 using SpiceSharp.Components;
 using Xunit;
 
@@ -90,7 +89,6 @@ namespace SpiceSharpParser.IntegrationTests.Components
             var model = netlist.Circuit["my-nmos"];
             Assert.True(model is Mosfet3Model);
         }
-
 
         //
         [Fact]

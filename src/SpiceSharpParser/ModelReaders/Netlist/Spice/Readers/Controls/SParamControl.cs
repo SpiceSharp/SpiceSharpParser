@@ -1,6 +1,4 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.Common.Evaluation.Expressions;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
@@ -10,10 +8,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
     /// </summary>
     public class SParamControl : ParamBaseControl
     {
-        protected override void SetParameter(string parameterName, string parameterExpression, ExpressionContext expressionContext, IEvaluator evaluator, SpiceNetlistCaseSensitivitySettings caseSettings, IReadingContext readingContext)
+        protected override void SetParameter(string parameterName, string parameterExpression, EvaluationContext context)
         {
-            var value = readingContext.ReadingEvaluator.Evaluate(new DynamicExpression(parameterExpression), expressionContext, null, readingContext);
-            expressionContext.SetParameter(parameterName, value);
+            context.SetParameter(parameterName, context.Evaluate(parameterExpression));
         }
     }
 }

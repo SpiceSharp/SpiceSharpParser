@@ -1,0 +1,482 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Parsers.Netlist.ParseTreeTraversal
+  commentId: T:SpiceSharpParser.Parsers.Netlist.ParseTreeTraversal
+  id: ParseTreeTraversal
+  parent: SpiceSharpParser.Parsers.Netlist
+  children:
+  - SpiceSharpParser.Parsers.Netlist.ParseTreeTraversal.GetIterativePostOrder(SpiceSharpParser.Parsers.Netlist.ParseTreeNode)
+  langs:
+  - csharp
+  - vb
+  name: ParseTreeTraversal
+  nameWithType: ParseTreeTraversal
+  fullName: SpiceSharpParser.Parsers.Netlist.ParseTreeTraversal
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/Parsers/Netlist/ParseTreeTraversal.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ParseTreeTraversal
+    path: ../SpiceSharpParser/Parsers/Netlist/ParseTreeTraversal.cs
+    startLine: 7
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Parsers.Netlist
+  summary: "\nAllows to enumerate a parse tree nodes in specific order.\n"
+  example: []
+  syntax:
+    content: public class ParseTreeTraversal
+    content.vb: Public Class ParseTreeTraversal
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.Parsers.Netlist.ParseTreeTraversal.GetIterativePostOrder(SpiceSharpParser.Parsers.Netlist.ParseTreeNode)
+  commentId: M:SpiceSharpParser.Parsers.Netlist.ParseTreeTraversal.GetIterativePostOrder(SpiceSharpParser.Parsers.Netlist.ParseTreeNode)
+  id: GetIterativePostOrder(SpiceSharpParser.Parsers.Netlist.ParseTreeNode)
+  parent: SpiceSharpParser.Parsers.Netlist.ParseTreeTraversal
+  langs:
+  - csharp
+  - vb
+  name: GetIterativePostOrder(ParseTreeNode)
+  nameWithType: ParseTreeTraversal.GetIterativePostOrder(ParseTreeNode)
+  fullName: SpiceSharpParser.Parsers.Netlist.ParseTreeTraversal.GetIterativePostOrder(SpiceSharpParser.Parsers.Netlist.ParseTreeNode)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Parsers/Netlist/ParseTreeTraversal.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetIterativePostOrder
+    path: ../SpiceSharpParser/Parsers/Netlist/ParseTreeTraversal.cs
+    startLine: 18
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Parsers.Netlist
+  summary: "\nReturns an enumerable of parse tree nodes in a post order.\n"
+  example: []
+  syntax:
+    content: public IEnumerable<ParseTreeNode> GetIterativePostOrder(ParseTreeNode rootNode)
+    parameters:
+    - id: rootNode
+      type: SpiceSharpParser.Parsers.Netlist.ParseTreeNode
+      description: "\nThe root node of tree.\n"
+    return:
+      type: System.Collections.Generic.IEnumerable{SpiceSharpParser.Parsers.Netlist.ParseTreeNode}
+      description: "\nAn enumerable of parse tree nodes in a post order.\n"
+    content.vb: Public Function GetIterativePostOrder(rootNode As ParseTreeNode) As IEnumerable(Of ParseTreeNode)
+  overload: SpiceSharpParser.Parsers.Netlist.ParseTreeTraversal.GetIterativePostOrder*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: SpiceSharpParser.Parsers.Netlist
+  commentId: N:SpiceSharpParser.Parsers.Netlist
+  name: SpiceSharpParser.Parsers.Netlist
+  nameWithType: SpiceSharpParser.Parsers.Netlist
+  fullName: SpiceSharpParser.Parsers.Netlist
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.Parsers.Netlist.ParseTreeTraversal.GetIterativePostOrder*
+  commentId: Overload:SpiceSharpParser.Parsers.Netlist.ParseTreeTraversal.GetIterativePostOrder
+  name: GetIterativePostOrder
+  nameWithType: ParseTreeTraversal.GetIterativePostOrder
+  fullName: SpiceSharpParser.Parsers.Netlist.ParseTreeTraversal.GetIterativePostOrder
+- uid: SpiceSharpParser.Parsers.Netlist.ParseTreeNode
+  commentId: T:SpiceSharpParser.Parsers.Netlist.ParseTreeNode
+  parent: SpiceSharpParser.Parsers.Netlist
+  name: ParseTreeNode
+  nameWithType: ParseTreeNode
+  fullName: SpiceSharpParser.Parsers.Netlist.ParseTreeNode
+- uid: System.Collections.Generic.IEnumerable{SpiceSharpParser.Parsers.Netlist.ParseTreeNode}
+  commentId: T:System.Collections.Generic.IEnumerable{SpiceSharpParser.Parsers.Netlist.ParseTreeNode}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<ParseTreeNode>
+  nameWithType: IEnumerable<ParseTreeNode>
+  fullName: System.Collections.Generic.IEnumerable<SpiceSharpParser.Parsers.Netlist.ParseTreeNode>
+  nameWithType.vb: IEnumerable(Of ParseTreeNode)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of SpiceSharpParser.Parsers.Netlist.ParseTreeNode)
+  name.vb: IEnumerable(Of ParseTreeNode)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.Parsers.Netlist.ParseTreeNode
+    name: ParseTreeNode
+    nameWithType: ParseTreeNode
+    fullName: SpiceSharpParser.Parsers.Netlist.ParseTreeNode
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.Parsers.Netlist.ParseTreeNode
+    name: ParseTreeNode
+    nameWithType: ParseTreeNode
+    fullName: SpiceSharpParser.Parsers.Netlist.ParseTreeNode
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic

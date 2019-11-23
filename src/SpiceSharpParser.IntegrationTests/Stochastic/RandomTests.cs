@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
+using System.Collections.Generic;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Stochastic

@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
+﻿using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
@@ -22,31 +20,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// </returns>
         public virtual ICollection<string> CreatedTypes => new List<string> { "v", "vr", "vi", "vm", "vdb", "vp", "vph" };
 
-        /// <summary>
-        /// Creates a new voltage export
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="type">A type of export</param>
-        /// <param name="parameters">A parameters of export</param>
-        /// <param name="simulation">A simulation for export</param>
-        /// <param name="nodeNameGenerator"></param>
-        /// <param name="componentNameGenerator"></param>
-        /// <param name="modelNameGenerator"></param>
-        /// <param name="result"></param>
-        /// <param name="caseSettings"></param>
-        /// <returns>
-        /// A new export
-        /// </returns>
         public override Export CreateExport(
             string name,
             string type,
             ParameterCollection parameters,
-            Simulation simulation,
-            INodeNameGenerator nodeNameGenerator,
-            IObjectNameGenerator componentNameGenerator,
-            IObjectNameGenerator modelNameGenerator,
-            IResultService result,
-            SpiceNetlistCaseSensitivitySettings caseSettings)
+            EvaluationContext context,
+            ISpiceNetlistCaseSensitivitySettings caseSettings)
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
             {
@@ -65,12 +44,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                         throw new WrongParametersCountException("No nodes for voltage export. Node expected");
                     case 2:
                         referencePath = vector.Elements[1].Image;
-                        reference = nodeNameGenerator.Parse(referencePath);
+                        reference = context.NameGenerator.ParseNodeName(referencePath);
                         goto case 1;
                     case 1:
                         nodePath = vector.Elements[0].Image;
-                        node = nodeNameGenerator.Parse(nodePath);
+                        node = context.NameGenerator.ParseNodeName(nodePath);
                         break;
+
                     default:
                         throw new WrongParametersCountException("Too many nodes specified for voltage export");
                 }
@@ -78,30 +58,35 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             else
             {
                 nodePath = parameters.Get(0).Image;
-                node = nodeNameGenerator.Parse(nodePath);
+                node = context.NameGenerator.ParseNodeName(nodePath);
             }
 
             Export ve = null;
             switch (type.ToLower())
             {
                 case "v":
-                    ve = new VoltageExport(name, simulation, node, reference);
+                    ve = new VoltageExport(name, context.Simulation, node, reference);
                     break;
+
                 case "vr":
-                    ve = new VoltageRealExport(name, simulation, node, reference);
+                    ve = new VoltageRealExport(name, context.Simulation, node, reference);
                     break;
+
                 case "vi":
-                    ve = new VoltageImaginaryExport(name, simulation, node, reference);
+                    ve = new VoltageImaginaryExport(name, context.Simulation, node, reference);
                     break;
+
                 case "vm":
-                    ve = new VoltageMagnitudeExport(name, simulation, node, reference);
+                    ve = new VoltageMagnitudeExport(name, context.Simulation, node, reference);
                     break;
+
                 case "vdb":
-                    ve = new VoltageDecibelExport(name, simulation, node, reference);
+                    ve = new VoltageDecibelExport(name, context.Simulation, node, reference);
                     break;
+
                 case "vph":
                 case "vp":
-                    ve = new VoltagePhaseExport(name, simulation, node, reference);
+                    ve = new VoltagePhaseExport(name, context.Simulation, node, reference);
                     break;
             }
 

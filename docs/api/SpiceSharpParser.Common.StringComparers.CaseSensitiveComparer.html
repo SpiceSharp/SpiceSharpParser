@@ -78,14 +78,25 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">CaseSensitiveComparer</span></div>
+    <div class="level1"><span class="xref">System.Collections.Generic.EqualityComparer</span>&lt;<span class="xref">System.String</span>&gt;</div>
+    <div class="level2"><span class="xref">CaseSensitiveComparer</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><span class="xref">System.Collections.IEqualityComparer</span></div>
     <div><span class="xref">System.Collections.Generic.IEqualityComparer</span>&lt;<span class="xref">System.String</span>&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Collections.Generic.EqualityComparer&lt;System.String&gt;.System.Collections.IEqualityComparer.GetHashCode(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Collections.Generic.EqualityComparer&lt;System.String&gt;.System.Collections.IEqualityComparer.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Collections.Generic.EqualityComparer&lt;System.String&gt;.Default</span>
+    </div>
     <div>
       <span class="xref">System.Object.ToString()</span>
     </div>
@@ -112,7 +123,7 @@
   <h6><strong>Assembly</strong>: SpiceSharpParser.dll</h6>
   <h5 id="SpiceSharpParser_Common_StringComparers_CaseSensitiveComparer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class CaseSensitiveComparer : IEqualityComparer&lt;string&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class CaseSensitiveComparer : EqualityComparer&lt;string&gt;, IEqualityComparer, IEqualityComparer&lt;string&gt;</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -130,7 +141,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Equals(string x, string y)</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool Equals(string x, string y)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -171,6 +182,8 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Collections.Generic.EqualityComparer&lt;System.String&gt;.Equals(System.String, System.String)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_StringComparers_CaseSensitiveComparer_GetHashCode_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.StringComparers.CaseSensitiveComparer.GetHashCode(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -185,7 +198,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int GetHashCode(string obj)</code></pre>
+    <pre><code class="lang-csharp hljs">public override int GetHashCode(string obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -221,7 +234,12 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Collections.Generic.EqualityComparer&lt;System.String&gt;.GetHashCode(System.String)</span></div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.Collections.IEqualityComparer</span>
+  </div>
   <div>
       <span class="xref">System.Collections.Generic.IEqualityComparer&lt;T&gt;</span>
   </div>

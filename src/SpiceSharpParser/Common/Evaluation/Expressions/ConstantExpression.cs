@@ -6,13 +6,15 @@
         /// Initializes a new instance of the <see cref="ConstantExpression"/> class.
         /// </summary>
         /// <param name="value">Value.</param>
-        public ConstantExpression(double value) 
+        public ConstantExpression(double value)
             : base(string.Empty)
         {
             Value = value;
         }
 
         public double Value { get; }
+
+        public override bool CanProvideValueDirectly { get; } = true;
 
         /// <summary>
         /// Clones the named expression.
@@ -23,6 +25,11 @@
         public override Expression Clone()
         {
             return new ConstantExpression(Value);
+        }
+
+        public override double GetValue()
+        {
+            return Value;
         }
     }
 }

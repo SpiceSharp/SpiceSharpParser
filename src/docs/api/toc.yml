@@ -1,0 +1,875 @@
+### YamlMime:TableOfContent
+- uid: SpiceSharpParser
+  name: SpiceSharpParser
+  items:
+  - uid: SpiceSharpParser.SpiceParser
+    name: SpiceParser
+  - uid: SpiceSharpParser.SpiceParserResult
+    name: SpiceParserResult
+  - uid: SpiceSharpParser.SpiceParserSettings
+    name: SpiceParserSettings
+- uid: SpiceSharpParser.Common
+  name: SpiceSharpParser.Common
+  items:
+  - uid: SpiceSharpParser.Common.NumberSystem
+    name: NumberSystem
+  - uid: SpiceSharpParser.Common.StringComparerProvider
+    name: StringComparerProvider
+  - uid: SpiceSharpParser.Common.StringExtensions
+    name: StringExtensions
+- uid: SpiceSharpParser.Common.Evaluation
+  name: SpiceSharpParser.Common.Evaluation
+  items:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    name: EvaluationContext
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationParameter
+    name: EvaluationParameter
+  - uid: SpiceSharpParser.Common.Evaluation.Expression
+    name: Expression
+  - uid: SpiceSharpParser.Common.Evaluation.ExpressionRegistry
+    name: ExpressionRegistry
+  - uid: SpiceSharpParser.Common.Evaluation.Function`2
+    name: Function<TInputArgumentType, TOutputType>
+    name.vb: Function(Of TInputArgumentType, TOutputType)
+  - uid: SpiceSharpParser.Common.Evaluation.FunctionFactory
+    name: FunctionFactory
+  - uid: SpiceSharpParser.Common.Evaluation.IDerivativeFunction`2
+    name: IDerivativeFunction<TInputArgumentType, TOutputType>
+    name.vb: IDerivativeFunction(Of TInputArgumentType, TOutputType)
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction
+    name: IFunction
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+    name: IFunction<TInputArgumentType, TOutputType>
+    name.vb: IFunction(Of TInputArgumentType, TOutputType)
+  - uid: SpiceSharpParser.Common.Evaluation.IFunctionFactory
+    name: IFunctionFactory
+  - uid: SpiceSharpParser.Common.Evaluation.UnknownParameterException
+    name: UnknownParameterException
+- uid: SpiceSharpParser.Common.Evaluation.Expressions
+  name: SpiceSharpParser.Common.Evaluation.Expressions
+  items:
+  - uid: SpiceSharpParser.Common.Evaluation.Expressions.ConstantExpression
+    name: ConstantExpression
+  - uid: SpiceSharpParser.Common.Evaluation.Expressions.DynamicExpression
+    name: DynamicExpression
+  - uid: SpiceSharpParser.Common.Evaluation.Expressions.FunctionExpression
+    name: FunctionExpression
+  - uid: SpiceSharpParser.Common.Evaluation.Expressions.NamedExpression
+    name: NamedExpression
+- uid: SpiceSharpParser.Common.Evaluation.Functions
+  name: SpiceSharpParser.Common.Evaluation.Functions
+  items:
+  - uid: SpiceSharpParser.Common.Evaluation.Functions.ExpressionFunction
+    name: ExpressionFunction
+  - uid: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions
+    name: MathFunctions
+- uid: SpiceSharpParser.Common.Evaluation.Functions.Math
+  name: SpiceSharpParser.Common.Evaluation.Functions.Math
+  items:
+  - uid: SpiceSharpParser.Common.Evaluation.Functions.Math.ATan2Function
+    name: ATan2Function
+  - uid: SpiceSharpParser.Common.Evaluation.Functions.Math.CoshFunction
+    name: CoshFunction
+  - uid: SpiceSharpParser.Common.Evaluation.Functions.Math.SinhFunction
+    name: SinhFunction
+  - uid: SpiceSharpParser.Common.Evaluation.Functions.Math.TanhFunction
+    name: TanhFunction
+- uid: SpiceSharpParser.Common.FileSystem
+  name: SpiceSharpParser.Common.FileSystem
+  items:
+  - uid: SpiceSharpParser.Common.FileSystem.CsvFileReader
+    name: CsvFileReader
+  - uid: SpiceSharpParser.Common.FileSystem.CsvFileWriter
+    name: CsvFileWriter
+  - uid: SpiceSharpParser.Common.FileSystem.FileReader
+    name: FileReader
+  - uid: SpiceSharpParser.Common.FileSystem.IFileReader
+    name: IFileReader
+  - uid: SpiceSharpParser.Common.FileSystem.PathConverter
+    name: PathConverter
+- uid: SpiceSharpParser.Common.Mathematics.Combinatorics
+  name: SpiceSharpParser.Common.Mathematics.Combinatorics
+  items:
+  - uid: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationCache
+    name: CombinationCache
+  - uid: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator
+    name: CombinationGenerator
+- uid: SpiceSharpParser.Common.Mathematics.Probability
+  name: SpiceSharpParser.Common.Mathematics.Probability
+  items:
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.Cdf
+    name: Cdf
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.Curve
+    name: Curve
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.CustomRandomNumberProvider
+    name: CustomRandomNumberProvider
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.CustomRandomNumberProviderFactory
+    name: CustomRandomNumberProviderFactory
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.DefaultRandomNumberProvider
+    name: DefaultRandomNumberProvider
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.DefaultRandomNumberProviderFactory
+    name: DefaultRandomNumberProviderFactory
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider
+    name: IRandomDoubleProvider
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProviderFactory
+    name: IRandomDoubleProviderFactory
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider
+    name: IRandomIntegerProvider
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory
+    name: IRandomIntegerProviderFactory
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+    name: IRandomizer
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomNumberProvider
+    name: IRandomNumberProvider
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomNumberProviderFactory
+    name: IRandomNumberProviderFactory
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.Pdf
+    name: Pdf
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.Point
+    name: Point
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.Randomizer
+    name: Randomizer
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Pdfs
+  name: SpiceSharpParser.Common.Mathematics.Probability.Pdfs
+  items:
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.Pdfs.NormalPdf
+    name: NormalPdf
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.Pdfs.UniformPdf
+    name: UniformPdf
+- uid: SpiceSharpParser.Common.StringComparers
+  name: SpiceSharpParser.Common.StringComparers
+  items:
+  - uid: SpiceSharpParser.Common.StringComparers.CaseInsensitiveComparer
+    name: CaseInsensitiveComparer
+  - uid: SpiceSharpParser.Common.StringComparers.CaseSensitiveComparer
+    name: CaseSensitiveComparer
+- uid: SpiceSharpParser.Lexers
+  name: SpiceSharpParser.Lexers
+  items:
+  - uid: SpiceSharpParser.Lexers.Lexer`1
+    name: Lexer<TLexerState>
+    name.vb: Lexer(Of TLexerState)
+  - uid: SpiceSharpParser.Lexers.LexerDynamicRule
+    name: LexerDynamicRule
+  - uid: SpiceSharpParser.Lexers.LexerException
+    name: LexerException
+  - uid: SpiceSharpParser.Lexers.LexerGrammar`1
+    name: LexerGrammar<TLexerState>
+    name.vb: LexerGrammar(Of TLexerState)
+  - uid: SpiceSharpParser.Lexers.LexerGrammarBuilder`1
+    name: LexerGrammarBuilder<TLexerState>
+    name.vb: LexerGrammarBuilder(Of TLexerState)
+  - uid: SpiceSharpParser.Lexers.LexerInternalRule
+    name: LexerInternalRule
+  - uid: SpiceSharpParser.Lexers.LexerLineNumberProvider
+    name: LexerLineNumberProvider
+  - uid: SpiceSharpParser.Lexers.LexerLineRange
+    name: LexerLineRange
+  - uid: SpiceSharpParser.Lexers.LexerRegexRule
+    name: LexerRegexRule
+  - uid: SpiceSharpParser.Lexers.LexerRuleReturnDecision
+    name: LexerRuleReturnDecision
+  - uid: SpiceSharpParser.Lexers.LexerRuleUseDecision
+    name: LexerRuleUseDecision
+  - uid: SpiceSharpParser.Lexers.LexerState
+    name: LexerState
+  - uid: SpiceSharpParser.Lexers.LexerTokenRule`1
+    name: LexerTokenRule<TLexerState>
+    name.vb: LexerTokenRule(Of TLexerState)
+  - uid: SpiceSharpParser.Lexers.StringExtensions
+    name: StringExtensions
+  - uid: SpiceSharpParser.Lexers.Token
+    name: Token
+- uid: SpiceSharpParser.Lexers.Netlist.Spice
+  name: SpiceSharpParser.Lexers.Netlist.Spice
+  items:
+  - uid: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProvider
+    name: ISpiceTokenProvider
+  - uid: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool
+    name: ISpiceTokenProviderPool
+  - uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexer
+    name: SpiceLexer
+  - uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+    name: SpiceLexerSettings
+  - uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerState
+    name: SpiceLexerState
+  - uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken
+    name: SpiceToken
+  - uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenExtensions
+    name: SpiceTokenExtensions
+  - uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenProvider
+    name: SpiceTokenProvider
+  - uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenProviderPool
+    name: SpiceTokenProviderPool
+  - uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType
+    name: SpiceTokenType
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+    name: ISpiceNetlistCaseSensitivitySettings
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceObjectMappings
+    name: ISpiceObjectMappings
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsOrderer
+    name: ISpiceStatementsOrderer
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsReader
+    name: ISpiceStatementsReader
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistCaseSensitivitySettings
+    name: SpiceNetlistCaseSensitivitySettings
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReader
+    name: SpiceNetlistReader
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+    name: SpiceNetlistReaderResult
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderSettings
+    name: SpiceNetlistReaderSettings
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceObjectMappings
+    name: SpiceObjectMappings
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsOrderer
+    name: SpiceStatementsOrderer
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceStatementsReader
+    name: SpiceStatementsReader
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.CircuitContext
+    name: CircuitContext
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.CircuitEvaluator
+    name: CircuitEvaluator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitEvaluator
+    name: ICircuitEvaluator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+    name: INameGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+    name: IResultService
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ISimulationPreparations
+    name: ISimulationPreparations
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.NameGenerator
+    name: NameGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ResultService
+    name: ResultService
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts
+    name: SimulationEvaluationContexts
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationPreparations
+    name: SimulationPreparations
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IModelsRegistry
+    name: IModelsRegistry
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry
+    name: IStochasticModelsRegistry
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness
+    name: ParameterRandomness
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.StochasticModelsRegistry
+    name: StochasticModelsRegistry
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.INodeNameGenerator
+    name: INodeNameGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator
+    name: IObjectNameGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.MainCircuitNodeNameGenerator
+    name: MainCircuitNodeNameGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator
+    name: ObjectNameGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.SubcircuitNodeNameGenerator
+    name: SubcircuitNodeNameGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater
+    name: IParameterSweepUpdater
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep
+    name: ListSweep
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweep
+    name: ParameterSweep
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater
+    name: ParameterSweepUpdater
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterDoubleValueUpdate
+    name: EntityParameterDoubleValueUpdate
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterExpressionValueUpdate
+    name: EntityParameterExpressionValueUpdate
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate
+    name: EntityParameterUpdate
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate
+    name: EntityUpdate
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdates
+    name: EntityUpdates
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.SimulationsUpdates
+    name: SimulationsUpdates
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.SimulationUpdate
+    name: SimulationUpdate
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.SimulationUpdates
+    name: SimulationUpdates
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.ISwitchModel
+    name: ISwitchModel
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.ISwitchModelBaseParameters
+    name: ISwitchModelBaseParameters
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModel
+    name: VSwitchModel
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModelBaseParameters
+    name: VSwitchModelBaseParameters
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext
+    name: SpiceEvaluationContext
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode
+    name: SpiceExpressionMode
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.ControlFunctions
+    name: ControlFunctions
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.MathFunctions
+    name: MathFunctions
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions
+    name: RandomFunctions
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Control
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Control
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Control.DefFunction
+    name: DefFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Control.IfFunction
+    name: IfFunction
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.BufFunction
+    name: BufFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.CbrtFunction
+    name: CbrtFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.CeilFunction
+    name: CeilFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.DbFunction
+    name: DbFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.FloorFunction
+    name: FloorFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.HypotFunction
+    name: HypotFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.IntFunction
+    name: IntFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.InvFunction
+    name: InvFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.LimitFunction
+    name: LimitFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.LnFunction
+    name: LnFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.MaxFunction
+    name: MaxFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.MinFunction
+    name: MinFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.NintFunction
+    name: NintFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.PolyFunction
+    name: PolyFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.PosFunction
+    name: PosFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.PwrFunction
+    name: PwrFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.PwrsFunction
+    name: PwrsFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.RoundFunction
+    name: RoundFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.SgnFunction
+    name: SgnFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction
+    name: TableFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition
+    name: TableFunction.LineDefinition
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.Point
+    name: TableFunction.Point
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.UFunction
+    name: UFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.URampFunction
+    name: URampFunction
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.AGaussFunction
+    name: AGaussFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.AUnifFunction
+    name: AUnifFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.ExtendedGaussFunction
+    name: ExtendedGaussFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.FlatFunction
+    name: FlatFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.GaussFunction
+    name: GaussFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.LimitFunction
+    name: LimitFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.McFunction
+    name: McFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.RandomFunction
+    name: RandomFunction
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.UnifFunction
+    name: UnifFunction
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.GeneralReaderException
+    name: GeneralReaderException
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.ModelNotFoundException
+    name: ModelNotFoundException
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.UnknownComponentException
+    name: UnknownComponentException
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.WrongParameterException
+    name: WrongParameterException
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.WrongParametersCountException
+    name: WrongParametersCountException
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.WrongParameterTypeException
+    name: WrongParameterTypeException
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1
+    name: BaseMapper<TElement>
+    name.vb: BaseMapper(Of TElement)
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ControlMapper
+    name: ControlMapper
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.EntityGeneratorMapper
+    name: EntityGeneratorMapper
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ExporterMapper
+    name: ExporterMapper
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+    name: IMapper<TElement>
+    name.vb: IMapper(Of TElement)
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ModelGeneratorMapper
+    name: ModelGeneratorMapper
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.WaveformMapper
+    name: WaveformMapper
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.AppendModelPreprocessor
+    name: AppendModelPreprocessor
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer
+    name: IEvaluatorConsumer
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor
+    name: IfPreprocessor
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IncludesPreprocessor
+    name: IncludesPreprocessor
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor
+    name: IProcessor
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.LibPreprocessor
+    name: LibPreprocessor
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.SweepsPreprocessor
+    name: SweepsPreprocessor
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.CommentReader
+    name: CommentReader
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ComponentReader
+    name: ComponentReader
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ControlReader
+    name: ControlReader
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ICommentReader
+    name: ICommentReader
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IComponentReader
+    name: IComponentReader
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IControlReader
+    name: IControlReader
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IModelReader
+    name: IModelReader
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IStatementReader
+    name: IStatementReader
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ISubcircuitDefinitionReader
+    name: ISubcircuitDefinitionReader
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.IWaveformReader
+    name: IWaveformReader
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.ModelReader
+    name: ModelReader
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.StatementReader`1
+    name: StatementReader<TStatement>
+    name.vb: StatementReader(Of TStatement)
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.SubcircuitDefinitionReader
+    name: SubcircuitDefinitionReader
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.WaveformReader
+    name: WaveformReader
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.BaseControl
+    name: BaseControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.ConnectControl
+    name: ConnectControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.DistributionControl
+    name: DistributionControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.ExportControl
+    name: ExportControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.FuncControl
+    name: FuncControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.GlobalControl
+    name: GlobalControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.ICControl
+    name: ICControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.LetControl
+    name: LetControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.McControl
+    name: McControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.NodeSetControl
+    name: NodeSetControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.OptionsControl
+    name: OptionsControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.ParamBaseControl
+    name: ParamBaseControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.ParamControl
+    name: ParamControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.PlotControl
+    name: PlotControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.PrintControl
+    name: PrintControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.SaveControl
+    name: SaveControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.SParamControl
+    name: SParamControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.StControl
+    name: StControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.StepControl
+    name: StepControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.StepRegisterControl
+    name: StepRegisterControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.StRegisterControl
+    name: StRegisterControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.TempControl
+    name: TempControl
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common.ExportFactory
+    name: ExportFactory
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common.IExportFactory
+    name: IExportFactory
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExporter
+    name: CurrentExporter
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+    name: Export
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter
+    name: Exporter
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ExpressionExport
+    name: ExpressionExport
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.PropertyExport
+    name: PropertyExport
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.PropertyExporter
+    name: PropertyExporter
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExporter
+    name: VoltageExporter
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.ZeroExport
+    name: ZeroExport
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentDecibelExport
+    name: CurrentDecibelExport
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentExport
+    name: CurrentExport
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentImaginaryExport
+    name: CurrentImaginaryExport
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentMagnitudeExport
+    name: CurrentMagnitudeExport
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentPhaseExport
+    name: CurrentPhaseExport
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports.CurrentRealExport
+    name: CurrentRealExport
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageDecibelExport
+    name: VoltageDecibelExport
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageExport
+    name: VoltageExport
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageImaginaryExport
+    name: VoltageImaginaryExport
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageMagnitudeExport
+    name: VoltageMagnitudeExport
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltagePhaseExport
+    name: VoltagePhaseExport
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports.VoltageRealExport
+    name: VoltageRealExport
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.Bin
+    name: Bin
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.HistogramPlot
+    name: HistogramPlot
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.Point
+    name: Point
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.Series
+    name: Series
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.XyPlot
+    name: XyPlot
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints.Print
+    name: Print
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints.PrintCsvWriter
+    name: PrintCsvWriter
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints.Row
+    name: Row
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ACControl
+    name: ACControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.DCControl
+    name: DCControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ISimulationDecorator
+    name: ISimulationDecorator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.ISimulationsFactory
+    name: ISimulationsFactory
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.MonteCarloResult
+    name: MonteCarloResult
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.NoiseControl
+    name: NoiseControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.OPControl
+    name: OPControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationControl
+    name: SimulationControl
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.SimulationsFactory
+    name: SimulationsFactory
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.TransientControl
+    name: TransientControl
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations.MonteCarloConfiguration
+    name: MonteCarloConfiguration
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations.SimulationConfiguration
+    name: SimulationConfiguration
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.CircuitTemperatureSimulationDecorator
+    name: CircuitTemperatureSimulationDecorator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator
+    name: EnableStochasticModelsSimulationDecorator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.NominalTemperatureSimulationDecorator
+    name: NominalTemperatureSimulationDecorator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+    name: CreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForAllTemperaturesFactory
+    name: CreateSimulationsForAllTemperaturesFactory
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.CreateSimulationsForMonteCarloFactory
+    name: CreateSimulationsForMonteCarloFactory
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+    name: ICreateSimulationsForAllParameterSweepsAndTemperaturesFactory
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForAllTemperaturesFactory
+    name: ICreateSimulationsForAllTemperaturesFactory
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Factories.ICreateSimulationsForMonteCarloFactory
+    name: ICreateSimulationsForMonteCarloFactory
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IComponentGenerator
+    name: IComponentGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+    name: IModelGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelsGenerator
+    name: IModelsGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.StochasticModelsGenerator
+    name: StochasticModelsGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator
+    name: ComponentGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.RLCKGenerator
+    name: RLCKGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator
+    name: SubCircuitGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData
+    name: SubCircuitGenerator.CustomComponentInstanceData
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SwitchGenerator
+    name: SwitchGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Distributed
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Distributed
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Distributed.LosslessTransmissionLineGenerator
+    name: LosslessTransmissionLineGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Distributed.VoltageDelayGenerator
+    name: VoltageDelayGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.BipolarJunctionTransistorGenerator
+    name: BipolarJunctionTransistorGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.DiodeGenerator
+    name: DiodeGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.JFETGenerator
+    name: JFETGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.MosfetGenerator
+    name: MosfetGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors.MosfetGenerator.MosfetDetails
+    name: MosfetGenerator.MosfetDetails
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.ArbitraryBehavioralGenerator
+    name: ArbitraryBehavioralGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.CurrentSourceGenerator
+    name: CurrentSourceGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.ExpressionFactory
+    name: ExpressionFactory
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator
+    name: SourceGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator
+    name: VoltageSourceGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.BipolarModelGenerator
+    name: BipolarModelGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.DiodeModelGenerator
+    name: DiodeModelGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.JFETModelGenerator
+    name: JFETModelGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.ModelGenerator
+    name: ModelGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.MosfetModelGenerator
+    name: MosfetModelGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.RLCModelGenerator
+    name: RLCModelGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.SwitchModelGenerator
+    name: SwitchModelGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
+  items:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.PulseGenerator
+    name: PulseGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.PwlGenerator
+    name: PwlGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.SineGenerator
+    name: SineGenerator
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.WaveformGenerator
+    name: WaveformGenerator
+- uid: SpiceSharpParser.Models.Netlist.Spice
+  name: SpiceSharpParser.Models.Netlist.Spice
+  items:
+  - uid: SpiceSharpParser.Models.Netlist.Spice.SpiceNetlist
+    name: SpiceNetlist
+  - uid: SpiceSharpParser.Models.Netlist.Spice.SpiceObject
+    name: SpiceObject
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: SpiceSharpParser.Models.Netlist.Spice.Objects
+  items:
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.CommentLine
+    name: CommentLine
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Component
+    name: Component
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Control
+    name: Control
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Model
+    name: Model
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+    name: ParameterCollection
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+    name: Statement
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+    name: Statements
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.SubCircuit
+    name: SubCircuit
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  name: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  items:
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter
+    name: AssignmentParameter
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.BracketParameter
+    name: BracketParameter
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ExpressionEqualParameter
+    name: ExpressionEqualParameter
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ExpressionParameter
+    name: ExpressionParameter
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.IdentifierParameter
+    name: IdentifierParameter
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.PercentParameter
+    name: PercentParameter
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.PointParameter
+    name: PointParameter
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.Points
+    name: Points
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.PointValues
+    name: PointValues
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ReferenceParameter
+    name: ReferenceParameter
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.SingleParameter
+    name: SingleParameter
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.StringParameter
+    name: StringParameter
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ValueParameter
+    name: ValueParameter
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.VectorParameter
+    name: VectorParameter
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.WordParameter
+    name: WordParameter
+- uid: SpiceSharpParser.Parsers.Expression
+  name: SpiceSharpParser.Parsers.Expression
+  items:
+  - uid: SpiceSharpParser.Parsers.Expression.ExpressionParser
+    name: ExpressionParser
+  - uid: SpiceSharpParser.Parsers.Expression.IExpressionParser
+    name: IExpressionParser
+  - uid: SpiceSharpParser.Parsers.Expression.SimpleDerivativeParserExtended
+    name: SimpleDerivativeParserExtended
+- uid: SpiceSharpParser.Parsers.Netlist
+  name: SpiceSharpParser.Parsers.Netlist
+  items:
+  - uid: SpiceSharpParser.Parsers.Netlist.ParseException
+    name: ParseException
+  - uid: SpiceSharpParser.Parsers.Netlist.ParseTreeEvaluationException
+    name: ParseTreeEvaluationException
+  - uid: SpiceSharpParser.Parsers.Netlist.ParseTreeNode
+    name: ParseTreeNode
+  - uid: SpiceSharpParser.Parsers.Netlist.ParseTreeNonTerminalNode
+    name: ParseTreeNonTerminalNode
+  - uid: SpiceSharpParser.Parsers.Netlist.ParseTreeTerminalNode
+    name: ParseTreeTerminalNode
+  - uid: SpiceSharpParser.Parsers.Netlist.ParseTreeTraversal
+    name: ParseTreeTraversal
+- uid: SpiceSharpParser.Parsers.Netlist.Spice
+  name: SpiceSharpParser.Parsers.Netlist.Spice
+  items:
+  - uid: SpiceSharpParser.Parsers.Netlist.Spice.ISingleSpiceNetlistParser
+    name: ISingleSpiceNetlistParser
+  - uid: SpiceSharpParser.Parsers.Netlist.Spice.ParseTreeEvaluator
+    name: ParseTreeEvaluator
+  - uid: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParser
+    name: SingleSpiceNetlistParser
+  - uid: SpiceSharpParser.Parsers.Netlist.Spice.SingleSpiceNetlistParserSettings
+    name: SingleSpiceNetlistParserSettings
+  - uid: SpiceSharpParser.Parsers.Netlist.Spice.Symbols
+    name: Symbols
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.Internals
+  name: SpiceSharpParser.Parsers.Netlist.Spice.Internals
+  items:
+  - uid: SpiceSharpParser.Parsers.Netlist.Spice.Internals.ParseTreeGenerator
+    name: ParseTreeGenerator
+  - uid: SpiceSharpParser.Parsers.Netlist.Spice.Internals.ParseTreeGenerator.Parser
+    name: ParseTreeGenerator.Parser
+  - uid: SpiceSharpParser.Parsers.Netlist.Spice.Internals.ParseTreeNodeEvaluationValue
+    name: ParseTreeNodeEvaluationValue
+  - uid: SpiceSharpParser.Parsers.Netlist.Spice.Internals.ParseTreeNodeEvaluationValues
+    name: ParseTreeNodeEvaluationValues
+  - uid: SpiceSharpParser.Parsers.Netlist.Spice.Internals.ParseTreeNodeTerminalEvaluationValue
+    name: ParseTreeNodeTerminalEvaluationValue
+  - uid: SpiceSharpParser.Parsers.Netlist.Spice.Internals.ParseTreeNonTerminalEvaluationValue
+    name: ParseTreeNonTerminalEvaluationValue

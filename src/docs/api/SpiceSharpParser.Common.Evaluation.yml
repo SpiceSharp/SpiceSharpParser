@@ -1,0 +1,221 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Common.Evaluation
+  commentId: N:SpiceSharpParser.Common.Evaluation
+  id: SpiceSharpParser.Common.Evaluation
+  children:
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext
+  - SpiceSharpParser.Common.Evaluation.EvaluationParameter
+  - SpiceSharpParser.Common.Evaluation.Expression
+  - SpiceSharpParser.Common.Evaluation.ExpressionRegistry
+  - SpiceSharpParser.Common.Evaluation.Function`2
+  - SpiceSharpParser.Common.Evaluation.FunctionFactory
+  - SpiceSharpParser.Common.Evaluation.IDerivativeFunction`2
+  - SpiceSharpParser.Common.Evaluation.IFunction
+  - SpiceSharpParser.Common.Evaluation.IFunction`2
+  - SpiceSharpParser.Common.Evaluation.IFunctionFactory
+  - SpiceSharpParser.Common.Evaluation.UnknownParameterException
+  langs:
+  - csharp
+  - vb
+  name: SpiceSharpParser.Common.Evaluation
+  nameWithType: SpiceSharpParser.Common.Evaluation
+  fullName: SpiceSharpParser.Common.Evaluation
+  type: Namespace
+  assemblies:
+  - SpiceSharpParser
+references:
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  commentId: T:SpiceSharpParser.Common.Evaluation.EvaluationContext
+  parent: SpiceSharpParser.Common.Evaluation
+  name: EvaluationContext
+  nameWithType: EvaluationContext
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationParameter
+  commentId: T:SpiceSharpParser.Common.Evaluation.EvaluationParameter
+  name: EvaluationParameter
+  nameWithType: EvaluationParameter
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationParameter
+- uid: SpiceSharpParser.Common.Evaluation.Expression
+  commentId: T:SpiceSharpParser.Common.Evaluation.Expression
+  parent: SpiceSharpParser.Common.Evaluation
+  name: Expression
+  nameWithType: Expression
+  fullName: SpiceSharpParser.Common.Evaluation.Expression
+- uid: SpiceSharpParser.Common.Evaluation.ExpressionRegistry
+  commentId: T:SpiceSharpParser.Common.Evaluation.ExpressionRegistry
+  parent: SpiceSharpParser.Common.Evaluation
+  name: ExpressionRegistry
+  nameWithType: ExpressionRegistry
+  fullName: SpiceSharpParser.Common.Evaluation.ExpressionRegistry
+- uid: SpiceSharpParser.Common.Evaluation.Function`2
+  commentId: T:SpiceSharpParser.Common.Evaluation.Function`2
+  name: Function<TInputArgumentType, TOutputType>
+  nameWithType: Function<TInputArgumentType, TOutputType>
+  fullName: SpiceSharpParser.Common.Evaluation.Function<TInputArgumentType, TOutputType>
+  nameWithType.vb: Function(Of TInputArgumentType, TOutputType)
+  fullName.vb: SpiceSharpParser.Common.Evaluation.Function(Of TInputArgumentType, TOutputType)
+  name.vb: Function(Of TInputArgumentType, TOutputType)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.Function`2
+    name: Function
+    nameWithType: Function
+    fullName: SpiceSharpParser.Common.Evaluation.Function
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TOutputType
+    nameWithType: TOutputType
+    fullName: TOutputType
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.Function`2
+    name: Function
+    nameWithType: Function
+    fullName: SpiceSharpParser.Common.Evaluation.Function
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TOutputType
+    nameWithType: TOutputType
+    fullName: TOutputType
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.FunctionFactory
+  commentId: T:SpiceSharpParser.Common.Evaluation.FunctionFactory
+  name: FunctionFactory
+  nameWithType: FunctionFactory
+  fullName: SpiceSharpParser.Common.Evaluation.FunctionFactory
+- uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+  commentId: T:SpiceSharpParser.Common.Evaluation.IFunction`2
+  name: IFunction<TInputArgumentType, TOutputType>
+  nameWithType: IFunction<TInputArgumentType, TOutputType>
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction<TInputArgumentType, TOutputType>
+  nameWithType.vb: IFunction(Of TInputArgumentType, TOutputType)
+  fullName.vb: SpiceSharpParser.Common.Evaluation.IFunction(Of TInputArgumentType, TOutputType)
+  name.vb: IFunction(Of TInputArgumentType, TOutputType)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TOutputType
+    nameWithType: TOutputType
+    fullName: TOutputType
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TOutputType
+    nameWithType: TOutputType
+    fullName: TOutputType
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.IDerivativeFunction`2
+  commentId: T:SpiceSharpParser.Common.Evaluation.IDerivativeFunction`2
+  name: IDerivativeFunction<TInputArgumentType, TOutputType>
+  nameWithType: IDerivativeFunction<TInputArgumentType, TOutputType>
+  fullName: SpiceSharpParser.Common.Evaluation.IDerivativeFunction<TInputArgumentType, TOutputType>
+  nameWithType.vb: IDerivativeFunction(Of TInputArgumentType, TOutputType)
+  fullName.vb: SpiceSharpParser.Common.Evaluation.IDerivativeFunction(Of TInputArgumentType, TOutputType)
+  name.vb: IDerivativeFunction(Of TInputArgumentType, TOutputType)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.IDerivativeFunction`2
+    name: IDerivativeFunction
+    nameWithType: IDerivativeFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IDerivativeFunction
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TOutputType
+    nameWithType: TOutputType
+    fullName: TOutputType
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.IDerivativeFunction`2
+    name: IDerivativeFunction
+    nameWithType: IDerivativeFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IDerivativeFunction
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TOutputType
+    nameWithType: TOutputType
+    fullName: TOutputType
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.IFunction
+  commentId: T:SpiceSharpParser.Common.Evaluation.IFunction
+  parent: SpiceSharpParser.Common.Evaluation
+  name: IFunction
+  nameWithType: IFunction
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction
+- uid: SpiceSharpParser.Common.Evaluation.IFunctionFactory
+  commentId: T:SpiceSharpParser.Common.Evaluation.IFunctionFactory
+  parent: SpiceSharpParser.Common.Evaluation
+  name: IFunctionFactory
+  nameWithType: IFunctionFactory
+  fullName: SpiceSharpParser.Common.Evaluation.IFunctionFactory
+- uid: SpiceSharpParser.Common.Evaluation.UnknownParameterException
+  commentId: T:SpiceSharpParser.Common.Evaluation.UnknownParameterException
+  name: UnknownParameterException
+  nameWithType: UnknownParameterException
+  fullName: SpiceSharpParser.Common.Evaluation.UnknownParameterException
+- uid: SpiceSharpParser.Common.Evaluation
+  commentId: N:SpiceSharpParser.Common.Evaluation
+  name: SpiceSharpParser.Common.Evaluation
+  nameWithType: SpiceSharpParser.Common.Evaluation
+  fullName: SpiceSharpParser.Common.Evaluation

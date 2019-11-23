@@ -37,12 +37,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <summary>
         /// Generates a new export.
         /// </summary>
-        protected Export GenerateExport(Parameter parameter, IReadingContext context, Simulation simulation)
+        protected Export GenerateExport(Parameter parameter, ICircuitContext context, Simulation simulation)
         {
             return ExportFactory.Create(parameter, context, simulation, Mapper);
         }
 
-        protected List<Export> CreateExportsForAllVoltageAndCurrents(Simulation simulation, IReadingContext context)
+        protected List<Export> CreateExportsForAllVoltageAndCurrents(Simulation simulation, ICircuitContext context)
         {
             var result = new List<Export>();
             var nodes = new List<string>();
@@ -72,11 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             "I(" + componentName + ")",
                             "i",
                             @params,
-                            simulation,
-                            context.NodeNameGenerator,
-                            context.ComponentNameGenerator,
-                            context.ModelNameGenerator,
-                            context.Result,
+                            context.Evaluator.GetEvaluationContext(simulation),
                             context.CaseSensitivity));
                 }
             }
@@ -93,18 +89,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         "V(" + node + ")",
                         "v",
                         @params,
-                        simulation,
-                        context.NodeNameGenerator,
-                        context.ComponentNameGenerator,
-                        context.ModelNameGenerator,
-                        context.Result,
+                        context.Evaluator.GetEvaluationContext(simulation),
                         context.CaseSensitivity));
             }
 
             return result;
         }
 
-        protected List<Export> GenerateExports(ParameterCollection parameterCollection, Simulation simulation, IReadingContext context)
+        protected List<Export> GenerateExports(ParameterCollection parameterCollection, Simulation simulation, ICircuitContext context)
         {
             if (parameterCollection.Count == 0)
             {
@@ -121,19 +113,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 else
                 {
                     string expressionName = parameter.Image;
-                    var evaluator = context.SimulationEvaluators.GetEvaluator(simulation);
-                    var expressionNames = context.ReadingExpressionContext.GetExpressionNames();
+                    var expressionNames = context.Evaluator.GetExpressionNames();
 
                     if (expressionNames.Contains(expressionName))
                     {
                         var export = new ExpressionExport(
                             simulation.Name,
                             expressionName,
-                            context.ReadingExpressionContext.GetExpression(expressionName),
-                            evaluator,
-                            context.SimulationExpressionContexts,
-                            simulation,
-                            context);
+                            context.Evaluator.GetEvaluationContext(simulation));
 
                         result.Add(export);
                     }

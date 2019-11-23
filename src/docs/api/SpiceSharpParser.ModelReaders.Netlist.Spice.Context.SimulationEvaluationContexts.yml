@@ -1,0 +1,647 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts
+  id: SimulationEvaluationContexts
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.#ctor(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.Contexts
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.GetContext(SpiceSharp.Simulations.Simulation)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.SourceContext
+  langs:
+  - csharp
+  - vb
+  name: SimulationEvaluationContexts
+  nameWithType: SimulationEvaluationContexts
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/SimulationEvaluationContexts.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SimulationEvaluationContexts
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/SimulationEvaluationContexts.cs
+    startLine: 8
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  syntax:
+    content: public class SimulationEvaluationContexts
+    content.vb: Public Class SimulationEvaluationContexts
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.#ctor(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.#ctor(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  id: '#ctor(SpiceSharpParser.Common.Evaluation.EvaluationContext)'
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts
+  langs:
+  - csharp
+  - vb
+  name: SimulationEvaluationContexts(EvaluationContext)
+  nameWithType: SimulationEvaluationContexts.SimulationEvaluationContexts(EvaluationContext)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.SimulationEvaluationContexts(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/SimulationEvaluationContexts.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/SimulationEvaluationContexts.cs
+    startLine: 12
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  syntax:
+    content: public SimulationEvaluationContexts(EvaluationContext sourceContext)
+    parameters:
+    - id: sourceContext
+      type: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    content.vb: Public Sub New(sourceContext As EvaluationContext)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.SourceContext
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.SourceContext
+  id: SourceContext
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts
+  langs:
+  - csharp
+  - vb
+  name: SourceContext
+  nameWithType: SimulationEvaluationContexts.SourceContext
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.SourceContext
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/SimulationEvaluationContexts.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SourceContext
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/SimulationEvaluationContexts.cs
+    startLine: 18
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  syntax:
+    content: protected EvaluationContext SourceContext { get; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    content.vb: Protected ReadOnly Property SourceContext As EvaluationContext
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.SourceContext*
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.Contexts
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.Contexts
+  id: Contexts
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts
+  langs:
+  - csharp
+  - vb
+  name: Contexts
+  nameWithType: SimulationEvaluationContexts.Contexts
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.Contexts
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/SimulationEvaluationContexts.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Contexts
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/SimulationEvaluationContexts.cs
+    startLine: 20
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  syntax:
+    content: protected Dictionary<Simulation, EvaluationContext> Contexts { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.Dictionary{SpiceSharp.Simulations.Simulation,SpiceSharpParser.Common.Evaluation.EvaluationContext}
+    content.vb: Protected ReadOnly Property Contexts As Dictionary(Of Simulation, EvaluationContext)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.Contexts*
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.GetContext(SpiceSharp.Simulations.Simulation)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.GetContext(SpiceSharp.Simulations.Simulation)
+  id: GetContext(SpiceSharp.Simulations.Simulation)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts
+  langs:
+  - csharp
+  - vb
+  name: GetContext(Simulation)
+  nameWithType: SimulationEvaluationContexts.GetContext(Simulation)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.GetContext(SpiceSharp.Simulations.Simulation)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/SimulationEvaluationContexts.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetContext
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/SimulationEvaluationContexts.cs
+    startLine: 29
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  summary: "\nGets the expression context for simulation.\n"
+  example: []
+  syntax:
+    content: public EvaluationContext GetContext(Simulation simulation)
+    parameters:
+    - id: simulation
+      type: SpiceSharp.Simulations.Simulation
+      description: A simulation.
+    return:
+      type: SpiceSharpParser.Common.Evaluation.EvaluationContext
+      description: "\nExpression context.\n"
+    content.vb: Public Function GetContext(simulation As Simulation) As EvaluationContext
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.GetContext*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.#ctor*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.#ctor
+  name: SimulationEvaluationContexts
+  nameWithType: SimulationEvaluationContexts.SimulationEvaluationContexts
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.SimulationEvaluationContexts
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  commentId: T:SpiceSharpParser.Common.Evaluation.EvaluationContext
+  parent: SpiceSharpParser.Common.Evaluation
+  name: EvaluationContext
+  nameWithType: EvaluationContext
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+- uid: SpiceSharpParser.Common.Evaluation
+  commentId: N:SpiceSharpParser.Common.Evaluation
+  name: SpiceSharpParser.Common.Evaluation
+  nameWithType: SpiceSharpParser.Common.Evaluation
+  fullName: SpiceSharpParser.Common.Evaluation
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.SourceContext*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.SourceContext
+  name: SourceContext
+  nameWithType: SimulationEvaluationContexts.SourceContext
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.SourceContext
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.Contexts*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.Contexts
+  name: Contexts
+  nameWithType: SimulationEvaluationContexts.Contexts
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.Contexts
+- uid: System.Collections.Generic.Dictionary{SpiceSharp.Simulations.Simulation,SpiceSharpParser.Common.Evaluation.EvaluationContext}
+  commentId: T:System.Collections.Generic.Dictionary{SpiceSharp.Simulations.Simulation,SpiceSharpParser.Common.Evaluation.EvaluationContext}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  name: Dictionary<Simulation, EvaluationContext>
+  nameWithType: Dictionary<Simulation, EvaluationContext>
+  fullName: System.Collections.Generic.Dictionary<SpiceSharp.Simulations.Simulation, SpiceSharpParser.Common.Evaluation.EvaluationContext>
+  nameWithType.vb: Dictionary(Of Simulation, EvaluationContext)
+  fullName.vb: System.Collections.Generic.Dictionary(Of SpiceSharp.Simulations.Simulation, SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  name.vb: Dictionary(Of Simulation, EvaluationContext)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharp.Simulations.Simulation
+    name: Simulation
+    nameWithType: Simulation
+    fullName: SpiceSharp.Simulations.Simulation
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    name: EvaluationContext
+    nameWithType: EvaluationContext
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharp.Simulations.Simulation
+    name: Simulation
+    nameWithType: Simulation
+    fullName: SpiceSharp.Simulations.Simulation
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    name: EvaluationContext
+    nameWithType: EvaluationContext
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.GetContext*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.GetContext
+  name: GetContext
+  nameWithType: SimulationEvaluationContexts.GetContext
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.SimulationEvaluationContexts.GetContext
+- uid: SpiceSharp.Simulations.Simulation
+  commentId: T:SpiceSharp.Simulations.Simulation
+  parent: SpiceSharp.Simulations
+  isExternal: true
+  name: Simulation
+  nameWithType: Simulation
+  fullName: SpiceSharp.Simulations.Simulation
+- uid: SpiceSharp.Simulations
+  commentId: N:SpiceSharp.Simulations
+  isExternal: true
+  name: SpiceSharp.Simulations
+  nameWithType: SpiceSharp.Simulations
+  fullName: SpiceSharp.Simulations

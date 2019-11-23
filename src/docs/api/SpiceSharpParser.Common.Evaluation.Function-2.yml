@@ -1,0 +1,863 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Common.Evaluation.Function`2
+  commentId: T:SpiceSharpParser.Common.Evaluation.Function`2
+  id: Function`2
+  parent: SpiceSharpParser.Common.Evaluation
+  children:
+  - SpiceSharpParser.Common.Evaluation.Function`2.ArgumentsCount
+  - SpiceSharpParser.Common.Evaluation.Function`2.Logic(System.String,`0[],SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  - SpiceSharpParser.Common.Evaluation.Function`2.Name
+  langs:
+  - csharp
+  - vb
+  name: Function<TInputArgumentType, TOutputType>
+  nameWithType: Function<TInputArgumentType, TOutputType>
+  fullName: SpiceSharpParser.Common.Evaluation.Function<TInputArgumentType, TOutputType>
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/Function.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Function
+    path: ../SpiceSharpParser/Common/Evaluation/Function.cs
+    startLine: 2
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  syntax:
+    content: 'public abstract class Function<TInputArgumentType, TOutputType> : IFunction<TInputArgumentType, TOutputType>, IFunction'
+    typeParameters:
+    - id: TInputArgumentType
+    - id: TOutputType
+    content.vb: >-
+      Public MustInherit Class Function(Of TInputArgumentType, TOutputType)
+          Implements IFunction(Of TInputArgumentType, TOutputType), IFunction
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - SpiceSharpParser.Common.Evaluation.Functions.ExpressionFunction
+  - SpiceSharpParser.Common.Evaluation.Functions.Math.ATan2Function
+  - SpiceSharpParser.Common.Evaluation.Functions.Math.CoshFunction
+  - SpiceSharpParser.Common.Evaluation.Functions.Math.SinhFunction
+  - SpiceSharpParser.Common.Evaluation.Functions.Math.TanhFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Control.DefFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Control.IfFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.BufFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.CbrtFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.CeilFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.DbFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.FloorFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.HypotFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.IntFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.InvFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.LimitFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.LnFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.MaxFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.MinFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.NintFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.PolyFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.PosFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.PwrFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.PwrsFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.RoundFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.SgnFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.UFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.URampFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.AGaussFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.AUnifFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.ExtendedGaussFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.FlatFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.GaussFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.LimitFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.McFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.RandomFunction
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.UnifFunction
+  implements:
+  - SpiceSharpParser.Common.Evaluation.IFunction{{TInputArgumentType},{TOutputType}}
+  - SpiceSharpParser.Common.Evaluation.IFunction
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  nameWithType.vb: Function(Of TInputArgumentType, TOutputType)
+  modifiers.csharp:
+  - public
+  - abstract
+  - class
+  modifiers.vb:
+  - Public
+  - MustInherit
+  - Class
+  fullName.vb: SpiceSharpParser.Common.Evaluation.Function(Of TInputArgumentType, TOutputType)
+  name.vb: Function(Of TInputArgumentType, TOutputType)
+- uid: SpiceSharpParser.Common.Evaluation.Function`2.Name
+  commentId: P:SpiceSharpParser.Common.Evaluation.Function`2.Name
+  id: Name
+  parent: SpiceSharpParser.Common.Evaluation.Function`2
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: Function<TInputArgumentType, TOutputType>.Name
+  fullName: SpiceSharpParser.Common.Evaluation.Function<TInputArgumentType, TOutputType>.Name
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/Function.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Name
+    path: ../SpiceSharpParser/Common/Evaluation/Function.cs
+    startLine: 7
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  summary: "\nGets or sets the name of function.\n"
+  example: []
+  syntax:
+    content: public string Name { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Name As String
+  overload: SpiceSharpParser.Common.Evaluation.Function`2.Name*
+  implements:
+  - SpiceSharpParser.Common.Evaluation.IFunction.Name
+  nameWithType.vb: Function(Of TInputArgumentType, TOutputType).Name
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: SpiceSharpParser.Common.Evaluation.Function(Of TInputArgumentType, TOutputType).Name
+- uid: SpiceSharpParser.Common.Evaluation.Function`2.ArgumentsCount
+  commentId: P:SpiceSharpParser.Common.Evaluation.Function`2.ArgumentsCount
+  id: ArgumentsCount
+  parent: SpiceSharpParser.Common.Evaluation.Function`2
+  langs:
+  - csharp
+  - vb
+  name: ArgumentsCount
+  nameWithType: Function<TInputArgumentType, TOutputType>.ArgumentsCount
+  fullName: SpiceSharpParser.Common.Evaluation.Function<TInputArgumentType, TOutputType>.ArgumentsCount
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/Function.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ArgumentsCount
+    path: ../SpiceSharpParser/Common/Evaluation/Function.cs
+    startLine: 12
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  summary: "\nGets or sets arguments count.\n"
+  example: []
+  syntax:
+    content: public int ArgumentsCount { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property ArgumentsCount As Integer
+  overload: SpiceSharpParser.Common.Evaluation.Function`2.ArgumentsCount*
+  implements:
+  - SpiceSharpParser.Common.Evaluation.IFunction.ArgumentsCount
+  nameWithType.vb: Function(Of TInputArgumentType, TOutputType).ArgumentsCount
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: SpiceSharpParser.Common.Evaluation.Function(Of TInputArgumentType, TOutputType).ArgumentsCount
+- uid: SpiceSharpParser.Common.Evaluation.Function`2.Logic(System.String,`0[],SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  commentId: M:SpiceSharpParser.Common.Evaluation.Function`2.Logic(System.String,`0[],SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  id: Logic(System.String,`0[],SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  parent: SpiceSharpParser.Common.Evaluation.Function`2
+  langs:
+  - csharp
+  - vb
+  name: Logic(String, TInputArgumentType[], EvaluationContext)
+  nameWithType: Function<TInputArgumentType, TOutputType>.Logic(String, TInputArgumentType[], EvaluationContext)
+  fullName: SpiceSharpParser.Common.Evaluation.Function<TInputArgumentType, TOutputType>.Logic(System.String, TInputArgumentType[], SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/Function.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Logic
+    path: ../SpiceSharpParser/Common/Evaluation/Function.cs
+    startLine: 17
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  summary: "\nComputes the value of the function for given arguments.\n"
+  example: []
+  syntax:
+    content: public abstract TOutputType Logic(string image, TInputArgumentType[] args, EvaluationContext context)
+    parameters:
+    - id: image
+      type: System.String
+    - id: args
+      type: '{TInputArgumentType}[]'
+    - id: context
+      type: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    return:
+      type: '{TOutputType}'
+    content.vb: Public MustOverride Function Logic(image As String, args As TInputArgumentType(), context As EvaluationContext) As TOutputType
+  overload: SpiceSharpParser.Common.Evaluation.Function`2.Logic*
+  implements:
+  - SpiceSharpParser.Common.Evaluation.IFunction{{TInputArgumentType},{TOutputType}}.Logic(System.String,{TInputArgumentType}[],SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  nameWithType.vb: Function(Of TInputArgumentType, TOutputType).Logic(String, TInputArgumentType(), EvaluationContext)
+  modifiers.csharp:
+  - public
+  - abstract
+  modifiers.vb:
+  - Public
+  - MustOverride
+  fullName.vb: SpiceSharpParser.Common.Evaluation.Function(Of TInputArgumentType, TOutputType).Logic(System.String, TInputArgumentType(), SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  name.vb: Logic(String, TInputArgumentType(), EvaluationContext)
+references:
+- uid: SpiceSharpParser.Common.Evaluation
+  commentId: N:SpiceSharpParser.Common.Evaluation
+  name: SpiceSharpParser.Common.Evaluation
+  nameWithType: SpiceSharpParser.Common.Evaluation
+  fullName: SpiceSharpParser.Common.Evaluation
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharpParser.Common.Evaluation.IFunction{{TInputArgumentType},{TOutputType}}
+  commentId: T:SpiceSharpParser.Common.Evaluation.IFunction{`0,`1}
+  parent: SpiceSharpParser.Common.Evaluation
+  definition: SpiceSharpParser.Common.Evaluation.IFunction`2
+  name: IFunction<TInputArgumentType, TOutputType>
+  nameWithType: IFunction<TInputArgumentType, TOutputType>
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction<TInputArgumentType, TOutputType>
+  nameWithType.vb: IFunction(Of TInputArgumentType, TOutputType)
+  fullName.vb: SpiceSharpParser.Common.Evaluation.IFunction(Of TInputArgumentType, TOutputType)
+  name.vb: IFunction(Of TInputArgumentType, TOutputType)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TOutputType
+    nameWithType: TOutputType
+    fullName: TOutputType
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TOutputType
+    nameWithType: TOutputType
+    fullName: TOutputType
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.IFunction
+  commentId: T:SpiceSharpParser.Common.Evaluation.IFunction
+  parent: SpiceSharpParser.Common.Evaluation
+  name: IFunction
+  nameWithType: IFunction
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+  commentId: T:SpiceSharpParser.Common.Evaluation.IFunction`2
+  name: IFunction<TInputArgumentType, TOutputType>
+  nameWithType: IFunction<TInputArgumentType, TOutputType>
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction<TInputArgumentType, TOutputType>
+  nameWithType.vb: IFunction(Of TInputArgumentType, TOutputType)
+  fullName.vb: SpiceSharpParser.Common.Evaluation.IFunction(Of TInputArgumentType, TOutputType)
+  name.vb: IFunction(Of TInputArgumentType, TOutputType)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TOutputType
+    nameWithType: TOutputType
+    fullName: TOutputType
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TOutputType
+    nameWithType: TOutputType
+    fullName: TOutputType
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.Function`2.Name*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.Function`2.Name
+  name: Name
+  nameWithType: Function<TInputArgumentType, TOutputType>.Name
+  fullName: SpiceSharpParser.Common.Evaluation.Function<TInputArgumentType, TOutputType>.Name
+  nameWithType.vb: Function(Of TInputArgumentType, TOutputType).Name
+  fullName.vb: SpiceSharpParser.Common.Evaluation.Function(Of TInputArgumentType, TOutputType).Name
+- uid: SpiceSharpParser.Common.Evaluation.IFunction.Name
+  commentId: P:SpiceSharpParser.Common.Evaluation.IFunction.Name
+  parent: SpiceSharpParser.Common.Evaluation.IFunction
+  name: Name
+  nameWithType: IFunction.Name
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction.Name
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: SpiceSharpParser.Common.Evaluation.Function`2.ArgumentsCount*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.Function`2.ArgumentsCount
+  name: ArgumentsCount
+  nameWithType: Function<TInputArgumentType, TOutputType>.ArgumentsCount
+  fullName: SpiceSharpParser.Common.Evaluation.Function<TInputArgumentType, TOutputType>.ArgumentsCount
+  nameWithType.vb: Function(Of TInputArgumentType, TOutputType).ArgumentsCount
+  fullName.vb: SpiceSharpParser.Common.Evaluation.Function(Of TInputArgumentType, TOutputType).ArgumentsCount
+- uid: SpiceSharpParser.Common.Evaluation.IFunction.ArgumentsCount
+  commentId: P:SpiceSharpParser.Common.Evaluation.IFunction.ArgumentsCount
+  parent: SpiceSharpParser.Common.Evaluation.IFunction
+  name: ArgumentsCount
+  nameWithType: IFunction.ArgumentsCount
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction.ArgumentsCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: SpiceSharpParser.Common.Evaluation.Function`2.Logic*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.Function`2.Logic
+  name: Logic
+  nameWithType: Function<TInputArgumentType, TOutputType>.Logic
+  fullName: SpiceSharpParser.Common.Evaluation.Function<TInputArgumentType, TOutputType>.Logic
+  nameWithType.vb: Function(Of TInputArgumentType, TOutputType).Logic
+  fullName.vb: SpiceSharpParser.Common.Evaluation.Function(Of TInputArgumentType, TOutputType).Logic
+- uid: SpiceSharpParser.Common.Evaluation.IFunction{{TInputArgumentType},{TOutputType}}.Logic(System.String,{TInputArgumentType}[],SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  commentId: M:SpiceSharpParser.Common.Evaluation.IFunction{`0,`1}.Logic(System.String,`0[],SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  parent: SpiceSharpParser.Common.Evaluation.IFunction{{TInputArgumentType},{TOutputType}}
+  definition: SpiceSharpParser.Common.Evaluation.IFunction`2.Logic(System.String,`0[],SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  name: Logic(String, TInputArgumentType[], EvaluationContext)
+  nameWithType: IFunction<TInputArgumentType, TOutputType>.Logic(String, TInputArgumentType[], EvaluationContext)
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction<TInputArgumentType, TOutputType>.Logic(System.String, TInputArgumentType[], SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  nameWithType.vb: IFunction(Of TInputArgumentType, TOutputType).Logic(String, TInputArgumentType(), EvaluationContext)
+  fullName.vb: SpiceSharpParser.Common.Evaluation.IFunction(Of TInputArgumentType, TOutputType).Logic(System.String, TInputArgumentType(), SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  name.vb: Logic(String, TInputArgumentType(), EvaluationContext)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2.Logic(System.String,`0[],SpiceSharpParser.Common.Evaluation.EvaluationContext)
+    name: Logic
+    nameWithType: IFunction<TInputArgumentType, TOutputType>.Logic
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction<TInputArgumentType, TOutputType>.Logic
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    name: EvaluationContext
+    nameWithType: EvaluationContext
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2.Logic(System.String,`0[],SpiceSharpParser.Common.Evaluation.EvaluationContext)
+    name: Logic
+    nameWithType: IFunction(Of TInputArgumentType, TOutputType).Logic
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction(Of TInputArgumentType, TOutputType).Logic
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    name: EvaluationContext
+    nameWithType: EvaluationContext
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: '{TInputArgumentType}[]'
+  isExternal: true
+  name: TInputArgumentType[]
+  nameWithType: TInputArgumentType[]
+  fullName: TInputArgumentType[]
+  nameWithType.vb: TInputArgumentType()
+  fullName.vb: TInputArgumentType()
+  name.vb: TInputArgumentType()
+  spec.csharp:
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  commentId: T:SpiceSharpParser.Common.Evaluation.EvaluationContext
+  parent: SpiceSharpParser.Common.Evaluation
+  name: EvaluationContext
+  nameWithType: EvaluationContext
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+- uid: '{TOutputType}'
+  commentId: '!:TOutputType'
+  definition: TOutputType
+  name: TOutputType
+  nameWithType: TOutputType
+  fullName: TOutputType
+- uid: SpiceSharpParser.Common.Evaluation.IFunction`2.Logic(System.String,`0[],SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  commentId: M:SpiceSharpParser.Common.Evaluation.IFunction`2.Logic(System.String,`0[],SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  isExternal: true
+  name: Logic(String, TInputArgumentType[], EvaluationContext)
+  nameWithType: IFunction<TInputArgumentType, TOutputType>.Logic(String, TInputArgumentType[], EvaluationContext)
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction<TInputArgumentType, TOutputType>.Logic(System.String, TInputArgumentType[], SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  nameWithType.vb: IFunction(Of TInputArgumentType, TOutputType).Logic(String, TInputArgumentType(), EvaluationContext)
+  fullName.vb: SpiceSharpParser.Common.Evaluation.IFunction(Of TInputArgumentType, TOutputType).Logic(System.String, TInputArgumentType(), SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  name.vb: Logic(String, TInputArgumentType(), EvaluationContext)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2.Logic(System.String,`0[],SpiceSharpParser.Common.Evaluation.EvaluationContext)
+    name: Logic
+    nameWithType: IFunction<TInputArgumentType, TOutputType>.Logic
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction<TInputArgumentType, TOutputType>.Logic
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    name: EvaluationContext
+    nameWithType: EvaluationContext
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2.Logic(System.String,`0[],SpiceSharpParser.Common.Evaluation.EvaluationContext)
+    name: Logic
+    nameWithType: IFunction(Of TInputArgumentType, TOutputType).Logic
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction(Of TInputArgumentType, TOutputType).Logic
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    name: EvaluationContext
+    nameWithType: EvaluationContext
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: TOutputType
+  name: TOutputType
+  nameWithType: TOutputType
+  fullName: TOutputType

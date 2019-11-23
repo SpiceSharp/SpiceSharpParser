@@ -1,6 +1,6 @@
-﻿using System;
+﻿using SpiceSharpParser.Common.Evaluation.Expressions;
+using System;
 using System.Collections.Generic;
-using SpiceSharpParser.Common.Evaluation.Expressions;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
@@ -262,7 +262,7 @@ namespace SpiceSharpParser.Common.Evaluation
             {
                 if (!addedExpressions.Contains(expression.Value))
                 {
-                    result.NamedExpressions.Add(expression.Key,  (NamedExpression)expression.Value.Clone());
+                    result.NamedExpressions.Add(expression.Key, (NamedExpression)expression.Value.Clone());
                 }
             }
 

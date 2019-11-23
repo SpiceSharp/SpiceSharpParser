@@ -1,11 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using SpiceSharpParser.Common.FileSystem;
+﻿using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Parsers.Netlist.Spice;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {

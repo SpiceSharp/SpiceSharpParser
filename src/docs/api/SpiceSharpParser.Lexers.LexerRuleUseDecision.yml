@@ -1,0 +1,118 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Lexers.LexerRuleUseDecision
+  commentId: T:SpiceSharpParser.Lexers.LexerRuleUseDecision
+  id: LexerRuleUseDecision
+  parent: SpiceSharpParser.Lexers
+  children:
+  - SpiceSharpParser.Lexers.LexerRuleUseDecision.Next
+  - SpiceSharpParser.Lexers.LexerRuleUseDecision.Use
+  langs:
+  - csharp
+  - vb
+  name: LexerRuleUseDecision
+  nameWithType: LexerRuleUseDecision
+  fullName: SpiceSharpParser.Lexers.LexerRuleUseDecision
+  type: Enum
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/LexerRuleUseDecision.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: LexerRuleUseDecision
+    path: ../SpiceSharpParser/Lexers/LexerRuleUseDecision.cs
+    startLine: 5
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers
+  summary: "\nEnumeration that specifies whether to use a rule or skip to the next rule.\n"
+  example: []
+  syntax:
+    content: public enum LexerRuleUseDecision
+    content.vb: Public Enum LexerRuleUseDecision
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: SpiceSharpParser.Lexers.LexerRuleUseDecision.Use
+  commentId: F:SpiceSharpParser.Lexers.LexerRuleUseDecision.Use
+  id: Use
+  parent: SpiceSharpParser.Lexers.LexerRuleUseDecision
+  langs:
+  - csharp
+  - vb
+  name: Use
+  nameWithType: LexerRuleUseDecision.Use
+  fullName: SpiceSharpParser.Lexers.LexerRuleUseDecision.Use
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/LexerRuleUseDecision.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Use
+    path: ../SpiceSharpParser/Lexers/LexerRuleUseDecision.cs
+    startLine: 10
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers
+  summary: "\nSpecifies that the rule is used.\n"
+  example: []
+  syntax:
+    content: Use = 0
+    return:
+      type: SpiceSharpParser.Lexers.LexerRuleUseDecision
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SpiceSharpParser.Lexers.LexerRuleUseDecision.Next
+  commentId: F:SpiceSharpParser.Lexers.LexerRuleUseDecision.Next
+  id: Next
+  parent: SpiceSharpParser.Lexers.LexerRuleUseDecision
+  langs:
+  - csharp
+  - vb
+  name: Next
+  nameWithType: LexerRuleUseDecision.Next
+  fullName: SpiceSharpParser.Lexers.LexerRuleUseDecision.Next
+  type: Field
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/LexerRuleUseDecision.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Next
+    path: ../SpiceSharpParser/Lexers/LexerRuleUseDecision.cs
+    startLine: 15
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers
+  summary: "\nSpecifies that the next rule will be tried.\n"
+  example: []
+  syntax:
+    content: Next = 1
+    return:
+      type: SpiceSharpParser.Lexers.LexerRuleUseDecision
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: SpiceSharpParser.Lexers
+  commentId: N:SpiceSharpParser.Lexers
+  name: SpiceSharpParser.Lexers
+  nameWithType: SpiceSharpParser.Lexers
+  fullName: SpiceSharpParser.Lexers
+- uid: SpiceSharpParser.Lexers.LexerRuleUseDecision
+  commentId: T:SpiceSharpParser.Lexers.LexerRuleUseDecision
+  parent: SpiceSharpParser.Lexers
+  name: LexerRuleUseDecision
+  nameWithType: LexerRuleUseDecision
+  fullName: SpiceSharpParser.Lexers.LexerRuleUseDecision

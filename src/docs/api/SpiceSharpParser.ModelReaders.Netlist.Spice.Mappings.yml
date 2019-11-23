@@ -1,0 +1,120 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  id: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ControlMapper
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.EntityGeneratorMapper
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ExporterMapper
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ModelGeneratorMapper
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.WaveformMapper
+  langs:
+  - csharp
+  - vb
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  type: Namespace
+  assemblies:
+  - SpiceSharpParser
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1
+  name: BaseMapper<TElement>
+  nameWithType: BaseMapper<TElement>
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<TElement>
+  nameWithType.vb: BaseMapper(Of TElement)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of TElement)
+  name.vb: BaseMapper(Of TElement)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1
+    name: BaseMapper
+    nameWithType: BaseMapper
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TElement
+    nameWithType: TElement
+    fullName: TElement
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1
+    name: BaseMapper
+    nameWithType: BaseMapper
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TElement
+    nameWithType: TElement
+    fullName: TElement
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ControlMapper
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ControlMapper
+  name: ControlMapper
+  nameWithType: ControlMapper
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ControlMapper
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.EntityGeneratorMapper
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.EntityGeneratorMapper
+  name: EntityGeneratorMapper
+  nameWithType: EntityGeneratorMapper
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.EntityGeneratorMapper
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ExporterMapper
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ExporterMapper
+  name: ExporterMapper
+  nameWithType: ExporterMapper
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ExporterMapper
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+  name: IMapper<TElement>
+  nameWithType: IMapper<TElement>
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper<TElement>
+  nameWithType.vb: IMapper(Of TElement)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper(Of TElement)
+  name.vb: IMapper(Of TElement)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+    name: IMapper
+    nameWithType: IMapper
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TElement
+    nameWithType: TElement
+    fullName: TElement
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+    name: IMapper
+    nameWithType: IMapper
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TElement
+    nameWithType: TElement
+    fullName: TElement
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ModelGeneratorMapper
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ModelGeneratorMapper
+  name: ModelGeneratorMapper
+  nameWithType: ModelGeneratorMapper
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ModelGeneratorMapper
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.WaveformMapper
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.WaveformMapper
+  name: WaveformMapper
+  nameWithType: WaveformMapper
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.WaveformMapper

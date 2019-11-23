@@ -1,0 +1,64 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
+  id: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.BipolarModelGenerator
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.DiodeModelGenerator
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.JFETModelGenerator
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.ModelGenerator
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.MosfetModelGenerator
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.RLCModelGenerator
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.SwitchModelGenerator
+  langs:
+  - csharp
+  - vb
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
+  type: Namespace
+  assemblies:
+  - SpiceSharpParser
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.BipolarModelGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.BipolarModelGenerator
+  name: BipolarModelGenerator
+  nameWithType: BipolarModelGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.BipolarModelGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.DiodeModelGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.DiodeModelGenerator
+  name: DiodeModelGenerator
+  nameWithType: DiodeModelGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.DiodeModelGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.JFETModelGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.JFETModelGenerator
+  name: JFETModelGenerator
+  nameWithType: JFETModelGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.JFETModelGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.ModelGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.ModelGenerator
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
+  name: ModelGenerator
+  nameWithType: ModelGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.ModelGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.MosfetModelGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.MosfetModelGenerator
+  name: MosfetModelGenerator
+  nameWithType: MosfetModelGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.MosfetModelGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.RLCModelGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.RLCModelGenerator
+  name: RLCModelGenerator
+  nameWithType: RLCModelGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.RLCModelGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.SwitchModelGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.SwitchModelGenerator
+  name: SwitchModelGenerator
+  nameWithType: SwitchModelGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models.SwitchModelGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models

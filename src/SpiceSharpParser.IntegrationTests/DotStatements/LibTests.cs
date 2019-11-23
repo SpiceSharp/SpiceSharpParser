@@ -80,7 +80,6 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(14, ((BaseSimulation)netlist.Simulations[0]).Configurations.Get<BaseConfiguration>().Nodesets["OUT"]);
         }
 
-
         [Fact]
         public void LibOneArgumentWithInclude()
         {

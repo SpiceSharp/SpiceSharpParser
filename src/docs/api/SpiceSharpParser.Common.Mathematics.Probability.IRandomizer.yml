@@ -1,0 +1,618 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+  id: IRandomizer
+  parent: SpiceSharpParser.Common.Mathematics.Probability
+  children:
+  - SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.CdfPoints
+  - SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.Clone
+  - SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.CurrentPdfName
+  - SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomDoubleProvider(System.String)
+  - SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomIntegerProvider(System.String)
+  - SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomProvider(System.String)
+  - SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.NormalLimit
+  - SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.RegisterPdf(System.String,System.Func{SpiceSharpParser.Common.Mathematics.Probability.Pdf})
+  - SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.Seed
+  langs:
+  - csharp
+  - vb
+  name: IRandomizer
+  nameWithType: IRandomizer
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+  type: Interface
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IRandomizer
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+    startLine: 7
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nInterface for all random numbers generator facades.\n"
+  example: []
+  syntax:
+    content: public interface IRandomizer
+    content.vb: Public Interface IRandomizer
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.CurrentPdfName
+  commentId: P:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.CurrentPdfName
+  id: CurrentPdfName
+  parent: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+  langs:
+  - csharp
+  - vb
+  name: CurrentPdfName
+  nameWithType: IRandomizer.CurrentPdfName
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.CurrentPdfName
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CurrentPdfName
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+    startLine: 12
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nGets or sets current pdf name.\n"
+  example: []
+  syntax:
+    content: string CurrentPdfName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Property CurrentPdfName As String
+  overload: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.CurrentPdfName*
+  modifiers.csharp:
+  - get
+  - set
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.CdfPoints
+  commentId: P:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.CdfPoints
+  id: CdfPoints
+  parent: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+  langs:
+  - csharp
+  - vb
+  name: CdfPoints
+  nameWithType: IRandomizer.CdfPoints
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.CdfPoints
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CdfPoints
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+    startLine: 17
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nGets or sets number of cdf points.\n"
+  example: []
+  syntax:
+    content: int CdfPoints { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property CdfPoints As Integer
+  overload: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.CdfPoints*
+  modifiers.csharp:
+  - get
+  - set
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.NormalLimit
+  commentId: P:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.NormalLimit
+  id: NormalLimit
+  parent: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+  langs:
+  - csharp
+  - vb
+  name: NormalLimit
+  nameWithType: IRandomizer.NormalLimit
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.NormalLimit
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: NormalLimit
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+    startLine: 22
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nGets or sets normal limit.\n"
+  example: []
+  syntax:
+    content: double NormalLimit { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Property NormalLimit As Double
+  overload: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.NormalLimit*
+  modifiers.csharp:
+  - get
+  - set
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.Seed
+  commentId: P:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.Seed
+  id: Seed
+  parent: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+  langs:
+  - csharp
+  - vb
+  name: Seed
+  nameWithType: IRandomizer.Seed
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.Seed
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Seed
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+    startLine: 27
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nGets or sets the random seed.\n"
+  example: []
+  syntax:
+    content: int? Seed { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Int32}
+    content.vb: Property Seed As Integer?
+  overload: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.Seed*
+  modifiers.csharp:
+  - get
+  - set
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.RegisterPdf(System.String,System.Func{SpiceSharpParser.Common.Mathematics.Probability.Pdf})
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.RegisterPdf(System.String,System.Func{SpiceSharpParser.Common.Mathematics.Probability.Pdf})
+  id: RegisterPdf(System.String,System.Func{SpiceSharpParser.Common.Mathematics.Probability.Pdf})
+  parent: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+  langs:
+  - csharp
+  - vb
+  name: RegisterPdf(String, Func<Pdf>)
+  nameWithType: IRandomizer.RegisterPdf(String, Func<Pdf>)
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.RegisterPdf(System.String, System.Func<SpiceSharpParser.Common.Mathematics.Probability.Pdf>)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: RegisterPdf
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+    startLine: 34
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nRegisters a Pdf in the randomizer.\n"
+  example: []
+  syntax:
+    content: void RegisterPdf(string name, Func<Pdf> pdf)
+    parameters:
+    - id: name
+      type: System.String
+      description: Name of Pdf.
+    - id: pdf
+      type: System.Func{SpiceSharpParser.Common.Mathematics.Probability.Pdf}
+      description: Pdf factory.
+    content.vb: Sub RegisterPdf(name As String, pdf As Func(Of Pdf))
+  overload: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.RegisterPdf*
+  nameWithType.vb: IRandomizer.RegisterPdf(String, Func(Of Pdf))
+  fullName.vb: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.RegisterPdf(System.String, System.Func(Of SpiceSharpParser.Common.Mathematics.Probability.Pdf))
+  name.vb: RegisterPdf(String, Func(Of Pdf))
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomProvider(System.String)
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomProvider(System.String)
+  id: GetRandomProvider(System.String)
+  parent: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+  langs:
+  - csharp
+  - vb
+  name: GetRandomProvider(String)
+  nameWithType: IRandomizer.GetRandomProvider(String)
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomProvider(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetRandomProvider
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+    startLine: 43
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nGets a random number provider for a given seed and pdf.\n"
+  example: []
+  syntax:
+    content: IRandomNumberProvider GetRandomProvider(string pdfName = null)
+    parameters:
+    - id: pdfName
+      type: System.String
+      description: Name of PDF.
+    return:
+      type: SpiceSharpParser.Common.Mathematics.Probability.IRandomNumberProvider
+      description: "\nA random number provider.\n"
+    content.vb: Function GetRandomProvider(pdfName As String = Nothing) As IRandomNumberProvider
+  overload: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomProvider*
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomDoubleProvider(System.String)
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomDoubleProvider(System.String)
+  id: GetRandomDoubleProvider(System.String)
+  parent: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+  langs:
+  - csharp
+  - vb
+  name: GetRandomDoubleProvider(String)
+  nameWithType: IRandomizer.GetRandomDoubleProvider(String)
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomDoubleProvider(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetRandomDoubleProvider
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+    startLine: 52
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nGets a random double provider for a given seed and pdf.\n"
+  example: []
+  syntax:
+    content: IRandomDoubleProvider GetRandomDoubleProvider(string pdfName = null)
+    parameters:
+    - id: pdfName
+      type: System.String
+      description: Name of PDF.
+    return:
+      type: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider
+      description: "\nA random double provider.\n"
+    content.vb: Function GetRandomDoubleProvider(pdfName As String = Nothing) As IRandomDoubleProvider
+  overload: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomDoubleProvider*
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomIntegerProvider(System.String)
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomIntegerProvider(System.String)
+  id: GetRandomIntegerProvider(System.String)
+  parent: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+  langs:
+  - csharp
+  - vb
+  name: GetRandomIntegerProvider(String)
+  nameWithType: IRandomizer.GetRandomIntegerProvider(String)
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomIntegerProvider(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetRandomIntegerProvider
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+    startLine: 61
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nGets a random integer provider for a given seed and pdf.\n"
+  example: []
+  syntax:
+    content: IRandomIntegerProvider GetRandomIntegerProvider(string pdfName = null)
+    parameters:
+    - id: pdfName
+      type: System.String
+      description: Name of PDF.
+    return:
+      type: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider
+      description: "\nA random integer provider.\n"
+    content.vb: Function GetRandomIntegerProvider(pdfName As String = Nothing) As IRandomIntegerProvider
+  overload: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomIntegerProvider*
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.Clone
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.Clone
+  id: Clone
+  parent: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+  langs:
+  - csharp
+  - vb
+  name: Clone()
+  nameWithType: IRandomizer.Clone()
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.Clone()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Clone
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/IRandomizer.cs
+    startLine: 62
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  syntax:
+    content: IRandomizer Clone()
+    return:
+      type: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+    content.vb: Function Clone As IRandomizer
+  overload: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.Clone*
+references:
+- uid: SpiceSharpParser.Common.Mathematics.Probability
+  commentId: N:SpiceSharpParser.Common.Mathematics.Probability
+  name: SpiceSharpParser.Common.Mathematics.Probability
+  nameWithType: SpiceSharpParser.Common.Mathematics.Probability
+  fullName: SpiceSharpParser.Common.Mathematics.Probability
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.CurrentPdfName*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.CurrentPdfName
+  name: CurrentPdfName
+  nameWithType: IRandomizer.CurrentPdfName
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.CurrentPdfName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.CdfPoints*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.CdfPoints
+  name: CdfPoints
+  nameWithType: IRandomizer.CdfPoints
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.CdfPoints
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.NormalLimit*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.NormalLimit
+  name: NormalLimit
+  nameWithType: IRandomizer.NormalLimit
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.NormalLimit
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  name: Double
+  nameWithType: Double
+  fullName: System.Double
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.Seed*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.Seed
+  name: Seed
+  nameWithType: IRandomizer.Seed
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.Seed
+- uid: System.Nullable{System.Int32}
+  commentId: T:System.Nullable{System.Int32}
+  parent: System
+  definition: System.Nullable`1
+  name: Nullable<Int32>
+  nameWithType: Nullable<Int32>
+  fullName: System.Nullable<System.Int32>
+  nameWithType.vb: Nullable(Of Int32)
+  fullName.vb: System.Nullable(Of System.Int32)
+  name.vb: Nullable(Of Int32)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.RegisterPdf*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.RegisterPdf
+  name: RegisterPdf
+  nameWithType: IRandomizer.RegisterPdf
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.RegisterPdf
+- uid: System.Func{SpiceSharpParser.Common.Mathematics.Probability.Pdf}
+  commentId: T:System.Func{SpiceSharpParser.Common.Mathematics.Probability.Pdf}
+  parent: System
+  definition: System.Func`1
+  name: Func<Pdf>
+  nameWithType: Func<Pdf>
+  fullName: System.Func<SpiceSharpParser.Common.Mathematics.Probability.Pdf>
+  nameWithType.vb: Func(Of Pdf)
+  fullName.vb: System.Func(Of SpiceSharpParser.Common.Mathematics.Probability.Pdf)
+  name.vb: Func(Of Pdf)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.Pdf
+    name: Pdf
+    nameWithType: Pdf
+    fullName: SpiceSharpParser.Common.Mathematics.Probability.Pdf
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.Common.Mathematics.Probability.Pdf
+    name: Pdf
+    nameWithType: Pdf
+    fullName: SpiceSharpParser.Common.Mathematics.Probability.Pdf
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomProvider*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomProvider
+  name: GetRandomProvider
+  nameWithType: IRandomizer.GetRandomProvider
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomProvider
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomNumberProvider
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.IRandomNumberProvider
+  parent: SpiceSharpParser.Common.Mathematics.Probability
+  name: IRandomNumberProvider
+  nameWithType: IRandomNumberProvider
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomNumberProvider
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomDoubleProvider*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomDoubleProvider
+  name: GetRandomDoubleProvider
+  nameWithType: IRandomizer.GetRandomDoubleProvider
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomDoubleProvider
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider
+  parent: SpiceSharpParser.Common.Mathematics.Probability
+  name: IRandomDoubleProvider
+  nameWithType: IRandomDoubleProvider
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomIntegerProvider*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomIntegerProvider
+  name: GetRandomIntegerProvider
+  nameWithType: IRandomizer.GetRandomIntegerProvider
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.GetRandomIntegerProvider
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider
+  parent: SpiceSharpParser.Common.Mathematics.Probability
+  name: IRandomIntegerProvider
+  nameWithType: IRandomIntegerProvider
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.Clone*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.Clone
+  name: Clone
+  nameWithType: IRandomizer.Clone
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer.Clone
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+  parent: SpiceSharpParser.Common.Mathematics.Probability
+  name: IRandomizer
+  nameWithType: IRandomizer
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer

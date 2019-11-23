@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using System.Linq;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Common

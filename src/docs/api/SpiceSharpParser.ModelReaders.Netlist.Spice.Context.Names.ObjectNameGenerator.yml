@@ -1,0 +1,621 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator
+  id: ObjectNameGenerator
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.#ctor(System.String)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.CreateChildGenerator(System.String)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.Generate(System.String)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.Prefix
+  langs:
+  - csharp
+  - vb
+  name: ObjectNameGenerator
+  nameWithType: ObjectNameGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Names/ObjectNameGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ObjectNameGenerator
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Names/ObjectNameGenerator.cs
+    startLine: 4
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  syntax:
+    content: 'public class ObjectNameGenerator : IObjectNameGenerator'
+    content.vb: >-
+      Public Class ObjectNameGenerator
+          Implements IObjectNameGenerator
+  inheritance:
+  - System.Object
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.#ctor(System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.#ctor(System.String)
+  id: '#ctor(System.String)'
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator
+  langs:
+  - csharp
+  - vb
+  name: ObjectNameGenerator(String)
+  nameWithType: ObjectNameGenerator.ObjectNameGenerator(String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.ObjectNameGenerator(System.String)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Names/ObjectNameGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Names/ObjectNameGenerator.cs
+    startLine: 10
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  summary: "\nInitializes a new instance of the <xref href=\"SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
+  example: []
+  syntax:
+    content: public ObjectNameGenerator(string prefix)
+    parameters:
+    - id: prefix
+      type: System.String
+      description: Naming prefix
+    content.vb: Public Sub New(prefix As String)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.Prefix
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.Prefix
+  id: Prefix
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator
+  langs:
+  - csharp
+  - vb
+  name: Prefix
+  nameWithType: ObjectNameGenerator.Prefix
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.Prefix
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Names/ObjectNameGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Prefix
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Names/ObjectNameGenerator.cs
+    startLine: 18
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  summary: "\nGets the prefix for names.\n"
+  example: []
+  syntax:
+    content: protected string Prefix { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Protected ReadOnly Property Prefix As String
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.Prefix*
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.CreateChildGenerator(System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.CreateChildGenerator(System.String)
+  id: CreateChildGenerator(System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator
+  langs:
+  - csharp
+  - vb
+  name: CreateChildGenerator(String)
+  nameWithType: ObjectNameGenerator.CreateChildGenerator(String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.CreateChildGenerator(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Names/ObjectNameGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CreateChildGenerator
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Names/ObjectNameGenerator.cs
+    startLine: 27
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  summary: "\nCreates a new child object name generator.\n"
+  example: []
+  syntax:
+    content: public IObjectNameGenerator CreateChildGenerator(string name)
+    parameters:
+    - id: name
+      type: System.String
+      description: Name of generator.
+    return:
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator
+      description: "\nA new object name generator.\n"
+    content.vb: Public Function CreateChildGenerator(name As String) As IObjectNameGenerator
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.CreateChildGenerator*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.CreateChildGenerator(System.String)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.Generate(System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.Generate(System.String)
+  id: Generate(System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator
+  langs:
+  - csharp
+  - vb
+  name: Generate(String)
+  nameWithType: ObjectNameGenerator.Generate(String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.Generate(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Names/ObjectNameGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Generate
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Names/ObjectNameGenerator.cs
+    startLine: 44
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  summary: "\nGenerates entity object name.\n"
+  example: []
+  syntax:
+    content: public string Generate(string entityName)
+    parameters:
+    - id: entityName
+      type: System.String
+      description: Name of entity.
+    return:
+      type: System.String
+      description: "\nA object name for entity.\n"
+    content.vb: Public Function Generate(entityName As String) As String
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.Generate*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.Generate(System.String)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  name: IObjectNameGenerator
+  nameWithType: IObjectNameGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator
+  name: ObjectNameGenerator
+  nameWithType: ObjectNameGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.#ctor*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.#ctor
+  name: ObjectNameGenerator
+  nameWithType: ObjectNameGenerator.ObjectNameGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.ObjectNameGenerator
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.Prefix*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.Prefix
+  name: Prefix
+  nameWithType: ObjectNameGenerator.Prefix
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.Prefix
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.CreateChildGenerator*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.CreateChildGenerator
+  name: CreateChildGenerator
+  nameWithType: ObjectNameGenerator.CreateChildGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.CreateChildGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.CreateChildGenerator(System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.CreateChildGenerator(System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator
+  isExternal: true
+  name: CreateChildGenerator(String)
+  nameWithType: IObjectNameGenerator.CreateChildGenerator(String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.CreateChildGenerator(System.String)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.CreateChildGenerator(System.String)
+    name: CreateChildGenerator
+    nameWithType: IObjectNameGenerator.CreateChildGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.CreateChildGenerator
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.CreateChildGenerator(System.String)
+    name: CreateChildGenerator
+    nameWithType: IObjectNameGenerator.CreateChildGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.CreateChildGenerator
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.Generate*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.Generate
+  name: Generate
+  nameWithType: ObjectNameGenerator.Generate
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.ObjectNameGenerator.Generate
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.Generate(System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.Generate(System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator
+  isExternal: true
+  name: Generate(String)
+  nameWithType: IObjectNameGenerator.Generate(String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.Generate(System.String)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.Generate(System.String)
+    name: Generate
+    nameWithType: IObjectNameGenerator.Generate
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.Generate
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.Generate(System.String)
+    name: Generate
+    nameWithType: IObjectNameGenerator.Generate
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.Generate
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )

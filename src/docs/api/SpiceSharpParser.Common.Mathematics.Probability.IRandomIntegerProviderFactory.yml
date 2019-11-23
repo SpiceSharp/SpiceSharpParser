@@ -1,0 +1,175 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory
+  id: IRandomIntegerProviderFactory
+  parent: SpiceSharpParser.Common.Mathematics.Probability
+  children:
+  - SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory.GetRandomInteger(System.Nullable{System.Int32})
+  langs:
+  - csharp
+  - vb
+  name: IRandomIntegerProviderFactory
+  nameWithType: IRandomIntegerProviderFactory
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory
+  type: Interface
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/IRandomNumberProviderFactory.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IRandomIntegerProviderFactory
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/IRandomNumberProviderFactory.cs
+    startLine: 7
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  syntax:
+    content: public interface IRandomIntegerProviderFactory
+    content.vb: Public Interface IRandomIntegerProviderFactory
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory.GetRandomInteger(System.Nullable{System.Int32})
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory.GetRandomInteger(System.Nullable{System.Int32})
+  id: GetRandomInteger(System.Nullable{System.Int32})
+  parent: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory
+  langs:
+  - csharp
+  - vb
+  name: GetRandomInteger(Nullable<Int32>)
+  nameWithType: IRandomIntegerProviderFactory.GetRandomInteger(Nullable<Int32>)
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory.GetRandomInteger(System.Nullable<System.Int32>)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/IRandomNumberProviderFactory.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetRandomInteger
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/IRandomNumberProviderFactory.cs
+    startLine: 9
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  syntax:
+    content: IRandomIntegerProvider GetRandomInteger(int? randomSeed)
+    parameters:
+    - id: randomSeed
+      type: System.Nullable{System.Int32}
+    return:
+      type: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider
+    content.vb: Function GetRandomInteger(randomSeed As Integer?) As IRandomIntegerProvider
+  overload: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory.GetRandomInteger*
+  nameWithType.vb: IRandomIntegerProviderFactory.GetRandomInteger(Nullable(Of Int32))
+  fullName.vb: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory.GetRandomInteger(System.Nullable(Of System.Int32))
+  name.vb: GetRandomInteger(Nullable(Of Int32))
+references:
+- uid: SpiceSharpParser.Common.Mathematics.Probability
+  commentId: N:SpiceSharpParser.Common.Mathematics.Probability
+  name: SpiceSharpParser.Common.Mathematics.Probability
+  nameWithType: SpiceSharpParser.Common.Mathematics.Probability
+  fullName: SpiceSharpParser.Common.Mathematics.Probability
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory.GetRandomInteger*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory.GetRandomInteger
+  name: GetRandomInteger
+  nameWithType: IRandomIntegerProviderFactory.GetRandomInteger
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProviderFactory.GetRandomInteger
+- uid: System.Nullable{System.Int32}
+  commentId: T:System.Nullable{System.Int32}
+  parent: System
+  definition: System.Nullable`1
+  name: Nullable<Int32>
+  nameWithType: Nullable<Int32>
+  fullName: System.Nullable<System.Int32>
+  nameWithType.vb: Nullable(Of Int32)
+  fullName.vb: System.Nullable(Of System.Int32)
+  name.vb: Nullable(Of Int32)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider
+  parent: SpiceSharpParser.Common.Mathematics.Probability
+  name: IRandomIntegerProvider
+  nameWithType: IRandomIntegerProvider
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomIntegerProvider
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System

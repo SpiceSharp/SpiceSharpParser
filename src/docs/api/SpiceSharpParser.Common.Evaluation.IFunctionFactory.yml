@@ -1,0 +1,299 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Common.Evaluation.IFunctionFactory
+  commentId: T:SpiceSharpParser.Common.Evaluation.IFunctionFactory
+  id: IFunctionFactory
+  parent: SpiceSharpParser.Common.Evaluation
+  children:
+  - SpiceSharpParser.Common.Evaluation.IFunctionFactory.Create(System.String,System.Collections.Generic.List{System.String},System.String)
+  langs:
+  - csharp
+  - vb
+  name: IFunctionFactory
+  nameWithType: IFunctionFactory
+  fullName: SpiceSharpParser.Common.Evaluation.IFunctionFactory
+  type: Interface
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/IFunctionFactory.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IFunctionFactory
+    path: ../SpiceSharpParser/Common/Evaluation/IFunctionFactory.cs
+    startLine: 7
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  summary: "\nInterface for all function factories.\n"
+  example: []
+  syntax:
+    content: public interface IFunctionFactory
+    content.vb: Public Interface IFunctionFactory
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: SpiceSharpParser.Common.Evaluation.IFunctionFactory.Create(System.String,System.Collections.Generic.List{System.String},System.String)
+  commentId: M:SpiceSharpParser.Common.Evaluation.IFunctionFactory.Create(System.String,System.Collections.Generic.List{System.String},System.String)
+  id: Create(System.String,System.Collections.Generic.List{System.String},System.String)
+  parent: SpiceSharpParser.Common.Evaluation.IFunctionFactory
+  langs:
+  - csharp
+  - vb
+  name: Create(String, List<String>, String)
+  nameWithType: IFunctionFactory.Create(String, List<String>, String)
+  fullName: SpiceSharpParser.Common.Evaluation.IFunctionFactory.Create(System.String, System.Collections.Generic.List<System.String>, System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/IFunctionFactory.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Create
+    path: ../SpiceSharpParser/Common/Evaluation/IFunctionFactory.cs
+    startLine: 15
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  summary: "\nCreates a new function.\n"
+  example: []
+  syntax:
+    content: IFunction<double, double> Create(string name, List<string> arguments, string functionBodyExpression)
+    parameters:
+    - id: name
+      type: System.String
+      description: Name of a function.
+    - id: arguments
+      type: System.Collections.Generic.List{System.String}
+      description: Arguments of a function.
+    - id: functionBodyExpression
+      type: System.String
+      description: Body expression of a function.
+    return:
+      type: SpiceSharpParser.Common.Evaluation.IFunction{System.Double,System.Double}
+    content.vb: Function Create(name As String, arguments As List(Of String), functionBodyExpression As String) As IFunction(Of Double, Double)
+  overload: SpiceSharpParser.Common.Evaluation.IFunctionFactory.Create*
+  nameWithType.vb: IFunctionFactory.Create(String, List(Of String), String)
+  fullName.vb: SpiceSharpParser.Common.Evaluation.IFunctionFactory.Create(System.String, System.Collections.Generic.List(Of System.String), System.String)
+  name.vb: Create(String, List(Of String), String)
+references:
+- uid: SpiceSharpParser.Common.Evaluation
+  commentId: N:SpiceSharpParser.Common.Evaluation
+  name: SpiceSharpParser.Common.Evaluation
+  nameWithType: SpiceSharpParser.Common.Evaluation
+  fullName: SpiceSharpParser.Common.Evaluation
+- uid: SpiceSharpParser.Common.Evaluation.IFunctionFactory.Create*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.IFunctionFactory.Create
+  name: Create
+  nameWithType: IFunctionFactory.Create
+  fullName: SpiceSharpParser.Common.Evaluation.IFunctionFactory.Create
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.Collections.Generic.List{System.String}
+  commentId: T:System.Collections.Generic.List{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<String>
+  nameWithType: List<String>
+  fullName: System.Collections.Generic.List<System.String>
+  nameWithType.vb: List(Of String)
+  fullName.vb: System.Collections.Generic.List(Of System.String)
+  name.vb: List(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.IFunction{System.Double,System.Double}
+  commentId: T:SpiceSharpParser.Common.Evaluation.IFunction{System.Double,System.Double}
+  parent: SpiceSharpParser.Common.Evaluation
+  definition: SpiceSharpParser.Common.Evaluation.IFunction`2
+  name: IFunction<Double, Double>
+  nameWithType: IFunction<Double, Double>
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction<System.Double, System.Double>
+  nameWithType.vb: IFunction(Of Double, Double)
+  fullName.vb: SpiceSharpParser.Common.Evaluation.IFunction(Of System.Double, System.Double)
+  name.vb: IFunction(Of Double, Double)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+  commentId: T:SpiceSharpParser.Common.Evaluation.IFunction`2
+  name: IFunction<TInputArgumentType, TOutputType>
+  nameWithType: IFunction<TInputArgumentType, TOutputType>
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction<TInputArgumentType, TOutputType>
+  nameWithType.vb: IFunction(Of TInputArgumentType, TOutputType)
+  fullName.vb: SpiceSharpParser.Common.Evaluation.IFunction(Of TInputArgumentType, TOutputType)
+  name.vb: IFunction(Of TInputArgumentType, TOutputType)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TOutputType
+    nameWithType: TOutputType
+    fullName: TOutputType
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TOutputType
+    nameWithType: TOutputType
+    fullName: TOutputType
+  - name: )
+    nameWithType: )
+    fullName: )

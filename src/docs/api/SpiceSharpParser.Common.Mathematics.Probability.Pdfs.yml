@@ -1,0 +1,28 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Pdfs
+  commentId: N:SpiceSharpParser.Common.Mathematics.Probability.Pdfs
+  id: SpiceSharpParser.Common.Mathematics.Probability.Pdfs
+  children:
+  - SpiceSharpParser.Common.Mathematics.Probability.Pdfs.NormalPdf
+  - SpiceSharpParser.Common.Mathematics.Probability.Pdfs.UniformPdf
+  langs:
+  - csharp
+  - vb
+  name: SpiceSharpParser.Common.Mathematics.Probability.Pdfs
+  nameWithType: SpiceSharpParser.Common.Mathematics.Probability.Pdfs
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Pdfs
+  type: Namespace
+  assemblies:
+  - SpiceSharpParser
+references:
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Pdfs.NormalPdf
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.Pdfs.NormalPdf
+  name: NormalPdf
+  nameWithType: NormalPdf
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Pdfs.NormalPdf
+- uid: SpiceSharpParser.Common.Mathematics.Probability.Pdfs.UniformPdf
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.Pdfs.UniformPdf
+  name: UniformPdf
+  nameWithType: UniformPdf
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.Pdfs.UniformPdf

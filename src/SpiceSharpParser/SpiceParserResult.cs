@@ -8,7 +8,6 @@ namespace SpiceSharpParser
     /// </summary>
     public class SpiceParserResult
     {
-
         /// <summary>
         /// Gets or sets the result of reading <see cref="SpiceNetlistReaderResult"/> model.
         /// </summary>

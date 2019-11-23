@@ -1,0 +1,455 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter
+  id: Exporter
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter.CreateExport(System.String,System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.Common.Evaluation.EvaluationContext,SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings)
+  langs:
+  - csharp
+  - vb
+  name: Exporter
+  nameWithType: Exporter
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Exporter.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Exporter
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Exporter.cs
+    startLine: 8
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  summary: "\nBase class for all exporters.\n"
+  example: []
+  syntax:
+    content: public abstract class Exporter
+    content.vb: Public MustInherit Class Exporter
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExporter
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.PropertyExporter
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExporter
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - abstract
+  - class
+  modifiers.vb:
+  - Public
+  - MustInherit
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter.CreateExport(System.String,System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.Common.Evaluation.EvaluationContext,SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter.CreateExport(System.String,System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.Common.Evaluation.EvaluationContext,SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings)
+  id: CreateExport(System.String,System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.Common.Evaluation.EvaluationContext,SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter
+  langs:
+  - csharp
+  - vb
+  name: CreateExport(String, String, ParameterCollection, EvaluationContext, ISpiceNetlistCaseSensitivitySettings)
+  nameWithType: Exporter.CreateExport(String, String, ParameterCollection, EvaluationContext, ISpiceNetlistCaseSensitivitySettings)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter.CreateExport(System.String, System.String, SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection, SpiceSharpParser.Common.Evaluation.EvaluationContext, SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Exporter.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CreateExport
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Exporters/Exporter.cs
+    startLine: 21
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  summary: "\nCreates a new export.\n"
+  example: []
+  syntax:
+    content: public abstract Export CreateExport(string name, string type, ParameterCollection parameters, EvaluationContext context, ISpiceNetlistCaseSensitivitySettings caseSettings)
+    parameters:
+    - id: name
+      type: System.String
+      description: Name of export.
+    - id: type
+      type: System.String
+      description: A type of export.
+    - id: parameters
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+      description: A parameters of export.
+    - id: context
+      type: SpiceSharpParser.Common.Evaluation.EvaluationContext
+      description: Expression context.
+    - id: caseSettings
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+      description: Case settings.
+    return:
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+      description: "\nA new export.\n"
+    content.vb: Public MustOverride Function CreateExport(name As String, type As String, parameters As ParameterCollection, context As EvaluationContext, caseSettings As ISpiceNetlistCaseSensitivitySettings) As Export
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter.CreateExport*
+  modifiers.csharp:
+  - public
+  - abstract
+  modifiers.vb:
+  - Public
+  - MustOverride
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter.CreateExport*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter.CreateExport
+  name: CreateExport
+  nameWithType: Exporter.CreateExport
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Exporter.CreateExport
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: ParameterCollection
+  nameWithType: ParameterCollection
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  commentId: T:SpiceSharpParser.Common.Evaluation.EvaluationContext
+  parent: SpiceSharpParser.Common.Evaluation
+  name: EvaluationContext
+  nameWithType: EvaluationContext
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice
+  name: ISpiceNetlistCaseSensitivitySettings
+  nameWithType: ISpiceNetlistCaseSensitivitySettings
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
+  name: Export
+  nameWithType: Export
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: SpiceSharpParser.Models.Netlist.Spice.Objects
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice.Objects
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects
+- uid: SpiceSharpParser.Common.Evaluation
+  commentId: N:SpiceSharpParser.Common.Evaluation
+  name: SpiceSharpParser.Common.Evaluation
+  nameWithType: SpiceSharpParser.Common.Evaluation
+  fullName: SpiceSharpParser.Common.Evaluation
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice

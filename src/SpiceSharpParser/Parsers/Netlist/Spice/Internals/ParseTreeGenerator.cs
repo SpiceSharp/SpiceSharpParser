@@ -1,6 +1,6 @@
-﻿using System;
+﻿using SpiceSharpParser.Lexers.Netlist.Spice;
+using System;
 using System.Collections.Generic;
-using SpiceSharpParser.Lexers.Netlist.Spice;
 
 namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
 {
@@ -857,11 +857,11 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
                 || currentToken.Is(SpiceTokenType.PERCENT)
                 || (currentToken.Is(SpiceTokenType.DELIMITER) && currentToken.Lexem == "("))
             {
-                    PushProductionExpression(
-                        stack,
-                        CreateNonTerminalNode(Symbols.Parameter, current),
-                        CreateNonTerminalNode(Symbols.ParametersSeparator, current),
-                        CreateNonTerminalNode(Symbols.Parameters, current));
+                PushProductionExpression(
+                    stack,
+                    CreateNonTerminalNode(Symbols.Parameter, current),
+                    CreateNonTerminalNode(Symbols.ParametersSeparator, current),
+                    CreateNonTerminalNode(Symbols.Parameters, current));
             }
             else if (currentToken.Is(SpiceTokenType.EOF))
             {
@@ -882,7 +882,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             else
             {
                 throw new ParseException(
-                    string.Format("Error during parsing parameters. Unexpected token: '{0}' of type {1} line={2}", currentToken.Lexem,  currentToken.SpiceTokenType, currentToken.LineNumber), currentToken.LineNumber);
+                    string.Format("Error during parsing parameters. Unexpected token: '{0}' of type {1} line={2}", currentToken.Lexem, currentToken.SpiceTokenType, currentToken.LineNumber), currentToken.LineNumber);
             }
         }
 

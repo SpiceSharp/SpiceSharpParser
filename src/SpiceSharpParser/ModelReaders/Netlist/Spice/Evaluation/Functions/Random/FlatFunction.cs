@@ -1,7 +1,5 @@
-﻿using System;
-using SpiceSharp.Simulations;
-using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+﻿using SpiceSharpParser.Common.Evaluation;
+using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random
 {
@@ -13,14 +11,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
             ArgumentsCount = 1;
         }
 
-        public override double Logic(string image, double[] args, IEvaluator evaluator, ExpressionContext context, Simulation simulation = null, IReadingContext readingContext = null)
+        public override double Logic(string image, double[] args, EvaluationContext context)
         {
             if (args.Length != 1)
             {
                 throw new ArgumentException("flat function expects one argument");
             }
 
-            var random = context.Randomizer.GetRandomDoubleProvider(context.Seed);
+            var random = context.Randomizer.GetRandomDoubleProvider();
 
             double x = args[0];
             return x * ((random.NextDouble() * 2.0) - 1.0);

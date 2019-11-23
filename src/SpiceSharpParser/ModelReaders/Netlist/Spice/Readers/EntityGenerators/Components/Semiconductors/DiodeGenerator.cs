@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using SpiceSharp.Components;
+﻿using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -8,15 +7,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class DiodeGenerator : IComponentGenerator
     {
-        /// <summary>
-        /// Gets generated types.
-        /// </summary>
-        /// <returns>
-        /// Generated types.
-        /// </returns>
-        public IEnumerable<string> GeneratedTypes => new List<string> { "D" };
-
-        public SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters.Count < 3)
             {
@@ -70,13 +61,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     var bp = diode.ParameterSets.Get<SpiceSharp.Components.DiodeBehaviors.BaseParameters>();
                     if (!bp.Area.Given)
                     {
-                        bp.Area.Value = context.EvaluateDouble(parameters.Get(i));
+                        bp.Area.Value = context.Evaluator.EvaluateDouble(parameters.Get(i));
                     }
                     else
                     {
                         if (!bp.Temperature.Given)
                         {
-                            bp.Temperature.Value = context.EvaluateDouble(parameters.Get(i));
+                            bp.Temperature.Value = context.Evaluator.EvaluateDouble(parameters.Get(i));
                         }
                     }
                 }

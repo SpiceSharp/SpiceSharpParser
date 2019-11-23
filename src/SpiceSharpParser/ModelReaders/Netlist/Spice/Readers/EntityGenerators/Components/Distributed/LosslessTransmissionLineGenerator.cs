@@ -8,7 +8,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class LosslessTransmissionLineGenerator : ComponentGenerator
     {
-        public override SpiceSharp.Components.Component Generate(string name, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public override SpiceSharp.Components.Component Generate(string name, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
         {
             var losslessLine = new LosslessTransmissionLine(name);
             context.CreateNodes(losslessLine, parameters);

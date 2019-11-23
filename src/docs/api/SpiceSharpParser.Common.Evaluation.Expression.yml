@@ -1,0 +1,591 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Common.Evaluation.Expression
+  commentId: T:SpiceSharpParser.Common.Evaluation.Expression
+  id: Expression
+  parent: SpiceSharpParser.Common.Evaluation
+  children:
+  - SpiceSharpParser.Common.Evaluation.Expression.#ctor(System.String)
+  - SpiceSharpParser.Common.Evaluation.Expression.CanProvideValueDirectly
+  - SpiceSharpParser.Common.Evaluation.Expression.Clone
+  - SpiceSharpParser.Common.Evaluation.Expression.GetValue
+  - SpiceSharpParser.Common.Evaluation.Expression.ValueExpression
+  langs:
+  - csharp
+  - vb
+  name: Expression
+  nameWithType: Expression
+  fullName: SpiceSharpParser.Common.Evaluation.Expression
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/Expression.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Expression
+    path: ../SpiceSharpParser/Common/Evaluation/Expression.cs
+    startLine: 7
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  summary: "\nAn evaluator expression.\n"
+  example: []
+  syntax:
+    content: public abstract class Expression
+    content.vb: Public MustInherit Class Expression
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - SpiceSharpParser.Common.Evaluation.Expressions.ConstantExpression
+  - SpiceSharpParser.Common.Evaluation.Expressions.DynamicExpression
+  - SpiceSharpParser.Common.Evaluation.Expressions.FunctionExpression
+  - SpiceSharpParser.Common.Evaluation.Expressions.NamedExpression
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - abstract
+  - class
+  modifiers.vb:
+  - Public
+  - MustInherit
+  - Class
+- uid: SpiceSharpParser.Common.Evaluation.Expression.#ctor(System.String)
+  commentId: M:SpiceSharpParser.Common.Evaluation.Expression.#ctor(System.String)
+  id: '#ctor(System.String)'
+  parent: SpiceSharpParser.Common.Evaluation.Expression
+  langs:
+  - csharp
+  - vb
+  name: Expression(String)
+  nameWithType: Expression.Expression(String)
+  fullName: SpiceSharpParser.Common.Evaluation.Expression.Expression(System.String)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/Expression.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/Common/Evaluation/Expression.cs
+    startLine: 13
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  summary: "\nInitializes a new instance of the <xref href=\"SpiceSharpParser.Common.Evaluation.Expression\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
+  example: []
+  syntax:
+    content: protected Expression(string expression)
+    parameters:
+    - id: expression
+      type: System.String
+      description: Expression.
+    content.vb: Protected Sub New(expression As String)
+  overload: SpiceSharpParser.Common.Evaluation.Expression.#ctor*
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+- uid: SpiceSharpParser.Common.Evaluation.Expression.ValueExpression
+  commentId: P:SpiceSharpParser.Common.Evaluation.Expression.ValueExpression
+  id: ValueExpression
+  parent: SpiceSharpParser.Common.Evaluation.Expression
+  langs:
+  - csharp
+  - vb
+  name: ValueExpression
+  nameWithType: Expression.ValueExpression
+  fullName: SpiceSharpParser.Common.Evaluation.Expression.ValueExpression
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/Expression.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ValueExpression
+    path: ../SpiceSharpParser/Common/Evaluation/Expression.cs
+    startLine: 21
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  summary: "\nGets the expression string.\n"
+  example: []
+  syntax:
+    content: public string ValueExpression { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property ValueExpression As String
+  overload: SpiceSharpParser.Common.Evaluation.Expression.ValueExpression*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.Common.Evaluation.Expression.CanProvideValueDirectly
+  commentId: P:SpiceSharpParser.Common.Evaluation.Expression.CanProvideValueDirectly
+  id: CanProvideValueDirectly
+  parent: SpiceSharpParser.Common.Evaluation.Expression
+  langs:
+  - csharp
+  - vb
+  name: CanProvideValueDirectly
+  nameWithType: Expression.CanProvideValueDirectly
+  fullName: SpiceSharpParser.Common.Evaluation.Expression.CanProvideValueDirectly
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/Expression.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CanProvideValueDirectly
+    path: ../SpiceSharpParser/Common/Evaluation/Expression.cs
+    startLine: 26
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  summary: "\nGets the value indicating whether expression can provide value without evaluation.\n"
+  example: []
+  syntax:
+    content: public abstract bool CanProvideValueDirectly { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public MustOverride ReadOnly Property CanProvideValueDirectly As Boolean
+  overload: SpiceSharpParser.Common.Evaluation.Expression.CanProvideValueDirectly*
+  modifiers.csharp:
+  - public
+  - abstract
+  - get
+  modifiers.vb:
+  - Public
+  - MustOverride
+  - ReadOnly
+- uid: SpiceSharpParser.Common.Evaluation.Expression.Clone
+  commentId: M:SpiceSharpParser.Common.Evaluation.Expression.Clone
+  id: Clone
+  parent: SpiceSharpParser.Common.Evaluation.Expression
+  langs:
+  - csharp
+  - vb
+  name: Clone()
+  nameWithType: Expression.Clone()
+  fullName: SpiceSharpParser.Common.Evaluation.Expression.Clone()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/Expression.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Clone
+    path: ../SpiceSharpParser/Common/Evaluation/Expression.cs
+    startLine: 34
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  summary: "\nClones the expression.\n"
+  example: []
+  syntax:
+    content: public abstract Expression Clone()
+    return:
+      type: SpiceSharpParser.Common.Evaluation.Expression
+      description: "\nA cloned expression.\n"
+    content.vb: Public MustOverride Function Clone As Expression
+  overload: SpiceSharpParser.Common.Evaluation.Expression.Clone*
+  modifiers.csharp:
+  - public
+  - abstract
+  modifiers.vb:
+  - Public
+  - MustOverride
+- uid: SpiceSharpParser.Common.Evaluation.Expression.GetValue
+  commentId: M:SpiceSharpParser.Common.Evaluation.Expression.GetValue
+  id: GetValue
+  parent: SpiceSharpParser.Common.Evaluation.Expression
+  langs:
+  - csharp
+  - vb
+  name: GetValue()
+  nameWithType: Expression.GetValue()
+  fullName: SpiceSharpParser.Common.Evaluation.Expression.GetValue()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/Expression.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetValue
+    path: ../SpiceSharpParser/Common/Evaluation/Expression.cs
+    startLine: 36
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  syntax:
+    content: public abstract double GetValue()
+    return:
+      type: System.Double
+    content.vb: Public MustOverride Function GetValue As Double
+  overload: SpiceSharpParser.Common.Evaluation.Expression.GetValue*
+  modifiers.csharp:
+  - public
+  - abstract
+  modifiers.vb:
+  - Public
+  - MustOverride
+references:
+- uid: SpiceSharpParser.Common.Evaluation
+  commentId: N:SpiceSharpParser.Common.Evaluation
+  name: SpiceSharpParser.Common.Evaluation
+  nameWithType: SpiceSharpParser.Common.Evaluation
+  fullName: SpiceSharpParser.Common.Evaluation
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.Common.Evaluation.Expression
+  commentId: T:SpiceSharpParser.Common.Evaluation.Expression
+  parent: SpiceSharpParser.Common.Evaluation
+  name: Expression
+  nameWithType: Expression
+  fullName: SpiceSharpParser.Common.Evaluation.Expression
+- uid: SpiceSharpParser.Common.Evaluation.Expression.#ctor*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.Expression.#ctor
+  name: Expression
+  nameWithType: Expression.Expression
+  fullName: SpiceSharpParser.Common.Evaluation.Expression.Expression
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: SpiceSharpParser.Common.Evaluation.Expression.ValueExpression*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.Expression.ValueExpression
+  name: ValueExpression
+  nameWithType: Expression.ValueExpression
+  fullName: SpiceSharpParser.Common.Evaluation.Expression.ValueExpression
+- uid: SpiceSharpParser.Common.Evaluation.Expression.CanProvideValueDirectly*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.Expression.CanProvideValueDirectly
+  name: CanProvideValueDirectly
+  nameWithType: Expression.CanProvideValueDirectly
+  fullName: SpiceSharpParser.Common.Evaluation.Expression.CanProvideValueDirectly
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: SpiceSharpParser.Common.Evaluation.Expression.Clone*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.Expression.Clone
+  name: Clone
+  nameWithType: Expression.Clone
+  fullName: SpiceSharpParser.Common.Evaluation.Expression.Clone
+- uid: SpiceSharpParser.Common.Evaluation.Expression.GetValue*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.Expression.GetValue
+  name: GetValue
+  nameWithType: Expression.GetValue
+  fullName: SpiceSharpParser.Common.Evaluation.Expression.GetValue
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  name: Double
+  nameWithType: Double
+  fullName: System.Double

@@ -20,6 +20,8 @@ namespace SpiceSharpParser.Common.Evaluation.Expressions
         /// </summary>
         public string Name { get; }
 
+        public override bool CanProvideValueDirectly { get; } = false;
+
         /// <summary>
         /// Clones the named expression.
         /// </summary>
@@ -29,6 +31,11 @@ namespace SpiceSharpParser.Common.Evaluation.Expressions
         public override Expression Clone()
         {
             return new NamedExpression(Name, ValueExpression);
+        }
+
+        public override double GetValue()
+        {
+            throw new NotImplementedException();
         }
     }
 }

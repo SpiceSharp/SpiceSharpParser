@@ -1,0 +1,446 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator
+  id: EnableStochasticModelsSimulationDecorator
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator.#ctor(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator.Decorate(SpiceSharp.Simulations.BaseSimulation)
+  langs:
+  - csharp
+  - vb
+  name: EnableStochasticModelsSimulationDecorator
+  nameWithType: EnableStochasticModelsSimulationDecorator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Decorators/EnableStochasticModelsSimulationDecorator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: EnableStochasticModelsSimulationDecorator
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Decorators/EnableStochasticModelsSimulationDecorator.cs
+    startLine: 14
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+  syntax:
+    content: public class EnableStochasticModelsSimulationDecorator
+    content.vb: Public Class EnableStochasticModelsSimulationDecorator
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator.#ctor(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator.#ctor(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  id: '#ctor(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)'
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator
+  langs:
+  - csharp
+  - vb
+  name: EnableStochasticModelsSimulationDecorator(ICircuitContext)
+  nameWithType: EnableStochasticModelsSimulationDecorator.EnableStochasticModelsSimulationDecorator(ICircuitContext)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator.EnableStochasticModelsSimulationDecorator(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Decorators/EnableStochasticModelsSimulationDecorator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Decorators/EnableStochasticModelsSimulationDecorator.cs
+    startLine: 19
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+  syntax:
+    content: public EnableStochasticModelsSimulationDecorator(ICircuitContext context)
+    parameters:
+    - id: context
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    content.vb: Public Sub New(context As ICircuitContext)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator.Decorate(SpiceSharp.Simulations.BaseSimulation)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator.Decorate(SpiceSharp.Simulations.BaseSimulation)
+  id: Decorate(SpiceSharp.Simulations.BaseSimulation)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator
+  langs:
+  - csharp
+  - vb
+  name: Decorate(BaseSimulation)
+  nameWithType: EnableStochasticModelsSimulationDecorator.Decorate(BaseSimulation)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator.Decorate(SpiceSharp.Simulations.BaseSimulation)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Decorators/EnableStochasticModelsSimulationDecorator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Decorate
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Simulations/Decorators/EnableStochasticModelsSimulationDecorator.cs
+    startLine: 24
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+  syntax:
+    content: public BaseSimulation Decorate(BaseSimulation simulation)
+    parameters:
+    - id: simulation
+      type: SpiceSharp.Simulations.BaseSimulation
+    return:
+      type: SpiceSharp.Simulations.BaseSimulation
+    content.vb: Public Function Decorate(simulation As BaseSimulation) As BaseSimulation
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator.Decorate*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator.#ctor*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator.#ctor
+  name: EnableStochasticModelsSimulationDecorator
+  nameWithType: EnableStochasticModelsSimulationDecorator.EnableStochasticModelsSimulationDecorator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator.EnableStochasticModelsSimulationDecorator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: ICircuitContext
+  nameWithType: ICircuitContext
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator.Decorate*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator.Decorate
+  name: Decorate
+  nameWithType: EnableStochasticModelsSimulationDecorator.Decorate
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators.EnableStochasticModelsSimulationDecorator.Decorate
+- uid: SpiceSharp.Simulations.BaseSimulation
+  commentId: T:SpiceSharp.Simulations.BaseSimulation
+  parent: SpiceSharp.Simulations
+  isExternal: true
+  name: BaseSimulation
+  nameWithType: BaseSimulation
+  fullName: SpiceSharp.Simulations.BaseSimulation
+- uid: SpiceSharp.Simulations
+  commentId: N:SpiceSharp.Simulations
+  isExternal: true
+  name: SpiceSharp.Simulations
+  nameWithType: SpiceSharp.Simulations
+  fullName: SpiceSharp.Simulations

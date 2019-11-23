@@ -1,0 +1,1059 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater
+  id: ParameterSweepUpdater
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetDeviceParameter(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ReferenceParameter)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetIndependentSource(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double})
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetModelParameter(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.BracketParameter)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetSimulationParameter(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double})
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.Update(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}})
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.UpdateSweep(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}})
+  langs:
+  - csharp
+  - vb
+  name: ParameterSweepUpdater
+  nameWithType: ParameterSweepUpdater
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ParameterSweepUpdater.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ParameterSweepUpdater
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ParameterSweepUpdater.cs
+    startLine: 9
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  syntax:
+    content: 'public class ParameterSweepUpdater : IParameterSweepUpdater'
+    content.vb: >-
+      Public Class ParameterSweepUpdater
+          Implements IParameterSweepUpdater
+  inheritance:
+  - System.Object
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.Update(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}})
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.Update(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}})
+  id: Update(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}})
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater
+  langs:
+  - csharp
+  - vb
+  name: Update(BaseSimulation, ICircuitContext, List<KeyValuePair<Parameter, Double>>)
+  nameWithType: ParameterSweepUpdater.Update(BaseSimulation, ICircuitContext, List<KeyValuePair<Parameter, Double>>)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.Update(SpiceSharp.Simulations.BaseSimulation, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double>>)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ParameterSweepUpdater.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Update
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ParameterSweepUpdater.cs
+    startLine: 17
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  summary: "\nSets sweep parameters for the simulation.\n"
+  example: []
+  syntax:
+    content: public void Update(BaseSimulation simulation, ICircuitContext context, List<KeyValuePair<Parameter, double>> parameterValues)
+    parameters:
+    - id: simulation
+      type: SpiceSharp.Simulations.BaseSimulation
+      description: Simulation to set.
+    - id: context
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+      description: Reading context.
+    - id: parameterValues
+      type: System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}}
+      description: Parameter values.
+    content.vb: Public Sub Update(simulation As BaseSimulation, context As ICircuitContext, parameterValues As List(Of KeyValuePair(Of Parameter, Double)))
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.Update*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater.Update(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}})
+  nameWithType.vb: ParameterSweepUpdater.Update(BaseSimulation, ICircuitContext, List(Of KeyValuePair(Of Parameter, Double)))
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.Update(SpiceSharp.Simulations.BaseSimulation, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Collections.Generic.List(Of System.Collections.Generic.KeyValuePair(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double)))
+  name.vb: Update(BaseSimulation, ICircuitContext, List(Of KeyValuePair(Of Parameter, Double)))
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.UpdateSweep(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}})
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.UpdateSweep(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}})
+  id: UpdateSweep(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}})
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater
+  langs:
+  - csharp
+  - vb
+  name: UpdateSweep(BaseSimulation, ICircuitContext, List<KeyValuePair<Parameter, Double>>)
+  nameWithType: ParameterSweepUpdater.UpdateSweep(BaseSimulation, ICircuitContext, List<KeyValuePair<Parameter, Double>>)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.UpdateSweep(SpiceSharp.Simulations.BaseSimulation, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double>>)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ParameterSweepUpdater.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: UpdateSweep
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ParameterSweepUpdater.cs
+    startLine: 40
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  syntax:
+    content: protected void UpdateSweep(BaseSimulation simulation, ICircuitContext context, List<KeyValuePair<Parameter, double>> parameterValues)
+    parameters:
+    - id: simulation
+      type: SpiceSharp.Simulations.BaseSimulation
+    - id: context
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    - id: parameterValues
+      type: System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}}
+    content.vb: Protected Sub UpdateSweep(simulation As BaseSimulation, context As ICircuitContext, parameterValues As List(Of KeyValuePair(Of Parameter, Double)))
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.UpdateSweep*
+  nameWithType.vb: ParameterSweepUpdater.UpdateSweep(BaseSimulation, ICircuitContext, List(Of KeyValuePair(Of Parameter, Double)))
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.UpdateSweep(SpiceSharp.Simulations.BaseSimulation, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Collections.Generic.List(Of System.Collections.Generic.KeyValuePair(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double)))
+  name.vb: UpdateSweep(BaseSimulation, ICircuitContext, List(Of KeyValuePair(Of Parameter, Double)))
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetDeviceParameter(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ReferenceParameter)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetDeviceParameter(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ReferenceParameter)
+  id: SetDeviceParameter(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ReferenceParameter)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater
+  langs:
+  - csharp
+  - vb
+  name: SetDeviceParameter(BaseSimulation, ICircuitContext, KeyValuePair<Parameter, Double>, ReferenceParameter)
+  nameWithType: ParameterSweepUpdater.SetDeviceParameter(BaseSimulation, ICircuitContext, KeyValuePair<Parameter, Double>, ReferenceParameter)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetDeviceParameter(SpiceSharp.Simulations.BaseSimulation, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Collections.Generic.KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double>, SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ReferenceParameter)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ParameterSweepUpdater.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SetDeviceParameter
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ParameterSweepUpdater.cs
+    startLine: 66
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  syntax:
+    content: protected void SetDeviceParameter(BaseSimulation simulation, ICircuitContext context, KeyValuePair<Parameter, double> paramToSet, ReferenceParameter rp)
+    parameters:
+    - id: simulation
+      type: SpiceSharp.Simulations.BaseSimulation
+    - id: context
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    - id: paramToSet
+      type: System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}
+    - id: rp
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ReferenceParameter
+    content.vb: Protected Sub SetDeviceParameter(simulation As BaseSimulation, context As ICircuitContext, paramToSet As KeyValuePair(Of Parameter, Double), rp As ReferenceParameter)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetDeviceParameter*
+  nameWithType.vb: ParameterSweepUpdater.SetDeviceParameter(BaseSimulation, ICircuitContext, KeyValuePair(Of Parameter, Double), ReferenceParameter)
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetDeviceParameter(SpiceSharp.Simulations.BaseSimulation, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Collections.Generic.KeyValuePair(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double), SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ReferenceParameter)
+  name.vb: SetDeviceParameter(BaseSimulation, ICircuitContext, KeyValuePair(Of Parameter, Double), ReferenceParameter)
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetModelParameter(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.BracketParameter)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetModelParameter(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.BracketParameter)
+  id: SetModelParameter(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double},SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.BracketParameter)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater
+  langs:
+  - csharp
+  - vb
+  name: SetModelParameter(BaseSimulation, ICircuitContext, KeyValuePair<Parameter, Double>, BracketParameter)
+  nameWithType: ParameterSweepUpdater.SetModelParameter(BaseSimulation, ICircuitContext, KeyValuePair<Parameter, Double>, BracketParameter)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetModelParameter(SpiceSharp.Simulations.BaseSimulation, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Collections.Generic.KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double>, SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.BracketParameter)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ParameterSweepUpdater.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SetModelParameter
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ParameterSweepUpdater.cs
+    startLine: 76
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  syntax:
+    content: protected void SetModelParameter(BaseSimulation simulation, ICircuitContext context, KeyValuePair<Parameter, double> paramToSet, BracketParameter bp)
+    parameters:
+    - id: simulation
+      type: SpiceSharp.Simulations.BaseSimulation
+    - id: context
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    - id: paramToSet
+      type: System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}
+    - id: bp
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.BracketParameter
+    content.vb: Protected Sub SetModelParameter(simulation As BaseSimulation, context As ICircuitContext, paramToSet As KeyValuePair(Of Parameter, Double), bp As BracketParameter)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetModelParameter*
+  nameWithType.vb: ParameterSweepUpdater.SetModelParameter(BaseSimulation, ICircuitContext, KeyValuePair(Of Parameter, Double), BracketParameter)
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetModelParameter(SpiceSharp.Simulations.BaseSimulation, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Collections.Generic.KeyValuePair(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double), SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.BracketParameter)
+  name.vb: SetModelParameter(BaseSimulation, ICircuitContext, KeyValuePair(Of Parameter, Double), BracketParameter)
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetSimulationParameter(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double})
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetSimulationParameter(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double})
+  id: SetSimulationParameter(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double})
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater
+  langs:
+  - csharp
+  - vb
+  name: SetSimulationParameter(BaseSimulation, ICircuitContext, KeyValuePair<Parameter, Double>)
+  nameWithType: ParameterSweepUpdater.SetSimulationParameter(BaseSimulation, ICircuitContext, KeyValuePair<Parameter, Double>)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetSimulationParameter(SpiceSharp.Simulations.BaseSimulation, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Collections.Generic.KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double>)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ParameterSweepUpdater.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SetSimulationParameter
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ParameterSweepUpdater.cs
+    startLine: 94
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  syntax:
+    content: protected void SetSimulationParameter(BaseSimulation simulation, ICircuitContext context, KeyValuePair<Parameter, double> paramToSet)
+    parameters:
+    - id: simulation
+      type: SpiceSharp.Simulations.BaseSimulation
+    - id: context
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    - id: paramToSet
+      type: System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}
+    content.vb: Protected Sub SetSimulationParameter(simulation As BaseSimulation, context As ICircuitContext, paramToSet As KeyValuePair(Of Parameter, Double))
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetSimulationParameter*
+  nameWithType.vb: ParameterSweepUpdater.SetSimulationParameter(BaseSimulation, ICircuitContext, KeyValuePair(Of Parameter, Double))
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetSimulationParameter(SpiceSharp.Simulations.BaseSimulation, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Collections.Generic.KeyValuePair(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double))
+  name.vb: SetSimulationParameter(BaseSimulation, ICircuitContext, KeyValuePair(Of Parameter, Double))
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetIndependentSource(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double})
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetIndependentSource(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double})
+  id: SetIndependentSource(SpiceSharp.Circuits.Entity,SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double})
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater
+  langs:
+  - csharp
+  - vb
+  name: SetIndependentSource(Entity, BaseSimulation, ICircuitContext, KeyValuePair<Parameter, Double>)
+  nameWithType: ParameterSweepUpdater.SetIndependentSource(Entity, BaseSimulation, ICircuitContext, KeyValuePair<Parameter, Double>)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetIndependentSource(SpiceSharp.Circuits.Entity, SpiceSharp.Simulations.BaseSimulation, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Collections.Generic.KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double>)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ParameterSweepUpdater.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SetIndependentSource
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ParameterSweepUpdater.cs
+    startLine: 102
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  syntax:
+    content: protected void SetIndependentSource(Entity entity, BaseSimulation simulation, ICircuitContext context, KeyValuePair<Parameter, double> paramToSet)
+    parameters:
+    - id: entity
+      type: SpiceSharp.Circuits.Entity
+    - id: simulation
+      type: SpiceSharp.Simulations.BaseSimulation
+    - id: context
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    - id: paramToSet
+      type: System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}
+    content.vb: Protected Sub SetIndependentSource(entity As Entity, simulation As BaseSimulation, context As ICircuitContext, paramToSet As KeyValuePair(Of Parameter, Double))
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetIndependentSource*
+  nameWithType.vb: ParameterSweepUpdater.SetIndependentSource(Entity, BaseSimulation, ICircuitContext, KeyValuePair(Of Parameter, Double))
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetIndependentSource(SpiceSharp.Circuits.Entity, SpiceSharp.Simulations.BaseSimulation, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Collections.Generic.KeyValuePair(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double))
+  name.vb: SetIndependentSource(Entity, BaseSimulation, ICircuitContext, KeyValuePair(Of Parameter, Double))
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  name: IParameterSweepUpdater
+  nameWithType: IParameterSweepUpdater
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.Update*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.Update
+  name: Update
+  nameWithType: ParameterSweepUpdater.Update
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.Update
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater.Update(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}})
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater.Update(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}})
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater
+  isExternal: true
+  name: Update(BaseSimulation, ICircuitContext, List<KeyValuePair<Parameter, Double>>)
+  nameWithType: IParameterSweepUpdater.Update(BaseSimulation, ICircuitContext, List<KeyValuePair<Parameter, Double>>)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater.Update(SpiceSharp.Simulations.BaseSimulation, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double>>)
+  nameWithType.vb: IParameterSweepUpdater.Update(BaseSimulation, ICircuitContext, List(Of KeyValuePair(Of Parameter, Double)))
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater.Update(SpiceSharp.Simulations.BaseSimulation, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Collections.Generic.List(Of System.Collections.Generic.KeyValuePair(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double)))
+  name.vb: Update(BaseSimulation, ICircuitContext, List(Of KeyValuePair(Of Parameter, Double)))
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater.Update(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}})
+    name: Update
+    nameWithType: IParameterSweepUpdater.Update
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater.Update
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    nameWithType: KeyValuePair
+    fullName: System.Collections.Generic.KeyValuePair
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater.Update(SpiceSharp.Simulations.BaseSimulation,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}})
+    name: Update
+    nameWithType: IParameterSweepUpdater.Update
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.IParameterSweepUpdater.Update
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Simulations.BaseSimulation
+    name: BaseSimulation
+    nameWithType: BaseSimulation
+    fullName: SpiceSharp.Simulations.BaseSimulation
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    nameWithType: KeyValuePair
+    fullName: System.Collections.Generic.KeyValuePair
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Simulations.BaseSimulation
+  commentId: T:SpiceSharp.Simulations.BaseSimulation
+  parent: SpiceSharp.Simulations
+  isExternal: true
+  name: BaseSimulation
+  nameWithType: BaseSimulation
+  fullName: SpiceSharp.Simulations.BaseSimulation
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: ICircuitContext
+  nameWithType: ICircuitContext
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+- uid: System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}}
+  commentId: T:System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<KeyValuePair<Parameter, Double>>
+  nameWithType: List<KeyValuePair<Parameter, Double>>
+  fullName: System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double>>
+  nameWithType.vb: List(Of KeyValuePair(Of Parameter, Double))
+  fullName.vb: System.Collections.Generic.List(Of System.Collections.Generic.KeyValuePair(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double))
+  name.vb: List(Of KeyValuePair(Of Parameter, Double))
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    nameWithType: KeyValuePair
+    fullName: System.Collections.Generic.KeyValuePair
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    nameWithType: KeyValuePair
+    fullName: System.Collections.Generic.KeyValuePair
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Simulations
+  commentId: N:SpiceSharp.Simulations
+  isExternal: true
+  name: SpiceSharp.Simulations
+  nameWithType: SpiceSharp.Simulations
+  fullName: SpiceSharp.Simulations
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.UpdateSweep*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.UpdateSweep
+  name: UpdateSweep
+  nameWithType: ParameterSweepUpdater.UpdateSweep
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.UpdateSweep
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetDeviceParameter*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetDeviceParameter
+  name: SetDeviceParameter
+  nameWithType: ParameterSweepUpdater.SetDeviceParameter
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetDeviceParameter
+- uid: System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}
+  commentId: T:System.Collections.Generic.KeyValuePair{SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter,System.Double}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.KeyValuePair`2
+  name: KeyValuePair<Parameter, Double>
+  nameWithType: KeyValuePair<Parameter, Double>
+  fullName: System.Collections.Generic.KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double>
+  nameWithType.vb: KeyValuePair(Of Parameter, Double)
+  fullName.vb: System.Collections.Generic.KeyValuePair(Of SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, System.Double)
+  name.vb: KeyValuePair(Of Parameter, Double)
+  spec.csharp:
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    nameWithType: KeyValuePair
+    fullName: System.Collections.Generic.KeyValuePair
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    nameWithType: KeyValuePair
+    fullName: System.Collections.Generic.KeyValuePair
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ReferenceParameter
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ReferenceParameter
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  name: ReferenceParameter
+  nameWithType: ReferenceParameter
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ReferenceParameter
+- uid: System.Collections.Generic.KeyValuePair`2
+  commentId: T:System.Collections.Generic.KeyValuePair`2
+  isExternal: true
+  name: KeyValuePair<TKey, TValue>
+  nameWithType: KeyValuePair<TKey, TValue>
+  fullName: System.Collections.Generic.KeyValuePair<TKey, TValue>
+  nameWithType.vb: KeyValuePair(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.KeyValuePair(Of TKey, TValue)
+  name.vb: KeyValuePair(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    nameWithType: KeyValuePair
+    fullName: System.Collections.Generic.KeyValuePair
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    nameWithType: KeyValuePair
+    fullName: System.Collections.Generic.KeyValuePair
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  name: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetModelParameter*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetModelParameter
+  name: SetModelParameter
+  nameWithType: ParameterSweepUpdater.SetModelParameter
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetModelParameter
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.BracketParameter
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.BracketParameter
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
+  name: BracketParameter
+  nameWithType: BracketParameter
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.BracketParameter
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetSimulationParameter*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetSimulationParameter
+  name: SetSimulationParameter
+  nameWithType: ParameterSweepUpdater.SetSimulationParameter
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetSimulationParameter
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetIndependentSource*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetIndependentSource
+  name: SetIndependentSource
+  nameWithType: ParameterSweepUpdater.SetIndependentSource
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweepUpdater.SetIndependentSource
+- uid: SpiceSharp.Circuits.Entity
+  commentId: T:SpiceSharp.Circuits.Entity
+  parent: SpiceSharp.Circuits
+  isExternal: true
+  name: Entity
+  nameWithType: Entity
+  fullName: SpiceSharp.Circuits.Entity
+- uid: SpiceSharp.Circuits
+  commentId: N:SpiceSharp.Circuits
+  isExternal: true
+  name: SpiceSharp.Circuits
+  nameWithType: SpiceSharp.Circuits
+  fullName: SpiceSharp.Circuits

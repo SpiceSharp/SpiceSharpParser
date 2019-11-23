@@ -1,6 +1,4 @@
 using System;
-using System.IO;
-using SpiceSharpBehavioral.Parsers;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
@@ -174,7 +172,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             Assert.NotNull(netlist);
             Assert.Throws<SpiceSharp.CircuitException>(() => RunOpSimulation(netlist, "V(2,0)"));
         }
-        
+
         [Fact]
         public void When_CurrentControlledVoltageSourceValueParsing_Expect_Reference()
         {

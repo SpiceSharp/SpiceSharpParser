@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using SpiceSharpParser.Lexers.Netlist.Spice;
+﻿using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
 {

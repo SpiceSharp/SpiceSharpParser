@@ -1,0 +1,1409 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ModelGeneratorMapper
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ModelGeneratorMapper
+  id: ModelGeneratorMapper
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: ModelGeneratorMapper
+  nameWithType: ModelGeneratorMapper
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.ModelGeneratorMapper
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Mappings/ModelGeneratorMapper.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ModelGeneratorMapper
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Mappings/ModelGeneratorMapper.cs
+    startLine: 7
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  summary: "\nMapper for elements of <xref href=\"SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
+  example: []
+  syntax:
+    content: 'public class ModelGeneratorMapper : BaseMapper<IModelGenerator>, IMapper<IModelGenerator>, IEnumerable<KeyValuePair<string, IModelGenerator>>, IEnumerable'
+    content.vb: >-
+      Public Class ModelGeneratorMapper
+          Inherits BaseMapper(Of IModelGenerator)
+          Implements IMapper(Of IModelGenerator), IEnumerable(Of KeyValuePair(Of String, IModelGenerator)), IEnumerable
+  inheritance:
+  - System.Object
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}
+  - System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}}
+  - System.Collections.IEnumerable
+  inheritedMembers:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.Count
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.Elements
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.Map(System.String,SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.Map(System.String[],SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.ContainsKey(System.String,System.Boolean)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.GetValue(System.String,System.Boolean)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.TryGetValue(System.String,System.Boolean,SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator@)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.GetEnumerator
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.System#Collections#IEnumerable#GetEnumerator
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
+  name: IModelGenerator
+  nameWithType: IModelGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  definition: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1
+  name: BaseMapper<IModelGenerator>
+  nameWithType: BaseMapper<IModelGenerator>
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator>
+  nameWithType.vb: BaseMapper(Of IModelGenerator)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator)
+  name.vb: BaseMapper(Of IModelGenerator)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1
+    name: BaseMapper
+    nameWithType: BaseMapper
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+    name: IModelGenerator
+    nameWithType: IModelGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1
+    name: BaseMapper
+    nameWithType: BaseMapper
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+    name: IModelGenerator
+    nameWithType: IModelGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
+  definition: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+  name: IMapper<IModelGenerator>
+  nameWithType: IMapper<IModelGenerator>
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator>
+  nameWithType.vb: IMapper(Of IModelGenerator)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator)
+  name.vb: IMapper(Of IModelGenerator)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+    name: IMapper
+    nameWithType: IMapper
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+    name: IModelGenerator
+    nameWithType: IModelGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+    name: IMapper
+    nameWithType: IMapper
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+    name: IModelGenerator
+    nameWithType: IModelGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<KeyValuePair<String, IModelGenerator>>
+  nameWithType: IEnumerable<KeyValuePair<String, IModelGenerator>>
+  fullName: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator>>
+  nameWithType.vb: IEnumerable(Of KeyValuePair(Of String, IModelGenerator))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Collections.Generic.KeyValuePair(Of System.String, SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator))
+  name.vb: IEnumerable(Of KeyValuePair(Of String, IModelGenerator))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    nameWithType: KeyValuePair
+    fullName: System.Collections.Generic.KeyValuePair
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+    name: IModelGenerator
+    nameWithType: IModelGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    nameWithType: KeyValuePair
+    fullName: System.Collections.Generic.KeyValuePair
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+    name: IModelGenerator
+    nameWithType: IModelGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.IEnumerable
+  commentId: T:System.Collections.IEnumerable
+  parent: System.Collections
+  isExternal: true
+  name: IEnumerable
+  nameWithType: IEnumerable
+  fullName: System.Collections.IEnumerable
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.Count
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.Count
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}
+  definition: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Count
+  name: Count
+  nameWithType: BaseMapper<IModelGenerator>.Count
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator>.Count
+  nameWithType.vb: BaseMapper(Of IModelGenerator).Count
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator).Count
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.Elements
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.Elements
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}
+  definition: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Elements
+  name: Elements
+  nameWithType: BaseMapper<IModelGenerator>.Elements
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator>.Elements
+  nameWithType.vb: BaseMapper(Of IModelGenerator).Elements
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator).Elements
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.Map(System.String,SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.Map(System.String,SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}
+  definition: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Map(System.String,`0)
+  name: Map(String, IModelGenerator)
+  nameWithType: BaseMapper<IModelGenerator>.Map(String, IModelGenerator)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator>.Map(System.String, SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator)
+  nameWithType.vb: BaseMapper(Of IModelGenerator).Map(String, IModelGenerator)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator).Map(System.String, SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Map(System.String,`0)
+    name: Map
+    nameWithType: BaseMapper<IModelGenerator>.Map
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator>.Map
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+    name: IModelGenerator
+    nameWithType: IModelGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Map(System.String,`0)
+    name: Map
+    nameWithType: BaseMapper(Of IModelGenerator).Map
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator).Map
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+    name: IModelGenerator
+    nameWithType: IModelGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.Map(System.String[],SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.Map(System.String[],SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}
+  definition: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Map(System.String[],`0)
+  name: Map(String[], IModelGenerator)
+  nameWithType: BaseMapper<IModelGenerator>.Map(String[], IModelGenerator)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator>.Map(System.String[], SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator)
+  nameWithType.vb: BaseMapper(Of IModelGenerator).Map(String(), IModelGenerator)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator).Map(System.String(), SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator)
+  name.vb: Map(String(), IModelGenerator)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Map(System.String[],`0)
+    name: Map
+    nameWithType: BaseMapper<IModelGenerator>.Map
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator>.Map
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+    name: IModelGenerator
+    nameWithType: IModelGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Map(System.String[],`0)
+    name: Map
+    nameWithType: BaseMapper(Of IModelGenerator).Map
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator).Map
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+    name: IModelGenerator
+    nameWithType: IModelGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.ContainsKey(System.String,System.Boolean)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.ContainsKey(System.String,System.Boolean)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}
+  definition: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.ContainsKey(System.String,System.Boolean)
+  name: ContainsKey(String, Boolean)
+  nameWithType: BaseMapper<IModelGenerator>.ContainsKey(String, Boolean)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator>.ContainsKey(System.String, System.Boolean)
+  nameWithType.vb: BaseMapper(Of IModelGenerator).ContainsKey(String, Boolean)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator).ContainsKey(System.String, System.Boolean)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.ContainsKey(System.String,System.Boolean)
+    name: ContainsKey
+    nameWithType: BaseMapper<IModelGenerator>.ContainsKey
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator>.ContainsKey
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.ContainsKey(System.String,System.Boolean)
+    name: ContainsKey
+    nameWithType: BaseMapper(Of IModelGenerator).ContainsKey
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator).ContainsKey
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.GetValue(System.String,System.Boolean)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.GetValue(System.String,System.Boolean)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}
+  definition: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.GetValue(System.String,System.Boolean)
+  name: GetValue(String, Boolean)
+  nameWithType: BaseMapper<IModelGenerator>.GetValue(String, Boolean)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator>.GetValue(System.String, System.Boolean)
+  nameWithType.vb: BaseMapper(Of IModelGenerator).GetValue(String, Boolean)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator).GetValue(System.String, System.Boolean)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.GetValue(System.String,System.Boolean)
+    name: GetValue
+    nameWithType: BaseMapper<IModelGenerator>.GetValue
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator>.GetValue
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.GetValue(System.String,System.Boolean)
+    name: GetValue
+    nameWithType: BaseMapper(Of IModelGenerator).GetValue
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator).GetValue
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.TryGetValue(System.String,System.Boolean,SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator@)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.TryGetValue(System.String,System.Boolean,SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator@)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}
+  definition: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.TryGetValue(System.String,System.Boolean,`0@)
+  name: TryGetValue(String, Boolean, IModelGenerator)
+  nameWithType: BaseMapper<IModelGenerator>.TryGetValue(String, Boolean, IModelGenerator)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator>.TryGetValue(System.String, System.Boolean, SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator)
+  nameWithType.vb: BaseMapper(Of IModelGenerator).TryGetValue(String, Boolean, IModelGenerator)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator).TryGetValue(System.String, System.Boolean, SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.TryGetValue(System.String,System.Boolean,`0@)
+    name: TryGetValue
+    nameWithType: BaseMapper<IModelGenerator>.TryGetValue
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator>.TryGetValue
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+    name: IModelGenerator
+    nameWithType: IModelGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.TryGetValue(System.String,System.Boolean,`0@)
+    name: TryGetValue
+    nameWithType: BaseMapper(Of IModelGenerator).TryGetValue
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator).TryGetValue
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+    name: IModelGenerator
+    nameWithType: IModelGenerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.GetEnumerator
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.GetEnumerator
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}
+  definition: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.GetEnumerator
+  name: GetEnumerator()
+  nameWithType: BaseMapper<IModelGenerator>.GetEnumerator()
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator>.GetEnumerator()
+  nameWithType.vb: BaseMapper(Of IModelGenerator).GetEnumerator()
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator).GetEnumerator()
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: BaseMapper<IModelGenerator>.GetEnumerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator>.GetEnumerator
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: BaseMapper(Of IModelGenerator).GetEnumerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator).GetEnumerator
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.System#Collections#IEnumerable#GetEnumerator
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}.System#Collections#IEnumerable#GetEnumerator
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator}
+  definition: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.System#Collections#IEnumerable#GetEnumerator
+  name: IEnumerable.GetEnumerator()
+  nameWithType: BaseMapper<IModelGenerator>.IEnumerable.GetEnumerator()
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator>.System.Collections.IEnumerable.GetEnumerator()
+  nameWithType.vb: BaseMapper(Of IModelGenerator).System.Collections.IEnumerable.GetEnumerator()
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator).System.Collections.IEnumerable.GetEnumerator()
+  name.vb: System.Collections.IEnumerable.GetEnumerator()
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.System#Collections#IEnumerable#GetEnumerator
+    name: IEnumerable.GetEnumerator
+    nameWithType: BaseMapper<IModelGenerator>.IEnumerable.GetEnumerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator>.System.Collections.IEnumerable.GetEnumerator
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.System#Collections#IEnumerable#GetEnumerator
+    name: System.Collections.IEnumerable.GetEnumerator
+    nameWithType: BaseMapper(Of IModelGenerator).System.Collections.IEnumerable.GetEnumerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IModelGenerator).System.Collections.IEnumerable.GetEnumerator
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1
+  name: BaseMapper<TElement>
+  nameWithType: BaseMapper<TElement>
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<TElement>
+  nameWithType.vb: BaseMapper(Of TElement)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of TElement)
+  name.vb: BaseMapper(Of TElement)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1
+    name: BaseMapper
+    nameWithType: BaseMapper
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TElement
+    nameWithType: TElement
+    fullName: TElement
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1
+    name: BaseMapper
+    nameWithType: BaseMapper
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TElement
+    nameWithType: TElement
+    fullName: TElement
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+  name: IMapper<TElement>
+  nameWithType: IMapper<TElement>
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper<TElement>
+  nameWithType.vb: IMapper(Of TElement)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper(Of TElement)
+  name.vb: IMapper(Of TElement)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+    name: IMapper
+    nameWithType: IMapper
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TElement
+    nameWithType: TElement
+    fullName: TElement
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper`1
+    name: IMapper
+    nameWithType: IMapper
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.IMapper
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TElement
+    nameWithType: TElement
+    fullName: TElement
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: System.Collections
+  commentId: N:System.Collections
+  isExternal: true
+  name: System.Collections
+  nameWithType: System.Collections
+  fullName: System.Collections
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Count
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Count
+  name: Count
+  nameWithType: BaseMapper<TElement>.Count
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<TElement>.Count
+  nameWithType.vb: BaseMapper(Of TElement).Count
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of TElement).Count
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Elements
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Elements
+  name: Elements
+  nameWithType: BaseMapper<TElement>.Elements
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<TElement>.Elements
+  nameWithType.vb: BaseMapper(Of TElement).Elements
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of TElement).Elements
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Map(System.String,`0)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Map(System.String,`0)
+  isExternal: true
+  name: Map(String, TElement)
+  nameWithType: BaseMapper<TElement>.Map(String, TElement)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<TElement>.Map(System.String, TElement)
+  nameWithType.vb: BaseMapper(Of TElement).Map(String, TElement)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of TElement).Map(System.String, TElement)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Map(System.String,`0)
+    name: Map
+    nameWithType: BaseMapper<TElement>.Map
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<TElement>.Map
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TElement
+    nameWithType: TElement
+    fullName: TElement
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Map(System.String,`0)
+    name: Map
+    nameWithType: BaseMapper(Of TElement).Map
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of TElement).Map
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TElement
+    nameWithType: TElement
+    fullName: TElement
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Map(System.String[],`0)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Map(System.String[],`0)
+  isExternal: true
+  name: Map(String[], TElement)
+  nameWithType: BaseMapper<TElement>.Map(String[], TElement)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<TElement>.Map(System.String[], TElement)
+  nameWithType.vb: BaseMapper(Of TElement).Map(String(), TElement)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of TElement).Map(System.String(), TElement)
+  name.vb: Map(String(), TElement)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Map(System.String[],`0)
+    name: Map
+    nameWithType: BaseMapper<TElement>.Map
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<TElement>.Map
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TElement
+    nameWithType: TElement
+    fullName: TElement
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.Map(System.String[],`0)
+    name: Map
+    nameWithType: BaseMapper(Of TElement).Map
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of TElement).Map
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TElement
+    nameWithType: TElement
+    fullName: TElement
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.ContainsKey(System.String,System.Boolean)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.ContainsKey(System.String,System.Boolean)
+  isExternal: true
+  name: ContainsKey(String, Boolean)
+  nameWithType: BaseMapper<TElement>.ContainsKey(String, Boolean)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<TElement>.ContainsKey(System.String, System.Boolean)
+  nameWithType.vb: BaseMapper(Of TElement).ContainsKey(String, Boolean)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of TElement).ContainsKey(System.String, System.Boolean)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.ContainsKey(System.String,System.Boolean)
+    name: ContainsKey
+    nameWithType: BaseMapper<TElement>.ContainsKey
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<TElement>.ContainsKey
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.ContainsKey(System.String,System.Boolean)
+    name: ContainsKey
+    nameWithType: BaseMapper(Of TElement).ContainsKey
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of TElement).ContainsKey
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.GetValue(System.String,System.Boolean)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.GetValue(System.String,System.Boolean)
+  isExternal: true
+  name: GetValue(String, Boolean)
+  nameWithType: BaseMapper<TElement>.GetValue(String, Boolean)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<TElement>.GetValue(System.String, System.Boolean)
+  nameWithType.vb: BaseMapper(Of TElement).GetValue(String, Boolean)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of TElement).GetValue(System.String, System.Boolean)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.GetValue(System.String,System.Boolean)
+    name: GetValue
+    nameWithType: BaseMapper<TElement>.GetValue
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<TElement>.GetValue
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.GetValue(System.String,System.Boolean)
+    name: GetValue
+    nameWithType: BaseMapper(Of TElement).GetValue
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of TElement).GetValue
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.TryGetValue(System.String,System.Boolean,`0@)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.TryGetValue(System.String,System.Boolean,`0@)
+  isExternal: true
+  name: TryGetValue(String, Boolean, TElement)
+  nameWithType: BaseMapper<TElement>.TryGetValue(String, Boolean, TElement)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<TElement>.TryGetValue(System.String, System.Boolean, TElement)
+  nameWithType.vb: BaseMapper(Of TElement).TryGetValue(String, Boolean, TElement)
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of TElement).TryGetValue(System.String, System.Boolean, TElement)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.TryGetValue(System.String,System.Boolean,`0@)
+    name: TryGetValue
+    nameWithType: BaseMapper<TElement>.TryGetValue
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<TElement>.TryGetValue
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TElement
+    nameWithType: TElement
+    fullName: TElement
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.TryGetValue(System.String,System.Boolean,`0@)
+    name: TryGetValue
+    nameWithType: BaseMapper(Of TElement).TryGetValue
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of TElement).TryGetValue
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TElement
+    nameWithType: TElement
+    fullName: TElement
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.GetEnumerator
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.GetEnumerator
+  name: GetEnumerator()
+  nameWithType: BaseMapper<TElement>.GetEnumerator()
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<TElement>.GetEnumerator()
+  nameWithType.vb: BaseMapper(Of TElement).GetEnumerator()
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of TElement).GetEnumerator()
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: BaseMapper<TElement>.GetEnumerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<TElement>.GetEnumerator
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: BaseMapper(Of TElement).GetEnumerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of TElement).GetEnumerator
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.System#Collections#IEnumerable#GetEnumerator
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.System#Collections#IEnumerable#GetEnumerator
+  name: IEnumerable.GetEnumerator()
+  nameWithType: BaseMapper<TElement>.IEnumerable.GetEnumerator()
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<TElement>.System.Collections.IEnumerable.GetEnumerator()
+  nameWithType.vb: BaseMapper(Of TElement).System.Collections.IEnumerable.GetEnumerator()
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of TElement).System.Collections.IEnumerable.GetEnumerator()
+  name.vb: System.Collections.IEnumerable.GetEnumerator()
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.System#Collections#IEnumerable#GetEnumerator
+    name: IEnumerable.GetEnumerator
+    nameWithType: BaseMapper<TElement>.IEnumerable.GetEnumerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper<TElement>.System.Collections.IEnumerable.GetEnumerator
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper`1.System#Collections#IEnumerable#GetEnumerator
+    name: System.Collections.IEnumerable.GetEnumerator
+    nameWithType: BaseMapper(Of TElement).System.Collections.IEnumerable.GetEnumerator
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings.BaseMapper(Of TElement).System.Collections.IEnumerable.GetEnumerator
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )

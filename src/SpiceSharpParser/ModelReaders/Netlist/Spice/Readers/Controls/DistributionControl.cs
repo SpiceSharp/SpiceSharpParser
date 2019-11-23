@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using SpiceSharpParser.Common.Mathematics.Probability;
+﻿using SpiceSharpParser.Common.Mathematics.Probability;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -15,7 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, IReadingContext context)
+        public override void Read(Control statement, ICircuitContext context)
         {
             var curve = new Curve();
 
@@ -28,11 +28,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     var x = pp.Values.Items[0];
                     var y = pp.Values.Items[1];
 
-                    curve.Add(new Point(context.EvaluateDouble(x.Image), context.EvaluateDouble(y.Image)));
+                    curve.Add(new Point(context.Evaluator.EvaluateDouble(x.Image), context.Evaluator.EvaluateDouble(y.Image)));
                 }
             }
 
-            context.ReadingExpressionContext.Randomizer.RegisterPdf(distributionName, () => new Pdf(curve));
+            context.Evaluator.GetEvaluationContext().Randomizer.RegisterPdf(distributionName, () => new Pdf(curve));
         }
     }
 }

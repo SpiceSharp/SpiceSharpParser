@@ -1,0 +1,184 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.Internals.ParseTreeGenerator.Parser
+  commentId: T:SpiceSharpParser.Parsers.Netlist.Spice.Internals.ParseTreeGenerator.Parser
+  id: ParseTreeGenerator.Parser
+  parent: SpiceSharpParser.Parsers.Netlist.Spice.Internals
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: ParseTreeGenerator.Parser
+  nameWithType: ParseTreeGenerator.Parser
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.Internals.ParseTreeGenerator.Parser
+  type: Delegate
+  source:
+    remote:
+      path: src/SpiceSharpParser/Parsers/Netlist/Spice/Internals/ParseTreeGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Parser
+    path: ../SpiceSharpParser/Parsers/Netlist/Spice/Internals/ParseTreeGenerator.cs
+    startLine: 53
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Parsers.Netlist.Spice.Internals
+  syntax:
+    content: protected delegate void Parser(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex);
+    parameters:
+    - id: stack
+      type: System.Collections.Generic.Stack{SpiceSharpParser.Parsers.Netlist.ParseTreeNode}
+    - id: currentNode
+      type: SpiceSharpParser.Parsers.Netlist.ParseTreeNonTerminalNode
+    - id: tokens
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken[]
+    - id: currentTokenIndex
+      type: System.Int32
+    content.vb: Protected Delegate Sub Parser(stack As Stack(Of ParseTreeNode), currentNode As ParseTreeNonTerminalNode, tokens As SpiceToken(), currentTokenIndex As Integer)
+  modifiers.csharp:
+  - protected
+  - delegate
+  modifiers.vb:
+  - Protected
+  - Delegate
+references:
+- uid: SpiceSharpParser.Parsers.Netlist.Spice.Internals
+  commentId: N:SpiceSharpParser.Parsers.Netlist.Spice.Internals
+  name: SpiceSharpParser.Parsers.Netlist.Spice.Internals
+  nameWithType: SpiceSharpParser.Parsers.Netlist.Spice.Internals
+  fullName: SpiceSharpParser.Parsers.Netlist.Spice.Internals
+- uid: System.Collections.Generic.Stack{SpiceSharpParser.Parsers.Netlist.ParseTreeNode}
+  commentId: T:System.Collections.Generic.Stack{SpiceSharpParser.Parsers.Netlist.ParseTreeNode}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Stack`1
+  name: Stack<ParseTreeNode>
+  nameWithType: Stack<ParseTreeNode>
+  fullName: System.Collections.Generic.Stack<SpiceSharpParser.Parsers.Netlist.ParseTreeNode>
+  nameWithType.vb: Stack(Of ParseTreeNode)
+  fullName.vb: System.Collections.Generic.Stack(Of SpiceSharpParser.Parsers.Netlist.ParseTreeNode)
+  name.vb: Stack(Of ParseTreeNode)
+  spec.csharp:
+  - uid: System.Collections.Generic.Stack`1
+    name: Stack
+    nameWithType: Stack
+    fullName: System.Collections.Generic.Stack
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.Parsers.Netlist.ParseTreeNode
+    name: ParseTreeNode
+    nameWithType: ParseTreeNode
+    fullName: SpiceSharpParser.Parsers.Netlist.ParseTreeNode
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Stack`1
+    name: Stack
+    nameWithType: Stack
+    fullName: System.Collections.Generic.Stack
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.Parsers.Netlist.ParseTreeNode
+    name: ParseTreeNode
+    nameWithType: ParseTreeNode
+    fullName: SpiceSharpParser.Parsers.Netlist.ParseTreeNode
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Parsers.Netlist.ParseTreeNonTerminalNode
+  commentId: T:SpiceSharpParser.Parsers.Netlist.ParseTreeNonTerminalNode
+  parent: SpiceSharpParser.Parsers.Netlist
+  name: ParseTreeNonTerminalNode
+  nameWithType: ParseTreeNonTerminalNode
+  fullName: SpiceSharpParser.Parsers.Netlist.ParseTreeNonTerminalNode
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken[]
+  isExternal: true
+  name: SpiceToken[]
+  nameWithType: SpiceToken[]
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken[]
+  nameWithType.vb: SpiceToken()
+  fullName.vb: SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken()
+  name.vb: SpiceToken()
+  spec.csharp:
+  - uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken
+    name: SpiceToken
+    nameWithType: SpiceToken
+    fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken
+    name: SpiceToken
+    nameWithType: SpiceToken
+    fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: System.Collections.Generic.Stack`1
+  commentId: T:System.Collections.Generic.Stack`1
+  isExternal: true
+  name: Stack<T>
+  nameWithType: Stack<T>
+  fullName: System.Collections.Generic.Stack<T>
+  nameWithType.vb: Stack(Of T)
+  fullName.vb: System.Collections.Generic.Stack(Of T)
+  name.vb: Stack(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.Stack`1
+    name: Stack
+    nameWithType: Stack
+    fullName: System.Collections.Generic.Stack
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Stack`1
+    name: Stack
+    nameWithType: Stack
+    fullName: System.Collections.Generic.Stack
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: SpiceSharpParser.Parsers.Netlist
+  commentId: N:SpiceSharpParser.Parsers.Netlist
+  name: SpiceSharpParser.Parsers.Netlist
+  nameWithType: SpiceSharpParser.Parsers.Netlist
+  fullName: SpiceSharpParser.Parsers.Netlist
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System

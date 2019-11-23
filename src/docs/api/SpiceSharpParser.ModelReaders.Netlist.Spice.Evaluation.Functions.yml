@@ -1,0 +1,34 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
+  id: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.ControlFunctions
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.MathFunctions
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions
+  langs:
+  - csharp
+  - vb
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
+  type: Namespace
+  assemblies:
+  - SpiceSharpParser
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.ControlFunctions
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.ControlFunctions
+  name: ControlFunctions
+  nameWithType: ControlFunctions
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.ControlFunctions
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.MathFunctions
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.MathFunctions
+  name: MathFunctions
+  nameWithType: MathFunctions
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.MathFunctions
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions
+  name: RandomFunctions
+  nameWithType: RandomFunctions
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.RandomFunctions

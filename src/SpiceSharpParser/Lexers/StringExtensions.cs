@@ -10,7 +10,10 @@
         public static char? GetLastCharacter(this string line, out int position)
         {
             position = -1;
-            if (line == null) return null;
+            if (line == null)
+            {
+                return null;
+            }
 
             if (line.EndsWith("\r\n") && line.Length >= 3)
             {

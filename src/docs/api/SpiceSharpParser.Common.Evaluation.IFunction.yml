@@ -1,0 +1,136 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Common.Evaluation.IFunction
+  commentId: T:SpiceSharpParser.Common.Evaluation.IFunction
+  id: IFunction
+  parent: SpiceSharpParser.Common.Evaluation
+  children:
+  - SpiceSharpParser.Common.Evaluation.IFunction.ArgumentsCount
+  - SpiceSharpParser.Common.Evaluation.IFunction.Name
+  langs:
+  - csharp
+  - vb
+  name: IFunction
+  nameWithType: IFunction
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  type: Interface
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/IFunction.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IFunction
+    path: ../SpiceSharpParser/Common/Evaluation/IFunction.cs
+    startLine: 15
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  syntax:
+    content: public interface IFunction
+    content.vb: Public Interface IFunction
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: SpiceSharpParser.Common.Evaluation.IFunction.ArgumentsCount
+  commentId: P:SpiceSharpParser.Common.Evaluation.IFunction.ArgumentsCount
+  id: ArgumentsCount
+  parent: SpiceSharpParser.Common.Evaluation.IFunction
+  langs:
+  - csharp
+  - vb
+  name: ArgumentsCount
+  nameWithType: IFunction.ArgumentsCount
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction.ArgumentsCount
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/IFunction.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ArgumentsCount
+    path: ../SpiceSharpParser/Common/Evaluation/IFunction.cs
+    startLine: 17
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  syntax:
+    content: int ArgumentsCount { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property ArgumentsCount As Integer
+  overload: SpiceSharpParser.Common.Evaluation.IFunction.ArgumentsCount*
+  modifiers.csharp:
+  - get
+  - set
+- uid: SpiceSharpParser.Common.Evaluation.IFunction.Name
+  commentId: P:SpiceSharpParser.Common.Evaluation.IFunction.Name
+  id: Name
+  parent: SpiceSharpParser.Common.Evaluation.IFunction
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: IFunction.Name
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction.Name
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/IFunction.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Name
+    path: ../SpiceSharpParser/Common/Evaluation/IFunction.cs
+    startLine: 19
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  syntax:
+    content: string Name { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Property Name As String
+  overload: SpiceSharpParser.Common.Evaluation.IFunction.Name*
+  modifiers.csharp:
+  - get
+  - set
+references:
+- uid: SpiceSharpParser.Common.Evaluation
+  commentId: N:SpiceSharpParser.Common.Evaluation
+  name: SpiceSharpParser.Common.Evaluation
+  nameWithType: SpiceSharpParser.Common.Evaluation
+  fullName: SpiceSharpParser.Common.Evaluation
+- uid: SpiceSharpParser.Common.Evaluation.IFunction.ArgumentsCount*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.IFunction.ArgumentsCount
+  name: ArgumentsCount
+  nameWithType: IFunction.ArgumentsCount
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction.ArgumentsCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.Common.Evaluation.IFunction.Name*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.IFunction.Name
+  name: Name
+  nameWithType: IFunction.Name
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction.Name
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String

@@ -1,0 +1,94 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Common.FileSystem.IFileReader
+  commentId: T:SpiceSharpParser.Common.FileSystem.IFileReader
+  id: IFileReader
+  parent: SpiceSharpParser.Common.FileSystem
+  children:
+  - SpiceSharpParser.Common.FileSystem.IFileReader.ReadAll(System.String)
+  langs:
+  - csharp
+  - vb
+  name: IFileReader
+  nameWithType: IFileReader
+  fullName: SpiceSharpParser.Common.FileSystem.IFileReader
+  type: Interface
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/FileSystem/IFileReader.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IFileReader
+    path: ../SpiceSharpParser/Common/FileSystem/IFileReader.cs
+    startLine: 2
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.FileSystem
+  syntax:
+    content: public interface IFileReader
+    content.vb: Public Interface IFileReader
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: SpiceSharpParser.Common.FileSystem.IFileReader.ReadAll(System.String)
+  commentId: M:SpiceSharpParser.Common.FileSystem.IFileReader.ReadAll(System.String)
+  id: ReadAll(System.String)
+  parent: SpiceSharpParser.Common.FileSystem.IFileReader
+  langs:
+  - csharp
+  - vb
+  name: ReadAll(String)
+  nameWithType: IFileReader.ReadAll(String)
+  fullName: SpiceSharpParser.Common.FileSystem.IFileReader.ReadAll(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/FileSystem/IFileReader.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ReadAll
+    path: ../SpiceSharpParser/Common/FileSystem/IFileReader.cs
+    startLine: 11
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.FileSystem
+  summary: "\nGets the content of the file located at the specified path.\n"
+  example: []
+  syntax:
+    content: string ReadAll(string path)
+    parameters:
+    - id: path
+      type: System.String
+      description: System path to file (either absolute or relative).
+    return:
+      type: System.String
+      description: "\nThe content of the file.\n"
+    content.vb: Function ReadAll(path As String) As String
+  overload: SpiceSharpParser.Common.FileSystem.IFileReader.ReadAll*
+references:
+- uid: SpiceSharpParser.Common.FileSystem
+  commentId: N:SpiceSharpParser.Common.FileSystem
+  name: SpiceSharpParser.Common.FileSystem
+  nameWithType: SpiceSharpParser.Common.FileSystem
+  fullName: SpiceSharpParser.Common.FileSystem
+- uid: SpiceSharpParser.Common.FileSystem.IFileReader.ReadAll*
+  commentId: Overload:SpiceSharpParser.Common.FileSystem.IFileReader.ReadAll
+  name: ReadAll
+  nameWithType: IFileReader.ReadAll
+  fullName: SpiceSharpParser.Common.FileSystem.IFileReader.ReadAll
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System

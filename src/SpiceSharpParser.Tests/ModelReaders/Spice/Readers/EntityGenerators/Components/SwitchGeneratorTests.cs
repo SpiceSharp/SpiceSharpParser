@@ -1,10 +1,9 @@
 ﻿using NSubstitute;
+using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharp.Components;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Components
@@ -14,7 +13,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         [Fact]
         public void GenerateVoltageSwitch()
         {
-            var context = Substitute.For<IReadingContext>();
+            var context = Substitute.For<ICircuitContext>();
             context.ModelsRegistry.FindModel<VoltageSwitchModel>(Arg.Any<string>()).Returns(new VoltageSwitchModel("SModel"));
 
             var parameters = new ParameterCollection
@@ -38,7 +37,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         [Fact]
         public void GenerateVoltageSwitchOff()
         {
-            var context = Substitute.For<IReadingContext>();
+            var context = Substitute.For<ICircuitContext>();
             context.ModelsRegistry.FindModel<VoltageSwitchModel>(Arg.Any<string>()).Returns(new VoltageSwitchModel("SModel"));
 
             var parameters = new ParameterCollection
@@ -62,9 +61,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         [Fact]
         public void GenerateCurrentSwitch()
         {
-            var context = Substitute.For<IReadingContext>();
+            var context = Substitute.For<ICircuitContext>();
             context.ModelsRegistry.FindModel<CurrentSwitchModel>(Arg.Any<string>()).Returns(new CurrentSwitchModel("WModel"));
-            context.ComponentNameGenerator.Generate(Arg.Any<string>()).Returns("V3");
 
             var parameters = new ParameterCollection
             {
@@ -86,9 +84,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         [Fact]
         public void GenerateCurrentSwitchOff()
         {
-            var context = Substitute.For<IReadingContext>();
+            var context = Substitute.For<ICircuitContext>();
             context.ModelsRegistry.FindModel<CurrentSwitchModel>(Arg.Any<string>()).Returns(new CurrentSwitchModel("WModel"));
-            context.ComponentNameGenerator.Generate(Arg.Any<string>()).Returns("V3");
 
             var parameters = new ParameterCollection
             {
@@ -96,7 +93,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("0"),
                 new IdentifierParameter("V3"),
                 new WordParameter("model"),
-                new WordParameter("Off")
+                new WordParameter("Off"),
             };
 
             var generator = new SwitchGenerator();

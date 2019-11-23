@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using SpiceSharp.Circuits;
+﻿using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using System;
+using System.Collections.Generic;
 using Model = SpiceSharp.Components.Model;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
@@ -17,9 +16,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// </summary>
         /// <param name="modelNamesGenerators">The enumerable of model name generators.</param>
         /// <param name="isModelNameCaseSensitive">Is model names case sensitive.</param>
-        public StochasticModelsRegistry(IEnumerable<IObjectNameGenerator> modelNamesGenerators, bool isModelNameCaseSensitive)
+        public StochasticModelsRegistry(IEnumerable<INameGenerator> modelNamesGenerators, bool isModelNameCaseSensitive)
         {
-            ModelNamesGenerators = modelNamesGenerators ?? throw new ArgumentNullException(nameof(modelNamesGenerators));
+            NamesGenerators = modelNamesGenerators ?? throw new ArgumentNullException(nameof(modelNamesGenerators));
             IsModelNameCaseSensitive = isModelNameCaseSensitive;
 
             AllModels = new Dictionary<string, Entity>(StringComparerProvider.Get(isModelNameCaseSensitive));
@@ -55,7 +54,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// <summary>
         /// Gets the object model name generators.
         /// </summary>
-        protected IEnumerable<IObjectNameGenerator> ModelNamesGenerators { get; }
+        protected IEnumerable<INameGenerator> NamesGenerators { get; }
 
         /// <summary>
         /// Registers that a model has a dev parameter.
@@ -118,9 +117,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// <param name="tolerance">A tolerance (value of lot).</param>
         /// <param name="distributionName">Distribution name.</param>
         public void RegisterModelLot(
-            Model model, 
-            Func<string, Model> generator, 
-            Parameter parameter, 
+            Model model,
+            Func<string, Model> generator,
+            Parameter parameter,
             Parameter tolerance,
             string distributionName)
         {
@@ -241,7 +240,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
                 throw new ModelNotFoundException(exceptionMessage);
             }
 
-            var stochasticModel = (T) ProvideStochasticModel(entity.Name, simulation, model);
+            var stochasticModel = (T)ProvideStochasticModel(entity.Name, simulation, model);
             setModelAction(stochasticModel);
 
             if (stochasticModel != null)
@@ -256,9 +255,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         public T FindModel<T>(string modelName)
             where T : Model
         {
-            foreach (var generator in ModelNamesGenerators)
+            foreach (var generator in NamesGenerators)
             {
-                var modelNameToSearch = generator.Generate(modelName);
+                var modelNameToSearch = generator.GenerateObjectName(modelName);
 
                 if (AllModels.TryGetValue(modelNameToSearch, out var model))
                 {
@@ -269,7 +268,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             return null;
         }
 
-        public IModelsRegistry CreateChildRegistry(List<IObjectNameGenerator> generators)
+        public IModelsRegistry CreateChildRegistry(List<INameGenerator> generators)
         {
             var result = new StochasticModelsRegistry(generators, IsModelNameCaseSensitive)
             {

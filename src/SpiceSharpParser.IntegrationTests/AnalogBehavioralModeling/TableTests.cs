@@ -146,6 +146,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             var export = RunOpSimulation(netlist, "V(2,1)");
             Assert.Equal(2.5, export);
         }
+
         [Fact]
         public void When_ParsingEightFormat_Expect_Reference()
         {

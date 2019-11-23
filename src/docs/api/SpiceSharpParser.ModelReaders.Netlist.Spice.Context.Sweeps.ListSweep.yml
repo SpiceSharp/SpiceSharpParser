@@ -1,0 +1,698 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep
+  id: ListSweep
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep.#ctor(System.Collections.Generic.IEnumerable{System.Double})
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep.Points
+  langs:
+  - csharp
+  - vb
+  name: ListSweep
+  nameWithType: ListSweep
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ListSweep.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ListSweep
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ListSweep.cs
+    startLine: 6
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  syntax:
+    content: 'public class ListSweep : Sweep<double>'
+    content.vb: >-
+      Public Class ListSweep
+          Inherits Sweep(Of Double)
+  inheritance:
+  - System.Object
+  - SpiceSharp.Simulations.Sweep{System.Double}
+  inheritedMembers:
+  - SpiceSharp.Simulations.Sweep{System.Double}.Current
+  - SpiceSharp.Simulations.Sweep{System.Double}.Initial
+  - SpiceSharp.Simulations.Sweep{System.Double}.Final
+  - SpiceSharp.Simulations.Sweep{System.Double}.Count
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep.#ctor(System.Collections.Generic.IEnumerable{System.Double})
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep.#ctor(System.Collections.Generic.IEnumerable{System.Double})
+  id: '#ctor(System.Collections.Generic.IEnumerable{System.Double})'
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep
+  langs:
+  - csharp
+  - vb
+  name: ListSweep(IEnumerable<Double>)
+  nameWithType: ListSweep.ListSweep(IEnumerable<Double>)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep.ListSweep(System.Collections.Generic.IEnumerable<System.Double>)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ListSweep.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ListSweep.cs
+    startLine: 10
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  syntax:
+    content: public ListSweep(IEnumerable<double> points)
+    parameters:
+    - id: points
+      type: System.Collections.Generic.IEnumerable{System.Double}
+    content.vb: Public Sub New(points As IEnumerable(Of Double))
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep.#ctor*
+  nameWithType.vb: ListSweep.ListSweep(IEnumerable(Of Double))
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep.ListSweep(System.Collections.Generic.IEnumerable(Of System.Double))
+  name.vb: ListSweep(IEnumerable(Of Double))
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep.Points
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep.Points
+  id: Points
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep
+  langs:
+  - csharp
+  - vb
+  name: Points
+  nameWithType: ListSweep.Points
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep.Points
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ListSweep.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Points
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Sweeps/ListSweep.cs
+    startLine: 15
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  syntax:
+    content: public override IEnumerable<double> Points { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Double}
+    content.vb: Public Overrides ReadOnly Property Points As IEnumerable(Of Double)
+  overridden: SpiceSharp.Simulations.Sweep{System.Double}.Points
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep.Points*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
+  - ReadOnly
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharp.Simulations.Sweep{System.Double}
+  commentId: T:SpiceSharp.Simulations.Sweep{System.Double}
+  parent: SpiceSharp.Simulations
+  definition: SpiceSharp.Simulations.Sweep`1
+  name: Sweep<Double>
+  nameWithType: Sweep<Double>
+  fullName: SpiceSharp.Simulations.Sweep<System.Double>
+  nameWithType.vb: Sweep(Of Double)
+  fullName.vb: SpiceSharp.Simulations.Sweep(Of System.Double)
+  name.vb: Sweep(Of Double)
+  spec.csharp:
+  - uid: SpiceSharp.Simulations.Sweep`1
+    name: Sweep
+    nameWithType: Sweep
+    fullName: SpiceSharp.Simulations.Sweep
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharp.Simulations.Sweep`1
+    name: Sweep
+    nameWithType: Sweep
+    fullName: SpiceSharp.Simulations.Sweep
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Simulations.Sweep{System.Double}.Current
+  commentId: P:SpiceSharp.Simulations.Sweep{System.Double}.Current
+  parent: SpiceSharp.Simulations.Sweep{System.Double}
+  definition: SpiceSharp.Simulations.Sweep`1.Current
+  name: Current
+  nameWithType: Sweep<Double>.Current
+  fullName: SpiceSharp.Simulations.Sweep<System.Double>.Current
+  nameWithType.vb: Sweep(Of Double).Current
+  fullName.vb: SpiceSharp.Simulations.Sweep(Of System.Double).Current
+- uid: SpiceSharp.Simulations.Sweep{System.Double}.Initial
+  commentId: P:SpiceSharp.Simulations.Sweep{System.Double}.Initial
+  parent: SpiceSharp.Simulations.Sweep{System.Double}
+  definition: SpiceSharp.Simulations.Sweep`1.Initial
+  name: Initial
+  nameWithType: Sweep<Double>.Initial
+  fullName: SpiceSharp.Simulations.Sweep<System.Double>.Initial
+  nameWithType.vb: Sweep(Of Double).Initial
+  fullName.vb: SpiceSharp.Simulations.Sweep(Of System.Double).Initial
+- uid: SpiceSharp.Simulations.Sweep{System.Double}.Final
+  commentId: P:SpiceSharp.Simulations.Sweep{System.Double}.Final
+  parent: SpiceSharp.Simulations.Sweep{System.Double}
+  definition: SpiceSharp.Simulations.Sweep`1.Final
+  name: Final
+  nameWithType: Sweep<Double>.Final
+  fullName: SpiceSharp.Simulations.Sweep<System.Double>.Final
+  nameWithType.vb: Sweep(Of Double).Final
+  fullName.vb: SpiceSharp.Simulations.Sweep(Of System.Double).Final
+- uid: SpiceSharp.Simulations.Sweep{System.Double}.Count
+  commentId: P:SpiceSharp.Simulations.Sweep{System.Double}.Count
+  parent: SpiceSharp.Simulations.Sweep{System.Double}
+  definition: SpiceSharp.Simulations.Sweep`1.Count
+  name: Count
+  nameWithType: Sweep<Double>.Count
+  fullName: SpiceSharp.Simulations.Sweep<System.Double>.Count
+  nameWithType.vb: Sweep(Of Double).Count
+  fullName.vb: SpiceSharp.Simulations.Sweep(Of System.Double).Count
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharp.Simulations.Sweep`1
+  commentId: T:SpiceSharp.Simulations.Sweep`1
+  isExternal: true
+  name: Sweep<T>
+  nameWithType: Sweep<T>
+  fullName: SpiceSharp.Simulations.Sweep<T>
+  nameWithType.vb: Sweep(Of T)
+  fullName.vb: SpiceSharp.Simulations.Sweep(Of T)
+  name.vb: Sweep(Of T)
+  spec.csharp:
+  - uid: SpiceSharp.Simulations.Sweep`1
+    name: Sweep
+    nameWithType: Sweep
+    fullName: SpiceSharp.Simulations.Sweep
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharp.Simulations.Sweep`1
+    name: Sweep
+    nameWithType: Sweep
+    fullName: SpiceSharp.Simulations.Sweep
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Simulations
+  commentId: N:SpiceSharp.Simulations
+  isExternal: true
+  name: SpiceSharp.Simulations
+  nameWithType: SpiceSharp.Simulations
+  fullName: SpiceSharp.Simulations
+- uid: SpiceSharp.Simulations.Sweep`1.Current
+  commentId: P:SpiceSharp.Simulations.Sweep`1.Current
+  isExternal: true
+  name: Current
+  nameWithType: Sweep<T>.Current
+  fullName: SpiceSharp.Simulations.Sweep<T>.Current
+  nameWithType.vb: Sweep(Of T).Current
+  fullName.vb: SpiceSharp.Simulations.Sweep(Of T).Current
+- uid: SpiceSharp.Simulations.Sweep`1.Initial
+  commentId: P:SpiceSharp.Simulations.Sweep`1.Initial
+  isExternal: true
+  name: Initial
+  nameWithType: Sweep<T>.Initial
+  fullName: SpiceSharp.Simulations.Sweep<T>.Initial
+  nameWithType.vb: Sweep(Of T).Initial
+  fullName.vb: SpiceSharp.Simulations.Sweep(Of T).Initial
+- uid: SpiceSharp.Simulations.Sweep`1.Final
+  commentId: P:SpiceSharp.Simulations.Sweep`1.Final
+  isExternal: true
+  name: Final
+  nameWithType: Sweep<T>.Final
+  fullName: SpiceSharp.Simulations.Sweep<T>.Final
+  nameWithType.vb: Sweep(Of T).Final
+  fullName.vb: SpiceSharp.Simulations.Sweep(Of T).Final
+- uid: SpiceSharp.Simulations.Sweep`1.Count
+  commentId: P:SpiceSharp.Simulations.Sweep`1.Count
+  isExternal: true
+  name: Count
+  nameWithType: Sweep<T>.Count
+  fullName: SpiceSharp.Simulations.Sweep<T>.Count
+  nameWithType.vb: Sweep(Of T).Count
+  fullName.vb: SpiceSharp.Simulations.Sweep(Of T).Count
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep.#ctor*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep.#ctor
+  name: ListSweep
+  nameWithType: ListSweep.ListSweep
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep.ListSweep
+- uid: System.Collections.Generic.IEnumerable{System.Double}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Double}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<Double>
+  nameWithType: IEnumerable<Double>
+  fullName: System.Collections.Generic.IEnumerable<System.Double>
+  nameWithType.vb: IEnumerable(Of Double)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Double)
+  name.vb: IEnumerable(Of Double)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: SpiceSharp.Simulations.Sweep{System.Double}.Points
+  commentId: P:SpiceSharp.Simulations.Sweep{System.Double}.Points
+  parent: SpiceSharp.Simulations.Sweep{System.Double}
+  definition: SpiceSharp.Simulations.Sweep`1.Points
+  name: Points
+  nameWithType: Sweep<Double>.Points
+  fullName: SpiceSharp.Simulations.Sweep<System.Double>.Points
+  nameWithType.vb: Sweep(Of Double).Points
+  fullName.vb: SpiceSharp.Simulations.Sweep(Of System.Double).Points
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep.Points*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep.Points
+  name: Points
+  nameWithType: ListSweep.Points
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ListSweep.Points
+- uid: SpiceSharp.Simulations.Sweep`1.Points
+  commentId: P:SpiceSharp.Simulations.Sweep`1.Points
+  isExternal: true
+  name: Points
+  nameWithType: Sweep<T>.Points
+  fullName: SpiceSharp.Simulations.Sweep<T>.Points
+  nameWithType.vb: Sweep(Of T).Points
+  fullName.vb: SpiceSharp.Simulations.Sweep(Of T).Points

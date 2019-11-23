@@ -141,7 +141,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
 
             for (var i = 0; i < exports.Count; i++)
             {
-                Assert.Equal(-0.01 * (i+1), exports[i]);
+                Assert.Equal(-0.01 * (i + 1), exports[i]);
             }
         }
 
@@ -232,7 +232,6 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(-0.01, exports[0]);
             Assert.Equal(-0.005, exports[1]);
             Assert.Equal(-0.0025, exports[2]);
-
         }
 
         [Fact]
@@ -256,7 +255,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
 
             for (var i = 0; i < exports.Count; i++)
             {
-                Assert.Equal(-100 /(10.00 * (i + 1)), exports[i]);
+                Assert.Equal(-100 / (10.00 * (i + 1)), exports[i]);
             }
         }
 
@@ -338,7 +337,6 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             EqualsWithTol(100.0 / (100.0 + 1.5) * 11, r100[1]);
             EqualsWithTol(100.0 / (100.0 + 2) * 11, r100[2]);
         }
-    
 
         [Fact]
         public void ListIcParameter()

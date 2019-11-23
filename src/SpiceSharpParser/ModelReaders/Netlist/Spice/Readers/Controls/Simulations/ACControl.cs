@@ -1,10 +1,10 @@
-﻿using System;
-using SpiceSharp.Simulations;
+﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
@@ -23,12 +23,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, IReadingContext context)
+        public override void Read(Control statement, ICircuitContext context)
         {
             CreateSimulations(statement, context, CreateAcSimulation);
         }
 
-        private AC CreateAcSimulation(string name, Control statement, IReadingContext context)
+        private AC CreateAcSimulation(string name, Control statement, ICircuitContext context)
         {
             switch (statement.Parameters.Count)
             {
@@ -41,9 +41,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             AC ac;
 
             string type = statement.Parameters.Get(0).Image.ToLower();
-            var numberSteps = context.EvaluateDouble(statement.Parameters.Get(1));
-            var start = context.EvaluateDouble(statement.Parameters.Get(2));
-            var stop = context.EvaluateDouble(statement.Parameters.Get(3));
+            var numberSteps = context.Evaluator.EvaluateDouble(statement.Parameters.Get(1));
+            var start = context.Evaluator.EvaluateDouble(statement.Parameters.Get(2));
+            var stop = context.Evaluator.EvaluateDouble(statement.Parameters.Get(3));
 
             switch (type)
             {
@@ -62,7 +62,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     if (ac.ComplexState != null)
                     {
                         var freq = ac.ComplexState.Laplace.Imaginary / (2.0 * Math.PI);
-                        context.SimulationExpressionContexts.GetContext(ac).SetParameter("FREQ", freq);
+                        context.Evaluator.SetParameter(ac, "FREQ", freq);
                     }
                 };
 
@@ -70,7 +70,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             return ac;
         }
 
-        private void ConfigureAcSettings(FrequencyConfiguration frequencyConfiguration, IReadingContext context)
+        private void ConfigureAcSettings(FrequencyConfiguration frequencyConfiguration, ICircuitContext context)
         {
             if (context.Result.SimulationConfiguration.KeepOpInfo.HasValue)
             {

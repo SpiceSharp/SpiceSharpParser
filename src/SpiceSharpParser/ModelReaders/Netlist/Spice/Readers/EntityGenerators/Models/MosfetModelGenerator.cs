@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using SpiceSharp.Components;
+﻿using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
 {
@@ -55,7 +55,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
         /// </summary>
         protected Dictionary<int, Func<string, string, string, SpiceSharp.Components.Model>> Levels { get; } = new Dictionary<int, Func<string, string, string, SpiceSharp.Components.Model>>();
 
-        public override SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context)
+        public override SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, ICircuitContext context)
         {
             var clonedParameters = (ParameterCollection)parameters.Clone();
 
@@ -69,7 +69,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
                     if (ap.Name.ToLower() == "level")
                     {
                         lindex = i;
-                        level = (int)Math.Round(context.EvaluateDouble(ap.Value));
+                        level = (int)Math.Round(context.Evaluator.EvaluateDouble(ap.Value));
                     }
 
                     if (ap.Name.ToLower() == "version")

@@ -1,0 +1,241 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Lexers
+  commentId: N:SpiceSharpParser.Lexers
+  id: SpiceSharpParser.Lexers
+  children:
+  - SpiceSharpParser.Lexers.Lexer`1
+  - SpiceSharpParser.Lexers.LexerDynamicRule
+  - SpiceSharpParser.Lexers.LexerException
+  - SpiceSharpParser.Lexers.LexerGrammar`1
+  - SpiceSharpParser.Lexers.LexerGrammarBuilder`1
+  - SpiceSharpParser.Lexers.LexerInternalRule
+  - SpiceSharpParser.Lexers.LexerLineNumberProvider
+  - SpiceSharpParser.Lexers.LexerLineRange
+  - SpiceSharpParser.Lexers.LexerRegexRule
+  - SpiceSharpParser.Lexers.LexerRuleReturnDecision
+  - SpiceSharpParser.Lexers.LexerRuleUseDecision
+  - SpiceSharpParser.Lexers.LexerState
+  - SpiceSharpParser.Lexers.LexerTokenRule`1
+  - SpiceSharpParser.Lexers.StringExtensions
+  - SpiceSharpParser.Lexers.Token
+  langs:
+  - csharp
+  - vb
+  name: SpiceSharpParser.Lexers
+  nameWithType: SpiceSharpParser.Lexers
+  fullName: SpiceSharpParser.Lexers
+  type: Namespace
+  assemblies:
+  - SpiceSharpParser
+references:
+- uid: SpiceSharpParser.Lexers.Lexer`1
+  commentId: T:SpiceSharpParser.Lexers.Lexer`1
+  name: Lexer<TLexerState>
+  nameWithType: Lexer<TLexerState>
+  fullName: SpiceSharpParser.Lexers.Lexer<TLexerState>
+  nameWithType.vb: Lexer(Of TLexerState)
+  fullName.vb: SpiceSharpParser.Lexers.Lexer(Of TLexerState)
+  name.vb: Lexer(Of TLexerState)
+  spec.csharp:
+  - uid: SpiceSharpParser.Lexers.Lexer`1
+    name: Lexer
+    nameWithType: Lexer
+    fullName: SpiceSharpParser.Lexers.Lexer
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TLexerState
+    nameWithType: TLexerState
+    fullName: TLexerState
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.Lexers.Lexer`1
+    name: Lexer
+    nameWithType: Lexer
+    fullName: SpiceSharpParser.Lexers.Lexer
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TLexerState
+    nameWithType: TLexerState
+    fullName: TLexerState
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Lexers.LexerDynamicRule
+  commentId: T:SpiceSharpParser.Lexers.LexerDynamicRule
+  parent: SpiceSharpParser.Lexers
+  name: LexerDynamicRule
+  nameWithType: LexerDynamicRule
+  fullName: SpiceSharpParser.Lexers.LexerDynamicRule
+- uid: SpiceSharpParser.Lexers.LexerException
+  commentId: T:SpiceSharpParser.Lexers.LexerException
+  name: LexerException
+  nameWithType: LexerException
+  fullName: SpiceSharpParser.Lexers.LexerException
+- uid: SpiceSharpParser.Lexers.LexerGrammar`1
+  commentId: T:SpiceSharpParser.Lexers.LexerGrammar`1
+  name: LexerGrammar<TLexerState>
+  nameWithType: LexerGrammar<TLexerState>
+  fullName: SpiceSharpParser.Lexers.LexerGrammar<TLexerState>
+  nameWithType.vb: LexerGrammar(Of TLexerState)
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammar(Of TLexerState)
+  name.vb: LexerGrammar(Of TLexerState)
+  spec.csharp:
+  - uid: SpiceSharpParser.Lexers.LexerGrammar`1
+    name: LexerGrammar
+    nameWithType: LexerGrammar
+    fullName: SpiceSharpParser.Lexers.LexerGrammar
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TLexerState
+    nameWithType: TLexerState
+    fullName: TLexerState
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.Lexers.LexerGrammar`1
+    name: LexerGrammar
+    nameWithType: LexerGrammar
+    fullName: SpiceSharpParser.Lexers.LexerGrammar
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TLexerState
+    nameWithType: TLexerState
+    fullName: TLexerState
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Lexers.LexerGrammarBuilder`1
+  commentId: T:SpiceSharpParser.Lexers.LexerGrammarBuilder`1
+  name: LexerGrammarBuilder<TLexerState>
+  nameWithType: LexerGrammarBuilder<TLexerState>
+  fullName: SpiceSharpParser.Lexers.LexerGrammarBuilder<TLexerState>
+  nameWithType.vb: LexerGrammarBuilder(Of TLexerState)
+  fullName.vb: SpiceSharpParser.Lexers.LexerGrammarBuilder(Of TLexerState)
+  name.vb: LexerGrammarBuilder(Of TLexerState)
+  spec.csharp:
+  - uid: SpiceSharpParser.Lexers.LexerGrammarBuilder`1
+    name: LexerGrammarBuilder
+    nameWithType: LexerGrammarBuilder
+    fullName: SpiceSharpParser.Lexers.LexerGrammarBuilder
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TLexerState
+    nameWithType: TLexerState
+    fullName: TLexerState
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.Lexers.LexerGrammarBuilder`1
+    name: LexerGrammarBuilder
+    nameWithType: LexerGrammarBuilder
+    fullName: SpiceSharpParser.Lexers.LexerGrammarBuilder
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TLexerState
+    nameWithType: TLexerState
+    fullName: TLexerState
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Lexers.LexerInternalRule
+  commentId: T:SpiceSharpParser.Lexers.LexerInternalRule
+  name: LexerInternalRule
+  nameWithType: LexerInternalRule
+  fullName: SpiceSharpParser.Lexers.LexerInternalRule
+- uid: SpiceSharpParser.Lexers.LexerLineNumberProvider
+  commentId: T:SpiceSharpParser.Lexers.LexerLineNumberProvider
+  name: LexerLineNumberProvider
+  nameWithType: LexerLineNumberProvider
+  fullName: SpiceSharpParser.Lexers.LexerLineNumberProvider
+- uid: SpiceSharpParser.Lexers.LexerLineRange
+  commentId: T:SpiceSharpParser.Lexers.LexerLineRange
+  name: LexerLineRange
+  nameWithType: LexerLineRange
+  fullName: SpiceSharpParser.Lexers.LexerLineRange
+- uid: SpiceSharpParser.Lexers.LexerRegexRule
+  commentId: T:SpiceSharpParser.Lexers.LexerRegexRule
+  parent: SpiceSharpParser.Lexers
+  name: LexerRegexRule
+  nameWithType: LexerRegexRule
+  fullName: SpiceSharpParser.Lexers.LexerRegexRule
+- uid: SpiceSharpParser.Lexers.LexerRuleReturnDecision
+  commentId: T:SpiceSharpParser.Lexers.LexerRuleReturnDecision
+  parent: SpiceSharpParser.Lexers
+  name: LexerRuleReturnDecision
+  nameWithType: LexerRuleReturnDecision
+  fullName: SpiceSharpParser.Lexers.LexerRuleReturnDecision
+- uid: SpiceSharpParser.Lexers.LexerRuleUseDecision
+  commentId: T:SpiceSharpParser.Lexers.LexerRuleUseDecision
+  parent: SpiceSharpParser.Lexers
+  name: LexerRuleUseDecision
+  nameWithType: LexerRuleUseDecision
+  fullName: SpiceSharpParser.Lexers.LexerRuleUseDecision
+- uid: SpiceSharpParser.Lexers.LexerState
+  commentId: T:SpiceSharpParser.Lexers.LexerState
+  parent: SpiceSharpParser.Lexers
+  name: LexerState
+  nameWithType: LexerState
+  fullName: SpiceSharpParser.Lexers.LexerState
+- uid: SpiceSharpParser.Lexers.LexerTokenRule`1
+  commentId: T:SpiceSharpParser.Lexers.LexerTokenRule`1
+  name: LexerTokenRule<TLexerState>
+  nameWithType: LexerTokenRule<TLexerState>
+  fullName: SpiceSharpParser.Lexers.LexerTokenRule<TLexerState>
+  nameWithType.vb: LexerTokenRule(Of TLexerState)
+  fullName.vb: SpiceSharpParser.Lexers.LexerTokenRule(Of TLexerState)
+  name.vb: LexerTokenRule(Of TLexerState)
+  spec.csharp:
+  - uid: SpiceSharpParser.Lexers.LexerTokenRule`1
+    name: LexerTokenRule
+    nameWithType: LexerTokenRule
+    fullName: SpiceSharpParser.Lexers.LexerTokenRule
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TLexerState
+    nameWithType: TLexerState
+    fullName: TLexerState
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.Lexers.LexerTokenRule`1
+    name: LexerTokenRule
+    nameWithType: LexerTokenRule
+    fullName: SpiceSharpParser.Lexers.LexerTokenRule
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TLexerState
+    nameWithType: TLexerState
+    fullName: TLexerState
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Lexers.StringExtensions
+  commentId: T:SpiceSharpParser.Lexers.StringExtensions
+  name: StringExtensions
+  nameWithType: StringExtensions
+  fullName: SpiceSharpParser.Lexers.StringExtensions
+- uid: SpiceSharpParser.Lexers.Token
+  commentId: T:SpiceSharpParser.Lexers.Token
+  parent: SpiceSharpParser.Lexers
+  name: Token
+  nameWithType: Token
+  fullName: SpiceSharpParser.Lexers.Token
+- uid: SpiceSharpParser.Lexers
+  commentId: N:SpiceSharpParser.Lexers
+  name: SpiceSharpParser.Lexers
+  nameWithType: SpiceSharpParser.Lexers
+  fullName: SpiceSharpParser.Lexers

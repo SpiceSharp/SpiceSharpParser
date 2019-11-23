@@ -1,0 +1,489 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.PulseGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.PulseGenerator
+  id: PulseGenerator
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.PulseGenerator.Generate(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  langs:
+  - csharp
+  - vb
+  name: PulseGenerator
+  nameWithType: PulseGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.PulseGenerator
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Waveforms/PulseGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: PulseGenerator
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Waveforms/PulseGenerator.cs
+    startLine: 11
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
+  summary: "\nGenerator for pulse waveform.\n"
+  example: []
+  syntax:
+    content: 'public class PulseGenerator : WaveformGenerator'
+    content.vb: >-
+      Public Class PulseGenerator
+          Inherits WaveformGenerator
+  inheritance:
+  - System.Object
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.WaveformGenerator
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.PulseGenerator.Generate(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.PulseGenerator.Generate(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  id: Generate(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.PulseGenerator
+  langs:
+  - csharp
+  - vb
+  name: Generate(ParameterCollection, ICircuitContext)
+  nameWithType: PulseGenerator.Generate(ParameterCollection, ICircuitContext)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.PulseGenerator.Generate(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Waveforms/PulseGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Generate
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Waveforms/PulseGenerator.cs
+    startLine: 21
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
+  summary: "\nGenerates a new waveform.\n"
+  example: []
+  syntax:
+    content: public override Waveform Generate(ParameterCollection parameters, ICircuitContext context)
+    parameters:
+    - id: parameters
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+      description: Parameters for waveform.
+    - id: context
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+      description: A context.
+    return:
+      type: SpiceSharp.Components.Waveform
+      description: "\nA new waveform.\n"
+    content.vb: Public Overrides Function Generate(parameters As ParameterCollection, context As ICircuitContext) As Waveform
+  overridden: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.WaveformGenerator.Generate(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.PulseGenerator.Generate*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.WaveformGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.WaveformGenerator
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
+  name: WaveformGenerator
+  nameWithType: WaveformGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.WaveformGenerator
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.WaveformGenerator.Generate(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.WaveformGenerator.Generate(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.WaveformGenerator
+  name: Generate(ParameterCollection, ICircuitContext)
+  nameWithType: WaveformGenerator.Generate(ParameterCollection, ICircuitContext)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.WaveformGenerator.Generate(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.WaveformGenerator.Generate(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+    name: Generate
+    nameWithType: WaveformGenerator.Generate
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.WaveformGenerator.Generate
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+    name: ParameterCollection
+    nameWithType: ParameterCollection
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.WaveformGenerator.Generate(SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+    name: Generate
+    nameWithType: WaveformGenerator.Generate
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.WaveformGenerator.Generate
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+    name: ParameterCollection
+    nameWithType: ParameterCollection
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.PulseGenerator.Generate*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.PulseGenerator.Generate
+  name: Generate
+  nameWithType: PulseGenerator.Generate
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.PulseGenerator.Generate
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: ParameterCollection
+  nameWithType: ParameterCollection
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: ICircuitContext
+  nameWithType: ICircuitContext
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+- uid: SpiceSharp.Components.Waveform
+  commentId: T:SpiceSharp.Components.Waveform
+  parent: SpiceSharp.Components
+  isExternal: true
+  name: Waveform
+  nameWithType: Waveform
+  fullName: SpiceSharp.Components.Waveform
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: SpiceSharpParser.Models.Netlist.Spice.Objects
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice.Objects
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+- uid: SpiceSharp.Components
+  commentId: N:SpiceSharp.Components
+  isExternal: true
+  name: SpiceSharp.Components
+  nameWithType: SpiceSharp.Components
+  fullName: SpiceSharp.Components

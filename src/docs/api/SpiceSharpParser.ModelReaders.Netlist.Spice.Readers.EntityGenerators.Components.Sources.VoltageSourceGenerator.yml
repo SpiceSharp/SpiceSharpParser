@@ -1,0 +1,1071 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator
+  id: VoltageSourceGenerator
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.CreateCustomVoltageSource(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Boolean)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.Generate(System.String,System.String,System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateCurrentControlledVoltageSource(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateVoltageControlledVoltageSource(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateVoltageSource(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  langs:
+  - csharp
+  - vb
+  name: VoltageSourceGenerator
+  nameWithType: VoltageSourceGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/VoltageSourceGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: VoltageSourceGenerator
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/VoltageSourceGenerator.cs
+    startLine: 15
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
+  summary: "\nVoltage sources generator.\n"
+  example: []
+  syntax:
+    content: 'public class VoltageSourceGenerator : SourceGenerator, IComponentGenerator'
+    content.vb: >-
+      Public Class VoltageSourceGenerator
+          Inherits SourceGenerator
+          Implements IComponentGenerator
+  inheritance:
+  - System.Object
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IComponentGenerator
+  inheritedMembers:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreateParser(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.Simulation)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.SetSourceParameters(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Components.Component)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreatePolyExpression(System.Int32,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,System.Boolean)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.SetParameters(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Circuits.Entity,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,System.Boolean)
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.Generate(System.String,System.String,System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.Generate(System.String,System.String,System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  id: Generate(System.String,System.String,System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator
+  langs:
+  - csharp
+  - vb
+  name: Generate(String, String, String, ParameterCollection, ICircuitContext)
+  nameWithType: VoltageSourceGenerator.Generate(String, String, String, ParameterCollection, ICircuitContext)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.Generate(System.String, System.String, System.String, SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/VoltageSourceGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Generate
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/VoltageSourceGenerator.cs
+    startLine: 17
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
+  syntax:
+    content: public override Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
+    parameters:
+    - id: componentIdentifier
+      type: System.String
+    - id: originalName
+      type: System.String
+    - id: type
+      type: System.String
+    - id: parameters
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+    - id: context
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    return:
+      type: SpiceSharp.Components.Component
+    content.vb: Public Overrides Function Generate(componentIdentifier As String, originalName As String, type As String, parameters As ParameterCollection, context As ICircuitContext) As Component
+  overridden: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.Generate(System.String,System.String,System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.Generate*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateVoltageControlledVoltageSource(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateVoltageControlledVoltageSource(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  id: GenerateVoltageControlledVoltageSource(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator
+  langs:
+  - csharp
+  - vb
+  name: GenerateVoltageControlledVoltageSource(String, ParameterCollection, ICircuitContext)
+  nameWithType: VoltageSourceGenerator.GenerateVoltageControlledVoltageSource(String, ParameterCollection, ICircuitContext)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateVoltageControlledVoltageSource(System.String, SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/VoltageSourceGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GenerateVoltageControlledVoltageSource
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/VoltageSourceGenerator.cs
+    startLine: 38
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
+  summary: "\nGenerates new voltage controlled voltage source: EName.\n"
+  example: []
+  syntax:
+    content: protected Component GenerateVoltageControlledVoltageSource(string name, ParameterCollection parameters, ICircuitContext context)
+    parameters:
+    - id: name
+      type: System.String
+      description: The name of voltage source to generate.
+    - id: parameters
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+      description: The parameters for voltage source.
+    - id: context
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+      description: The reading context.
+    return:
+      type: SpiceSharp.Components.Component
+      description: "\nA new instance of voltage controlled voltage source.\n"
+    content.vb: Protected Function GenerateVoltageControlledVoltageSource(name As String, parameters As ParameterCollection, context As ICircuitContext) As Component
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateVoltageControlledVoltageSource*
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateCurrentControlledVoltageSource(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateCurrentControlledVoltageSource(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  id: GenerateCurrentControlledVoltageSource(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator
+  langs:
+  - csharp
+  - vb
+  name: GenerateCurrentControlledVoltageSource(String, ParameterCollection, ICircuitContext)
+  nameWithType: VoltageSourceGenerator.GenerateCurrentControlledVoltageSource(String, ParameterCollection, ICircuitContext)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateCurrentControlledVoltageSource(System.String, SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/VoltageSourceGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GenerateCurrentControlledVoltageSource
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/VoltageSourceGenerator.cs
+    startLine: 91
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
+  summary: "\nGenerates new current controlled voltage source HName.\n"
+  example: []
+  syntax:
+    content: protected Component GenerateCurrentControlledVoltageSource(string name, ParameterCollection parameters, ICircuitContext context)
+    parameters:
+    - id: name
+      type: System.String
+      description: The name of voltage source to generate.
+    - id: parameters
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+      description: The parameters for voltage source.
+    - id: context
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+      description: The reading context.
+    return:
+      type: SpiceSharp.Components.Component
+      description: "\nA new instance of current controlled voltage source.\n"
+    content.vb: Protected Function GenerateCurrentControlledVoltageSource(name As String, parameters As ParameterCollection, context As ICircuitContext) As Component
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateCurrentControlledVoltageSource*
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateVoltageSource(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateVoltageSource(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  id: GenerateVoltageSource(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator
+  langs:
+  - csharp
+  - vb
+  name: GenerateVoltageSource(String, ParameterCollection, ICircuitContext)
+  nameWithType: VoltageSourceGenerator.GenerateVoltageSource(String, ParameterCollection, ICircuitContext)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateVoltageSource(System.String, SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/VoltageSourceGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GenerateVoltageSource
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/VoltageSourceGenerator.cs
+    startLine: 123
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
+  summary: "\nGenerates new voltage source.\n"
+  example: []
+  syntax:
+    content: protected Component GenerateVoltageSource(string name, ParameterCollection parameters, ICircuitContext context)
+    parameters:
+    - id: name
+      type: System.String
+      description: The name of voltage source to generate.
+    - id: parameters
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+      description: The parameters for voltage source.
+    - id: context
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+      description: The reading context.
+    return:
+      type: SpiceSharp.Components.Component
+      description: "\nA new instance of voltage source.\n"
+    content.vb: Protected Function GenerateVoltageSource(name As String, parameters As ParameterCollection, context As ICircuitContext) As Component
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateVoltageSource*
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.CreateCustomVoltageSource(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Boolean)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.CreateCustomVoltageSource(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Boolean)
+  id: CreateCustomVoltageSource(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,System.Boolean)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator
+  langs:
+  - csharp
+  - vb
+  name: CreateCustomVoltageSource(String, ParameterCollection, ICircuitContext, Boolean)
+  nameWithType: VoltageSourceGenerator.CreateCustomVoltageSource(String, ParameterCollection, ICircuitContext, Boolean)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.CreateCustomVoltageSource(System.String, SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/VoltageSourceGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CreateCustomVoltageSource
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/VoltageSourceGenerator.cs
+    startLine: 131
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
+  syntax:
+    content: protected Component CreateCustomVoltageSource(string name, ParameterCollection parameters, ICircuitContext context, bool isVoltageControlled)
+    parameters:
+    - id: name
+      type: System.String
+    - id: parameters
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+    - id: context
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    - id: isVoltageControlled
+      type: System.Boolean
+    return:
+      type: SpiceSharp.Components.Component
+    content.vb: Protected Function CreateCustomVoltageSource(name As String, parameters As ParameterCollection, context As ICircuitContext, isVoltageControlled As Boolean) As Component
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.CreateCustomVoltageSource*
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
+  name: ComponentGenerator
+  nameWithType: ComponentGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
+  name: SourceGenerator
+  nameWithType: SourceGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IComponentGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IComponentGenerator
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
+  name: IComponentGenerator
+  nameWithType: IComponentGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.IComponentGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreateParser(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.Simulation)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreateParser(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.Simulation)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator
+  isExternal: true
+  name: CreateParser(ICircuitContext, Simulation)
+  nameWithType: SourceGenerator.CreateParser(ICircuitContext, Simulation)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreateParser(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, SpiceSharp.Simulations.Simulation)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreateParser(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.Simulation)
+    name: CreateParser
+    nameWithType: SourceGenerator.CreateParser
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreateParser
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Simulations.Simulation
+    name: Simulation
+    nameWithType: Simulation
+    fullName: SpiceSharp.Simulations.Simulation
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreateParser(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Simulations.Simulation)
+    name: CreateParser
+    nameWithType: SourceGenerator.CreateParser
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreateParser
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Simulations.Simulation
+    name: Simulation
+    nameWithType: Simulation
+    fullName: SpiceSharp.Simulations.Simulation
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.SetSourceParameters(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Components.Component)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.SetSourceParameters(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Components.Component)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator
+  isExternal: true
+  name: SetSourceParameters(String, ParameterCollection, ICircuitContext, Component)
+  nameWithType: SourceGenerator.SetSourceParameters(String, ParameterCollection, ICircuitContext, Component)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.SetSourceParameters(System.String, SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, SpiceSharp.Components.Component)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.SetSourceParameters(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Components.Component)
+    name: SetSourceParameters
+    nameWithType: SourceGenerator.SetSourceParameters
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.SetSourceParameters
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+    name: ParameterCollection
+    nameWithType: ParameterCollection
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Components.Component
+    name: Component
+    nameWithType: Component
+    fullName: SpiceSharp.Components.Component
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.SetSourceParameters(System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Components.Component)
+    name: SetSourceParameters
+    nameWithType: SourceGenerator.SetSourceParameters
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.SetSourceParameters
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+    name: ParameterCollection
+    nameWithType: ParameterCollection
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Components.Component
+    name: Component
+    nameWithType: Component
+    fullName: SpiceSharp.Components.Component
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreatePolyExpression(System.Int32,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,System.Boolean)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreatePolyExpression(System.Int32,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,System.Boolean)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator
+  isExternal: true
+  name: CreatePolyExpression(Int32, ParameterCollection, Boolean)
+  nameWithType: SourceGenerator.CreatePolyExpression(Int32, ParameterCollection, Boolean)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreatePolyExpression(System.Int32, SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection, System.Boolean)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreatePolyExpression(System.Int32,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,System.Boolean)
+    name: CreatePolyExpression
+    nameWithType: SourceGenerator.CreatePolyExpression
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreatePolyExpression
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+    name: ParameterCollection
+    nameWithType: ParameterCollection
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreatePolyExpression(System.Int32,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,System.Boolean)
+    name: CreatePolyExpression
+    nameWithType: SourceGenerator.CreatePolyExpression
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.SourceGenerator.CreatePolyExpression
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+    name: ParameterCollection
+    nameWithType: ParameterCollection
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.SetParameters(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Circuits.Entity,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,System.Boolean)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.SetParameters(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Circuits.Entity,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,System.Boolean)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator
+  isExternal: true
+  name: SetParameters(ICircuitContext, Entity, ParameterCollection, Boolean)
+  nameWithType: ComponentGenerator.SetParameters(ICircuitContext, Entity, ParameterCollection, Boolean)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.SetParameters(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext, SpiceSharp.Circuits.Entity, SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection, System.Boolean)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.SetParameters(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Circuits.Entity,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,System.Boolean)
+    name: SetParameters
+    nameWithType: ComponentGenerator.SetParameters
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.SetParameters
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Circuits.Entity
+    name: Entity
+    nameWithType: Entity
+    fullName: SpiceSharp.Circuits.Entity
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+    name: ParameterCollection
+    nameWithType: ParameterCollection
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.SetParameters(SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext,SpiceSharp.Circuits.Entity,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,System.Boolean)
+    name: SetParameters
+    nameWithType: ComponentGenerator.SetParameters
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.SetParameters
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharp.Circuits.Entity
+    name: Entity
+    nameWithType: Entity
+    fullName: SpiceSharp.Circuits.Entity
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+    name: ParameterCollection
+    nameWithType: ParameterCollection
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.Generate(System.String,System.String,System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.Generate(System.String,System.String,System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator
+  isExternal: true
+  name: Generate(String, String, String, ParameterCollection, ICircuitContext)
+  nameWithType: ComponentGenerator.Generate(String, String, String, ParameterCollection, ICircuitContext)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.Generate(System.String, System.String, System.String, SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.Generate(System.String,System.String,System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+    name: Generate
+    nameWithType: ComponentGenerator.Generate
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.Generate
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+    name: ParameterCollection
+    nameWithType: ParameterCollection
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.Generate(System.String,System.String,System.String,SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+    name: Generate
+    nameWithType: ComponentGenerator.Generate
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.ComponentGenerator.Generate
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+    name: ParameterCollection
+    nameWithType: ParameterCollection
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+    name: ICircuitContext
+    nameWithType: ICircuitContext
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.Generate*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.Generate
+  name: Generate
+  nameWithType: VoltageSourceGenerator.Generate
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.Generate
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: ParameterCollection
+  nameWithType: ParameterCollection
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: ICircuitContext
+  nameWithType: ICircuitContext
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+- uid: SpiceSharp.Components.Component
+  commentId: T:SpiceSharp.Components.Component
+  parent: SpiceSharp.Components
+  isExternal: true
+  name: Component
+  nameWithType: Component
+  fullName: SpiceSharp.Components.Component
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: SpiceSharpParser.Models.Netlist.Spice.Objects
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice.Objects
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+- uid: SpiceSharp.Components
+  commentId: N:SpiceSharp.Components
+  isExternal: true
+  name: SpiceSharp.Components
+  nameWithType: SpiceSharp.Components
+  fullName: SpiceSharp.Components
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateVoltageControlledVoltageSource*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateVoltageControlledVoltageSource
+  name: GenerateVoltageControlledVoltageSource
+  nameWithType: VoltageSourceGenerator.GenerateVoltageControlledVoltageSource
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateVoltageControlledVoltageSource
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateCurrentControlledVoltageSource*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateCurrentControlledVoltageSource
+  name: GenerateCurrentControlledVoltageSource
+  nameWithType: VoltageSourceGenerator.GenerateCurrentControlledVoltageSource
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateCurrentControlledVoltageSource
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateVoltageSource*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateVoltageSource
+  name: GenerateVoltageSource
+  nameWithType: VoltageSourceGenerator.GenerateVoltageSource
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.GenerateVoltageSource
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.CreateCustomVoltageSource*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.CreateCustomVoltageSource
+  name: CreateCustomVoltageSource
+  nameWithType: VoltageSourceGenerator.CreateCustomVoltageSource
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources.VoltageSourceGenerator.CreateCustomVoltageSource
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean

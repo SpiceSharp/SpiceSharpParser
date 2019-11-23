@@ -1,0 +1,28 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Common.Mathematics.Combinatorics
+  commentId: N:SpiceSharpParser.Common.Mathematics.Combinatorics
+  id: SpiceSharpParser.Common.Mathematics.Combinatorics
+  children:
+  - SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationCache
+  - SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator
+  langs:
+  - csharp
+  - vb
+  name: SpiceSharpParser.Common.Mathematics.Combinatorics
+  nameWithType: SpiceSharpParser.Common.Mathematics.Combinatorics
+  fullName: SpiceSharpParser.Common.Mathematics.Combinatorics
+  type: Namespace
+  assemblies:
+  - SpiceSharpParser
+references:
+- uid: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationCache
+  commentId: T:SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationCache
+  name: CombinationCache
+  nameWithType: CombinationCache
+  fullName: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationCache
+- uid: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator
+  commentId: T:SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator
+  name: CombinationGenerator
+  nameWithType: CombinationGenerator
+  fullName: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator

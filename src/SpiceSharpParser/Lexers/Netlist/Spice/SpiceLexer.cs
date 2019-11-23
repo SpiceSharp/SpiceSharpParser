@@ -56,7 +56,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
             builder.AddRegexRule(new LexerInternalRule("DIGIT", "[0-9]"));
             builder.AddRegexRule(new LexerInternalRule("SPECIAL", @"[\/\\_\.:%!\#\-;\<\>\^\*\[\]]"));
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
-                (int) SpiceTokenType.WHITESPACE,
+                (int)SpiceTokenType.WHITESPACE,
                 "A whitespace characters that will be ignored",
                 @"[\t 	]+",
                 (SpiceLexerState state, string lexem) => LexerRuleReturnDecision.IgnoreToken));
@@ -65,8 +65,8 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 (int)SpiceTokenType.CONTINUATION_CURRENT_LINE,
                 "A current line continuation character that is ignored",
                 @"(\\\\)(\r\n|\r|\n)",
-                (SpiceLexerState state, string lexem) => LexerRuleReturnDecision.IgnoreToken, 
-                topRule:true));
+                (SpiceLexerState state, string lexem) => LexerRuleReturnDecision.IgnoreToken,
+                topRule: true));
 
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.CONTINUATION_NEXT_LINE,
@@ -176,13 +176,13 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
 
             builder.AddRegexRule(
                 new LexerTokenRule<SpiceLexerState>(
-                    (int) SpiceTokenType.DELIMITER,
+                    (int)SpiceTokenType.DELIMITER,
                     "A delimiter character",
                     @"(\(|\)|\|)",
                     (SpiceLexerState state, string lexem) => LexerRuleReturnDecision.ReturnToken,
                     (SpiceLexerState state, string lexem) =>
                     {
-                        if (state.PreviousReturnedTokenType == (int) SpiceTokenType.IF || (state.PreviousReturnedTokenType == (int)SpiceTokenType.ELSE_IF))
+                        if (state.PreviousReturnedTokenType == (int)SpiceTokenType.IF || (state.PreviousReturnedTokenType == (int)SpiceTokenType.ELSE_IF))
                         {
                             return LexerRuleUseDecision.Next;
                         }
@@ -306,7 +306,6 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
               "\\.ELSEIF",
               ignoreCase: !_options.IsDotStatementNameCaseSensitive));
 
-
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.MODEL,
                 ".MODEL keyword",
@@ -348,7 +347,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 null,
                 (SpiceLexerState state, string lexem) =>
                 {
-                    if (state.LineNumber == 1 && _options.HasTitle )
+                    if (state.LineNumber == 1 && _options.HasTitle)
                     {
                         return LexerRuleUseDecision.Next;
                     }

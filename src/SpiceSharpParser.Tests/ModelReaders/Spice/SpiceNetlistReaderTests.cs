@@ -1,6 +1,6 @@
+using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
 using Xunit;
-using SpiceSharpParser.ModelReaders.Netlist.Spice;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice
 {

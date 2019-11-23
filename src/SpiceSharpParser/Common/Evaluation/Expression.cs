@@ -8,7 +8,7 @@ namespace SpiceSharpParser.Common.Evaluation
     public abstract class Expression
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Evaluation.Expression"/> class.
+        /// Initializes a new instance of the <see cref="Expression"/> class.
         /// </summary>
         /// <param name="expression">Expression.</param>
         protected Expression(string expression)
@@ -22,11 +22,18 @@ namespace SpiceSharpParser.Common.Evaluation
         public string ValueExpression { get; }
 
         /// <summary>
+        /// Gets the value indicating whether expression can provide value without evaluation.
+        /// </summary>
+        public abstract bool CanProvideValueDirectly { get; }
+
+        /// <summary>
         /// Clones the expression.
         /// </summary>
         /// <returns>
         /// A cloned expression.
         /// </returns>
         public abstract Expression Clone();
+
+        public abstract double GetValue();
     }
 }

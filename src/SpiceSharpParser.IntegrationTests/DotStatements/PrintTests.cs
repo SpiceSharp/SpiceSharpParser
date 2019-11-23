@@ -1,5 +1,5 @@
-using Xunit;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
+using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.DotStatements
 {

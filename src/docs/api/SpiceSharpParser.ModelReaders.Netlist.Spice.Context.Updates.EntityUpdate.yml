@@ -1,0 +1,601 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate
+  id: EntityUpdate
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.#ctor
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.Entity
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.ParameterUpdatesBeforeLoad
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.ParameterUpdatesBeforeTemperature
+  langs:
+  - csharp
+  - vb
+  name: EntityUpdate
+  nameWithType: EntityUpdate
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdate.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: EntityUpdate
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdate.cs
+    startLine: 5
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: public class EntityUpdate
+    content.vb: Public Class EntityUpdate
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.#ctor
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.#ctor
+  id: '#ctor'
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate
+  langs:
+  - csharp
+  - vb
+  name: EntityUpdate()
+  nameWithType: EntityUpdate.EntityUpdate()
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.EntityUpdate()
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdate.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdate.cs
+    startLine: 7
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: public EntityUpdate()
+    content.vb: Public Sub New
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.Entity
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.Entity
+  id: Entity
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate
+  langs:
+  - csharp
+  - vb
+  name: Entity
+  nameWithType: EntityUpdate.Entity
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.Entity
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdate.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Entity
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdate.cs
+    startLine: 13
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: public Entity Entity { get; set; }
+    parameters: []
+    return:
+      type: SpiceSharp.Circuits.Entity
+    content.vb: Public Property Entity As Entity
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.Entity*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.ParameterUpdatesBeforeLoad
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.ParameterUpdatesBeforeLoad
+  id: ParameterUpdatesBeforeLoad
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate
+  langs:
+  - csharp
+  - vb
+  name: ParameterUpdatesBeforeLoad
+  nameWithType: EntityUpdate.ParameterUpdatesBeforeLoad
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.ParameterUpdatesBeforeLoad
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdate.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ParameterUpdatesBeforeLoad
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdate.cs
+    startLine: 15
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: public List<EntityParameterUpdate> ParameterUpdatesBeforeLoad { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate}
+    content.vb: Public ReadOnly Property ParameterUpdatesBeforeLoad As List(Of EntityParameterUpdate)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.ParameterUpdatesBeforeLoad*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.ParameterUpdatesBeforeTemperature
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.ParameterUpdatesBeforeTemperature
+  id: ParameterUpdatesBeforeTemperature
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate
+  langs:
+  - csharp
+  - vb
+  name: ParameterUpdatesBeforeTemperature
+  nameWithType: EntityUpdate.ParameterUpdatesBeforeTemperature
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.ParameterUpdatesBeforeTemperature
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdate.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ParameterUpdatesBeforeTemperature
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/EntityUpdate.cs
+    startLine: 17
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  syntax:
+    content: public List<EntityParameterUpdate> ParameterUpdatesBeforeTemperature { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate}
+    content.vb: Public ReadOnly Property ParameterUpdatesBeforeTemperature As List(Of EntityParameterUpdate)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.ParameterUpdatesBeforeTemperature*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.#ctor*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.#ctor
+  name: EntityUpdate
+  nameWithType: EntityUpdate.EntityUpdate
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.EntityUpdate
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.Entity*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.Entity
+  name: Entity
+  nameWithType: EntityUpdate.Entity
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.Entity
+- uid: SpiceSharp.Circuits.Entity
+  commentId: T:SpiceSharp.Circuits.Entity
+  parent: SpiceSharp.Circuits
+  isExternal: true
+  name: Entity
+  nameWithType: Entity
+  fullName: SpiceSharp.Circuits.Entity
+- uid: SpiceSharp.Circuits
+  commentId: N:SpiceSharp.Circuits
+  isExternal: true
+  name: SpiceSharp.Circuits
+  nameWithType: SpiceSharp.Circuits
+  fullName: SpiceSharp.Circuits
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.ParameterUpdatesBeforeLoad*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.ParameterUpdatesBeforeLoad
+  name: ParameterUpdatesBeforeLoad
+  nameWithType: EntityUpdate.ParameterUpdatesBeforeLoad
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.ParameterUpdatesBeforeLoad
+- uid: System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate}
+  commentId: T:System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<EntityParameterUpdate>
+  nameWithType: List<EntityParameterUpdate>
+  fullName: System.Collections.Generic.List<SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate>
+  nameWithType.vb: List(Of EntityParameterUpdate)
+  fullName.vb: System.Collections.Generic.List(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate)
+  name.vb: List(Of EntityParameterUpdate)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate
+    name: EntityParameterUpdate
+    nameWithType: EntityParameterUpdate
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate
+    name: EntityParameterUpdate
+    nameWithType: EntityParameterUpdate
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityParameterUpdate
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.ParameterUpdatesBeforeTemperature*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.ParameterUpdatesBeforeTemperature
+  name: ParameterUpdatesBeforeTemperature
+  nameWithType: EntityUpdate.ParameterUpdatesBeforeTemperature
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates.EntityUpdate.ParameterUpdatesBeforeTemperature

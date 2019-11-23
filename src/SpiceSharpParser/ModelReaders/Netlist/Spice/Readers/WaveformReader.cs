@@ -1,9 +1,9 @@
-﻿using System;
-using SpiceSharp.Components;
+﻿using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
@@ -32,7 +32,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <returns>
         /// An new instance of waveform.
         /// </returns>
-        public Waveform Generate(string type, ParameterCollection parameters, IReadingContext context)
+        public Waveform Generate(string type, ParameterCollection parameters, ICircuitContext context)
         {
             if (type == null)
             {
@@ -57,7 +57,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
             return reader.Generate(parameters, context);
         }
 
-        public bool Supports(string type, IReadingContext context)
+        public bool Supports(string type, ICircuitContext context)
         {
             if (type == null)
             {

@@ -1,0 +1,129 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider
+  id: IRandomDoubleProvider
+  parent: SpiceSharpParser.Common.Mathematics.Probability
+  children:
+  - SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider.NextDouble
+  - SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider.NextSignedDouble
+  langs:
+  - csharp
+  - vb
+  name: IRandomDoubleProvider
+  nameWithType: IRandomDoubleProvider
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider
+  type: Interface
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/IRandomNumberProvider.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IRandomDoubleProvider
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/IRandomNumberProvider.cs
+    startLine: 12
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nInterface for all random double providers.\n"
+  example: []
+  syntax:
+    content: public interface IRandomDoubleProvider
+    content.vb: Public Interface IRandomDoubleProvider
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider.NextSignedDouble
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider.NextSignedDouble
+  id: NextSignedDouble
+  parent: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider
+  langs:
+  - csharp
+  - vb
+  name: NextSignedDouble()
+  nameWithType: IRandomDoubleProvider.NextSignedDouble()
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider.NextSignedDouble()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/IRandomNumberProvider.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: NextSignedDouble
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/IRandomNumberProvider.cs
+    startLine: 20
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nComputes new random double in range (-1, 1).\n"
+  example: []
+  syntax:
+    content: double NextSignedDouble()
+    return:
+      type: System.Double
+      description: "\nRandom double in range (-1, 1).\n"
+    content.vb: Function NextSignedDouble As Double
+  overload: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider.NextSignedDouble*
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider.NextDouble
+  commentId: M:SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider.NextDouble
+  id: NextDouble
+  parent: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider
+  langs:
+  - csharp
+  - vb
+  name: NextDouble()
+  nameWithType: IRandomDoubleProvider.NextDouble()
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider.NextDouble()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Probability/IRandomNumberProvider.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: NextDouble
+    path: ../SpiceSharpParser/Common/Mathematics/Probability/IRandomNumberProvider.cs
+    startLine: 28
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Probability
+  summary: "\nComputes new random double in range (0, 1).\n"
+  example: []
+  syntax:
+    content: double NextDouble()
+    return:
+      type: System.Double
+      description: "\nRandom double in range (0, 1).\n"
+    content.vb: Function NextDouble As Double
+  overload: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider.NextDouble*
+references:
+- uid: SpiceSharpParser.Common.Mathematics.Probability
+  commentId: N:SpiceSharpParser.Common.Mathematics.Probability
+  name: SpiceSharpParser.Common.Mathematics.Probability
+  nameWithType: SpiceSharpParser.Common.Mathematics.Probability
+  fullName: SpiceSharpParser.Common.Mathematics.Probability
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider.NextSignedDouble*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider.NextSignedDouble
+  name: NextSignedDouble
+  nameWithType: IRandomDoubleProvider.NextSignedDouble
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider.NextSignedDouble
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  name: Double
+  nameWithType: Double
+  fullName: System.Double
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider.NextDouble*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider.NextDouble
+  name: NextDouble
+  nameWithType: IRandomDoubleProvider.NextDouble
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomDoubleProvider.NextDouble

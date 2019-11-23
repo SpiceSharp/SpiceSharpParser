@@ -1,9 +1,6 @@
-using System;
-using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.Parsers.Expression;
 using SpiceSharpParser.Parsers.Netlist;
-using SpiceSharpParser.Parsers.Netlist.Spice;
+using System;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Common
@@ -517,7 +514,6 @@ namespace SpiceSharpParser.IntegrationTests.Common
 
             EqualsWithTol(export, references);
         }
-
 
         [Fact]
         public void EntityParameterPositive3()

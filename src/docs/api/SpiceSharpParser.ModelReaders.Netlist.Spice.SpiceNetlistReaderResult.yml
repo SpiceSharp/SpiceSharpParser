@@ -1,0 +1,1252 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+  id: SpiceNetlistReaderResult
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.#ctor(SpiceSharp.Circuit,System.String)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Circuit
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Comments
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Exports
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.MonteCarloResult
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Prints
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Seed
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.SimulationConfiguration
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Simulations
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Title
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Warnings
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.XyPlots
+  langs:
+  - csharp
+  - vb
+  name: SpiceNetlistReaderResult
+  nameWithType: SpiceNetlistReaderResult
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SpiceNetlistReaderResult
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+    startLine: 14
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nA result of reading a SPICE netlist model.\n"
+  example: []
+  syntax:
+    content: public class SpiceNetlistReaderResult
+    content.vb: Public Class SpiceNetlistReaderResult
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.#ctor(SpiceSharp.Circuit,System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.#ctor(SpiceSharp.Circuit,System.String)
+  id: '#ctor(SpiceSharp.Circuit,System.String)'
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+  langs:
+  - csharp
+  - vb
+  name: SpiceNetlistReaderResult(Circuit, String)
+  nameWithType: SpiceNetlistReaderResult.SpiceNetlistReaderResult(Circuit, String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.SpiceNetlistReaderResult(SpiceSharp.Circuit, System.String)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+    startLine: 21
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nInitializes a new instance of the <xref href=\"SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
+  example: []
+  syntax:
+    content: public SpiceNetlistReaderResult(Circuit circuit, string title)
+    parameters:
+    - id: circuit
+      type: SpiceSharp.Circuit
+      description: The SpiceSharp circuit for the netlist.
+    - id: title
+      type: System.String
+      description: The title of the netlist.
+    content.vb: Public Sub New(circuit As Circuit, title As String)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Title
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Title
+  id: Title
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+  langs:
+  - csharp
+  - vb
+  name: Title
+  nameWithType: SpiceNetlistReaderResult.Title
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Title
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Title
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+    startLine: 30
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets the title of the netlist.\n"
+  example: []
+  syntax:
+    content: public string Title { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property Title As String
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Title*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Circuit
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Circuit
+  id: Circuit
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+  langs:
+  - csharp
+  - vb
+  name: Circuit
+  nameWithType: SpiceNetlistReaderResult.Circuit
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Circuit
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Circuit
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+    startLine: 35
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets the circuit from the netlist.\n"
+  example: []
+  syntax:
+    content: public Circuit Circuit { get; }
+    parameters: []
+    return:
+      type: SpiceSharp.Circuit
+    content.vb: Public ReadOnly Property Circuit As Circuit
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Circuit*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Simulations
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Simulations
+  id: Simulations
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+  langs:
+  - csharp
+  - vb
+  name: Simulations
+  nameWithType: SpiceNetlistReaderResult.Simulations
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Simulations
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Simulations
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+    startLine: 40
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets the list of simulation from the netlist.\n"
+  example: []
+  syntax:
+    content: public List<Simulation> Simulations { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{SpiceSharp.Simulations.Simulation}
+    content.vb: Public ReadOnly Property Simulations As List(Of Simulation)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Simulations*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Comments
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Comments
+  id: Comments
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+  langs:
+  - csharp
+  - vb
+  name: Comments
+  nameWithType: SpiceNetlistReaderResult.Comments
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Comments
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Comments
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+    startLine: 45
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets the list of comments from the netlist.\n"
+  example: []
+  syntax:
+    content: public List<string> Comments { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{System.String}
+    content.vb: Public ReadOnly Property Comments As List(Of String)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Comments*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Warnings
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Warnings
+  id: Warnings
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+  langs:
+  - csharp
+  - vb
+  name: Warnings
+  nameWithType: SpiceNetlistReaderResult.Warnings
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Warnings
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Warnings
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+    startLine: 50
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets the warnings created during creating SpiceSharp objects.\n"
+  example: []
+  syntax:
+    content: public List<string> Warnings { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{System.String}
+    content.vb: Public ReadOnly Property Warnings As List(Of String)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Warnings*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Exports
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Exports
+  id: Exports
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+  langs:
+  - csharp
+  - vb
+  name: Exports
+  nameWithType: SpiceNetlistReaderResult.Exports
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Exports
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Exports
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+    startLine: 55
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets the list of exports from the netlist.\n"
+  example: []
+  syntax:
+    content: public List<Export> Exports { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export}
+    content.vb: Public ReadOnly Property Exports As List(Of Export)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Exports*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.XyPlots
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.XyPlots
+  id: XyPlots
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+  langs:
+  - csharp
+  - vb
+  name: XyPlots
+  nameWithType: SpiceNetlistReaderResult.XyPlots
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.XyPlots
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: XyPlots
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+    startLine: 60
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets the list of generated X-Y plots.\n"
+  example: []
+  syntax:
+    content: public List<XyPlot> XyPlots { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.XyPlot}
+    content.vb: Public ReadOnly Property XyPlots As List(Of XyPlot)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.XyPlots*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.MonteCarloResult
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.MonteCarloResult
+  id: MonteCarloResult
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+  langs:
+  - csharp
+  - vb
+  name: MonteCarloResult
+  nameWithType: SpiceNetlistReaderResult.MonteCarloResult
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.MonteCarloResult
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: MonteCarloResult
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+    startLine: 65
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets the Monte Carlo Analysis results.\n"
+  example: []
+  syntax:
+    content: public MonteCarloResult MonteCarloResult { get; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.MonteCarloResult
+    content.vb: Public ReadOnly Property MonteCarloResult As MonteCarloResult
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.MonteCarloResult*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.SimulationConfiguration
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.SimulationConfiguration
+  id: SimulationConfiguration
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+  langs:
+  - csharp
+  - vb
+  name: SimulationConfiguration
+  nameWithType: SpiceNetlistReaderResult.SimulationConfiguration
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.SimulationConfiguration
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SimulationConfiguration
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+    startLine: 70
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets the simulation configuration.\n"
+  example: []
+  syntax:
+    content: public SimulationConfiguration SimulationConfiguration { get; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations.SimulationConfiguration
+    content.vb: Public ReadOnly Property SimulationConfiguration As SimulationConfiguration
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.SimulationConfiguration*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Prints
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Prints
+  id: Prints
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+  langs:
+  - csharp
+  - vb
+  name: Prints
+  nameWithType: SpiceNetlistReaderResult.Prints
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Prints
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Prints
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+    startLine: 75
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets the list of generated prints.\n"
+  example: []
+  syntax:
+    content: public List<Print> Prints { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints.Print}
+    content.vb: Public ReadOnly Property Prints As List(Of Print)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Prints*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Seed
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Seed
+  id: Seed
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+  langs:
+  - csharp
+  - vb
+  name: Seed
+  nameWithType: SpiceNetlistReaderResult.Seed
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Seed
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Seed
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderResult.cs
+    startLine: 80
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nGets or sets the used random seed.\n"
+  example: []
+  syntax:
+    content: public int? Seed { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Int32}
+    content.vb: Public Property Seed As Integer?
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Seed*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice
+  name: SpiceNetlistReaderResult
+  nameWithType: SpiceNetlistReaderResult
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.#ctor*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.#ctor
+  name: SpiceNetlistReaderResult
+  nameWithType: SpiceNetlistReaderResult.SpiceNetlistReaderResult
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.SpiceNetlistReaderResult
+- uid: SpiceSharp.Circuit
+  commentId: T:SpiceSharp.Circuit
+  parent: SpiceSharp
+  isExternal: true
+  name: Circuit
+  nameWithType: Circuit
+  fullName: SpiceSharp.Circuit
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: SpiceSharp
+  commentId: N:SpiceSharp
+  isExternal: true
+  name: SpiceSharp
+  nameWithType: SpiceSharp
+  fullName: SpiceSharp
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Title*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Title
+  name: Title
+  nameWithType: SpiceNetlistReaderResult.Title
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Title
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Circuit*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Circuit
+  name: Circuit
+  nameWithType: SpiceNetlistReaderResult.Circuit
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Circuit
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Simulations*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Simulations
+  name: Simulations
+  nameWithType: SpiceNetlistReaderResult.Simulations
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Simulations
+- uid: System.Collections.Generic.List{SpiceSharp.Simulations.Simulation}
+  commentId: T:System.Collections.Generic.List{SpiceSharp.Simulations.Simulation}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<Simulation>
+  nameWithType: List<Simulation>
+  fullName: System.Collections.Generic.List<SpiceSharp.Simulations.Simulation>
+  nameWithType.vb: List(Of Simulation)
+  fullName.vb: System.Collections.Generic.List(Of SpiceSharp.Simulations.Simulation)
+  name.vb: List(Of Simulation)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharp.Simulations.Simulation
+    name: Simulation
+    nameWithType: Simulation
+    fullName: SpiceSharp.Simulations.Simulation
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharp.Simulations.Simulation
+    name: Simulation
+    nameWithType: Simulation
+    fullName: SpiceSharp.Simulations.Simulation
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Comments*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Comments
+  name: Comments
+  nameWithType: SpiceNetlistReaderResult.Comments
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Comments
+- uid: System.Collections.Generic.List{System.String}
+  commentId: T:System.Collections.Generic.List{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<String>
+  nameWithType: List<String>
+  fullName: System.Collections.Generic.List<System.String>
+  nameWithType.vb: List(Of String)
+  fullName.vb: System.Collections.Generic.List(Of System.String)
+  name.vb: List(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Warnings*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Warnings
+  name: Warnings
+  nameWithType: SpiceNetlistReaderResult.Warnings
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Warnings
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Exports*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Exports
+  name: Exports
+  nameWithType: SpiceNetlistReaderResult.Exports
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Exports
+- uid: System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export}
+  commentId: T:System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<Export>
+  nameWithType: List<Export>
+  fullName: System.Collections.Generic.List<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export>
+  nameWithType.vb: List(Of Export)
+  fullName.vb: System.Collections.Generic.List(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export)
+  name.vb: List(Of Export)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+    name: Export
+    nameWithType: Export
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+    name: Export
+    nameWithType: Export
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.Export
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.XyPlots*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.XyPlots
+  name: XyPlots
+  nameWithType: SpiceNetlistReaderResult.XyPlots
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.XyPlots
+- uid: System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.XyPlot}
+  commentId: T:System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.XyPlot}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<XyPlot>
+  nameWithType: List<XyPlot>
+  fullName: System.Collections.Generic.List<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.XyPlot>
+  nameWithType.vb: List(Of XyPlot)
+  fullName.vb: System.Collections.Generic.List(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.XyPlot)
+  name.vb: List(Of XyPlot)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.XyPlot
+    name: XyPlot
+    nameWithType: XyPlot
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.XyPlot
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.XyPlot
+    name: XyPlot
+    nameWithType: XyPlot
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots.XyPlot
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.MonteCarloResult*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.MonteCarloResult
+  name: MonteCarloResult
+  nameWithType: SpiceNetlistReaderResult.MonteCarloResult
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.MonteCarloResult
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.MonteCarloResult
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.MonteCarloResult
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  name: MonteCarloResult
+  nameWithType: MonteCarloResult
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.MonteCarloResult
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.SimulationConfiguration*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.SimulationConfiguration
+  name: SimulationConfiguration
+  nameWithType: SpiceNetlistReaderResult.SimulationConfiguration
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.SimulationConfiguration
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations.SimulationConfiguration
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations.SimulationConfiguration
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations
+  name: SimulationConfiguration
+  nameWithType: SimulationConfiguration
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations.SimulationConfiguration
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Prints*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Prints
+  name: Prints
+  nameWithType: SpiceNetlistReaderResult.Prints
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Prints
+- uid: System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints.Print}
+  commentId: T:System.Collections.Generic.List{SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints.Print}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<Print>
+  nameWithType: List<Print>
+  fullName: System.Collections.Generic.List<SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints.Print>
+  nameWithType.vb: List(Of Print)
+  fullName.vb: System.Collections.Generic.List(Of SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints.Print)
+  name.vb: List(Of Print)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints.Print
+    name: Print
+    nameWithType: Print
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints.Print
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints.Print
+    name: Print
+    nameWithType: Print
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints.Print
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Seed*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Seed
+  name: Seed
+  nameWithType: SpiceNetlistReaderResult.Seed
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.Seed
+- uid: System.Nullable{System.Int32}
+  commentId: T:System.Nullable{System.Int32}
+  parent: System
+  definition: System.Nullable`1
+  name: Nullable<Int32>
+  nameWithType: Nullable<Int32>
+  fullName: System.Nullable<System.Int32>
+  nameWithType.vb: Nullable(Of Int32)
+  fullName.vb: System.Nullable(Of System.Int32)
+  name.vb: Nullable(Of Int32)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )

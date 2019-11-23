@@ -1,10 +1,10 @@
-﻿using System;
-using SpiceSharp.Simulations;
+﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
@@ -26,7 +26,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <summary>
         /// Creates simulations.
         /// </summary>
-        protected void CreateSimulations(Control statement, IReadingContext context, Func<string, Control, IReadingContext, BaseSimulation> createSimulation)
+        protected void CreateSimulations(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, BaseSimulation> createSimulation)
         {
             _factory.Create(statement, context, createSimulation);
         }
@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// </summary>
         /// <param name="baseSimulation">The simulation to configure.</param>
         /// <param name="context">The reading context.</param>
-        protected void ConfigureCommonSettings(BaseSimulation baseSimulation, IReadingContext context)
+        protected void ConfigureCommonSettings(BaseSimulation baseSimulation, ICircuitContext context)
         {
             var baseConfiguration = baseSimulation.Configurations.Get<BaseConfiguration>();
             if (context.Result.SimulationConfiguration.Gmin.HasValue)

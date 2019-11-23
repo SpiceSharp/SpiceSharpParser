@@ -80,8 +80,9 @@
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">Expression</span></div>
-      <div class="level2"><a class="xref" href="SpiceSharpParser.Common.Evaluation.Expressions.CachedExpression.html">CachedExpression</a></div>
       <div class="level2"><a class="xref" href="SpiceSharpParser.Common.Evaluation.Expressions.ConstantExpression.html">ConstantExpression</a></div>
+      <div class="level2"><a class="xref" href="SpiceSharpParser.Common.Evaluation.Expressions.DynamicExpression.html">DynamicExpression</a></div>
+      <div class="level2"><a class="xref" href="SpiceSharpParser.Common.Evaluation.Expressions.FunctionExpression.html">FunctionExpression</a></div>
       <div class="level2"><a class="xref" href="SpiceSharpParser.Common.Evaluation.Expressions.NamedExpression.html">NamedExpression</a></div>
   </div>
   <div class="inheritedMembers">
@@ -112,7 +113,7 @@
   <h6><strong>Assembly</strong>: SpiceSharpParser.dll</h6>
   <h5 id="SpiceSharpParser_Common_Evaluation_Expression_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Expression</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class Expression</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -130,7 +131,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Expression(string expression)</code></pre>
+    <pre><code class="lang-csharp hljs">protected Expression(string expression)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -154,19 +155,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Expression_CurrentValue.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Expression.CurrentValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Expression_CanProvideValueDirectly.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Expression.CanProvideValueDirectly%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/Evaluation/Expression.cs/#L32">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/Evaluation/Expression.cs/#L27">View Source</a>
   </span>
-  <a id="SpiceSharpParser_Common_Evaluation_Expression_CurrentValue_" data-uid="SpiceSharpParser.Common.Evaluation.Expression.CurrentValue*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Expression_CurrentValue" data-uid="SpiceSharpParser.Common.Evaluation.Expression.CurrentValue">CurrentValue</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the current evaluation value.</p>
+  <a id="SpiceSharpParser_Common_Evaluation_Expression_CanProvideValueDirectly_" data-uid="SpiceSharpParser.Common.Evaluation.Expression.CanProvideValueDirectly*"></a>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Expression_CanProvideValueDirectly" data-uid="SpiceSharpParser.Common.Evaluation.Expression.CanProvideValueDirectly">CanProvideValueDirectly</h4>
+  <div class="markdown level1 summary"><p>Gets the value indicating whether expression can provide value without evaluation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public double CurrentValue { get; protected set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract bool CanProvideValueDirectly { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -178,7 +179,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Double</span></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -188,7 +189,7 @@
     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Expression_ValueExpression.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Expression.ValueExpression%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/Evaluation/Expression.cs/#L27">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/Evaluation/Expression.cs/#L22">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Expression_ValueExpression_" data-uid="SpiceSharpParser.Common.Evaluation.Expression.ValueExpression*"></a>
   <h4 id="SpiceSharpParser_Common_Evaluation_Expression_ValueExpression" data-uid="SpiceSharpParser.Common.Evaluation.Expression.ValueExpression">ValueExpression</h4>
@@ -221,7 +222,7 @@
     <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Expression_Clone.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Expression.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/Evaluation/Expression.cs/#L74">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/Evaluation/Expression.cs/#L35">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_Evaluation_Expression_Clone_" data-uid="SpiceSharpParser.Common.Evaluation.Expression.Clone*"></a>
   <h4 id="SpiceSharpParser_Common_Evaluation_Expression_Clone" data-uid="SpiceSharpParser.Common.Evaluation.Expression.Clone">Clone()</h4>
@@ -230,7 +231,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Expression Clone()</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract Expression Clone()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -250,44 +251,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Expression_Evaluate_SpiceSharpParser_Common_Evaluation_IEvaluator_SpiceSharpParser_Common_Evaluation_ExpressionContext_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Expression.Evaluate(SpiceSharpParser.Common.Evaluation.IEvaluator%2CSpiceSharpParser.Common.Evaluation.ExpressionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Expression_GetValue.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Expression.GetValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/Evaluation/Expression.cs/#L42">View Source</a>
+    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/Evaluation/Expression.cs/#L37">View Source</a>
   </span>
-  <a id="SpiceSharpParser_Common_Evaluation_Expression_Evaluate_" data-uid="SpiceSharpParser.Common.Evaluation.Expression.Evaluate*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Expression_Evaluate_SpiceSharpParser_Common_Evaluation_IEvaluator_SpiceSharpParser_Common_Evaluation_ExpressionContext_" data-uid="SpiceSharpParser.Common.Evaluation.Expression.Evaluate(SpiceSharpParser.Common.Evaluation.IEvaluator,SpiceSharpParser.Common.Evaluation.ExpressionContext)">Evaluate(IEvaluator, ExpressionContext)</h4>
-  <div class="markdown level1 summary"><p>Evaluates the expression.</p>
-</div>
+  <a id="SpiceSharpParser_Common_Evaluation_Expression_GetValue_" data-uid="SpiceSharpParser.Common.Evaluation.Expression.GetValue*"></a>
+  <h4 id="SpiceSharpParser_Common_Evaluation_Expression_GetValue" data-uid="SpiceSharpParser.Common.Evaluation.Expression.GetValue">GetValue()</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual double Evaluate(IEvaluator evaluator, ExpressionContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract double GetValue()</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.IEvaluator.html">IEvaluator</a></td>
-        <td><span class="parametername">evaluator</span></td>
-        <td><p>Evaluator.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.ExpressionContext.html">ExpressionContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>Context.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -299,87 +275,6 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Double</span></td>
-        <td><p>The value of the expression.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Expression_Invalidate.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Expression.Invalidate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/Evaluation/Expression.cs/#L63">View Source</a>
-  </span>
-  <a id="SpiceSharpParser_Common_Evaluation_Expression_Invalidate_" data-uid="SpiceSharpParser.Common.Evaluation.Expression.Invalidate*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Expression_Invalidate" data-uid="SpiceSharpParser.Common.Evaluation.Expression.Invalidate">Invalidate()</h4>
-  <div class="markdown level1 summary"><p>Invalidates the expression.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void Invalidate()</code></pre>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Expression_OnEvaluated_System_Double_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Expression.OnEvaluated(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/Evaluation/Expression.cs/#L79">View Source</a>
-  </span>
-  <a id="SpiceSharpParser_Common_Evaluation_Expression_OnEvaluated_" data-uid="SpiceSharpParser.Common.Evaluation.Expression.OnEvaluated*"></a>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Expression_OnEvaluated_System_Double_" data-uid="SpiceSharpParser.Common.Evaluation.Expression.OnEvaluated(System.Double)">OnEvaluated(Double)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnEvaluated(double newValue)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Double</span></td>
-        <td><span class="parametername">newValue</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="events">Events
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_Evaluation_Expression_Evaluated.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.Evaluation.Expression.Evaluated%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/Evaluation/Expression.cs/#L22">View Source</a>
-  </span>
-  <h4 id="SpiceSharpParser_Common_Evaluation_Expression_Evaluated" data-uid="SpiceSharpParser.Common.Evaluation.Expression.Evaluated">Evaluated</h4>
-  <div class="markdown level1 summary"><p>Thrown when expression is evaluated.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public event EventHandler&lt;EvaluatedArgs&gt; Evaluated</code></pre>
-  </div>
-  <h5 class="eventType">Event Type</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.EventHandler</span>&lt;<a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluatedArgs.html">EvaluatedArgs</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>

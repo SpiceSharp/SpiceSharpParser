@@ -1,6 +1,6 @@
-﻿using System;
-using SpiceSharp.Circuits;
+﻿using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
+using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -8,11 +8,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
     {
         void Prepare(BaseSimulation simulation);
 
-        void SetNodeSetVoltage(string nodeId, string expression, IReadingContext readingContext);
+        void SetNodeSetVoltage(string nodeId, string expression);
 
-        void SetICVoltage(string nodeId, string expression, IReadingContext readingContext);
+        void SetICVoltage(string nodeId, string expression);
 
-        void SetParameter(Entity @object, string paramName, string expression, bool beforeTemperature, bool onload, IReadingContext readingContext);
+        void SetParameter(Entity @object, string paramName, string expression, bool beforeTemperature, bool onload);
 
         void SetParameter(Entity @object, string paramName, double value, bool beforeTemperature, bool onload);
 
@@ -21,5 +21,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         void ExecuteTemperatureBehaviorBeforeLoad(Entity @object);
 
         void ExecuteActionBeforeSetup(Action<BaseSimulation> action);
+
+        void ExecuteActionAfterSetup(Action<BaseSimulation> action);
     }
 }

@@ -1,24 +1,16 @@
-﻿using System;
-using SpiceSharp.Simulations;
-using SpiceSharpBehavioral.Parsers;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+﻿using SpiceSharpBehavioral.Parsers;
+using System;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
     public interface IFunction<in TInputArgumentType, out TOutputType> : IFunction
     {
-        TOutputType Logic(string image, TInputArgumentType[] args, IEvaluator evaluator, ExpressionContext context, Simulation simulation = null, IReadingContext readingContext = null);
+        TOutputType Logic(string image, TInputArgumentType[] args, EvaluationContext context);
     }
 
-    public interface IDerivativeFunction<TInputArgumentType, out TOutputType> : IFunction<TInputArgumentType, TOutputType>
+    public interface IDerivativeFunction<TInputArgumentType, TOutputType> : IFunction<TInputArgumentType, TOutputType>
     {
-        Derivatives<Func<double>> Derivative(
-            string image,
-            Func<TInputArgumentType>[] args,
-            IEvaluator evaluator,
-            ExpressionContext context,
-            Simulation simulation = null,
-            IReadingContext readingContext = null);
+        Derivatives<Func<TOutputType>> Derivative(string image, Func<TInputArgumentType>[] args, EvaluationContext context);
     }
 
     public interface IFunction

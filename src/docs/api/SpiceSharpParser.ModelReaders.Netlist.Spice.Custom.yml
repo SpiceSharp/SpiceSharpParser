@@ -1,0 +1,40 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
+  id: SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.ISwitchModel
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.ISwitchModelBaseParameters
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModel
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModelBaseParameters
+  langs:
+  - csharp
+  - vb
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
+  type: Namespace
+  assemblies:
+  - SpiceSharpParser
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.ISwitchModel
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.ISwitchModel
+  name: ISwitchModel
+  nameWithType: ISwitchModel
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.ISwitchModel
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.ISwitchModelBaseParameters
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.ISwitchModelBaseParameters
+  name: ISwitchModelBaseParameters
+  nameWithType: ISwitchModelBaseParameters
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.ISwitchModelBaseParameters
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModel
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModel
+  name: VSwitchModel
+  nameWithType: VSwitchModel
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModel
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModelBaseParameters
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModelBaseParameters
+  name: VSwitchModelBaseParameters
+  nameWithType: VSwitchModelBaseParameters
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModelBaseParameters

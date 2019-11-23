@@ -1,12 +1,10 @@
 ﻿using NSubstitute;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
-using SpiceSharpParser.ModelReaders.Netlist.Spice;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using Xunit;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
 {
@@ -42,17 +40,16 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 }
             };
 
-            var readingContext = Substitute.For<IReadingContext>();
-            readingContext.CaseSensitivity = new SpiceNetlistCaseSensitivitySettings();
+            var readingContext = Substitute.For<ICircuitContext>();
+            readingContext.NameGenerator.GenerateNodeName(Arg.Any<string>()).Returns(x => x[0].ToString());
             readingContext.SimulationPreparations.Returns(Substitute.For<ISimulationPreparations>());
-            readingContext.NodeNameGenerator.Returns(new MainCircuitNodeNameGenerator(new string[] { }, false));
             // act
             var nodeSetControl = new NodeSetControl();
             nodeSetControl.Read(control, readingContext);
 
             // assert
-            readingContext.SimulationPreparations.Received().SetNodeSetVoltage("input", "12", readingContext);
-            readingContext.SimulationPreparations.Received().SetNodeSetVoltage("x", "13", readingContext);
+            readingContext.SimulationPreparations.Received().SetNodeSetVoltage("input", "12");
+            readingContext.SimulationPreparations.Received().SetNodeSetVoltage("x", "13");
         }
     }
 }

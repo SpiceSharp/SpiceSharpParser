@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using System.Text;
-using BenchmarkDotNet.Attributes;
+﻿using BenchmarkDotNet.Attributes;
 using SpiceSharpParser.Lexers.Netlist.Spice;
+using System.Linq;
+using System.Text;
 
 namespace SpiceSharpParser.PerformanceTests.Benchmarks
 {

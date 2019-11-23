@@ -25,7 +25,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".END");
 
             var exports = RunTransientSimulation(netlist, "V(OUT)");
-            Func<double, double> reference =  t => dcVoltage * (1.0 - Math.Exp(-t / tau));
+            Func<double, double> reference = t => dcVoltage * (1.0 - Math.Exp(-t / tau));
             EqualsWithTol(exports, reference);
         }
 

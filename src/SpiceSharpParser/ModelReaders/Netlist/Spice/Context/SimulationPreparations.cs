@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using SpiceSharp.Behaviors;
+﻿using SpiceSharp.Behaviors;
 using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
+using System;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -14,14 +13,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         {
             EntityUpdates = entityUpdates ?? throw new ArgumentNullException(nameof(entityUpdates));
             SimulationUpdates = simulationUpdates ?? throw new ArgumentNullException(nameof(simulationUpdates));
-            BeforeExecute = new List<Action<BaseSimulation>>();
+            BeforeSetup = new List<Action<BaseSimulation>>();
+            AfterSetup = new List<Action<BaseSimulation>>();
         }
 
         protected EntityUpdates EntityUpdates { get; }
 
         protected SimulationsUpdates SimulationUpdates { get; }
 
-        protected List<Action<BaseSimulation>> BeforeExecute { get; }
+        protected List<Action<BaseSimulation>> BeforeSetup { get; }
+
+        protected List<Action<BaseSimulation>> AfterSetup { get; }
 
         public void Prepare(BaseSimulation simulation)
         {
@@ -32,7 +34,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             simulation.BeforeSetup += (obj, args) =>
             {
-                foreach (var action in BeforeExecute)
+                foreach (var action in BeforeSetup)
+                {
+                    action(simulation);
+                }
+            };
+
+            simulation.AfterSetup += (obj, args) =>
+            {
+                foreach (var action in AfterSetup)
                 {
                     action(simulation);
                 }
@@ -42,7 +52,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             EntityUpdates.Apply(simulation);
         }
 
-        public void SetNodeSetVoltage(string nodeId, string expression, IReadingContext readingContext)
+        public void SetNodeSetVoltage(string nodeId, string expression)
         {
             if (nodeId == null)
             {
@@ -54,17 +64,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            SimulationUpdates.AddBeforeTemperature((simulation, evaluators, contexts) =>
+            SimulationUpdates.AddBeforeTemperature((simulation, contexts) =>
             {
-                var simEval = evaluators.GetEvaluator(simulation);
                 var context = contexts.GetContext(simulation);
-                var value = simEval.Evaluate(new DynamicExpression(expression), context, simulation, readingContext);
+                var value = context.Evaluate(expression);
 
                 simulation.Configurations.Get<BaseConfiguration>().Nodesets[nodeId] = value;
             });
         }
 
-        public void SetICVoltage(string nodeId, string expression, IReadingContext readingContext)
+        public void SetICVoltage(string nodeId, string expression)
         {
             if (nodeId == null)
             {
@@ -76,11 +85,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            SimulationUpdates.AddBeforeSetup((simulation, evaluators, contexts) =>
+            SimulationUpdates.AddBeforeSetup((simulation, contexts) =>
             {
-                var simEval = evaluators.GetEvaluator(simulation);
                 var context = contexts.GetContext(simulation);
-                var value = simEval.Evaluate(new DynamicExpression(expression), context, simulation, readingContext);
+                var value = context.Evaluate(expression);
 
                 if (simulation is TimeSimulation ts)
                 {
@@ -96,7 +104,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(entity));
             }
 
-            SimulationUpdates.AddBeforeLoad((simulation, evaluators, contexts) =>
+            SimulationUpdates.AddBeforeLoad((simulation, contexts) =>
             {
                 if (simulation.EntityBehaviors[entity.Name].TryGet<ITemperatureBehavior>(out var temperatureBehavior))
                 {
@@ -111,10 +119,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public void ExecuteActionBeforeSetup(Action<BaseSimulation> action)
         {
-            BeforeExecute.Add(action);
+            BeforeSetup.Add(action);
         }
 
-        public void SetParameter(Entity @object, string paramName, string expression, bool beforeTemperature, bool onload, IReadingContext readingContext)
+        public void ExecuteActionAfterSetup(Action<BaseSimulation> action)
+        {
+            AfterSetup.Add(action);
+        }
+
+        public void SetParameter(Entity @object, string paramName, string expression, bool beforeTemperature, bool onload)
         {
             if (@object == null)
             {
@@ -130,7 +143,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new ArgumentNullException(nameof(expression));
             }
-            EntityUpdates.Add(@object, paramName, expression, beforeTemperature, onload, readingContext);
+            EntityUpdates.Add(@object, paramName, expression, beforeTemperature, onload);
         }
 
         public void SetParameter(Entity @object, string paramName, double value, bool beforeTemperature, bool onload)

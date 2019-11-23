@@ -1,0 +1,1198 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationParameter
+  commentId: T:SpiceSharpParser.Common.Evaluation.EvaluationParameter
+  id: EvaluationParameter
+  parent: SpiceSharpParser.Common.Evaluation
+  children:
+  - SpiceSharpParser.Common.Evaluation.EvaluationParameter.#ctor(SpiceSharpParser.Common.Evaluation.EvaluationContext,System.String)
+  - SpiceSharpParser.Common.Evaluation.EvaluationParameter.Clone
+  - SpiceSharpParser.Common.Evaluation.EvaluationParameter.EvaluationContext
+  - SpiceSharpParser.Common.Evaluation.EvaluationParameter.ParameterName
+  - SpiceSharpParser.Common.Evaluation.EvaluationParameter.Value
+  langs:
+  - csharp
+  - vb
+  name: EvaluationParameter
+  nameWithType: EvaluationParameter
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationParameter
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/EvaluationParameter.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: EvaluationParameter
+    path: ../SpiceSharpParser/Common/Evaluation/EvaluationParameter.cs
+    startLine: 8
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  summary: "\nAn parameter that triggers re-evaluation when changed.\n"
+  example: []
+  syntax:
+    content: 'public class EvaluationParameter : Parameter<double>, ICloneable, ICloneable<Parameter<double>>'
+    content.vb: >-
+      Public Class EvaluationParameter
+          Inherits Parameter(Of Double)
+          Implements ICloneable, ICloneable(Of Parameter(Of Double))
+  inheritance:
+  - System.Object
+  - SpiceSharp.Parameter{System.Double}
+  implements:
+  - SpiceSharp.ICloneable
+  - SpiceSharp.ICloneable{SpiceSharp.Parameter{System.Double}}
+  inheritedMembers:
+  - SpiceSharp.Parameter{System.Double}.CopyFrom(SpiceSharp.Parameter{System.Double})
+  - SpiceSharp.Parameter{System.Double}.SpiceSharp#ICloneable#CopyFrom(SpiceSharp.ICloneable)
+  - SpiceSharp.Parameter{System.Double}.SpiceSharp#ICloneable#Clone
+  - SpiceSharp.Parameter{System.Double}.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationParameter.#ctor(SpiceSharpParser.Common.Evaluation.EvaluationContext,System.String)
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationParameter.#ctor(SpiceSharpParser.Common.Evaluation.EvaluationContext,System.String)
+  id: '#ctor(SpiceSharpParser.Common.Evaluation.EvaluationContext,System.String)'
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationParameter
+  langs:
+  - csharp
+  - vb
+  name: EvaluationParameter(EvaluationContext, String)
+  nameWithType: EvaluationParameter.EvaluationParameter(EvaluationContext, String)
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationParameter.EvaluationParameter(SpiceSharpParser.Common.Evaluation.EvaluationContext, System.String)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/EvaluationParameter.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/Common/Evaluation/EvaluationParameter.cs
+    startLine: 17
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  summary: "\nInitializes a new instance of the <xref href=\"SpiceSharpParser.Common.Evaluation.EvaluationParameter\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
+  example: []
+  syntax:
+    content: public EvaluationParameter(EvaluationContext context, string parameterName)
+    parameters:
+    - id: context
+      type: SpiceSharpParser.Common.Evaluation.EvaluationContext
+      description: An expression context.
+    - id: parameterName
+      type: System.String
+      description: A parameter name.
+    content.vb: Public Sub New(context As EvaluationContext, parameterName As String)
+  overload: SpiceSharpParser.Common.Evaluation.EvaluationParameter.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationParameter.Value
+  commentId: P:SpiceSharpParser.Common.Evaluation.EvaluationParameter.Value
+  id: Value
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationParameter
+  langs:
+  - csharp
+  - vb
+  name: Value
+  nameWithType: EvaluationParameter.Value
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationParameter.Value
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/EvaluationParameter.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Value
+    path: ../SpiceSharpParser/Common/Evaluation/EvaluationParameter.cs
+    startLine: 26
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  summary: "\nGets or sets the value of parameter.\n"
+  example: []
+  syntax:
+    content: public override double Value { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Overrides Property Value As Double
+  overridden: SpiceSharp.Parameter{System.Double}.Value
+  overload: SpiceSharpParser.Common.Evaluation.EvaluationParameter.Value*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationParameter.EvaluationContext
+  commentId: P:SpiceSharpParser.Common.Evaluation.EvaluationParameter.EvaluationContext
+  id: EvaluationContext
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationParameter
+  langs:
+  - csharp
+  - vb
+  name: EvaluationContext
+  nameWithType: EvaluationParameter.EvaluationContext
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationParameter.EvaluationContext
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/EvaluationParameter.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: EvaluationContext
+    path: ../SpiceSharpParser/Common/Evaluation/EvaluationParameter.cs
+    startLine: 40
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  summary: "\nGets the evaluator.\n"
+  example: []
+  syntax:
+    content: protected EvaluationContext EvaluationContext { get; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    content.vb: Protected ReadOnly Property EvaluationContext As EvaluationContext
+  overload: SpiceSharpParser.Common.Evaluation.EvaluationParameter.EvaluationContext*
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationParameter.ParameterName
+  commentId: P:SpiceSharpParser.Common.Evaluation.EvaluationParameter.ParameterName
+  id: ParameterName
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationParameter
+  langs:
+  - csharp
+  - vb
+  name: ParameterName
+  nameWithType: EvaluationParameter.ParameterName
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationParameter.ParameterName
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/EvaluationParameter.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ParameterName
+    path: ../SpiceSharpParser/Common/Evaluation/EvaluationParameter.cs
+    startLine: 45
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  summary: "\nGets the parameter name.\n"
+  example: []
+  syntax:
+    content: protected string ParameterName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Protected ReadOnly Property ParameterName As String
+  overload: SpiceSharpParser.Common.Evaluation.EvaluationParameter.ParameterName*
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationParameter.Clone
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationParameter.Clone
+  id: Clone
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationParameter
+  langs:
+  - csharp
+  - vb
+  name: Clone()
+  nameWithType: EvaluationParameter.Clone()
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationParameter.Clone()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/EvaluationParameter.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Clone
+    path: ../SpiceSharpParser/Common/Evaluation/EvaluationParameter.cs
+    startLine: 53
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation
+  summary: "\nClones the parameter.\n"
+  example: []
+  syntax:
+    content: public override Parameter<double> Clone()
+    return:
+      type: SpiceSharp.Parameter{System.Double}
+      description: "\nA clone of parameter.\n"
+    content.vb: Public Overrides Function Clone As Parameter(Of Double)
+  overridden: SpiceSharp.Parameter{System.Double}.Clone
+  overload: SpiceSharpParser.Common.Evaluation.EvaluationParameter.Clone*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+references:
+- uid: SpiceSharpParser.Common.Evaluation
+  commentId: N:SpiceSharpParser.Common.Evaluation
+  name: SpiceSharpParser.Common.Evaluation
+  nameWithType: SpiceSharpParser.Common.Evaluation
+  fullName: SpiceSharpParser.Common.Evaluation
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharp.Parameter{System.Double}
+  commentId: T:SpiceSharp.Parameter{System.Double}
+  parent: SpiceSharp
+  definition: SpiceSharp.Parameter`1
+  name: Parameter<Double>
+  nameWithType: Parameter<Double>
+  fullName: SpiceSharp.Parameter<System.Double>
+  nameWithType.vb: Parameter(Of Double)
+  fullName.vb: SpiceSharp.Parameter(Of System.Double)
+  name.vb: Parameter(Of Double)
+  spec.csharp:
+  - uid: SpiceSharp.Parameter`1
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharp.Parameter
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharp.Parameter`1
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharp.Parameter
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.ICloneable
+  commentId: T:SpiceSharp.ICloneable
+  parent: SpiceSharp
+  isExternal: true
+  name: ICloneable
+  nameWithType: ICloneable
+  fullName: SpiceSharp.ICloneable
+- uid: SpiceSharp.ICloneable{SpiceSharp.Parameter{System.Double}}
+  commentId: T:SpiceSharp.ICloneable{SpiceSharp.Parameter{System.Double}}
+  parent: SpiceSharp
+  definition: SpiceSharp.ICloneable`1
+  name: ICloneable<Parameter<Double>>
+  nameWithType: ICloneable<Parameter<Double>>
+  fullName: SpiceSharp.ICloneable<SpiceSharp.Parameter<System.Double>>
+  nameWithType.vb: ICloneable(Of Parameter(Of Double))
+  fullName.vb: SpiceSharp.ICloneable(Of SpiceSharp.Parameter(Of System.Double))
+  name.vb: ICloneable(Of Parameter(Of Double))
+  spec.csharp:
+  - uid: SpiceSharp.ICloneable`1
+    name: ICloneable
+    nameWithType: ICloneable
+    fullName: SpiceSharp.ICloneable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SpiceSharp.Parameter`1
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharp.Parameter
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharp.ICloneable`1
+    name: ICloneable
+    nameWithType: ICloneable
+    fullName: SpiceSharp.ICloneable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SpiceSharp.Parameter`1
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharp.Parameter
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Parameter{System.Double}.CopyFrom(SpiceSharp.Parameter{System.Double})
+  commentId: M:SpiceSharp.Parameter{System.Double}.CopyFrom(SpiceSharp.Parameter{System.Double})
+  parent: SpiceSharp.Parameter{System.Double}
+  definition: SpiceSharp.Parameter`1.CopyFrom(SpiceSharp.Parameter{`0})
+  name: CopyFrom(Parameter<Double>)
+  nameWithType: Parameter<Double>.CopyFrom(Parameter<Double>)
+  fullName: SpiceSharp.Parameter<System.Double>.CopyFrom(SpiceSharp.Parameter<System.Double>)
+  nameWithType.vb: Parameter(Of Double).CopyFrom(Parameter(Of Double))
+  fullName.vb: SpiceSharp.Parameter(Of System.Double).CopyFrom(SpiceSharp.Parameter(Of System.Double))
+  name.vb: CopyFrom(Parameter(Of Double))
+  spec.csharp:
+  - uid: SpiceSharp.Parameter`1.CopyFrom(SpiceSharp.Parameter{`0})
+    name: CopyFrom
+    nameWithType: Parameter<Double>.CopyFrom
+    fullName: SpiceSharp.Parameter<System.Double>.CopyFrom
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Parameter`1
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharp.Parameter
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharp.Parameter`1.CopyFrom(SpiceSharp.Parameter{`0})
+    name: CopyFrom
+    nameWithType: Parameter(Of Double).CopyFrom
+    fullName: SpiceSharp.Parameter(Of System.Double).CopyFrom
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Parameter`1
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharp.Parameter
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Parameter{System.Double}.SpiceSharp#ICloneable#CopyFrom(SpiceSharp.ICloneable)
+  commentId: M:SpiceSharp.Parameter{System.Double}.SpiceSharp#ICloneable#CopyFrom(SpiceSharp.ICloneable)
+  parent: SpiceSharp.Parameter{System.Double}
+  definition: SpiceSharp.Parameter`1.SpiceSharp#ICloneable#CopyFrom(SpiceSharp.ICloneable)
+  name: ICloneable.CopyFrom(ICloneable)
+  nameWithType: Parameter<Double>.ICloneable.CopyFrom(ICloneable)
+  fullName: SpiceSharp.Parameter<System.Double>.SpiceSharp.ICloneable.CopyFrom(SpiceSharp.ICloneable)
+  nameWithType.vb: Parameter(Of Double).SpiceSharp.ICloneable.CopyFrom(ICloneable)
+  fullName.vb: SpiceSharp.Parameter(Of System.Double).SpiceSharp.ICloneable.CopyFrom(SpiceSharp.ICloneable)
+  name.vb: SpiceSharp.ICloneable.CopyFrom(ICloneable)
+  spec.csharp:
+  - uid: SpiceSharp.Parameter`1.SpiceSharp#ICloneable#CopyFrom(SpiceSharp.ICloneable)
+    name: ICloneable.CopyFrom
+    nameWithType: Parameter<Double>.ICloneable.CopyFrom
+    fullName: SpiceSharp.Parameter<System.Double>.SpiceSharp.ICloneable.CopyFrom
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.ICloneable
+    name: ICloneable
+    nameWithType: ICloneable
+    fullName: SpiceSharp.ICloneable
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharp.Parameter`1.SpiceSharp#ICloneable#CopyFrom(SpiceSharp.ICloneable)
+    name: SpiceSharp.ICloneable.CopyFrom
+    nameWithType: Parameter(Of Double).SpiceSharp.ICloneable.CopyFrom
+    fullName: SpiceSharp.Parameter(Of System.Double).SpiceSharp.ICloneable.CopyFrom
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.ICloneable
+    name: ICloneable
+    nameWithType: ICloneable
+    fullName: SpiceSharp.ICloneable
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Parameter{System.Double}.SpiceSharp#ICloneable#Clone
+  commentId: M:SpiceSharp.Parameter{System.Double}.SpiceSharp#ICloneable#Clone
+  parent: SpiceSharp.Parameter{System.Double}
+  definition: SpiceSharp.Parameter`1.SpiceSharp#ICloneable#Clone
+  name: ICloneable.Clone()
+  nameWithType: Parameter<Double>.ICloneable.Clone()
+  fullName: SpiceSharp.Parameter<System.Double>.SpiceSharp.ICloneable.Clone()
+  nameWithType.vb: Parameter(Of Double).SpiceSharp.ICloneable.Clone()
+  fullName.vb: SpiceSharp.Parameter(Of System.Double).SpiceSharp.ICloneable.Clone()
+  name.vb: SpiceSharp.ICloneable.Clone()
+  spec.csharp:
+  - uid: SpiceSharp.Parameter`1.SpiceSharp#ICloneable#Clone
+    name: ICloneable.Clone
+    nameWithType: Parameter<Double>.ICloneable.Clone
+    fullName: SpiceSharp.Parameter<System.Double>.SpiceSharp.ICloneable.Clone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharp.Parameter`1.SpiceSharp#ICloneable#Clone
+    name: SpiceSharp.ICloneable.Clone
+    nameWithType: Parameter(Of Double).SpiceSharp.ICloneable.Clone
+    fullName: SpiceSharp.Parameter(Of System.Double).SpiceSharp.ICloneable.Clone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Parameter{System.Double}.ToString
+  commentId: M:SpiceSharp.Parameter{System.Double}.ToString
+  parent: SpiceSharp.Parameter{System.Double}
+  definition: SpiceSharp.Parameter`1.ToString
+  name: ToString()
+  nameWithType: Parameter<Double>.ToString()
+  fullName: SpiceSharp.Parameter<System.Double>.ToString()
+  nameWithType.vb: Parameter(Of Double).ToString()
+  fullName.vb: SpiceSharp.Parameter(Of System.Double).ToString()
+  spec.csharp:
+  - uid: SpiceSharp.Parameter`1.ToString
+    name: ToString
+    nameWithType: Parameter<Double>.ToString
+    fullName: SpiceSharp.Parameter<System.Double>.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharp.Parameter`1.ToString
+    name: ToString
+    nameWithType: Parameter(Of Double).ToString
+    fullName: SpiceSharp.Parameter(Of System.Double).ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharp.Parameter`1
+  commentId: T:SpiceSharp.Parameter`1
+  isExternal: true
+  name: Parameter<T>
+  nameWithType: Parameter<T>
+  fullName: SpiceSharp.Parameter<T>
+  nameWithType.vb: Parameter(Of T)
+  fullName.vb: SpiceSharp.Parameter(Of T)
+  name.vb: Parameter(Of T)
+  spec.csharp:
+  - uid: SpiceSharp.Parameter`1
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharp.Parameter
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharp.Parameter`1
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharp.Parameter
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp
+  commentId: N:SpiceSharp
+  isExternal: true
+  name: SpiceSharp
+  nameWithType: SpiceSharp
+  fullName: SpiceSharp
+- uid: SpiceSharp.ICloneable`1
+  commentId: T:SpiceSharp.ICloneable`1
+  isExternal: true
+  name: ICloneable<T>
+  nameWithType: ICloneable<T>
+  fullName: SpiceSharp.ICloneable<T>
+  nameWithType.vb: ICloneable(Of T)
+  fullName.vb: SpiceSharp.ICloneable(Of T)
+  name.vb: ICloneable(Of T)
+  spec.csharp:
+  - uid: SpiceSharp.ICloneable`1
+    name: ICloneable
+    nameWithType: ICloneable
+    fullName: SpiceSharp.ICloneable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharp.ICloneable`1
+    name: ICloneable
+    nameWithType: ICloneable
+    fullName: SpiceSharp.ICloneable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Parameter`1.CopyFrom(SpiceSharp.Parameter{`0})
+  commentId: M:SpiceSharp.Parameter`1.CopyFrom(SpiceSharp.Parameter{`0})
+  isExternal: true
+  name: CopyFrom(Parameter<T>)
+  nameWithType: Parameter<T>.CopyFrom(Parameter<T>)
+  fullName: SpiceSharp.Parameter<T>.CopyFrom(SpiceSharp.Parameter<T>)
+  nameWithType.vb: Parameter(Of T).CopyFrom(Parameter(Of T))
+  fullName.vb: SpiceSharp.Parameter(Of T).CopyFrom(SpiceSharp.Parameter(Of T))
+  name.vb: CopyFrom(Parameter(Of T))
+  spec.csharp:
+  - uid: SpiceSharp.Parameter`1.CopyFrom(SpiceSharp.Parameter{`0})
+    name: CopyFrom
+    nameWithType: Parameter<T>.CopyFrom
+    fullName: SpiceSharp.Parameter<T>.CopyFrom
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Parameter`1
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharp.Parameter
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharp.Parameter`1.CopyFrom(SpiceSharp.Parameter{`0})
+    name: CopyFrom
+    nameWithType: Parameter(Of T).CopyFrom
+    fullName: SpiceSharp.Parameter(Of T).CopyFrom
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.Parameter`1
+    name: Parameter
+    nameWithType: Parameter
+    fullName: SpiceSharp.Parameter
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Parameter`1.SpiceSharp#ICloneable#CopyFrom(SpiceSharp.ICloneable)
+  commentId: M:SpiceSharp.Parameter`1.SpiceSharp#ICloneable#CopyFrom(SpiceSharp.ICloneable)
+  isExternal: true
+  name: ICloneable.CopyFrom(ICloneable)
+  nameWithType: Parameter<T>.ICloneable.CopyFrom(ICloneable)
+  fullName: SpiceSharp.Parameter<T>.SpiceSharp.ICloneable.CopyFrom(SpiceSharp.ICloneable)
+  nameWithType.vb: Parameter(Of T).SpiceSharp.ICloneable.CopyFrom(ICloneable)
+  fullName.vb: SpiceSharp.Parameter(Of T).SpiceSharp.ICloneable.CopyFrom(SpiceSharp.ICloneable)
+  name.vb: SpiceSharp.ICloneable.CopyFrom(ICloneable)
+  spec.csharp:
+  - uid: SpiceSharp.Parameter`1.SpiceSharp#ICloneable#CopyFrom(SpiceSharp.ICloneable)
+    name: ICloneable.CopyFrom
+    nameWithType: Parameter<T>.ICloneable.CopyFrom
+    fullName: SpiceSharp.Parameter<T>.SpiceSharp.ICloneable.CopyFrom
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.ICloneable
+    name: ICloneable
+    nameWithType: ICloneable
+    fullName: SpiceSharp.ICloneable
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharp.Parameter`1.SpiceSharp#ICloneable#CopyFrom(SpiceSharp.ICloneable)
+    name: SpiceSharp.ICloneable.CopyFrom
+    nameWithType: Parameter(Of T).SpiceSharp.ICloneable.CopyFrom
+    fullName: SpiceSharp.Parameter(Of T).SpiceSharp.ICloneable.CopyFrom
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharp.ICloneable
+    name: ICloneable
+    nameWithType: ICloneable
+    fullName: SpiceSharp.ICloneable
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Parameter`1.SpiceSharp#ICloneable#Clone
+  commentId: M:SpiceSharp.Parameter`1.SpiceSharp#ICloneable#Clone
+  isExternal: true
+  name: ICloneable.Clone()
+  nameWithType: Parameter<T>.ICloneable.Clone()
+  fullName: SpiceSharp.Parameter<T>.SpiceSharp.ICloneable.Clone()
+  nameWithType.vb: Parameter(Of T).SpiceSharp.ICloneable.Clone()
+  fullName.vb: SpiceSharp.Parameter(Of T).SpiceSharp.ICloneable.Clone()
+  name.vb: SpiceSharp.ICloneable.Clone()
+  spec.csharp:
+  - uid: SpiceSharp.Parameter`1.SpiceSharp#ICloneable#Clone
+    name: ICloneable.Clone
+    nameWithType: Parameter<T>.ICloneable.Clone
+    fullName: SpiceSharp.Parameter<T>.SpiceSharp.ICloneable.Clone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharp.Parameter`1.SpiceSharp#ICloneable#Clone
+    name: SpiceSharp.ICloneable.Clone
+    nameWithType: Parameter(Of T).SpiceSharp.ICloneable.Clone
+    fullName: SpiceSharp.Parameter(Of T).SpiceSharp.ICloneable.Clone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharp.Parameter`1.ToString
+  commentId: M:SpiceSharp.Parameter`1.ToString
+  isExternal: true
+  name: ToString()
+  nameWithType: Parameter<T>.ToString()
+  fullName: SpiceSharp.Parameter<T>.ToString()
+  nameWithType.vb: Parameter(Of T).ToString()
+  fullName.vb: SpiceSharp.Parameter(Of T).ToString()
+  spec.csharp:
+  - uid: SpiceSharp.Parameter`1.ToString
+    name: ToString
+    nameWithType: Parameter<T>.ToString
+    fullName: SpiceSharp.Parameter<T>.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharp.Parameter`1.ToString
+    name: ToString
+    nameWithType: Parameter(Of T).ToString
+    fullName: SpiceSharp.Parameter(Of T).ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationParameter
+  commentId: T:SpiceSharpParser.Common.Evaluation.EvaluationParameter
+  name: EvaluationParameter
+  nameWithType: EvaluationParameter
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationParameter
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationParameter.#ctor*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.EvaluationParameter.#ctor
+  name: EvaluationParameter
+  nameWithType: EvaluationParameter.EvaluationParameter
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationParameter.EvaluationParameter
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  commentId: T:SpiceSharpParser.Common.Evaluation.EvaluationContext
+  parent: SpiceSharpParser.Common.Evaluation
+  name: EvaluationContext
+  nameWithType: EvaluationContext
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: SpiceSharp.Parameter{System.Double}.Value
+  commentId: P:SpiceSharp.Parameter{System.Double}.Value
+  parent: SpiceSharp.Parameter{System.Double}
+  definition: SpiceSharp.Parameter`1.Value
+  name: Value
+  nameWithType: Parameter<Double>.Value
+  fullName: SpiceSharp.Parameter<System.Double>.Value
+  nameWithType.vb: Parameter(Of Double).Value
+  fullName.vb: SpiceSharp.Parameter(Of System.Double).Value
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationParameter.Value*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.EvaluationParameter.Value
+  name: Value
+  nameWithType: EvaluationParameter.Value
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationParameter.Value
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  name: Double
+  nameWithType: Double
+  fullName: System.Double
+- uid: SpiceSharp.Parameter`1.Value
+  commentId: P:SpiceSharp.Parameter`1.Value
+  isExternal: true
+  name: Value
+  nameWithType: Parameter<T>.Value
+  fullName: SpiceSharp.Parameter<T>.Value
+  nameWithType.vb: Parameter(Of T).Value
+  fullName.vb: SpiceSharp.Parameter(Of T).Value
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationParameter.EvaluationContext*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.EvaluationParameter.EvaluationContext
+  name: EvaluationContext
+  nameWithType: EvaluationParameter.EvaluationContext
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationParameter.EvaluationContext
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationParameter.ParameterName*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.EvaluationParameter.ParameterName
+  name: ParameterName
+  nameWithType: EvaluationParameter.ParameterName
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationParameter.ParameterName
+- uid: SpiceSharp.Parameter{System.Double}.Clone
+  commentId: M:SpiceSharp.Parameter{System.Double}.Clone
+  parent: SpiceSharp.Parameter{System.Double}
+  definition: SpiceSharp.Parameter`1.Clone
+  name: Clone()
+  nameWithType: Parameter<Double>.Clone()
+  fullName: SpiceSharp.Parameter<System.Double>.Clone()
+  nameWithType.vb: Parameter(Of Double).Clone()
+  fullName.vb: SpiceSharp.Parameter(Of System.Double).Clone()
+  spec.csharp:
+  - uid: SpiceSharp.Parameter`1.Clone
+    name: Clone
+    nameWithType: Parameter<Double>.Clone
+    fullName: SpiceSharp.Parameter<System.Double>.Clone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharp.Parameter`1.Clone
+    name: Clone
+    nameWithType: Parameter(Of Double).Clone
+    fullName: SpiceSharp.Parameter(Of System.Double).Clone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationParameter.Clone*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.EvaluationParameter.Clone
+  name: Clone
+  nameWithType: EvaluationParameter.Clone
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationParameter.Clone
+- uid: SpiceSharp.Parameter`1.Clone
+  commentId: M:SpiceSharp.Parameter`1.Clone
+  isExternal: true
+  name: Clone()
+  nameWithType: Parameter<T>.Clone()
+  fullName: SpiceSharp.Parameter<T>.Clone()
+  nameWithType.vb: Parameter(Of T).Clone()
+  fullName.vb: SpiceSharp.Parameter(Of T).Clone()
+  spec.csharp:
+  - uid: SpiceSharp.Parameter`1.Clone
+    name: Clone
+    nameWithType: Parameter<T>.Clone
+    fullName: SpiceSharp.Parameter<T>.Clone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharp.Parameter`1.Clone
+    name: Clone
+    nameWithType: Parameter(Of T).Clone
+    fullName: SpiceSharp.Parameter(Of T).Clone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )

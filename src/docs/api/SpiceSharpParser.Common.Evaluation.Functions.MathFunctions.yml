@@ -1,0 +1,625 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions
+  commentId: T:SpiceSharpParser.Common.Evaluation.Functions.MathFunctions
+  id: MathFunctions
+  parent: SpiceSharpParser.Common.Evaluation.Functions
+  children:
+  - SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateATan2
+  - SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateCosh
+  - SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateSinh
+  - SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateTanh
+  langs:
+  - csharp
+  - vb
+  name: MathFunctions
+  nameWithType: MathFunctions
+  fullName: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/Functions/MathFunctions.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: MathFunctions
+    path: ../SpiceSharpParser/Common/Evaluation/Functions/MathFunctions.cs
+    startLine: 4
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation.Functions
+  syntax:
+    content: public class MathFunctions
+    content.vb: Public Class MathFunctions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateCosh
+  commentId: M:SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateCosh
+  id: CreateCosh
+  parent: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions
+  langs:
+  - csharp
+  - vb
+  name: CreateCosh()
+  nameWithType: MathFunctions.CreateCosh()
+  fullName: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateCosh()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/Functions/MathFunctions.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CreateCosh
+    path: ../SpiceSharpParser/Common/Evaluation/Functions/MathFunctions.cs
+    startLine: 12
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation.Functions
+  summary: "\nGet a cosh() function.\n"
+  example: []
+  syntax:
+    content: public static IFunction<double, double> CreateCosh()
+    return:
+      type: SpiceSharpParser.Common.Evaluation.IFunction{System.Double,System.Double}
+      description: "\nA new instance of cosh() function.\n"
+    content.vb: Public Shared Function CreateCosh As IFunction(Of Double, Double)
+  overload: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateCosh*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateSinh
+  commentId: M:SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateSinh
+  id: CreateSinh
+  parent: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions
+  langs:
+  - csharp
+  - vb
+  name: CreateSinh()
+  nameWithType: MathFunctions.CreateSinh()
+  fullName: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateSinh()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/Functions/MathFunctions.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CreateSinh
+    path: ../SpiceSharpParser/Common/Evaluation/Functions/MathFunctions.cs
+    startLine: 23
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation.Functions
+  summary: "\nGet a sinh() function.\n"
+  example: []
+  syntax:
+    content: public static IFunction<double, double> CreateSinh()
+    return:
+      type: SpiceSharpParser.Common.Evaluation.IFunction{System.Double,System.Double}
+      description: "\nA new instance of sinh() function.\n"
+    content.vb: Public Shared Function CreateSinh As IFunction(Of Double, Double)
+  overload: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateSinh*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateTanh
+  commentId: M:SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateTanh
+  id: CreateTanh
+  parent: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions
+  langs:
+  - csharp
+  - vb
+  name: CreateTanh()
+  nameWithType: MathFunctions.CreateTanh()
+  fullName: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateTanh()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/Functions/MathFunctions.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CreateTanh
+    path: ../SpiceSharpParser/Common/Evaluation/Functions/MathFunctions.cs
+    startLine: 34
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation.Functions
+  summary: "\nGet a tanh() function.\n"
+  example: []
+  syntax:
+    content: public static IFunction<double, double> CreateTanh()
+    return:
+      type: SpiceSharpParser.Common.Evaluation.IFunction{System.Double,System.Double}
+      description: "\nA new instance of tanh() function.\n"
+    content.vb: Public Shared Function CreateTanh As IFunction(Of Double, Double)
+  overload: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateTanh*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateATan2
+  commentId: M:SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateATan2
+  id: CreateATan2
+  parent: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions
+  langs:
+  - csharp
+  - vb
+  name: CreateATan2()
+  nameWithType: MathFunctions.CreateATan2()
+  fullName: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateATan2()
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Evaluation/Functions/MathFunctions.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CreateATan2
+    path: ../SpiceSharpParser/Common/Evaluation/Functions/MathFunctions.cs
+    startLine: 45
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Evaluation.Functions
+  summary: "\nGet a atan() function.\n"
+  example: []
+  syntax:
+    content: public static IFunction<double, double> CreateATan2()
+    return:
+      type: SpiceSharpParser.Common.Evaluation.IFunction{System.Double,System.Double}
+      description: "\nA new instance of atan() function.\n"
+    content.vb: Public Shared Function CreateATan2 As IFunction(Of Double, Double)
+  overload: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateATan2*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+references:
+- uid: SpiceSharpParser.Common.Evaluation.Functions
+  commentId: N:SpiceSharpParser.Common.Evaluation.Functions
+  name: SpiceSharpParser.Common.Evaluation.Functions
+  nameWithType: SpiceSharpParser.Common.Evaluation.Functions
+  fullName: SpiceSharpParser.Common.Evaluation.Functions
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateCosh*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateCosh
+  name: CreateCosh
+  nameWithType: MathFunctions.CreateCosh
+  fullName: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateCosh
+- uid: SpiceSharpParser.Common.Evaluation.IFunction{System.Double,System.Double}
+  commentId: T:SpiceSharpParser.Common.Evaluation.IFunction{System.Double,System.Double}
+  parent: SpiceSharpParser.Common.Evaluation
+  definition: SpiceSharpParser.Common.Evaluation.IFunction`2
+  name: IFunction<Double, Double>
+  nameWithType: IFunction<Double, Double>
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction<System.Double, System.Double>
+  nameWithType.vb: IFunction(Of Double, Double)
+  fullName.vb: SpiceSharpParser.Common.Evaluation.IFunction(Of System.Double, System.Double)
+  name.vb: IFunction(Of Double, Double)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+  commentId: T:SpiceSharpParser.Common.Evaluation.IFunction`2
+  name: IFunction<TInputArgumentType, TOutputType>
+  nameWithType: IFunction<TInputArgumentType, TOutputType>
+  fullName: SpiceSharpParser.Common.Evaluation.IFunction<TInputArgumentType, TOutputType>
+  nameWithType.vb: IFunction(Of TInputArgumentType, TOutputType)
+  fullName.vb: SpiceSharpParser.Common.Evaluation.IFunction(Of TInputArgumentType, TOutputType)
+  name.vb: IFunction(Of TInputArgumentType, TOutputType)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TOutputType
+    nameWithType: TOutputType
+    fullName: TOutputType
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction`2
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TInputArgumentType
+    nameWithType: TInputArgumentType
+    fullName: TInputArgumentType
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TOutputType
+    nameWithType: TOutputType
+    fullName: TOutputType
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation
+  commentId: N:SpiceSharpParser.Common.Evaluation
+  name: SpiceSharpParser.Common.Evaluation
+  nameWithType: SpiceSharpParser.Common.Evaluation
+  fullName: SpiceSharpParser.Common.Evaluation
+- uid: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateSinh*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateSinh
+  name: CreateSinh
+  nameWithType: MathFunctions.CreateSinh
+  fullName: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateSinh
+- uid: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateTanh*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateTanh
+  name: CreateTanh
+  nameWithType: MathFunctions.CreateTanh
+  fullName: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateTanh
+- uid: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateATan2*
+  commentId: Overload:SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateATan2
+  name: CreateATan2
+  nameWithType: MathFunctions.CreateATan2
+  fullName: SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.CreateATan2

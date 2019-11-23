@@ -23,12 +23,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
-        public override void Read(Control statement, IReadingContext context)
+        public override void Read(Control statement, ICircuitContext context)
         {
             CreateSimulations(statement, context, CreateTransientSimulation);
         }
 
-        private Transient CreateTransientSimulation(string name, Control statement, IReadingContext context)
+        private Transient CreateTransientSimulation(string name, Control statement, ICircuitContext context)
         {
             switch (statement.Parameters.Count)
             {
@@ -52,25 +52,28 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 case 2:
                     tran = new Transient(
                         name,
-                        context.EvaluateDouble(clonedParameters[0].Image),
-                        context.EvaluateDouble(clonedParameters[1].Image));
+                        context.Evaluator.EvaluateDouble(clonedParameters[0].Image),
+                        context.Evaluator.EvaluateDouble(clonedParameters[1].Image));
                     break;
+
                 case 3:
                     tran = new Transient(
                         name,
-                        context.EvaluateDouble(clonedParameters[0].Image),
-                        context.EvaluateDouble(clonedParameters[1].Image),
-                        context.EvaluateDouble(clonedParameters[2].Image));
+                        context.Evaluator.EvaluateDouble(clonedParameters[0].Image),
+                        context.Evaluator.EvaluateDouble(clonedParameters[1].Image),
+                        context.Evaluator.EvaluateDouble(clonedParameters[2].Image));
                     break;
+
                 case 4:
                     tran = new Transient(
                         name,
-                        context.EvaluateDouble(clonedParameters[0].Image),
-                        context.EvaluateDouble(clonedParameters[1].Image),
-                        context.EvaluateDouble(clonedParameters[3].Image));
-                    tran.Configurations.SetParameter("init", context.EvaluateDouble(clonedParameters[2].Image));
+                        context.Evaluator.EvaluateDouble(clonedParameters[0].Image),
+                        context.Evaluator.EvaluateDouble(clonedParameters[1].Image),
+                        context.Evaluator.EvaluateDouble(clonedParameters[3].Image));
+                    tran.Configurations.SetParameter("init", context.Evaluator.EvaluateDouble(clonedParameters[2].Image));
 
                     break;
+
                 default:
                     throw new WrongParametersCountException(".tran control - Too many parameters for .tran");
             }
@@ -82,8 +85,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             {
                 tran.Method.TruncateProbe += (object sender2, SpiceSharp.IntegrationMethods.TruncateTimestepEventArgs args) =>
                 {
-                    var expressionContext = context.SimulationExpressionContexts.GetContext(tran);
-                    expressionContext.SetParameter("TIME", tran.Method.Time + args.Delta);
+                    context.Evaluator.SetParameter(tran, "TIME", tran.Method.Time + args.Delta);
                 };
             };
             context.Result.AddSimulation(tran);
@@ -91,7 +93,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             return tran;
         }
 
-        private void ConfigureTransientSettings(Transient tran, IReadingContext context, bool useIc)
+        private void ConfigureTransientSettings(Transient tran, ICircuitContext context, bool useIc)
         {
             if (context.Result.SimulationConfiguration.Method != null)
             {

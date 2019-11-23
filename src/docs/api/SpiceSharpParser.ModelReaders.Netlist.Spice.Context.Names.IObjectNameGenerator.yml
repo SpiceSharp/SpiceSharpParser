@@ -1,0 +1,143 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator
+  id: IObjectNameGenerator
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.CreateChildGenerator(System.String)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.Generate(System.String)
+  langs:
+  - csharp
+  - vb
+  name: IObjectNameGenerator
+  nameWithType: IObjectNameGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator
+  type: Interface
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Names/IObjectNameGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IObjectNameGenerator
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Names/IObjectNameGenerator.cs
+    startLine: 5
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  summary: "\nInterface for all object name generators.\n"
+  example: []
+  syntax:
+    content: public interface IObjectNameGenerator
+    content.vb: Public Interface IObjectNameGenerator
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.Generate(System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.Generate(System.String)
+  id: Generate(System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator
+  langs:
+  - csharp
+  - vb
+  name: Generate(String)
+  nameWithType: IObjectNameGenerator.Generate(String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.Generate(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Names/IObjectNameGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Generate
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Names/IObjectNameGenerator.cs
+    startLine: 14
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  summary: "\nGenerates entity object name.\n"
+  example: []
+  syntax:
+    content: string Generate(string entityName)
+    parameters:
+    - id: entityName
+      type: System.String
+      description: Name of entity.
+    return:
+      type: System.String
+      description: "\nA object name for entity.\n"
+    content.vb: Function Generate(entityName As String) As String
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.Generate*
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.CreateChildGenerator(System.String)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.CreateChildGenerator(System.String)
+  id: CreateChildGenerator(System.String)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator
+  langs:
+  - csharp
+  - vb
+  name: CreateChildGenerator(String)
+  nameWithType: IObjectNameGenerator.CreateChildGenerator(String)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.CreateChildGenerator(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Names/IObjectNameGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CreateChildGenerator
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Names/IObjectNameGenerator.cs
+    startLine: 23
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  summary: "\nCreates a new child object name generator.\n"
+  example: []
+  syntax:
+    content: IObjectNameGenerator CreateChildGenerator(string childGeneratorName)
+    parameters:
+    - id: childGeneratorName
+      type: System.String
+      description: Name of generator.
+    return:
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator
+      description: "\nA new object name generator.\n"
+    content.vb: Function CreateChildGenerator(childGeneratorName As String) As IObjectNameGenerator
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.CreateChildGenerator*
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.Generate*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.Generate
+  name: Generate
+  nameWithType: IObjectNameGenerator.Generate
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.Generate
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.CreateChildGenerator*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.CreateChildGenerator
+  name: CreateChildGenerator
+  nameWithType: IObjectNameGenerator.CreateChildGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator.CreateChildGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
+  name: IObjectNameGenerator
+  nameWithType: IObjectNameGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names.IObjectNameGenerator

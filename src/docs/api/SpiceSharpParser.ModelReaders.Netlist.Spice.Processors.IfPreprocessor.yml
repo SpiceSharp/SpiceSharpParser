@@ -1,0 +1,573 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor
+  id: IfPreprocessor
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.CaseSettings
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.EvaluationContext
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  langs:
+  - csharp
+  - vb
+  name: IfPreprocessor
+  nameWithType: IfPreprocessor
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IfPreprocessor.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IfPreprocessor
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IfPreprocessor.cs
+    startLine: 12
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  summary: "\nNot smart .if/.endif &quot;parser&quot;.\n"
+  example: []
+  syntax:
+    content: 'public class IfPreprocessor : IProcessor, IEvaluatorConsumer'
+    content.vb: >-
+      Public Class IfPreprocessor
+          Implements IProcessor, IEvaluatorConsumer
+  inheritance:
+  - System.Object
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.EvaluationContext
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.EvaluationContext
+  id: EvaluationContext
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor
+  langs:
+  - csharp
+  - vb
+  name: EvaluationContext
+  nameWithType: IfPreprocessor.EvaluationContext
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.EvaluationContext
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IfPreprocessor.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: EvaluationContext
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IfPreprocessor.cs
+    startLine: 14
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  syntax:
+    content: public EvaluationContext EvaluationContext { get; set; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    content.vb: Public Property EvaluationContext As EvaluationContext
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.EvaluationContext*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.EvaluationContext
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.CaseSettings
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.CaseSettings
+  id: CaseSettings
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor
+  langs:
+  - csharp
+  - vb
+  name: CaseSettings
+  nameWithType: IfPreprocessor.CaseSettings
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.CaseSettings
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IfPreprocessor.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CaseSettings
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IfPreprocessor.cs
+    startLine: 19
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  summary: "\nGets or sets the evaluator.\n"
+  example: []
+  syntax:
+    content: public ISpiceNetlistCaseSensitivitySettings CaseSettings { get; set; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+    content.vb: Public Property CaseSettings As ISpiceNetlistCaseSensitivitySettings
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.CaseSettings*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.CaseSettings
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  id: Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor
+  langs:
+  - csharp
+  - vb
+  name: Process(Statements)
+  nameWithType: IfPreprocessor.Process(Statements)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IfPreprocessor.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Process
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IfPreprocessor.cs
+    startLine: 21
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  syntax:
+    content: public Statements Process(Statements statements)
+    parameters:
+    - id: statements
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+    return:
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+    content.vb: Public Function Process(statements As Statements) As Statements
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.Process*
+  implements:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  name: IProcessor
+  nameWithType: IProcessor
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  name: IEvaluatorConsumer
+  nameWithType: IEvaluatorConsumer
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.EvaluationContext*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.EvaluationContext
+  name: EvaluationContext
+  nameWithType: IfPreprocessor.EvaluationContext
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.EvaluationContext
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.EvaluationContext
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.EvaluationContext
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer
+  name: EvaluationContext
+  nameWithType: IEvaluatorConsumer.EvaluationContext
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.EvaluationContext
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  commentId: T:SpiceSharpParser.Common.Evaluation.EvaluationContext
+  parent: SpiceSharpParser.Common.Evaluation
+  name: EvaluationContext
+  nameWithType: EvaluationContext
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+- uid: SpiceSharpParser.Common.Evaluation
+  commentId: N:SpiceSharpParser.Common.Evaluation
+  name: SpiceSharpParser.Common.Evaluation
+  nameWithType: SpiceSharpParser.Common.Evaluation
+  fullName: SpiceSharpParser.Common.Evaluation
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.CaseSettings*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.CaseSettings
+  name: CaseSettings
+  nameWithType: IfPreprocessor.CaseSettings
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.CaseSettings
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.CaseSettings
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.CaseSettings
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer
+  name: CaseSettings
+  nameWithType: IEvaluatorConsumer.CaseSettings
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IEvaluatorConsumer.CaseSettings
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice
+  name: ISpiceNetlistCaseSensitivitySettings
+  nameWithType: ISpiceNetlistCaseSensitivitySettings
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.Process*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.Process
+  name: Process
+  nameWithType: IfPreprocessor.Process
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IfPreprocessor.Process
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor
+  name: Process(Statements)
+  nameWithType: IProcessor.Process(Statements)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  spec.csharp:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+    name: Process
+    nameWithType: IProcessor.Process
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+    name: Statements
+    nameWithType: Statements
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+    name: Process
+    nameWithType: IProcessor.Process
+    fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+    name: Statements
+    nameWithType: Statements
+    fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: Statements
+  nameWithType: Statements
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: SpiceSharpParser.Models.Netlist.Spice.Objects
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice.Objects
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects

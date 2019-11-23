@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using SpiceSharp.Components;
+﻿using SpiceSharp.Components;
 using SpiceSharpBehavioral.Components.BehavioralBehaviors;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System.Linq;
 using Component = SpiceSharp.Components.Component;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
@@ -16,7 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     /// </summary>
     public class VoltageSourceGenerator : SourceGenerator
     {
-        public override  Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public override Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
         {
             switch (type.ToLower())
             {
@@ -40,7 +39,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         protected Component GenerateVoltageControlledVoltageSource(
             string name,
             ParameterCollection parameters,
-            IReadingContext context)
+            ICircuitContext context)
         {
             if (parameters.Count == 5
                 && parameters.IsValueString(0)
@@ -93,7 +92,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         protected Component GenerateCurrentControlledVoltageSource(
             string name,
             ParameterCollection parameters,
-            IReadingContext context)
+            ICircuitContext context)
         {
             if (parameters.Count == 4
                 && parameters.IsValueString(0)
@@ -103,7 +102,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var ccvs = new CurrentControlledVoltageSource(name);
                 context.CreateNodes(ccvs, parameters);
-                ccvs.ControllingName = context.ComponentNameGenerator.Generate(parameters.Get(2).Image);
+                ccvs.ControllingName = context.NameGenerator.GenerateObjectName(parameters.Get(2).Image);
                 context.SetParameter(ccvs, "gain", parameters.Get(3).Image);
                 return ccvs;
             }
@@ -122,7 +121,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of voltage source.
         /// </returns>
-        protected Component GenerateVoltageSource(string name, ParameterCollection parameters, IReadingContext context)
+        protected Component GenerateVoltageSource(string name, ParameterCollection parameters, ICircuitContext context)
         {
             var vs = new VoltageSource(name);
             context.CreateNodes(vs, parameters);
@@ -133,7 +132,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         protected Component CreateCustomVoltageSource(
             string name,
             ParameterCollection parameters,
-            IReadingContext context,
+            ICircuitContext context,
             bool isVoltageControlled)
         {
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
@@ -190,7 +189,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var entity = new VoltageSource(name);
                 context.CreateNodes(entity, parameters);
                 parameters = parameters.Skip(VoltageSource.VoltageSourcePinCount);
-                var dimension = (int)context.EvaluateDouble(polyParameter.Parameters[0].Image);
+                var dimension = (int)context.Evaluator.EvaluateDouble(polyParameter.Parameters[0].Image);
                 var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled);
                 context.SetParameter(entity, "dc", expression);
                 return entity;
@@ -211,7 +210,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     var entity = new BehavioralVoltageSource(name);
                     context.CreateNodes(entity, parameters);
-                    
+
                     var baseParameters = entity.ParameterSets.Get<BaseParameters>();
                     baseParameters.Parser = (sim) => CreateParser(context, sim);
                     baseParameters.Expression = ExpressionFactory.CreateTableExpression(eep.Expression, eep.Points);

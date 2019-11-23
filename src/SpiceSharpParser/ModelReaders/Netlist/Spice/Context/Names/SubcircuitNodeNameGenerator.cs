@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SpiceSharpParser.Common;
+﻿using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
 {
@@ -68,9 +68,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         /// </summary>
         public IEnumerable<string> Globals => _globals;
 
-       /// <summary>
-       /// Gets or sets the root name.
-       /// </summary>
+        /// <summary>
+        /// Gets or sets the root name.
+        /// </summary>
         public string RootName { get; set; }
 
         /// <summary>

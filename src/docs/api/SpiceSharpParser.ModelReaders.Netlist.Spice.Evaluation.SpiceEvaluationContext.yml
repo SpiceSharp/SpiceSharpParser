@@ -1,0 +1,1522 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext
+  id: SpiceEvaluationContext
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.#ctor(System.String,SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode,SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings,SpiceSharpParser.Common.Mathematics.Probability.IRandomizer,SpiceSharpParser.Parsers.Expression.IExpressionParser,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.Mode
+  langs:
+  - csharp
+  - vb
+  name: SpiceEvaluationContext
+  nameWithType: SpiceEvaluationContext
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluationContext.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SpiceEvaluationContext
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluationContext.cs
+    startLine: 12
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  syntax:
+    content: 'public class SpiceEvaluationContext : EvaluationContext'
+    content.vb: >-
+      Public Class SpiceEvaluationContext
+          Inherits EvaluationContext
+  inheritance:
+  - System.Object
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext
+  inheritedMembers:
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.Name
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.Seed
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.Randomizer
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.Parameters
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.Arguments
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.Functions
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.ExpressionRegistry
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.Children
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.Simulation
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.NameGenerator
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.ResultService
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.Parser
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.Double)
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.Func{System.Double})
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.String)
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpressionNames
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.SetNamedExpression(System.String,System.String)
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpression(System.String)
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.CreateChildContext(System.String,System.Boolean)
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.Clone
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameters(System.Collections.Generic.Dictionary{System.String,System.String})
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.Find(System.String)
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.AddFunction(System.String,SpiceSharpParser.Common.Evaluation.IFunction)
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.CreateCommonFunctions
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.String,SpiceSharpParser.Common.Evaluation.Expression)
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.Evaluate(System.String)
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.Evaluate(SpiceSharpParser.Common.Evaluation.Expression)
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.HaveSpiceProperties(System.String)
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.HaveFunctions(System.String)
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpressionParameters(System.String,System.Boolean)
+  - SpiceSharpParser.Common.Evaluation.EvaluationContext.GetDeriveParser(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.#ctor(System.String,SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode,SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings,SpiceSharpParser.Common.Mathematics.Probability.IRandomizer,SpiceSharpParser.Parsers.Expression.IExpressionParser,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.#ctor(System.String,SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode,SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings,SpiceSharpParser.Common.Mathematics.Probability.IRandomizer,SpiceSharpParser.Parsers.Expression.IExpressionParser,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  id: '#ctor(System.String,SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode,SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings,SpiceSharpParser.Common.Mathematics.Probability.IRandomizer,SpiceSharpParser.Parsers.Expression.IExpressionParser,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)'
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext
+  langs:
+  - csharp
+  - vb
+  name: SpiceEvaluationContext(String, SpiceExpressionMode, ISpiceNetlistCaseSensitivitySettings, IRandomizer, IExpressionParser, INameGenerator, IResultService)
+  nameWithType: SpiceEvaluationContext.SpiceEvaluationContext(String, SpiceExpressionMode, ISpiceNetlistCaseSensitivitySettings, IRandomizer, IExpressionParser, INameGenerator, IResultService)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.SpiceEvaluationContext(System.String, SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode, SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings, SpiceSharpParser.Common.Mathematics.Probability.IRandomizer, SpiceSharpParser.Parsers.Expression.IExpressionParser, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)
+  type: Constructor
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluationContext.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: .ctor
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluationContext.cs
+    startLine: 14
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  syntax:
+    content: public SpiceEvaluationContext(string name, SpiceExpressionMode mode, ISpiceNetlistCaseSensitivitySettings caseSetting, IRandomizer randomizer, IExpressionParser parser, INameGenerator nameGenerator, IResultService resultService)
+    parameters:
+    - id: name
+      type: System.String
+    - id: mode
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode
+    - id: caseSetting
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+    - id: randomizer
+      type: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+    - id: parser
+      type: SpiceSharpParser.Parsers.Expression.IExpressionParser
+    - id: nameGenerator
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+    - id: resultService
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+    content.vb: Public Sub New(name As String, mode As SpiceExpressionMode, caseSetting As ISpiceNetlistCaseSensitivitySettings, randomizer As IRandomizer, parser As IExpressionParser, nameGenerator As INameGenerator, resultService As IResultService)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.Mode
+  commentId: P:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.Mode
+  id: Mode
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext
+  langs:
+  - csharp
+  - vb
+  name: Mode
+  nameWithType: SpiceEvaluationContext.Mode
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.Mode
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluationContext.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Mode
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluationContext.cs
+    startLine: 31
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  syntax:
+    content: public SpiceExpressionMode Mode { get; }
+    parameters: []
+    return:
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode
+    content.vb: Public ReadOnly Property Mode As SpiceExpressionMode
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.Mode*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  commentId: T:SpiceSharpParser.Common.Evaluation.EvaluationContext
+  parent: SpiceSharpParser.Common.Evaluation
+  name: EvaluationContext
+  nameWithType: EvaluationContext
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Name
+  commentId: P:SpiceSharpParser.Common.Evaluation.EvaluationContext.Name
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  name: Name
+  nameWithType: EvaluationContext.Name
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Name
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Seed
+  commentId: P:SpiceSharpParser.Common.Evaluation.EvaluationContext.Seed
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  name: Seed
+  nameWithType: EvaluationContext.Seed
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Seed
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Randomizer
+  commentId: P:SpiceSharpParser.Common.Evaluation.EvaluationContext.Randomizer
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  name: Randomizer
+  nameWithType: EvaluationContext.Randomizer
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Randomizer
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Parameters
+  commentId: P:SpiceSharpParser.Common.Evaluation.EvaluationContext.Parameters
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  name: Parameters
+  nameWithType: EvaluationContext.Parameters
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Parameters
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Arguments
+  commentId: P:SpiceSharpParser.Common.Evaluation.EvaluationContext.Arguments
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  name: Arguments
+  nameWithType: EvaluationContext.Arguments
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Arguments
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Functions
+  commentId: P:SpiceSharpParser.Common.Evaluation.EvaluationContext.Functions
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  name: Functions
+  nameWithType: EvaluationContext.Functions
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Functions
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.ExpressionRegistry
+  commentId: P:SpiceSharpParser.Common.Evaluation.EvaluationContext.ExpressionRegistry
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  name: ExpressionRegistry
+  nameWithType: EvaluationContext.ExpressionRegistry
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.ExpressionRegistry
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Children
+  commentId: P:SpiceSharpParser.Common.Evaluation.EvaluationContext.Children
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  name: Children
+  nameWithType: EvaluationContext.Children
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Children
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Simulation
+  commentId: P:SpiceSharpParser.Common.Evaluation.EvaluationContext.Simulation
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  name: Simulation
+  nameWithType: EvaluationContext.Simulation
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Simulation
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.NameGenerator
+  commentId: P:SpiceSharpParser.Common.Evaluation.EvaluationContext.NameGenerator
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  name: NameGenerator
+  nameWithType: EvaluationContext.NameGenerator
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.NameGenerator
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.ResultService
+  commentId: P:SpiceSharpParser.Common.Evaluation.EvaluationContext.ResultService
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  name: ResultService
+  nameWithType: EvaluationContext.ResultService
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.ResultService
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Parser
+  commentId: P:SpiceSharpParser.Common.Evaluation.EvaluationContext.Parser
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  name: Parser
+  nameWithType: EvaluationContext.Parser
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Parser
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.Double)
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.Double)
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  isExternal: true
+  name: SetParameter(String, Double)
+  nameWithType: EvaluationContext.SetParameter(String, Double)
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String, System.Double)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.Double)
+    name: SetParameter
+    nameWithType: EvaluationContext.SetParameter
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.Double)
+    name: SetParameter
+    nameWithType: EvaluationContext.SetParameter
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.Func{System.Double})
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.Func{System.Double})
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  isExternal: true
+  name: SetParameter(String, Func<Double>)
+  nameWithType: EvaluationContext.SetParameter(String, Func<Double>)
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String, System.Func<System.Double>)
+  nameWithType.vb: EvaluationContext.SetParameter(String, Func(Of Double))
+  fullName.vb: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String, System.Func(Of System.Double))
+  name.vb: SetParameter(String, Func(Of Double))
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.Func{System.Double})
+    name: SetParameter
+    nameWithType: EvaluationContext.SetParameter
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Func`1
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.Func{System.Double})
+    name: SetParameter
+    nameWithType: EvaluationContext.SetParameter
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Func`1
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Double
+    name: Double
+    nameWithType: Double
+    fullName: System.Double
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.String)
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.String)
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  isExternal: true
+  name: SetParameter(String, String)
+  nameWithType: EvaluationContext.SetParameter(String, String)
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String, System.String)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.String)
+    name: SetParameter
+    nameWithType: EvaluationContext.SetParameter
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.String)
+    name: SetParameter
+    nameWithType: EvaluationContext.SetParameter
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpressionNames
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpressionNames
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  name: GetExpressionNames()
+  nameWithType: EvaluationContext.GetExpressionNames()
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpressionNames()
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpressionNames
+    name: GetExpressionNames
+    nameWithType: EvaluationContext.GetExpressionNames
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpressionNames
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpressionNames
+    name: GetExpressionNames
+    nameWithType: EvaluationContext.GetExpressionNames
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpressionNames
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetNamedExpression(System.String,System.String)
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationContext.SetNamedExpression(System.String,System.String)
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  isExternal: true
+  name: SetNamedExpression(String, String)
+  nameWithType: EvaluationContext.SetNamedExpression(String, String)
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetNamedExpression(System.String, System.String)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetNamedExpression(System.String,System.String)
+    name: SetNamedExpression
+    nameWithType: EvaluationContext.SetNamedExpression
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetNamedExpression
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetNamedExpression(System.String,System.String)
+    name: SetNamedExpression
+    nameWithType: EvaluationContext.SetNamedExpression
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetNamedExpression
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpression(System.String)
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpression(System.String)
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  isExternal: true
+  name: GetExpression(String)
+  nameWithType: EvaluationContext.GetExpression(String)
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpression(System.String)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpression(System.String)
+    name: GetExpression
+    nameWithType: EvaluationContext.GetExpression
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpression
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpression(System.String)
+    name: GetExpression
+    nameWithType: EvaluationContext.GetExpression
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpression
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.CreateChildContext(System.String,System.Boolean)
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationContext.CreateChildContext(System.String,System.Boolean)
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  isExternal: true
+  name: CreateChildContext(String, Boolean)
+  nameWithType: EvaluationContext.CreateChildContext(String, Boolean)
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.CreateChildContext(System.String, System.Boolean)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.CreateChildContext(System.String,System.Boolean)
+    name: CreateChildContext
+    nameWithType: EvaluationContext.CreateChildContext
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.CreateChildContext
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.CreateChildContext(System.String,System.Boolean)
+    name: CreateChildContext
+    nameWithType: EvaluationContext.CreateChildContext
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.CreateChildContext
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Clone
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationContext.Clone
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  name: Clone()
+  nameWithType: EvaluationContext.Clone()
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Clone()
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Clone
+    name: Clone
+    nameWithType: EvaluationContext.Clone
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Clone
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Clone
+    name: Clone
+    nameWithType: EvaluationContext.Clone
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Clone
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameters(System.Collections.Generic.Dictionary{System.String,System.String})
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameters(System.Collections.Generic.Dictionary{System.String,System.String})
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  isExternal: true
+  name: SetParameters(Dictionary<String, String>)
+  nameWithType: EvaluationContext.SetParameters(Dictionary<String, String>)
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameters(System.Collections.Generic.Dictionary<System.String, System.String>)
+  nameWithType.vb: EvaluationContext.SetParameters(Dictionary(Of String, String))
+  fullName.vb: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameters(System.Collections.Generic.Dictionary(Of System.String, System.String))
+  name.vb: SetParameters(Dictionary(Of String, String))
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameters(System.Collections.Generic.Dictionary{System.String,System.String})
+    name: SetParameters
+    nameWithType: EvaluationContext.SetParameters
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameters
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameters(System.Collections.Generic.Dictionary{System.String,System.String})
+    name: SetParameters
+    nameWithType: EvaluationContext.SetParameters
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameters
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Find(System.String)
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationContext.Find(System.String)
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  isExternal: true
+  name: Find(String)
+  nameWithType: EvaluationContext.Find(String)
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Find(System.String)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Find(System.String)
+    name: Find
+    nameWithType: EvaluationContext.Find
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Find
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Find(System.String)
+    name: Find
+    nameWithType: EvaluationContext.Find
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Find
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.AddFunction(System.String,SpiceSharpParser.Common.Evaluation.IFunction)
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationContext.AddFunction(System.String,SpiceSharpParser.Common.Evaluation.IFunction)
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  isExternal: true
+  name: AddFunction(String, IFunction)
+  nameWithType: EvaluationContext.AddFunction(String, IFunction)
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.AddFunction(System.String, SpiceSharpParser.Common.Evaluation.IFunction)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.AddFunction(System.String,SpiceSharpParser.Common.Evaluation.IFunction)
+    name: AddFunction
+    nameWithType: EvaluationContext.AddFunction
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.AddFunction
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.AddFunction(System.String,SpiceSharpParser.Common.Evaluation.IFunction)
+    name: AddFunction
+    nameWithType: EvaluationContext.AddFunction
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.AddFunction
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Common.Evaluation.IFunction
+    name: IFunction
+    nameWithType: IFunction
+    fullName: SpiceSharpParser.Common.Evaluation.IFunction
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.CreateCommonFunctions
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationContext.CreateCommonFunctions
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  name: CreateCommonFunctions()
+  nameWithType: EvaluationContext.CreateCommonFunctions()
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.CreateCommonFunctions()
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.CreateCommonFunctions
+    name: CreateCommonFunctions
+    nameWithType: EvaluationContext.CreateCommonFunctions
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.CreateCommonFunctions
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.CreateCommonFunctions
+    name: CreateCommonFunctions
+    nameWithType: EvaluationContext.CreateCommonFunctions
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.CreateCommonFunctions
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.String,SpiceSharpParser.Common.Evaluation.Expression)
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.String,SpiceSharpParser.Common.Evaluation.Expression)
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  isExternal: true
+  name: SetParameter(String, String, Expression)
+  nameWithType: EvaluationContext.SetParameter(String, String, Expression)
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String, System.String, SpiceSharpParser.Common.Evaluation.Expression)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.String,SpiceSharpParser.Common.Evaluation.Expression)
+    name: SetParameter
+    nameWithType: EvaluationContext.SetParameter
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Common.Evaluation.Expression
+    name: Expression
+    nameWithType: Expression
+    fullName: SpiceSharpParser.Common.Evaluation.Expression
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter(System.String,System.String,SpiceSharpParser.Common.Evaluation.Expression)
+    name: SetParameter
+    nameWithType: EvaluationContext.SetParameter
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.SetParameter
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: SpiceSharpParser.Common.Evaluation.Expression
+    name: Expression
+    nameWithType: Expression
+    fullName: SpiceSharpParser.Common.Evaluation.Expression
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Evaluate(System.String)
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationContext.Evaluate(System.String)
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  isExternal: true
+  name: Evaluate(String)
+  nameWithType: EvaluationContext.Evaluate(String)
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Evaluate(System.String)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Evaluate(System.String)
+    name: Evaluate
+    nameWithType: EvaluationContext.Evaluate
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Evaluate
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Evaluate(System.String)
+    name: Evaluate
+    nameWithType: EvaluationContext.Evaluate
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Evaluate
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Evaluate(SpiceSharpParser.Common.Evaluation.Expression)
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationContext.Evaluate(SpiceSharpParser.Common.Evaluation.Expression)
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  name: Evaluate(Expression)
+  nameWithType: EvaluationContext.Evaluate(Expression)
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Evaluate(SpiceSharpParser.Common.Evaluation.Expression)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Evaluate(SpiceSharpParser.Common.Evaluation.Expression)
+    name: Evaluate
+    nameWithType: EvaluationContext.Evaluate
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Evaluate
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Common.Evaluation.Expression
+    name: Expression
+    nameWithType: Expression
+    fullName: SpiceSharpParser.Common.Evaluation.Expression
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.Evaluate(SpiceSharpParser.Common.Evaluation.Expression)
+    name: Evaluate
+    nameWithType: EvaluationContext.Evaluate
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.Evaluate
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Common.Evaluation.Expression
+    name: Expression
+    nameWithType: Expression
+    fullName: SpiceSharpParser.Common.Evaluation.Expression
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.HaveSpiceProperties(System.String)
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationContext.HaveSpiceProperties(System.String)
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  isExternal: true
+  name: HaveSpiceProperties(String)
+  nameWithType: EvaluationContext.HaveSpiceProperties(String)
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.HaveSpiceProperties(System.String)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.HaveSpiceProperties(System.String)
+    name: HaveSpiceProperties
+    nameWithType: EvaluationContext.HaveSpiceProperties
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.HaveSpiceProperties
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.HaveSpiceProperties(System.String)
+    name: HaveSpiceProperties
+    nameWithType: EvaluationContext.HaveSpiceProperties
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.HaveSpiceProperties
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.HaveFunctions(System.String)
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationContext.HaveFunctions(System.String)
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  isExternal: true
+  name: HaveFunctions(String)
+  nameWithType: EvaluationContext.HaveFunctions(String)
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.HaveFunctions(System.String)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.HaveFunctions(System.String)
+    name: HaveFunctions
+    nameWithType: EvaluationContext.HaveFunctions
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.HaveFunctions
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.HaveFunctions(System.String)
+    name: HaveFunctions
+    nameWithType: EvaluationContext.HaveFunctions
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.HaveFunctions
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpressionParameters(System.String,System.Boolean)
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpressionParameters(System.String,System.Boolean)
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  isExternal: true
+  name: GetExpressionParameters(String, Boolean)
+  nameWithType: EvaluationContext.GetExpressionParameters(String, Boolean)
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpressionParameters(System.String, System.Boolean)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpressionParameters(System.String,System.Boolean)
+    name: GetExpressionParameters
+    nameWithType: EvaluationContext.GetExpressionParameters
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpressionParameters
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpressionParameters(System.String,System.Boolean)
+    name: GetExpressionParameters
+    nameWithType: EvaluationContext.GetExpressionParameters
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetExpressionParameters
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetDeriveParser(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  commentId: M:SpiceSharpParser.Common.Evaluation.EvaluationContext.GetDeriveParser(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  parent: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  name: GetDeriveParser(EvaluationContext)
+  nameWithType: EvaluationContext.GetDeriveParser(EvaluationContext)
+  fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetDeriveParser(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+  spec.csharp:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetDeriveParser(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+    name: GetDeriveParser
+    nameWithType: EvaluationContext.GetDeriveParser
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetDeriveParser
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    name: EvaluationContext
+    nameWithType: EvaluationContext
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetDeriveParser(SpiceSharpParser.Common.Evaluation.EvaluationContext)
+    name: GetDeriveParser
+    nameWithType: EvaluationContext.GetDeriveParser
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext.GetDeriveParser
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Common.Evaluation.EvaluationContext
+    name: EvaluationContext
+    nameWithType: EvaluationContext
+    fullName: SpiceSharpParser.Common.Evaluation.EvaluationContext
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.Common.Evaluation
+  commentId: N:SpiceSharpParser.Common.Evaluation
+  name: SpiceSharpParser.Common.Evaluation
+  nameWithType: SpiceSharpParser.Common.Evaluation
+  fullName: SpiceSharpParser.Common.Evaluation
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.#ctor*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.#ctor
+  name: SpiceEvaluationContext
+  nameWithType: SpiceEvaluationContext.SpiceEvaluationContext
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.SpiceEvaluationContext
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+  name: SpiceExpressionMode
+  nameWithType: SpiceExpressionMode
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice
+  name: ISpiceNetlistCaseSensitivitySettings
+  nameWithType: ISpiceNetlistCaseSensitivitySettings
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings
+- uid: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+  commentId: T:SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+  parent: SpiceSharpParser.Common.Mathematics.Probability
+  name: IRandomizer
+  nameWithType: IRandomizer
+  fullName: SpiceSharpParser.Common.Mathematics.Probability.IRandomizer
+- uid: SpiceSharpParser.Parsers.Expression.IExpressionParser
+  commentId: T:SpiceSharpParser.Parsers.Expression.IExpressionParser
+  parent: SpiceSharpParser.Parsers.Expression
+  name: IExpressionParser
+  nameWithType: IExpressionParser
+  fullName: SpiceSharpParser.Parsers.Expression.IExpressionParser
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: INameGenerator
+  nameWithType: INameGenerator
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: IResultService
+  nameWithType: IResultService
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice
+- uid: SpiceSharpParser.Common.Mathematics.Probability
+  commentId: N:SpiceSharpParser.Common.Mathematics.Probability
+  name: SpiceSharpParser.Common.Mathematics.Probability
+  nameWithType: SpiceSharpParser.Common.Mathematics.Probability
+  fullName: SpiceSharpParser.Common.Mathematics.Probability
+- uid: SpiceSharpParser.Parsers.Expression
+  commentId: N:SpiceSharpParser.Parsers.Expression
+  name: SpiceSharpParser.Parsers.Expression
+  nameWithType: SpiceSharpParser.Parsers.Expression
+  fullName: SpiceSharpParser.Parsers.Expression
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.Mode*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.Mode
+  name: Mode
+  nameWithType: SpiceEvaluationContext.Mode
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.Mode

@@ -1,0 +1,90 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor
+  id: IProcessor
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  langs:
+  - csharp
+  - vb
+  name: IProcessor
+  nameWithType: IProcessor
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor
+  type: Interface
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IProcessor.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: IProcessor
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IProcessor.cs
+    startLine: 7
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  summary: "\nAn interface for all statements processors.\n"
+  example: []
+  syntax:
+    content: public interface IProcessor
+    content.vb: Public Interface IProcessor
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  id: Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor
+  langs:
+  - csharp
+  - vb
+  name: Process(Statements)
+  nameWithType: IProcessor.Process(Statements)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process(SpiceSharpParser.Models.Netlist.Spice.Objects.Statements)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IProcessor.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Process
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/Processors/IProcessor.cs
+    startLine: 9
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  syntax:
+    content: Statements Process(Statements statements)
+    parameters:
+    - id: statements
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+    return:
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+    content.vb: Function Process(statements As Statements) As Statements
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process*
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process
+  name: Process
+  nameWithType: IProcessor.Process
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.IProcessor.Process
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: Statements
+  nameWithType: Statements
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Statements
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: SpiceSharpParser.Models.Netlist.Spice.Objects
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice.Objects
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects

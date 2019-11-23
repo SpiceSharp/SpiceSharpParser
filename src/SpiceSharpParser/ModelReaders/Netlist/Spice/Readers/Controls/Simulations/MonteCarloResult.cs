@@ -1,8 +1,8 @@
-﻿using System;
+﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
@@ -88,8 +88,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             {
                 case "MAX":
                     return GetMaxPlot(bins);
+
                 case "MIN":
                     return GetMinPlot(bins);
+
                 case "YMAX":
                     return GetYMaxPlot(bins);
             }

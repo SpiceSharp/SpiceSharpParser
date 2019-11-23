@@ -21,7 +21,7 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
 
             var exports = RunSimulationsAndReturnExports(netlist);
 
-            for  (var i = 1; i < exports.Count; i++)
+            for (var i = 1; i < exports.Count; i++)
             {
                 Assert.NotEqual(exports[0], exports[i]);
             }
@@ -286,7 +286,7 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
                 ".DC V1 -1 1 0.1",
                 ".SAVE i(V1)",
                 ".END");
-            
+
             RunDCSimulation(netlist, "i(V1)");
         }
 

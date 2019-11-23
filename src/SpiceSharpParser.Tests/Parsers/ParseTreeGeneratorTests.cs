@@ -288,7 +288,6 @@ namespace SpiceSharpParser.Tests.Parsers
             Assert.NotNull(child);
             Assert.Equal(Symbols.ParameterBracket, child.Name);
             Assert.Equal(4, child.Children.Count);
-
         }
 
         [Fact]

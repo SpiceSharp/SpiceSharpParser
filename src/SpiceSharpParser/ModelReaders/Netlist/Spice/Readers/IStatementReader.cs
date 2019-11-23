@@ -8,6 +8,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
     /// </summary>
     public interface IStatementReader
     {
-        void Read(Statement statement, IReadingContext context);
+        void Read(Statement statement, ICircuitContext context);
     }
 }

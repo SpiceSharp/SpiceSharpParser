@@ -1,0 +1,575 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Lexers.LexerState
+  commentId: T:SpiceSharpParser.Lexers.LexerState
+  id: LexerState
+  parent: SpiceSharpParser.Lexers
+  children:
+  - SpiceSharpParser.Lexers.LexerState.BeforeLineBreak
+  - SpiceSharpParser.Lexers.LexerState.FullMatch
+  - SpiceSharpParser.Lexers.LexerState.LineNumber
+  - SpiceSharpParser.Lexers.LexerState.NewLine
+  - SpiceSharpParser.Lexers.LexerState.PreviousReturnedTokenType
+  langs:
+  - csharp
+  - vb
+  name: LexerState
+  nameWithType: LexerState
+  fullName: SpiceSharpParser.Lexers.LexerState
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/LexerState.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: LexerState
+    path: ../SpiceSharpParser/Lexers/LexerState.cs
+    startLine: 5
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers
+  summary: "\nA base class for lexer state classes. It contains a type of previous token.\n"
+  example: []
+  syntax:
+    content: public class LexerState
+    content.vb: Public Class LexerState
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerState
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.Lexers.LexerState.PreviousReturnedTokenType
+  commentId: P:SpiceSharpParser.Lexers.LexerState.PreviousReturnedTokenType
+  id: PreviousReturnedTokenType
+  parent: SpiceSharpParser.Lexers.LexerState
+  langs:
+  - csharp
+  - vb
+  name: PreviousReturnedTokenType
+  nameWithType: LexerState.PreviousReturnedTokenType
+  fullName: SpiceSharpParser.Lexers.LexerState.PreviousReturnedTokenType
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/LexerState.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: PreviousReturnedTokenType
+    path: ../SpiceSharpParser/Lexers/LexerState.cs
+    startLine: 10
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers
+  summary: "\nGets or sets type of previously returned token by lexer.\n"
+  example: []
+  syntax:
+    content: public int PreviousReturnedTokenType { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property PreviousReturnedTokenType As Integer
+  overload: SpiceSharpParser.Lexers.LexerState.PreviousReturnedTokenType*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Lexers.LexerState.FullMatch
+  commentId: P:SpiceSharpParser.Lexers.LexerState.FullMatch
+  id: FullMatch
+  parent: SpiceSharpParser.Lexers.LexerState
+  langs:
+  - csharp
+  - vb
+  name: FullMatch
+  nameWithType: LexerState.FullMatch
+  fullName: SpiceSharpParser.Lexers.LexerState.FullMatch
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/LexerState.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: FullMatch
+    path: ../SpiceSharpParser/Lexers/LexerState.cs
+    startLine: 15
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers
+  summary: "\nGets or sets a value indicating whether lexem is a full match.\n"
+  example: []
+  syntax:
+    content: public bool FullMatch { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property FullMatch As Boolean
+  overload: SpiceSharpParser.Lexers.LexerState.FullMatch*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Lexers.LexerState.BeforeLineBreak
+  commentId: P:SpiceSharpParser.Lexers.LexerState.BeforeLineBreak
+  id: BeforeLineBreak
+  parent: SpiceSharpParser.Lexers.LexerState
+  langs:
+  - csharp
+  - vb
+  name: BeforeLineBreak
+  nameWithType: LexerState.BeforeLineBreak
+  fullName: SpiceSharpParser.Lexers.LexerState.BeforeLineBreak
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/LexerState.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: BeforeLineBreak
+    path: ../SpiceSharpParser/Lexers/LexerState.cs
+    startLine: 20
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers
+  summary: "\nGets or sets a value indicating whether lexem is before a line break character.\n"
+  example: []
+  syntax:
+    content: public bool BeforeLineBreak { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property BeforeLineBreak As Boolean
+  overload: SpiceSharpParser.Lexers.LexerState.BeforeLineBreak*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Lexers.LexerState.LineNumber
+  commentId: P:SpiceSharpParser.Lexers.LexerState.LineNumber
+  id: LineNumber
+  parent: SpiceSharpParser.Lexers.LexerState
+  langs:
+  - csharp
+  - vb
+  name: LineNumber
+  nameWithType: LexerState.LineNumber
+  fullName: SpiceSharpParser.Lexers.LexerState.LineNumber
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/LexerState.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: LineNumber
+    path: ../SpiceSharpParser/Lexers/LexerState.cs
+    startLine: 25
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers
+  summary: "\nGets or sets the current line number.\n"
+  example: []
+  syntax:
+    content: public int LineNumber { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property LineNumber As Integer
+  overload: SpiceSharpParser.Lexers.LexerState.LineNumber*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Lexers.LexerState.NewLine
+  commentId: P:SpiceSharpParser.Lexers.LexerState.NewLine
+  id: NewLine
+  parent: SpiceSharpParser.Lexers.LexerState
+  langs:
+  - csharp
+  - vb
+  name: NewLine
+  nameWithType: LexerState.NewLine
+  fullName: SpiceSharpParser.Lexers.LexerState.NewLine
+  type: Property
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/LexerState.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: NewLine
+    path: ../SpiceSharpParser/Lexers/LexerState.cs
+    startLine: 30
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers
+  summary: "\nGets or sets a value indicating lexer is lexing new line.\n"
+  example: []
+  syntax:
+    content: public bool NewLine { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property NewLine As Boolean
+  overload: SpiceSharpParser.Lexers.LexerState.NewLine*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+references:
+- uid: SpiceSharpParser.Lexers
+  commentId: N:SpiceSharpParser.Lexers
+  name: SpiceSharpParser.Lexers
+  nameWithType: SpiceSharpParser.Lexers
+  fullName: SpiceSharpParser.Lexers
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.Lexers.LexerState.PreviousReturnedTokenType*
+  commentId: Overload:SpiceSharpParser.Lexers.LexerState.PreviousReturnedTokenType
+  name: PreviousReturnedTokenType
+  nameWithType: LexerState.PreviousReturnedTokenType
+  fullName: SpiceSharpParser.Lexers.LexerState.PreviousReturnedTokenType
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: SpiceSharpParser.Lexers.LexerState.FullMatch*
+  commentId: Overload:SpiceSharpParser.Lexers.LexerState.FullMatch
+  name: FullMatch
+  nameWithType: LexerState.FullMatch
+  fullName: SpiceSharpParser.Lexers.LexerState.FullMatch
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: SpiceSharpParser.Lexers.LexerState.BeforeLineBreak*
+  commentId: Overload:SpiceSharpParser.Lexers.LexerState.BeforeLineBreak
+  name: BeforeLineBreak
+  nameWithType: LexerState.BeforeLineBreak
+  fullName: SpiceSharpParser.Lexers.LexerState.BeforeLineBreak
+- uid: SpiceSharpParser.Lexers.LexerState.LineNumber*
+  commentId: Overload:SpiceSharpParser.Lexers.LexerState.LineNumber
+  name: LineNumber
+  nameWithType: LexerState.LineNumber
+  fullName: SpiceSharpParser.Lexers.LexerState.LineNumber
+- uid: SpiceSharpParser.Lexers.LexerState.NewLine*
+  commentId: Overload:SpiceSharpParser.Lexers.LexerState.NewLine
+  name: NewLine
+  nameWithType: LexerState.NewLine
+  fullName: SpiceSharpParser.Lexers.LexerState.NewLine

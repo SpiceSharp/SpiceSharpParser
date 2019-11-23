@@ -1,0 +1,34 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
+  id: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common.ExportFactory
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common.IExportFactory
+  langs:
+  - csharp
+  - vb
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
+  type: Namespace
+  assemblies:
+  - SpiceSharpParser
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common.ExportFactory
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common.ExportFactory
+  name: ExportFactory
+  nameWithType: ExportFactory
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common.ExportFactory
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common.IExportFactory
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common.IExportFactory
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
+  name: IExportFactory
+  nameWithType: IExportFactory
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common.IExportFactory
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common

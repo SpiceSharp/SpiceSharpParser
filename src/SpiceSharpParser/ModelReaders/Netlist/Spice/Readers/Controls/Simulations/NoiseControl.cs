@@ -23,12 +23,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
-        public override void Read(Control statement, IReadingContext context)
+        public override void Read(Control statement, ICircuitContext context)
         {
             CreateSimulations(statement, context, CreateNoiseSimulation);
         }
 
-        private Noise CreateNoiseSimulation(string name, Control statement, IReadingContext context)
+        private Noise CreateNoiseSimulation(string name, Control statement, ICircuitContext context)
         {
             Noise noise = null;
 
@@ -48,9 +48,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             }
 
             string type = statement.Parameters.Get(2).Image;
-            var numberSteps = context.EvaluateDouble(statement.Parameters.Get(3));
-            var start = context.EvaluateDouble(statement.Parameters.Get(4));
-            var stop = context.EvaluateDouble(statement.Parameters.Get(5));
+            var numberSteps = context.Evaluator.EvaluateDouble(statement.Parameters.Get(3));
+            var start = context.Evaluator.EvaluateDouble(statement.Parameters.Get(4));
+            var stop = context.Evaluator.EvaluateDouble(statement.Parameters.Get(5));
 
             Sweep<double> sweep;
 
@@ -88,6 +88,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                             }
 
                             break;
+
                         default:
                             throw new WrongParameterException("1 or 2 nodes expected");
                     }

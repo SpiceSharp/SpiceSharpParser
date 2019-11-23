@@ -1,7 +1,4 @@
-﻿using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-
-namespace SpiceSharpParser.Common.Evaluation
+﻿namespace SpiceSharpParser.Common.Evaluation
 {
     public abstract class Function<TInputArgumentType, TOutputType> : IFunction<TInputArgumentType, TOutputType>
     {
@@ -18,6 +15,6 @@ namespace SpiceSharpParser.Common.Evaluation
         /// <summary>
         /// Computes the value of the function for given arguments.
         /// </summary>
-        public abstract TOutputType Logic(string image, TInputArgumentType[] args, IEvaluator evaluator, ExpressionContext context, Simulation simulation = null, IReadingContext readingContext = null);
+        public abstract TOutputType Logic(string image, TInputArgumentType[] args, EvaluationContext context);
     }
 }

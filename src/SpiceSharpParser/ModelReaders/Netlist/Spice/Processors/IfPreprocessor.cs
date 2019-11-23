@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.Common.Evaluation.Expressions;
+﻿using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
@@ -13,14 +12,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
     /// </summary>
     public class IfPreprocessor : IProcessor, IEvaluatorConsumer
     {
-        public ExpressionContext ExpressionContext { get; set; }
-
-        public IEvaluator Evaluator { get; set; }
+        public EvaluationContext EvaluationContext { get; set; }
 
         /// <summary>
         /// Gets or sets the evaluator.
         /// </summary>
-        public SpiceNetlistCaseSensitivitySettings CaseSettings { get; set; }
+        public ISpiceNetlistCaseSensitivitySettings CaseSettings { get; set; }
 
         public Statements Process(Statements statements)
         {
@@ -29,15 +26,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                 throw new ArgumentNullException(nameof(statements));
             }
 
-            if (Evaluator == null)
-            {
-                throw new InvalidOperationException("No evaluator");
-            }
-
             ParamControl paramControl = new ParamControl();
             foreach (Control param in statements.Where(statement => statement is Control c && c.Name.ToLower() == "param").Cast<Control>())
             {
-                paramControl.Read(param, ExpressionContext, CaseSettings, Evaluator, null, false);
+                paramControl.Read(param, EvaluationContext);
             }
 
             return ReadIfs(statements);
@@ -122,11 +114,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                 elseIfControl = result[elseIfControlIndex] as Control;
             }
 
-            if (Evaluator.Evaluate(new DynamicExpression(ifCondition.Image), ExpressionContext, null, null) >= 1.0)
+            if (EvaluationContext.Evaluate(ifCondition.Image) >= 1.0)
             {
                 if (elseIfControl != null)
                 {
-                   return result.Skip(ifIndex + 1).Take(elseIfControlIndex - ifIndex - 1).ToList();
+                    return result.Skip(ifIndex + 1).Take(elseIfControlIndex - ifIndex - 1).ToList();
                 }
                 else
                 {

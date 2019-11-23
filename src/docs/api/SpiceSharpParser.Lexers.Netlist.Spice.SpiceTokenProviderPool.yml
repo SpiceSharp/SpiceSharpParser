@@ -1,0 +1,443 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenProviderPool
+  commentId: T:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenProviderPool
+  id: SpiceTokenProviderPool
+  parent: SpiceSharpParser.Lexers.Netlist.Spice
+  children:
+  - SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenProviderPool.GetSpiceTokenProvider(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  langs:
+  - csharp
+  - vb
+  name: SpiceTokenProviderPool
+  nameWithType: SpiceTokenProviderPool
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenProviderPool
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenProviderPool.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: SpiceTokenProviderPool
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenProviderPool.cs
+    startLine: 6
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  syntax:
+    content: 'public class SpiceTokenProviderPool : ISpiceTokenProviderPool'
+    content.vb: >-
+      Public Class SpiceTokenProviderPool
+          Implements ISpiceTokenProviderPool
+  inheritance:
+  - System.Object
+  implements:
+  - SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenProviderPool.GetSpiceTokenProvider(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  commentId: M:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenProviderPool.GetSpiceTokenProvider(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  id: GetSpiceTokenProvider(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenProviderPool
+  langs:
+  - csharp
+  - vb
+  name: GetSpiceTokenProvider(SpiceLexerSettings)
+  nameWithType: SpiceTokenProviderPool.GetSpiceTokenProvider(SpiceLexerSettings)
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenProviderPool.GetSpiceTokenProvider(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenProviderPool.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetSpiceTokenProvider
+    path: ../SpiceSharpParser/Lexers/Netlist/Spice/SpiceTokenProviderPool.cs
+    startLine: 11
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Lexers.Netlist.Spice
+  syntax:
+    content: public ISpiceTokenProvider GetSpiceTokenProvider(SpiceLexerSettings settings)
+    parameters:
+    - id: settings
+      type: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+    return:
+      type: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProvider
+    content.vb: Public Function GetSpiceTokenProvider(settings As SpiceLexerSettings) As ISpiceTokenProvider
+  overload: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenProviderPool.GetSpiceTokenProvider*
+  implements:
+  - SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool.GetSpiceTokenProvider(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: SpiceSharpParser.Lexers.Netlist.Spice
+  commentId: N:SpiceSharpParser.Lexers.Netlist.Spice
+  name: SpiceSharpParser.Lexers.Netlist.Spice
+  nameWithType: SpiceSharpParser.Lexers.Netlist.Spice
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool
+  commentId: T:SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool
+  parent: SpiceSharpParser.Lexers.Netlist.Spice
+  name: ISpiceTokenProviderPool
+  nameWithType: ISpiceTokenProviderPool
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenProviderPool.GetSpiceTokenProvider*
+  commentId: Overload:SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenProviderPool.GetSpiceTokenProvider
+  name: GetSpiceTokenProvider
+  nameWithType: SpiceTokenProviderPool.GetSpiceTokenProvider
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenProviderPool.GetSpiceTokenProvider
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool.GetSpiceTokenProvider(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  commentId: M:SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool.GetSpiceTokenProvider(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  parent: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool
+  name: GetSpiceTokenProvider(SpiceLexerSettings)
+  nameWithType: ISpiceTokenProviderPool.GetSpiceTokenProvider(SpiceLexerSettings)
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool.GetSpiceTokenProvider(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+  spec.csharp:
+  - uid: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool.GetSpiceTokenProvider(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+    name: GetSpiceTokenProvider
+    nameWithType: ISpiceTokenProviderPool.GetSpiceTokenProvider
+    fullName: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool.GetSpiceTokenProvider
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+    name: SpiceLexerSettings
+    nameWithType: SpiceLexerSettings
+    fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool.GetSpiceTokenProvider(SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings)
+    name: GetSpiceTokenProvider
+    nameWithType: ISpiceTokenProviderPool.GetSpiceTokenProvider
+    fullName: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProviderPool.GetSpiceTokenProvider
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+    name: SpiceLexerSettings
+    nameWithType: SpiceLexerSettings
+    fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+  commentId: T:SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+  parent: SpiceSharpParser.Lexers.Netlist.Spice
+  name: SpiceLexerSettings
+  nameWithType: SpiceLexerSettings
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.SpiceLexerSettings
+- uid: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProvider
+  commentId: T:SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProvider
+  parent: SpiceSharpParser.Lexers.Netlist.Spice
+  name: ISpiceTokenProvider
+  nameWithType: ISpiceTokenProvider
+  fullName: SpiceSharpParser.Lexers.Netlist.Spice.ISpiceTokenProvider

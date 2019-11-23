@@ -1,0 +1,716 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator
+  commentId: T:SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator
+  id: CombinationGenerator
+  parent: SpiceSharpParser.Common.Mathematics.Combinatorics
+  children:
+  - SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.Generate(System.Int32,System.Int32)
+  - SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GenerateFirstCombination(System.Int32)
+  - SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GetCombinationsCount(System.Int32,System.Int32)
+  - SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GetFactorial(System.Int32)
+  - SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.NextCombination(System.Int32[],System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: CombinationGenerator
+  nameWithType: CombinationGenerator
+  fullName: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator
+  type: Class
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Combinatorics/CombinationGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: CombinationGenerator
+    path: ../SpiceSharpParser/Common/Mathematics/Combinatorics/CombinationGenerator.cs
+    startLine: 8
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Combinatorics
+  summary: "\nHelper methods for generating combinations.\n"
+  example: []
+  syntax:
+    content: public class CombinationGenerator
+    content.vb: Public Class CombinationGenerator
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.Generate(System.Int32,System.Int32)
+  commentId: M:SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.Generate(System.Int32,System.Int32)
+  id: Generate(System.Int32,System.Int32)
+  parent: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator
+  langs:
+  - csharp
+  - vb
+  name: Generate(Int32, Int32)
+  nameWithType: CombinationGenerator.Generate(Int32, Int32)
+  fullName: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.Generate(System.Int32, System.Int32)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Combinatorics/CombinationGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Generate
+    path: ../SpiceSharpParser/Common/Mathematics/Combinatorics/CombinationGenerator.cs
+    startLine: 18
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Combinatorics
+  summary: "\nGenerates combinations for given n.\n"
+  example: []
+  syntax:
+    content: public List<int[]> Generate(int count, int n)
+    parameters:
+    - id: count
+      type: System.Int32
+      description: Number of combinations to generate.
+    - id: n
+      type: System.Int32
+      description: Number of elements.
+    return:
+      type: System.Collections.Generic.List{System.Int32[]}
+      description: "\nCombinations for given n.\n"
+    content.vb: Public Function Generate(count As Integer, n As Integer) As List(Of Integer())
+  overload: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.Generate*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GetFactorial(System.Int32)
+  commentId: M:SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GetFactorial(System.Int32)
+  id: GetFactorial(System.Int32)
+  parent: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator
+  langs:
+  - csharp
+  - vb
+  name: GetFactorial(Int32)
+  nameWithType: CombinationGenerator.GetFactorial(Int32)
+  fullName: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GetFactorial(System.Int32)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Combinatorics/CombinationGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetFactorial
+    path: ../SpiceSharpParser/Common/Mathematics/Combinatorics/CombinationGenerator.cs
+    startLine: 74
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Combinatorics
+  summary: "\nGets a value of factorial.\n"
+  example: []
+  syntax:
+    content: public long GetFactorial(int n)
+    parameters:
+    - id: n
+      type: System.Int32
+      description: Factorial number.
+    return:
+      type: System.Int64
+      description: "\nA value of factorial.\n"
+    content.vb: Public Function GetFactorial(n As Integer) As Long
+  overload: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GetFactorial*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GetCombinationsCount(System.Int32,System.Int32)
+  commentId: M:SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GetCombinationsCount(System.Int32,System.Int32)
+  id: GetCombinationsCount(System.Int32,System.Int32)
+  parent: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator
+  langs:
+  - csharp
+  - vb
+  name: GetCombinationsCount(Int32, Int32)
+  nameWithType: CombinationGenerator.GetCombinationsCount(Int32, Int32)
+  fullName: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GetCombinationsCount(System.Int32, System.Int32)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Combinatorics/CombinationGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GetCombinationsCount
+    path: ../SpiceSharpParser/Common/Mathematics/Combinatorics/CombinationGenerator.cs
+    startLine: 99
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Combinatorics
+  summary: "\nGets the number of combinations with repetitions.\n"
+  example: []
+  syntax:
+    content: public long GetCombinationsCount(int k, int n)
+    parameters:
+    - id: k
+      type: System.Int32
+      description: Size of combination.
+    - id: n
+      type: System.Int32
+      description: Number of elements.
+    return:
+      type: System.Int64
+      description: "\nThe number of combinations with repetitions.\n"
+    content.vb: Public Function GetCombinationsCount(k As Integer, n As Integer) As Long
+  overload: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GetCombinationsCount*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GenerateFirstCombination(System.Int32)
+  commentId: M:SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GenerateFirstCombination(System.Int32)
+  id: GenerateFirstCombination(System.Int32)
+  parent: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator
+  langs:
+  - csharp
+  - vb
+  name: GenerateFirstCombination(Int32)
+  nameWithType: CombinationGenerator.GenerateFirstCombination(Int32)
+  fullName: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GenerateFirstCombination(System.Int32)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Combinatorics/CombinationGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: GenerateFirstCombination
+    path: ../SpiceSharpParser/Common/Mathematics/Combinatorics/CombinationGenerator.cs
+    startLine: 118
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Combinatorics
+  summary: "\nGenerates a first combination where all elements are first element.\n"
+  example: []
+  syntax:
+    content: public int[] GenerateFirstCombination(int k)
+    parameters:
+    - id: k
+      type: System.Int32
+      description: Size of combination.
+    return:
+      type: System.Int32[]
+      description: "\nA first combination for given k.\n"
+    content.vb: Public Function GenerateFirstCombination(k As Integer) As Integer()
+  overload: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GenerateFirstCombination*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.NextCombination(System.Int32[],System.Int32)
+  commentId: M:SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.NextCombination(System.Int32[],System.Int32)
+  id: NextCombination(System.Int32[],System.Int32)
+  parent: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator
+  langs:
+  - csharp
+  - vb
+  name: NextCombination(Int32[], Int32)
+  nameWithType: CombinationGenerator.NextCombination(Int32[], Int32)
+  fullName: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.NextCombination(System.Int32[], System.Int32)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/Common/Mathematics/Combinatorics/CombinationGenerator.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: NextCombination
+    path: ../SpiceSharpParser/Common/Mathematics/Combinatorics/CombinationGenerator.cs
+    startLine: 137
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.Common.Mathematics.Combinatorics
+  summary: "\nGenerate a next combination.\n"
+  example: []
+  syntax:
+    content: public int[] NextCombination(int[] combination, int n)
+    parameters:
+    - id: combination
+      type: System.Int32[]
+      description: Current combination.
+    - id: n
+      type: System.Int32
+      description: Number of elements.
+    return:
+      type: System.Int32[]
+      description: "\nA next combination.\n"
+    content.vb: Public Function NextCombination(combination As Integer(), n As Integer) As Integer()
+  overload: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.NextCombination*
+  nameWithType.vb: CombinationGenerator.NextCombination(Int32(), Int32)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.NextCombination(System.Int32(), System.Int32)
+  name.vb: NextCombination(Int32(), Int32)
+references:
+- uid: SpiceSharpParser.Common.Mathematics.Combinatorics
+  commentId: N:SpiceSharpParser.Common.Mathematics.Combinatorics
+  name: SpiceSharpParser.Common.Mathematics.Combinatorics
+  nameWithType: SpiceSharpParser.Common.Mathematics.Combinatorics
+  fullName: SpiceSharpParser.Common.Mathematics.Combinatorics
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.Generate*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.Generate
+  name: Generate
+  nameWithType: CombinationGenerator.Generate
+  fullName: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.Generate
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: System.Collections.Generic.List{System.Int32[]}
+  commentId: T:System.Collections.Generic.List{System.Int32[]}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<Int32[]>
+  nameWithType: List<Int32[]>
+  fullName: System.Collections.Generic.List<System.Int32[]>
+  nameWithType.vb: List(Of Int32())
+  fullName.vb: System.Collections.Generic.List(Of System.Int32())
+  name.vb: List(Of Int32())
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GetFactorial*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GetFactorial
+  name: GetFactorial
+  nameWithType: CombinationGenerator.GetFactorial
+  fullName: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GetFactorial
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  name: Int64
+  nameWithType: Int64
+  fullName: System.Int64
+- uid: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GetCombinationsCount*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GetCombinationsCount
+  name: GetCombinationsCount
+  nameWithType: CombinationGenerator.GetCombinationsCount
+  fullName: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GetCombinationsCount
+- uid: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GenerateFirstCombination*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GenerateFirstCombination
+  name: GenerateFirstCombination
+  nameWithType: CombinationGenerator.GenerateFirstCombination
+  fullName: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.GenerateFirstCombination
+- uid: System.Int32[]
+  isExternal: true
+  name: Int32[]
+  nameWithType: Int32[]
+  fullName: System.Int32[]
+  nameWithType.vb: Int32()
+  fullName.vb: System.Int32()
+  name.vb: Int32()
+  spec.csharp:
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.NextCombination*
+  commentId: Overload:SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.NextCombination
+  name: NextCombination
+  nameWithType: CombinationGenerator.NextCombination
+  fullName: SpiceSharpParser.Common.Mathematics.Combinatorics.CombinationGenerator.NextCombination

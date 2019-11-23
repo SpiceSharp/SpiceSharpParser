@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using SpiceSharp.Components;
+﻿using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Custom;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System;
+using System.Globalization;
 using Model = SpiceSharp.Components.Model;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
 {
     public class SwitchGenerator : ComponentGenerator
     {
-        public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
         {
             switch (type.ToLower())
             {
@@ -34,7 +33,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new voltage switch.
         /// </returns>
-        protected SpiceSharp.Components.Component GenerateVoltageSwitch(string name, ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateVoltageSwitch(string name, ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters.Count < 5)
             {
@@ -96,9 +95,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         case "on":
                             vsw.ParameterSets.SetParameter("on");
                             break;
+
                         case "off":
                             vsw.ParameterSets.SetParameter("off");
                             break;
+
                         default:
                             throw new Exception("ON or OFF expected");
                     }
@@ -121,7 +122,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of current switch.
         /// </returns>
-        protected SpiceSharp.Components.Component GenerateCurrentSwitch(string name, ParameterCollection parameters, IReadingContext context)
+        protected SpiceSharp.Components.Component GenerateCurrentSwitch(string name, ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters.Count < 4)
             {
@@ -166,7 +167,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // Get the controlling voltage source
                 if (parameters[2] is WordParameter || parameters[2] is IdentifierParameter)
                 {
-                    csw.ControllingName = context.ComponentNameGenerator.Generate(parameters.Get(2).Image);
+                    csw.ControllingName = context.NameGenerator.GenerateObjectName(parameters.Get(2).Image);
                 }
                 else
                 {
@@ -193,9 +194,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         case "on":
                             csw.ParameterSets.SetParameter("on");
                             break;
+
                         case "off":
                             csw.ParameterSets.SetParameter("off");
                             break;
+
                         default:
                             throw new GeneralReaderException("ON or OFF expected");
                     }

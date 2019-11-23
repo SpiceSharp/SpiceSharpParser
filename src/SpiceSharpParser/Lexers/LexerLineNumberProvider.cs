@@ -32,7 +32,7 @@ namespace SpiceSharpParser.Lexers
         {
             int currentIndex = 0;
 
-            var newRange = new LexerLineRange {From = 0, LineNumber = 1};
+            var newRange = new LexerLineRange { From = 0, LineNumber = 1 };
             int currentLineNumber = 1;
 
             while (currentIndex < _text.Length)
@@ -48,7 +48,7 @@ namespace SpiceSharpParser.Lexers
                         currentLineNumber++;
                         currentIndex += 2;
 
-                        newRange = new LexerLineRange {From = currentIndex, LineNumber = currentLineNumber};
+                        newRange = new LexerLineRange { From = currentIndex, LineNumber = currentLineNumber };
                     }
                     else
                     {
@@ -59,7 +59,7 @@ namespace SpiceSharpParser.Lexers
                         currentLineNumber++;
                         currentIndex++;
 
-                        newRange = new LexerLineRange {From = currentIndex, LineNumber = currentLineNumber};
+                        newRange = new LexerLineRange { From = currentIndex, LineNumber = currentLineNumber };
                     }
                 }
                 else if (_text[currentIndex] == '\n')
@@ -71,7 +71,7 @@ namespace SpiceSharpParser.Lexers
                     currentLineNumber++;
                     currentIndex++;
 
-                    newRange = new LexerLineRange {From = currentIndex, LineNumber = currentLineNumber};
+                    newRange = new LexerLineRange { From = currentIndex, LineNumber = currentLineNumber };
                 }
                 else
                 {

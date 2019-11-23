@@ -28,6 +28,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
 
             EqualsWithTol(export, references);
         }
+
         [Fact]
         public void When_PlusWithWhiteSpaceAndEmptyLine_Expect_Reference()
         {

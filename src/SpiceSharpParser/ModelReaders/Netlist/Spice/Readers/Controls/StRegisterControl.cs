@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, IReadingContext context)
+        public override void Read(Control statement, ICircuitContext context)
         {
             if (statement.Parameters == null)
             {
@@ -36,16 +36,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 case "lin":
                     RegisterParameter(statement.Parameters.Skip(1), context);
                     break;
+
                 default:
                     RegisterParameter(statement.Parameters, context);
                     break;
             }
         }
 
-        private void RegisterParameter(ParameterCollection parameters, IReadingContext context)
+        private void RegisterParameter(ParameterCollection parameters, ICircuitContext context)
         {
             var variableParameter = parameters[0];
-            context.SetParameter(variableParameter.Image, 0);
+            context.Evaluator.SetParameter(variableParameter.Image, 0);
         }
     }
 }

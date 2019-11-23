@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using SpiceSharp.Simulations;
-using SpiceSharpBehavioral.Parsers;
+﻿using SpiceSharpBehavioral.Parsers;
 using SpiceSharpParser.Common.Evaluation.Expressions;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.Parsers.Expression;
+using System;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.Common.Evaluation.Functions
 {
@@ -22,7 +19,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
 
         public string Expression { get; }
 
-        public override double Logic(string image, double[] args, IEvaluator evaluator, ExpressionContext context, Simulation simulation = null, IReadingContext readingContext = null)
+        public override double Logic(string image, double[] args, EvaluationContext context)
         {
             if (image == null)
             {
@@ -32,11 +29,6 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
             if (args == null)
             {
                 throw new ArgumentNullException(nameof(args));
-            }
-
-            if (evaluator == null)
-            {
-                throw new ArgumentNullException(nameof(evaluator));
             }
 
             if (context == null)
@@ -50,11 +42,11 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
                 childContext.SetParameter(Arguments[i], args[i]);
             }
 
-            var @value = ExpressionParserHelpers.GetExpressionValue(Expression, childContext, evaluator, simulation, readingContext);
+            var @value = childContext.Evaluate(Expression);
             return @value;
         }
 
-        public Derivatives<Func<double>> Derivative(string image, Func<double>[] args, IEvaluator evaluator, ExpressionContext context, Simulation simulation = null, IReadingContext readingContext = null)
+        public Derivatives<Func<double>> Derivative(string image, Func<double>[] args, EvaluationContext context)
         {
             if (image == null)
             {
@@ -66,19 +58,9 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
                 throw new ArgumentNullException(nameof(args));
             }
 
-            if (evaluator == null)
-            {
-                throw new ArgumentNullException(nameof(evaluator));
-            }
-
             if (context == null)
             {
                 throw new ArgumentNullException(nameof(context));
-            }
-
-            if (readingContext == null)
-            {
-                throw new ArgumentNullException(nameof(readingContext));
             }
 
             var childContext = context.CreateChildContext(string.Empty, false);
@@ -89,8 +71,8 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
                 childContext.Arguments.Add(Arguments[i], new FunctionExpression(args[iLocal]));
             }
 
-            var parser = ExpressionParserHelpers.GetDeriveParser(childContext, readingContext, evaluator, simulation, readingContext.CaseSensitivity);
-            var parseResult = parser.Parse(Expression);
+            var childParser = childContext.GetDeriveParser();
+            var parseResult = childParser.Parse(Expression);
             return parseResult;
         }
     }

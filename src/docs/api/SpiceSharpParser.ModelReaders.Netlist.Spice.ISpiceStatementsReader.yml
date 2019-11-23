@@ -1,0 +1,105 @@
+### YamlMime:ManagedReference
+items:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsReader
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsReader
+  id: ISpiceStatementsReader
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice
+  children:
+  - SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsReader.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  langs:
+  - csharp
+  - vb
+  name: ISpiceStatementsReader
+  nameWithType: ISpiceStatementsReader
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsReader
+  type: Interface
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceStatementsReader.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: ISpiceStatementsReader
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceStatementsReader.cs
+    startLine: 8
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nAn interface for all statements readers.\n"
+  example: []
+  syntax:
+    content: public interface ISpiceStatementsReader
+    content.vb: Public Interface ISpiceStatementsReader
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsReader.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  commentId: M:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsReader.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  id: Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsReader
+  langs:
+  - csharp
+  - vb
+  name: Read(Statement, ICircuitContext)
+  nameWithType: ISpiceStatementsReader.Read(Statement, ICircuitContext)
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsReader.Read(SpiceSharpParser.Models.Netlist.Spice.Objects.Statement, SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext)
+  type: Method
+  source:
+    remote:
+      path: src/SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceStatementsReader.cs
+      branch: master
+      repo: https://github.com/marcin-golebiowski/SpiceSharpParser.git
+    id: Read
+    path: ../SpiceSharpParser/ModelReaders/Netlist/Spice/ISpiceStatementsReader.cs
+    startLine: 15
+  assemblies:
+  - SpiceSharpParser
+  namespace: SpiceSharpParser.ModelReaders.Netlist.Spice
+  summary: "\nReads a statement.\n"
+  example: []
+  syntax:
+    content: void Read(Statement statement, ICircuitContext circuitContext)
+    parameters:
+    - id: statement
+      type: SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+      description: A statement.
+    - id: circuitContext
+      type: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+      description: A reading context.
+    content.vb: Sub Read(statement As Statement, circuitContext As ICircuitContext)
+  overload: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsReader.Read*
+references:
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsReader.Read*
+  commentId: Overload:SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsReader.Read
+  name: Read
+  nameWithType: ISpiceStatementsReader.Read
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsReader.Read
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+  commentId: T:SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+  parent: SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: Statement
+  nameWithType: Statement
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects.Statement
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  commentId: T:SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+  parent: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: ICircuitContext
+  nameWithType: ICircuitContext
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context.ICircuitContext
+- uid: SpiceSharpParser.Models.Netlist.Spice.Objects
+  commentId: N:SpiceSharpParser.Models.Netlist.Spice.Objects
+  name: SpiceSharpParser.Models.Netlist.Spice.Objects
+  nameWithType: SpiceSharpParser.Models.Netlist.Spice.Objects
+  fullName: SpiceSharpParser.Models.Netlist.Spice.Objects
+- uid: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  commentId: N:SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  name: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  nameWithType: SpiceSharpParser.ModelReaders.Netlist.Spice.Context
+  fullName: SpiceSharpParser.ModelReaders.Netlist.Spice.Context

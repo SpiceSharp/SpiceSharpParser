@@ -1,7 +1,7 @@
-﻿using System;
-using SpiceSharpParser.Lexers.Netlist.Spice;
+﻿using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Parsers.Netlist.Spice.Internals;
+using System;
 
 namespace SpiceSharpParser.Parsers.Netlist.Spice
 {

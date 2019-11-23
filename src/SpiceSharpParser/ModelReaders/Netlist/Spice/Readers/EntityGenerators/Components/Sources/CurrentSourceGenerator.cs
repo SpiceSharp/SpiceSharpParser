@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using SpiceSharp.Components;
+﻿using SpiceSharp.Components;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System.Linq;
 using Component = SpiceSharp.Components.Component;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     /// </summary>
     public class CurrentSourceGenerator : SourceGenerator
     {
-        public override Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
+        public override Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
         {
             switch (type.ToLower())
             {
@@ -35,7 +35,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of current controlled current source.
         /// </returns>
-        protected Component GenerateCurrentControlledCurrentSource(string name,  ParameterCollection parameters, IReadingContext context)
+        protected Component GenerateCurrentControlledCurrentSource(string name, ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters.Count == 4
                 && parameters.IsValueString(0)
@@ -45,7 +45,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var cccs = new CurrentControlledCurrentSource(name);
                 context.CreateNodes(cccs, parameters);
-                cccs.ControllingName = context.ComponentNameGenerator.Generate(parameters.Get(2).Image);
+                cccs.ControllingName = context.NameGenerator.GenerateObjectName(parameters.Get(2).Image);
                 context.SetParameter(cccs, "gain", parameters.Get(3));
                 return cccs;
             }
@@ -64,7 +64,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of voltage controlled current source.
         /// </returns>
-        protected Component GenerateVoltageControlledCurrentSource(string name, ParameterCollection parameters, IReadingContext context)
+        protected Component GenerateVoltageControlledCurrentSource(string name, ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters.Count == 5
                 && parameters.IsValueString(0)
@@ -111,7 +111,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of current source.
         /// </returns>
-        protected Component GenerateCurrentSource(string name,  ParameterCollection parameters, IReadingContext context)
+        protected Component GenerateCurrentSource(string name, ParameterCollection parameters, ICircuitContext context)
         {
             CurrentSource cs = new CurrentSource(name);
             context.CreateNodes(cs, parameters);
@@ -119,7 +119,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return cs;
         }
 
-        private Component CreateCustomCurrentSource(string name, ParameterCollection parameters, IReadingContext context, bool isVoltageControlled)
+        private Component CreateCustomCurrentSource(string name, ParameterCollection parameters, ICircuitContext context, bool isVoltageControlled)
         {
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
@@ -127,7 +127,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 var entity = new BehavioralCurrentSource(name);
                 context.CreateNodes(entity, parameters);
-                
+
                 var baseParameters = entity.ParameterSets.Get<SpiceSharpBehavioral.Components.BehavioralBehaviors.BaseParameters>();
                 baseParameters.Expression = valueParameter.Value;
                 baseParameters.SpicePropertyComparer = StringComparerProvider.Get(context.CaseSensitivity.IsFunctionNameCaseSensitive);
@@ -175,7 +175,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     throw new WrongParametersCountException(name, "poly expects one argument => dimension");
                 }
 
-                var dimension = (int)context.EvaluateDouble(polyParameter.Parameters[0].Image);
+                var dimension = (int)context.Evaluator.EvaluateDouble(polyParameter.Parameters[0].Image);
                 var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled);
 
                 context.SetParameter(entity, "dc", expression);
@@ -197,7 +197,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     var entity = new BehavioralCurrentSource(name);
                     context.CreateNodes(entity, parameters);
-                    
+
                     var baseParameters = entity.ParameterSets.Get<SpiceSharpBehavioral.Components.BehavioralBehaviors.BaseParameters>();
                     baseParameters.Expression = ExpressionFactory.CreateTableExpression(eep.Expression, eep.Points);
                     baseParameters.SpicePropertyComparer = StringComparerProvider.Get(context.CaseSensitivity.IsFunctionNameCaseSensitive);

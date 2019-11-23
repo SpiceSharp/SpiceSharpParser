@@ -17,7 +17,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".END");
 
             RunSimulations(parseResult);
-            Assert.Empty(parseResult.XyPlots);        
+            Assert.Empty(parseResult.XyPlots);
         }
 
         [Fact]
@@ -85,6 +85,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             RunSimulations(parseResult);
             Assert.Empty(parseResult.XyPlots);
         }
+
         [Fact]
         public void When_PrintDcWithoutFilter_Expect_Reference()
         {

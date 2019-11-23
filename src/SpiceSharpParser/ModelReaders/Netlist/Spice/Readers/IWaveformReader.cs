@@ -18,8 +18,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <returns>
         /// An new instance of waveform.
         /// </returns>
-        Waveform Generate(string type, ParameterCollection parameters, IReadingContext context);
+        Waveform Generate(string type, ParameterCollection parameters, ICircuitContext context);
 
-        bool Supports(string type, IReadingContext context);
+        bool Supports(string type, ICircuitContext context);
     }
 }

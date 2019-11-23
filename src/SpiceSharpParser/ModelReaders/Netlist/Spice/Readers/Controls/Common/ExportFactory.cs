@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SpiceSharp.Simulations;
+﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
 {
@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
     {
         public Export Create(
             Parameter exportParameter,
-            IReadingContext context,
+            ICircuitContext context,
             Simulation simulation,
             IMapper<Exporter> mapper)
         {
@@ -28,11 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                         exportParameter.Image,
                         type,
                         bp.Parameters,
-                        simulation,
-                        context.NodeNameGenerator,
-                        context.ComponentNameGenerator,
-                        context.ModelNameGenerator,
-                        context.Result,
+                        context.Evaluator.GetEvaluationContext(simulation),
                         context.CaseSensitivity);
                 }
             }
@@ -40,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
             if (exportParameter is ReferenceParameter rp)
             {
                 string type = "@";
-                var parameters = new ParameterCollection { new VectorParameter() { Elements = new List<SingleParameter>() { new WordParameter(rp.Name), new WordParameter(rp.Argument) }}};
+                var parameters = new ParameterCollection { new VectorParameter() { Elements = new List<SingleParameter>() { new WordParameter(rp.Name), new WordParameter(rp.Argument) } } };
 
                 if (mapper.TryGetValue(type, true, out var exporter))
                 {
@@ -48,11 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                         exportParameter.Image,
                         type,
                         parameters,
-                        simulation,
-                        context.NodeNameGenerator,
-                        context.ComponentNameGenerator,
-                        context.ModelNameGenerator,
-                        context.Result,
+                        context.Evaluator.GetEvaluationContext(simulation),
                         context.CaseSensitivity);
                 }
             }
@@ -60,19 +52,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
             if (exportParameter is SingleParameter s)
             {
                 string expressionName = s.Image;
-                var expressionNames = context.ReadingExpressionContext.GetExpressionNames();
+                var expressionNames = context.Evaluator.GetExpressionNames();
 
-                if (expressionNames.Contains(expressionName))
+                if (expressionNames.Any(e => e == expressionName))
                 {
-                    var evaluator = context.SimulationEvaluators.GetEvaluator(simulation);
                     var export = new ExpressionExport(
                         simulation.Name,
                         expressionName,
-                        context.ReadingExpressionContext.GetExpression(expressionName),
-                        evaluator,
-                        context.SimulationExpressionContexts,
-                        simulation,
-                        context);
+                        context.Evaluator.GetEvaluationContext(simulation));
 
                     return export;
                 }
