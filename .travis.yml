@@ -13,7 +13,7 @@ addons:
   sonarcloud:
     organization: "marcin-golebiowski"
     token:
-      secure: TOKEN
+      secure: ${SONAR_TOKEN}
 
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
