@@ -1,9 +1,7 @@
-﻿using SpiceSharpParser.Common.Evaluation;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using SpiceSharp.Simulations;
 using SpiceSharpBehavioral.Parsers;
+using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
 {
@@ -52,6 +50,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             return (linesDefinition[index].A * parameterValue) + linesDefinition[index].B;
         }
 
+        public Derivatives<Func<double>> Derivative(string image, FunctionFoundEventArgs<Derivatives<Func<double>>> args, EvaluationContext context)
+        {
+            return GetDerivatives(args);
+        }
+
         private static LineDefinition[] CreateLineParameters(List<Point> points)
         {
             List<LineDefinition> result = new List<LineDefinition>();
@@ -80,7 +83,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         private static Derivatives<Func<double>> GetDerivatives(FunctionFoundEventArgs<Derivatives<Func<double>>> args)
         {
             Derivatives<Func<double>> derivatives = new DoubleDerivatives(2);
-
 
             var parameterValue = args[0][0];
             var points = new List<Point>();
@@ -145,11 +147,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             public double X { get; set; }
 
             public double Y { get; set; }
-        }
-
-        public Derivatives<Func<double>> Derivative(string image, FunctionFoundEventArgs<Derivatives<Func<double>>> args, EvaluationContext context)
-        {
-            return GetDerivatives(args);
         }
     }
 }

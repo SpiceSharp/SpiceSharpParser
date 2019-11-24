@@ -18,11 +18,11 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".END");
             RunSimulations(parseResult);
 
-            Assert.Equal(1, parseResult.Prints.Count);
+            Assert.Single(parseResult.Prints);
             Assert.Equal("#1 OP", parseResult.Prints[0].Name);
-            Assert.Equal(1, parseResult.Prints[0].ColumnNames.Count);
-            Assert.Equal(1, parseResult.Prints[0].Rows[0].Columns.Count);
-            Assert.Equal(1, parseResult.Prints[0].Rows.Count);
+            Assert.Single(parseResult.Prints[0].ColumnNames);
+            Assert.Single(parseResult.Prints[0].Rows[0].Columns);
+            Assert.Single(parseResult.Prints[0].Rows);
         }
 
         [Fact]
@@ -38,11 +38,11 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".END");
             RunSimulations(parseResult);
 
-            Assert.Equal(1, parseResult.Prints.Count);
+            Assert.Single(parseResult.Prints);
             Assert.Equal("#1 OP", parseResult.Prints[0].Name);
             Assert.Equal(2, parseResult.Prints[0].ColumnNames.Count);
             Assert.Equal(2, parseResult.Prints[0].Rows[0].Columns.Count);
-            Assert.Equal(1, parseResult.Prints[0].Rows.Count);
+            Assert.Single(parseResult.Prints[0].Rows);
         }
 
         [Fact]
@@ -77,7 +77,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".END");
 
             RunSimulations(parseResult);
-            Assert.Equal(1, parseResult.Prints.Count);
+            Assert.Single(parseResult.Prints);
             Assert.Equal("#1 TRAN", parseResult.Prints[0].Name);
             Assert.Equal(7, parseResult.Prints[0].ColumnNames.Count);
             Assert.Equal(62, parseResult.Prints[0].Rows.Count);
@@ -96,10 +96,10 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".END");
 
             RunSimulations(parseResult);
-            Assert.Equal(1, parseResult.Prints.Count);
+            Assert.Single(parseResult.Prints);
             Assert.Equal("#1 OP", parseResult.Prints[0].Name);
             Assert.Equal(6, parseResult.Prints[0].ColumnNames.Count);
-            Assert.Equal(1, parseResult.Prints[0].Rows.Count);
+            Assert.Single(parseResult.Prints[0].Rows);
         }
 
         [Fact]
@@ -115,10 +115,10 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".END");
 
             RunSimulations(parseResult);
-            Assert.Equal(1, parseResult.Prints.Count);
+            Assert.Single(parseResult.Prints);
             Assert.Equal("#1 OP", parseResult.Prints[0].Name);
             Assert.Equal(5, parseResult.Prints[0].ColumnNames.Count);
-            Assert.Equal(1, parseResult.Prints[0].Rows.Count);
+            Assert.Single(parseResult.Prints[0].Rows);
         }
 
         [Fact]
@@ -134,13 +134,12 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".END");
             RunSimulations(parseResult);
 
-            Assert.Equal(1, parseResult.Prints.Count);
+            Assert.Single(parseResult.Prints);
             Assert.Equal("#1 OP", parseResult.Prints[0].Name);
             Assert.Equal(2, parseResult.Prints[0].ColumnNames.Count);
             Assert.Equal("V(OUT)", parseResult.Prints[0].ColumnNames[0]);
             Assert.Equal("I(V1)", parseResult.Prints[0].ColumnNames[1]);
-
-            Assert.Equal(1, parseResult.Prints[0].Rows.Count);
+            Assert.Single(parseResult.Prints[0].Rows);
         }
 
         [Fact]
@@ -156,7 +155,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".END");
             RunSimulations(parseResult);
 
-            Assert.Equal(1, parseResult.Prints.Count);
+            Assert.Single( parseResult.Prints);
             Assert.Equal("#1 OP", parseResult.Prints[0].Name);
             Assert.Equal(5, parseResult.Prints[0].ColumnNames.Count);
 
@@ -166,7 +165,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal("V(0)", parseResult.Prints[0].ColumnNames[3]);
             Assert.Equal("V(OUT)", parseResult.Prints[0].ColumnNames[4]);
 
-            Assert.Equal(1, parseResult.Prints[0].Rows.Count);
+            Assert.Single(parseResult.Prints[0].Rows);
         }
 
         [Fact]
@@ -182,10 +181,10 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".END");
             RunSimulations(parseResult);
 
-            Assert.Equal(1, parseResult.Prints.Count);
+            Assert.Single(parseResult.Prints);
             Assert.Equal("#1 OP", parseResult.Prints[0].Name);
             Assert.Equal(2, parseResult.Prints[0].ColumnNames.Count);
-            Assert.Equal(1, parseResult.Prints[0].Rows.Count);
+            Assert.Single(parseResult.Prints[0].Rows);
         }
 
         [Fact]
@@ -200,7 +199,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
               ".END");
             RunSimulations(parseResult);
 
-            Assert.Equal(1, parseResult.Prints.Count);
+            Assert.Single(parseResult.Prints);
             Assert.Equal("#1 DC", parseResult.Prints[0].Name);
             Assert.Equal(3, parseResult.Prints[0].ColumnNames.Count);
             Assert.Equal(20001, parseResult.Prints[0].Rows.Count);
@@ -218,7 +217,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
               ".END");
             RunSimulations(parseResult);
 
-            Assert.Equal(1, parseResult.Prints.Count);
+            Assert.Single(parseResult.Prints);
             Assert.Equal("#1 DC", parseResult.Prints[0].Name);
             Assert.Equal(3, parseResult.Prints[0].ColumnNames.Count);
             Assert.Equal(20001, parseResult.Prints[0].Rows.Count);
@@ -237,7 +236,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
               ".END");
             RunSimulations(parseResult);
 
-            Assert.Equal(1, parseResult.Prints.Count);
+            Assert.Single(parseResult.Prints);
             Assert.Equal("#1 DC", parseResult.Prints[0].Name);
             Assert.Equal(4, parseResult.Prints[0].ColumnNames.Count);
             Assert.Equal(20001, parseResult.Prints[0].Rows.Count);

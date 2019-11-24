@@ -127,7 +127,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         {
             var max = values.Max();
             var min = values.Min();
-            //var width = max - min;
 
             var binWidth = (max - min) / bins;
             if (Math.Abs(binWidth) < 1e-16)
@@ -140,8 +139,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             for (var i = 1; i <= bins; i++)
             {
-                plot.Bins[i] = new Bin();
-                plot.Bins[i].Value = (binWidth * (i - 1)) + min;
+                plot.Bins[i] = new Bin { Value = (binWidth * (i - 1)) + min };
             }
 
             foreach (var value in values)

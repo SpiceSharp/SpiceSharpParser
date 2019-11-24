@@ -68,6 +68,54 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
+        private static void CreateRowInPrint(ref int rowIndex, Simulation simulation, ExportDataEventArgs eventArgs, List<Export> exports, Print print)
+        {
+            Row row = new Row(rowIndex++);
+
+            double x = 0;
+
+            if (simulation is Transient)
+            {
+                x = eventArgs.Time;
+            }
+
+            if (simulation is AC)
+            {
+                x = eventArgs.Frequency;
+            }
+
+            if (simulation is DC dc)
+            {
+                if (dc.Sweeps.Count > 1)
+                {
+                    // TODO: Add support for DC Sweeps > 1
+                    throw new GeneralReaderException(".print doesn't support sweep count > 1");
+                }
+
+                x = eventArgs.SweepValue;
+            }
+
+            if (!(simulation is OP))
+            {
+                row.Columns.Add(x);
+            }
+
+            for (var i = 0; i < exports.Count; i++)
+            {
+                try
+                {
+                    double val = exports[i].Extract();
+                    row.Columns.Add(val);
+                }
+                catch (Exception)
+                {
+                    row.Columns.Add(double.NaN);
+                }
+            }
+
+            print.Rows.Add(row);
+        }
+
         private IEnumerable<Simulation> FilterSimulations(IEnumerable<Simulation> simulations, string type)
         {
             var typeLowered = type.ToLower();
@@ -124,54 +172,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 context.Result.AddPrint(print);
             }
-        }
-
-        private static void CreateRowInPrint(ref int rowIndex, Simulation simulation, ExportDataEventArgs eventArgs, List<Export> exports, Print print)
-        {
-            Row row = new Row(rowIndex++);
-
-            double x = 0;
-
-            if (simulation is Transient)
-            {
-                x = eventArgs.Time;
-            }
-
-            if (simulation is AC)
-            {
-                x = eventArgs.Frequency;
-            }
-
-            if (simulation is DC dc)
-            {
-                if (dc.Sweeps.Count > 1)
-                {
-                    // TODO: Add support for DC Sweeps > 1
-                    throw new GeneralReaderException(".print doesn't support sweep count > 1");
-                }
-
-                x = eventArgs.SweepValue;
-            }
-
-            if (!(simulation is OP))
-            {
-                row.Columns.Add(x);
-            }
-
-            for (var i = 0; i < exports.Count; i++)
-            {
-                try
-                {
-                    double val = exports[i].Extract();
-                    row.Columns.Add(val);
-                }
-                catch (Exception)
-                {
-                    row.Columns.Add(double.NaN);
-                }
-            }
-
-            print.Rows.Add(row);
         }
 
         private void RemoveNaNColumns(Print print)

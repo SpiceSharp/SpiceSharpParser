@@ -143,6 +143,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new ArgumentNullException(nameof(expression));
             }
+
             EntityUpdates.Add(@object, paramName, expression, beforeTemperature, onload);
         }
 

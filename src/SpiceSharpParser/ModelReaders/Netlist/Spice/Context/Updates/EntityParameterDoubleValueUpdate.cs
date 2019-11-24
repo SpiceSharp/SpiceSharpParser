@@ -13,6 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             {
                 throw new ArgumentNullException(nameof(context));
             }
+
             return Value;
         }
     }

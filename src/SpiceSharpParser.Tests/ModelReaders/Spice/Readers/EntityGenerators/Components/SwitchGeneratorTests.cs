@@ -23,7 +23,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("2"),
                 new ValueParameter("0"),
                 new WordParameter("model"),
-                new WordParameter("On")
+                new WordParameter("On"),
             };
 
             var generator = new SwitchGenerator();
@@ -47,7 +47,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("2"),
                 new ValueParameter("0"),
                 new WordParameter("model"),
-                new WordParameter("Off")
+                new WordParameter("Off"),
             };
 
             var generator = new SwitchGenerator();
@@ -70,7 +70,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("0"),
                 new IdentifierParameter("V3"),
                 new WordParameter("model"),
-                new WordParameter("On")
+                new WordParameter("On"),
             };
 
             var generator = new SwitchGenerator();

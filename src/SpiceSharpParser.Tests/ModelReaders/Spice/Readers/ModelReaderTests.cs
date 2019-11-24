@@ -48,7 +48,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
             var model = new Models.Netlist.Spice.Objects.Model() { Name = "2Na2222", Parameters = new ParameterCollection() { new BracketParameter() { Name = "NPN" } } };
             reader.Read(model, readingContext);
 
-            //assert
+            // assert
             modelsGenerator.Received().GenerateModel(Arg.Any<IModelGenerator>(), Arg.Any<string>(), "2Na2222", "NPN", Arg.Any<ParameterCollection>(), Arg.Any<ICircuitContext>());
             resultService.Received().AddEntity(Arg.Is<Entity>((Entity e) => e.Name == "2Na2222"));
         }

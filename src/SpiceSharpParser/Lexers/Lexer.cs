@@ -90,8 +90,7 @@ namespace SpiceSharpParser.Lexers
                         {
                             var dynamicResult = dynamicRule.Action(textForDynamicRules);
 
-                            yield return new Token(dynamicRule.TokenType, dynamicResult.Item1,
-                                state?.LineNumber ?? 0);
+                            yield return new Token(dynamicRule.TokenType, dynamicResult.Item1, state?.LineNumber ?? 0);
 
                             currentTokenIndex += dynamicResult.Item2;
                             matched = true;

@@ -40,6 +40,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new ArgumentNullException(nameof(expression));
             }
+
             try
             {
                 if (simulation == null)
@@ -61,6 +62,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new ArgumentNullException(nameof(expression));
             }
+
             try
             {
                 return ParsingContext.Evaluate(expression);
@@ -77,6 +79,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new ArgumentNullException(nameof(parameter));
             }
+
             try
             {
                 return ParsingContext.Evaluate(parameter.Image);
@@ -123,6 +126,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 throw new ArgumentNullException(nameof(body));
             }
+
             IFunctionFactory factory = new FunctionFactory();
             ParsingContext.AddFunction(functionName, factory.Create(functionName, arguments, body));
         }

@@ -14,6 +14,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             ArgumentsCount = -1;
         }
 
+        public static string GetExpression(int dimension, List<double> coefficients, List<string> variables)
+        {
+            var combinations = CombinationCache.GetCombinations(coefficients.Count, dimension);
+            string expression = coefficients[0].ToString();
+
+            for (int i = 1; i < combinations.Count; i++)
+            {
+                expression += $" + {ComputeSumElementString(variables, coefficients[i], combinations[i])}";
+            }
+
+            return expression;
+        }
+
         public override double Logic(string image, double[] args, EvaluationContext context)
         {
             var dimension = (int)args[0];
@@ -44,6 +57,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             return Get(coefficients, dimension, variables);
         }
 
+        private static double ComputeSumElementValue(List<double> variables, double coefficient, int[] combination)
+        {
+            double result = 1.0;
+
+            for (int i = 0; i < combination.Length; i++)
+            {
+                result *= variables[combination[i] - 1];
+            }
+
+            return result * coefficient;
+        }
+
         private static double Get(List<double> coefficients, int dimension, List<double> variables)
         {
             var combinations = CombinationCache.GetCombinations(coefficients.Count, dimension);
@@ -56,31 +81,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             }
 
             return sum;
-        }
-
-        public static string GetExpression(int dimension, List<double> coefficients, List<string> variables)
-        {
-            var combinations = CombinationCache.GetCombinations(coefficients.Count, dimension);
-            string expression = coefficients[0].ToString();
-
-            for (int i = 1; i < combinations.Count; i++)
-            {
-                expression += $" + {ComputeSumElementString(variables, coefficients[i], combinations[i])}";
-            }
-
-            return expression;
-        }
-
-        private static double ComputeSumElementValue(List<double> variables, double coefficient, int[] combination)
-        {
-            double result = 1.0;
-
-            for (int i = 0; i < combination.Length; i++)
-            {
-                result *= variables[combination[i] - 1];
-            }
-
-            return result * coefficient;
         }
 
         private static string ComputeSumElementString(List<string> variables, double coefficient, int[] combination)

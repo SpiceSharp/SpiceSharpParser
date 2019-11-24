@@ -27,7 +27,8 @@ namespace SpiceSharpParser.Tests.Lexers
         [Fact]
         public void NonEmptyGrammarNonEmptyText()
         {
-            LexerGrammar<LexerState> grammar = new LexerGrammar<LexerState>(new List<LexerTokenRule<LexerState>>()
+            LexerGrammar<LexerState> grammar = new LexerGrammar<LexerState>(
+                new List<LexerTokenRule<LexerState>>()
                 {
                     new LexerTokenRule<LexerState>(1, "Text", "[a-zA-Z0-9]*"),
                     new LexerTokenRule<LexerState>(
@@ -38,8 +39,9 @@ namespace SpiceSharpParser.Tests.Lexers
                         {
                             state.LineNumber++;
                             return LexerRuleReturnDecision.ReturnToken;
-                        })
-                }, new List<LexerDynamicRule>());
+                        }),
+                },
+                new List<LexerDynamicRule>());
 
             Lexer<LexerState> lexer = new Lexer<LexerState>(grammar);
             var s = new LexerState();

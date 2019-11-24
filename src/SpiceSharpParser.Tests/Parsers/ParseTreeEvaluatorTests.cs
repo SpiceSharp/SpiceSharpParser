@@ -94,7 +94,7 @@ namespace SpiceSharpParser.Tests.Parsers
                 new SpiceToken(SpiceTokenType.WORD, "out"),
                 new SpiceToken(SpiceTokenType.COMMA, ","),
                 new SpiceToken(SpiceTokenType.WORD, "0"),
-                new SpiceToken(SpiceTokenType.DELIMITER, ")")
+                new SpiceToken(SpiceTokenType.DELIMITER, ")"),
             };
 
             var parser = new ParseTreeGenerator(true);
@@ -123,7 +123,7 @@ namespace SpiceSharpParser.Tests.Parsers
                 new SpiceToken(SpiceTokenType.VALUE, "1"),
                 new SpiceToken(SpiceTokenType.VALUE, "2"),
                 new SpiceToken(SpiceTokenType.VALUE, "3"),
-                new SpiceToken(SpiceTokenType.DELIMITER, ")")
+                new SpiceToken(SpiceTokenType.DELIMITER, ")"),
             };
 
             var parser = new ParseTreeGenerator(true);
@@ -185,7 +185,7 @@ namespace SpiceSharpParser.Tests.Parsers
                 new SpiceToken(SpiceTokenType.WORD, "n3"),
                 new SpiceToken(SpiceTokenType.EQUAL, "="),
                 new SpiceToken(SpiceTokenType.VALUE, "3"),
-                new SpiceToken(SpiceTokenType.DELIMITER, ")")
+                new SpiceToken(SpiceTokenType.DELIMITER, ")"),
             };
 
             var parser = new ParseTreeGenerator(true);

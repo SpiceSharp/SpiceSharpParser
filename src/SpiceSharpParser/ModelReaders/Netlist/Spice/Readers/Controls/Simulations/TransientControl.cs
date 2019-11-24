@@ -19,10 +19,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         }
 
         /// <summary>
-        /// Reads <see cref="Control"/> statement and modifies the context
+        /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modify</param>
+        /// <param name="statement">A statement to process.</param>
+        /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, ICircuitContext context)
         {
             CreateSimulations(statement, context, CreateTransientSimulation);
@@ -81,11 +81,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             ConfigureCommonSettings(tran, context);
             ConfigureTransientSettings(tran, context, useIc);
 
-            tran.BeforeExecute += (object sender, BeforeExecuteEventArgs BeforeExecuteEventArgs) =>
+            tran.BeforeExecute += (sender, beforeExecuteEventArgs) =>
             {
-                tran.Method.TruncateProbe += (object sender2, SpiceSharp.IntegrationMethods.TruncateTimestepEventArgs args) =>
+                tran.Method.TruncateProbe += (truncateSender, truncateArgs) =>
                 {
-                    context.Evaluator.SetParameter(tran, "TIME", tran.Method.Time + args.Delta);
+                    context.Evaluator.SetParameter(tran, "TIME", tran.Method.Time + truncateArgs.Delta);
                 };
             };
             context.Result.AddSimulation(tran);

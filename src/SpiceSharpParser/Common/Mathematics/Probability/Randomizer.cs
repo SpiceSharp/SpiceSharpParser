@@ -9,29 +9,27 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
     /// </summary>
     public class Randomizer : IRandomizer
     {
+        /// <summary>
+        /// Default number of CDF points.
+        /// </summary>
+        private static readonly int DefaultCdfPoints = 1000;
+
+        /// <summary>
+        /// Default limit of normal distribution.
+        /// </summary>
+        private static readonly int DefaultNormalLimit = 3;
+
         private readonly bool _isDistributionNameCaseSensitive;
         private readonly Dictionary<string, Func<Pdf>> _pdfDictionary = null;
         private readonly Dictionary<string, Pdf> _pdfInstancesDictionary = null;
         private readonly Dictionary<string, Cdf> _cdfDictionary = null;
         private readonly Dictionary<string, CustomRandomNumberProviderFactory> _customRandomNumberProviderFactories = null;
         private readonly DefaultRandomNumberProviderFactory _defaultRandomNumberProviderFactory = new DefaultRandomNumberProviderFactory();
-        private double _normalLimit;
-        private int _cdfPoints;
-
-        /// <summary>
-        /// Default number of CDF points.
-        /// </summary>
-        public static readonly int DefaultCdfPoints = 1000;
-
-        /// <summary>
-        /// Default limit of normal distribution.
-        /// </summary>
-        public static readonly int DefaultNormalLimit = 3;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Randomizer"/> class.
         /// </summary>
-        /// <param name="isDistributionNameCaseSensitive">Is distribution name case-sensitive</param>
+        /// <param name="isDistributionNameCaseSensitive">Is distribution name case-sensitive.</param>
         /// <param name="cdfPoints">Number of cdf points.</param>
         /// <param name="normalLimit">Normal limit.</param>
         /// <param name="seed">Seed.</param>
@@ -61,14 +59,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// <summary>
         /// Gets or sets normal limit.
         /// </summary>
-        public double NormalLimit
-        {
-            get => _normalLimit;
-            set
-            {
-                _normalLimit = value;
-            }
-        }
+        public double NormalLimit { get; set; }
 
         /// <summary>
         /// Gets or sets current pdf name.
@@ -78,14 +69,9 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// <summary>
         /// Gets or sets number of CDF points.
         /// </summary>
-        public int CdfPoints
-        {
-            get => _cdfPoints;
-            set
-            {
-                _cdfPoints = value;
-            }
-        }
+        public int CdfPoints { get; set; }
+
+        public int? Seed { get; set; }
 
         /// <summary>
         /// Registers a Pdf in the randomizer.
@@ -139,8 +125,6 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
 
             return randomizer;
         }
-
-        public int? Seed { get; set; }
 
         /// <summary>
         /// Gets a random number provider for a given seed and pdf.

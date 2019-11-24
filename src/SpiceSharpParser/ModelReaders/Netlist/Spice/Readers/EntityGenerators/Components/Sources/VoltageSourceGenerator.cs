@@ -159,6 +159,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     baseParameters.Expression = expressionParameter.Image;
                 }
+
                 baseParameters.SpicePropertyComparer = StringComparerProvider.Get(context.CaseSensitivity.IsFunctionNameCaseSensitive);
                 baseParameters.Parser = (sim) => CreateParser(context, sim);
 
@@ -193,7 +194,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var dimension = (int)context.Evaluator.EvaluateDouble(polyParameter.Parameters[0].Image);
                 var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled, context.Evaluator.GetEvaluationContext());
                 var baseParameters = entity.ParameterSets.Get<BaseParameters>();
-                
                 baseParameters.Parser = (sim) => CreateParser(context, sim);
                 baseParameters.Expression = expression;
                 baseParameters.SpicePropertyComparer = StringComparerProvider.Get(context.CaseSensitivity.IsFunctionNameCaseSensitive);

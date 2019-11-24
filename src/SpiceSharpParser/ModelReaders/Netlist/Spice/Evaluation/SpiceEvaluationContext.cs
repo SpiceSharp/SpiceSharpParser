@@ -67,7 +67,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
                 MathFunctions.CreateU(),
                 RandomFunctions.CreateUnif(),
                 MathFunctions.CreateURamp(),
-                MathFunctions.CreatePoly()
+                MathFunctions.CreatePoly(),
             };
 
             foreach (var function in functions)
