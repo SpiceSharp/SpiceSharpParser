@@ -2,6 +2,7 @@
 using SpiceSharpParser.Common.Mathematics.Combinatorics;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
 {
@@ -40,6 +41,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
                 return 0;
             }
 
+            return Get(coefficients, dimension, variables);
+        }
+
+        private static double Get(List<double> coefficients, int dimension, List<double> variables)
+        {
             var combinations = CombinationCache.GetCombinations(coefficients.Count, dimension);
             double sum = 0.0;
             sum += coefficients[0];
@@ -52,6 +58,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             return sum;
         }
 
+        public static string GetExpression(int dimension, List<double> coefficients, List<string> variables)
+        {
+            var combinations = CombinationCache.GetCombinations(coefficients.Count, dimension);
+            string expression = coefficients[0].ToString();
+
+            for (int i = 1; i < combinations.Count; i++)
+            {
+                expression += $" + {ComputeSumElementString(variables, coefficients[i], combinations[i])}";
+            }
+
+            return expression;
+        }
+
         private static double ComputeSumElementValue(List<double> variables, double coefficient, int[] combination)
         {
             double result = 1.0;
@@ -62,6 +81,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             }
 
             return result * coefficient;
+        }
+
+        private static string ComputeSumElementString(List<string> variables, double coefficient, int[] combination)
+        {
+            string result = $"{coefficient.ToString(CultureInfo.InvariantCulture)}";
+
+            for (int i = 0; i < combination.Length; i++)
+            {
+                result += " * ";
+                result += variables[combination[i] - 1];
+            }
+
+            return result;
         }
     }
 }

@@ -1,10 +1,13 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using SpiceSharp.Simulations;
+using SpiceSharpBehavioral.Parsers;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
 {
-    public class TableFunction : Function<double, double>
+    public class TableFunction : Function<double, double>, IDerivativeFunction<double, double>
     {
         public TableFunction()
         {
@@ -74,6 +77,62 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             return result.ToArray();
         }
 
+        private static Derivatives<Func<double>> GetDerivatives(FunctionFoundEventArgs<Derivatives<Func<double>>> args)
+        {
+            Derivatives<Func<double>> derivatives = new DoubleDerivatives(2);
+
+
+            var parameterValue = args[0][0];
+            var points = new List<Point>();
+            var value = parameterValue();
+
+            for (var i = 1; i < args.ArgumentCount - 1; i += 2)
+            {
+                var pointX = args[i][0]();
+                var pointY = args[i + 1][0]();
+
+                points.Add(new Point() { X = pointX, Y = pointY });
+
+                if (pointX == value)
+                {
+                    derivatives[0] = () => pointY;
+                    return derivatives;
+                }
+            }
+
+            points.Sort((p1, p2) => p1.X.CompareTo(p2.X));
+            if (points.Count == 1)
+            {
+                throw new Exception("There is only one point for table interpolation.");
+            }
+
+            // Get point + 1 line parameters for each segment of line
+            LineDefinition[] linesDefinition = CreateLineParameters(points);
+
+            int index = 0;
+
+            while (index < points.Count && points[index].X < value)
+            {
+                index++;
+            }
+
+            derivatives[0] = () => (linesDefinition[index].A * value) + linesDefinition[index].B;
+            derivatives[1] = () =>
+            {
+                double result = 0;
+                for (var i = 0; i < args[0].Count; i++)
+                {
+                    if (args[0][i + 1] != null)
+                    {
+                        result += linesDefinition[index].A * args[0][i + 1]();
+                    }
+                }
+
+                return result;
+            };
+            return derivatives;
+        }
+
         public class LineDefinition
         {
             public double A { get; set; }
@@ -86,6 +145,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             public double X { get; set; }
 
             public double Y { get; set; }
+        }
+
+        public Derivatives<Func<double>> Derivative(string image, FunctionFoundEventArgs<Derivatives<Func<double>>> args, EvaluationContext context)
+        {
+            return GetDerivatives(args);
         }
     }
 }

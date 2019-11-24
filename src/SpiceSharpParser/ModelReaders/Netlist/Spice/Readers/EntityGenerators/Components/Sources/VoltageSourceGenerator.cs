@@ -171,7 +171,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.CreateNodes(entity, parameters);
                 parameters = parameters.Skip(VoltageSource.VoltageSourcePinCount);
                 var dimension = 1;
-                var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled);
+                var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled, context.Evaluator.GetEvaluationContext());
                 context.SetParameter(entity, "dc", expression);
 
                 return entity;
@@ -186,12 +186,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     throw new WrongParametersCountException(name, "poly expects one argument => dimension");
                 }
 
-                var entity = new VoltageSource(name);
+                var entity = new BehavioralVoltageSource(name);
                 context.CreateNodes(entity, parameters);
+
                 parameters = parameters.Skip(VoltageSource.VoltageSourcePinCount);
                 var dimension = (int)context.Evaluator.EvaluateDouble(polyParameter.Parameters[0].Image);
-                var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled);
-                context.SetParameter(entity, "dc", expression);
+                var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled, context.Evaluator.GetEvaluationContext());
+                var baseParameters = entity.ParameterSets.Get<BaseParameters>();
+                
+                baseParameters.Parser = (sim) => CreateParser(context, sim);
+                baseParameters.Expression = expression;
+                baseParameters.SpicePropertyComparer = StringComparerProvider.Get(context.CaseSensitivity.IsFunctionNameCaseSensitive);
+
                 return entity;
             }
 

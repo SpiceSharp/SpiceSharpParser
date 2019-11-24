@@ -1,11 +1,12 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharp.Simulations;
-using SpiceSharpBehavioral.Parsers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Linq;
+using SpiceSharpBehavioral.Parsers;
+using SpiceSharpParser.Common.Evaluation;
 using Component = SpiceSharp.Components.Component;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
@@ -132,14 +133,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             context.CreateNodes(component, originalParameters);
         }
 
-        protected string CreatePolyExpression(int dimension, ParameterCollection parameters, bool isVoltageControlled)
+        protected string CreatePolyExpression(int dimension, ParameterCollection parameters, bool isVoltageControlled, EvaluationContext context)
         {
             if (isVoltageControlled)
             {
-                return ExpressionFactory.CreatePolyVoltageExpression(dimension, parameters);
+                return ExpressionFactory.CreatePolyVoltageExpression(dimension, parameters, context);
             }
 
-            return ExpressionFactory.CreatePolyCurrentExpression(dimension, parameters);
+            return ExpressionFactory.CreatePolyCurrentExpression(dimension, parameters, context);
         }
     }
 }

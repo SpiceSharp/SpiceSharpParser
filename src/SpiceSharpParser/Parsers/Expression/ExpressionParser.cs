@@ -8,6 +8,9 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharp.Components;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports;
 
 namespace SpiceSharpParser.Parsers.Expression
 {
@@ -15,7 +18,6 @@ namespace SpiceSharpParser.Parsers.Expression
     {
         private readonly ISpiceNetlistCaseSensitivitySettings _caseSettings;
         private readonly ConcurrentDictionary<string, Export> _exporterInstances = new ConcurrentDictionary<string, Export>();
-
         public ExpressionParser(ISpiceNetlistCaseSensitivitySettings caseSettings)
         {
             _caseSettings = caseSettings;
@@ -23,9 +25,11 @@ namespace SpiceSharpParser.Parsers.Expression
 
         public double GetExpressionValue(string expression, EvaluationContext context, bool @throw = true)
         {
-            var parser = GetDeriveParser(context, @throw);
+            var parser = GetDeriveParser(context, @throw, true);
             var derivatives = parser.Parse(expression);
-            return derivatives[0]();
+            var result = derivatives[0]();
+
+            return result;
         }
 
         public List<string> GetExpressionParameters(string expression, EvaluationContext context, bool @throw = true)
@@ -45,13 +49,13 @@ namespace SpiceSharpParser.Parsers.Expression
             return parameters;
         }
 
-        public SimpleDerivativeParser GetDeriveParser(EvaluationContext context, bool @throw = true)
+        public SimpleDerivativeParser GetDeriveParser(EvaluationContext context, bool @throw = true, bool @parseVoltage = false)
         {
             var parser = new SimpleDerivativeParserExtended(_caseSettings);
 
             parser.VariableFound += OnVariableFound(context, @throw);
             parser.FunctionFound += OnFunctionFound(context);
-            parser.SpicePropertyFound += OnSpicePropertyFound(context);
+            parser.SpicePropertyFound += OnSpicePropertyFound(context, @parseVoltage);
 
             return parser;
         }
@@ -83,7 +87,7 @@ namespace SpiceSharpParser.Parsers.Expression
             return present;
         }
 
-        private EventHandler<SpicePropertyFoundEventArgs<double>> OnSpicePropertyFound(EvaluationContext context)
+        private EventHandler<SpicePropertyFoundEventArgs<double>> OnSpicePropertyFound(EvaluationContext context, bool @parseVoltage)
         {
             return (sender, arg) =>
             {
@@ -101,11 +105,11 @@ namespace SpiceSharpParser.Parsers.Expression
                     return;
                 }
 
-                ApplySpiceProperty(context, arg);
+                ApplySpiceProperty(context, arg, @parseVoltage);
             };
         }
 
-        private void ApplySpiceProperty(EvaluationContext context, SpicePropertyFoundEventArgs<double> arg)
+        private void ApplySpiceProperty(EvaluationContext context, SpicePropertyFoundEventArgs<double> arg, bool @parseVoltage)
         {
             var parameters = GetSpicePropertyParameters(context, arg);
 
@@ -113,9 +117,13 @@ namespace SpiceSharpParser.Parsers.Expression
 
             string key = $"{context.Name}_{propertyName}_{parameters}_{context.Simulation?.Name}";
 
+            var variables = context.Simulation.Variables;
+
+            // We want to keep track of derivatives, and which column they map to
+
             if (_exporterInstances.TryGetValue(key, out Export cachedExport))
             {
-                arg.Apply(() => cachedExport.Extract());
+                ApplyExport(arg, cachedExport, variables, @parseVoltage);
             }
             else
             {
@@ -153,7 +161,22 @@ namespace SpiceSharpParser.Parsers.Expression
 
                 _exporterInstances[key] = export;
 
-                arg.Apply(() => export.Extract());
+                ApplyExport(arg, export, variables, @parseVoltage);
+            }
+        }
+
+        private void ApplyExport(SpicePropertyFoundEventArgs<double> arg, Export export, VariableSet variables, bool @parseVoltage)
+        {
+            if (export is VoltageExport ve)
+            {
+                if (@parseVoltage)
+                {
+                    arg.Apply(() => export.Extract(), 0, 0);
+                }
+            }
+            else
+            {
+                arg.Apply(() => export.Extract(), 0, 0);
             }
         }
 
@@ -285,16 +308,15 @@ namespace SpiceSharpParser.Parsers.Expression
 
             if (doubleFunction is IDerivativeFunction<double, double> derivativeFunction)
             {
-                var derivatives = new Lazy<Derivatives<Func<double>>>(() =>
-                    derivativeFunction.Derivative(string.Empty, arguments, context));
+                var derivatives = new Lazy<Derivatives<Func<double>>>(() => derivativeFunction.Derivative(string.Empty, args, context));
 
                 for (var i = 1; i <= variableCount; i++)
                 {
-                    var iLocal = i;
+                    var derivativeIndex = i;
 
-                    if (IsDerivativeDefined(args, iLocal))
+                    if (IsDerivativeDefined(args, derivativeIndex))
                     {
-                        result[i] = () => GetDerivativeValue(args, iLocal, argumentCount, derivatives);
+                        result[i] = () => GetDerivativeValue(args, derivativeIndex, argumentCount, derivatives);
                     }
                 }
             }
@@ -302,11 +324,11 @@ namespace SpiceSharpParser.Parsers.Expression
             args.Result = result;
         }
 
-        private static bool IsDerivativeDefined(FunctionFoundEventArgs<Derivatives<Func<double>>> args, int variableIndex)
+        private bool IsDerivativeDefined(FunctionFoundEventArgs<Derivatives<Func<double>>> args, int derivativeIndex)
         {
             for (var i = 0; i < args.ArgumentCount; i++)
             {
-                if (args[i][variableIndex] != null)
+                if (args[i][derivativeIndex] != null)
                 {
                     return true;
                 }
@@ -315,7 +337,7 @@ namespace SpiceSharpParser.Parsers.Expression
             return false;
         }
 
-        private static double GetDerivativeValue(FunctionFoundEventArgs<Derivatives<Func<double>>> args, int derivativeIndex, int argumentCount, Lazy<Derivatives<Func<double>>> derivatives)
+        private double GetDerivativeValue(FunctionFoundEventArgs<Derivatives<Func<double>>> args, int derivativeIndex, int argumentCount, Lazy<Derivatives<Func<double>>> derivatives)
         {
             var result = 0.0;
 

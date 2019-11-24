@@ -10,7 +10,7 @@ namespace SpiceSharpParser.Parsers.Expression
 
         List<string> GetExpressionParameters(string expression, EvaluationContext context, bool @throw = true);
 
-        SimpleDerivativeParser GetDeriveParser(EvaluationContext context, bool @throw = true);
+        SimpleDerivativeParser GetDeriveParser(EvaluationContext context, bool @throw = true, bool @parseVoltage = false);
 
         bool HaveSpiceProperties(string expression, EvaluationContext context);
 
