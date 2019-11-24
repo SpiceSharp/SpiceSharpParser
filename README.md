@@ -4,6 +4,12 @@
 [![Linux](https://travis-ci.org/SpiceSharp/SpiceSharpParser.svg?branch=master)](https://travis-ci.org/SpiceSharp/SpiceSharpParser?branch=master)
 [![codecov](https://codecov.io/gh/SpiceSharp/SpiceSharpParser/branch/master/graph/badge.svg)](https://codecov.io/gh/SpiceSharp/SpiceSharpParser)
 [![CodeFactor](https://www.codefactor.io/repository/github/spicesharp/spicesharpparser/badge)](https://www.codefactor.io/repository/github/spicesharp/spicesharpparser)
+[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharpParser&metric=alert_status)](https://sonarcloud.io/dashboard?id=SpiceSharpParser)
+[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharpParser&metric=bugs)](https://sonarcloud.io/dashboard?id=SpiceSharpParser)
+[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharpParser&metric=code_smells)](https://sonarcloud.io/dashboard?id=SpiceSharpParser)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharpParser&metric=ncloc)](https://sonarcloud.io/dashboard?id=SpiceSharpParser)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharpParser&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=SpiceSharpParser)
+
 
 SpiceSharpParser is a .NET library that allows to parse SPICE netlists and to simulate them using SpiceSharp.
 
