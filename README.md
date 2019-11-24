@@ -57,7 +57,7 @@ At the moment due to lack of implementation of LAPLACE and FREQ (part of analog 
 
 
 ## Capabilities
-### Analog Behavioral Modeling (partly) supported:
+### Analog Behavioral Modeling supported:
 * POLY(n)
 * TABLE 
 * VALUE
