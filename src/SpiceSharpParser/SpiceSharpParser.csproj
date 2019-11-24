@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <ProjectGuid>{DF3DD787-71CC-4C89-9E33-DC4536A52278}</ProjectGuid>
     <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">netstandard1.5;netstandard2.0;net45</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netstandard1.5;netstandard2.0</TargetFrameworks>
     <Authors>SpiceSharp</Authors>
