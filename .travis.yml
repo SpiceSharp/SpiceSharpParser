@@ -1,6 +1,7 @@
 language: csharp
 sudo: required
 mono: none
+dist: trusty
 dotnet: 2.0.0
 script:
   - cd ./src/
@@ -8,3 +9,12 @@ script:
   - dotnet build
   - dotnet test SpiceSharpParser.Tests/SpiceSharpParser.Tests.csproj
   - dotnet test SpiceSharpParser.IntegrationTests/SpiceSharpParser.IntegrationTests.csproj
+addons:
+  sonarcloud:
+    organization: "marcin-golebiowski"
+    token:
+      secure: TOKEN
+
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - sonar-scanner
