@@ -17,8 +17,8 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
                 ".PARAM X={table(V(0,1), 1, 10, 2, 20, 3, 30)}",
                 ".END");
 
-            Assert.Equal(1, result.Exports.Count);
-            Assert.Equal(1, result.Simulations.Count);
+            Assert.Single(result.Exports);
+            Assert.Single(result.Simulations);
 
             var export = RunOpSimulation(result, "V(1,2)");
 
@@ -38,12 +38,12 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
                 ".PARAM R={table(0, 1, 10, 2, 20, 3, 30)}",
                 ".END");
 
-            Assert.Equal(1, result.Exports.Count);
-            Assert.Equal(1, result.Simulations.Count);
+            Assert.Single(result.Exports);
+            Assert.Single(result.Simulations);
 
             var export = RunOpSimulation(result, "i(R1)");
 
-            Assert.Equal(-150 / 10, export);
+            Assert.Equal(-150.0 / 10.0, export);
         }
 
         [Fact]
@@ -59,12 +59,12 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
                 ".PARAM R={table(1.5, 1, 10, 2, 20, 3, 30)}",
                 ".END");
 
-            Assert.Equal(1, result.Exports.Count);
-            Assert.Equal(1, result.Simulations.Count);
+            Assert.Single(result.Exports);
+            Assert.Single(result.Simulations);
 
             var export = RunOpSimulation(result, "i(R1)");
 
-            Assert.Equal(-150 / 15, export);
+            Assert.Equal(-150.0 / 15.0, export);
         }
 
         [Fact]
@@ -80,12 +80,12 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
                 ".PARAM R={table(4, 1, 10, 2, 20, 3, 30)}",
                 ".END");
 
-            Assert.Equal(1, result.Exports.Count);
-            Assert.Equal(1, result.Simulations.Count);
+            Assert.Single(result.Exports);
+            Assert.Single(result.Simulations);
 
             var export = RunOpSimulation(result, "i(R1)");
 
-            Assert.Equal(-150 / 30, export);
+            Assert.Equal(-150.0 / 30.0, export);
         }
     }
 }

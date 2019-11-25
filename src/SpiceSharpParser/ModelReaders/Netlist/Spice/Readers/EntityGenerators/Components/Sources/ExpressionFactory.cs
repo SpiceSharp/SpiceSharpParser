@@ -1,10 +1,10 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+﻿using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
 using System.Linq;
-using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {
@@ -40,7 +40,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
 
                 var variablesList = variables.Select(v =>
-                        $"v({((PointParameter) v).Values.Items[0].Image},{((PointParameter) v).Values.Items[1].Image})")
+                        $"v({((PointParameter)v).Values.Items[0].Image},{((PointParameter)v).Values.Items[1].Image})")
                     .ToList();
 
                 var coefficients = polyArguments.Skip(dimension);

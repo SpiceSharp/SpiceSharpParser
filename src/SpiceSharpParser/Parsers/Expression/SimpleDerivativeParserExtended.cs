@@ -47,8 +47,15 @@ namespace SpiceSharpParser.Parsers.Expression
             }
         }
 
+        public SimpleDerivativeParserExtended(ISpiceNetlistCaseSensitivitySettings caseSensitivitySettings)
+        {
+            bool isFunctionCaseSensitive = caseSensitivitySettings?.IsFunctionNameCaseSensitive ?? false;
+            DefaultFunctions = isFunctionCaseSensitive ? DefaultFunctionsCaseSensitive : DefaultFunctionsCaseInSensitive;
+            FunctionFound += ExpressionParser_FunctionFound;
+        }
+
         /// <summary>
-        /// The default functions.
+        /// Gets the default functions.
         /// </summary>
         protected static ConcurrentDictionary<string, SimpleDerivativeParserHelper.DoubleDerivativesFunction> DefaultFunctionsCaseSensitive
         {
@@ -63,27 +70,6 @@ namespace SpiceSharpParser.Parsers.Expression
         protected ConcurrentDictionary<string, SimpleDerivativeParserHelper.DoubleDerivativesFunction> DefaultFunctions
         {
             get;
-        }
-
-        public SimpleDerivativeParserExtended(ISpiceNetlistCaseSensitivitySettings caseSensitivitySettings)
-        {
-            bool isFunctionCaseSensitive = caseSensitivitySettings?.IsFunctionNameCaseSensitive ?? false;
-            DefaultFunctions = isFunctionCaseSensitive ? DefaultFunctionsCaseSensitive : DefaultFunctionsCaseInSensitive;
-            FunctionFound += ExpressionParser_FunctionFound;
-        }
-
-        private void ExpressionParser_FunctionFound(object sender, FunctionFoundEventArgs<Derivatives<Func<double>>> e)
-        {
-            if (DefaultFunctions.TryGetValue(e.Name, out var function))
-            {
-                var arguments = new Derivatives<Func<double>>[e.ArgumentCount];
-                for (var i = 0; i < e.ArgumentCount; i++)
-                {
-                    arguments[i] = e[i];
-                }
-
-                e.Result = function?.Invoke(arguments);
-            }
         }
 
         /// <summary>
@@ -108,6 +94,7 @@ namespace SpiceSharpParser.Parsers.Expression
                     result[i] = () => -Math.Sin(a0()) * ai();
                 }
             }
+
             return result;
         }
 
@@ -137,7 +124,22 @@ namespace SpiceSharpParser.Parsers.Expression
                     };
                 }
             }
+
             return result;
+        }
+
+        private void ExpressionParser_FunctionFound(object sender, FunctionFoundEventArgs<Derivatives<Func<double>>> e)
+        {
+            if (DefaultFunctions.TryGetValue(e.Name, out var function))
+            {
+                var arguments = new Derivatives<Func<double>>[e.ArgumentCount];
+                for (var i = 0; i < e.ArgumentCount; i++)
+                {
+                    arguments[i] = e[i];
+                }
+
+                e.Result = function?.Invoke(arguments);
+            }
         }
     }
 }

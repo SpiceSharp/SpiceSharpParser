@@ -11,11 +11,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             ObjectNameGenerator = objectNameGenerator;
         }
 
+        public IEnumerable<string> Globals => NodeNameGenerator.Globals;
+
         protected INodeNameGenerator NodeNameGenerator { get; }
 
         protected IObjectNameGenerator ObjectNameGenerator { get; }
-
-        public IEnumerable<string> Globals => NodeNameGenerator.Globals;
 
         public string ParseNodeName(string nodePath)
         {

@@ -122,9 +122,9 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
 
                         if (openBracketCount == 0)
                         {
-                            //TODO this is a hack, please refactor me
+                            // TODO this is a hack, please refactor me
                             var text = textToLex.Substring(0, i);
-                            var replaced = Regex.Replace(text, @"((\r\n|\r|\n)[\t 	]*)+\+", "");
+                            var replaced = Regex.Replace(text, @"((\r\n|\r|\n)[\t 	]*)+\+", string.Empty);
                             return new Tuple<string, int>(replaced, text.Length);
                         }
 
@@ -155,7 +155,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                     if (openBracketCount == 0)
                     {
                         var text = textToLex.Substring(0, i);
-                        var replaced = Regex.Replace(text, @"((\r\n|\r|\n)[\t 	]*)+\+", "");
+                        var replaced = Regex.Replace(text, @"((\r\n|\r|\n)[\t 	]*)+\+", string.Empty);
                         return new Tuple<string, int>(replaced, text.Length);
                     }
 

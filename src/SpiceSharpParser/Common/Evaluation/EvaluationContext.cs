@@ -70,7 +70,7 @@ namespace SpiceSharpParser.Common.Evaluation
         public Dictionary<string, Expression> Parameters { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the parameters.
+        /// Gets the parameters.
         /// </summary>
         public Dictionary<string, Expression> Arguments { get; }
 
@@ -343,21 +343,6 @@ namespace SpiceSharpParser.Common.Evaluation
             AddFunction("tanh", MathFunctions.CreateTanh());
         }
 
-        protected void SetParameter(string parameterName, string expression, Expression parameter)
-        {
-            Parameters[parameterName] = parameter;
-
-            ExpressionRegistry.AddOrUpdate(parameterName, parameter);
-
-            var expressionParameters = Parser.GetExpressionParameters(expression, this, false);
-            ExpressionRegistry.AddOrUpdateParameterDependencies(parameterName, expressionParameters);
-
-            foreach (var child in Children)
-            {
-                child.SetParameter(parameterName, expression);
-            }
-        }
-
         /// <summary>
         /// Evaluates a specific expression to double.
         /// </summary>
@@ -408,6 +393,21 @@ namespace SpiceSharpParser.Common.Evaluation
         public SimpleDerivativeParser GetDeriveParser(EvaluationContext context = null)
         {
             return Parser.GetDeriveParser(context ?? this, true);
+        }
+
+        protected void SetParameter(string parameterName, string expression, Expression parameter)
+        {
+            Parameters[parameterName] = parameter;
+
+            ExpressionRegistry.AddOrUpdate(parameterName, parameter);
+
+            var expressionParameters = Parser.GetExpressionParameters(expression, this, false);
+            ExpressionRegistry.AddOrUpdateParameterDependencies(parameterName, expressionParameters);
+
+            foreach (var child in Children)
+            {
+                child.SetParameter(parameterName, expression);
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             {
                 new ValueParameter("1"),
                 new ValueParameter("0"),
-                new ValueParameter("1.2")
+                new ValueParameter("1.2"),
             };
 
             var context = Substitute.For<ICircuitContext>();
@@ -46,7 +46,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("1"), // pin
                 new ValueParameter("0"), // pin
                 new WordParameter("Dc"), // dc
-                new ValueParameter("1.2") // dc-value
+                new ValueParameter("1.2"), // dc-value
             };
 
             var context = Substitute.For<ICircuitContext>();
@@ -169,9 +169,9 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                     {
                         new ValueParameter("0"),
                         new ValueParameter("1"),
-                        new ValueParameter("2000")
-                    }
-                }
+                        new ValueParameter("2000"),
+                    },
+                },
             };
 
             var context = Substitute.For<ICircuitContext>();
@@ -203,9 +203,9 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                     {
                         new ValueParameter("0"),
                         new ValueParameter("1"),
-                        new ValueParameter("2000")
-                    }
-                }
+                        new ValueParameter("2000"),
+                    },
+                },
             };
 
             var context = Substitute.For<ICircuitContext>();
@@ -228,7 +228,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("1"), // pin
                 new ValueParameter("0"), // pin
                 new WordParameter("ac"), // ac
-                new ValueParameter("13") // ac-magnitude
+                new ValueParameter("13"), // ac-magnitude
             };
 
             var context = Substitute.For<ICircuitContext>();
@@ -251,7 +251,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ValueParameter("0"), // pin
                 new WordParameter("ac"), // ac
                 new ValueParameter("13"), // ac-magnitude
-                new ValueParameter("2") // ac-phase
+                new ValueParameter("2"), // ac-phase
             };
 
             var context = Substitute.For<ICircuitContext>();

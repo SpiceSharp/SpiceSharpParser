@@ -1,16 +1,15 @@
-﻿using SpiceSharpBehavioral.Parsers;
+﻿using SpiceSharp.Simulations;
+using SpiceSharpBehavioral.Parsers;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using SpiceSharp.Components;
-using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports;
 
 namespace SpiceSharpParser.Parsers.Expression
 {
@@ -18,6 +17,7 @@ namespace SpiceSharpParser.Parsers.Expression
     {
         private readonly ISpiceNetlistCaseSensitivitySettings _caseSettings;
         private readonly ConcurrentDictionary<string, Export> _exporterInstances = new ConcurrentDictionary<string, Export>();
+
         public ExpressionParser(ISpiceNetlistCaseSensitivitySettings caseSettings)
         {
             _caseSettings = caseSettings;
@@ -117,10 +117,9 @@ namespace SpiceSharpParser.Parsers.Expression
 
             string key = $"{context.Name}_{propertyName}_{parameters}_{context.Simulation?.Name}";
 
-            var variables = context.Simulation.Variables;
+            var variables = context.Simulation?.Variables;
 
             // We want to keep track of derivatives, and which column they map to
-
             if (_exporterInstances.TryGetValue(key, out Export cachedExport))
             {
                 ApplyExport(arg, cachedExport, variables, @parseVoltage);

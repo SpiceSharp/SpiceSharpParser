@@ -130,8 +130,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     Export export = exports[i];
                     series.Add(new Series($"{simulation.Name} {export.Name}"));
                 }
-                plot.Series.AddRange(series);
 
+                plot.Series.AddRange(series);
                 simulation.ExportSimulationData += (sender, args) => CreatePointForSeries(simulation, args, exports, series, plot);
             }
 
@@ -194,8 +194,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         series[i].Points.Add(new Point() { X = x, Y = val });
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
+                    // ignore exception
                 }
             }
         }

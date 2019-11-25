@@ -205,7 +205,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// from the values of children nodes of <see cref="Symbols.Netlist"/> parse tree node.
         /// </summary>
         /// <returns>
-        /// A new instance of <see cref="SpiceNetlist"/>
+        /// A new instance of <see cref="SpiceNetlist"/>.
         /// </returns>
         private SpiceObject CreateNetlist(ParseTreeNodeEvaluationValues values)
         {
@@ -238,10 +238,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
         /// <summary>
         /// Returns new instance of <see cref="SpiceNetlist"/>
-        /// from the values of children nodes of <see cref="Symbols.Netlist"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.Netlist"/> parse tree node.
         /// </summary>
         /// <returns>
-        /// A new instance of <see cref="SpiceNetlist"/>
+        /// A new instance of <see cref="SpiceNetlist"/>.
         /// </returns>
         private SpiceObject CreateNetlistWithoutTitle(ParseTreeNodeEvaluationValues values)
         {
@@ -257,10 +257,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// or <see cref="BracketParameter"/>
         /// or <see cref="AssignmentParameter"/>
         /// or <see cref="VectorParameter"/>
-        /// from the values of children nodes of <see cref="Symbols.Parameter"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.Parameter"/> parse tree node.
         /// </summary>
         /// <returns>
-        /// A new instance of <see cref="SingleParameter"/>
+        /// A new instance of <see cref="SingleParameter"/>.
         /// </returns>
         private SpiceObject CreateParameter(ParseTreeNodeEvaluationValues values)
         {
@@ -304,10 +304,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// Returns new instance of <see cref="ReferenceParameter"/>
         /// or <see cref="ValueParameter"/> or <see cref="WordParameter"/>
         /// or <see cref="ExpressionParameter"/> or <see cref="IdentifierParameter"/>
-        /// from the values of children nodes of <see cref="Symbols.ParameterSingle"/> parse tree node
+        /// from the values of children nodes of <see cref="Symbols.ParameterSingle"/> parse tree node.
         /// </summary>
         /// <returns>
-        /// A new instance of <see cref="SingleParameter"/>
+        /// A new instance of <see cref="SingleParameter"/>.
         /// </returns>
         private SpiceObject CreateParameterSingle(ParseTreeNodeEvaluationValues values)
         {
@@ -707,7 +707,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 {
                     Name = values.GetLexem(0),
                     LineNumber = singleParameter.LineNumber,
-                    Values = new List<string>() { singleParameter.Image }
+                    Values = new List<string>() { singleParameter.Image },
                 };
                 return assignmentParameter;
             }

@@ -60,24 +60,16 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void MissingEndIf()
         {
-            try
-            {
-                var netlist = ParseNetlistToModel(
-                    false,
-                    true,
-                   "Missing endif",
-                   ".IF (a == 0)",
-                   "* Comment 1",
-                   ".ELSE",
-                   "* Comment 2",
-                   ".PARAM a = 1",
-                   ".END");
-
-                Assert.False(true);
-            }
-            catch (Exception ex)
-            {
-            }
+            Assert.Throws<Exception>(() => ParseNetlistToModel(
+                false,
+                true,
+                "Missing endif",
+                ".IF (a == 0)",
+                "* Comment 1",
+                ".ELSE",
+                "* Comment 2",
+                ".PARAM a = 1",
+                ".END"));
         }
 
         [Fact]

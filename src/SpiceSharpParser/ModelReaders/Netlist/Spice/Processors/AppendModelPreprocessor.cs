@@ -59,8 +59,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <summary>
         /// Reads .APPENDMODEL statement.
         /// </summary>
-        /// <param name="statements">Statements to process</param>
-        /// <param name="appendModel">Append model statement</param>
+        /// <param name="statements">Statements to process.</param>
+        /// <param name="appendModel">Append model statement.</param>
         private void ReadAppendModel(Statements statements, Control appendModel)
         {
             if (appendModel.Parameters.Count != 4 && appendModel.Parameters.Count != 2)
@@ -114,7 +114,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         private void ReadAppendModelWithFourParameters(Statements statements, Control appendModel)
         {
             string sourceModel = appendModel.Parameters.Get(0).Image;
-            //string sourceModelType = appendModel.Parameters.GetString(1); // ignored (for now)
             string destinationModel = appendModel.Parameters.Get(2).Image;
             string destinationModelType = appendModel.Parameters.Get(3).Image;
 

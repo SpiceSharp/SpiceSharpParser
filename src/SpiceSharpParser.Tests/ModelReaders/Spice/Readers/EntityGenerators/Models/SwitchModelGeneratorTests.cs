@@ -16,7 +16,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Mod
             {
                 new AssignmentParameter() { Name = "ron", Value = "100" },
                 new AssignmentParameter() { Name = "roff", Value = "1001" },
-                new AssignmentParameter() { Name = "unkownParametr", Value = "1002" }
+                new AssignmentParameter() { Name = "unkownParametr", Value = "1002" },
             };
 
             var context = Substitute.For<ICircuitContext>();

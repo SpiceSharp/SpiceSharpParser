@@ -56,6 +56,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
+        private static void ReadLin(ParameterCollection parameters, ICircuitContext context)
+        {
+            var variableParameter = parameters[0];
+            var pSweep = new ParameterSweep()
+            {
+                Parameter = variableParameter,
+                Sweep = new LinearSweep(
+                    context.Evaluator.EvaluateDouble(parameters[1].Image),
+                    context.Evaluator.EvaluateDouble(parameters[2].Image),
+                    context.Evaluator.EvaluateDouble(parameters[3].Image)),
+            };
+
+            context.Result.SimulationConfiguration.ParameterSweeps.Add(pSweep);
+        }
+
         private void ReadDec(ParameterCollection parameters, ICircuitContext context)
         {
             var variableParameter = parameters[0];
@@ -107,21 +122,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     Parameter = variableParameter,
                     Sweep = new ListSweep(values),
                 });
-        }
-
-        private static void ReadLin(ParameterCollection parameters, ICircuitContext context)
-        {
-            var variableParameter = parameters[0];
-            var pSweep = new ParameterSweep()
-            {
-                Parameter = variableParameter,
-                Sweep = new LinearSweep(
-                    context.Evaluator.EvaluateDouble(parameters[1].Image),
-                    context.Evaluator.EvaluateDouble(parameters[2].Image),
-                    context.Evaluator.EvaluateDouble(parameters[3].Image)),
-            };
-
-            context.Result.SimulationConfiguration.ParameterSweeps.Add(pSweep);
         }
     }
 }

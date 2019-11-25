@@ -116,8 +116,7 @@ namespace SpiceSharpParser
                 Settings.Reading.CaseSensitivity,
                 new Randomizer(
                     Settings.Reading.CaseSensitivity.IsDistributionNameCaseSensitive,
-                    seed: Settings.Reading.Seed
-                ),
+                    seed: Settings.Reading.Seed),
                 new ExpressionParser(Settings.Reading.CaseSensitivity),
                 nameGenerator,
                 null);

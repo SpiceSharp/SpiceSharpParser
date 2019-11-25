@@ -193,6 +193,6 @@
         /// <summary>
         /// model token
         /// </summary>
-        MODEL = 37
+        MODEL = 37,
     }
 }

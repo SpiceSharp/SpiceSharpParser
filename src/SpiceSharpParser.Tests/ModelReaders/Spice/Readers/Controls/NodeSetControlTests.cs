@@ -24,25 +24,26 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                         Name = "V",
                         Arguments = new List<string>()
                         {
-                            "input"
+                            "input",
                         },
-                        Value = "12"
+                        Value = "12",
                     },
                     new AssignmentParameter()
                     {
                         Name = "V",
                         Arguments = new List<string>()
                         {
-                            "x"
+                            "x",
                         },
-                        Value = "13"
-                    }
-                }
+                        Value = "13",
+                    },
+                },
             };
 
             var readingContext = Substitute.For<ICircuitContext>();
             readingContext.NameGenerator.GenerateNodeName(Arg.Any<string>()).Returns(x => x[0].ToString());
             readingContext.SimulationPreparations.Returns(Substitute.For<ISimulationPreparations>());
+
             // act
             var nodeSetControl = new NodeSetControl();
             nodeSetControl.Read(control, readingContext);

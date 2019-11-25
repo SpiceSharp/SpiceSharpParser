@@ -177,7 +177,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                 SimulationSpecificUpdates[simulation][entity].ParameterUpdatesBeforeTemperature.Add(new EntityParameterExpressionValueUpdate()
                 {
                     Expression = new DynamicExpression(expression),
-                    ParameterName = parameterName
+                    ParameterName = parameterName,
                 });
             }
         }
@@ -253,7 +253,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                 CommonUpdates[entity].ParameterUpdatesBeforeTemperature.Add(new EntityParameterExpressionValueUpdate()
                 {
                     Expression = new DynamicExpression(expression),
-                    ParameterName = parameterName
+                    ParameterName = parameterName,
                 });
             }
         }

@@ -144,7 +144,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// Provides a model for component.
         /// </summary>
         /// <param name="componentName">A component name.</param>
-        /// <param name="simulation"></param>
+        /// <param name="simulation">Simulation.</param>
         /// <param name="model">A model for component.</param>
         /// <returns>
         /// If a model is stochastic (dev, lot) then a copy of model with be returned.
@@ -275,7 +275,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
                 AllModels = new Dictionary<string, Entity>(AllModels, StringComparerProvider.Get(IsModelNameCaseSensitive)),
                 ModelsWithDev = new Dictionary<Model, Dictionary<Parameter, ParameterRandomness>>(ModelsWithDev),
                 ModelsWithLot = new Dictionary<Model, Dictionary<Parameter, ParameterRandomness>>(ModelsWithLot),
-                StochasticModels = new Dictionary<BaseSimulation, Dictionary<Model, List<Model>>>(StochasticModels)
+                StochasticModels = new Dictionary<BaseSimulation, Dictionary<Model, List<Model>>>(StochasticModels),
             };
 
             return result;
