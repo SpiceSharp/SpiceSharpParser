@@ -2,7 +2,7 @@
 echo "Changing to /src directory..."
 cd src
 echo "Executing MSBuild DLL begin command..."
-mono ../tools/sonar/SonarScanner.MSBuild.dll begin /o:"marcin-golebiowski" /k:"SpiceSharpParser" /d:sonar.cs.vstest.reportsPaths="*/TestResults/.trx" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.verbose=true /d:sonar.login=${SONAR_TOKEN} /v:"2.0"
+dotnet ../tools/sonar/SonarScanner.MSBuild.dll begin /o:"marcin-golebiowski" /k:"SpiceSharpParser" /d:sonar.cs.vstest.reportsPaths="*/TestResults/.trx" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.verbose=true /d:sonar.login=${SONAR_TOKEN}
 echo "Running build..."
 dotnet build
 echo "Running tests..."
