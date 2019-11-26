@@ -68,7 +68,7 @@ At the moment due to lack of implementation of LAPLACE and FREQ (part of analog 
 * TABLE 
 * VALUE
 
-Note: Only voltage and current expressions are supported in TABLE, VALUE, POLY(n)
+Note: Only voltage and current expressions are supported in TABLE, VALUE
 
 ### Dot statements supported:
 |  Statement  |  Documentation   |
