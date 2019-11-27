@@ -137,7 +137,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             if (result == null)
             {
-                throw new GeneralReaderException("Could not find " + subCircuitDefinitionName + " subcircuit");
+                throw new ReadingException("Could not find " + subCircuitDefinitionName + " subcircuit");
             }
 
             return result;

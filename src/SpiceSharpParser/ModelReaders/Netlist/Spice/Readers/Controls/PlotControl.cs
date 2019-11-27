@@ -178,7 +178,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 if (dc.Sweeps.Count > 1)
                 {
                     // TODO: Add support for DC Sweeps > 1
-                    throw new GeneralReaderException(".print doesn't support sweep count > 1");
+                    throw new ReadingException(".print doesn't support sweep count > 1");
                 }
 
                 x = eventArgs.SweepValue;

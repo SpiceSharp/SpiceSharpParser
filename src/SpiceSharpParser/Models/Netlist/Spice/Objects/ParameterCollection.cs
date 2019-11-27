@@ -24,6 +24,8 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// </summary>
         public int Count => Values.Count;
 
+        public int LineNumber => Values.FirstOrDefault()?.LineNumber ?? 0;
+
         /// <summary>
         /// Gets or sets the values of parameters.
         /// </summary>

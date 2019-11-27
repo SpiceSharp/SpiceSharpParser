@@ -9,9 +9,6 @@ using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
 {
-    /// <summary>
-    /// Generator for resistors, capacitors, inductors and mutual inductance
-    /// </summary>
     public class RLCKGenerator : ComponentGenerator
     {
         public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
@@ -42,19 +39,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             switch (parameters.Count)
             {
-                case 0: throw new WrongParametersCountException(name, $"Inductor name expected for mutual inductance \"{name}\"");
-                case 1: throw new WrongParametersCountException(name, "Inductor name expected");
-                case 2: throw new WrongParametersCountException(name, "Coupling factor expected");
+                case 0: throw new WrongParametersCountException($"Inductor name expected for mutual inductance \"{name}\"", parameters.LineNumber);
+                case 1: throw new WrongParametersCountException("Inductor name expected", parameters.LineNumber);
+                case 2: throw new WrongParametersCountException("Coupling factor expected", parameters.LineNumber);
             }
 
             if (!(parameters[0] is SingleParameter))
             {
-                throw new WrongParameterTypeException(name, "Component name expected");
+                throw new WrongParameterTypeException("Component name expected", parameters.LineNumber);
             }
 
             if (!(parameters[1] is SingleParameter))
             {
-                throw new WrongParameterTypeException(name, "Component name expected");
+                throw new WrongParameterTypeException("Component name expected", parameters.LineNumber);
             }
 
             mut.InductorName1 = parameters.Get(0).Image;
@@ -101,7 +98,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    throw new WrongParameterTypeException(name, "Wrong parameter value for capacitance");
+                    throw new WrongParameterTypeException("Wrong parameter value for capacitance", parameters.LineNumber);
                 }
             }
             else
@@ -139,7 +136,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     var bp = capacitor.ParameterSets[typeof(SpiceSharp.Components.CapacitorBehaviors.BaseParameters)] as SpiceSharp.Components.CapacitorBehaviors.BaseParameters;
                     if (bp == null || !bp.Length.Given)
                     {
-                        throw new GeneralReaderException("L needs to be specified");
+                        throw new ReadingException("L needs to be specified");
                     }
                 }
             }
@@ -150,7 +147,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (tcParameterAssignment == null)
                 {
-                    throw new GeneralReaderException("TC needs to be assignment parameter");
+                    throw new ReadingException("TC needs to be assignment parameter");
                 }
 
                 if (modelBased)
@@ -221,7 +218,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <param name="name">Name of resistor to generate.</param>
         /// <param name="parameters">Parameters and pins for resistor.</param>
         /// <param name="context">Reading context.</param>
-        /// <exception cref="GeneralReaderException">When there is wrong syntax.</exception>
+        /// <exception cref="ReadingException">When there is wrong syntax.</exception>
         /// <returns>
         /// A new instance of resistor.
         /// </returns>
@@ -254,7 +251,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     && context.ModelsRegistry.FindModel<ResistorModel>(parameters.Get(2).Image) != null)
                 {
                     // RName Node1 Node2 modelName
-                    throw new GeneralReaderException("L parameter needs to be specified");
+                    throw new ReadingException("L parameter needs to be specified");
                 }
 
                 // Check if something can be resistance
@@ -264,7 +261,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                      || something is ExpressionParameter
                      || (something is AssignmentParameter ap && (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))) == false)
                 {
-                    throw new GeneralReaderException("Third parameter needs to represent resistance of resistor");
+                    throw new ReadingException("Third parameter needs to represent resistance of resistor");
                 }
 
                 // Set resistance
@@ -364,7 +361,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                          || resistanceParameter is ExpressionParameter
                          || (resistanceParameter is AssignmentParameter ap && (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))) == false)
                     {
-                        throw new GeneralReaderException("Invalid value for resistance");
+                        throw new ReadingException("Invalid value for resistance");
                     }
 
                     if (resistanceParameter is AssignmentParameter asp)
@@ -387,7 +384,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                     else
                     {
-                        throw new GeneralReaderException("Invalid parameter for resistor: " + parameter.Image);
+                        throw new ReadingException("Invalid parameter for resistor: " + parameter.Image);
                     }
                 }
             }

@@ -37,7 +37,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
 
             if (SubCircuit.Pins.Count != PinInstanceNames.Count)
             {
-                throw new GeneralReaderException($"Subcircuit: {subcircuitFullName} has wrong number of nodes");
+                throw new ReadingException($"Subcircuit: {subcircuitFullName} has wrong number of nodes");
             }
 
             for (var i = 0; i < SubCircuit.Pins.Count; i++)

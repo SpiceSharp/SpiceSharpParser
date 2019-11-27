@@ -154,7 +154,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void When_ModelFormatWithoutWidthAndLength_Expect_Reference()
         {
-            Assert.Throws<GeneralReaderException>(
+            Assert.Throws<ReadingException>(
                 () => ParseNetlist(
                     "Resistor circuit",
                     "V1 1 0 150",

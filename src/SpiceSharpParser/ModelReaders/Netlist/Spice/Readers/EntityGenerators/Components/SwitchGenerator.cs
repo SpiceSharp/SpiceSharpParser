@@ -198,7 +198,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             break;
 
                         default:
-                            throw new GeneralReaderException("ON or OFF expected");
+                            throw new ReadingException("ON or OFF expected");
                     }
                 }
 

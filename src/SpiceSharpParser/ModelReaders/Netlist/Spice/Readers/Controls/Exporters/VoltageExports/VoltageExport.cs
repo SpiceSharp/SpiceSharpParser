@@ -71,7 +71,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 {
                     if (ExceptionsEnabled)
                     {
-                        throw new GeneralReaderException($"Voltage export {Name} is invalid");
+                        throw new ReadingException($"Voltage export {Name} is invalid");
                     }
 
                     return double.NaN;
@@ -85,7 +85,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 {
                     if (ExceptionsEnabled)
                     {
-                        throw new GeneralReaderException($"Voltage export {Name} is invalid");
+                        throw new ReadingException($"Voltage export {Name} is invalid");
                     }
 
                     return double.NaN;

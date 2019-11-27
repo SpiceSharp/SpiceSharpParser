@@ -121,7 +121,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void When_CdfPoints_LessThan4_Expect_Exception()
         {
-            Assert.Throws<GeneralReaderException>(() => ParseNetlist(
+            Assert.Throws<ReadingException>(() => ParseNetlist(
                 "Monte Carlo Analysis - OP - POWER",
                 "V1 0 1 100",
                 "R1 1 0 {R}",

@@ -64,7 +64,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 {
                     if (ExceptionsEnabled)
                     {
-                        throw new GeneralReaderException($"Current export {Name} is invalid");
+                        throw new ReadingException($"Current export {Name} is invalid");
                     }
 
                     return double.NaN;
@@ -78,7 +78,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 {
                     if (ExceptionsEnabled)
                     {
-                        throw new GeneralReaderException($"Current export {Name} is invalid");
+                        throw new ReadingException($"Current export {Name} is invalid");
                     }
 
                     return double.NaN;

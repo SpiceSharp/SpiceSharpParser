@@ -172,7 +172,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (polyParameter.Parameters.Count != 1)
                 {
-                    throw new WrongParametersCountException(name, "poly expects one argument => dimension");
+                    throw new WrongParametersCountException("poly expects one argument => dimension", polyParameter.LineNumber);
                 }
 
                 var dimension = (int)context.Evaluator.EvaluateDouble(polyParameter.Parameters[0].Image);
@@ -188,7 +188,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 int tableParameterPosition = parameters.IndexOf(tableParameter);
                 if (tableParameterPosition == parameters.Count - 1)
                 {
-                    throw new WrongParametersCountException(name, "table expects expression parameter");
+                    throw new WrongParametersCountException("table expects expression parameter", tableParameter.LineNumber);
                 }
 
                 var nextParameter = parameters[tableParameterPosition + 1];
@@ -206,7 +206,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    throw new WrongParameterTypeException(name, "table expects expression equal parameter");
+                    throw new WrongParameterTypeException("table expects expression equal parameter", tableParameter.LineNumber);
                 }
             }
 

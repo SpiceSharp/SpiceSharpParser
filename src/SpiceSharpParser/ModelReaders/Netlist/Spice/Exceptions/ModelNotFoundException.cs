@@ -2,10 +2,7 @@
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
 {
-    /// <summary>
-    ///  Exception thrown when the model for entity is not found
-    /// </summary>
-    public class ModelNotFoundException : Exception
+    public class ModelNotFoundException : ReadingException
     {
         public ModelNotFoundException()
         {
@@ -13,6 +10,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
 
         public ModelNotFoundException(string message)
             : base(message)
+        {
+        }
+
+        public ModelNotFoundException(string message, int line)
+            : base(message, line)
         {
         }
 

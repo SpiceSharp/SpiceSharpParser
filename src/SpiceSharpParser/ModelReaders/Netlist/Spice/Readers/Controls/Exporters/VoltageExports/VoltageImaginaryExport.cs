@@ -57,7 +57,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             {
                 if (ExceptionsEnabled)
                 {
-                    throw new GeneralReaderException($"Voltage imaginary export {Name} is invalid");
+                    throw new ReadingException($"Voltage imaginary export {Name} is invalid");
                 }
 
                 return double.NaN;

@@ -29,7 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     }
                     else
                     {
-                        throw new GeneralReaderException(".ic supports only V(X)=Y");
+                        throw new ReadingException(".ic supports only V(X)=Y");
                     }
                 }
             }
