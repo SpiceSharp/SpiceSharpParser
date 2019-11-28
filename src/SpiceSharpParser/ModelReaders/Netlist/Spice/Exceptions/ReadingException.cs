@@ -15,7 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
         }
 
         public ReadingException(string message, int lineNumber)
-            : base($"{message} at line {lineNumber}")
+            : base(message, lineNumber)
         {
         }
 

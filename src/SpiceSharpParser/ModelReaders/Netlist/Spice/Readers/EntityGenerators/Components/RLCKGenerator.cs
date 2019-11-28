@@ -147,7 +147,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (tcParameterAssignment == null)
                 {
-                    throw new ReadingException("TC needs to be assignment parameter");
+                    throw new ReadingException("TC needs to be assignment parameter", tcParameterAssignment.LineNumber);
                 }
 
                 if (modelBased)
@@ -202,7 +202,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             if (parameters.Count != 3)
             {
-                throw new WrongParametersCountException("Inductor expects 3 parameters/pins");
+                throw new WrongParametersCountException("Inductor expects 3 parameters/pins", parameters.LineNumber);
             }
 
             var inductor = new Inductor(name);
@@ -251,17 +251,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     && context.ModelsRegistry.FindModel<ResistorModel>(parameters.Get(2).Image) != null)
                 {
                     // RName Node1 Node2 modelName
-                    throw new ReadingException("L parameter needs to be specified");
+                    throw new ReadingException("L parameter needs to be specified", something.LineNumber);
                 }
 
                 // Check if something can be resistance
-                if ((something is WordParameter
+                if (!(something is WordParameter
                      || something is IdentifierParameter
                      || something is ValueParameter
                      || something is ExpressionParameter
-                     || (something is AssignmentParameter ap && (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))) == false)
+                     || (something is AssignmentParameter ap && (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))))
                 {
-                    throw new ReadingException("Third parameter needs to represent resistance of resistor");
+                    throw new ReadingException("Third parameter needs to represent resistance of resistor", something.LineNumber);
                 }
 
                 // Set resistance
@@ -355,13 +355,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     // Check if something can be resistance
                     var resistanceParameter = resistorParameters[0];
 
-                    if ((resistanceParameter is WordParameter
+                    if (!(resistanceParameter is WordParameter
                          || resistanceParameter is IdentifierParameter
                          || resistanceParameter is ValueParameter
                          || resistanceParameter is ExpressionParameter
-                         || (resistanceParameter is AssignmentParameter ap && (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))) == false)
+                         || (resistanceParameter is AssignmentParameter ap && !(ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))))
                     {
-                        throw new ReadingException("Invalid value for resistance");
+                        throw new ReadingException("Invalid value for resistance", resistanceParameter.LineNumber);
                     }
 
                     if (resistanceParameter is AssignmentParameter asp)

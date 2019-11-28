@@ -191,7 +191,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
             foreach (Parameter parameter in parameters)
             {
-                if ((parameter is SingleParameter) == false)
+                if (!(parameter is SingleParameter))
                 {
                     throw new WrongParameterTypeException();
                 }

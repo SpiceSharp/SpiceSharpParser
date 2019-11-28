@@ -81,7 +81,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            if (SpecificUpdates.ContainsKey(simulation) == false)
+            if (!SpecificUpdates.ContainsKey(simulation))
             {
                 SpecificUpdates[simulation] = new SimulationUpdates() { Simulation = simulation };
             }
@@ -96,7 +96,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            if (SpecificUpdates.ContainsKey(simulation) == false)
+            if (!SpecificUpdates.ContainsKey(simulation))
             {
                 SpecificUpdates[simulation] = new SimulationUpdates() { Simulation = simulation };
             }
