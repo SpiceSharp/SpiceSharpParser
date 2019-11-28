@@ -83,7 +83,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                             if (points < 4)
                             {
-                                throw new GeneralReaderException("cdfpoints needs to be greater than 3");
+                                throw new ReadingException("cdfpoints needs to be greater than 3");
                             }
 
                             context.Evaluator.GetEvaluationContext().Randomizer.CdfPoints = points;

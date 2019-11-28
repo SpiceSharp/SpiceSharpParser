@@ -221,7 +221,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var parseResult = parser.ParseNetlist(text);
-            Assert.Throws<GeneralReaderException>(() => RunOpSimulation(parseResult.SpiceSharpModel, "V(Out)"));
+            Assert.Throws<ReadingException>(() => RunOpSimulation(parseResult.SpiceSharpModel, "V(Out)"));
         }
 
         [Fact]
@@ -399,7 +399,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".SAVE i(V1)",
                 ".END");
 
-            Assert.Throws<GeneralReaderException>(() => parser.ParseNetlist(text));
+            Assert.Throws<ReadingException>(() => parser.ParseNetlist(text));
         }
 
         [Fact]
@@ -566,7 +566,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var parseResult = parser.ParseNetlist(text);
-            Assert.Throws<GeneralReaderException>(() => RunDCSimulation(parseResult.SpiceSharpModel, "@V1[I]"));
+            Assert.Throws<ReadingException>(() => RunDCSimulation(parseResult.SpiceSharpModel, "@V1[I]"));
         }
 
         [Fact]
@@ -587,7 +587,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".DC V1 -1 1 10e-3",
                 ".SAVE i(V1)",
                 ".END");
-            Assert.Throws<GeneralReaderException>(() => parser.ParseNetlist(text));
+            Assert.Throws<ReadingException>(() => parser.ParseNetlist(text));
         }
     }
 }

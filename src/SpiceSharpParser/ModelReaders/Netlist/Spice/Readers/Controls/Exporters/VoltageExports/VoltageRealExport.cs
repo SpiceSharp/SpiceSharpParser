@@ -56,7 +56,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             {
                 if (ExceptionsEnabled)
                 {
-                    throw new GeneralReaderException($"Voltage real export '{Name}' is invalid");
+                    throw new ReadingException($"Voltage real export '{Name}' is invalid");
                 }
 
                 return double.NaN;

@@ -55,37 +55,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
         private void ReadOtherCases(ParameterCollection parameters, ICircuitContext context)
         {
-            bool list = false;
-            for (var i = 0; i <= 2; i++)
+            if (parameters[1] is BracketParameter bp)
             {
-                if (parameters[i].Image.ToLower() == "list")
-                {
-                    list = true;
-                }
-            }
-
-            if (list)
-            {
-                if (parameters[1] is BracketParameter bp)
-                {
-                    RegisterParameter(bp, context); // model parameter
-                }
-                else
-                {
-                    RegisterParameter(parameters[0], context); // source
-                }
+                RegisterParameter(bp, context); // model parameter
             }
             else
             {
-                // lin
-                if (parameters[1] is BracketParameter bp)
-                {
-                    RegisterParameter(bp, context); // model parameter
-                }
-                else
-                {
-                    RegisterParameter(parameters[0], context); // source
-                }
+                RegisterParameter(parameters[0], context); // source
             }
         }
 

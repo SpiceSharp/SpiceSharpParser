@@ -2,22 +2,19 @@
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
 {
-    /// <summary>
-    /// Exception thrown when there is something wrong with parameter of component
-    /// </summary>
-    public class WrongParameterException : Exception
+    public class WrongParameterException : ReadingException
     {
         public WrongParameterException()
         {
         }
 
-        public WrongParameterException(string componentName, string message)
-            : base($"{componentName}-{message}")
+        public WrongParameterException(string message)
+            : base(message)
         {
         }
 
-        public WrongParameterException(string message)
-            : base(message)
+        public WrongParameterException(string message, int line)
+            : base(message, line)
         {
         }
 

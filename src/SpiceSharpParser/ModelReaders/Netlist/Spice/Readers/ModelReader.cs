@@ -61,7 +61,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                     if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsEntityNameCaseSensitive, out var generator))
                     {
-                        throw new GeneralReaderException("Unsupported model type: " + type);
+                        throw new ReadingException("Unsupported model type: " + type);
                     }
 
                     var model = ModelsGenerator.GenerateModel(
@@ -84,7 +84,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                     if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsModelTypeCaseSensitive, out var generator))
                     {
-                        throw new GeneralReaderException("Unsupported model type: " + type);
+                        throw new ReadingException("Unsupported model type: " + type);
                     }
 
                     var model = ModelsGenerator.GenerateModel(

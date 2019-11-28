@@ -99,7 +99,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                     else
                     {
-                        throw new WrongParameterTypeException(name, "Unsupported waveform: " + bp.Name);
+                        throw new WrongParameterTypeException($"Unsupported waveform: {bp.Name}", bp.LineNumber);
                     }
                 }
                 else
@@ -112,7 +112,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         }
                         else
                         {
-                            throw new WrongParameterTypeException(name, "Unsupported waveform: " + wp);
+                            throw new WrongParameterTypeException($"Unsupported waveform: {wp}", wp.LineNumber);
                         }
                     }
                 }

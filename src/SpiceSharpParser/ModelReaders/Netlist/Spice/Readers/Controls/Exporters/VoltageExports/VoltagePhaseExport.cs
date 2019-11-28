@@ -56,7 +56,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             {
                 if (ExceptionsEnabled)
                 {
-                    throw new GeneralReaderException($"Voltage phase export {Name} is invalid");
+                    throw new ReadingException($"Voltage phase export {Name} is invalid");
                 }
 
                 return double.NaN;

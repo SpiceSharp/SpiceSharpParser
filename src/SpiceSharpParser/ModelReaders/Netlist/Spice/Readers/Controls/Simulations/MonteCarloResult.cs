@@ -11,6 +11,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
     /// </summary>
     public class MonteCarloResult
     {
+        private readonly object _locker = new object();
+
         /// <summary>
         /// Gets or sets a value indicating whether MC analysis was executed.
         /// </summary>
@@ -53,7 +55,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            lock (this)
+            lock (_locker)
             {
                 if (Min.ContainsKey(simulation))
                 {

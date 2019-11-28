@@ -70,22 +70,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public string WorkingDirectory { get; }
 
         /// <summary>
-        /// Gets or sets instance data.
+        /// Gets instance data.
         /// </summary>
         public InstanceData InstanceData { get; }
 
         /// <summary>
-        /// Gets or sets the name of context.
+        /// Gets the name of context.
         /// </summary>
         public string Name { get; }
 
         /// <summary>
-        /// Gets or sets the parent of context.
+        /// Gets the parent of context.
         /// </summary>
         public ICircuitContext Parent { get; }
 
         /// <summary>
-        /// Gets or sets exporter mapper.
+        /// Gets exporter mapper.
         /// </summary>
         public IMapper<Exporter> Exporters { get; }
 
@@ -100,7 +100,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public ISimulationPreparations SimulationPreparations { get; }
 
         /// <summary>
-        /// Gets or sets available subcircuits in context.
+        /// Gets available subcircuits in context.
         /// </summary>
         public ICollection<SubCircuit> AvailableSubcircuits { get; }
 
@@ -110,7 +110,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public IResultService Result { get; }
 
         /// <summary>
-        /// Get the name generator.
+        /// Gets the name generator.
         /// </summary>
         public INameGenerator NameGenerator { get;  }
 
@@ -125,17 +125,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public IModelsRegistry ModelsRegistry { get; }
 
         /// <summary>
-        /// Gets or sets statements reader.
+        /// Gets statements reader.
         /// </summary>
         public ISpiceStatementsReader StatementsReader { get; }
 
         /// <summary>
-        /// Gets or sets waveform reader.
+        /// Gets waveform reader.
         /// </summary>
         public IWaveformReader WaveformReader { get;  }
 
         /// <summary>
-        /// Gets or sets the case sensitivity settings.
+        /// Gets the case sensitivity settings.
         /// </summary>
         public ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
 
@@ -249,7 +249,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             catch (Exception e)
             {
-                throw new GeneralReaderException($"Problem with setting parameter = {parameterName} with value = {value}", e);
+                throw new ReadingException($"Problem with setting parameter = {parameterName} with value = {value}", e);
             }
         }
 
@@ -302,9 +302,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             catch (Exception ex)
             {
-                throw new GeneralReaderException(
-                    $"Exception during evaluation of parameter with expression: `{expression}` at line={parameter.LineNumber}", ex)
-                { LineNumber = parameter.LineNumber };
+                throw new ReadingException($"Exception during evaluation of parameter with expression: `{expression}`", ex, parameter.LineNumber);
             }
         }
 

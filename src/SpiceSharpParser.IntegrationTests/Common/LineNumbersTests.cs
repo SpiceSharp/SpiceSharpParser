@@ -61,7 +61,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                     "V1 OUT 0 0 $  test3.3 ; test4 $ test5",
                     ".END");
             }
-            catch (GeneralReaderException ex)
+            catch (ReadingException ex)
             {
                 Assert.Equal(7, ex.LineNumber);
                 return;

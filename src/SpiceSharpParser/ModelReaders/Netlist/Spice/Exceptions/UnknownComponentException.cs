@@ -2,10 +2,7 @@
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
 {
-    /// <summary>
-    /// Unknown component exception.
-    /// </summary>
-    public class UnknownComponentException : Exception
+    public class UnknownComponentException : ReadingException
     {
         public UnknownComponentException()
         {
@@ -13,6 +10,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
 
         public UnknownComponentException(string message)
             : base(message)
+        {
+        }
+
+        public UnknownComponentException(string message, int lineNumber)
+            : base(message, lineNumber)
         {
         }
 

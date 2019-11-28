@@ -32,7 +32,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     }
                     else
                     {
-                        throw new GeneralReaderException(".NODESET supports only V(X)=Y");
+                        throw new ReadingException(".NODESET supports only V(X)=Y");
                     }
                 }
             }
