@@ -13,13 +13,18 @@ namespace SpiceSharpParser.Common
         {
         }
 
+        public SpiceSharpParserException(string message, int lineNumber)
+            : base($"{message} (at line {lineNumber})")
+        {
+        }
+
         public SpiceSharpParserException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
 
         public SpiceSharpParserException(string message, Exception innerException, int lineNumber)
-            : base($"{message} at line {lineNumber}", innerException)
+            : base($"{message} (at line {lineNumber})", innerException)
         {
             LineNumber = lineNumber;
         }

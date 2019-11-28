@@ -58,7 +58,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             Model model = context.ModelsRegistry.FindModel<Model>(modelName);
             if (model == null)
             {
-                throw new ModelNotFoundException($"Could not find model {modelName} for mosfet {originalName}");
+                throw new ModelNotFoundException($"Could not find model {modelName} for mosfet {originalName}", parameters.LineNumber);
             }
 
             if (Mosfets.ContainsKey(model.GetType()))

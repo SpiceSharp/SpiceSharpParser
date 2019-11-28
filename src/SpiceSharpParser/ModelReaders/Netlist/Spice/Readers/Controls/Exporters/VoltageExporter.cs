@@ -29,7 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
             {
-                throw new WrongParameterException("Voltage exports should have vector or single parameter");
+                throw new WrongParameterException("Voltage exports should have vector or single parameter", parameters.LineNumber);
             }
 
             // Get the nodes

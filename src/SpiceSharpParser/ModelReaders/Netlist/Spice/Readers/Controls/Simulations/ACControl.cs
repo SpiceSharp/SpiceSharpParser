@@ -51,7 +51,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 case "oct": ac = new AC(name, new OctaveSweep(start, stop, (int)numberSteps)); break;
                 case "dec": ac = new AC(name, new DecadeSweep(start, stop, (int)numberSteps)); break;
                 default:
-                    throw new WrongParameterException("LIN, DEC or OCT expected");
+                    throw new WrongParameterException("LIN, DEC or OCT expected", statement.Parameters.LineNumber);
             }
 
             ConfigureCommonSettings(ac, context);

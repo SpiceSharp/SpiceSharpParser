@@ -152,12 +152,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            if (SimulationSpecificUpdates.ContainsKey(simulation) == false)
+            if (!SimulationSpecificUpdates.ContainsKey(simulation))
             {
                 SimulationSpecificUpdates[simulation] = new Dictionary<Entity, EntityUpdate>();
             }
 
-            if (SimulationSpecificUpdates[simulation].ContainsKey(entity) == false)
+            if (!SimulationSpecificUpdates[simulation].ContainsKey(entity))
             {
                 SimulationSpecificUpdates[simulation][entity] = new EntityUpdate();
             }
@@ -194,7 +194,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                 throw new ArgumentNullException(nameof(parameterName));
             }
 
-            if (CommonUpdates.ContainsKey(entity) == false)
+            if (!CommonUpdates.ContainsKey(entity))
             {
                 CommonUpdates[entity] = new EntityUpdate();
             }
@@ -233,7 +233,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            if (CommonUpdates.ContainsKey(entity) == false)
+            if (!CommonUpdates.ContainsKey(entity))
             {
                 CommonUpdates[entity] = new EntityUpdate();
             }
@@ -275,12 +275,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                 throw new ArgumentNullException(nameof(parameterName));
             }
 
-            if (SimulationSpecificUpdates.ContainsKey(simulation) == false)
+            if (!SimulationSpecificUpdates.ContainsKey(simulation))
             {
                 SimulationSpecificUpdates[simulation] = new Dictionary<Entity, EntityUpdate>();
             }
 
-            if (SimulationSpecificUpdates[simulation].ContainsKey(entity) == false)
+            if (!SimulationSpecificUpdates[simulation].ContainsKey(entity))
             {
                 SimulationSpecificUpdates[simulation][entity] = new EntityUpdate();
             }
