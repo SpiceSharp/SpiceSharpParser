@@ -1,5 +1,6 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
 using System;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random
 {
@@ -15,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
         {
             if (args.Length != 0)
             {
-                throw new Exception("random expects no arguments");
+                throw new SpiceSharpParserException("random expects no arguments");
             }
 
             var random = context.Randomizer.GetRandomDoubleProvider();

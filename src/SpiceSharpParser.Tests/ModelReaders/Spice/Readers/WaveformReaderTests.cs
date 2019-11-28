@@ -6,6 +6,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
 using System;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
@@ -58,7 +59,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
 
             // act + assert
             WaveformReader waveformReader = new WaveformReader(waveFormRegistry);
-            Assert.Throws<Exception>(() => waveformReader.Generate("func2", new ParameterCollection(), readingContext));
+            Assert.Throws<ReadingException>(() => waveformReader.Generate("func2", new ParameterCollection(), readingContext));
         }
     }
 }

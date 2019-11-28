@@ -19,7 +19,7 @@ namespace SpiceSharpParser.Common.FileSystem
 
             if (lines.Length == 0)
             {
-                throw new Exception("Empty CSV file");
+                throw new SpiceSharpParserException("Empty CSV file");
             }
 
             bool hasCommaSeparator = lines[0].Contains(",");

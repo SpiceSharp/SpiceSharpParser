@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SpiceSharpBehavioral.Parsers;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
@@ -34,7 +35,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             points.Sort((p1, p2) => p1.X.CompareTo(p2.X));
             if (points.Count == 1)
             {
-                throw new Exception("There is only one point for table interpolation.");
+                throw new SpiceSharpParserException("There is only one point for table interpolation.");
             }
 
             // Get point + 1 line parameters for each segment of line
@@ -105,7 +106,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             points.Sort((p1, p2) => p1.X.CompareTo(p2.X));
             if (points.Count == 1)
             {
-                throw new Exception("There is only one point for table interpolation.");
+                throw new SpiceSharpParserException("There is only one point for table interpolation.");
             }
 
             // Get point + 1 line parameters for each segment of line

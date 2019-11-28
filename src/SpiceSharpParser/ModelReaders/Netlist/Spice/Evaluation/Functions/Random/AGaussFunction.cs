@@ -1,5 +1,6 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
 using System;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random
 {
@@ -15,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
         {
             if (args.Length != 3)
             {
-                throw new Exception("agauss expects three arguments: nominal_val, abs_variation and sigma");
+                throw new SpiceSharpParserException("agauss expects three arguments: nominal_val, abs_variation and sigma");
             }
 
             var random = context.Randomizer.GetRandomDoubleProvider();

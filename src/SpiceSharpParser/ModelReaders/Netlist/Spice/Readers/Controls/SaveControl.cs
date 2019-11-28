@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -321,7 +322,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
             else
             {
-                throw new Exception("There is no " + expressionName + " expression");
+                throw new ReadingException($"There is no {expressionName} expression");
             }
         }
 

@@ -57,7 +57,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
 
             if (!(context.ModelsRegistry is IStochasticModelsRegistry stochasticModelRegistry))
             {
-                throw new Exception();
+                throw new ReadingException("Model registry is not stochastic models registry");
             }
 
             var filteredParameters = FilterDevAndLot(parameters);

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
@@ -107,7 +108,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
                 if (position == allStatements.Count)
                 {
-                    throw new Exception("No .ENDL found");
+                    throw new ReadingException("No .ENDL found");
                 }
                 else
                 {

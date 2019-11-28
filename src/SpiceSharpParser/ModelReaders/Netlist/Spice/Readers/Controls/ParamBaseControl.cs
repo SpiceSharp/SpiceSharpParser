@@ -56,7 +56,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         {
                             if (validate)
                             {
-                                throw new Exception(
+                                throw new ReadingException(
                                     $"Problem with setting param `{assignmentParameter.Name}` with expression =`{assignmentParameter.Value}` at line = {assignmentParameter.LineNumber}",
                                     e);
                             }

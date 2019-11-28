@@ -3,6 +3,7 @@ using SpiceSharpParser.Common.Mathematics.Combinatorics;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
 {
@@ -34,7 +35,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
 
             if (args.Length < dimension + 1)
             {
-                throw new Exception("Too less variables for poly");
+                throw new SpiceSharpParserException("Too less variables for poly");
             }
 
             for (var i = 1; i <= dimension; i++)

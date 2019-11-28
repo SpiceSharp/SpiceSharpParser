@@ -45,11 +45,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             // Errors
             switch (parameters.Count)
             {
-                case 0: throw new Exception($"Node expected for component {componentIdentifier}");
+                case 0: throw new WrongParametersCountException($"Node expected for component {componentIdentifier}");
                 case 1:
                 case 2:
-                case 3: throw new Exception("Node expected");
-                case 4: throw new Exception("Model name expected");
+                case 3: throw new WrongParametersCountException("Node expected");
+                case 4: throw new WrongParametersCountException("Model name expected");
             }
 
             // Get the model and generate a component for it
@@ -79,7 +79,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
             else
             {
-                throw new Exception("Invalid model");
+                throw new ReadingException("Invalid model");
             }
 
             // The rest is all just parameters

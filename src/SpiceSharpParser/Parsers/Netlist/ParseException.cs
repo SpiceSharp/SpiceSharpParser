@@ -15,12 +15,6 @@ namespace SpiceSharpParser.Parsers.Netlist
         public ParseException(string message, int lineNumber)
             : base($"{message} at line {lineNumber}")
         {
-            LineNumber = lineNumber;
         }
-
-        /// <summary>
-        /// Gets the line number of SPICE netlist where exception occurs.
-        /// </summary>
-        public int LineNumber { get; }
     }
 }

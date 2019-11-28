@@ -450,7 +450,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".SAVE A",
                 ".END");
 
-            Assert.Throws<Exception>(() => parser.ParseNetlist(text));
+            Assert.Throws<ReadingException>(() => parser.ParseNetlist(text));
         }
 
         [Fact]

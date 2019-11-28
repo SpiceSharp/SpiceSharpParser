@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace SpiceSharpParser.Common.Evaluation
+﻿namespace SpiceSharpParser.Common.Evaluation
 {
-    public class UnknownParameterException : Exception
+    public class UnknownParameterException : SpiceSharpParserException
     {
         public UnknownParameterException(string name)
             : base($"Unknown parameter {name}")

@@ -52,7 +52,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
             var area = ComputeAreaUnderCurve();
             if (area != 1.0)
             {
-                throw new Exception("Pdf is invalid");
+                throw new SpiceSharpParserException("Pdf is invalid");
             }
         }
     }

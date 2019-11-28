@@ -75,7 +75,7 @@ namespace SpiceSharpParser.Common.FileSystem
         {
             if (decimalSeparator != null && decimalSeparator != "," && decimalSeparator != ".")
             {
-                throw new Exception("Unsupported decimal separator: " + decimalSeparator);
+                throw new SpiceSharpParserException($"Unsupported decimal separator: {decimalSeparator}");
             }
 
             if (decimalSeparator == null)

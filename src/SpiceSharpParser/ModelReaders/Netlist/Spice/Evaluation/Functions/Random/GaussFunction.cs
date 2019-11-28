@@ -1,5 +1,6 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
 using System;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random
 {
@@ -15,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
         {
             if (args.Length != 1)
             {
-                throw new Exception("gauss expects one argument - stdDev");
+                throw new SpiceSharpParserException("gauss expects one argument - stdDev");
             }
 
             var random = context.Randomizer.GetRandomDoubleProvider();

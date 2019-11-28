@@ -569,7 +569,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
                 {
                     if (!nextToken.Is(SpiceTokenType.NEWLINE) && !nextToken.Is(SpiceTokenType.EOF))
                     {
-                        throw new Exception("Points in broken format");
+                        throw new ParseException("Points in broken format", nextToken.LineNumber);
                     }
                 }
             }
@@ -710,7 +710,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             }
             else
             {
-                throw new Exception("Unsupported point value");
+                throw new ParseException("Unsupported point value", currentToken.LineNumber);
             }
         }
 
@@ -910,7 +910,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             }
             else
             {
-                throw new Exception("Expression equal should start with expression");
+                throw new ParseException("Expression equal should start with expression", currentToken.LineNumber);
             }
         }
 
@@ -927,8 +927,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
 
-            if (currentToken.Is(SpiceTokenType.WORD)
-                || currentToken.Is(SpiceTokenType.IDENTIFIER))
+            if (currentToken.Is(SpiceTokenType.WORD) || currentToken.Is(SpiceTokenType.IDENTIFIER))
             {
                 if (nextToken.Is(SpiceTokenType.EQUAL))
                 {

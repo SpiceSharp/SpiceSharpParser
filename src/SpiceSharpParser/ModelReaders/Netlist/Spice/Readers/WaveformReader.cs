@@ -1,5 +1,6 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -51,7 +52,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
             if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsFunctionNameCaseSensitive, out var reader))
             {
-                throw new Exception("Unsupported waveform");
+                throw new ReadingException("Unsupported waveform", parameters.LineNumber);
             }
 
             return reader.Generate(parameters, context);
