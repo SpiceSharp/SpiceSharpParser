@@ -1,9 +1,11 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
@@ -79,7 +81,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
             if (matchedEndIfIndex == statements.Count)
             {
-                throw new Exception("Couldn't find matching .endif");
+                throw new ReadingException("Couldn't find matching .endif");
             }
 
             // 3. Compute result of .if

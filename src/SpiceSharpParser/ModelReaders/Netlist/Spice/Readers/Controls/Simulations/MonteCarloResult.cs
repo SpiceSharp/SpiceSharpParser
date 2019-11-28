@@ -3,6 +3,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
@@ -98,7 +99,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     return GetYMaxPlot(bins);
             }
 
-            throw new Exception("Unknown Monte Carlo function:" + Function);
+            throw new ReadingException($"Unknown Monte Carlo function:{Function}");
         }
 
         protected HistogramPlot GetYMaxPlot(int bins)

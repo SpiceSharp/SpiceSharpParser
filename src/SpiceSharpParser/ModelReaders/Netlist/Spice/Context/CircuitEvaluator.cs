@@ -3,6 +3,7 @@ using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Collections.Generic;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -52,7 +53,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             catch (Exception ex)
             {
-                throw new Exception($"Exception during evaluation of expression: {expression}", ex);
+                throw new SpiceSharpParserException($"Exception during evaluation of expression: {expression}", ex);
             }
         }
 
@@ -69,7 +70,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             catch (Exception ex)
             {
-                throw new Exception($"Exception during evaluation of expression: {expression}", ex);
+                throw new SpiceSharpParserException($"Exception during evaluation of expression: {expression}", ex);
             }
         }
 
@@ -86,7 +87,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             catch (Exception ex)
             {
-                throw new Exception($"Exception during evaluation of parameter: {parameter.Image}", ex);
+                throw new SpiceSharpParserException($"Exception during evaluation of parameter: {parameter.Image}", ex);
             }
         }
 

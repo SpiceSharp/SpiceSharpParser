@@ -149,7 +149,7 @@ namespace SpiceSharpParser.Common.Mathematics.Combinatorics
 
             if (elementIndexToModify == -1)
             {
-                throw new Exception("There is no next combination");
+                throw new SpiceSharpParserException("There is no next combination");
             }
 
             int[] newCombination = new int[combination.Length];

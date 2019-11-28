@@ -2,7 +2,7 @@
 
 namespace SpiceSharpParser.Common.Evaluation.Functions
 {
-    public class MathFunctions
+    public static class MathFunctions
     {
         /// <summary>
         /// Get a cosh() function.

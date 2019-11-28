@@ -199,12 +199,12 @@ namespace SpiceSharpParser.Common.Evaluation
 
             foreach (var parameter in dependentParameters)
             {
-                if (ParametersDependencies.ContainsKey(parameter) == false)
+                if (!ParametersDependencies.ContainsKey(parameter))
                 {
                     ParametersDependencies[parameter] = new HashSet<string>();
                 }
 
-                if (ParametersDependencies[parameter].Contains(parameterName) == false)
+                if (!ParametersDependencies[parameter].Contains(parameterName))
                 {
                     ParametersDependencies[parameter].Add(parameterName);
                 }

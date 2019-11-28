@@ -99,12 +99,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             break;
 
                         default:
-                            throw new Exception("ON or OFF expected");
+                            throw new ReadingException("ON or OFF expected", parameters.LineNumber);
                     }
                 }
                 else if (parameters.Count > 6)
                 {
-                    throw new WrongParametersCountException("Too many parameters for voltage switch");
+                    throw new WrongParametersCountException("Too many parameters for voltage switch", parameters.LineNumber);
                 }
 
                 return vsw;

@@ -29,7 +29,7 @@ namespace SpiceSharpParser.Common
 
                 if (b == 0)
                 {
-                    throw new Exception($"System at {pos} is 0");
+                    throw new SpiceSharpParserException($"System at {pos} is 0");
                 }
 
                 result[pos] = value % b;

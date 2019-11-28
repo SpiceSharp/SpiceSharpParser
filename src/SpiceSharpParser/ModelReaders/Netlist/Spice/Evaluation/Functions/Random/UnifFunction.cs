@@ -1,5 +1,6 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
 using System;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random
 {
@@ -15,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Rando
         {
             if (args.Length != 2)
             {
-                throw new Exception("unif expects two arguments: nominal_val, rel_variation");
+                throw new SpiceSharpParserException("unif expects two arguments: nominal_val, rel_variation");
             }
 
             var random = context.Randomizer.GetRandomDoubleProvider();
