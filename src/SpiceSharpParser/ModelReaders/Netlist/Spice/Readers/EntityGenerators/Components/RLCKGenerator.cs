@@ -120,7 +120,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         context.ModelsRegistry.SetModel(
                             capacitor,
                             simulation,
-                            parameters.Get(2).Image,
+                            parameters.Get(2),
                             $"Could not find model {parameters.Get(2)} for capacitor {name}",
                             (CapacitorModel model) => capacitor.Model = model.Name,
                             context.Result);
@@ -281,7 +281,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // RName Node1 Node2 something param1 ...
                 if (resistorParameters.Count == 0)
                 {
-                    throw new WrongParametersCountException("Resistor doesn't have at least 3 parameters");
+                    throw new WrongParametersCountException("Resistor doesn't have at least 3 parameters", parameters.LineNumber);
                 }
 
                 var something = resistorParameters[0];
@@ -307,7 +307,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (hasModelSyntax)
                 {
-                    var modelName = resistorParameters[0].Image;
+                    var modelNameParameter = resistorParameters[0];
 
                     // Ignore tc parameter on resistor ...
                     context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
@@ -315,8 +315,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         context.ModelsRegistry.SetModel(
                             res,
                             simulation,
-                            modelName,
-                            $"Could not find model {modelName} for resistor {name}",
+                            modelNameParameter,
+                            $"Could not find model {modelNameParameter} for resistor {name}",
                             (ResistorModel model) => res.Model = model.Name,
                             context.Result);
                     });

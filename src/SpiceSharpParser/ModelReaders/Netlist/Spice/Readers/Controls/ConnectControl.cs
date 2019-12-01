@@ -19,15 +19,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             if (statement.Parameters.Count != 2)
             {
-                throw new WrongParametersCountException("Wrong parameter count for .connect");
+                throw new WrongParametersCountException("Wrong parameter count for .CONNECT", statement.LineNumber);
             }
 
             string nodeA = statement.Parameters.Get(0).Image;
             string nodeB = statement.Parameters.Get(1).Image;
 
-            var vsrc = new VoltageSource("Voltage connector: " + nodeA + " <-> " + nodeB);
-            context.CreateNodes(vsrc, statement.Parameters);
-            context.Result.AddEntity(vsrc);
+            var vs = new VoltageSource($"Voltage connector: {nodeA} <-> {nodeB}");
+            context.CreateNodes(vs, statement.Parameters);
+            context.Result.AddEntity(vs);
         }
     }
 }

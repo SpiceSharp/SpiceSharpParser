@@ -34,10 +34,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             });
         }
 
-        /// <summary>
-        /// Generate a mosfet instance based on a model.
-        /// The generator is passed the arguments name and model.
-        /// </summary>
         protected Dictionary<Type, Func<string, MosfetDetails>> Mosfets { get; } = new Dictionary<Type, Func<string, MosfetDetails>>();
 
         public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
@@ -45,20 +41,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             // Errors
             switch (parameters.Count)
             {
-                case 0: throw new WrongParametersCountException($"Node expected for component {componentIdentifier}");
+                case 0: throw new WrongParametersCountException($"Node expected for component {componentIdentifier}", parameters.LineNumber);
                 case 1:
                 case 2:
-                case 3: throw new WrongParametersCountException("Node expected");
-                case 4: throw new WrongParametersCountException("Model name expected");
+                case 3: throw new WrongParametersCountException("Node expected", parameters.LineNumber);
+                case 4: throw new WrongParametersCountException("Model name expected", parameters.LineNumber);
             }
 
             // Get the model and generate a component for it
             SpiceSharp.Components.Component mosfet = null;
-            string modelName = parameters.Get(4).Image;
-            Model model = context.ModelsRegistry.FindModel<Model>(modelName);
+            var modelNameParameter = parameters.Get(4);
+            Model model = context.ModelsRegistry.FindModel<Model>(modelNameParameter.Image);
             if (model == null)
             {
-                throw new ModelNotFoundException($"Could not find model {modelName} for mosfet {originalName}", parameters.LineNumber);
+                throw new ModelNotFoundException($"Could not find model {modelNameParameter.Image} for mosfet {originalName}", parameters.LineNumber);
             }
 
             if (Mosfets.ContainsKey(model.GetType()))
@@ -71,8 +67,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     context.ModelsRegistry.SetModel(
                         mosfetDetails.Mosfet,
                         simulation,
-                        modelName,
-                        $"Could not find model {modelName} for mosfet {componentIdentifier}",
+                        modelNameParameter,
+                        $"Could not find model {modelNameParameter.Image} for mosfet {componentIdentifier}",
                         mosfetDetails.SetModelAction,
                         context.Result);
                 });

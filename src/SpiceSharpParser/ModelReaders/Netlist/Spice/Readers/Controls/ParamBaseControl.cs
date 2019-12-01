@@ -39,7 +39,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 throw new ArgumentNullException(nameof(statement.Parameters));
             }
 
-            foreach (var param in statement.Parameters)
+            foreach (Parameter param in statement.Parameters)
             {
                 if (param is Models.Netlist.Spice.Objects.Parameters.AssignmentParameter assignmentParameter)
                 {
@@ -76,7 +76,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 }
                 else
                 {
-                    throw new WrongParameterTypeException(".PARAM supports only assignments");
+                    throw new WrongParameterTypeException(".PARAM supports only assignments", param.LineNumber);
                 }
             }
         }

@@ -19,19 +19,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             if (statement.Parameters.Count != 2)
             {
-                throw new WrongParametersCountException("Wrong parameter count for .let");
+                throw new WrongParametersCountException("Wrong parameter count for .LET", statement.LineNumber);
             }
 
             if (!(statement.Parameters[1] is SingleParameter))
             {
-                throw new WrongParameterTypeException("First parameter for .let should be an single");
+                throw new WrongParameterTypeException("First parameter for .LET should be an single", statement.LineNumber);
             }
 
             string expressionName = statement.Parameters[0].Image;
 
             if (!(statement.Parameters[1] is ExpressionParameter) && !(statement.Parameters[1] is StringParameter))
             {
-                throw new WrongParameterTypeException("Second parameter for .let should be an expression");
+                throw new WrongParameterTypeException("Second parameter for .LET should be an expression", statement.LineNumber);
             }
 
             string expression = statement.Parameters.Get(1).Image;

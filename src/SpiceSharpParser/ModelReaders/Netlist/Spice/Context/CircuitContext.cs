@@ -179,8 +179,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             if (parameters.Count < component.PinCount)
             {
-                throw new WrongParametersCountException(
-                    "Too few parameters for: " + component.Name + " to create nodes");
+                throw new WrongParametersCountException($"Too few parameters for: {component.Name} to create nodes", parameters.LineNumber);
             }
 
             string[] nodes = new string[component.PinCount];
