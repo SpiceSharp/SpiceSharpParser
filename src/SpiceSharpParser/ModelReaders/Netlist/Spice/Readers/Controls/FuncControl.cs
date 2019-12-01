@@ -64,7 +64,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     }
                     else
                     {
-                        throw new WrongParameterTypeException("Unsupported syntax for .FUNC");
+                        throw new WrongParameterTypeException("Unsupported syntax for .FUNC", param.LineNumber);
                     }
                 }
             }

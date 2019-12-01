@@ -33,7 +33,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 
             if (parameters.Count != 7)
             {
-                throw new WrongParametersCountException("Wrong number of arguments for pulse");
+                throw new WrongParametersCountException("Wrong number of arguments for pulse", parameters.LineNumber);
             }
 
             var w = new Pulse();

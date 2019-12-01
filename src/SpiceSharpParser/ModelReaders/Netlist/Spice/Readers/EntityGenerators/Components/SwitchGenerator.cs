@@ -37,7 +37,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             if (parameters.Count < 5)
             {
-                throw new WrongParametersCountException("Wrong parameter count for voltage switch");
+                throw new WrongParametersCountException("Wrong parameter count for voltage switch", parameters.LineNumber);
             }
 
             string modelName = parameters.Get(4).Image;
@@ -79,7 +79,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     context.ModelsRegistry.SetModel(
                         vsw,
                         simulation,
-                        parameters.Get(4).Image,
+                        parameters.Get(4),
                         $"Could not find model {parameters.Get(4)} for voltage switch {name}",
                         (VoltageSwitchModel model) => { vsw.Model = model.Name; },
                         context.Result);
@@ -124,7 +124,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             if (parameters.Count < 4)
             {
-                throw new WrongParametersCountException("Wrong parameter count for current switch");
+                throw new WrongParametersCountException("Wrong parameter count for current switch", parameters.LineNumber);
             }
 
             string modelName = parameters.Get(3).Image;
@@ -169,7 +169,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    throw new WrongParameterTypeException("Voltage source name expected");
+                    throw new WrongParameterTypeException("Voltage source name expected", parameters[2].LineNumber);
                 }
 
                 // Get the model
@@ -178,7 +178,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     context.ModelsRegistry.SetModel(
                         csw,
                         simulation,
-                        parameters.Get(3).Image,
+                        parameters.Get(3),
                         $"Could not find model {parameters.Get(3)} for current switch {name}",
                         (CurrentSwitchModel model) => csw.Model = model.Name,
                         context.Result);

@@ -32,10 +32,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         {
             switch (statement.Parameters.Count)
             {
-                case 0: throw new WrongParametersCountException("LIN, DEC or OCT expected");
-                case 1: throw new WrongParametersCountException("Number of points expected");
-                case 2: throw new WrongParametersCountException("Starting frequency expected");
-                case 3: throw new WrongParametersCountException("Stopping frequency expected");
+                case 0: throw new WrongParametersCountException("LIN, DEC or OCT expected", statement.LineNumber);
+                case 1: throw new WrongParametersCountException("Number of points expected", statement.LineNumber);
+                case 2: throw new WrongParametersCountException("Starting frequency expected", statement.LineNumber);
+                case 3: throw new WrongParametersCountException("Stopping frequency expected", statement.LineNumber);
             }
 
             AC ac;

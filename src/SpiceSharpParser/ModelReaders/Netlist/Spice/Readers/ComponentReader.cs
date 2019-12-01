@@ -46,7 +46,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
             string componentName = statement.Name;
 
-            IComponentGenerator generator = GetComponentGenerator(context, componentName, out string componentType);
+            IComponentGenerator generator = GetComponentGenerator(context, componentName, statement.LineNumber, out string componentType);
 
             Entity entity = generator.Generate(
                 context.NameGenerator.GenerateObjectName(componentName),
@@ -61,7 +61,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
             }
         }
 
-        private IComponentGenerator GetComponentGenerator(ICircuitContext context, string componentName, out string componentType)
+        private IComponentGenerator GetComponentGenerator(ICircuitContext context, string componentName, int lineNumber, out string componentType)
         {
             foreach (var map in Mapper)
             {
@@ -72,7 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                 }
             }
 
-            throw new UnknownComponentException($"Unsupported component {componentName}");
+            throw new UnknownComponentException($"Unsupported component {componentName}", lineNumber);
         }
     }
 }

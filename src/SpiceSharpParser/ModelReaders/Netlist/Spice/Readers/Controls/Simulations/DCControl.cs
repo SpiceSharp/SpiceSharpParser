@@ -37,14 +37,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 case 0:
                     if (statement.Parameters.Count == 0)
                     {
-                        throw new WrongParametersCountException(".dc - Source Name expected");
+                        throw new WrongParametersCountException(".dc - Source Name expected", statement.LineNumber);
                     }
 
                     break;
 
-                case 1: throw new WrongParametersCountException(".dc - Start value expected");
-                case 2: throw new WrongParametersCountException(".dc - Stop value expected");
-                case 3: throw new WrongParametersCountException(".dc - Step value expected");
+                case 1: throw new WrongParametersCountException(".dc - Start value expected", statement.LineNumber);
+                case 2: throw new WrongParametersCountException(".dc - Stop value expected", statement.LineNumber);
+                case 3: throw new WrongParametersCountException(".dc - Step value expected", statement.LineNumber);
             }
 
             // Format: .DC SRCNAM VSTART VSTOP VINCR [SRC2 START2 STOP2 INCR2]

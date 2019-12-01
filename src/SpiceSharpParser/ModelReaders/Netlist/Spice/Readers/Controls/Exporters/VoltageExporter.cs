@@ -41,7 +41,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 switch (vector.Elements.Count)
                 {
                     case 0:
-                        throw new WrongParametersCountException("No nodes for voltage export. Node expected");
+                        throw new WrongParametersCountException("No nodes for voltage export. Node expected", vector.LineNumber);
                     case 2:
                         referencePath = vector.Elements[1].Image;
                         reference = context.NameGenerator.ParseNodeName(referencePath);
@@ -52,7 +52,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                         break;
 
                     default:
-                        throw new WrongParametersCountException("Too many nodes specified for voltage export");
+                        throw new WrongParametersCountException("Too many nodes specified for voltage export", vector.LineNumber);
                 }
             }
             else

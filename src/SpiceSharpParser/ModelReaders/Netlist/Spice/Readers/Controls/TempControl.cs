@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             if (statement.Parameters.Count == 0)
             {
-                throw new WrongParametersCountException("No parameters for .TEMP");
+                throw new WrongParametersCountException("No parameters for .TEMP", statement.LineNumber);
             }
 
             if (context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions.HasValue)
@@ -37,7 +37,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 }
                 else
                 {
-                    throw new WrongParameterException("Wrong type of parameter for .temp: " + param.GetType());
+                    throw new WrongParameterException($"Wrong type of parameter for .TEMP: {param.GetType()}", param.LineNumber);
                 }
             }
         }

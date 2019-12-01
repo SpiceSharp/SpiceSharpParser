@@ -32,8 +32,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         {
             switch (statement.Parameters.Count)
             {
-                case 0: throw new WrongParametersCountException(".tran control - Step expected");
-                case 1: throw new WrongParametersCountException(".tran control - Maximum time expected");
+                case 0: throw new WrongParametersCountException(".tran control - Step expected", statement.LineNumber);
+                case 1: throw new WrongParametersCountException(".tran control - Maximum time expected", statement.LineNumber);
             }
 
             bool useIc = false;
@@ -75,7 +75,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     break;
 
                 default:
-                    throw new WrongParametersCountException(".tran control - Too many parameters for .tran");
+                    throw new WrongParametersCountException(".TRAN control - Too many parameters for .TRAN", clonedParameters.LineNumber);
             }
 
             ConfigureCommonSettings(tran, context);

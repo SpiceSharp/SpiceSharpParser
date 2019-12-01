@@ -230,14 +230,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             return null;
         }
 
-        public void SetModel<T>(Entity entity, BaseSimulation simulation, string modelName, string exceptionMessage, Action<T> setModelAction, IResultService result)
+        public void SetModel<T>(Entity entity, BaseSimulation simulation, Parameter modelNameParameter, string exceptionMessage, Action<T> setModelAction, IResultService result)
             where T : Model
         {
-            var model = FindModel<T>(modelName);
+            var model = FindModel<T>(modelNameParameter.Image);
 
             if (model == null)
             {
-                throw new ModelNotFoundException(exceptionMessage);
+                throw new ModelNotFoundException(exceptionMessage, modelNameParameter.LineNumber);
             }
 
             var stochasticModel = (T)ProvideStochasticModel(entity.Name, simulation, model);

@@ -22,7 +22,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.ModelsRegistry.SetModel(
                     diode,
                     simulation,
-                    parameters.Get(2).Image,
+                    parameters.Get(2),
                     $"Could not find model {parameters.Get(2)} for diode {originalName}",
                     (DiodeModel model) => diode.Model = model.Name,
                     context.Result);

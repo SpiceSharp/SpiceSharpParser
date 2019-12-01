@@ -8,6 +8,6 @@
         /// <summary>
         /// Gets or sets the line number of the statement.
         /// </summary>
-        public int? LineNumber { get; set; }
+        public int LineNumber { get; set; }
     }
 }
