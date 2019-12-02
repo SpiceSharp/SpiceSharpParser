@@ -48,8 +48,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
         /// <summary>
         /// Maps the keys with given element.
         /// </summary>
-        /// <param name="key">Keys of the element.</param>
+        /// <param name="keys">Keys of the element.</param>
         /// <param name="element">An element.</param>
-        void Map(string[] key, TElement element);
+        void Map(string[] keys, TElement element);
     }
 }

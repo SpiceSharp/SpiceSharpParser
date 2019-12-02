@@ -63,13 +63,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// <param name="generator">A model generator.</param>
         /// <param name="parameter">A parameter.</param>
         /// <param name="tolerance">A tolerance (value of dev).</param>
-        /// <param name="distribution">Distribution name.</param>
+        /// <param name="distributionName">Distribution name.</param>
         public void RegisterModelDev(
             Model model,
             Func<string, Model> generator,
             Parameter parameter,
             Parameter tolerance,
-            string distribution)
+            string distributionName)
         {
             if (model == null)
             {
@@ -98,7 +98,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 
             ModelsWithDev[model][parameter] = new ParameterRandomness
             {
-                RandomDistributionName = distribution,
+                RandomDistributionName = distributionName,
                 Tolerance = tolerance,
             };
 

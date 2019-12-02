@@ -25,14 +25,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         /// <returns>
         /// A new object name generator.
         /// </returns>
-        public IObjectNameGenerator CreateChildGenerator(string name)
+        public IObjectNameGenerator CreateChildGenerator(string childGeneratorName)
         {
             if (!string.IsNullOrEmpty(Prefix))
             {
-                return new ObjectNameGenerator(string.Format("{0}.{1}", Prefix, name));
+                return new ObjectNameGenerator($"{Prefix}.{childGeneratorName}");
             }
 
-            return new ObjectNameGenerator(name);
+            return new ObjectNameGenerator(childGeneratorName);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         {
             if (!string.IsNullOrEmpty(Prefix))
             {
-                return string.Format("{0}.{1}", Prefix, entityName);
+                return $"{Prefix}.{entityName}";
             }
             else
             {

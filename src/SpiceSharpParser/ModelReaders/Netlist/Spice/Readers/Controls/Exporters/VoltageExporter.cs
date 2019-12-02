@@ -45,7 +45,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                     case 2:
                         referencePath = vector.Elements[1].Image;
                         reference = context.NameGenerator.ParseNodeName(referencePath);
-                        goto case 1;
+                        nodePath = vector.Elements[0].Image;
+                        node = context.NameGenerator.ParseNodeName(nodePath);
+                        break;
                     case 1:
                         nodePath = vector.Elements[0].Image;
                         node = context.NameGenerator.ParseNodeName(nodePath);

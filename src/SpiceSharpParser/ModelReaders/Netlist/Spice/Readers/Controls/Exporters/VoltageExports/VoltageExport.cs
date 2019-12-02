@@ -22,9 +22,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             Node = node ?? throw new System.ArgumentNullException(nameof(node));
             Reference = reference;
 
-            if (simulation is FrequencySimulation)
+            if (simulation is FrequencySimulation fs)
             {
-                ExportImpl = new ComplexVoltageExport((FrequencySimulation)simulation, node, reference);
+                ExportImpl = new ComplexVoltageExport(fs, node, reference);
             }
             else
             {

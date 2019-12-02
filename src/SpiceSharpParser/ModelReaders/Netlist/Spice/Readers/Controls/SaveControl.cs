@@ -2,6 +2,7 @@
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
@@ -12,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -174,10 +174,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             var plot = new XyPlot("OP - Parameter sweep: " + variableName);
 
-            for (var i = 0; i < exports.Count; i++)
+            foreach (var export in exports)
             {
-                var series = new Series(exports[i].Simulation.Name.ToString()) { XUnit = firstParameterSweep.Parameter.Image, YUnit = exports[i].QuantityUnit };
-                AddOpPointToSeries(firstParameterSweep, exports[i], context, series);
+                var series = new Series(export.Simulation.Name)
+                {
+                    XUnit = firstParameterSweep.Parameter.Image,
+                    YUnit = export.QuantityUnit,
+                };
+                AddOpPointToSeries(firstParameterSweep, export, context, series);
 
                 plot.Series.Add(series);
             }
@@ -189,10 +193,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             var plot = new XyPlot("Tran - Parameter sweep: " + variableName);
 
-            for (var i = 0; i < exports.Count; i++)
+            foreach (var export in exports)
             {
-                var series = new Series(exports[i].Simulation.Name.ToString()) { XUnit = "Time (s)", YUnit = exports[i].QuantityUnit };
-                AddTranPointsToSeries(exports[i], series);
+                var series = new Series(export.Simulation.Name)
+                {
+                    XUnit = "Time (s)",
+                    YUnit = export.QuantityUnit,
+                };
+                AddTranPointsToSeries(export, series);
 
                 plot.Series.Add(series);
             }
@@ -204,10 +212,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             var plot = new XyPlot("AC - Parameter sweep: " + variableName);
 
-            for (var i = 0; i < exports.Count; i++)
+            foreach (var export in exports)
             {
-                var series = new Series(exports[i].Simulation.Name.ToString()) { XUnit = "Freq (s)", YUnit = exports[i].QuantityUnit };
-                AddAcPointsToSeries(exports[i], series);
+                var series = new Series(export.Simulation.Name)
+                {
+                    XUnit = "Freq (s)",
+                    YUnit = export.QuantityUnit,
+                };
+                AddAcPointsToSeries(export, series);
 
                 plot.Series.Add(series);
             }

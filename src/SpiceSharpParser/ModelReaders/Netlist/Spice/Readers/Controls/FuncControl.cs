@@ -4,6 +4,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -32,7 +33,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 {
                     if (!assignmentParameter.HasFunctionSyntax)
                     {
-                        throw new System.Exception("User function needs to be a function");
+                        throw new SpiceSharpParserException("User function needs to be a function", assignmentParameter.LineNumber);
                     }
 
                     context.Evaluator.AddFunction(assignmentParameter.Name, assignmentParameter.Arguments, assignmentParameter.Value);

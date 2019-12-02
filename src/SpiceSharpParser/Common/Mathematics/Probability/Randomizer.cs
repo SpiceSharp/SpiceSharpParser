@@ -174,7 +174,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
             }
             else
             {
-                throw new ArgumentException("Unknown pdf", nameof(workingPdfName));
+                throw new ArgumentException("Unknown pdf", nameof(pdfName));
             }
         }
 

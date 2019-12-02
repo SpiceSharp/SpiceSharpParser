@@ -76,7 +76,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         bool HaveParameter(Simulation simulation, string parameterName);
 
-        EvaluationContext CreateChildContext(string subcircuitFullName, bool b);
+        EvaluationContext CreateChildContext(string name, bool addToChildren);
 
         int? GetSeed(Simulation sim);
 

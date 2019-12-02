@@ -1,9 +1,9 @@
-﻿using SpiceSharpParser.Common.Evaluation;
+﻿using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Mathematics.Combinatorics;
-using System;
 using System.Collections.Generic;
 using System.Globalization;
-using SpiceSharpParser.Common;
+using System.Text;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
 {
@@ -18,14 +18,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
         public static string GetExpression(int dimension, List<double> coefficients, List<string> variables)
         {
             var combinations = CombinationCache.GetCombinations(coefficients.Count, dimension);
-            string expression = coefficients[0].ToString();
+            string coefficientString = coefficients[0].ToString(CultureInfo.InvariantCulture);
+
+            StringBuilder result = new StringBuilder();
+            result.Append(coefficientString);
 
             for (int i = 1; i < combinations.Count; i++)
             {
-                expression += $" + {ComputeSumElementString(variables, coefficients[i], combinations[i])}";
+                result.Append($" + {ComputeSumElementString(variables, coefficients[i], combinations[i])}");
             }
 
-            return expression;
+            return result.ToString();
         }
 
         public override double Logic(string image, double[] args, EvaluationContext context)
@@ -84,17 +87,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math
             return sum;
         }
 
-        private static string ComputeSumElementString(List<string> variables, double coefficient, int[] combination)
+        private static string ComputeSumElementString(List<string> variables, double coefficient, int[] combinations)
         {
-            string result = $"{coefficient.ToString(CultureInfo.InvariantCulture)}";
+            string coefficientString = $"{coefficient.ToString(CultureInfo.InvariantCulture)}";
 
-            for (int i = 0; i < combination.Length; i++)
+            StringBuilder result = new StringBuilder();
+            result.Append(coefficientString);
+
+            foreach (var combination in combinations)
             {
-                result += " * ";
-                result += variables[combination[i] - 1];
+                result.Append(" * ");
+                result.Append(variables[combination - 1]);
             }
 
-            return result;
+            return result.ToString();
         }
     }
 }
