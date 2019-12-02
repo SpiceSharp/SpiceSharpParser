@@ -1,9 +1,9 @@
 ﻿using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
@@ -15,12 +15,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <summary>
         /// Creates a new current export.
         /// </summary>
-        /// <paramref name="name">Name of export.</paramref>
-        /// <param name="name"></param>
+        /// <param name="name">Name of export.</param>
         /// <param name="type">A type of export.</param>
         /// <param name="parameters">A parameters of export.</param>
         /// <param name="context">Expression context.</param>
-        /// <param name="caseSettings"></param>
+        /// <param name="caseSettings">Case settings.</param>
         /// <returns>
         /// A new export.
         /// </returns>
@@ -73,7 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 }
             }
 
-            throw new ReadingException("Invalid property export");
+            throw new ReadingException("Invalid property export", parameters.LineNumber);
         }
     }
 }

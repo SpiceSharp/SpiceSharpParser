@@ -17,14 +17,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             foreach (var param in statement.Parameters)
             {
-                if (param is Models.Netlist.Spice.Objects.Parameters.SingleParameter sp)
+                if ((param is Models.Netlist.Spice.Objects.Parameters.SingleParameter sp) 
+                    && (sp is Models.Netlist.Spice.Objects.Parameters.WordParameter
+                      || sp is Models.Netlist.Spice.Objects.Parameters.IdentifierParameter
+                      || sp is Models.Netlist.Spice.Objects.Parameters.ValueParameter))
                 {
-                    if (sp is Models.Netlist.Spice.Objects.Parameters.WordParameter
-                        || sp is Models.Netlist.Spice.Objects.Parameters.IdentifierParameter
-                        || sp is Models.Netlist.Spice.Objects.Parameters.ValueParameter)
-                    {
-                        context.NameGenerator.SetGlobal(sp.Image);
-                    }
+                    context.NameGenerator.SetGlobal(sp.Image);
                 }
             }
         }

@@ -21,9 +21,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter tolerance,
             string distributionName);
 
-        Model ProvideStochasticModel(string componentName, BaseSimulation sim, Model model);
+        Model ProvideStochasticModel(string componentName, BaseSimulation simulation, Model model);
 
-        Dictionary<Model, List<Model>> GetStochasticModels(BaseSimulation sim);
+        Dictionary<Model, List<Model>> GetStochasticModels(BaseSimulation simulation);
 
         Dictionary<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, ParameterRandomness> GetStochasticModelDevParameters(Model baseModel);
 

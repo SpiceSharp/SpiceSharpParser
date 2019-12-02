@@ -101,7 +101,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                 SpecificUpdates[simulation] = new SimulationUpdates() { Simulation = simulation };
             }
 
-            SpecificUpdates[simulation].ParameterUpdatesBeforeSetup.Add(new SimulationUpdate() { Simulation = simulation, Update = update });
+            SpecificUpdates[simulation].ParameterUpdatesBeforeTemperature.Add(new SimulationUpdate() { Simulation = simulation, Update = update });
         }
 
         public void AddBeforeSetup(Action<BaseSimulation, SimulationEvaluationContexts> update)

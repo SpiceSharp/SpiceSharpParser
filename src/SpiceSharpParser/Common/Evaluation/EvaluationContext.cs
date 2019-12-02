@@ -318,21 +318,21 @@ namespace SpiceSharpParser.Common.Evaluation
             return null;
         }
 
-        public void AddFunction(string name, IFunction function)
+        public void AddFunction(string functionName, IFunction function)
         {
-            if (!Functions.ContainsKey(name))
+            if (!Functions.ContainsKey(functionName))
             {
-                Functions[name] = new List<IFunction>();
+                Functions[functionName] = new List<IFunction>();
             }
 
-            var overridenFunction = Functions[name].SingleOrDefault(f => f.ArgumentsCount == function.ArgumentsCount);
+            var overridenFunction = Functions[functionName].SingleOrDefault(f => f.ArgumentsCount == function.ArgumentsCount);
 
             if (overridenFunction != null)
             {
-                Functions[name].Remove(overridenFunction);
+                Functions[functionName].Remove(overridenFunction);
             }
 
-            Functions[name].Add(function);
+            Functions[functionName].Add(function);
         }
 
         public void CreateCommonFunctions()

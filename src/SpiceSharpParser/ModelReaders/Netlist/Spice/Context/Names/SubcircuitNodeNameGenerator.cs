@@ -86,28 +86,28 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         /// <summary>
         /// Generates node name.
         /// </summary>
-        /// <param name="pinName">Pin name.</param>
+        /// <param name="nodeName">Pin name.</param>
         /// <returns>
         /// Node name.
         /// </returns>
-        public string Generate(string pinName)
+        public string Generate(string nodeName)
         {
-            if (pinName is null)
+            if (nodeName is null)
             {
-                throw new ArgumentNullException(nameof(pinName));
+                throw new ArgumentNullException(nameof(nodeName));
             }
 
-            if (pinName.ToUpper() == "GND")
+            if (nodeName.ToUpper() == "GND")
             {
-                return pinName;
+                return nodeName;
             }
 
-            if (_globals.Contains(pinName))
+            if (_globals.Contains(nodeName))
             {
-                return pinName;
+                return nodeName;
             }
 
-            var pinIdentifier = pinName;
+            var pinIdentifier = nodeName;
 
             if (_pinMap.ContainsKey(pinIdentifier))
             {
@@ -115,7 +115,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
             }
             else
             {
-                return $"{FullName}.{pinName}";
+                return $"{FullName}.{nodeName}";
             }
         }
 

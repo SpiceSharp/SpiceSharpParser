@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             if (statement.Parameters == null)
             {
-                throw new ArgumentNullException(nameof(statement.Parameters));
+                throw new ArgumentNullException(nameof(statement));
             }
 
             foreach (Parameter param in statement.Parameters)

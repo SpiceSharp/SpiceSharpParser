@@ -147,7 +147,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (tcParameterAssignment == null)
                 {
-                    throw new ReadingException("TC needs to be assignment parameter", tcParameterAssignment.LineNumber);
+                    throw new ReadingException("TC needs to be assignment parameter", tcParameter.LineNumber);
                 }
 
                 if (modelBased)

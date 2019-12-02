@@ -17,7 +17,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             if (statement.Parameters == null)
             {
-                throw new System.ArgumentNullException(nameof(statement.Parameters));
+                throw new System.ArgumentNullException(nameof(statement));
             }
 
             context.Result.SimulationConfiguration.MonteCarloConfiguration.Enabled = true;
