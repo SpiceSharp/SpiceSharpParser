@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 {
@@ -146,7 +147,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
             }
             else
             {
-                throw new Exception("Unknown statement to replace");
+                throw new SpiceSharpParserException("Unknown statement to replace", statement.LineNumber);
             }
         }
 

@@ -4,6 +4,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System;
 using System.Collections.Generic;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
 {
@@ -103,7 +104,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             }
             else
             {
-                throw new Exception($"Unknown mosfet model level {level}");
+                throw new ModelNotFoundException($"Unknown mosfet model level {level}", parameters.LineNumber);
             }
 
             // Read all the parameters
