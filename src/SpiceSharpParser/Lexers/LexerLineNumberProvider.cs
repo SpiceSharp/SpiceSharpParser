@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SpiceSharpParser.Lexers
@@ -17,15 +18,33 @@ namespace SpiceSharpParser.Lexers
 
         public int GetLineForIndex(int index)
         {
-            foreach (var t in _ranges)
+            // binary search over line ranges
+            int start = 0;
+            int end = _ranges.Count - 1;
+
+            while (start <= end)
             {
-                if (t.From <= index && index <= t.To)
+                int middle = (end + start) / 2;
+
+                if (_ranges[middle].From <= index && index <= _ranges[middle].To)
                 {
-                    return t.LineNumber;
+                    return _ranges[middle].LineNumber;
+                }
+                else if (_ranges[middle].From > index)
+                {
+                    end = middle - 1;
+                }
+                else if (_ranges[middle].To < index)
+                {
+                    start = middle + 1;
+                }
+                else
+                {
+                    return -1;
                 }
             }
 
-            return _ranges.Last().LineNumber;
+            return -1;
         }
 
         private void Init()
