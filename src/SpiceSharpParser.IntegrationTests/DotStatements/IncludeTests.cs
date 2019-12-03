@@ -52,6 +52,28 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         }
 
         [Fact]
+        public void When_IncludeParentDirectory_Expect_Reference()
+        {
+            string modelFileContent = ".model 1N914 D(Is=2.52e-9 Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)\n";
+            string modelFilePath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "diodesx.mod");
+            File.WriteAllText(modelFilePath, modelFileContent);
+
+            var netlist = ParseNetlist(
+                "Include - Diode circuit",
+                "D1 OUT 0 1N914",
+                "V1 OUT 0 0",
+                ".DC V1 -1 1 10e-3",
+                ".SAVE V(OUT)",
+                ".NODESET V(OUT)={x+1}",
+                ".param x = 13",
+                $".include ../diodesx.mod",
+                ".END");
+
+            RunDCSimulation(netlist, "V(OUT)");
+            Assert.Equal(14, ((BaseSimulation)netlist.Simulations[0]).Configurations.Get<BaseConfiguration>().Nodesets["OUT"]);
+        }
+
+        [Fact]
         public void SingleIncludeSingleQuotes()
         {
             string modelFileContent = ".model 1N914 D(Is=2.52e-9 Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)\n";

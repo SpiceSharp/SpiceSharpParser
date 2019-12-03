@@ -419,6 +419,14 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 (SpiceLexerState state, string lexem) => LexerRuleUseDecision.Use,
                 ignoreCase: true));
 
+            builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
+                (int)SpiceTokenType.WORD,
+                "A relative path",
+                @"(\.\.\\|\.\.\/|\.\/|\.\\)(<CHARACTER>|<SPECIAL>)*",
+                null,
+                (SpiceLexerState state, string lexem) => LexerRuleUseDecision.Use,
+                ignoreCase: true));
+
             builder.AddRegexRule(
                 new LexerTokenRule<SpiceLexerState>(
                     (int)SpiceTokenType.IDENTIFIER,

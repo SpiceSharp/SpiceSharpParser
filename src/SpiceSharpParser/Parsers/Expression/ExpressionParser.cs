@@ -10,6 +10,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.Parsers.Expression
 {
@@ -148,7 +149,7 @@ namespace SpiceSharpParser.Parsers.Expression
 
                 if (factory == null)
                 {
-                    throw new Exception("Unknown spice property");
+                    throw new SpiceSharpParserException("Unknown spice property");
                 }
 
                 var export = factory.CreateExport(
