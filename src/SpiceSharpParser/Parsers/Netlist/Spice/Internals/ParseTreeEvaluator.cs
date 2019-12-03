@@ -153,7 +153,13 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
         private SpiceObject CreatePointParameter(ParseTreeNodeEvaluationValues nt)
         {
-            return new PointParameter() { Values = nt.GetSpiceObject<PointValues>(1), };
+            var pointParameter = new PointParameter()
+            {
+                Values = nt.GetSpiceObject<PointValues>(1),
+            };
+
+            pointParameter.LineNumber = pointParameter.Values.First().LineNumber;
+            return pointParameter;
         }
 
         private SpiceObject CreatePoints(ParseTreeNodeEvaluationValues values)
