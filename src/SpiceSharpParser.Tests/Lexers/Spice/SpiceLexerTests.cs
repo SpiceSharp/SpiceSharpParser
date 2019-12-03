@@ -446,6 +446,46 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         }
 
         [Fact]
+        public void IncludeParent()
+        {
+            var tokensStr = ".INCLUDE ../lib/diodes.lib";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+            Assert.True(tokens.Length == 4);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.DOT);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.WORD);
+            Assert.True(tokens[2].SpiceTokenType == SpiceTokenType.WORD);
+            Assert.True(tokens[3].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
+        public void IncludeParentInQuotes()
+        {
+            var tokensStr = ".INCLUDE \"../lib/diodes.lib\"";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+            Assert.True(tokens.Length == 4);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.DOT);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.WORD);
+            Assert.True(tokens[2].SpiceTokenType == SpiceTokenType.DOUBLE_QUOTED_STRING);
+            Assert.True(tokens[3].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+        [Fact]
+        public void IncludeCurrent()
+        {
+            var tokensStr = ".INCLUDE ./lib/diodes.lib";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+            Assert.True(tokens.Length == 4);
+            Assert.True(tokens[0].SpiceTokenType == SpiceTokenType.DOT);
+            Assert.True(tokens[1].SpiceTokenType == SpiceTokenType.WORD);
+            Assert.True(tokens[2].SpiceTokenType == SpiceTokenType.WORD);
+            Assert.True(tokens[3].SpiceTokenType == SpiceTokenType.EOF);
+        }
+
+
+        [Fact]
         public void PercentSimpleTest()
         {
             var tokensStr = "5%";
