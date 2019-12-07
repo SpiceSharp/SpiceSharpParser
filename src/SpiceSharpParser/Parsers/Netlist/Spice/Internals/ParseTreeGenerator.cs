@@ -92,7 +92,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
                     }
                     else
                     {
-                        throw new ParseException("Unknown non-terminal found while parsing." + ntn.Name, tokens[currentTokenIndex].LineNumber);
+                        throw new ParseException($"Unknown non-terminal found while parsing.{ntn.Name}", tokens[currentTokenIndex].LineNumber);
                     }
                 }
 
@@ -100,24 +100,21 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
                 {
                     if (currentTokenIndex >= tokens.Length)
                     {
-                        throw new ParseException("End of tokens. Expected token type: " + tn.Token.SpiceTokenType + " line=" + tokens[tokens.Length - 1].LineNumber, tokens[tokens.Length - 1].LineNumber);
+                        throw new ParseException(
+                            $"End of tokens. Expected token type: {tn.Token.SpiceTokenType} line={tokens[tokens.Length - 1].LineNumber}", tokens[tokens.Length - 1].LineNumber);
                     }
 
                     if (tn.Token.SpiceTokenType == tokens[currentTokenIndex].SpiceTokenType && (tn.Token.Lexem == null || tn.Token.Lexem == tokens[currentTokenIndex].Lexem))
                     {
                         tn.Token.Lexem = tokens[currentTokenIndex].Lexem;
                         tn.Token.LineNumber = tokens[currentTokenIndex].LineNumber;
+                        tn.Token.FileName = tokens[currentTokenIndex].FileName;
                         currentTokenIndex++;
                     }
                     else
                     {
                         throw new ParseException(
-                            string.Format(
-                                "Unexpected token '{0}' of type: {1} at line = {2}. Expected token type: {3}",
-                                tokens[currentTokenIndex].Lexem,
-                                tokens[currentTokenIndex].SpiceTokenType,
-                                tokens[currentTokenIndex].LineNumber,
-                                tn.Token.SpiceTokenType),
+                            $"Unexpected token '{tokens[currentTokenIndex].Lexem}' of type: {tokens[currentTokenIndex].SpiceTokenType} at line = {tokens[currentTokenIndex].LineNumber}. Expected token type: {tn.Token.SpiceTokenType}",
                             tokens[currentTokenIndex].LineNumber);
                     }
                 }

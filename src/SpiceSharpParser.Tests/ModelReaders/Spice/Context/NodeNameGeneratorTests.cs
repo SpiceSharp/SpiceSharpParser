@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
+﻿using System.Collections.Generic;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
@@ -29,8 +30,18 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
             subcircuit.DefaultParameters =
                 new System.Collections.Generic.List<Models.Netlist.Spice.Objects.Parameters.AssignmentParameter>
                 {
-                    new Models.Netlist.Spice.Objects.Parameters.AssignmentParameter { Name = "L", Value = "100" },
-                    new Models.Netlist.Spice.Objects.Parameters.AssignmentParameter { Name = "C", Value = "10" },
+                    new Models.Netlist.Spice.Objects.Parameters.AssignmentParameter
+                    {
+                        Name = "L",
+                        Value = "100",
+                        Values = new List<string>(),
+                    },
+                    new Models.Netlist.Spice.Objects.Parameters.AssignmentParameter
+                    {
+                        Name = "C",
+                        Value = "10",
+                        Values = new List<string>(),
+                    },
                 };
 
             var generator = new SubcircuitNodeNameGenerator("x1", "x1", subcircuit, new System.Collections.Generic.List<string>() { "net2", "net3" }, new string[] { "0" }, true);

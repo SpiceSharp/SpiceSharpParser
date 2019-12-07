@@ -42,7 +42,15 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
 
             // act
             ComponentReader reader = new ComponentReader(mapper);
-            var component = new Models.Netlist.Spice.Objects.Component() { Name = "Ra1", PinsAndParameters = new ParameterCollection() { new ValueParameter("0"), new ValueParameter("1"), new ValueParameter("12.3") } };
+            var component = new Models.Netlist.Spice.Objects.Component(
+                "Ra1",
+                new ParameterCollection(new List<Parameter>()
+                {
+                    new ValueParameter("0"),
+                    new ValueParameter("1"),
+                    new ValueParameter("12.3"),
+                }), null);
+
             reader.Read(component, readingContext);
 
             // assert

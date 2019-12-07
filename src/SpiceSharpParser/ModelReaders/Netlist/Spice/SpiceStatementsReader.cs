@@ -58,7 +58,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             }
             else
             {
-                throw new ReadingException($"There is no reader for the statement of type: {statement.GetType()}", statement.LineNumber);
+                throw new ReadingException($"There is no reader for the statement of type: {statement.GetType()}", statement.LineInfo);
             }
         }
     }

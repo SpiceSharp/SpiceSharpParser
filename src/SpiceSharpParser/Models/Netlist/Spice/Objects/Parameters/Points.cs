@@ -1,11 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
 {
     public class Points : SpiceObject, IEnumerable<PointParameter>
     {
-        public List<PointParameter> Values { get; set; } = new List<PointParameter>();
+        public Points(List<PointParameter> values, SpiceLineInfo lineInfo) : base(lineInfo)
+        {
+            Values = values;
+        }
+
+        public Points()
+        {
+            Values = new List<PointParameter>();
+        }
+
+        public List<PointParameter> Values { get; }
+
+        public override SpiceLineInfo LineInfo => Values.FirstOrDefault()?.LineInfo;
 
         public override SpiceObject Clone()
         {

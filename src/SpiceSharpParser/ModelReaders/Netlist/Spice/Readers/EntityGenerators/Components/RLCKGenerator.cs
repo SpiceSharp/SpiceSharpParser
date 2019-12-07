@@ -39,19 +39,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             switch (parameters.Count)
             {
-                case 0: throw new WrongParametersCountException($"Inductor name expected for mutual inductance \"{name}\"", parameters.LineNumber);
-                case 1: throw new WrongParametersCountException("Inductor name expected", parameters.LineNumber);
-                case 2: throw new WrongParametersCountException("Coupling factor expected", parameters.LineNumber);
+                case 0: throw new WrongParametersCountException($"Inductor name expected for mutual inductance \"{name}\"", parameters.LineInfo);
+                case 1: throw new WrongParametersCountException("Inductor name expected", parameters.LineInfo);
+                case 2: throw new WrongParametersCountException("Coupling factor expected", parameters.LineInfo);
             }
 
             if (!(parameters[0] is SingleParameter))
             {
-                throw new WrongParameterTypeException("Component name expected", parameters.LineNumber);
+                throw new WrongParameterTypeException("Component name expected", parameters.LineInfo);
             }
 
             if (!(parameters[1] is SingleParameter))
             {
-                throw new WrongParameterTypeException("Component name expected", parameters.LineNumber);
+                throw new WrongParameterTypeException("Component name expected", parameters.LineInfo);
             }
 
             mut.InductorName1 = parameters.Get(0).Image;
@@ -98,7 +98,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    throw new WrongParameterTypeException("Wrong parameter value for capacitance", parameters.LineNumber);
+                    throw new WrongParameterTypeException("Wrong parameter value for capacitance", parameters.LineInfo);
                 }
             }
             else
@@ -147,7 +147,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (tcParameterAssignment == null)
                 {
-                    throw new ReadingException("TC needs to be assignment parameter", tcParameter.LineNumber);
+                    throw new ReadingException("TC needs to be assignment parameter", tcParameter.LineInfo);
                 }
 
                 if (modelBased)
@@ -202,7 +202,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             if (parameters.Count != 3)
             {
-                throw new WrongParametersCountException("Inductor expects 3 parameters/pins", parameters.LineNumber);
+                throw new WrongParametersCountException("Inductor expects 3 parameters/pins", parameters.LineInfo);
             }
 
             var inductor = new Inductor(name);
@@ -251,7 +251,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     && context.ModelsRegistry.FindModel<ResistorModel>(parameters.Get(2).Image) != null)
                 {
                     // RName Node1 Node2 modelName
-                    throw new ReadingException("L parameter needs to be specified", something.LineNumber);
+                    throw new ReadingException("L parameter needs to be specified", something.LineInfo);
                 }
 
                 // Check if something can be resistance
@@ -261,7 +261,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                      || something is ExpressionParameter
                      || (something is AssignmentParameter ap && (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))))
                 {
-                    throw new ReadingException("Third parameter needs to represent resistance of resistor", something.LineNumber);
+                    throw new ReadingException("Third parameter needs to represent resistance of resistor", something.LineInfo);
                 }
 
                 // Set resistance
@@ -281,7 +281,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // RName Node1 Node2 something param1 ...
                 if (resistorParameters.Count == 0)
                 {
-                    throw new WrongParametersCountException("Resistor doesn't have at least 3 parameters", parameters.LineNumber);
+                    throw new WrongParametersCountException("Resistor doesn't have at least 3 parameters", parameters.LineInfo);
                 }
 
                 var something = resistorParameters[0];
@@ -361,7 +361,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                          || resistanceParameter is ExpressionParameter
                          || (resistanceParameter is AssignmentParameter ap && !(ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))))
                     {
-                        throw new ReadingException("Invalid value for resistance", resistanceParameter.LineNumber);
+                        throw new ReadingException("Invalid value for resistance", resistanceParameter.LineInfo);
                     }
 
                     if (resistanceParameter is AssignmentParameter asp)

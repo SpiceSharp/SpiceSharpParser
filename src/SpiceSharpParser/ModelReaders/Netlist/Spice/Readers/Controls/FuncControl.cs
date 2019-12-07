@@ -33,7 +33,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 {
                     if (!assignmentParameter.HasFunctionSyntax)
                     {
-                        throw new SpiceSharpParserException("User function needs to be a function", assignmentParameter.LineNumber);
+                        throw new SpiceSharpParserException("User function needs to be a function", assignmentParameter.LineInfo);
                     }
 
                     context.Evaluator.AddFunction(assignmentParameter.Name, assignmentParameter.Arguments, assignmentParameter.Value);
@@ -65,7 +65,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     }
                     else
                     {
-                        throw new WrongParameterTypeException("Unsupported syntax for .FUNC", param.LineNumber);
+                        throw new WrongParameterTypeException("Unsupported syntax for .FUNC", param.LineInfo);
                     }
                 }
             }

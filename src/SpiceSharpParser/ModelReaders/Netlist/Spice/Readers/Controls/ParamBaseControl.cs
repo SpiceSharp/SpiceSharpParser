@@ -57,7 +57,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             if (validate)
                             {
                                 throw new ReadingException(
-                                    $"Problem with setting param `{assignmentParameter.Name}` with expression =`{assignmentParameter.Value}` at line = {assignmentParameter.LineNumber}",
+                                    $"Problem with setting param `{assignmentParameter.Name}` with expression =`{assignmentParameter.Value}` at line = {assignmentParameter.LineInfo.LineNumber}",
                                     e);
                             }
                         }
@@ -76,7 +76,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 }
                 else
                 {
-                    throw new WrongParameterTypeException(".PARAM supports only assignments", param.LineNumber);
+                    throw new WrongParameterTypeException(".PARAM supports only assignments", param.LineInfo);
                 }
             }
         }

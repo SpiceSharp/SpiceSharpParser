@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             if (statement.Parameters.Count != 2)
             {
-                throw new WrongParametersCountException("Wrong parameter count for .CONNECT", statement.LineNumber);
+                throw new WrongParametersCountException("Wrong parameter count for .CONNECT", statement.LineInfo);
             }
 
             string nodeA = statement.Parameters.Get(0).Image;

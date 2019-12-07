@@ -5,8 +5,11 @@
     /// </summary>
     public class WordParameter : SingleParameter
     {
-        public WordParameter(string word)
-            : base(word)
+        public WordParameter(string word, SpiceLineInfo lineInfo) : base(word, lineInfo)
+        {
+        }
+
+        public WordParameter(string word) : base(word, null)
         {
         }
 
@@ -16,7 +19,7 @@
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new WordParameter(Image) { LineNumber = LineNumber };
+            return new WordParameter(Image, LineInfo);
         }
     }
 }

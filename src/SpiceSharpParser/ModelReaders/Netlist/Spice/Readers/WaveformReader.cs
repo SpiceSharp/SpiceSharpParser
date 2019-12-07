@@ -52,7 +52,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
             if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsFunctionNameCaseSensitive, out var reader))
             {
-                throw new ReadingException("Unsupported waveform", parameters.LineNumber);
+                throw new ReadingException("Unsupported waveform", parameters.LineInfo);
             }
 
             return reader.Generate(parameters, context);

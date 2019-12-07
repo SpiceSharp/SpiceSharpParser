@@ -41,11 +41,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             // Errors
             switch (parameters.Count)
             {
-                case 0: throw new WrongParametersCountException($"Node expected for component {componentIdentifier}", parameters.LineNumber);
+                case 0: throw new WrongParametersCountException($"Node expected for component {componentIdentifier}", parameters.LineInfo);
                 case 1:
                 case 2:
-                case 3: throw new WrongParametersCountException("Node expected", parameters.LineNumber);
-                case 4: throw new WrongParametersCountException("Model name expected", parameters.LineNumber);
+                case 3: throw new WrongParametersCountException("Node expected", parameters.LineInfo);
+                case 4: throw new WrongParametersCountException("Model name expected", parameters.LineInfo);
             }
 
             // Get the model and generate a component for it
@@ -54,7 +54,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             Model model = context.ModelsRegistry.FindModel<Model>(modelNameParameter.Image);
             if (model == null)
             {
-                throw new ModelNotFoundException($"Could not find model {modelNameParameter.Image} for mosfet {originalName}", parameters.LineNumber);
+                throw new ModelNotFoundException($"Could not find model {modelNameParameter.Image} for mosfet {originalName}", parameters.LineInfo);
             }
 
             if (Mosfets.ContainsKey(model.GetType()))

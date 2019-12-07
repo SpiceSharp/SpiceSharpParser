@@ -32,10 +32,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         {
             switch (statement.Parameters.Count)
             {
-                case 0: throw new WrongParametersCountException("LIN, DEC or OCT expected", statement.LineNumber);
-                case 1: throw new WrongParametersCountException("Number of points expected", statement.LineNumber);
-                case 2: throw new WrongParametersCountException("Starting frequency expected", statement.LineNumber);
-                case 3: throw new WrongParametersCountException("Stopping frequency expected", statement.LineNumber);
+                case 0: throw new WrongParametersCountException("LIN, DEC or OCT expected", statement.LineInfo);
+                case 1: throw new WrongParametersCountException("Number of points expected", statement.LineInfo);
+                case 2: throw new WrongParametersCountException("Starting frequency expected", statement.LineInfo);
+                case 3: throw new WrongParametersCountException("Stopping frequency expected", statement.LineInfo);
             }
 
             AC ac;
@@ -51,7 +51,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 case "oct": ac = new AC(name, new OctaveSweep(start, stop, (int)numberSteps)); break;
                 case "dec": ac = new AC(name, new DecadeSweep(start, stop, (int)numberSteps)); break;
                 default:
-                    throw new WrongParameterException("LIN, DEC or OCT expected", statement.Parameters.LineNumber);
+                    throw new WrongParameterException("LIN, DEC or OCT expected", statement.Parameters.LineInfo);
             }
 
             ConfigureCommonSettings(ac, context);

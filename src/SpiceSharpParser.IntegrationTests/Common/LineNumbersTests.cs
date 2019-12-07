@@ -27,19 +27,19 @@ namespace SpiceSharpParser.IntegrationTests.Common
             Assert.Equal(5, netlist.Statements.Count());
 
             Assert.True(netlist.Statements[0] is CommentLine);
-            Assert.True(netlist.Statements[0].LineNumber == 2);
+            Assert.True(netlist.Statements[0].LineInfo.LineNumber == 2);
 
             Assert.True(netlist.Statements[1] is CommentLine);
-            Assert.True(netlist.Statements[1].LineNumber == 3);
+            Assert.True(netlist.Statements[1].LineInfo.LineNumber == 3);
 
             Assert.True(netlist.Statements[2] is Component);
-            Assert.True(netlist.Statements[2].LineNumber == 5);
+            Assert.True(netlist.Statements[2].LineInfo.LineNumber == 5);
 
             Assert.True(netlist.Statements[3] is CommentLine);
-            Assert.True(netlist.Statements[3].LineNumber == 7);
+            Assert.True(netlist.Statements[3].LineInfo.LineNumber == 7);
 
             Assert.True(netlist.Statements[4] is Component);
-            Assert.True(netlist.Statements[4].LineNumber == 8);
+            Assert.True(netlist.Statements[4].LineInfo.LineNumber == 8);
         }
 
         [Fact]
@@ -63,7 +63,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
             }
             catch (ReadingException ex)
             {
-                Assert.Equal(7, ex.LineNumber);
+                Assert.Equal(7, ex.LineInfo.LineNumber);
                 return;
             }
 

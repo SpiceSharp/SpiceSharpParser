@@ -44,6 +44,23 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
         }
 
         /// <summary>
+        /// Gets file name from the <see cref="ParseTreeNodeEvaluationValue"/> at the specified index.
+        /// </summary>
+        /// <param name="index">An index of the item.</param>
+        /// <returns>
+        /// A file name of the lexem.
+        /// </returns>
+        public string GetLexemFileName(int index)
+        {
+            if (this[index] is ParseTreeNodeTerminalEvaluationValue t)
+            {
+                return t.Token.FileName;
+            }
+
+            throw new ParseTreeEvaluationException("Wrong evaluation type");
+        }
+
+        /// <summary>
         /// Tries to gets a <see cref="SpiceToken"/> from specific <see cref="ParseTreeNodeEvaluationValue"/> item.
         /// </summary>
         /// <param name="index">An index of the item.</param>

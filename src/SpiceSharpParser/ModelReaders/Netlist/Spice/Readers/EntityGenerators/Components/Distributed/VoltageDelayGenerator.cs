@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             if (parameters.Count > 7 || parameters.Count < 5)
             {
-                throw new WrongParametersCountException("Wrong parameter count for voltage delay", parameters.LineNumber);
+                throw new WrongParametersCountException("Wrong parameter count for voltage delay", parameters.LineInfo);
             }
 
             var vd = new VoltageDelay(name);

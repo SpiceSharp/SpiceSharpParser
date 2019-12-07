@@ -7,7 +7,7 @@
     {
         private readonly string _rawString;
 
-        protected SingleParameter(string rawString)
+        protected SingleParameter(string rawString, SpiceLineInfo lineInfo) : base(lineInfo)
         {
             _rawString = rawString;
         }

@@ -74,7 +74,7 @@ namespace SpiceSharpParser.Lexers
                             state.PreviousReturnedTokenType = bestTokenRule.TokenType;
                         }
 
-                        yield return new Token(bestTokenRule.TokenType, bestMatch.Value, state?.LineNumber ?? 0);
+                        yield return new Token(bestTokenRule.TokenType, bestMatch.Value, state?.LineNumber ?? 0, null);
                     }
 
                     currentTokenIndex += bestMatch.Length;
@@ -90,7 +90,7 @@ namespace SpiceSharpParser.Lexers
                         {
                             var dynamicResult = dynamicRule.Action(textForDynamicRules);
 
-                            yield return new Token(dynamicRule.TokenType, dynamicResult.Item1, state?.LineNumber ?? 0);
+                            yield return new Token(dynamicRule.TokenType, dynamicResult.Item1, state?.LineNumber ?? 0, null);
 
                             currentTokenIndex += dynamicResult.Item2;
                             matched = true;
@@ -105,7 +105,7 @@ namespace SpiceSharpParser.Lexers
             }
 
             // yield EOF token
-            yield return new Token(-1, "EOF", state?.LineNumber ?? 0);
+            yield return new Token(-1, "EOF", state?.LineNumber ?? 0, null);
         }
 
         /// <summary>

@@ -5,11 +5,22 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
 {
     public class PointValues : SpiceObject, IEnumerable<SingleParameter>
     {
-        public List<SingleParameter> Items { get; set; } = new List<SingleParameter>();
+        public PointValues(List<SingleParameter> items, SpiceLineInfo lineInfo) : base(lineInfo)
+        {
+            Items = items;
+        }
+
+
+        public PointValues(SpiceLineInfo lineInfo) : base(lineInfo)
+        {
+            Items = new List<SingleParameter>();
+        }
+
+        public List<SingleParameter> Items { get; }
 
         public override SpiceObject Clone()
         {
-            var result = new PointValues();
+            var result = new PointValues(LineInfo);
 
             foreach (var item in Items)
             {

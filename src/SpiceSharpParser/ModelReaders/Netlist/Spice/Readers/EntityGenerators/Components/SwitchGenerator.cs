@@ -37,7 +37,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             if (parameters.Count < 5)
             {
-                throw new WrongParametersCountException("Wrong parameter count for voltage switch", parameters.LineNumber);
+                throw new WrongParametersCountException("Wrong parameter count for voltage switch", parameters.LineInfo);
             }
 
             string modelName = parameters.Get(4).Image;
@@ -99,12 +99,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             break;
 
                         default:
-                            throw new ReadingException("ON or OFF expected", parameters.LineNumber);
+                            throw new ReadingException("ON or OFF expected", parameters.LineInfo);
                     }
                 }
                 else if (parameters.Count > 6)
                 {
-                    throw new WrongParametersCountException("Too many parameters for voltage switch", parameters.LineNumber);
+                    throw new WrongParametersCountException("Too many parameters for voltage switch", parameters.LineInfo);
                 }
 
                 return vsw;
@@ -124,7 +124,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             if (parameters.Count < 4)
             {
-                throw new WrongParametersCountException("Wrong parameter count for current switch", parameters.LineNumber);
+                throw new WrongParametersCountException("Wrong parameter count for current switch", parameters.LineInfo);
             }
 
             string modelName = parameters.Get(3).Image;
@@ -169,7 +169,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    throw new WrongParameterTypeException("Voltage source name expected", parameters[2].LineNumber);
+                    throw new WrongParameterTypeException("Voltage source name expected", parameters[2].LineInfo);
                 }
 
                 // Get the model

@@ -5,8 +5,7 @@
     /// </summary>
     public class StringParameter : SingleParameter
     {
-        public StringParameter(string rawString)
-            : base(rawString)
+        public StringParameter(string rawString, SpiceLineInfo lineInfo) : base(rawString, lineInfo)
         {
         }
 
@@ -16,7 +15,7 @@
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new StringParameter(Image) { LineNumber = LineNumber };
+            return new StringParameter(Image, LineInfo);
         }
     }
 }

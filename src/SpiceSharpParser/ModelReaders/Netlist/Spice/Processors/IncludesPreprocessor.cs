@@ -4,6 +4,7 @@ using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Parsers.Netlist.Spice;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -136,6 +137,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                 };
 
                 var tokens = TokenProviderPool.GetSpiceTokenProvider(lexerSettings).GetTokens(includeContent);
+
+                foreach (var token in tokens)
+                {
+                    token.FileName = includeFullPath;
+                }
 
                 SpiceNetlistParser.Settings = new SingleSpiceNetlistParserSettings(lexerSettings)
                 {

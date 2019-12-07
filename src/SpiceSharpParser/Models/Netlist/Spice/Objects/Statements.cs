@@ -26,6 +26,9 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// </summary>
         public int Count => _list.Count;
 
+
+        public override SpiceLineInfo LineInfo => _list.FirstOrDefault()?.LineInfo;
+
         /// <summary>
         /// Indexer.
         /// </summary>
@@ -147,7 +150,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
             }
             else
             {
-                throw new SpiceSharpParserException("Unknown statement to replace", statement.LineNumber);
+                throw new SpiceSharpParserException("Unknown statement to replace", statement.LineInfo);
             }
         }
 

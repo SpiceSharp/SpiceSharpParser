@@ -1,4 +1,5 @@
-﻿using SpiceSharp.Components;
+﻿using System.Collections.Generic;
+using SpiceSharp.Components;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
@@ -84,7 +85,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     && parameters[0] is PointParameter pp1 && pp1.Values.Count() == 2
                     && parameters[1] is PointParameter pp2 && pp2.Values.Count() == 2)
                 {
-                    var vccsNodes = new ParameterCollection();
+                    var vccsNodes = new ParameterCollection(new List<Parameter>());
                     vccsNodes.Add(pp1.Values.Items[0]);
                     vccsNodes.Add(pp1.Values.Items[1]);
                     vccsNodes.Add(pp2.Values.Items[0]);
@@ -172,7 +173,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (polyParameter.Parameters.Count != 1)
                 {
-                    throw new WrongParametersCountException("poly expects one argument => dimension", polyParameter.LineNumber);
+                    throw new WrongParametersCountException("poly expects one argument => dimension", polyParameter.LineInfo);
                 }
 
                 var dimension = (int)context.Evaluator.EvaluateDouble(polyParameter.Parameters[0].Image);
@@ -188,7 +189,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 int tableParameterPosition = parameters.IndexOf(tableParameter);
                 if (tableParameterPosition == parameters.Count - 1)
                 {
-                    throw new WrongParametersCountException("table expects expression parameter", tableParameter.LineNumber);
+                    throw new WrongParametersCountException("table expects expression parameter", tableParameter.LineInfo);
                 }
 
                 var nextParameter = parameters[tableParameterPosition + 1];
@@ -206,7 +207,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    throw new WrongParameterTypeException("table expects expression equal parameter", tableParameter.LineNumber);
+                    throw new WrongParameterTypeException("table expects expression equal parameter", tableParameter.LineInfo);
                 }
             }
 

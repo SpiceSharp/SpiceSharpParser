@@ -194,6 +194,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
                 var tokens = TokenProviderPool.GetSpiceTokenProvider(lexerSettings).GetTokens(libContent);
 
+                foreach (var token in tokens)
+                {
+                    token.FileName = libFullPath;
+                }
+
                 SpiceNetlistParser.Settings = new SingleSpiceNetlistParserSettings(lexerSettings)
                 {
                     IsNewlineRequired = false,

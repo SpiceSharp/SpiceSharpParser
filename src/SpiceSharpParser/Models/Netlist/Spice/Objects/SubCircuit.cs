@@ -5,15 +5,27 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 {
     public class SubCircuit : Statement
     {
+        public SubCircuit() : base(null)
+        {
+
+        }
+
+        public SubCircuit(string name, Statements statements, List<string> pins, SpiceLineInfo lineInfo) : base(lineInfo)
+        {
+            Name = name;
+            Statements = statements;
+            Pins = pins;
+        }
+
         /// <summary>
-        /// Gets or sets the name of subcircuit.
+        /// Gets the name of subcircuit.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets list of outside pins of subcircuit.
+        /// Gets list of outside pins of subcircuit.
         /// </summary>
-        public List<string> Pins { get; set; } = new List<string>();
+        public List<string> Pins { get; set; }
 
         /// <summary>
         /// Gets or sets the default values of parameters.
@@ -31,14 +43,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            var clone = new SubCircuit()
-            {
-                Name = Name,
-                Pins = new List<string>(Pins.ToArray()),
-                DefaultParameters = new List<AssignmentParameter>(),
-                Statements = (Statements)Statements.Clone(),
-                LineNumber = LineNumber,
-            };
+            var clone = new SubCircuit(Name, (Statements)Statements.Clone(), Pins, LineInfo);
 
             foreach (AssignmentParameter defaultParameter in DefaultParameters)
             {

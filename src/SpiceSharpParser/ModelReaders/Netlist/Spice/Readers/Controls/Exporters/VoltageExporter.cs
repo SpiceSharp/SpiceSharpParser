@@ -29,7 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
             {
-                throw new WrongParameterException("Voltage exports should have vector or single parameter", parameters.LineNumber);
+                throw new WrongParameterException("Voltage exports should have vector or single parameter", parameters.LineInfo);
             }
 
             // Get the nodes
@@ -41,7 +41,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 switch (vector.Elements.Count)
                 {
                     case 0:
-                        throw new WrongParametersCountException("No nodes for voltage export. Node expected", vector.LineNumber);
+                        throw new WrongParametersCountException("No nodes for voltage export. Node expected", vector.LineInfo);
                     case 2:
                         referencePath = vector.Elements[1].Image;
                         reference = context.NameGenerator.ParseNodeName(referencePath);
@@ -54,7 +54,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                         break;
 
                     default:
-                        throw new WrongParametersCountException("Too many nodes specified for voltage export", vector.LineNumber);
+                        throw new WrongParametersCountException("Too many nodes specified for voltage export", vector.LineInfo);
                 }
             }
             else

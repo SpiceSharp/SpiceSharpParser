@@ -179,7 +179,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             if (parameters.Count < component.PinCount)
             {
-                throw new WrongParametersCountException($"Too few parameters for: {component.Name} to create nodes", parameters.LineNumber);
+                throw new WrongParametersCountException($"Too few parameters for: {component.Name} to create nodes", parameters.LineInfo);
             }
 
             string[] nodes = new string[component.PinCount];
@@ -301,7 +301,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             catch (Exception ex)
             {
-                throw new ReadingException($"Exception during evaluation of parameter with expression: `{expression}`", ex, parameter.LineNumber);
+                throw new ReadingException($"Exception during evaluation of parameter with expression: `{expression}`", ex, parameter.LineInfo);
             }
         }
 

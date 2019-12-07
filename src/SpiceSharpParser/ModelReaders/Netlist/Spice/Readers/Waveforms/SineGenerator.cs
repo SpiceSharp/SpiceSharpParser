@@ -33,7 +33,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 
             if (parameters.Count < 3 || parameters.Count > 6)
             {
-                throw new WrongParametersCountException("Wrong parameters count for sine. There must be 3, 4, 5 or 6 parameters", parameters.LineNumber);
+                throw new WrongParametersCountException("Wrong parameters count for sine. There must be 3, 4, 5 or 6 parameters", parameters.LineInfo);
             }
 
             var sine = new Sine();

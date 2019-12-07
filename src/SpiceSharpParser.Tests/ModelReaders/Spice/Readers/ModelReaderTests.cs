@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NSubstitute;
 using SpiceSharp.Circuits;
 using SpiceSharp.Components;
@@ -45,7 +46,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
 
             // act
             ModelReader reader = new ModelReader(mapper, modelsGenerator);
-            var model = new Models.Netlist.Spice.Objects.Model() { Name = "2Na2222", Parameters = new ParameterCollection() { new BracketParameter() { Name = "NPN" } } };
+            var model = new Models.Netlist.Spice.Objects.Model("2Na2222", new ParameterCollection(new List<Parameter>() { new BracketParameter() { Name = "NPN" }}), null);
             reader.Read(model, readingContext);
 
             // assert

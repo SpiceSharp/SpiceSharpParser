@@ -5,8 +5,8 @@
     /// </summary>
     public class ReferenceParameter : SingleParameter
     {
-        public ReferenceParameter(string reference)
-            : base(reference)
+        public ReferenceParameter(string reference, SpiceLineInfo lineInfo)
+            : base(reference, lineInfo)
         {
             Name = reference.Substring(1, reference.IndexOf('[') - 1);
             Argument = reference.Substring(reference.IndexOf('[') + 1).TrimEnd(']');
@@ -28,7 +28,7 @@
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new ReferenceParameter(Image) { LineNumber = LineNumber };
+            return new ReferenceParameter(Image, LineInfo);
         }
     }
 }

@@ -5,8 +5,11 @@
     /// </summary>
     public class IdentifierParameter : SingleParameter
     {
-        public IdentifierParameter(string identifier)
-            : base(identifier)
+        public IdentifierParameter(string identifier) : base(identifier, null)
+        {
+        }
+
+        public IdentifierParameter(string identifier, SpiceLineInfo lineInfo) : base(identifier, lineInfo)
         {
         }
 
@@ -16,7 +19,7 @@
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new IdentifierParameter(Image) { LineNumber = LineNumber };
+            return new IdentifierParameter(Image, LineInfo);
         }
     }
 }

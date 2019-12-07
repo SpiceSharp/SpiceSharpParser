@@ -14,6 +14,14 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// <summary>
         /// Initializes a new instance of the <see cref="ParameterCollection"/> class.
         /// </summary>
+        public ParameterCollection(List<Parameter> values)
+        {
+            Values = values;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ParameterCollection"/> class.
+        /// </summary>
         public ParameterCollection()
         {
             Values = new List<Parameter>();
@@ -24,12 +32,12 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// </summary>
         public int Count => Values.Count;
 
-        public int LineNumber => Values.FirstOrDefault()?.LineNumber ?? 0;
+        public override SpiceLineInfo LineInfo => Values.FirstOrDefault()?.LineInfo;
 
         /// <summary>
-        /// Gets or sets the values of parameters.
+        /// Gets the values of parameters.
         /// </summary>
-        protected List<Parameter> Values { get; set; }
+        protected List<Parameter> Values { get; }
 
         /// <summary>
         /// Gets the parameter at specified index.
@@ -166,9 +174,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// </returns>
         public ParameterCollection Skip(int count)
         {
-            var result = new ParameterCollection();
-            result.Values.AddRange(Values.Skip(count));
-
+            var result = new ParameterCollection(Values.Skip(count).ToList());
             return result;
         }
 
@@ -181,8 +187,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// </returns>
         public ParameterCollection Take(int count)
         {
-            var result = new ParameterCollection();
-            result.Values.AddRange(Values.Take(count));
+            var result = new ParameterCollection(Values.Take(count).ToList());
             return result;
         }
 
@@ -235,7 +240,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// </returns>
         public override SpiceObject Clone()
         {
-            var result = new ParameterCollection();
+            var result = new ParameterCollection(new List<Parameter>());
 
             foreach (var param in Values)
             {

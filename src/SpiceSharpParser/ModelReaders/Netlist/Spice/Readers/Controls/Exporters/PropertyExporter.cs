@@ -72,7 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 }
             }
 
-            throw new ReadingException("Invalid property export", parameters.LineNumber);
+            throw new ReadingException("Invalid property export", parameters.LineInfo);
         }
     }
 }
