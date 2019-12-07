@@ -7,10 +7,15 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
     /// </summary>
     public class PointParameter : Parameter
     {
+        public PointParameter(PointValues values, SpiceLineInfo lineInfo) : base(lineInfo)
+        {
+            Values = values;
+        }
+
         /// <summary>
         /// Gets or sets the elements of the point.
         /// </summary>
-        public PointValues Values { get; set; }
+        public PointValues Values { get; }
 
         /// <summary>
         /// Gets the string representation of the point.
@@ -29,8 +34,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            var result = new PointParameter { Values = (PointValues)Values.Clone(), LineNumber = LineNumber };
-
+            var result = new PointParameter((PointValues)Values.Clone(), LineInfo);
             return result;
         }
     }

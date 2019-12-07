@@ -5,6 +5,17 @@
     /// </summary>
     public class Control : Statement
     {
+        public Control() : base(null)
+        {
+
+        }
+
+        public Control(string name, ParameterCollection parameters, SpiceLineInfo lineInfo) : base(lineInfo)
+        {
+            Name = name;
+            Parameters = parameters;
+        }
+
         /// <summary>
         /// Gets or sets the name of control.
         /// </summary>
@@ -21,12 +32,7 @@
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new Control()
-            {
-                Name = Name,
-                Parameters = (ParameterCollection)Parameters.Clone(),
-                LineNumber = LineNumber,
-            };
+            return new Control(Name, (ParameterCollection)Parameters.Clone(), LineInfo);
         }
     }
 }

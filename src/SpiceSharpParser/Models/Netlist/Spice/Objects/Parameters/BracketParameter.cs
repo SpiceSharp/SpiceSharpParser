@@ -7,6 +7,17 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
     /// </summary>
     public class BracketParameter : Parameter
     {
+        public BracketParameter()
+        {
+
+        }
+
+        public BracketParameter(string name, ParameterCollection parameters, SpiceLineInfo lineInfo) : base(lineInfo)
+        {
+            Name = name;
+            Parameters = parameters;
+        }
+
         /// <summary>
         /// Gets or sets the name of the bracket parameter.
         /// </summary>
@@ -53,12 +64,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new BracketParameter()
-            {
-                Name = Name,
-                Parameters = (ParameterCollection)Parameters.Clone(),
-                LineNumber = LineNumber,
-            };
+            return new BracketParameter(Name, Parameters, LineInfo);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Models.Netlist.Spice;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
 {
@@ -14,8 +15,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
         {
         }
 
-        public ReadingException(string message, int lineNumber)
-            : base(message, lineNumber)
+        public ReadingException(string message, SpiceLineInfo lineInfo)
+            : base(message, lineInfo)
         {
         }
 
@@ -24,8 +25,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
         {
         }
 
-        public ReadingException(string message, Exception innerException, int lineNumber)
-            : base(message, innerException, lineNumber)
+        public ReadingException(string message, Exception innerException, SpiceLineInfo lineInfo)
+            : base(message, innerException, lineInfo)
         {
         }
     }

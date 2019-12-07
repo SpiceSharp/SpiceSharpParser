@@ -7,6 +7,18 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
     /// </summary>
     public class AssignmentParameter : Parameter
     {
+        public AssignmentParameter()
+        {
+        }
+
+        public AssignmentParameter(string name, List<string> arguments, List<string> values, bool hasFunctionSyntax, SpiceLineInfo lineInfo) : base(lineInfo)
+        {
+            Name = name;
+            Arguments = arguments;
+            Values = values;
+            HasFunctionSyntax = hasFunctionSyntax;
+        }
+
         /// <summary>
         /// Gets or sets the name of the assignment parameter.
         /// </summary>
@@ -15,7 +27,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         /// <summary>
         /// Gets or sets the arguments of the assignment parameters.
         /// </summary>
-        public List<string> Arguments { get; set; } = new List<string>();
+        public List<string> Arguments { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the assignment parameter has "()" function syntax.
@@ -74,14 +86,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new AssignmentParameter()
-            {
-                Arguments = new List<string>(Arguments.ToArray()),
-                Values = Values,
-                Name = Name,
-                HasFunctionSyntax = HasFunctionSyntax,
-                LineNumber = LineNumber,
-            };
+            return new AssignmentParameter(Name, Arguments, Values, HasFunctionSyntax, LineInfo);
         }
     }
 }

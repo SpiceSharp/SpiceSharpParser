@@ -9,10 +9,22 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
     /// </summary>
     public class VectorParameter : Parameter
     {
+        public VectorParameter(List<SingleParameter> elements)
+        {
+            Elements = elements;
+        }
+
+        public VectorParameter()
+        { 
+            Elements = new List<SingleParameter>();
+        }
+
+        public override SpiceLineInfo LineInfo => Elements.FirstOrDefault()?.LineInfo;
+
         /// <summary>
         /// Gets or sets the elements of the vector.
         /// </summary>
-        public List<SingleParameter> Elements { get; set; } = new List<SingleParameter>();
+        public List<SingleParameter> Elements { get; }
 
         /// <summary>
         /// Gets the string representation of the vector.
@@ -50,7 +62,6 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
                 result.Elements.Add((SingleParameter)element.Clone());
             }
 
-            result.LineNumber = Elements.FirstOrDefault()?.LineNumber ?? 0;
             return result;
         }
     }

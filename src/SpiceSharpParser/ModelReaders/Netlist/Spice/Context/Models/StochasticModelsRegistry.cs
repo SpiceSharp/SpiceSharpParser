@@ -237,7 +237,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 
             if (model == null)
             {
-                throw new ModelNotFoundException(exceptionMessage, modelNameParameter.LineNumber);
+                throw new ModelNotFoundException(exceptionMessage, modelNameParameter.LineInfo);
             }
 
             var stochasticModel = (T)ProvideStochasticModel(entity.Name, simulation, model);

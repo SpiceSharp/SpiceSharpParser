@@ -5,6 +5,12 @@
     /// </summary>
     public class Model : Statement
     {
+        public Model(string name, ParameterCollection parameters, SpiceLineInfo lineInfo) : base(lineInfo)
+        {
+            Name = name;
+            Parameters = parameters;
+        }
+
         /// <summary>
         /// Gets or sets the name of the model.
         /// </summary>
@@ -21,12 +27,7 @@
         /// <returns>A clone of the object</returns>
         public override SpiceObject Clone()
         {
-            return new Model()
-            {
-                Name = Name,
-                LineNumber = LineNumber,
-                Parameters = (ParameterCollection)Parameters.Clone(),
-            };
+            return new Model(Name, (ParameterCollection) Parameters.Clone(), LineInfo);
         }
     }
 }

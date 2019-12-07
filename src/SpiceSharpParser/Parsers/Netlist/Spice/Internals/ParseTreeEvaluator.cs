@@ -51,7 +51,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             evaluators.Add(Symbols.PointValue, (ParseTreeNodeEvaluationValues nt) => CreatePointValue(nt));
             evaluators.Add(Symbols.PointValues, (ParseTreeNodeEvaluationValues nt) => CreatePointValues(nt));
             evaluators.Add(Symbols.Points, (ParseTreeNodeEvaluationValues nt) => CreatePoints(nt));
-            evaluators.Add(Symbols.PointsContinue, (ParseTreeNodeEvaluationValues nt) => CreatPointsContinue(nt));
+            evaluators.Add(Symbols.PointsContinue, (ParseTreeNodeEvaluationValues nt) => CreatePointsContinue(nt));
             evaluators.Add(Symbols.ParameterEqualSingle, (ParseTreeNodeEvaluationValues nt) => CreateAssignmentSimpleParameter(nt));
             evaluators.Add(Symbols.ParameterSingle, (ParseTreeNodeEvaluationValues nt) => CreateParameterSingle(nt));
             evaluators.Add(Symbols.Subckt, (ParseTreeNodeEvaluationValues nt) => CreateSubCircuit(nt));
@@ -124,7 +124,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
         private SpiceObject CreatePointValues(ParseTreeNodeEvaluationValues values)
         {
-            var pointValues = new PointValues();
+            var pointValues = new PointValues(new SpiceLineInfo());
             if (values.Count == 3)
             {
                 pointValues.Items.Add(values.GetSpiceObject<SingleParameter>(0));
@@ -153,12 +153,14 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
         private SpiceObject CreatePointParameter(ParseTreeNodeEvaluationValues nt)
         {
-            var pointParameter = new PointParameter()
-            {
-                Values = nt.GetSpiceObject<PointValues>(1),
-            };
+            var values = nt.GetSpiceObject<PointValues>(1);
+            var pointParameter = new PointParameter(values,
+                new SpiceLineInfo()
+                {
+                    LineNumber = values.First().LineInfo.LineNumber,
+                    FileName = values.First().LineInfo.FileName
+                });
 
-            pointParameter.LineNumber = pointParameter.Values.First().LineNumber;
             return pointParameter;
         }
 
@@ -178,10 +180,13 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 points.Values.AddRange(values.GetSpiceObject<Points>(2).Values);
             }
 
+            points.LineInfo.LineNumber = points.Values.First().LineInfo.LineNumber;
+            points.LineInfo.FileName = points.Values.First().LineInfo.FileName;
+
             return points;
         }
 
-        private SpiceObject CreatPointsContinue(ParseTreeNodeEvaluationValues values)
+        private SpiceObject CreatePointsContinue(ParseTreeNodeEvaluationValues values)
         {
             var points = new Points();
 
@@ -217,28 +222,16 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         {
             if (values.Count == 3)
             {
-                return new SpiceNetlist()
-                {
-                    Title = string.Empty,
-                    Statements = values.GetSpiceObject<Statements>(1),
-                };
+                return new SpiceNetlist(string.Empty, values.GetSpiceObject<Statements>(1));
             }
             else
             {
                 if (values.Count == 1)
                 {
-                    return new SpiceNetlist()
-                    {
-                        Title = null,
-                        Statements = new Statements(),
-                    };
+                    return new SpiceNetlist(null, new Statements());
                 }
 
-                return new SpiceNetlist()
-                {
-                    Title = values.GetLexem(0),
-                    Statements = values.Count >= 3 ? values.GetSpiceObject<Statements>(2) : new Statements(),
-                };
+                return new SpiceNetlist(values.GetLexem(0), values.Count >= 3 ? values.GetSpiceObject<Statements>(2) : new Statements());
             }
         }
 
@@ -251,11 +244,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// </returns>
         private SpiceObject CreateNetlistWithoutTitle(ParseTreeNodeEvaluationValues values)
         {
-            return new SpiceNetlist()
-            {
-                Title = null,
-                Statements = values.GetSpiceObject<Statements>(0),
-            };
+            return new SpiceNetlist(null, values.GetSpiceObject<Statements>(0));
         }
 
         /// <summary>
@@ -323,31 +312,68 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 switch (t.Token.SpiceTokenType)
                 {
                     case SpiceTokenType.REFERENCE:
-                        return new ReferenceParameter(lexemValue) { LineNumber = t.Token.LineNumber };
+                        return new ReferenceParameter(lexemValue,
+                            new SpiceLineInfo()
+                            {
+                                LineNumber = t.Token.LineNumber, 
+                                FileName = t.Token.FileName
+                            });
 
                     case SpiceTokenType.DOUBLE_QUOTED_STRING:
-                        return new StringParameter(lexemValue.Trim('"')) { LineNumber = t.Token.LineNumber };
+                        return new StringParameter(lexemValue.Trim('"'),
+                            new SpiceLineInfo()
+                            {
+                                LineNumber = t.Token.LineNumber,
+                                FileName = t.Token.FileName
+                            });
 
                     case SpiceTokenType.SINGLE_QUOTED_STRING:
-                        return new StringParameter(lexemValue.Trim('\'')) { LineNumber = t.Token.LineNumber };
+                        return new StringParameter(lexemValue.Trim('\''), new SpiceLineInfo()
+                        {
+                            LineNumber = t.Token.LineNumber,
+                            FileName = t.Token.FileName
+                        });
 
                     case SpiceTokenType.VALUE:
-                        return new ValueParameter(lexemValue) { LineNumber = t.Token.LineNumber };
+                        return new ValueParameter(lexemValue, new SpiceLineInfo()
+                        {
+                            LineNumber = t.Token.LineNumber,
+                            FileName = t.Token.FileName
+                        });
 
                     case SpiceTokenType.WORD:
-                        return new WordParameter(lexemValue) { LineNumber = t.Token.LineNumber };
+                        return new WordParameter(lexemValue, new SpiceLineInfo()
+                        {
+                            LineNumber = t.Token.LineNumber,
+                            FileName = t.Token.FileName
+                        });
 
                     case SpiceTokenType.IDENTIFIER:
-                        return new IdentifierParameter(lexemValue) { LineNumber = t.Token.LineNumber };
-
+                        return new IdentifierParameter(lexemValue, new SpiceLineInfo()
+                        {
+                            LineNumber = t.Token.LineNumber,
+                            FileName = t.Token.FileName
+                        });
                     case SpiceTokenType.EXPRESSION_BRACKET:
-                        return new ExpressionParameter(lexemValue.Trim('{', '}')) { LineNumber = t.Token.LineNumber };
+                        return new ExpressionParameter(lexemValue.Trim('{', '}'), new SpiceLineInfo()
+                        {
+                            LineNumber = t.Token.LineNumber,
+                            FileName = t.Token.FileName
+                        });
 
                     case SpiceTokenType.EXPRESSION_SINGLE_QUOTES:
-                        return new ExpressionParameter(lexemValue.Trim('\'')) { LineNumber = t.Token.LineNumber };
+                        return new ExpressionParameter(lexemValue.Trim('\''), new SpiceLineInfo()
+                        {
+                            LineNumber = t.Token.LineNumber,
+                            FileName = t.Token.FileName
+                        });
 
                     case SpiceTokenType.PERCENT:
-                        return new PercentParameter(lexemValue.TrimEnd('%')) { LineNumber = t.Token.LineNumber };
+                        return new PercentParameter(lexemValue.TrimEnd('%'), new SpiceLineInfo()
+                        {
+                            LineNumber = t.Token.LineNumber,
+                            FileName = t.Token.FileName
+                        });
                 }
             }
 
@@ -394,10 +420,14 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 throw new ParseTreeEvaluationException("Error during translating parse tree to Spice Object Model");
             }
 
-            var component = new Component();
-            component.Name = values.GetLexem(0);
-            component.PinsAndParameters = values.GetSpiceObject<ParameterCollection>(1);
-            component.LineNumber = values.GetLexemLineNumber(0);
+            var component = new Component(
+                values.GetLexem(0),
+                values.GetSpiceObject<ParameterCollection>(1),
+                new SpiceLineInfo()
+                {
+                    LineNumber = values.GetLexemLineNumber(0),
+                    FileName = values.GetLexemFileName(0),
+                });
             return component;
         }
 
@@ -410,44 +440,45 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// </returns>
         private SpiceObject CreateControl(ParseTreeNodeEvaluationValues values)
         {
-            var control = new Control();
+            Control control;
+            SpiceLineInfo lineInfo = new SpiceLineInfo()
+            {
+                FileName = values.GetLexemFileName(0),
+                LineNumber = values.GetLexemLineNumber(0),
+            };
 
             switch (values.GetLexem(0).ToLower())
             {
                 case ".endl":
-                    control.Name = "endl";
-                    control.Parameters = new ParameterCollection(); // TODO: fix it, endl can have a parameter
-                    control.LineNumber = values.GetLexemLineNumber(0);
+                    control = new Control("endl", new ParameterCollection(), lineInfo);
                     break;
 
                 case ".if":
-                    control.Name = "if";
-                    control.Parameters = new ParameterCollection() { new ExpressionParameter(values.GetLexem(1)) };
-                    control.LineNumber = values.GetLexemLineNumber(0);
+                    control = new Control("if", new ParameterCollection(new List<Parameter>()
+                    {
+                        new ExpressionParameter(values.GetLexem(1), lineInfo)
+                    }), lineInfo);
+
                     break;
 
                 case ".elseif":
-                    control.Name = "elseif";
-                    control.Parameters = new ParameterCollection() { new ExpressionParameter(values.GetLexem(1)) };
-                    control.LineNumber = values.GetLexemLineNumber(0);
+                    control = new Control("elseif", new ParameterCollection(new List<Parameter>()
+                    {
+                        new ExpressionParameter(values.GetLexem(1), lineInfo)
+                    }), lineInfo);
+
                     break;
 
                 case ".else":
-                    control.Name = "else";
-                    control.Parameters = new ParameterCollection();
-                    control.LineNumber = values.GetLexemLineNumber(0);
+                    control = new Control("else", new ParameterCollection(new List<Parameter>()), lineInfo);
                     break;
 
                 case ".endif":
-                    control.Name = "endif";
-                    control.Parameters = new ParameterCollection();
-                    control.LineNumber = values.GetLexemLineNumber(0);
+                    control = new Control("endif", new ParameterCollection(new List<Parameter>()), lineInfo);
                     break;
 
                 default:
-                    control.Name = values.GetLexem(1);
-                    control.Parameters = values.GetSpiceObject<ParameterCollection>(2);
-                    control.LineNumber = values.GetLexemLineNumber(1);
+                    control = new Control(values.GetLexem(1), values.GetSpiceObject<ParameterCollection>(2), lineInfo);
                     break;
             }
 
@@ -468,9 +499,11 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 throw new ParseTreeEvaluationException("Error during translating parse tree to Spice Object Model");
             }
 
-            var subCkt = new SubCircuit();
-            subCkt.Name = values.GetLexem(2);
-            subCkt.LineNumber = values.GetLexemLineNumber(2);
+            var subCkt = new SubCircuit(values.GetLexem(2), new Statements(), new List<string>(), new SpiceLineInfo()
+            {
+                LineNumber = values.GetLexemLineNumber(2),
+                FileName = values.GetLexemFileName(2),
+            });
 
             var allParameters = values.GetSpiceObject<ParameterCollection>(3);
 
@@ -536,9 +569,11 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// </returns>
         private SpiceObject CreateComment(ParseTreeNodeEvaluationValues values)
         {
-            var comment = new CommentLine();
-            comment.Text = values.GetLexem(0);
-            comment.LineNumber = values.GetLexemLineNumber(0);
+            var comment = new CommentLine(values.GetLexem(0), new SpiceLineInfo
+            {
+                LineNumber = values.GetLexemLineNumber(0),
+                FileName = values.GetLexemFileName(0)
+            });
             return comment;
         }
 
@@ -580,10 +615,12 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// </returns>
         private SpiceObject CreateModel(ParseTreeNodeEvaluationValues values)
         {
-            var model = new Model();
-            model.Name = values.GetLexem(1);
-            model.Parameters = values.GetSpiceObject<ParameterCollection>(2);
-            model.LineNumber = values.GetLexemLineNumber(1);
+            var model = new Model(values.GetLexem(1), values.GetSpiceObject<ParameterCollection>(2),
+                new SpiceLineInfo()
+                {
+                    LineNumber = values.GetLexemLineNumber(1),
+                    FileName = values.GetLexemFileName(1)
+                });
             return model;
         }
 
@@ -596,11 +633,14 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// </returns>
         private SpiceObject CreateDistribution(ParseTreeNodeEvaluationValues values)
         {
-            var model = new Control();
-            model.Name = "DISTRIBUTION";
-            model.Parameters = values.GetSpiceObject<ParameterCollection>(3);
-            model.Parameters.Insert(0, new StringParameter(values.GetLexem(2)));
-            model.LineNumber = values.GetLexemLineNumber(2);
+            var lineInfo = new SpiceLineInfo()
+            {
+                LineNumber = values.GetLexemLineNumber(2),
+                FileName = values.GetLexemFileName(2)
+            };
+
+            var model = new Control("DISTRIBUTION", values.GetSpiceObject<ParameterCollection>(3), lineInfo);
+            model.Parameters.Insert(0, new StringParameter(values.GetLexem(2), lineInfo));
             return model;
         }
 
@@ -654,18 +694,24 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// </returns>
         private SpiceObject CreateBracketParameter(ParseTreeNodeEvaluationValues values)
         {
-            var parameter = new BracketParameter();
             if (values.Count == 4)
             {
-                parameter.Name = values.GetLexem(0);
-                parameter.Parameters = values.GetSpiceObject<ParameterCollection>(2);
+                var parameter = new BracketParameter(
+                    values.GetLexem(0),
+                    values.GetSpiceObject<ParameterCollection>(2),
+                    new SpiceLineInfo()
+                    {
+                        LineNumber = values.GetLexemLineNumber(0),
+                        FileName = values.GetLexemFileName(0)
+                    });
+
+                return parameter;
             }
             else
             {
                 throw new ParseTreeEvaluationException("Error during translating parse tree to Spice Object Model");
             }
 
-            return parameter;
         }
 
         /// <summary>
@@ -709,12 +755,13 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             {
                 var singleParameter = values.GetSpiceObject<SingleParameter>(2);
 
-                var assignmentParameter = new AssignmentParameter
-                {
-                    Name = values.GetLexem(0),
-                    LineNumber = singleParameter.LineNumber,
-                    Values = new List<string>() { singleParameter.Image },
-                };
+                var assignmentParameter = new AssignmentParameter(
+                    values.GetLexem(0),
+                    new List<string>(),
+                    new List<string>() {singleParameter.Image},
+                    false,
+                    singleParameter.LineInfo);
+
                 return assignmentParameter;
             }
             else
@@ -734,23 +781,29 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         {
             if (values.Count == 2)
             {
-                return new ExpressionEqualParameter()
-                {
-                    Expression = values.GetLexem(0).Trim('{', '}'),
-                    Points = values.GetSpiceObject<Points>(1),
-                };
+                return new ExpressionEqualParameter(
+                    values.GetLexem(0).Trim('{', '}'),
+                    values.GetSpiceObject<Points>(1),
+                    new SpiceLineInfo()
+                    {
+                        LineNumber = values.GetLexemLineNumber(0),
+                        FileName = values.GetLexemFileName(0)
+                    });
             }
             else if (values.Count == 3)
             {
-                return new ExpressionEqualParameter()
-                {
-                    Expression = values.GetLexem(0).Trim('{', '}'),
-                    Points = values.GetSpiceObject<Points>(2),
-                };
+                return new ExpressionEqualParameter(
+                    values.GetLexem(0).Trim('{', '}'),
+                    values.GetSpiceObject<Points>(2),
+                    new SpiceLineInfo()
+                    {
+                        LineNumber = values.GetLexemLineNumber(0),
+                        FileName = values.GetLexemFileName(0)
+                    });
             }
             else
             {
-                throw new ParseTreeEvaluationException("Error during translating assigment parameter to Spice Object Model");
+                throw new ParseTreeEvaluationException("Error during translating assignment parameter to Spice Object Model");
             }
         }
 
@@ -769,9 +822,16 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             }
             else
             {
-                var assignmentParameter = new AssignmentParameter();
-                assignmentParameter.Name = values.GetLexem(0);
-                assignmentParameter.LineNumber = values.GetLexemLineNumber(0);
+                var assignmentParameter = new AssignmentParameter(
+                    values.GetLexem(0),
+                    new List<string>(),
+                    new List<string>(),
+                    false,
+                    new SpiceLineInfo()
+                    {
+                        LineNumber = values.GetLexemLineNumber(0),
+                        FileName = values.GetLexemFileName(0),
+                    });
 
                 if (values.Count == 6)
                 {

@@ -5,6 +5,17 @@
     /// </summary>
     public abstract class SpiceObject
     {
+        protected SpiceObject(SpiceLineInfo lineInfo)
+        {
+            LineInfo = lineInfo;
+        }
+
+        protected SpiceObject()
+        {
+        }
+
+        public virtual SpiceLineInfo LineInfo { get; }
+
         /// <summary>
         /// Clones the object.
         /// </summary>

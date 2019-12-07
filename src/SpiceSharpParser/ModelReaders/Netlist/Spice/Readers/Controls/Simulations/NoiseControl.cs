@@ -35,16 +35,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             // Check parameter count
             switch (statement.Parameters.Count)
             {
-                case 0: throw new WrongParametersCountException("SpiceSharpModel expected for .NOISE", statement.LineNumber);
-                case 1: throw new WrongParametersCountException("Source expected", statement.LineNumber);
-                case 2: throw new WrongParametersCountException("Step type expected", statement.LineNumber);
-                case 3: throw new WrongParametersCountException("Number of points expected", statement.LineNumber);
-                case 4: throw new WrongParametersCountException("Starting frequency expected", statement.LineNumber);
-                case 5: throw new WrongParametersCountException("Stopping frequency expected", statement.LineNumber);
+                case 0: throw new WrongParametersCountException("SpiceSharpModel expected for .NOISE", statement.LineInfo);
+                case 1: throw new WrongParametersCountException("Source expected", statement.LineInfo);
+                case 2: throw new WrongParametersCountException("Step type expected", statement.LineInfo);
+                case 3: throw new WrongParametersCountException("Number of points expected", statement.LineInfo);
+                case 4: throw new WrongParametersCountException("Starting frequency expected", statement.LineInfo);
+                case 5: throw new WrongParametersCountException("Stopping frequency expected", statement.LineInfo);
                 case 6: break;
                 case 7: break;
                 default:
-                    throw new WrongParametersCountException("Too many parameters for .NOISE", statement.LineNumber);
+                    throw new WrongParametersCountException("Too many parameters for .NOISE", statement.LineInfo);
             }
 
             string type = statement.Parameters.Get(2).Image;
@@ -60,7 +60,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 case "oct": sweep = new OctaveSweep(start, stop, (int)numberSteps); break;
                 case "dec": sweep = new DecadeSweep(start, stop, (int)numberSteps); break;
                 default:
-                    throw new WrongParameterException("LIN, DEC or OCT expected", statement.LineNumber);
+                    throw new WrongParameterException("LIN, DEC or OCT expected", statement.LineInfo);
             }
 
             // The first parameters needs to specify the output voltage
@@ -90,17 +90,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                             break;
 
                         default:
-                            throw new WrongParameterException("1 or 2 nodes expected", statement.LineNumber);
+                            throw new WrongParameterException("1 or 2 nodes expected", statement.LineInfo);
                     }
                 }
                 else
                 {
-                    throw new WrongParameterException("Invalid output", statement.LineNumber);
+                    throw new WrongParameterException("Invalid output", statement.LineInfo);
                 }
             }
             else
             {
-                throw new WrongParameterException("Invalid output", statement.LineNumber);
+                throw new WrongParameterException("Invalid output", statement.LineInfo);
             }
 
             context.Result.AddSimulation(noise);

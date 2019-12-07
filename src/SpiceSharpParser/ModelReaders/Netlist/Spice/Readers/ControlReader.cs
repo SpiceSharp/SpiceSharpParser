@@ -46,7 +46,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
             if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsDotStatementNameCaseSensitive, out var controlReader))
             {
-                context.Result.AddWarning("Unsupported control: " + statement.Name + " at " + statement.LineNumber + " line");
+                context.Result.AddWarning("Unsupported control: " + statement.Name + " at " + statement.LineInfo.LineNumber + " line");
             }
             else
             {

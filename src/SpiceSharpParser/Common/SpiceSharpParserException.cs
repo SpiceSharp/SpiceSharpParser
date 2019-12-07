@@ -1,4 +1,5 @@
 ﻿using System;
+using SpiceSharpParser.Models.Netlist.Spice;
 
 namespace SpiceSharpParser.Common
 {
@@ -13,9 +14,14 @@ namespace SpiceSharpParser.Common
         {
         }
 
-        public SpiceSharpParserException(string message, int lineNumber)
-            : base($"{message} (at line {lineNumber})")
+        public SpiceSharpParserException(string message, SpiceLineInfo lineInfo)
+            : base(
+                lineInfo != null ?
+                lineInfo.FileName != null
+                    ? $"{message} (at line {lineInfo?.LineNumber} from file {lineInfo.FileName})"
+                    : $"{message} (at line {lineInfo?.LineNumber})" : $"{message}")
         {
+            LineInfo = lineInfo;
         }
 
         public SpiceSharpParserException(string message, Exception innerException)
@@ -23,12 +29,12 @@ namespace SpiceSharpParser.Common
         {
         }
 
-        public SpiceSharpParserException(string message, Exception innerException, int lineNumber)
-            : base($"{message} (at line {lineNumber})", innerException)
+        public SpiceSharpParserException(string message, Exception innerException, SpiceLineInfo lineInfo)
+            : base(message, innerException)
         {
-            LineNumber = lineNumber;
+            LineInfo = lineInfo;
         }
 
-        public int LineNumber { get; }
+        public SpiceLineInfo LineInfo { get; }
     }
 }

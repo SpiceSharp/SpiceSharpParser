@@ -5,8 +5,8 @@
     /// </summary>
     public class PercentParameter : SingleParameter
     {
-        public PercentParameter(string value)
-            : base(value)
+        public PercentParameter(string value, SpiceLineInfo lineInfo)
+            : base(value, lineInfo)
         {
         }
 
@@ -16,7 +16,7 @@
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new PercentParameter(Image) { LineNumber = LineNumber };
+            return new PercentParameter(Image, LineInfo);
         }
     }
 }

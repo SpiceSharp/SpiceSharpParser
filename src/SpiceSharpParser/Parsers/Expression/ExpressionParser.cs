@@ -9,6 +9,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using SpiceSharpParser.Common;
 
@@ -182,22 +183,22 @@ namespace SpiceSharpParser.Parsers.Expression
 
         private ParameterCollection GetSpicePropertyParameters(EvaluationContext context, SpicePropertyFoundEventArgs<double> arg)
         {
-            var vectorParameter = new VectorParameter();
+            var vectorParameter = new VectorParameter(new List<SingleParameter>());
             for (var i = 0; i < arg.Property.ArgumentCount; i++)
             {
                 var argumentName = arg.Property[i];
                 if (context.Parameters.ContainsKey(argumentName))
                 {
                     var val = context.Evaluate(argumentName);
-                    vectorParameter.Elements.Add(new WordParameter(val.ToString()));
+                    vectorParameter.Elements.Add(new WordParameter(val.ToString(CultureInfo.InvariantCulture), null));
                 }
                 else
                 {
-                    vectorParameter.Elements.Add(new WordParameter(argumentName));
+                    vectorParameter.Elements.Add(new WordParameter(argumentName, null));
                 }
             }
 
-            var parameters = new ParameterCollection { vectorParameter };
+            var parameters = new ParameterCollection(new List<Parameter> { vectorParameter });
             return parameters;
         }
 

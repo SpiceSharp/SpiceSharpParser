@@ -7,15 +7,16 @@ namespace SpiceSharpParser.Models.Netlist.Spice
     /// </summary>
     public class SpiceNetlist : SpiceObject
     {
-        public SpiceNetlist()
+        public SpiceNetlist(string title, Statements statements)
         {
-            Statements = new Statements();
+            Title = title;
+            Statements = statements;
         }
 
         /// <summary>
-        /// Gets or sets title of the netlist.
+        /// Gets title of the netlist.
         /// </summary>
-        public string Title { get; set; }
+        public string Title { get; }
 
         /// <summary>
         /// Gets or sets a collection of statements of the netlist.
@@ -28,7 +29,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new SpiceNetlist() { Title = Title, Statements = (Statements)Statements.Clone() };
+            return new SpiceNetlist(Title, (Statements) Statements.Clone());
         }
     }
 }

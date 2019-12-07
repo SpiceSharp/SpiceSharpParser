@@ -36,7 +36,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
             if (exportParameter is ReferenceParameter rp)
             {
                 string type = "@";
-                var parameters = new ParameterCollection { new VectorParameter() { Elements = new List<SingleParameter>() { new WordParameter(rp.Name), new WordParameter(rp.Argument) } } };
+                var parameters = new ParameterCollection(
+                    new List<Parameter>()
+                    {
+                        new VectorParameter(
+                            new List<SingleParameter>()
+                            {
+                                new WordParameter(rp.Name, rp.LineInfo),
+                                new WordParameter(rp.Argument, rp.LineInfo)
+                            })
+                    });
 
                 if (mapper.TryGetValue(type, true, out var exporter))
                 {
@@ -65,11 +74,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                 }
                 else
                 {
-                    throw new ReadingException($"There is no {expressionName} expression", exportParameter.LineNumber);
+                    throw new ReadingException($"There is no {expressionName} expression", exportParameter.LineInfo);
                 }
             }
 
-            throw new ReadingException($"Unsupported export: {exportParameter.Image}", exportParameter.LineNumber);
+            throw new ReadingException($"Unsupported export: {exportParameter.Image}", exportParameter.LineInfo);
         }
     }
 }

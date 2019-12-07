@@ -20,7 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             if (polyArguments.Count == 0)
             {
-                throw new WrongParametersCountException("Wrong parameter count for poly expression", polyArguments.LineNumber);
+                throw new WrongParametersCountException("Wrong parameter count for poly expression", polyArguments.LineInfo);
             }
 
             bool voltagesAreSpecifiedAsPoints = polyArguments[0] is PointParameter;
@@ -31,12 +31,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (variables.Count < dimension)
                 {
-                    throw new WrongParametersCountException("Wrong parameter count for poly expression", variables.LineNumber);
+                    throw new WrongParametersCountException("Wrong parameter count for poly expression", variables.LineInfo);
                 }
 
                 if (variables.Any(v => !(v is PointParameter)))
                 {
-                    throw new WrongParameterTypeException("Wrong parameter type for poly expression", variables.LineNumber);
+                    throw new WrongParameterTypeException("Wrong parameter type for poly expression", variables.LineInfo);
                 }
 
                 var variablesList = variables.Select(v =>
@@ -52,12 +52,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (variables.Count < 2 * dimension)
                 {
-                    throw new WrongParametersCountException("Wrong parameter count for poly expression", variables.LineNumber);
+                    throw new WrongParametersCountException("Wrong parameter count for poly expression", variables.LineInfo);
                 }
 
                 if (variables.Any(v => !(v is SingleParameter)))
                 {
-                    throw new WrongParameterTypeException("Wrong parameter type for poly expression", variables.LineNumber);
+                    throw new WrongParameterTypeException("Wrong parameter type for poly expression", variables.LineInfo);
                 }
 
                 var voltages = new List<string>();

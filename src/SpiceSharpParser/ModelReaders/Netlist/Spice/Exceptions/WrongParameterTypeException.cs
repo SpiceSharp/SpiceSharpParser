@@ -1,4 +1,5 @@
 ﻿using System;
+using SpiceSharpParser.Models.Netlist.Spice;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
 {
@@ -13,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
         {
         }
 
-        public WrongParameterTypeException(string message, int line)
+        public WrongParameterTypeException(string message, SpiceLineInfo line)
             : base(message, line)
         {
         }

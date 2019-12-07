@@ -52,8 +52,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 if (entity is SpiceSharp.Components.Component c)
                 {
                     string componentName = c.Name;
-                    var @params = new ParameterCollection();
-                    @params.Add(new WordParameter(componentName));
+                    var @params = new ParameterCollection(new List<Parameter>());
+                    @params.Add(new WordParameter(componentName, null));
 
                     for (var i = 0; i < c.PinCount; i++)
                     {
@@ -79,8 +79,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
             foreach (var node in nodes)
             {
-                var @params = new ParameterCollection();
-                @params.Add(new WordParameter(node));
+                var @params = new ParameterCollection(new List<Parameter>());
+                @params.Add(new WordParameter(node, null));
 
                 result.Add(
                     Mapper

@@ -1,4 +1,5 @@
 ﻿using System;
+using SpiceSharpParser.Models.Netlist.Spice;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
 {
@@ -13,8 +14,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions
         {
         }
 
-        public UnknownComponentException(string message, int lineNumber)
-            : base(message, lineNumber)
+        public UnknownComponentException(string message, SpiceLineInfo lineInfo)
+            : base(message, lineInfo)
         {
         }
 

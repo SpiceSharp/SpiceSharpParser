@@ -1,4 +1,5 @@
-﻿using SpiceSharp.Components;
+﻿using System.Collections.Generic;
+using SpiceSharp.Components;
 using SpiceSharpBehavioral.Components.BehavioralBehaviors;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
@@ -62,11 +63,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     && parameters[1] is PointParameter pp2
                     && pp2.Values.Count() == 2)
                 {
-                    var vcvsNodes = new ParameterCollection();
-                    vcvsNodes.Add(pp1.Values.Items[0]);
-                    vcvsNodes.Add(pp1.Values.Items[1]);
-                    vcvsNodes.Add(pp2.Values.Items[0]);
-                    vcvsNodes.Add(pp2.Values.Items[1]);
+                    var vcvsNodes = new ParameterCollection(new List<Parameter>())
+                    {
+                        pp1.Values.Items[0],
+                        pp1.Values.Items[1],
+                        pp2.Values.Items[0],
+                        pp2.Values.Items[1],
+                    };
 
                     var vcvs = new VoltageControlledVoltageSource(name);
                     context.CreateNodes(vcvs, vcvsNodes);
@@ -184,7 +187,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (polyParameter.Parameters.Count != 1)
                 {
-                    throw new WrongParametersCountException("poly expects one argument => dimension", polyParameter.LineNumber);
+                    throw new WrongParametersCountException("poly expects one argument => dimension", polyParameter.LineInfo);
                 }
 
                 var entity = new BehavioralVoltageSource(name);
@@ -207,7 +210,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 int tableParameterPosition = parameters.IndexOf(tableParameter);
                 if (tableParameterPosition == parameters.Count - 1)
                 {
-                    throw new WrongParametersCountException("table expects expression parameter", tableParameter.LineNumber);
+                    throw new WrongParametersCountException("table expects expression parameter", tableParameter.LineInfo);
                 }
 
                 var nextParameter = parameters[tableParameterPosition + 1];
@@ -226,7 +229,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    throw new WrongParameterTypeException("table expects expression equal parameter", tableParameter.LineNumber);
+                    throw new WrongParameterTypeException("table expects expression equal parameter", tableParameter.LineInfo);
                 }
             }
 

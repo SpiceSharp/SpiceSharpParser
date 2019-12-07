@@ -5,8 +5,8 @@
     /// </summary>
     public class ExpressionParameter : SingleParameter
     {
-        public ExpressionParameter(string expression)
-            : base(expression)
+        public ExpressionParameter(string expression, SpiceLineInfo lineInfo)
+            : base(expression, lineInfo)
         {
         }
 
@@ -16,7 +16,7 @@
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new ExpressionParameter(Image) { LineNumber = LineNumber };
+            return new ExpressionParameter(Image, LineInfo);
         }
     }
 }

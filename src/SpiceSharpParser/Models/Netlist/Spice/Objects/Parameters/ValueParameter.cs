@@ -5,8 +5,11 @@
     /// </summary>
     public class ValueParameter : SingleParameter
     {
-        public ValueParameter(string value)
-            : base(value)
+        public ValueParameter(string value, SpiceLineInfo lineInfo) : base(value, lineInfo)
+        {
+        }
+
+        public ValueParameter(string value) : base(value, null)
         {
         }
 
@@ -16,7 +19,7 @@
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new ValueParameter(Image) { LineNumber = LineNumber };
+            return new ValueParameter(Image, LineInfo);
         }
     }
 }
