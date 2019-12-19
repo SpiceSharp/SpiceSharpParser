@@ -105,11 +105,12 @@ namespace SpiceSharpParser
             // Preprocessing
             SpiceNetlist preprocessedNetListModel = (SpiceNetlist)originalNetlistModel.Clone();
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(
-                new string[] { "0" },
+                new [] { "0" },
                 Settings.Reading.CaseSensitivity.IsNodeNameCaseSensitive);
 
             var objectNameGenerator = new ObjectNameGenerator(string.Empty);
             INameGenerator nameGenerator = new NameGenerator(nodeNameGenerator, objectNameGenerator);
+            var expressionParserFactory = new ExpressionParserFactory(Settings.Reading.CaseSensitivity);
             EvaluationContext preprocessorContext = new SpiceEvaluationContext(
                 string.Empty,
                 Settings.Reading.EvaluatorMode,
@@ -117,7 +118,9 @@ namespace SpiceSharpParser
                 new Randomizer(
                     Settings.Reading.CaseSensitivity.IsDistributionNameCaseSensitive,
                     seed: Settings.Reading.Seed),
-                new ExpressionParser(Settings.Reading.CaseSensitivity),
+                expressionParserFactory, 
+                new ExpressionFeaturesReader(expressionParserFactory), 
+                new ExpressionValueProvider(expressionParserFactory), 
                 nameGenerator,
                 null);
 

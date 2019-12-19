@@ -17,11 +17,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             SpiceExpressionMode mode,
             ISpiceNetlistCaseSensitivitySettings caseSetting,
             IRandomizer randomizer,
-            IExpressionParser parser,
+            IExpressionParserFactory expressionParserFactory,
+            IExpressionFeaturesReader expressionFeaturesReader,
+            IExpressionValueProvider expressionValueProvider,
             INameGenerator nameGenerator,
             IResultService resultService)
 
-        : base(name, caseSetting, randomizer, parser, nameGenerator, resultService)
+        : base(name, 
+            caseSetting,
+            randomizer,
+            expressionParserFactory, 
+            expressionFeaturesReader,
+            expressionValueProvider, 
+            nameGenerator,
+            resultService)
         {
             Mode = mode;
             CreateCommonFunctions();

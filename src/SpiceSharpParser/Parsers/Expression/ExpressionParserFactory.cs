@@ -1,95 +1,42 @@
-﻿using SpiceSharp.Simulations;
+﻿using System;
 using SpiceSharpBehavioral.Parsers;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.Parsers.Expression
 {
-    public class ExpressionParser : IExpressionParser
+    public class ExpressionParserFactory : IExpressionParserFactory
     {
-        private readonly ISpiceNetlistCaseSensitivitySettings _caseSettings;
         private readonly ConcurrentDictionary<string, Export> _exporterInstances = new ConcurrentDictionary<string, Export>();
+        private readonly ISpiceNetlistCaseSensitivitySettings _caseSettings;
 
-        public ExpressionParser(ISpiceNetlistCaseSensitivitySettings caseSettings)
+        public ExpressionParserFactory(ISpiceNetlistCaseSensitivitySettings caseSettings)
         {
             _caseSettings = caseSettings;
         }
 
-        public double GetExpressionValue(string expression, EvaluationContext context, bool @throw = true)
-        {
-            var parser = GetDeriveParser(context, @throw, true);
-            var derivatives = parser.Parse(expression);
-            var result = derivatives[0]();
-
-            return result;
-        }
-
-        public List<string> GetExpressionParameters(string expression, EvaluationContext context, bool @throw = true)
-        {
-            var parser = GetDeriveParser(context, @throw);
-            var parameters = new List<string>();
-            parser.VariableFound += (sender, e) =>
-            {
-                if (!parameters.Contains(e.Name))
-                {
-                    parameters.Add(e.Name);
-                }
-            };
-            parser.SpicePropertyFound += (sender, e) => { e.Apply(() => 0); };
-
-            parser.Parse(expression);
-            return parameters;
-        }
-
-        public SimpleDerivativeParser GetDeriveParser(EvaluationContext context, bool @throw = true, bool @parseVoltage = false)
+        public SimpleDerivativeParser Create(EvaluationContext context, bool throwOnErrors = true, bool applyVoltage = false)
         {
             var parser = new SimpleDerivativeParserExtended(_caseSettings);
 
-            parser.VariableFound += OnVariableFound(context, @throw);
+            parser.VariableFound += OnVariableFound(context, throwOnErrors);
             parser.FunctionFound += OnFunctionFound(context);
-            parser.SpicePropertyFound += OnSpicePropertyFound(context, @parseVoltage);
+            parser.SpicePropertyFound += OnSpicePropertyFound(context, applyVoltage);
 
             return parser;
         }
 
-        public bool HaveSpiceProperties(string expression, EvaluationContext context)
-        {
-            bool present = false;
-            var parser = GetDeriveParser(context);
-            parser.SpicePropertyFound += (sender, e) =>
-            {
-                present = true;
-                e.Apply(() => 0);
-            };
-
-            parser.Parse(expression);
-            return present;
-        }
-
-        public bool HaveFunctions(string expression, EvaluationContext context)
-        {
-            bool present = false;
-            var parser = GetDeriveParser(context);
-            parser.FunctionFound += (sender, e) =>
-            {
-                present = true;
-            };
-
-            parser.Parse(expression);
-            return present;
-        }
-
-        private EventHandler<SpicePropertyFoundEventArgs<double>> OnSpicePropertyFound(EvaluationContext context, bool @parseVoltage)
+        private EventHandler<SpicePropertyFoundEventArgs<double>> OnSpicePropertyFound(EvaluationContext context, bool applyVoltage)
         {
             return (sender, arg) =>
             {
@@ -107,99 +54,8 @@ namespace SpiceSharpParser.Parsers.Expression
                     return;
                 }
 
-                ApplySpiceProperty(context, arg, @parseVoltage);
+                ApplySpiceProperty(context, arg, applyVoltage);
             };
-        }
-
-        private void ApplySpiceProperty(EvaluationContext context, SpicePropertyFoundEventArgs<double> arg, bool @parseVoltage)
-        {
-            var parameters = GetSpicePropertyParameters(context, arg);
-
-            var propertyName = arg.Property.Identifier.ToLower();
-
-            string key = $"{context.Name}_{propertyName}_{parameters}_{context.Simulation?.Name}";
-
-            var variables = context.Simulation?.Variables;
-
-            // We want to keep track of derivatives, and which column they map to
-            if (_exporterInstances.TryGetValue(key, out Export cachedExport))
-            {
-                ApplyExport(arg, cachedExport, variables, @parseVoltage);
-            }
-            else
-            {
-                var voltageExportFactory = new VoltageExporter();
-                var currentExportFactory = new CurrentExporter();
-                var propertyExporter = new PropertyExporter();
-                Exporter factory = null;
-
-                if (currentExportFactory.CreatedTypes.Contains(propertyName))
-                {
-                    factory = currentExportFactory;
-                }
-
-                if (voltageExportFactory.CreatedTypes.Contains(propertyName))
-                {
-                    factory = voltageExportFactory;
-                }
-
-                if (propertyName == "@")
-                {
-                    factory = propertyExporter;
-                }
-
-                if (factory == null)
-                {
-                    throw new SpiceSharpParserException("Unknown spice property");
-                }
-
-                var export = factory.CreateExport(
-                    propertyName + "_" + parameters.ToString(),
-                    propertyName,
-                    parameters,
-                    context,
-                    _caseSettings);
-
-                _exporterInstances[key] = export;
-
-                ApplyExport(arg, export, variables, @parseVoltage);
-            }
-        }
-
-        private void ApplyExport(SpicePropertyFoundEventArgs<double> arg, Export export, VariableSet variables, bool @parseVoltage)
-        {
-            if (export is VoltageExport ve)
-            {
-                if (@parseVoltage)
-                {
-                    arg.Apply(() => export.Extract(), 0, 0);
-                }
-            }
-            else
-            {
-                arg.Apply(() => export.Extract(), 0, 0);
-            }
-        }
-
-        private ParameterCollection GetSpicePropertyParameters(EvaluationContext context, SpicePropertyFoundEventArgs<double> arg)
-        {
-            var vectorParameter = new VectorParameter(new List<SingleParameter>());
-            for (var i = 0; i < arg.Property.ArgumentCount; i++)
-            {
-                var argumentName = arg.Property[i];
-                if (context.Parameters.ContainsKey(argumentName))
-                {
-                    var val = context.Evaluate(argumentName);
-                    vectorParameter.Elements.Add(new WordParameter(val.ToString(CultureInfo.InvariantCulture), null));
-                }
-                else
-                {
-                    vectorParameter.Elements.Add(new WordParameter(argumentName, null));
-                }
-            }
-
-            var parameters = new ParameterCollection(new List<Parameter> { vectorParameter });
-            return parameters;
         }
 
         private EventHandler<VariableFoundEventArgs<Derivatives<Func<double>>>> OnVariableFound(EvaluationContext context, bool @throw)
@@ -279,6 +135,94 @@ namespace SpiceSharpParser.Parsers.Expression
                     }
                 }
             };
+        }
+
+        private ParameterCollection GetSpicePropertyParameters(EvaluationContext context, SpicePropertyFoundEventArgs<double> arg)
+        {
+            var vectorParameter = new VectorParameter(new List<SingleParameter>());
+            for (var i = 0; i < arg.Property.ArgumentCount; i++)
+            {
+                var argumentName = arg.Property[i];
+                if (context.Parameters.ContainsKey(argumentName))
+                {
+                    var val = context.Evaluate(argumentName);
+                    vectorParameter.Elements.Add(new WordParameter(val.ToString(CultureInfo.InvariantCulture), null));
+                }
+                else
+                {
+                    vectorParameter.Elements.Add(new WordParameter(argumentName, null));
+                }
+            }
+
+            var parameters = new ParameterCollection(new List<Parameter> { vectorParameter });
+            return parameters;
+        }
+
+        private void ApplySpiceProperty(EvaluationContext context, SpicePropertyFoundEventArgs<double> arg, bool applyVoltage)
+        {
+            var parameters = GetSpicePropertyParameters(context, arg);
+
+            var propertyName = arg.Property.Identifier.ToLower();
+
+            string key = $"{context.Name}_{propertyName}_{parameters}_{context.Simulation?.Name}";
+
+            if (_exporterInstances.TryGetValue(key, out Export cachedExport))
+            {
+                ApplyExport(arg, cachedExport, applyVoltage);
+            }
+            else
+            {
+                var voltageExportFactory = new VoltageExporter();
+                var currentExportFactory = new CurrentExporter();
+                var propertyExporter = new PropertyExporter();
+                Exporter factory = null;
+
+                if (currentExportFactory.CreatedTypes.Contains(propertyName))
+                {
+                    factory = currentExportFactory;
+                }
+
+                if (voltageExportFactory.CreatedTypes.Contains(propertyName))
+                {
+                    factory = voltageExportFactory;
+                }
+
+                if (propertyName == "@")
+                {
+                    factory = propertyExporter;
+                }
+
+                if (factory == null)
+                {
+                    throw new SpiceSharpParserException($"Unknown spice property {propertyName}");
+                }
+
+                var export = factory.CreateExport(
+                    $"{propertyName}_{parameters}",
+                    propertyName,
+                    parameters,
+                    context,
+                    _caseSettings);
+
+                _exporterInstances[key] = export;
+
+                ApplyExport(arg, export, applyVoltage);
+            }
+        }
+
+        private void ApplyExport(SpicePropertyFoundEventArgs<double> arg, Export export, bool applyVoltage)
+        {
+            if (export is VoltageExport)
+            {
+                if (applyVoltage)
+                {
+                    arg.Apply(() => export.Extract(), 0, 0);
+                }
+            }
+            else
+            {
+                arg.Apply(() => export.Extract(), 0, 0);
+            }
         }
 
         private void SetResult(EvaluationContext context, FunctionFoundEventArgs<Derivatives<Func<double>>> args, IFunction<double, double> doubleFunction)
