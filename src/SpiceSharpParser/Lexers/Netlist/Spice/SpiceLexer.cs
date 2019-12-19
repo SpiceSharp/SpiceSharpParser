@@ -41,7 +41,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
 
             foreach (var token in lexer.GetTokens(netlistText, state))
             {
-                yield return new SpiceToken((SpiceTokenType)token.Type, token.Lexem, state.LineNumber);
+                yield return new SpiceToken((SpiceTokenType)token.Type, token.Lexem, state.LineNumber, state.StartColumnIndex,null);
             }
         }
 

@@ -68,6 +68,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 return ParsingContext.Evaluate(expression);
             }
+            catch (SpiceSharpParserException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 throw new SpiceSharpParserException($"Exception during evaluation of expression: {expression}", ex);

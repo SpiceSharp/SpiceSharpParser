@@ -5,7 +5,6 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Custom;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using System;
 using System.Globalization;
 using Model = SpiceSharp.Components.Model;
 
@@ -198,7 +197,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             break;
 
                         default:
-                            throw new ReadingException("ON or OFF expected");
+                            throw new ReadingException("ON or OFF expected", parameters.LineInfo);
                     }
                 }
 

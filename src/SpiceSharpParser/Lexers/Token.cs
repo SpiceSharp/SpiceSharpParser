@@ -1,18 +1,21 @@
-﻿namespace SpiceSharpParser.Lexers
+﻿using SpiceSharpParser.Common;
+
+namespace SpiceSharpParser.Lexers
 {
     /// <summary>
     /// A token produces by <see cref="Lexer{TLexerState}"/>.
     /// </summary>
-    public class Token
+    public class Token : ILocationProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Token"/> class.
         /// </summary>
-        public Token(int tokenType, string lexem, int lineNumber, string fileName)
+        public Token(int tokenType, string lexem, int lineNumber, int startColumnIndex, string fileName)
         {
             Type = tokenType;
             Lexem = lexem;
             LineNumber = lineNumber;
+            StartColumnIndex = startColumnIndex;
             FileName = fileName;
         }
 
@@ -22,12 +25,22 @@
         public int Type { get; }
 
         /// <summary>
-        /// Gets token line number.
+        /// Gets or sets token line number.
         /// </summary>
         public int LineNumber { get; set; }
 
         /// <summary>
-        /// Gets token file name.
+        /// Gets or sets start column index.
+        /// </summary>
+        public int StartColumnIndex { get; set; }
+
+        /// <summary>
+        /// Gets end column index.
+        /// </summary>
+        public int EndColumnIndex => StartColumnIndex + (Lexem?.Length ?? 0);
+
+        /// <summary>
+        /// Gets or sets token file name.
         /// </summary>
         public string FileName { get; set; }
 

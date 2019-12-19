@@ -380,11 +380,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     if (parameter is AssignmentParameter ap)
                     {
-                        context.SetParameter(res, ap.Name, ap.Value);
+                        try
+                        {
+                            context.SetParameter(res, ap.Name, ap.Value);
+                        }
+                        catch (Exception e)
+                        {
+                            throw new ReadingException($"Can't set parameter for resistor: '{parameter.Image}'", e, parameter.LineInfo);
+                        }
+                        
                     }
                     else
                     {
-                        throw new ReadingException("Invalid parameter for resistor: " + parameter.Image);
+                        throw new ReadingException($"Invalid parameter for resistor: '{parameter.Image}'", parameter.LineInfo);
                     }
                 }
             }

@@ -23,7 +23,12 @@
         /// <summary>
         /// Gets or sets the current line number.
         /// </summary>
-        public int LineNumber { get; set; } = 1;
+        public int LineNumber { get; set; } = 0;
+
+        /// <summary>
+        /// Gets or sets the start column index.
+        /// </summary>
+        public int StartColumnIndex { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating lexer is lexing new line.

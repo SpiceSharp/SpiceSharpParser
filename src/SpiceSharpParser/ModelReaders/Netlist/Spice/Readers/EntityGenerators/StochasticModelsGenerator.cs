@@ -64,7 +64,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
             var model = modelGenerator.Generate(id, type, filteredParameters, context);
             if (model == null)
             {
-                throw new ReadingException("Couldn't generate model");
+                throw new ReadingException($"Couldn't generate model {id}", parameters.LineInfo);
             }
 
             context.ModelsRegistry.RegisterModelInstance(model);
