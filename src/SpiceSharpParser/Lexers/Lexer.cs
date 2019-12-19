@@ -15,7 +15,6 @@ namespace SpiceSharpParser.Lexers
         /// Initializes a new instance of the <see cref="Lexer{TLexerState}"/> class.
         /// </summary>
         /// <param name="grammar">Lexer grammar.</param>
-        /// <param name="options">Lexer options.</param>
         public Lexer(LexerGrammar<TLexerState> grammar)
         {
             Grammar = grammar ?? throw new ArgumentNullException(nameof(grammar));
@@ -40,7 +39,7 @@ namespace SpiceSharpParser.Lexers
             }
 
             int currentTokenIndex = 0;
-            var lineProvider = new LexerLineNumberProvider(text);
+            var lineProvider = new LexerLineInfoProvider(text);
 
             if (state != null)
             {
@@ -52,16 +51,9 @@ namespace SpiceSharpParser.Lexers
                 if (state != null)
                 {
                     var currentLineIndex = lineProvider.GetLineForIndex(currentTokenIndex);
-                    if (state.LineNumber != currentLineIndex)
-                    {
-                        state.NewLine = true;
-                    }
-                    else
-                    {
-                        state.NewLine = false;
-                    }
-
+                    state.NewLine = state.LineNumber != currentLineIndex;
                     state.LineNumber = currentLineIndex;
+                    state.StartColumnIndex = lineProvider.GetColumnForIndex(currentTokenIndex);
                 }
 
                 if (FindBestTokenRule(text, currentTokenIndex, state, out var bestTokenRule, out var bestMatch))
@@ -74,7 +66,12 @@ namespace SpiceSharpParser.Lexers
                             state.PreviousReturnedTokenType = bestTokenRule.TokenType;
                         }
 
-                        yield return new Token(bestTokenRule.TokenType, bestMatch.Value, state?.LineNumber ?? 0, null);
+                        yield return new Token(
+                            bestTokenRule.TokenType,
+                            bestMatch.Value,
+                            state?.LineNumber ?? 0,
+                            state?.StartColumnIndex ?? 0,
+                            null);
                     }
 
                     currentTokenIndex += bestMatch.Length;
@@ -90,7 +87,7 @@ namespace SpiceSharpParser.Lexers
                         {
                             var dynamicResult = dynamicRule.Action(textForDynamicRules);
 
-                            yield return new Token(dynamicRule.TokenType, dynamicResult.Item1, state?.LineNumber ?? 0, null);
+                            yield return new Token(dynamicRule.TokenType, dynamicResult.Item1, state?.LineNumber ?? 0, state?.StartColumnIndex ?? 0, null);
 
                             currentTokenIndex += dynamicResult.Item2;
                             matched = true;
@@ -105,7 +102,7 @@ namespace SpiceSharpParser.Lexers
             }
 
             // yield EOF token
-            yield return new Token(-1, "EOF", state?.LineNumber ?? 0, null);
+            yield return new Token(-1, "EOF", state?.LineNumber ?? 0, state?.StartColumnIndex ??0, null);
         }
 
         /// <summary>

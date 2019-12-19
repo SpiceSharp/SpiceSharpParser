@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.Parsers.Netlist
 {
     /// <summary>
     /// A non-terminal node in a parse tree.
     /// </summary>
-    public class ParseTreeNonTerminalNode : ParseTreeNode
+    public class ParseTreeNonTerminalNode : ParseTreeNode, ILocationProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ParseTreeNonTerminalNode"/> class.
@@ -39,5 +40,25 @@ namespace SpiceSharpParser.Parsers.Netlist
         /// Gets children of non-terminal.
         /// </summary>
         public List<ParseTreeNode> Children { get; }
+
+        /// <summary>
+        /// Gets or sets start column index.
+        /// </summary>
+        public int StartColumnIndex { get; set; }
+
+        /// <summary>
+        /// Gets or sets start column index.
+        /// </summary>
+        public int EndColumnIndex { get; set; }
+
+        /// <summary>
+        /// Gets or sets line number.
+        /// </summary>
+        public int LineNumber { get; set; }
+
+        /// <summary>
+        /// Gets or set file name.
+        /// </summary>
+        public string FileName { get; set; }
     }
 }

@@ -15,13 +15,16 @@ namespace SpiceSharpParser.Common
         }
 
         public SpiceSharpParserException(string message, SpiceLineInfo lineInfo)
-            : base(
-                lineInfo != null ?
-                lineInfo.FileName != null
-                    ? $"{message} (at line {lineInfo?.LineNumber} from file {lineInfo.FileName})"
-                    : $"{message} (at line {lineInfo?.LineNumber})" : $"{message}")
+            : base(CreateExceptionMessage(message, lineInfo))
         {
             LineInfo = lineInfo;
+        }
+        private static string CreateExceptionMessage(string message, SpiceLineInfo lineInfo)
+        {
+            return lineInfo != null ?
+                lineInfo.FileName != null
+                    ? $"{message} (at line {lineInfo?.LineNumber}, start column = {lineInfo?.StartColumnIndex}, end column = {lineInfo?.EndColumnIndex} from file {lineInfo.FileName})"
+                    : $"{message} (at line {lineInfo?.LineNumber}, start column = {lineInfo?.StartColumnIndex}, end column = {lineInfo?.EndColumnIndex})" : $"{message}";
         }
 
         public SpiceSharpParserException(string message, Exception innerException)
@@ -30,7 +33,7 @@ namespace SpiceSharpParser.Common
         }
 
         public SpiceSharpParserException(string message, Exception innerException, SpiceLineInfo lineInfo)
-            : base(message, innerException)
+            : base(CreateExceptionMessage(message, lineInfo), innerException)
         {
             LineInfo = lineInfo;
         }

@@ -1,6 +1,4 @@
-﻿using SpiceSharpParser.Models.Netlist.Spice;
-
-namespace SpiceSharpParser.Lexers.Netlist.Spice
+﻿namespace SpiceSharpParser.Lexers.Netlist.Spice
 {
     /// <summary>
     /// A token from SPICE netlist.
@@ -10,8 +8,8 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
         /// <summary>
         /// Initializes a new instance of the <see cref="SpiceToken"/> class.
         /// </summary>
-        public SpiceToken(SpiceTokenType tokenType, string lexem, int lineNumber = 0, string fileName = null)
-            : base((int)tokenType, lexem, lineNumber, fileName)
+        public SpiceToken(SpiceTokenType tokenType, string lexem, int lineNumber = 0, int startColumnIndex = 0, string fileName = null)
+            : base((int)tokenType, lexem, lineNumber, startColumnIndex, fileName)
         {
             SpiceTokenType = tokenType;
         }

@@ -88,6 +88,11 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
                 {
                     if (_parsers.ContainsKey(ntn.Name))
                     {
+                        var tokenIndexToUse = Math.Min(currentTokenIndex, tokens.Length - 1);
+
+                        ntn.StartColumnIndex = tokens[tokenIndexToUse].StartColumnIndex;
+                        ntn.LineNumber = tokens[tokenIndexToUse].LineNumber;
+                        ntn.FileName = tokens[tokenIndexToUse].FileName;
                         _parsers[ntn.Name](stack, ntn, tokens, currentTokenIndex);
                     }
                     else
@@ -106,9 +111,16 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
 
                     if (tn.Token.SpiceTokenType == tokens[currentTokenIndex].SpiceTokenType && (tn.Token.Lexem == null || tn.Token.Lexem == tokens[currentTokenIndex].Lexem))
                     {
+                        //TODO: refactor it
+
                         tn.Token.Lexem = tokens[currentTokenIndex].Lexem;
                         tn.Token.LineNumber = tokens[currentTokenIndex].LineNumber;
+                        tn.Token.StartColumnIndex = tokens[currentTokenIndex].StartColumnIndex;
                         tn.Token.FileName = tokens[currentTokenIndex].FileName;
+
+                        ((ParseTreeNonTerminalNode) tn.Parent).EndColumnIndex =
+                            tokens[currentTokenIndex].EndColumnIndex;
+
                         currentTokenIndex++;
                     }
                     else
