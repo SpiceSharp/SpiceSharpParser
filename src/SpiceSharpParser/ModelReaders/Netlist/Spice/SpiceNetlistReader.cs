@@ -52,28 +52,42 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
             // Get reading context
             var resultService = new ResultService(result);
-            var nodeNameGenerator = new MainCircuitNodeNameGenerator(new string[] { "0" }, Settings.CaseSensitivity.IsNodeNameCaseSensitive);
+            var nodeNameGenerator = new MainCircuitNodeNameGenerator(
+                new [] { "0" }, 
+                Settings.CaseSensitivity.IsNodeNameCaseSensitive);
             var objectNameGenerator = new ObjectNameGenerator(string.Empty);
             INameGenerator nameGenerator = new NameGenerator(nodeNameGenerator, objectNameGenerator);
             IRandomizer randomizer = new Randomizer(
                 Settings.CaseSensitivity.IsDistributionNameCaseSensitive,
                 seed: Settings.Seed);
 
+            IExpressionParserFactory expressionParserFactory = new ExpressionParserFactory(Settings.CaseSensitivity);
+            IExpressionFeaturesReader expressionFeaturesReader = new ExpressionFeaturesReader(expressionParserFactory);
+            IExpressionValueProvider expressionValueProvider = new ExpressionValueProvider(expressionParserFactory);
 
-            ExpressionParserFactory expressionParserFactory = new ExpressionParserFactory(Settings.CaseSensitivity);
-            ExpressionFeaturesReader expressionFeaturesReader = new ExpressionFeaturesReader(expressionParserFactory);
-            ExpressionValueProvider expressionValueProvider = new ExpressionValueProvider(expressionParserFactory);
+            EvaluationContext expressionContext = new SpiceEvaluationContext(
+                string.Empty,
+                Settings.EvaluatorMode,
+                Settings.CaseSensitivity,
+                randomizer,
+                expressionParserFactory,
+                expressionFeaturesReader,
+                expressionValueProvider,
+                nameGenerator,
+                resultService);
 
-            var parsingEvaluationContext = CreateExpressionContext(expressionParserFactory, expressionFeaturesReader, expressionValueProvider, nameGenerator, randomizer, resultService);
-            var simulationEvaluationContexts = new SimulationEvaluationContexts(parsingEvaluationContext);
-            ISimulationPreparations simulationPreparations = new SimulationPreparations(new EntityUpdates(Settings.CaseSensitivity.IsParameterNameCaseSensitive, simulationEvaluationContexts), new SimulationsUpdates(simulationEvaluationContexts));
+            var simulationEvaluationContexts = new SimulationEvaluationContexts(expressionContext);
+            ISimulationPreparations simulationPreparations = new SimulationPreparations(
+                new EntityUpdates(Settings.CaseSensitivity.IsParameterNameCaseSensitive, simulationEvaluationContexts),
+                new SimulationsUpdates(simulationEvaluationContexts));
 
-            ICircuitEvaluator circuitEvaluator = new CircuitEvaluator(simulationEvaluationContexts, parsingEvaluationContext);
-            ISpiceStatementsReader statementsReader = new SpiceStatementsReader(Settings.Mappings.Controls, Settings.Mappings.Models, Settings.Mappings.Components);
+            ICircuitEvaluator circuitEvaluator = new CircuitEvaluator(simulationEvaluationContexts, expressionContext);
+            ISpiceStatementsReader statementsReader = new SpiceStatementsReader(Settings.Mappings.Controls,
+                Settings.Mappings.Models, Settings.Mappings.Components);
             IWaveformReader waveformReader = new WaveformReader(Settings.Mappings.Waveforms);
 
             ICircuitContext circuitContext = new CircuitContext(
-                "Netlist reading context",
+                "Root circuit context",
                 null,
                 circuitEvaluator,
                 simulationPreparations,
@@ -96,22 +110,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             result.Seed = circuitContext.Evaluator.Seed;
 
             return result;
-        }
-
-        private EvaluationContext CreateExpressionContext(IExpressionParserFactory parserFactory, IExpressionFeaturesReader featuresReader, IExpressionValueProvider valueProvider,  INameGenerator nameGenerator, IRandomizer randomizer, IResultService resultService)
-        {
-            EvaluationContext rootContext = new SpiceEvaluationContext(
-                string.Empty,
-                Settings.EvaluatorMode,
-                Settings.CaseSensitivity,
-                randomizer,
-                parserFactory,
-                featuresReader,
-                valueProvider,
-                nameGenerator,
-                resultService);
-
-            return rootContext;
         }
     }
 }

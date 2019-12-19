@@ -105,7 +105,7 @@ namespace SpiceSharpParser
             // Preprocessing
             SpiceNetlist preprocessedNetListModel = (SpiceNetlist)originalNetlistModel.Clone();
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(
-                new string[] { "0" },
+                new [] { "0" },
                 Settings.Reading.CaseSensitivity.IsNodeNameCaseSensitive);
 
             var objectNameGenerator = new ObjectNameGenerator(string.Empty);
