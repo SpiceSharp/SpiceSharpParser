@@ -12,14 +12,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
     /// <summary>
     /// A result of reading a SPICE netlist model.
     /// </summary>
-    public class SpiceNetlistReaderResult
+    public class SpiceModel<TCircuit, TSimulation> : ISpiceModel<TCircuit, TSimulation> where TCircuit : class
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SpiceNetlistReaderResult"/> class.
-        /// </summary>
-        /// <param name="circuit">The SpiceSharp circuit for the netlist.</param>
-        /// <param name="title">The title of the netlist.</param>
-        public SpiceNetlistReaderResult(Circuit circuit, string title)
+        public SpiceModel(TCircuit circuit, string title)
         {
             Circuit = circuit ?? throw new System.ArgumentNullException(nameof(circuit));
             Title = title;
@@ -33,12 +28,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <summary>
         /// Gets the circuit from the netlist.
         /// </summary>
-        public Circuit Circuit { get; }
+        public TCircuit Circuit { get; }
 
         /// <summary>
         /// Gets the list of simulation from the netlist.
         /// </summary>
-        public List<Simulation> Simulations { get; } = new List<Simulation>();
+        public List<TSimulation> Simulations { get; } = new List<TSimulation>();
 
         /// <summary>
         /// Gets the list of comments from the netlist.

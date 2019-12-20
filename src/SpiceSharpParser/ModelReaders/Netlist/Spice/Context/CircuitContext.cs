@@ -25,7 +25,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="parent">Parent of the context.</param>
         /// <param name="evaluator">Circuit evaluator.</param>
         /// <param name="simulationPreparations">Simulation preparations.</param>
-        /// <param name="resultService">SpiceSharpModel service for the context.</param>
+        /// <param name="resultService">SpiceModel service for the context.</param>
         /// <param name="nameGenerator">Name generator for the models.</param>
         /// <param name="statementsReader">Statements reader.</param>
         /// <param name="waveformReader">Waveform reader.</param>

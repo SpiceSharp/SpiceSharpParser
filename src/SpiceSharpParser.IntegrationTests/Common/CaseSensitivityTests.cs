@@ -43,7 +43,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
 
             var parseResult = parser.ParseNetlist(text);
 
-            parseResult.SpiceSharpModel.Simulations[0].Run(parseResult.SpiceSharpModel.Circuit);
+            parseResult.SpiceModel.Simulations[0].Run(parseResult.SpiceModel.Circuit);
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var parseResult = parser.ParseNetlist(text);
-            parseResult.SpiceSharpModel.Simulations[0].Run(parseResult.SpiceSharpModel.Circuit);
+            parseResult.SpiceModel.Simulations[0].Run(parseResult.SpiceModel.Circuit);
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var parseResult = parser.ParseNetlist(text);
-            parseResult.SpiceSharpModel.Simulations[0].Run(parseResult.SpiceSharpModel.Circuit);
+            parseResult.SpiceModel.Simulations[0].Run(parseResult.SpiceModel.Circuit);
         }
 
         [Fact]
@@ -102,7 +102,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
 
             var parseResult = parser.ParseNetlist(text);
             Assert.Throws<ArgumentException>(() =>
-                parseResult.SpiceSharpModel.Simulations[0].Run(parseResult.SpiceSharpModel.Circuit));
+                parseResult.SpiceModel.Simulations[0].Run(parseResult.SpiceModel.Circuit));
         }
 
         [Fact]
@@ -124,7 +124,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
 
             var parseResult = parser.ParseNetlist(text);
 
-            parseResult.SpiceSharpModel.Simulations[0].Run(parseResult.SpiceSharpModel.Circuit);
+            parseResult.SpiceModel.Simulations[0].Run(parseResult.SpiceModel.Circuit);
         }
 
         [Fact]
@@ -197,7 +197,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var parseResult = parser.ParseNetlist(text);
-            var export = RunOpSimulation(parseResult.SpiceSharpModel, "V(Out)");
+            var export = RunOpSimulation(parseResult.SpiceModel, "V(Out)");
 
             Assert.Equal(-10, export);
         }
@@ -221,7 +221,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var parseResult = parser.ParseNetlist(text);
-            Assert.Throws<ReadingException>(() => RunOpSimulation(parseResult.SpiceSharpModel, "V(Out)"));
+            Assert.Throws<ReadingException>(() => RunOpSimulation(parseResult.SpiceModel, "V(Out)"));
         }
 
         [Fact]
@@ -248,7 +248,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var parseResult = parser.ParseNetlist(text);
-            double export = RunOpSimulation(parseResult.SpiceSharpModel, "V(OUT)");
+            double export = RunOpSimulation(parseResult.SpiceModel, "V(OUT)");
 
             // Get references
             double[] references = { 1.0 };
@@ -275,7 +275,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var parseResult = parser.ParseNetlist(text);
-            var export = RunOpSimulation(parseResult.SpiceSharpModel, "I(r1)");
+            var export = RunOpSimulation(parseResult.SpiceModel, "I(r1)");
 
             Assert.Equal(10, export);
         }
@@ -299,7 +299,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var parseResult = parser.ParseNetlist(text);
-            Assert.Throws<NullReferenceException>(() => RunOpSimulation(parseResult.SpiceSharpModel, "I(r1)"));
+            Assert.Throws<NullReferenceException>(() => RunOpSimulation(parseResult.SpiceModel, "I(r1)"));
         }
 
         [Fact]
@@ -322,7 +322,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var parseResult = parser.ParseNetlist(text);
-            var export = RunOpSimulation(parseResult.SpiceSharpModel, "i(V1)");
+            var export = RunOpSimulation(parseResult.SpiceModel, "i(V1)");
 
             EqualsWithTol(-618.507827392572, export);
         }
@@ -348,7 +348,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var parseResult = parser.ParseNetlist(text);
-            var export = RunOpSimulation(parseResult.SpiceSharpModel, "i(V1)");
+            var export = RunOpSimulation(parseResult.SpiceModel, "i(V1)");
 
             EqualsWithTol(-618.507827392572, export);
         }
@@ -374,7 +374,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var parseResult = parser.ParseNetlist(text);
-            var export = RunOpSimulation(parseResult.SpiceSharpModel, "i(V1)");
+            var export = RunOpSimulation(parseResult.SpiceModel, "i(V1)");
 
             EqualsWithTol(-618.507827392572, export);
         }
@@ -424,7 +424,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var parseResult = parser.ParseNetlist(text);
-            var export = RunOpSimulation(parseResult.SpiceSharpModel, "A");
+            var export = RunOpSimulation(parseResult.SpiceModel, "A");
 
             EqualsWithTol(-618.507827392572, export);
         }
@@ -473,7 +473,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var parseResult = parser.ParseNetlist(text);
-            var export = RunDCSimulation(parseResult.SpiceSharpModel, "i(V1)");
+            var export = RunDCSimulation(parseResult.SpiceModel, "i(V1)");
 
             // Get reference
             double[] references =
@@ -504,7 +504,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var parseResult = parser.ParseNetlist(text);
-            var export = RunDCSimulation(parseResult.SpiceSharpModel, "i(V1)");
+            var export = RunDCSimulation(parseResult.SpiceModel, "i(V1)");
 
             // Get reference
             double[] references =
@@ -535,7 +535,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var parseResult = parser.ParseNetlist(text);
-            var export = RunDCSimulation(parseResult.SpiceSharpModel, "@V1[I]");
+            var export = RunDCSimulation(parseResult.SpiceModel, "@V1[I]");
 
             // Get reference
             double[] references =
@@ -566,7 +566,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var parseResult = parser.ParseNetlist(text);
-            Assert.Throws<ReadingException>(() => RunDCSimulation(parseResult.SpiceSharpModel, "@V1[I]"));
+            Assert.Throws<ReadingException>(() => RunDCSimulation(parseResult.SpiceModel, "@V1[I]"));
         }
 
         [Fact]

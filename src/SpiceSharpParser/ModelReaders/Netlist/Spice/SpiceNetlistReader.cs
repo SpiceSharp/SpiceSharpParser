@@ -1,4 +1,5 @@
 ﻿using SpiceSharp;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Mathematics.Probability;
@@ -38,7 +39,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <returns>
         /// A new SpiceSharp netlist.
         /// </returns>
-        public SpiceNetlistReaderResult Read(SpiceNetlist netlist)
+        public SpiceModel<SpiceSharp.Circuit, Simulation> Read(SpiceNetlist netlist)
         {
             if (netlist == null)
             {
@@ -46,7 +47,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             }
 
             // Get result netlist
-            var result = new SpiceNetlistReaderResult(
+            var result = new SpiceModel<Circuit, Simulation>(
                 new Circuit(StringComparerProvider.Get(Settings.CaseSensitivity.IsEntityNameCaseSensitive)),
                 netlist.Title);
 

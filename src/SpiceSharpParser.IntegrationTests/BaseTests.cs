@@ -4,6 +4,7 @@ using SpiceSharpParser.Models.Netlist.Spice;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharp;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests
@@ -20,7 +21,7 @@ namespace SpiceSharpParser.IntegrationTests
         /// </summary>
         private double RelTol = 1e-3;
 
-        public static SpiceNetlistReaderResult ParseNetlistInWorkingDirectory(string workingDirectory, params string[] lines)
+        public static ISpiceModel<Circuit, Simulation> ParseNetlistInWorkingDirectory(string workingDirectory, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parser = new SpiceParser();
@@ -31,10 +32,10 @@ namespace SpiceSharpParser.IntegrationTests
 
             var parserResult = parser.ParseNetlist(text);
 
-            return parserResult.SpiceSharpModel;
+            return parserResult.SpiceModel;
         }
 
-        public static SpiceNetlistReaderResult ParseNetlist(params string[] lines)
+        public static ISpiceModel<Circuit, Simulation> ParseNetlist(params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parser = new SpiceParser();
@@ -42,10 +43,10 @@ namespace SpiceSharpParser.IntegrationTests
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
 
-            return parser.ParseNetlist(text).SpiceSharpModel;
+            return parser.ParseNetlist(text).SpiceModel;
         }
 
-        public static SpiceNetlistReaderResult ParseNetlist(int randomSeed, params string[] lines)
+        public static ISpiceModel<Circuit, Simulation> ParseNetlist(int randomSeed, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parser = new SpiceParser();
@@ -54,7 +55,7 @@ namespace SpiceSharpParser.IntegrationTests
             parser.Settings.Parsing.IsEndRequired = true;
             parser.Settings.Reading.Seed = randomSeed;
 
-            return parser.ParseNetlist(text).SpiceSharpModel;
+            return parser.ParseNetlist(text).SpiceModel;
         }
 
         public static SpiceNetlist ParseNetlistToModel(bool isEndRequired, bool hasTitle, params string[] lines)
@@ -88,13 +89,13 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         /// <summary>
-        /// Runs simulations from <see cref="SpiceNetlistReaderResult.Simulations"/> collection.
+        /// Runs simulations from collection.
         /// </summary>
         /// <param name="readerResult">A reader result</param>
         /// <returns>
         /// A list of exports list
         /// </returns>
-        public static List<object> RunSimulationsAndReturnExports(SpiceNetlistReaderResult readerResult)
+        public static List<object> RunSimulationsAndReturnExports(ISpiceModel<Circuit, Simulation> readerResult)
         {
             var result = new List<object>();
 
@@ -140,13 +141,13 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
         /// <summary>
-        /// Runs simulations from <see cref="SpiceNetlistReaderResult.Simulations"/> collection.
+        /// Runs simulations from collection.
         /// </summary>
         /// <param name="readerResult">A reader result</param>
         /// <returns>
         /// A list of exports list
         /// </returns>
-        public static void RunSimulations(SpiceNetlistReaderResult readerResult)
+        public static void RunSimulations(ISpiceModel<Circuit, Simulation> readerResult)
         {
             foreach (var simulation in readerResult.Simulations)
             {
@@ -154,7 +155,7 @@ namespace SpiceSharpParser.IntegrationTests
             }
         }
 
-        public static double RunOpSimulation(SpiceNetlistReaderResult readerResult, string nameOfExport)
+        public static double RunOpSimulation(ISpiceModel<Circuit, Simulation> readerResult, string nameOfExport)
         {
             double result = double.NaN;
             var export = readerResult.Exports.Find(e => e.Name == nameOfExport);
@@ -169,7 +170,7 @@ namespace SpiceSharpParser.IntegrationTests
             return result;
         }
 
-        public static double[] RunOpSimulation(SpiceNetlistReaderResult readerResult, params string[] nameOfExport)
+        public static double[] RunOpSimulation(ISpiceModel<Circuit, Simulation> readerResult, params string[] nameOfExport)
         {
             var simulation = readerResult.Simulations.Single();
             double[] result = new double[nameOfExport.Length];
@@ -188,7 +189,7 @@ namespace SpiceSharpParser.IntegrationTests
             return result;
         }
 
-        public static Tuple<string, double>[] RunOpSimulation(SpiceNetlistReaderResult readerResult)
+        public static Tuple<string, double>[] RunOpSimulation(SpiceModel<Circuit, Simulation> readerResult)
         {
             var simulation = readerResult.Simulations.First(s => s is OP);
             Tuple<string, double>[] result = new Tuple<string, double>[readerResult.Exports.Count];
@@ -214,7 +215,7 @@ namespace SpiceSharpParser.IntegrationTests
             return result;
         }
 
-        public static Tuple<double, double>[] RunTransientSimulation(SpiceNetlistReaderResult readerResult, string nameOfExport)
+        public static Tuple<double, double>[] RunTransientSimulation(ISpiceModel<Circuit, Simulation> readerResult, string nameOfExport)
         {
             var list = new List<Tuple<double, double>>();
 
@@ -230,7 +231,7 @@ namespace SpiceSharpParser.IntegrationTests
             return list.ToArray();
         }
 
-        public static Tuple<double, double>[] RunDCSimulation(SpiceNetlistReaderResult readerResult, string nameOfExport)
+        public static Tuple<double, double>[] RunDCSimulation(ISpiceModel<Circuit, Simulation> readerResult, string nameOfExport)
         {
             var list = new List<Tuple<double, double>>();
 

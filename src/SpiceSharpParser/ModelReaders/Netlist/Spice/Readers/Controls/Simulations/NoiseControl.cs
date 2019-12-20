@@ -35,7 +35,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             // Check parameter count
             switch (statement.Parameters.Count)
             {
-                case 0: throw new WrongParametersCountException("SpiceSharpModel expected for .NOISE", statement.LineInfo);
+                case 0: throw new WrongParametersCountException("SpiceModel expected for .NOISE", statement.LineInfo);
                 case 1: throw new WrongParametersCountException("Source expected", statement.LineInfo);
                 case 2: throw new WrongParametersCountException("Step type expected", statement.LineInfo);
                 case 3: throw new WrongParametersCountException("Number of points expected", statement.LineInfo);
