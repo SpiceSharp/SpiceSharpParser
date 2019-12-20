@@ -12,6 +12,8 @@ using SpiceSharpParser.Parsers.Expression;
 using SpiceSharpParser.Parsers.Netlist.Spice;
 using System;
 using System.Collections.Generic;
+using SpiceSharp;
+using SpiceSharp.Simulations;
 
 namespace SpiceSharpParser
 {
@@ -137,13 +139,13 @@ namespace SpiceSharpParser
 
             // Reading model
             var reader = new SpiceNetlistReader(Settings.Reading);
-            SpiceNetlistReaderResult readerResult = reader.Read(preprocessedNetListModel);
+            SpiceModel<Circuit, Simulation> readerResult = reader.Read(preprocessedNetListModel);
 
             return new SpiceParserResult()
             {
                 OriginalInputModel = originalNetlistModel,
                 PreprocessedInputModel = preprocessedNetListModel,
-                SpiceSharpModel = readerResult,
+                SpiceModel = readerResult,
             };
         }
     }

@@ -1,5 +1,7 @@
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using System.Collections.Generic;
+using SpiceSharp;
+using SpiceSharp.Simulations;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Stochastic
@@ -29,8 +31,8 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
         [Fact]
         public void OptionsSeed()
         {
-            SpiceNetlistReaderResult parseResult2223 = null;
-            SpiceNetlistReaderResult parseResult2224 = null;
+            ISpiceModel<Circuit, Simulation> parseResult2223 = null;
+            ISpiceModel<Circuit, Simulation> parseResult2224 = null;
 
             var resultsSeed2223 = new List<double>();
             var resultsSeed2224 = new List<double>();
@@ -92,8 +94,8 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
         [Fact]
         public void OptionsSeedOverridesParsingSeed()
         {
-            SpiceNetlistReaderResult parseResult2223 = null;
-            SpiceNetlistReaderResult parseResult2224 = null;
+            ISpiceModel<Circuit, Simulation> parseResult2223 = null;
+            ISpiceModel<Circuit, Simulation> parseResult2224 = null;
 
             var resultsSeed2223 = new List<double>();
             var resultsSeed2224 = new List<double>();
@@ -159,8 +161,8 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
         {
             for (var index = 0; index < 12; index++)
             {
-                SpiceNetlistReaderResult parseResult2223 = null;
-                SpiceNetlistReaderResult parseResult2224 = null;
+                ISpiceModel<Circuit, Simulation> parseResult2223 = null;
+                ISpiceModel<Circuit, Simulation> parseResult2224 = null;
 
                 var resultsSeed2223 = new List<double>();
                 var resultsSeed2224 = new List<double>();

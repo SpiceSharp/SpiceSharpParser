@@ -9,6 +9,7 @@
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharpParser&metric=code_smells)](https://sonarcloud.io/dashboard?id=SpiceSharpParser)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharpParser&metric=ncloc)](https://sonarcloud.io/dashboard?id=SpiceSharpParser)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharpParser&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=SpiceSharpParser)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarcin-golebiowski%2FSpiceSharpParser.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarcin-golebiowski%2FSpiceSharpParser?ref=badge_shield)
 
 
 SpiceSharpParser is a .NET library that allows to parse SPICE netlists and to simulate them using SpiceSharp.
@@ -134,3 +135,6 @@ Note: Only voltage and current expressions are supported in TABLE, VALUE
 
 ## License
 SpiceSharpParser is under MIT License
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarcin-golebiowski%2FSpiceSharpParser.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarcin-golebiowski%2FSpiceSharpParser?ref=badge_large)

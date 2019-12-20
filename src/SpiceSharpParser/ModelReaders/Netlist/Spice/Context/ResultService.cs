@@ -18,7 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Initializes a new instance of the <see cref="ResultService"/> class.
         /// </summary>
         /// <param name="result">A SPICE model reader result.</param>
-        public ResultService(SpiceNetlistReaderResult result)
+        public ResultService(SpiceModel<Circuit, Simulation> result)
         {
             Result = result ?? throw new ArgumentNullException(nameof(result));
         }
@@ -60,7 +60,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets the result where things are added.
         /// </summary>
-        private SpiceNetlistReaderResult Result { get; }
+        private SpiceModel<Circuit, Simulation> Result { get; }
 
         /// <summary>
         /// Adds warning.

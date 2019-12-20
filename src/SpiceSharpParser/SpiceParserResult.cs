@@ -1,4 +1,6 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice;
+﻿using SpiceSharp;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
 
 namespace SpiceSharpParser
@@ -9,9 +11,9 @@ namespace SpiceSharpParser
     public class SpiceParserResult
     {
         /// <summary>
-        /// Gets or sets the result of reading <see cref="SpiceNetlistReaderResult"/> model.
+        /// Gets or sets the result of reading <see cref="SpiceModel{TCircuit,TSimulation}"/> model.
         /// </summary>
-        public SpiceNetlistReaderResult SpiceSharpModel { get; set; }
+        public ISpiceModel<Circuit, Simulation> SpiceModel { get; set; }
 
         /// <summary>
         /// Gets or sets the netlist model before preprocessing.
