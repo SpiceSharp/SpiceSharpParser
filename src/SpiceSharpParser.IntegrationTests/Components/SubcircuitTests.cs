@@ -1,3 +1,4 @@
+using System;
 using SpiceSharpParser.Parsers.Netlist;
 using Xunit;
 
@@ -29,9 +30,9 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double export = RunOpSimulation(netlist, "V(OUT)");
 
             // Get references
-            double[] references = { 1.0 };
+            double[] references = {1.0};
 
-            EqualsWithTol(new double[] { export }, references);
+            EqualsWithTol(new double[] {export}, references);
         }
 
         [Fact]
@@ -58,9 +59,9 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double export = RunOpSimulation(netlist, "V(OUT)");
 
             // Get references
-            double[] references = { 1.0 };
+            double[] references = {1.0};
 
-            EqualsWithTol(new double[] { export }, references);
+            EqualsWithTol(new double[] {export}, references);
         }
 
         [Fact]
@@ -87,9 +88,9 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double export = RunOpSimulation(netlist, "V(OUT)");
 
             // Get references
-            double[] references = { 1.0 };
+            double[] references = {1.0};
 
-            EqualsWithTol(new double[] { export }, references);
+            EqualsWithTol(new double[] {export}, references);
         }
 
         [Fact]
@@ -111,9 +112,9 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double export = RunOpSimulation(netlist, "V(OUT)");
 
             // Get references
-            double[] references = { 1.0 };
+            double[] references = {1.0};
 
-            EqualsWithTol(new double[] { export }, references);
+            EqualsWithTol(new double[] {export}, references);
         }
 
         [Fact]
@@ -137,7 +138,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] exports = RunOpSimulation(netlist, "V(OUT)", "V(OUT2)");
 
             // Get references
-            double[] references = { 2.4, 2.0 };
+            double[] references = {2.4, 2.0};
 
             EqualsWithTol(exports, references);
         }
@@ -164,7 +165,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] exports = RunOpSimulation(netlist, "V(OUT)", "V(OUT2)");
 
             // Get references
-            double[] references = { 5.0, 0.5 };
+            double[] references = {5.0, 0.5};
 
             EqualsWithTol(exports, references);
         }
@@ -188,9 +189,9 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double export = RunOpSimulation(netlist, "V(OUT)");
 
             // Get references
-            double[] references = { 1.0 };
+            double[] references = {1.0};
 
-            EqualsWithTol(new double[] { export }, references);
+            EqualsWithTol(new double[] {export}, references);
         }
 
         [Fact]
@@ -212,9 +213,9 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double export = RunOpSimulation(netlist, "V(OUT)");
 
             // Get references
-            double[] references = { (1.0 / (10.0 + 20.0 + 1.0)) * 4.0 };
+            double[] references = {(1.0 / (10.0 + 20.0 + 1.0)) * 4.0};
 
-            EqualsWithTol(new double[] { export }, references);
+            EqualsWithTol(new double[] {export}, references);
         }
 
         [Fact]
@@ -239,9 +240,9 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double export = RunOpSimulation(netlist, "V(OUT)");
 
             // Get references
-            double[] references = { (1.0 / (10.0 + 20.0 + 1.0)) * 4.0 };
+            double[] references = {(1.0 / (10.0 + 20.0 + 1.0)) * 4.0};
 
-            EqualsWithTol(new double[] { export }, references);
+            EqualsWithTol(new double[] {export}, references);
         }
 
         [Fact]
@@ -266,9 +267,9 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double export = RunOpSimulation(netlist, "V(OUT)");
 
             // Get references
-            double[] references = { (1.0 / (10.0 + 20.0 + 1.0)) * 4.0 };
+            double[] references = {(1.0 / (10.0 + 20.0 + 1.0)) * 4.0};
 
-            EqualsWithTol(new double[] { export }, references);
+            EqualsWithTol(new double[] {export}, references);
         }
 
         [Fact]
@@ -294,33 +295,31 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double export = RunOpSimulation(netlist, "V(OUT)");
 
             // Get references
-            double[] references = { (1.0 / (10.0 + 20.0 + 1.0)) * 4.0 };
+            double[] references = {(1.0 / (10.0 + 20.0 + 1.0)) * 4.0};
 
-            EqualsWithTol(new double[] { export }, references);
+            EqualsWithTol(new double[] {export}, references);
         }
 
         [Fact]
         public void SubcircuitWithWrongEnding()
         {
-            try
-            {
-                var netlist = ParseNetlist(
-                    "Subcircuit - ComplexContainedSubcircuitWithParams",
-                    "V1 IN 0 4.0",
-                    "X1 IN OUT resistor",
-                    "RX OUT 0 1",
-                    ".SUBCKT resistor input output params: R=1",
-                    "R1 input output {R}",
-                    ".ENDS resistor2",
-                    ".OP",
-                    ".SAVE V(OUT)",
-                    ".END");
+            var text = string.Join(Environment.NewLine, "Subcircuit - ComplexContainedSubcircuitWithParams",
+                "V1 IN 0 4.0",
+                "X1 IN OUT resistor",
+                "RX OUT 0 1",
+                ".SUBCKT resistor input output params: R=1",
+                "R1 input output {R}",
+                ".ENDS resistor2",
+                ".OP",
+                ".SAVE V(OUT)",
+                ".END");
+            var parser = new SpiceParser();
 
-                Assert.True(false, "There should be exception");
-            }
-            catch (ParseException)
-            {
-            }
+            parser.Settings.Lexing.HasTitle = true;
+            parser.Settings.Parsing.IsEndRequired = true;
+
+            var result = parser.ParseNetlist(text);
+            Assert.False(result.ValidationResult.ParsingValidationResult.IsValid);
         }
     }
 }

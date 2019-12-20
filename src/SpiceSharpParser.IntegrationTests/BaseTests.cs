@@ -189,7 +189,7 @@ namespace SpiceSharpParser.IntegrationTests
             return result;
         }
 
-        public static Tuple<string, double>[] RunOpSimulation(SpiceModel<Circuit, Simulation> readerResult)
+        public static Tuple<string, double>[] RunOpSimulation(ISpiceModel<Circuit, Simulation> readerResult)
         {
             var simulation = readerResult.Simulations.First(s => s is OP);
             Tuple<string, double>[] result = new Tuple<string, double>[readerResult.Exports.Count];

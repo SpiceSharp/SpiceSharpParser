@@ -9,6 +9,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -153,7 +154,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
             else
             {
-                context.Result.AddWarning($"{plotImage} is not valid for: {simulation.Name}");
+                context.Result.AddValidationException(new SpiceSharpParserException($"{plotImage} is not valid for: {simulation.Name}"));
             }
         }
 

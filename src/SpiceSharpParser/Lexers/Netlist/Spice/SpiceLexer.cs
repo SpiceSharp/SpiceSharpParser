@@ -39,9 +39,16 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
             var state = new SpiceLexerState();
             var lexer = new Lexer<SpiceLexerState>(_grammar);
 
-            foreach (var token in lexer.GetTokens(netlistText, state))
+            var lexerResult = lexer.GetTokens(netlistText, state);
+
+            if (!lexerResult.IsValid)
             {
-                yield return new SpiceToken((SpiceTokenType)token.Type, token.Lexem, state.LineNumber, state.StartColumnIndex,null);
+                throw new LexerException("Invalid netlist", lexerResult.LexerException);
+            }
+
+            foreach (var token in lexerResult.Tokens)
+            {
+                yield return new SpiceToken((SpiceTokenType)token.Type, token.Lexem, token.LineNumber, token.StartColumnIndex, null);
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using SpiceSharp;
 using SpiceSharp.IntegrationMethods;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -94,7 +95,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             break;
 
                         default:
-                            context.Result.AddWarning("Unsupported option: " + name);
+                            context.Result.AddValidationException(new SpiceSharpParserException($"Unsupported option: {name}"));
                             break;
                     }
                 }

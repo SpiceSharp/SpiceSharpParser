@@ -96,7 +96,7 @@ namespace SpiceSharpParser.Parsers.Expression
 
                 if (@throw)
                 {
-                    throw new UnknownParameterException(args.Name);
+                    throw new InvalidParameterException(args.Name, null);
                 }
                 else
                 {
