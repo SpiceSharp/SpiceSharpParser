@@ -9,6 +9,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -161,7 +162,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                 if (print.Rows.Count == 0 || print.Rows[0].Columns.Count == (simulation is OP ? 0 : 1))
                 {
-                    context.Result.AddWarning($"{printImage} is not valid for: {simulation.Name}");
+                    context.Result.AddValidationException(new SpiceSharpParserException($"{printImage} is not valid for: {simulation.Name}"));
                 }
                 else
                 {

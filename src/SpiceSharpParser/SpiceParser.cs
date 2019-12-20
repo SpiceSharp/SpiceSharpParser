@@ -14,6 +14,8 @@ using System;
 using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Lexers;
+using SpiceSharpParser.Parsers.Netlist;
 
 namespace SpiceSharpParser
 {
@@ -94,37 +96,44 @@ namespace SpiceSharpParser
                 throw new ArgumentNullException(nameof(spiceNetlist));
             }
 
-            if (Settings == null)
-            {
-                throw new InvalidOperationException(nameof(Settings));
-            }
+            var result = new SpiceParserResult { ValidationResult = new SpiceParserValidationResult() };
 
             // Get tokens
-            var tokens = TokenProviderPool.GetSpiceTokenProvider(Settings.Lexing).GetTokens(spiceNetlist);
+            try
+            {
+                var tokens = TokenProviderPool.GetSpiceTokenProvider(Settings.Lexing).GetTokens(spiceNetlist);
 
-            SpiceNetlist originalNetlistModel = SingleNetlistParser.Parse(tokens);
+                SpiceNetlist originalNetlistModel = SingleNetlistParser.Parse(tokens);
 
-            // Preprocessing
-            SpiceNetlist preprocessedNetListModel = (SpiceNetlist)originalNetlistModel.Clone();
-            var nodeNameGenerator = new MainCircuitNodeNameGenerator(
-                new [] { "0" },
-                Settings.Reading.CaseSensitivity.IsNodeNameCaseSensitive);
+                // Preprocessing
+                var preprocessedNetListModel = GetPreprocessedNetListModel(originalNetlistModel);
 
-            var objectNameGenerator = new ObjectNameGenerator(string.Empty);
-            INameGenerator nameGenerator = new NameGenerator(nodeNameGenerator, objectNameGenerator);
-            var expressionParserFactory = new ExpressionParserFactory(Settings.Reading.CaseSensitivity);
-            EvaluationContext preprocessorContext = new SpiceEvaluationContext(
-                string.Empty,
-                Settings.Reading.EvaluatorMode,
-                Settings.Reading.CaseSensitivity,
-                new Randomizer(
-                    Settings.Reading.CaseSensitivity.IsDistributionNameCaseSensitive,
-                    seed: Settings.Reading.Seed),
-                expressionParserFactory, 
-                new ExpressionFeaturesReader(expressionParserFactory), 
-                new ExpressionValueProvider(expressionParserFactory), 
-                nameGenerator,
-                null);
+                // Reading model
+                var reader = new SpiceNetlistReader(Settings.Reading);
+                ISpiceModel<Circuit, Simulation> spiceModel = reader.Read(preprocessedNetListModel);
+
+                result.OriginalInputModel = originalNetlistModel;
+                result.PreprocessedInputModel = preprocessedNetListModel;
+                result.SpiceModel = spiceModel;
+
+                result.ValidationResult.SpiceNetlistValidationResult.Exceptions.AddRange(result.SpiceModel.ValidationResult.Exceptions);
+            }
+            catch (LexerException e)
+            {
+                result.ValidationResult.LexerException = e;
+            }
+            catch (ParseException e)
+            {
+                result.ValidationResult.ParsingValidationResult.ParsingException = e;
+            }
+
+            return result;
+        }
+
+        private SpiceNetlist GetPreprocessedNetListModel(SpiceNetlist originalNetlistModel)
+        {
+            SpiceNetlist preprocessedNetListModel = (SpiceNetlist) originalNetlistModel.Clone();
+            var preprocessorContext = GetEvaluationContext();
 
             foreach (var preprocessor in Preprocessors)
             {
@@ -137,16 +146,32 @@ namespace SpiceSharpParser
                 preprocessedNetListModel.Statements = preprocessor.Process(preprocessedNetListModel.Statements);
             }
 
-            // Reading model
-            var reader = new SpiceNetlistReader(Settings.Reading);
-            SpiceModel<Circuit, Simulation> readerResult = reader.Read(preprocessedNetListModel);
+            return preprocessedNetListModel;
+        }
 
-            return new SpiceParserResult()
-            {
-                OriginalInputModel = originalNetlistModel,
-                PreprocessedInputModel = preprocessedNetListModel,
-                SpiceModel = readerResult,
-            };
+        private EvaluationContext GetEvaluationContext()
+        {
+            var nodeNameGenerator = new MainCircuitNodeNameGenerator(
+                new[] {"0"},
+                Settings.Reading.CaseSensitivity.IsNodeNameCaseSensitive);
+
+            var objectNameGenerator = new ObjectNameGenerator(string.Empty);
+            INameGenerator nameGenerator = new NameGenerator(nodeNameGenerator, objectNameGenerator);
+            var expressionParserFactory = new ExpressionParserFactory(Settings.Reading.CaseSensitivity);
+
+            EvaluationContext preprocessorContext = new SpiceEvaluationContext(
+                string.Empty,
+                Settings.Reading.EvaluatorMode,
+                Settings.Reading.CaseSensitivity,
+                new Randomizer(
+                    Settings.Reading.CaseSensitivity.IsDistributionNameCaseSensitive,
+                    seed: Settings.Reading.Seed),
+                expressionParserFactory,
+                new ExpressionFeaturesReader(expressionParserFactory),
+                new ExpressionValueProvider(expressionParserFactory),
+                nameGenerator,
+                null);
+            return preprocessorContext;
         }
     }
 }

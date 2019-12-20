@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace SpiceSharpParser.Lexers
@@ -31,78 +30,96 @@ namespace SpiceSharpParser.Lexers
         /// <param name="text">A text for which tokens will be returned.</param>
         /// <param name="state">A state for lexer.</param>
         /// <returns>An enumerable of tokens.</returns>
-        public IEnumerable<Token> GetTokens(string text, TLexerState state = null)
+        public LexerResult GetTokens(string text, TLexerState state = null)
         {
             if (text == null)
             {
                 throw new ArgumentNullException(nameof(text));
             }
 
-            int currentTokenIndex = 0;
-            var lineProvider = new LexerLineInfoProvider(text);
+            var result = new LexerResult();
 
-            if (state != null)
+            try
             {
-                state.LineNumber = 0;
-            }
+                int currentTokenIndex = 0;
+                var lineProvider = new LexerLineInfoProvider(text);
 
-            while (currentTokenIndex < text.Length)
-            {
                 if (state != null)
                 {
-                    var currentLineIndex = lineProvider.GetLineForIndex(currentTokenIndex);
-                    state.NewLine = state.LineNumber != currentLineIndex;
-                    state.LineNumber = currentLineIndex;
-                    state.StartColumnIndex = lineProvider.GetColumnForIndex(currentTokenIndex);
+                    state.LineNumber = 0;
                 }
 
-                if (FindBestTokenRule(text, currentTokenIndex, state, out var bestTokenRule, out var bestMatch))
+                while (currentTokenIndex < text.Length)
                 {
-                    var tokenActionResult = bestTokenRule.ReturnDecisionProvider(state, bestMatch.Value);
-                    if (tokenActionResult == LexerRuleReturnDecision.ReturnToken)
+                    if (state != null)
                     {
-                        if (state != null)
+                        var currentLineIndex = lineProvider.GetLineForIndex(currentTokenIndex);
+                        state.NewLine = state.LineNumber != currentLineIndex;
+                        state.LineNumber = currentLineIndex;
+                        state.StartColumnIndex = lineProvider.GetColumnForIndex(currentTokenIndex);
+                    }
+
+                    if (FindBestTokenRule(text, currentTokenIndex, state, out var bestTokenRule, out var bestMatch))
+                    {
+                        var tokenActionResult = bestTokenRule.ReturnDecisionProvider(state, bestMatch.Value);
+                        if (tokenActionResult == LexerRuleReturnDecision.ReturnToken)
                         {
-                            state.PreviousReturnedTokenType = bestTokenRule.TokenType;
+                            if (state != null)
+                            {
+                                state.PreviousReturnedTokenType = bestTokenRule.TokenType;
+                            }
+
+                            result.Tokens.Add(new Token(
+                                bestTokenRule.TokenType,
+                                bestMatch.Value,
+                                state?.LineNumber ?? 0,
+                                state?.StartColumnIndex ?? 0,
+                                null));
                         }
 
-                        yield return new Token(
-                            bestTokenRule.TokenType,
-                            bestMatch.Value,
-                            state?.LineNumber ?? 0,
-                            state?.StartColumnIndex ?? 0,
-                            null);
+                        currentTokenIndex += bestMatch.Length;
                     }
-
-                    currentTokenIndex += bestMatch.Length;
-                }
-                else
-                {
-                    bool matched = false;
-                    var textForDynamicRules = text.Substring(currentTokenIndex);
-                    foreach (LexerDynamicRule dynamicRule in Grammar.DynamicRules)
+                    else
                     {
-                        bool ruleMatch = textForDynamicRules.StartsWith(dynamicRule.Prefix);
-                        if (ruleMatch)
+                        bool matched = false;
+                        var textForDynamicRules = text.Substring(currentTokenIndex);
+                        foreach (LexerDynamicRule dynamicRule in Grammar.DynamicRules)
                         {
-                            var dynamicResult = dynamicRule.Action(textForDynamicRules);
+                            bool ruleMatch = textForDynamicRules.StartsWith(dynamicRule.Prefix);
+                            if (ruleMatch)
+                            {
+                                var dynamicResult = dynamicRule.Action(textForDynamicRules);
 
-                            yield return new Token(dynamicRule.TokenType, dynamicResult.Item1, state?.LineNumber ?? 0, state?.StartColumnIndex ?? 0, null);
+                                result.Tokens.Add(
+                                    new Token(
+                                        dynamicRule.TokenType,
+                                        dynamicResult.Item1,
+                                        state?.LineNumber ?? 0,
+                                        state?.StartColumnIndex ?? 0,
+                                        null));
 
-                            currentTokenIndex += dynamicResult.Item2;
-                            matched = true;
+                                currentTokenIndex += dynamicResult.Item2;
+                                matched = true;
+                            }
+                        }
+
+                        if (!matched)
+                        {
+                            throw new LexerException($"Can't get next token from text: '{textForDynamicRules}'");
                         }
                     }
-
-                    if (!matched)
-                    {
-                        throw new LexerException($"Can't get next token from text: '{textForDynamicRules}'");
-                    }
                 }
+
+                // yield EOF token
+                result.Tokens.Add(new Token(-1, "EOF", state?.LineNumber ?? 0, state?.StartColumnIndex ?? 0, null));
+
+            }
+            catch (LexerException ex)
+            {
+                result.LexerException = ex;
             }
 
-            // yield EOF token
-            yield return new Token(-1, "EOF", state?.LineNumber ?? 0, state?.StartColumnIndex ??0, null);
+            return result;
         }
 
         /// <summary>

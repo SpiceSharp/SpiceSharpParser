@@ -1,5 +1,6 @@
 ﻿using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
@@ -248,7 +249,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             catch (Exception e)
             {
-                throw new ReadingException($"Problem with setting parameter = {parameterName} with value = {value}", e);
+                throw new InvalidParameterException($"Problem with setting parameter = {parameterName} with value = {value}", null);
             }
         }
 

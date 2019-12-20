@@ -1,3 +1,4 @@
+using System;
 using SpiceSharpParser.Parsers.Netlist;
 
 using Xunit;
@@ -44,15 +45,16 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void NoEndingException()
         {
-            Assert.Throws<ParseException>(() =>
-                ParseNetlistToModel(
-                    true,
-                    true,
-                    "End test circuit",
-                    "* test1",
-                    "R1 OUT 0 10 ; test2",
-                    "V1 OUT 0 0 $  test3 ; test4 $ test5\n")
-               );
+            var text = string.Join(Environment.NewLine, "End test circuit",
+                "* test1",
+                "R1 OUT 0 10 ; test2",
+                "V1 OUT 0 0 $  test3 ; test4 $ test5\n");
+            var parser = new SpiceParser();
+            parser.Settings.Lexing.HasTitle = true;
+            parser.Settings.Parsing.IsEndRequired = true;
+
+            var result = parser.ParseNetlist(text);
+            Assert.False(result.ValidationResult.ParsingValidationResult.IsValid);
         }
     }
 }

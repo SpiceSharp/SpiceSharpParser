@@ -24,5 +24,7 @@ namespace SpiceSharpParser
         /// Gets or sets the netlist model after preprocessing.
         /// </summary>
         public SpiceNetlist PreprocessedInputModel { get; set; }
+
+        public SpiceParserValidationResult ValidationResult { get; set; }
     }
 }

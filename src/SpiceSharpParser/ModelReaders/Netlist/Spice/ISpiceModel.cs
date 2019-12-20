@@ -30,11 +30,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         List<string> Comments { get; }
 
         /// <summary>
-        /// Gets the warnings created during creating SpiceSharp objects.
-        /// </summary>
-        List<string> Warnings { get; }
-
-        /// <summary>
         /// Gets the list of exports from the netlist.
         /// </summary>
         List<Export> Exports { get; }
@@ -63,5 +58,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// Gets or sets the used random seed.
         /// </summary>
         int? Seed { get; set; }
+
+        SpiceNetlistValidationResult ValidationResult { get; }
     }
 }

@@ -9,6 +9,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.C
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Collections.Generic;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -65,15 +66,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Adds warning.
         /// </summary>
-        /// <param name="warning">Warning to add.</param>
-        public void AddWarning(string warning)
+        /// <param name="exception">Exception to add.</param>
+        public void AddValidationException(SpiceSharpParserException exception)
         {
-            if (warning == null)
-            {
-                throw new ArgumentNullException(nameof(warning));
-            }
-
-            Result.Warnings.Add(warning);
+            Result.ValidationResult.Exceptions.Add(exception);
         }
 
         /// <summary>

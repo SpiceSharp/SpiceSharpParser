@@ -121,7 +121,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void When_CdfPoints_LessThan4_Expect_Exception()
         {
-            Assert.Throws<ReadingException>(() => ParseNetlist(
+            var result = ParseNetlist(
                 "Monte Carlo Analysis - OP - POWER",
                 "V1 0 1 100",
                 "R1 1 0 {R}",
@@ -133,7 +133,9 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OPTIONS DISTRIBUTION = triangle_dist",
                 ".OPTIONS CDFPOINTS = 3",
                 ".DISTRIBUTION triangle_dist (-1,0) (0, 1) (1, 0)",
-                ".END"));
+                ".END");
+
+            Assert.False(result.ValidationResult.IsValid);
         }
     }
 }

@@ -54,11 +54,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
             if (Readers.ContainsKey(statement.GetType()))
             {
-                Readers[statement.GetType()].Read(statement, circuitContext);
+                try
+                {
+                    Readers[statement.GetType()].Read(statement, circuitContext);
+                }
+                catch (ReadingException e)
+                {
+                    circuitContext.Result.AddValidationException(e);
+                }
+                catch (Exception e)
+                {
+                    circuitContext.Result.AddValidationException(new ReadingException($"Problem with reading {statement.GetType()}", e, statement.LineInfo));
+                }
             }
             else
             {
-                throw new ReadingException($"There is no reader for the statement of type: {statement.GetType()}", statement.LineInfo);
+                circuitContext.Result.AddValidationException(new ReadingException($"There is no reader for the statement of type: {statement.GetType()}", statement.LineInfo));
             }
         }
     }
