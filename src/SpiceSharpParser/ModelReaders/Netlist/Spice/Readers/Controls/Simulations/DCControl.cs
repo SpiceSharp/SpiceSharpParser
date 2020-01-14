@@ -1,11 +1,11 @@
 ﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System.Collections.Generic;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
@@ -37,14 +37,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 case 0:
                     if (statement.Parameters.Count == 0)
                     {
-                        throw new WrongParametersCountException(".dc - Source Name expected", statement.LineInfo);
+                        context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".dc - Source Name expected", statement.LineInfo));
+                        return null;
                     }
-
                     break;
 
-                case 1: throw new WrongParametersCountException(".dc - Start value expected", statement.LineInfo);
-                case 2: throw new WrongParametersCountException(".dc - Stop value expected", statement.LineInfo);
-                case 3: throw new WrongParametersCountException(".dc - Step value expected", statement.LineInfo);
+                case 1:
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".dc - Start value expected", statement.LineInfo));
+                    return null;
+
+                case 2:
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".dc - Stop value expected", statement.LineInfo));
+                    return null;
+
+                case 3:
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".dc - Step value expected", statement.LineInfo));
+                    return null;
             }
 
             // Format: .DC SRCNAM VSTART VSTOP VINCR [SRC2 START2 STOP2 INCR2]

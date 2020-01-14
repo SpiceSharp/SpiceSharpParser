@@ -1,12 +1,12 @@
 ﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
 {
@@ -74,11 +74,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                 }
                 else
                 {
-                    throw new ReadingException($"There is no {expressionName} expression", exportParameter.LineInfo);
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"There is no {expressionName} expression", exportParameter.LineInfo));
+                    return null;
                 }
             }
 
-            throw new ReadingException($"Unsupported export: {exportParameter.Image}", exportParameter.LineInfo);
+            context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported export: {exportParameter.Image}", exportParameter.LineInfo));
+            return null;
         }
     }
 }

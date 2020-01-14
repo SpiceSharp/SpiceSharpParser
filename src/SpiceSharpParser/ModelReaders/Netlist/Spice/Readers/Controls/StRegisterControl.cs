@@ -1,5 +1,5 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+﻿using SpiceSharpParser.Common.Validation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
@@ -23,7 +23,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
             if (statement.Parameters.Count < 3)
             {
-                throw new WrongParametersCountException();
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
+                    ValidationEntryLevel.Warning,
+                    "Too less parameters for .ST_R",
+                    statement.LineInfo));
+
+                return;
             }
 
             string firstParam = statement.Parameters[0].Image;

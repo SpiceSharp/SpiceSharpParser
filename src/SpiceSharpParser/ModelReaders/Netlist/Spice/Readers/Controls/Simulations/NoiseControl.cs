@@ -1,6 +1,6 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -35,16 +35,31 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             // Check parameter count
             switch (statement.Parameters.Count)
             {
-                case 0: throw new WrongParametersCountException("SpiceModel expected for .NOISE", statement.LineInfo);
-                case 1: throw new WrongParametersCountException("Source expected", statement.LineInfo);
-                case 2: throw new WrongParametersCountException("Step type expected", statement.LineInfo);
-                case 3: throw new WrongParametersCountException("Number of points expected", statement.LineInfo);
-                case 4: throw new WrongParametersCountException("Starting frequency expected", statement.LineInfo);
-                case 5: throw new WrongParametersCountException("Stopping frequency expected", statement.LineInfo);
+                case 0:
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "SpiceModel expected for .NOISE", statement.LineInfo));
+                    return null;
+                case 1:
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Source expected", statement.LineInfo));
+                    return null;
+
+                case 2:
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Step type expected", statement.LineInfo));
+                    return null;
+                case 3:
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Number of points expected", statement.LineInfo));
+                    return null;
+                case 4:
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Starting frequency expected", statement.LineInfo));
+                    return null;
+
+                case 5:
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Stopping frequency expected", statement.LineInfo));
+                    return null;
                 case 6: break;
                 case 7: break;
                 default:
-                    throw new WrongParametersCountException("Too many parameters for .NOISE", statement.LineInfo);
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Too many parameters for .NOISE", statement.LineInfo));
+                    return null;
             }
 
             string type = statement.Parameters.Get(2).Image;
@@ -60,7 +75,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 case "oct": sweep = new OctaveSweep(start, stop, (int)numberSteps); break;
                 case "dec": sweep = new DecadeSweep(start, stop, (int)numberSteps); break;
                 default:
-                    throw new WrongParameterException("LIN, DEC or OCT expected", statement.LineInfo);
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "LIN, DEC or OCT expected", statement.LineInfo));
+                    return null;
             }
 
             // The first parameters needs to specify the output voltage
@@ -90,17 +106,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                             break;
 
                         default:
-                            throw new WrongParameterException("1 or 2 nodes expected", statement.LineInfo);
+                            context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "1 or 2 nodes expected", statement.LineInfo));
+                            return null;
                     }
                 }
                 else
                 {
-                    throw new WrongParameterException("Invalid output", statement.LineInfo);
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Invalid output", statement.LineInfo));
+                    return null;
                 }
             }
             else
             {
-                throw new WrongParameterException("Invalid output", statement.LineInfo);
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Invalid output", statement.LineInfo));
+                return null;
             }
 
             context.Result.AddSimulation(noise);

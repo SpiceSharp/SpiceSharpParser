@@ -1,5 +1,3 @@
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
-
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
@@ -37,9 +35,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".OP",
                 ".END");
 
-            Assert.False(result.ValidationResult.IsValid);
-            Assert.Contains(result.ValidationResult.Exceptions,
-                e => e.GetType() == typeof(WrongParameterTypeException));
+            Assert.True(result.ValidationResult.HasWarning);
         }
 
         [Fact]

@@ -1,5 +1,5 @@
 using System;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.Common;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.DotStatements
@@ -98,7 +98,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
 
             var mcResult = result.MonteCarloResult;
 
-            Assert.Throws<ReadingException>(() => mcResult.GetPlot(10));
+            Assert.Throws<SpiceSharpParserException>(() => mcResult.GetPlot(10));
         }
 
         [Fact]

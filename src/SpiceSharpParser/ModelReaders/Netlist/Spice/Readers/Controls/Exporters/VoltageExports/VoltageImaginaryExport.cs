@@ -1,5 +1,5 @@
 ﻿using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports
 {
@@ -57,7 +57,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             {
                 if (ExceptionsEnabled)
                 {
-                    throw new ReadingException($"Voltage imaginary export {Name} is invalid");
+                    throw new SpiceSharpParserException($"Voltage imaginary export {Name} is invalid");
                 }
 
                 return double.NaN;

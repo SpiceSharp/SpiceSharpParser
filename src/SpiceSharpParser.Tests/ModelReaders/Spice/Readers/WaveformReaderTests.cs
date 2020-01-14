@@ -1,12 +1,11 @@
 using NSubstitute;
 using SpiceSharp.Components;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
-using System;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
@@ -57,9 +56,15 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
             var readingContext = Substitute.For<ICircuitContext>();
             readingContext.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
 
+            var service = Substitute.For<IResultService>();
+            service.Validation.Returns(new SpiceNetlistValidationResult());
+            readingContext.Result.Returns(service);
+
             // act + assert
             WaveformReader waveformReader = new WaveformReader(waveFormRegistry);
-            Assert.Throws<ReadingException>(() => waveformReader.Generate("func2", new ParameterCollection(), readingContext));
+            waveformReader.Generate("func2", new ParameterCollection(), readingContext);
+
+            Assert.Single(readingContext.Result.Validation);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.IO;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.Common;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.DotStatements
@@ -61,16 +61,16 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void MissingEndIf()
         {
-            Assert.Throws<ReadingException>(() => ParseNetlistToModel(
-                false,
-                true,
+            var result = ParseNetlist(
                 "Missing endif",
                 ".IF (a == 0)",
                 "* Comment 1",
                 ".ELSE",
                 "* Comment 2",
                 ".PARAM a = 1",
-                ".END"));
+                ".END");
+
+            Assert.True(result.ValidationResult.HasWarning);
         }
 
         [Fact]

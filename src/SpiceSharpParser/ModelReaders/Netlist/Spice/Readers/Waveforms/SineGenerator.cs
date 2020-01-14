@@ -1,8 +1,8 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 {
@@ -33,7 +33,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 
             if (parameters.Count < 3 || parameters.Count > 6)
             {
-                throw new WrongParametersCountException("Wrong parameters count for sine. There must be 3, 4, 5 or 6 parameters", parameters.LineInfo);
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameters count for sine. There must be 3, 4, 5 or 6 parameters", parameters.LineInfo));
             }
 
             var sine = new Sine();

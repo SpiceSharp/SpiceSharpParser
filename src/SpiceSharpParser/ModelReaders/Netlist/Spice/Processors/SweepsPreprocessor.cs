@@ -6,6 +6,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
     public class SweepsPreprocessor : IProcessor
     {
+        public SpiceParserValidationResult Validation { get; set; }
+
         /// <summary>
         /// Preprocess .ST and .STEP.
         /// </summary>

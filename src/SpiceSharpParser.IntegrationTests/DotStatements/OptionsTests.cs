@@ -1,6 +1,5 @@
 ﻿using SpiceSharp.IntegrationMethods;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using System;
 using System.Linq;
 using Xunit;
@@ -135,7 +134,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".DISTRIBUTION triangle_dist (-1,0) (0, 1) (1, 0)",
                 ".END");
 
-            Assert.False(result.ValidationResult.IsValid);
+            Assert.True(result.ValidationResult.HasWarning);
         }
     }
 }

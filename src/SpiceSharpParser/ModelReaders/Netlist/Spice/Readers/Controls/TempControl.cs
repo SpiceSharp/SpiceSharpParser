@@ -1,6 +1,6 @@
 ﻿using SpiceSharp;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
@@ -19,7 +19,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             if (statement.Parameters.Count == 0)
             {
-                throw new WrongParametersCountException("No parameters for .TEMP", statement.LineInfo);
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "No parameters for .TEMP", statement.LineInfo));
+                return;
             }
 
             if (context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions.HasValue)
@@ -37,7 +38,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 }
                 else
                 {
-                    throw new WrongParameterException($"Wrong type of parameter for .TEMP: {param.GetType()}", param.LineInfo);
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Wrong type of parameter for .TEMP: {param.GetType()}", param.LineInfo));
                 }
             }
         }

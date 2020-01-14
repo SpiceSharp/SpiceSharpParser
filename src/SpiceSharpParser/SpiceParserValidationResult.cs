@@ -8,16 +8,15 @@ namespace SpiceSharpParser
     {
         public SpiceParserValidationResult()
         {
-            ParsingValidationResult = new ParsingValidationResult();
-            SpiceNetlistValidationResult = new SpiceNetlistValidationResult();
+            Lexing = new LexerValidationResult();
+            Parsing = new ParsingValidationResult();
+            Reading = new SpiceNetlistValidationResult();
         }
 
-        public LexerException LexerException { get; set; }
+        public LexerValidationResult Lexing { get; set; }
 
-        public bool AreTokensValid => LexerException == null;
+        public ParsingValidationResult Parsing { get; set; }
 
-        public ParsingValidationResult ParsingValidationResult { get; set; }
-
-        public SpiceNetlistValidationResult SpiceNetlistValidationResult { get; set; }
+        public SpiceNetlistValidationResult Reading { get; set; }
     }
 }

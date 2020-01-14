@@ -1,6 +1,6 @@
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Parsers.Netlist;
 using System;
+using SpiceSharpParser.Common;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Common
@@ -21,7 +21,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 "CaseSensitivity",
                 ".End");
             var result = parser.ParseNetlist(text);
-            Assert.False(result.ValidationResult.ParsingValidationResult.IsValid);
+            Assert.True(result.ValidationResult.Parsing.HasError);
         }
 
         [Fact]
@@ -222,7 +222,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var parseResult = parser.ParseNetlist(text);
-            Assert.Throws<ReadingException>(() => RunOpSimulation(parseResult.SpiceModel, "V(Out)"));
+            Assert.Throws<SpiceSharpParserException>(() => RunOpSimulation(parseResult.SpiceModel, "V(Out)"));
         }
 
         [Fact]
@@ -401,7 +401,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var result = parser.ParseNetlist(text);
-            Assert.False(result.ValidationResult.SpiceNetlistValidationResult.IsValid);
+            Assert.True(result.ValidationResult.Reading.HasWarning);
         }
 
         [Fact]
@@ -453,7 +453,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var result = parser.ParseNetlist(text);
-            Assert.False(result.ValidationResult.SpiceNetlistValidationResult.IsValid);
+            Assert.True(result.ValidationResult.Reading.HasWarning);
         }
 
         [Fact]
@@ -569,7 +569,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var parseResult = parser.ParseNetlist(text);
-            Assert.Throws<ReadingException>(() => RunDCSimulation(parseResult.SpiceModel, "@V1[I]"));
+            Assert.Throws<SpiceSharpParserException>(() => RunDCSimulation(parseResult.SpiceModel, "@V1[I]"));
         }
 
         [Fact]
@@ -591,7 +591,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".SAVE i(V1)",
                 ".END");
             var result = parser.ParseNetlist(text);
-            Assert.False(result.ValidationResult.SpiceNetlistValidationResult.IsValid);
+            Assert.True(result.ValidationResult.Reading.HasWarning);
         }
     }
 }

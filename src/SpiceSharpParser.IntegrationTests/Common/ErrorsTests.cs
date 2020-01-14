@@ -1,10 +1,8 @@
-﻿using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
-using Xunit;
+﻿using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Common
 {
-    public class ExceptionTests : BaseTests
+    public class ErrorsTests : BaseTests
     {
         [Fact]
         public void When_UnknownComponent_Expect_Exception()
@@ -16,9 +14,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".DC V1_a -1 1.0 10e-3",
                 ".SAVE i(V1_a) v(1,0)",
                 ".END");
-            Assert.False(result.ValidationResult.IsValid);
-            Assert.Contains(result.ValidationResult.Exceptions,
-                e => e.GetType() == typeof(UnknownComponentException));
+
+            Assert.True(result.ValidationResult.HasWarning);
         }
 
         [Fact]
@@ -32,9 +29,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".OP",
                 ".END");
 
-            Assert.False(result.ValidationResult.IsValid);
-            Assert.Contains(result.ValidationResult.Exceptions,
-                e => e.GetType() == typeof(ReadingException) && e.InnerException?.GetType() == typeof(InvalidParameterException));
+            Assert.True(result.ValidationResult.HasWarning);
         }
     }
 }

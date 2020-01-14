@@ -1,6 +1,5 @@
 ﻿using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.Lexers.Netlist.Spice;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Parsers.Netlist.Spice;
@@ -8,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
@@ -72,6 +72,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
         protected Func<string> InitialDirectoryPathProvider { get; }
 
+        public SpiceParserValidationResult Validation { get; set; }
+
         /// <summary>
         /// Reads .include statements.
         /// </summary>
@@ -109,7 +111,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
                 if (position == allStatements.Count)
                 {
-                    throw new ReadingException("No .ENDL found");
+                    throw new SpiceSharpParserException("No .ENDL found");
                 }
                 else
                 {

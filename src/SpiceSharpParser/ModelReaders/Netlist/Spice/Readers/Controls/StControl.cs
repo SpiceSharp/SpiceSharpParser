@@ -1,10 +1,10 @@
 ﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -27,7 +27,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
             if (statement.Parameters.Count < 3)
             {
-                throw new WrongParametersCountException();
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
+                    ValidationEntryLevel.Warning,
+                    "Too less parameters for .ST",
+                    statement.LineInfo));
             }
 
             string firstParam = statement.Parameters[0].Image;
@@ -110,7 +113,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 if (!(parameter is SingleParameter))
                 {
-                    throw new WrongParameterTypeException();
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Warning,
+                        ".ST list needs to have single parameters",
+                        parameter.LineInfo));
+                    continue;
                 }
 
                 values.Add(context.Evaluator.EvaluateDouble(parameter.Image));

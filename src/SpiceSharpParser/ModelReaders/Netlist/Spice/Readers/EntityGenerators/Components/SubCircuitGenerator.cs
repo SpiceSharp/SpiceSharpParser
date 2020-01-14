@@ -4,13 +4,13 @@ using SpiceSharpBehavioral.Components.BehavioralBehaviors;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Processors;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using SpiceSharpParser.Common.Validation;
 using Component = SpiceSharpParser.Models.Netlist.Spice.Objects.Component;
 using Model = SpiceSharpParser.Models.Netlist.Spice.Objects.Model;
 
@@ -28,6 +28,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             var ifPreprocessor = new IfPreprocessor();
             ifPreprocessor.CaseSettings = subCircuitContext.CaseSensitivity;
+            ifPreprocessor.Validation = new SpiceParserValidationResult()
+            {
+                Reading = context.Result.Validation
+            };
             ifPreprocessor.EvaluationContext = subCircuitContext.Evaluator.GetEvaluationContext();
             subCircuitDefinition.Statements = ifPreprocessor.Process(subCircuitDefinition.Statements);
 
@@ -137,7 +141,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             if (result == null)
             {
-                throw new ReadingException($"Could not find '{subCircuitDefinitionName}' subcircuit", parameters.LineInfo);
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Could not find '{subCircuitDefinitionName}' subcircuit", parameters.LineInfo));
             }
 
             return result;

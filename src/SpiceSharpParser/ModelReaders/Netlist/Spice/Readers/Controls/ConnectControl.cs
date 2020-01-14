@@ -1,6 +1,6 @@
 ﻿using SpiceSharp.Components;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
@@ -19,7 +19,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             if (statement.Parameters.Count != 2)
             {
-                throw new WrongParametersCountException("Wrong parameter count for .CONNECT", statement.LineInfo);
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameter count for .CONNECT", statement.LineInfo));
+                return;
             }
 
             string nodeA = statement.Parameters.Get(0).Image;

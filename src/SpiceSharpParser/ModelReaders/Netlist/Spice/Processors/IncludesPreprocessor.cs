@@ -59,6 +59,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
         protected Func<string> InitialDirectoryPathProvider { get; }
 
+        public SpiceParserValidationResult Validation { get; set; }
+
         /// <summary>
         /// Reads .include statements.
         /// </summary>
