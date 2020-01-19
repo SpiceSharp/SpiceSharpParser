@@ -2,10 +2,10 @@
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Custom;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Globalization;
+using SpiceSharpParser.Common.Validation;
 using Model = SpiceSharp.Components.Model;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
@@ -36,7 +36,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             if (parameters.Count < 5)
             {
-                throw new WrongParametersCountException("Wrong parameter count for voltage switch", parameters.LineInfo);
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameter count for voltage switch", parameters.LineInfo));
+                return null;
             }
 
             string modelName = parameters.Get(4).Image;
@@ -98,12 +99,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             break;
 
                         default:
-                            throw new ReadingException("ON or OFF expected", parameters.LineInfo);
+                            context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "ON or OFF expected", parameters.LineInfo));
+                            return vsw;
                     }
                 }
                 else if (parameters.Count > 6)
                 {
-                    throw new WrongParametersCountException("Too many parameters for voltage switch", parameters.LineInfo);
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Too many parameters for voltage switch", parameters.LineInfo));
+                    return vsw;
                 }
 
                 return vsw;
@@ -123,7 +126,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             if (parameters.Count < 4)
             {
-                throw new WrongParametersCountException("Wrong parameter count for current switch", parameters.LineInfo);
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameter count for current switch", parameters.LineInfo));
+                return null;
             }
 
             string modelName = parameters.Get(3).Image;
@@ -168,7 +172,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    throw new WrongParameterTypeException("Voltage source name expected", parameters[2].LineInfo);
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Voltage source name expected", parameters.LineInfo));
+                    return null;
                 }
 
                 // Get the model
@@ -197,7 +202,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             break;
 
                         default:
-                            throw new ReadingException("ON or OFF expected", parameters.LineInfo);
+                            context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "ON or OFF expected", parameters.LineInfo));
+                            return csw;
                     }
                 }
 

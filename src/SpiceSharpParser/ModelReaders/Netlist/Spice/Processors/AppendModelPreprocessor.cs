@@ -1,15 +1,17 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
+﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
     public class AppendModelPreprocessor : IProcessor
     {
+        public SpiceParserValidationResult Validation { get; set; }
+
         /// <summary>
         /// Preprocess .APPENDMODEL statements.
         /// </summary>
@@ -66,7 +68,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         {
             if (appendModel.Parameters.Count != 4 && appendModel.Parameters.Count != 2)
             {
-                throw new ReadingException("Wrong parameter count for .APPENDMODEL");
+                throw new SpiceSharpParserException("Wrong parameter count for .APPENDMODEL");
             }
 
             if (appendModel.Parameters.Count == 4)
@@ -85,7 +87,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             var sourceModelObj = (Model)statements.FirstOrDefault(s => s is Model m && m.Name == sourceModel);
             if (sourceModelObj == null)
             {
-                throw new ReadingException("Could not find source model for .APPENDMODEL");
+                throw new SpiceSharpParserException("Could not find source model for .APPENDMODEL");
             }
 
             string destinationModel = appendModel.Parameters.Get(1).Image;
@@ -105,7 +107,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
                 if (destinationModelObj == null)
                 {
-                    throw new ReadingException("Could not find destination model for .APPENDMODEL");
+                    throw new SpiceSharpParserException("Could not find destination model for .APPENDMODEL");
                 }
 
                 destinationModelObj.Parameters.Set(sourceModelObj.Parameters);
@@ -122,7 +124,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
             if (sourceModelObj == null)
             {
-                throw new ReadingException("Could not find source model for .APPENDMODEL");
+                throw new SpiceSharpParserException("Could not find source model for .APPENDMODEL");
             }
 
             var parametersToSet = sourceModelObj.Parameters;

@@ -1,11 +1,8 @@
-﻿using SpiceSharpParser.Common;
+﻿using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.Parsers
 {
-    public class ParsingValidationResult
+    public class ParsingValidationResult : ValidationEntryCollection
     {
-        public SpiceSharpParserException ParsingException { get; set; }
-
-        public bool IsValid => ParsingException == null;
     }
 }

@@ -1,10 +1,10 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
@@ -13,7 +13,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
     /// </summary>
     public class IfPreprocessor : IProcessor, IEvaluatorConsumer
     {
-        public EvaluationContext EvaluationContext { get; set; }
+        public EvaluationContext EvaluationContext { get; set; } 
+        
+        public SpiceParserValidationResult Validation { get; set; }
 
         /// <summary>
         /// Gets or sets the evaluator.
@@ -30,7 +32,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             ParamControl paramControl = new ParamControl();
             foreach (Control param in statements.Where(statement => statement is Control c && c.Name.ToLower() == "param").Cast<Control>())
             {
-                paramControl.Read(param, EvaluationContext);
+                paramControl.Read(param, EvaluationContext, Validation.Reading);
             }
 
             return ReadIfs(statements);
@@ -80,7 +82,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
             if (matchedEndIfIndex == statements.Count)
             {
-                throw new ReadingException("Couldn't find matching .endif");
+                Validation.Reading.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Error, "Cannot find matched .endif"));
+                return result;
             }
 
             // 3. Compute result of .if

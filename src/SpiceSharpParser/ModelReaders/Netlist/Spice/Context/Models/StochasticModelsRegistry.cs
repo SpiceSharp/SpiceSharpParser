@@ -1,10 +1,10 @@
 ﻿using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Collections.Generic;
+using SpiceSharpParser.Common.Validation;
 using Model = SpiceSharp.Components.Model;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
@@ -237,7 +237,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 
             if (model == null)
             {
-                throw new ModelNotFoundException(exceptionMessage, modelNameParameter.LineInfo);
+                result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, exceptionMessage, modelNameParameter.LineInfo));
+                return;
             }
 
             var stochasticModel = (T)ProvideStochasticModel(entity.Name, simulation, model);

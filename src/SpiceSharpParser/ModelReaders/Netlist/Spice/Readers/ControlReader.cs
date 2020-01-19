@@ -3,7 +3,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
-using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
@@ -47,7 +47,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
             if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsDotStatementNameCaseSensitive, out var controlReader))
             {
-                context.Result.AddValidationException(new SpiceSharpParserException($"Unsupported control: {statement.Name} at {statement.LineInfo.LineNumber} line",statement.LineInfo));
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
+                    ValidationEntryLevel.Warning, $"Unsupported control: {statement.Name}", statement.LineInfo));
             }
             else
             {

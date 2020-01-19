@@ -1,4 +1,3 @@
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Components
@@ -16,7 +15,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OP",
                 ".END");
 
-            Assert.False(result.ValidationResult.IsValid);
+            Assert.True(result.ValidationResult.HasWarning);
         }
 
         [Fact]
@@ -165,7 +164,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                     ".OP",
                     ".END");
 
-            Assert.False(result.ValidationResult.IsValid);
+            Assert.False(result.ValidationResult.HasError);
         }
 
         [Fact]

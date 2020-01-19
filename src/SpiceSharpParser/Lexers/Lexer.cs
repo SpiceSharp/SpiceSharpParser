@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using SpiceSharpParser.Models.Netlist.Spice;
 
 namespace SpiceSharpParser.Lexers
 {
@@ -88,7 +89,7 @@ namespace SpiceSharpParser.Lexers
                             bool ruleMatch = textForDynamicRules.StartsWith(dynamicRule.Prefix);
                             if (ruleMatch)
                             {
-                                var dynamicResult = dynamicRule.Action(textForDynamicRules);
+                                var dynamicResult = dynamicRule.Action(textForDynamicRules, state);
 
                                 result.Tokens.Add(
                                     new Token(
@@ -105,12 +106,16 @@ namespace SpiceSharpParser.Lexers
 
                         if (!matched)
                         {
-                            throw new LexerException($"Can't get next token from text: '{textForDynamicRules}'");
+                            throw new LexerException("Can't get next token from text",
+                                new SpiceLineInfo
+                                {
+                                    LineNumber = state?.LineNumber ?? 0, 
+                                    StartColumnIndex = state?.StartColumnIndex ?? 0
+                                });
                         }
                     }
                 }
 
-                // yield EOF token
                 result.Tokens.Add(new Token(-1, "EOF", state?.LineNumber ?? 0, state?.StartColumnIndex ?? 0, null));
 
             }

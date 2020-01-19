@@ -1,8 +1,8 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 {
@@ -33,7 +33,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 
             if (parameters.Count != 7)
             {
-                throw new WrongParametersCountException("Wrong number of arguments for pulse", parameters.LineInfo);
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong number of arguments for pulse", parameters.LineInfo));
+                return null;
             }
 
             var w = new Pulse();

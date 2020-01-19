@@ -1,5 +1,5 @@
 ﻿using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports
 {
@@ -64,7 +64,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 {
                     if (ExceptionsEnabled)
                     {
-                        throw new ReadingException($"Current export {Name} is invalid");
+                        throw new SpiceSharpParserException($"Current export {Name} is invalid");
                     }
 
                     return double.NaN;
@@ -78,7 +78,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 {
                     if (ExceptionsEnabled)
                     {
-                        throw new ReadingException($"Current export {Name} is invalid");
+                        throw new SpiceSharpParserException($"Current export {Name} is invalid");
                     }
 
                     return double.NaN;

@@ -2,7 +2,6 @@
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
@@ -13,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -197,7 +197,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 var series = new Series(export.Simulation.Name)
                 {
-                    XUnit = "Time (s)",
+                    XUnit = "Time (parameter)",
                     YUnit = export.QuantityUnit,
                 };
                 AddTranPointsToSeries(export, series);
@@ -216,7 +216,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 var series = new Series(export.Simulation.Name)
                 {
-                    XUnit = "Freq (s)",
+                    XUnit = "Freq (parameter)",
                     YUnit = export.QuantityUnit,
                 };
                 AddAcPointsToSeries(export, series);
@@ -318,9 +318,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void AddLetExport(ICircuitContext context, Type simulationType, SingleParameter s)
+        private void AddLetExport(ICircuitContext context, Type simulationType, SingleParameter parameter)
         {
-            string expressionName = s.Image;
+            string expressionName = parameter.Image;
             var expressionNames = context.Evaluator.GetExpressionNames();
 
             if (expressionNames.Contains(expressionName))
@@ -334,7 +334,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
             else
             {
-                throw new ReadingException($"There is no {expressionName} expression");
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
+                    ValidationEntryLevel.Warning,
+                    $"There is no {expressionName} expression",
+                    parameter.LineInfo));
             }
         }
 

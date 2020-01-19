@@ -63,14 +63,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         private SpiceModel<Circuit, Simulation> Result { get; }
 
-        /// <summary>
-        /// Adds warning.
-        /// </summary>
-        /// <param name="exception">Exception to add.</param>
-        public void AddValidationException(SpiceSharpParserException exception)
-        {
-            Result.ValidationResult.Exceptions.Add(exception);
-        }
+        public SpiceNetlistValidationResult Validation => Result.ValidationResult;
 
         /// <summary>
         /// Adds comment.

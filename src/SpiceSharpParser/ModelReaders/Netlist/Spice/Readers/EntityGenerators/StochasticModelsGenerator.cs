@@ -1,8 +1,8 @@
 ﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
 {
@@ -57,14 +57,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
 
             if (!(context.ModelsRegistry is IStochasticModelsRegistry stochasticModelRegistry))
             {
-                throw new ReadingException("Model registry is not stochastic models registry");
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
+                    ValidationEntryLevel.Warning, "Model registry is not stochastic models registry",
+                    parameters.LineInfo));
+
+                return null;
             }
 
             var filteredParameters = FilterDevAndLot(parameters);
             var model = modelGenerator.Generate(id, type, filteredParameters, context);
             if (model == null)
             {
-                throw new ReadingException($"Couldn't generate model {id}", parameters.LineInfo);
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
+                    ValidationEntryLevel.Warning, $"Couldn't generate model {id}",
+                    parameters.LineInfo));
+
+                return null;
             }
 
             context.ModelsRegistry.RegisterModelInstance(model);

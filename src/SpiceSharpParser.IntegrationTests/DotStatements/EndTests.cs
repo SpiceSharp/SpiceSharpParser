@@ -1,6 +1,4 @@
 using System;
-using SpiceSharpParser.Parsers.Netlist;
-
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.DotStatements
@@ -54,7 +52,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             parser.Settings.Parsing.IsEndRequired = true;
 
             var result = parser.ParseNetlist(text);
-            Assert.False(result.ValidationResult.ParsingValidationResult.IsValid);
+            Assert.True(result.ValidationResult.Parsing.HasError);
         }
     }
 }

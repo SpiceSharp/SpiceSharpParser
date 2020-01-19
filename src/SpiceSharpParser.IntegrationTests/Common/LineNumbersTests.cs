@@ -1,5 +1,4 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
+﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System.Linq;
 using Xunit;
 
@@ -57,8 +56,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 "V1 OUT 0 0 $  test3.3 ; test4 $ test5",
                 ".END");
 
-            Assert.False(result.ValidationResult.IsValid);
-            Assert.Equal(7, result.ValidationResult.Exceptions.First().LineInfo.LineNumber);
+            Assert.False(result.ValidationResult.HasError);
+            Assert.Equal(7, result.ValidationResult.First().LineInfo.LineNumber);
         }
     }
 }

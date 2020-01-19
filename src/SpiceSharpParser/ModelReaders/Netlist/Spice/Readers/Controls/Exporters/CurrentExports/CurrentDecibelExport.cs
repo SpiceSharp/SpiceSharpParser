@@ -1,6 +1,6 @@
 ﻿using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using System;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports
 {
@@ -50,7 +50,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             {
                 if (ExceptionsEnabled)
                 {
-                    throw new ReadingException($"Current decibel export '{Name}' is invalid");
+                    throw new SpiceSharpParserException($"Current decibel export '{Name}' is invalid");
                 }
 
                 return double.NaN;

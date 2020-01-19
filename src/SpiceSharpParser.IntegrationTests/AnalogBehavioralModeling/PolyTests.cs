@@ -1,6 +1,3 @@
-using System.Linq;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
-
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
@@ -19,9 +16,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(2,0)",
                 ".END");
 
-            Assert.False(result.ValidationResult.IsValid);
-            Assert.Contains(result.ValidationResult.Exceptions,
-                e => e.GetType() == typeof(WrongParametersCountException));
+            Assert.True(result.ValidationResult.HasWarning);
         }
 
         [Fact]
@@ -53,9 +48,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(2,0)",
                 ".END");
 
-            Assert.False(result.ValidationResult.IsValid);
-            Assert.Contains(result.ValidationResult.Exceptions,
-                e => e.GetType() == typeof(WrongParametersCountException));
+            Assert.False(result.ValidationResult.HasError);
         }
 
         [Fact]
@@ -141,9 +134,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(2,0)",
                 ".END");
 
-            Assert.False(result.ValidationResult.IsValid);
-            Assert.Contains(result.ValidationResult.Exceptions,
-                e => e.GetType() == typeof(WrongParameterTypeException));
+            Assert.False(result.ValidationResult.HasError);
         }
 
         [Fact]
@@ -159,9 +150,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(2,0)",
                 ".END");
 
-            Assert.False(result.ValidationResult.IsValid);
-            Assert.Contains(result.ValidationResult.Exceptions,
-                e => e.GetType() == typeof(WrongParametersCountException));
+            Assert.False(result.ValidationResult.HasError);
         }
 
         [Fact]

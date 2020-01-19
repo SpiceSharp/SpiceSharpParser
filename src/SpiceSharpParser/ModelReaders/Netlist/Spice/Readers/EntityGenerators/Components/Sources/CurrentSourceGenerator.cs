@@ -2,10 +2,10 @@
 using SpiceSharp.Components;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Linq;
+using SpiceSharpParser.Common.Validation;
 using Component = SpiceSharp.Components.Component;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
@@ -173,7 +173,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (polyParameter.Parameters.Count != 1)
                 {
-                    throw new WrongParametersCountException("poly expects one argument => dimension", polyParameter.LineInfo);
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "poly expects one argument => dimension", polyParameter.LineInfo));
+                    return null;
                 }
 
                 var dimension = (int)context.Evaluator.EvaluateDouble(polyParameter.Parameters[0].Image);
@@ -189,7 +190,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 int tableParameterPosition = parameters.IndexOf(tableParameter);
                 if (tableParameterPosition == parameters.Count - 1)
                 {
-                    throw new WrongParametersCountException("table expects expression parameter", tableParameter.LineInfo);
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "table expects expression parameter", tableParameter.LineInfo));
+                    return null;
                 }
 
                 var nextParameter = parameters[tableParameterPosition + 1];
@@ -207,7 +209,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    throw new WrongParameterTypeException("table expects expression equal parameter", tableParameter.LineInfo);
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "table expects equal parameter", tableParameter.LineInfo));
+                    return null;
                 }
             }
 

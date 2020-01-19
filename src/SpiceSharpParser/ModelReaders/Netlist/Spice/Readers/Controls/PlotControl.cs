@@ -1,6 +1,5 @@
 ﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
@@ -10,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -113,7 +113,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 plot.Series.Add(new Series(export.Name));
             }
 
-            simulation.ExportSimulationData += (sender, args) => CreatePointForSeries(simulation, args, exports, plot.Series);
+            simulation.ExportSimulationData += (sender, args) => CreatePointForSeries(simulation, context, args, exports, plot.Series);
             simulation.AfterExecute += (sender, args) => AddPlotToResultIfValid(plotImage, context, plot, simulation);
         }
 
@@ -131,7 +131,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 }
 
                 plot.Series.AddRange(series);
-                simulation.ExportSimulationData += (sender, args) => CreatePointForSeries(simulation, args, exports, series);
+                simulation.ExportSimulationData += (sender, args) => CreatePointForSeries(simulation, context, args, exports, series);
             }
 
             context.Result.AddPlot(plot);
@@ -154,11 +154,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
             else
             {
-                context.Result.AddValidationException(new SpiceSharpParserException($"{plotImage} is not valid for: {simulation.Name}"));
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"{plotImage} is not valid for: {simulation.Name}"));
             }
         }
 
-        private void CreatePointForSeries(Simulation simulation, ExportDataEventArgs eventArgs, List<Export> exports, List<Series> series)
+        private void CreatePointForSeries(Simulation simulation, ICircuitContext context, ExportDataEventArgs eventArgs, List<Export> exports, List<Series> series)
         {
             double x = 0;
 
@@ -177,7 +177,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 if (dc.Sweeps.Count > 1)
                 {
                     // TODO: Add support for DC Sweeps > 1
-                    throw new ReadingException(".print doesn't support sweep count > 1");
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Warning, ".PRINT doesn't support sweep count > 1"));
+                    return;
                 }
 
                 x = eventArgs.SweepValue;
