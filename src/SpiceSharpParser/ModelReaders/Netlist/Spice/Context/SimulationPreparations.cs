@@ -4,6 +4,7 @@ using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
 using System;
 using System.Collections.Generic;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -112,7 +113,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 }
                 else
                 {
-                    throw new InvalidOperationException($"No temperature behavior for {entity.Name}");
+                    throw new SpiceSharpParserException($"No temperature behavior for {entity.Name}");
                 }
             });
         }

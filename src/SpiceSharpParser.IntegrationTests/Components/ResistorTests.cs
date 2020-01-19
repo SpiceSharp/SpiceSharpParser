@@ -1,4 +1,3 @@
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Components
@@ -8,14 +7,15 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void When_NoResistance_Expect_Exception()
         {
-            Assert.Throws<WrongParametersCountException>(
-                () => ParseNetlist(
-                    "Resistor circuit",
-                    "V1 1 0 150",
-                    "R1 1 0",
-                    ".SAVE I(R1)",
-                    ".OP",
-                    ".END"));
+            var result = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0",
+                ".SAVE I(R1)",
+                ".OP",
+                ".END");
+
+            Assert.True(result.ValidationResult.HasWarning);
         }
 
         [Fact]
@@ -154,15 +154,17 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void When_ModelFormatWithoutWidthAndLength_Expect_Reference()
         {
-            Assert.Throws<ReadingException>(
-                () => ParseNetlist(
+            var result =
+                ParseNetlist(
                     "Resistor circuit",
                     "V1 1 0 150",
                     "R1 1 0 myresistor",
                     ".MODEL myresistor R RSH=0.1 defw=2u",
                     ".SAVE I(R1)",
                     ".OP",
-                    ".END"));
+                    ".END");
+
+            Assert.False(result.ValidationResult.HasError);
         }
 
         [Fact]

@@ -3,10 +3,10 @@ using SpiceSharp.Simulations;
 using SpiceSharpBehavioral.Parsers;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Linq;
+using SpiceSharpParser.Common.Validation;
 using Component = SpiceSharp.Components.Component;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
@@ -99,7 +99,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                     else
                     {
-                        throw new WrongParameterTypeException($"Unsupported waveform: {bp.Name}", bp.LineInfo);
+                        context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported waveform: {bp.Name}", bp.LineInfo));
                     }
                 }
                 else
@@ -112,7 +112,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         }
                         else
                         {
-                            throw new WrongParameterTypeException($"Unsupported waveform: {wp}", wp.LineInfo);
+                            context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported waveform: {wp}", wp.LineInfo));
                         }
                     }
                 }

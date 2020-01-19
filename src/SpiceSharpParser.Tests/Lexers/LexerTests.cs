@@ -12,7 +12,7 @@ namespace SpiceSharpParser.Tests.Lexers
         {
             LexerGrammar<LexerState> grammar = new LexerGrammar<LexerState>(new List<LexerTokenRule<LexerState>>(), new List<LexerDynamicRule>());
             Lexer<LexerState> lexer = new Lexer<LexerState>(grammar);
-            var tokens = lexer.GetTokens(string.Empty);
+            var tokens = lexer.GetTokens(string.Empty).Tokens;
             Assert.Single(tokens);
         }
 
@@ -21,7 +21,7 @@ namespace SpiceSharpParser.Tests.Lexers
         {
             LexerGrammar<LexerState> grammar = new LexerGrammar<LexerState>(new List<LexerTokenRule<LexerState>>(), new List<LexerDynamicRule>());
             Lexer<LexerState> lexer = new Lexer<LexerState>(grammar);
-            Assert.Throws<LexerException>(() => lexer.GetTokens("Line1\nLine2\n").Count());
+            Assert.False(lexer.GetTokens("Line1\nLine2\n").IsValid);
         }
 
         [Fact]
@@ -45,7 +45,7 @@ namespace SpiceSharpParser.Tests.Lexers
 
             Lexer<LexerState> lexer = new Lexer<LexerState>(grammar);
             var s = new LexerState();
-            var tokens = lexer.GetTokens("Line1\nLine2\n", s).ToArray();
+            var tokens = lexer.GetTokens("Line1\nLine2\n", s).Tokens.ToArray();
             Assert.Equal(5, tokens.Count());
 
             Assert.Equal(3, s.LineNumber);

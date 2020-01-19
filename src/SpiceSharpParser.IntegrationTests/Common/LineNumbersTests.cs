@@ -1,5 +1,4 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
+﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System.Linq;
 using Xunit;
 
@@ -45,29 +44,20 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void When_BugInExpression_Expect_Reference()
         {
-            try
-            {
-                ParseNetlistToModel(
-                    false,
-                    true,
-                    "Line numbers test circuit",
-                    "* test1",
-                    "* test2",
-                    "",
-                    "R1 OUT 0",
-                    "",
-                    " + {1/a}",
-                    "* test 3",
-                    "V1 OUT 0 0 $  test3.3 ; test4 $ test5",
-                    ".END");
-            }
-            catch (ReadingException ex)
-            {
-                Assert.Equal(7, ex.LineInfo.LineNumber);
-                return;
-            }
+            var result = ParseNetlist(
+                "Line numbers test circuit",
+                "* test1",
+                "* test2",
+                "",
+                "R1 OUT 0",
+                "",
+                " + {1/a}",
+                "* test 3",
+                "V1 OUT 0 0 $  test3.3 ; test4 $ test5",
+                ".END");
 
-            Assert.False(true);
+            Assert.False(result.ValidationResult.HasError);
+            Assert.Equal(7, result.ValidationResult.First().LineInfo.LineNumber);
         }
     }
 }

@@ -54,17 +54,5 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END",
                 string.Empty);
         }
-
-        [Fact]
-        public void When_EndingHasNoNewLineRequired_Expect_Exception()
-        {
-            Assert.Throws<ParseException>(() => ParseNetlistToModel(true, true, true, "Newline test circuit", ".END"));
-        }
-
-        [Fact]
-        public void When_EndingHasNoNewLineRequiredWithoutEnd_Expect_Exception()
-        {
-            Assert.Throws<ParseException>(() => ParseNetlistToModel(false, true, true, "Newline test circuit"));
-        }
     }
 }

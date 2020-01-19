@@ -7,7 +7,7 @@ namespace SpiceSharpParser.Lexers
         /// <summary>
         /// Initializes a new instance of the <see cref="LexerDynamicRule"/> class.
         /// </summary>
-        public LexerDynamicRule(int tokenType, string ruleName, string prefix, Func<string, Tuple<string, int>> action)
+        public LexerDynamicRule(int tokenType, string ruleName, string prefix, Func<string, LexerState, Tuple<string, int>> action)
         {
             TokenType = tokenType;
             RuleName = ruleName ?? throw new ArgumentNullException(nameof(ruleName));
@@ -21,6 +21,6 @@ namespace SpiceSharpParser.Lexers
 
         public string Prefix { get; }
 
-        public Func<string, Tuple<string, int>> Action { get; }
+        public Func<string, LexerState, Tuple<string, int>> Action { get; }
     }
 }

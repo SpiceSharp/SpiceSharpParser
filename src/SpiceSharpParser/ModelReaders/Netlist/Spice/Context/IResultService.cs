@@ -25,7 +25,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         int? Seed { get; set; }
 
-        void AddWarning(string warning);
+        SpiceNetlistValidationResult Validation { get; }
 
         void AddComment(CommentLine statement);
 

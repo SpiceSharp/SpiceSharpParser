@@ -1,6 +1,6 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -32,8 +32,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         {
             switch (statement.Parameters.Count)
             {
-                case 0: throw new WrongParametersCountException(".tran control - Step expected", statement.LineInfo);
-                case 1: throw new WrongParametersCountException(".tran control - Maximum time expected", statement.LineInfo);
+                case 0:
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".tran control - Step expected", statement.LineInfo));
+                    break;
+
+                case 1:
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".tran control - Maximum time expected", statement.LineInfo));
+                    break;
             }
 
             bool useIc = false;
@@ -75,7 +80,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     break;
 
                 default:
-                    throw new WrongParametersCountException(".TRAN control - Too many parameters for .TRAN", clonedParameters.LineInfo);
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".TRAN control - Too many parameters for .TRAN", statement.LineInfo));
+                    return null;
             }
 
             ConfigureCommonSettings(tran, context);

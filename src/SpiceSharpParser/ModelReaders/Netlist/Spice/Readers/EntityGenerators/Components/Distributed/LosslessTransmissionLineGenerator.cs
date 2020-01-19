@@ -1,5 +1,6 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -43,7 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                     else
                     {
-                        throw new UnknownParameterException(paramName);
+                        context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Invalid parameter: {parameter.Image}", parameter.LineInfo));
                     }
                 }
             }

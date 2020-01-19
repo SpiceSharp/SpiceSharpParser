@@ -1,6 +1,5 @@
 ﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
@@ -9,6 +8,8 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -68,7 +69,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private static void CreateRowInPrint(ref int rowIndex, Simulation simulation, ExportDataEventArgs eventArgs, List<Export> exports, Print print)
+        private static void CreateRowInPrint(ref int rowIndex, Simulation simulation, ICircuitContext context, ExportDataEventArgs eventArgs, List<Export> exports, Print print)
         {
             Row row = new Row(rowIndex++);
 
@@ -89,7 +90,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 if (dc.Sweeps.Count > 1)
                 {
                     // TODO: Add support for DC Sweeps > 1
-                    throw new ReadingException(".print doesn't support sweep count > 1");
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".PRINT doesn't support sweep count > 1"));
+                    return;
                 }
 
                 x = eventArgs.SweepValue;
@@ -149,7 +151,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
 
             int rowIndex = 0;
-            simulation.ExportSimulationData += (sender, args) => CreateRowInPrint(ref rowIndex, simulation, args, exports, print);
+            simulation.ExportSimulationData += (sender, args) => CreateRowInPrint(ref rowIndex, simulation, context, args, exports, print);
             simulation.AfterExecute += (sender, args) => AddPrintToResultIfValid(printImage, context, print, simulation, filterSpecified);
         }
 
@@ -161,7 +163,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                 if (print.Rows.Count == 0 || print.Rows[0].Columns.Count == (simulation is OP ? 0 : 1))
                 {
-                    context.Result.AddWarning($"{printImage} is not valid for: {simulation.Name}");
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"{printImage} is not valid for: {simulation.Name}"));
                 }
                 else
                 {

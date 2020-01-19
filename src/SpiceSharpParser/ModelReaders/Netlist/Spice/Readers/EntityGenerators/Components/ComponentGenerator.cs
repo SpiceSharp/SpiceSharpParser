@@ -1,4 +1,6 @@
-﻿using SpiceSharp.Circuits;
+﻿using System;
+using SpiceSharp.Circuits;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -15,11 +17,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 if (parameter is AssignmentParameter ap)
                 {
-                    context.SetParameter(entity, ap.Name, ap.Value, true, onload);
+                    try
+                    {
+                        context.SetParameter(entity, ap.Name, ap.Value, true, onload);
+                    }
+                    catch (Exception)
+                    {
+                        context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Problem with setting parameter: {parameter.Image}", parameter.LineInfo));
+                    }
                 }
                 else
                 {
-                    context.Result.AddWarning("Unsupported parameter: " + parameter.Image);
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported parameter: {parameter.Image}", parameter.LineInfo));
                 }
             }
         }

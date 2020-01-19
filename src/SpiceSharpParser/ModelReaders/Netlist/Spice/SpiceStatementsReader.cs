@@ -1,5 +1,4 @@
 ﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
@@ -7,6 +6,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Collections.Generic;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
@@ -54,11 +54,28 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
             if (Readers.ContainsKey(statement.GetType()))
             {
-                Readers[statement.GetType()].Read(statement, circuitContext);
+                try
+                {
+                    Readers[statement.GetType()].Read(statement, circuitContext);
+                }
+                catch (Exception e)
+                {
+                    circuitContext.Result.Validation.Add(
+                        new ValidationEntry(
+                            ValidationEntrySource.Reader,
+                            ValidationEntryLevel.Warning,
+                            $"There was a problem during reading statement: {statement.GetType()} : {e}",
+                            statement.LineInfo));
+                }
             }
             else
             {
-                throw new ReadingException($"There is no reader for the statement of type: {statement.GetType()}", statement.LineInfo);
+                circuitContext.Result.Validation.Add(
+                    new ValidationEntry(
+                        ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Warning,
+                        $"There is no reader for the statement of type: {statement.GetType()}",
+                        statement.LineInfo));
             }
         }
     }

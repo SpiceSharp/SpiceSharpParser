@@ -1,5 +1,5 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
+﻿using SpiceSharpParser.Common.Validation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -19,19 +19,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             if (statement.Parameters.Count != 2)
             {
-                throw new WrongParametersCountException("Wrong parameter count for .LET", statement.LineInfo);
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameter count for .LET", statement.LineInfo));
+                return;
             }
 
             if (!(statement.Parameters[1] is SingleParameter))
             {
-                throw new WrongParameterTypeException("First parameter for .LET should be an single", statement.LineInfo);
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "First parameter for .LET should be an single", statement.LineInfo));
+                return;
             }
 
             string expressionName = statement.Parameters[0].Image;
 
             if (!(statement.Parameters[1] is ExpressionParameter) && !(statement.Parameters[1] is StringParameter))
             {
-                throw new WrongParameterTypeException("Second parameter for .LET should be an expression", statement.LineInfo);
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Second parameter for .LET should be an expression", statement.LineInfo));
+                return;
             }
 
             string expression = statement.Parameters.Get(1).Image;

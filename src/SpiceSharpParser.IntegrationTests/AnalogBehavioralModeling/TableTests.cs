@@ -1,5 +1,3 @@
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
-
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
@@ -27,16 +25,17 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_MissingPoints_Expect_Exception()
         {
-            Assert.Throws<WrongParameterTypeException>(
-                () => ParseNetlist(
-                    "TABLE circuit",
-                    "V1 1 0 1.5m",
-                    "R1 1 0 10",
-                    "E12 2 1 TABLE {V(1,0)}",
-                    "R2 2 0 10",
-                    ".SAVE V(2,1)",
-                    ".OP",
-                    ".END"));
+            var result = ParseNetlist(
+                "TABLE circuit",
+                "V1 1 0 1.5m",
+                "R1 1 0 10",
+                "E12 2 1 TABLE {V(1,0)}",
+                "R2 2 0 10",
+                ".SAVE V(2,1)",
+                ".OP",
+                ".END");
+
+            Assert.True(result.ValidationResult.HasWarning);
         }
 
         [Fact]

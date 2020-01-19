@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
+using SpiceSharpParser.Models.Netlist.Spice;
 
 namespace SpiceSharpParser.Lexers.Netlist.Spice
 {
@@ -39,10 +41,14 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
             var state = new SpiceLexerState();
             var lexer = new Lexer<SpiceLexerState>(_grammar);
 
-            foreach (var token in lexer.GetTokens(netlistText, state))
+            var lexerResult = lexer.GetTokens(netlistText, state);
+
+            if (!lexerResult.IsValid)
             {
-                yield return new SpiceToken((SpiceTokenType)token.Type, token.Lexem, state.LineNumber, state.StartColumnIndex,null);
+                throw new LexerException("Invalid netlist", lexerResult.LexerException, lexerResult.LexerException.LineInfo);
             }
+
+            return lexerResult.Tokens.Select(token => new SpiceToken((SpiceTokenType)token.Type, token.Lexem, token.LineNumber, token.StartColumnIndex, null));
         }
 
         /// <summary>
@@ -103,7 +109,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 (int)SpiceTokenType.EXPRESSION_BRACKET,
                 "A mathematical (also nested) expression in brackets",
                 "{",
-                (string textToLex) =>
+                (string textToLex, LexerState state) =>
                     {
                         int openBracketCount = 1;
                         int i = 0;
@@ -128,14 +134,18 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                             return new Tuple<string, int>(replaced, text.Length);
                         }
 
-                        throw new LexerException("Not matched brackets for expression");
+                        throw new LexerException("Not matched brackets for expression", new SpiceLineInfo()
+                        {
+                            LineNumber = state?.LineNumber ?? 0,
+                            StartColumnIndex = state?.StartColumnIndex ?? 0,
+                        });
                     }));
 
             builder.AddDynamicRule(new LexerDynamicRule(
                 (int)SpiceTokenType.BOOLEAN_EXPRESSION,
                 "A mathematical (also nested) expression in brackets",
                 "(",
-                (string textToLex) =>
+                (string textToLex, LexerState state) =>
                 {
                     int openBracketCount = 1;
                     var i = 0;
@@ -159,7 +169,11 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                         return new Tuple<string, int>(replaced, text.Length);
                     }
 
-                    throw new LexerException("Not matched brackets for expression");
+                    throw new LexerException("Not matched brackets for expression", new SpiceLineInfo()
+                    {
+                        LineNumber = state?.LineNumber ?? 0,
+                        StartColumnIndex = state?.StartColumnIndex ?? 0,
+                    });
                 }));
 
             builder.AddRegexRule(

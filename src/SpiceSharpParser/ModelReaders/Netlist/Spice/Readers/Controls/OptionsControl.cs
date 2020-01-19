@@ -1,7 +1,8 @@
 ﻿using SpiceSharp;
 using SpiceSharp.IntegrationMethods;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
@@ -83,7 +84,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                             if (points < 4)
                             {
-                                throw new ReadingException("cdfpoints needs to be greater than 3");
+                                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "CDFPOINTS needs to be greater than 3", statement.LineInfo));
+                                return;
                             }
 
                             context.Evaluator.GetEvaluationContext().Randomizer.CdfPoints = points;
@@ -94,7 +96,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             break;
 
                         default:
-                            context.Result.AddWarning("Unsupported option: " + name);
+                            context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported option: {name}", statement.LineInfo));
                             break;
                     }
                 }

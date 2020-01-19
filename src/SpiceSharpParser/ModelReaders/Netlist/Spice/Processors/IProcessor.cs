@@ -7,6 +7,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
     /// </summary>
     public interface IProcessor
     {
+        SpiceParserValidationResult Validation { get; set; }
+
         Statements Process(Statements statements);
     }
 }

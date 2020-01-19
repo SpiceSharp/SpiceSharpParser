@@ -1,6 +1,4 @@
-﻿using SpiceSharp;
-using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
@@ -18,6 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         {
             Circuit = circuit ?? throw new System.ArgumentNullException(nameof(circuit));
             Title = title;
+            ValidationResult = new SpiceNetlistValidationResult();
         }
 
         /// <summary>
@@ -39,11 +38,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// Gets the list of comments from the netlist.
         /// </summary>
         public List<string> Comments { get; } = new List<string>();
-
-        /// <summary>
-        /// Gets the warnings created during creating SpiceSharp objects.
-        /// </summary>
-        public List<string> Warnings { get; } = new List<string>();
 
         /// <summary>
         /// Gets the list of exports from the netlist.
@@ -74,5 +68,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// Gets or sets the used random seed.
         /// </summary>
         public int? Seed { get; set; }
+
+        /// <summary>
+        /// Gets the validation result.
+        /// </summary>
+        public SpiceNetlistValidationResult ValidationResult { get; }
     }
 }

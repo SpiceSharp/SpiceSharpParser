@@ -1,9 +1,10 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
@@ -15,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
             {
-                throw new ReadingException("Current exports should have a single parameter or vector parameter", parameters.LineInfo);
+                throw new SpiceSharpParserException("Current exports should have a single parameter or vector parameter", parameters.LineInfo);
             }
 
             // Get the nodes
@@ -25,13 +26,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 switch (vector.Elements.Count)
                 {
                     case 0:
-                        throw new ReadingException("Node expected", parameters.LineInfo);
+                        throw new SpiceSharpParserException("Node expected", parameters.LineInfo);
                     case 1:
                         componentIdentifier = context.NameGenerator.GenerateObjectName(vector.Elements[0].Image);
                         break;
 
                     default:
-                        throw new ReadingException("Too many nodes specified", parameters.LineInfo);
+                        throw new SpiceSharpParserException("Too many nodes specified", parameters.LineInfo);
                 }
             }
             else

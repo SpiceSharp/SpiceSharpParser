@@ -1,6 +1,5 @@
 ﻿using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System;
@@ -72,7 +71,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 }
             }
 
-            throw new ReadingException("Invalid property export", parameters.LineInfo);
+            throw new SpiceSharpParserException("Invalid property export", parameters.LineInfo);
         }
     }
 }

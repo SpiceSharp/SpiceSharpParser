@@ -1,8 +1,8 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -18,12 +18,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, ICircuitContext context)
         {
-            Read(statement, context.Evaluator.GetEvaluationContext(), true);
+            Read(statement, context.Evaluator.GetEvaluationContext(),  context.Result.Validation, true);
         }
 
-        public void Read(Control statement, EvaluationContext context)
+        public void Read(Control statement, EvaluationContext context, SpiceNetlistValidationResult validation)
         {
-            Read(statement, context, true);
+            Read(statement, context, validation, true);
         }
 
         /// <summary>
@@ -31,8 +31,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">Expression context.</param>
+        /// <param name="validation">Validation.</param>
         /// <param name="validate">Validate.</param>
-        public void Read(Control statement, EvaluationContext context, bool validate)
+        public void Read(Control statement, EvaluationContext context, SpiceNetlistValidationResult validation, bool validate)
         {
             if (statement.Parameters == null)
             {
@@ -56,9 +57,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         {
                             if (validate)
                             {
-                                throw new ReadingException(
-                                    $"Problem with setting param `{assignmentParameter.Name}` with expression =`{assignmentParameter.Value}` at line = {assignmentParameter.LineInfo.LineNumber}",
-                                    e);
+                                validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning,
+                                    $"Problem with setting param `{assignmentParameter.Name}` with expression =`{assignmentParameter.Value}`", statement.LineInfo));
                             }
                         }
                     }
@@ -76,7 +76,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 }
                 else
                 {
-                    throw new WrongParameterTypeException(".PARAM supports only assignments", param.LineInfo);
+                    validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning,
+                        ".PARAM supports only assignments", statement.LineInfo));
                 }
             }
         }

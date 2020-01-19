@@ -1,10 +1,10 @@
 ﻿using SpiceSharp.Circuits;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.Models.Netlist.Spice;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
@@ -49,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
             IComponentGenerator generator = GetComponentGenerator(context, componentName, statement.LineInfo, out string componentType);
 
-            Entity entity = generator.Generate(
+            Entity entity = generator?.Generate(
                 context.NameGenerator.GenerateObjectName(componentName),
                 componentName,
                 componentType,
@@ -72,8 +72,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                     return map.Value;
                 }
             }
+            context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported component {componentName}", lineInfo));
 
-            throw new UnknownComponentException($"Unsupported component {componentName}", lineInfo);
+            componentType = null;
+            return null;
         }
     }
 }

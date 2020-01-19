@@ -1,10 +1,10 @@
 ﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
@@ -55,13 +55,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
             if (statement.Parameters.Count > 0)
             {
-                if (statement.Parameters[0] is BracketParameter b)
+                if (statement.Parameters[0] is BracketParameter bracketParameter)
                 {
-                    var type = b.Name;
+                    var type = bracketParameter.Name;
 
                     if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsEntityNameCaseSensitive, out var generator))
                     {
-                        throw new ReadingException($"Unsupported model type: {type}", b.LineInfo);
+                        context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
+                            ValidationEntryLevel.Warning, $"Unsupported model type: {type}",
+                            bracketParameter.LineInfo));
+                        return;
                     }
 
                     var model = ModelsGenerator.GenerateModel(
@@ -69,7 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                         context.NameGenerator.GenerateObjectName(name),
                         name,
                         type,
-                        b.Parameters,
+                        bracketParameter.Parameters,
                         context);
 
                     if (model != null)
@@ -78,13 +81,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                     }
                 }
 
-                if (statement.Parameters[0] is SingleParameter single)
+                if (statement.Parameters[0] is SingleParameter parameter)
                 {
-                    var type = single.Image;
+                    var type = parameter.Image;
 
                     if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsModelTypeCaseSensitive, out var generator))
                     {
-                        throw new ReadingException($"Unsupported model type: {type}", single.LineInfo);
+                        context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
+                            ValidationEntryLevel.Warning, $"Unsupported model type: {type}",
+                            parameter.LineInfo));
+                        
+                        return;
                     }
 
                     var model = ModelsGenerator.GenerateModel(

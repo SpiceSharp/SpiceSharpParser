@@ -1,7 +1,7 @@
 ﻿using SpiceSharp.Circuits;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
@@ -10,6 +10,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -179,7 +180,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             if (parameters.Count < component.PinCount)
             {
-                throw new WrongParametersCountException($"Too few parameters for: {component.Name} to create nodes", parameters.LineInfo);
+                throw new SpiceSharpParserException($"Too few parameters for: {component.Name} to create nodes", parameters.LineInfo);
             }
 
             string[] nodes = new string[component.PinCount];
@@ -248,7 +249,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             catch (Exception e)
             {
-                throw new ReadingException($"Problem with setting parameter = {parameterName} with value = {value}", e);
+                Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Problem with setting parameter = {parameterName} with value = {value}"));
             }
         }
 
@@ -301,7 +302,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             catch (Exception ex)
             {
-                throw new ReadingException($"Exception during evaluation of parameter with expression: `{expression}`", ex, parameter.LineInfo);
+                Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, 
+                    $"Exception during evaluation of parameter with expression: `{expression}`: {ex}", parameter.LineInfo));
             }
         }
 

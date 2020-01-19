@@ -1,9 +1,9 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Collections.Generic;
+using SpiceSharpParser.Common.Validation;
 using Model = SpiceSharp.Components.Model;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
@@ -41,11 +41,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             // Errors
             switch (parameters.Count)
             {
-                case 0: throw new WrongParametersCountException($"Node expected for component {componentIdentifier}", parameters.LineInfo);
+                case 0:
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Error,
+                        $"Node expected for component {componentIdentifier}", parameters.LineInfo));
+                    return null;
                 case 1:
                 case 2:
-                case 3: throw new WrongParametersCountException("Node expected", parameters.LineInfo);
-                case 4: throw new WrongParametersCountException("Model name expected", parameters.LineInfo);
+                case 3:
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Error,
+                        $"Node expected", parameters.LineInfo));
+                    return null;
+                case 4:
+                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Error,
+                        $"Model name expected", parameters.LineInfo));
+                    return null;
             }
 
             // Get the model and generate a component for it
@@ -54,7 +66,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             Model model = context.ModelsRegistry.FindModel<Model>(modelNameParameter.Image);
             if (model == null)
             {
-                throw new ModelNotFoundException($"Could not find model {modelNameParameter.Image} for mosfet {originalName}", parameters.LineInfo);
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
+                    ValidationEntryLevel.Error,
+                    $"Could not find model {modelNameParameter.Image} for mosfet {originalName}", parameters.LineInfo));
+
+                return null;
             }
 
             if (Mosfets.ContainsKey(model.GetType()))
@@ -75,7 +91,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
             else
             {
-                throw new ReadingException("Invalid model");
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
+                    ValidationEntryLevel.Error,
+                    $"Invalid model {model.GetType()} for {componentIdentifier}", parameters.LineInfo));
+
+                return null;
             }
 
             // The rest is all just parameters

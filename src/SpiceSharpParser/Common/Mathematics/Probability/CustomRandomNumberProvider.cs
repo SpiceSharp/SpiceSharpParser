@@ -56,7 +56,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
                 }
             }
 
-            throw new InvalidOperationException("CDF was invalid");
+            throw new SpiceSharpParserException("CDF was invalid");
         }
 
         /// <summary>

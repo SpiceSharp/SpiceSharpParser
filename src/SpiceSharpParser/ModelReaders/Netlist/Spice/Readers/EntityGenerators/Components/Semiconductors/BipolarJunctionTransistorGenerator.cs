@@ -1,7 +1,7 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharp.Components.BipolarBehaviors;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -29,7 +29,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             if (parameters.Count < 5)
             {
-                throw new WrongParametersCountException();
+                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameters count for BJT", parameters.LineInfo));
+                return null;
             }
 
             context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
