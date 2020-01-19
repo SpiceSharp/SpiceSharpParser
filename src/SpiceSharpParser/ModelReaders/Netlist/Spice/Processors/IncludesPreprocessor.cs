@@ -4,9 +4,9 @@ using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Parsers.Netlist.Spice;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
@@ -125,7 +125,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             // check if file exists
             if (!File.Exists(includeFullPath))
             {
-                throw new InvalidOperationException($"Netlist include at {includeFullPath}  is not found");
+                Validation.Reading.Add(
+                    new ValidationEntry(
+                        ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Warning, 
+                        $"Netlist include at {includeFullPath}  is not found",
+                        include.LineInfo));
+                return;
             }
 
             // get include content
@@ -161,7 +167,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             }
             else
             {
-                throw new InvalidOperationException($"Netlist include at {includeFullPath} could not be loaded");
+                Validation.Reading.Add(
+                    new ValidationEntry(
+                        ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Warning,
+                        $"Netlist include at {includeFullPath} could not be read",
+                        include.LineInfo));
             }
         }
     }

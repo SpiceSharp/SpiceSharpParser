@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
@@ -70,9 +71,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// </summary>
         public IProcessor IncludesPreprocessor { get; }
 
-        protected Func<string> InitialDirectoryPathProvider { get; }
-
+        /// <summary>
+        /// Gets or sets validation.
+        /// </summary>
         public SpiceParserValidationResult Validation { get; set; }
+
+        protected Func<string> InitialDirectoryPathProvider { get; }
 
         /// <summary>
         /// Reads .include statements.
@@ -181,7 +185,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             // check if file exists
             if (!File.Exists(libFullPath))
             {
-                throw new InvalidOperationException($"Netlist include at {libFullPath}  is not found");
+                Validation.Reading.Add(
+                    new ValidationEntry(
+                        ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Warning,
+                        $"Netlist include at {libFullPath} could not be found",
+                        lib.LineInfo));
+                return;
             }
 
             // get lib content
@@ -222,7 +232,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             }
             else
             {
-                throw new InvalidOperationException($"Netlist include at {libFullPath} could not be loaded");
+                Validation.Reading.Add(
+                    new ValidationEntry(
+                        ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Warning,
+                        $"Netlist include at {libFullPath} could not be read",
+                        lib.LineInfo));
             }
         }
     }
