@@ -21,7 +21,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 "CaseSensitivity",
                 ".End");
             var result = parser.ParseNetlist(text);
-            Assert.True(result.ValidationResult.Parsing.HasError);
+            Assert.True(result.ValidationResult.HasError);
         }
 
         [Fact]
@@ -401,7 +401,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var result = parser.ParseNetlist(text);
-            Assert.True(result.ValidationResult.Reading.HasWarning);
+            Assert.True(result.ValidationResult.HasWarning);
         }
 
         [Fact]
@@ -453,7 +453,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             var result = parser.ParseNetlist(text);
-            Assert.True(result.ValidationResult.Reading.HasWarning);
+            Assert.True(result.ValidationResult.HasWarning);
         }
 
         [Fact]
@@ -591,7 +591,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".SAVE i(V1)",
                 ".END");
             var result = parser.ParseNetlist(text);
-            Assert.True(result.ValidationResult.Reading.HasWarning);
+            Assert.True(result.ValidationResult.HasWarning);
         }
     }
 }

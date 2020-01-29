@@ -1,6 +1,7 @@
 using NSubstitute;
 using SpiceSharp.Components;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
@@ -57,7 +58,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers
             readingContext.CaseSensitivity.Returns(new SpiceNetlistCaseSensitivitySettings());
 
             var service = Substitute.For<IResultService>();
-            service.Validation.Returns(new SpiceNetlistValidationResult());
+            service.Validation.Returns(new ValidationEntryCollection());
             readingContext.Result.Returns(service);
 
             // act + assert

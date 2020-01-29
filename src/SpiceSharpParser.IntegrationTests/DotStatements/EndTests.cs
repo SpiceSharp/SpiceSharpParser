@@ -52,7 +52,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             parser.Settings.Parsing.IsEndRequired = true;
 
             var result = parser.ParseNetlist(text);
-            Assert.True(result.ValidationResult.Parsing.HasError);
+            Assert.True(result.ValidationResult.HasError);
         }
     }
 }

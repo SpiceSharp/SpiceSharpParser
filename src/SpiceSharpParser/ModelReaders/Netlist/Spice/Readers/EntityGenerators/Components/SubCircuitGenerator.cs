@@ -28,10 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             var ifPreprocessor = new IfPreprocessor();
             ifPreprocessor.CaseSettings = subCircuitContext.CaseSensitivity;
-            ifPreprocessor.Validation = new SpiceParserValidationResult()
-            {
-                Reading = context.Result.Validation
-            };
+            ifPreprocessor.Validation = context.Result.Validation;
             ifPreprocessor.EvaluationContext = subCircuitContext.Evaluator.GetEvaluationContext();
             subCircuitDefinition.Statements = ifPreprocessor.Process(subCircuitDefinition.Statements);
 

@@ -1,5 +1,6 @@
 ﻿using SpiceSharp;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
 
@@ -25,6 +26,9 @@ namespace SpiceSharpParser
         /// </summary>
         public SpiceNetlist PreprocessedInputModel { get; set; }
 
-        public SpiceParserValidationResult ValidationResult { get; set; }
+        /// <summary>
+        /// Gets or set the validation result.
+        /// </summary>
+        public ValidationEntryCollection ValidationResult { get; set; }
     }
 }

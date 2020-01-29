@@ -8,6 +8,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System.Collections.Generic;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -25,7 +26,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         int? Seed { get; set; }
 
-        SpiceNetlistValidationResult Validation { get; }
+        ValidationEntryCollection Validation { get; }
 
         void AddComment(CommentLine statement);
 

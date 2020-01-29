@@ -97,7 +97,7 @@ namespace SpiceSharpParser
                 throw new ArgumentNullException(nameof(spiceNetlist));
             }
 
-            var result = new SpiceParserResult { ValidationResult = new SpiceParserValidationResult() };
+            var result = new SpiceParserResult { ValidationResult = new ValidationEntryCollection() };
 
             // Get tokens
             try
@@ -117,23 +117,23 @@ namespace SpiceSharpParser
                 result.PreprocessedInputModel = preprocessedNetListModel;
                 result.SpiceModel = spiceModel;
 
-                result.ValidationResult.Reading.AddRange(result.SpiceModel.ValidationResult);
+                result.ValidationResult.AddRange(result.SpiceModel.ValidationResult);
             }
             catch (LexerException e)
             {
-                result.ValidationResult.Lexing.Add(new ValidationEntry(ValidationEntrySource.Lexer,
+                result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Lexer,
                     ValidationEntryLevel.Error, e.ToString(), null));
             }
             catch (ParseException e)
             {
-                result.ValidationResult.Parsing.Add(new ValidationEntry(ValidationEntrySource.Parser,
+                result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Parser,
                     ValidationEntryLevel.Error, e.ToString(), null));
             }
 
             return result;
         }
 
-        private SpiceNetlist GetPreprocessedNetListModel(SpiceNetlist originalNetlistModel, SpiceParserValidationResult validationResult)
+        private SpiceNetlist GetPreprocessedNetListModel(SpiceNetlist originalNetlistModel, ValidationEntryCollection validationResult)
         {
             SpiceNetlist preprocessedNetListModel = (SpiceNetlist) originalNetlistModel.Clone();
             var preprocessorContext = GetEvaluationContext();

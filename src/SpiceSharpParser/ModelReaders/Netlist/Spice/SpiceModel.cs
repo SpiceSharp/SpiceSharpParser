@@ -4,6 +4,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations;
 using System.Collections.Generic;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
@@ -16,7 +17,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         {
             Circuit = circuit ?? throw new System.ArgumentNullException(nameof(circuit));
             Title = title;
-            ValidationResult = new SpiceNetlistValidationResult();
+            ValidationResult = new ValidationEntryCollection();
         }
 
         /// <summary>
@@ -72,6 +73,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <summary>
         /// Gets the validation result.
         /// </summary>
-        public SpiceNetlistValidationResult ValidationResult { get; }
+        public ValidationEntryCollection ValidationResult { get; }
     }
 }

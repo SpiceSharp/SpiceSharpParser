@@ -21,7 +21,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             Read(statement, context.Evaluator.GetEvaluationContext(),  context.Result.Validation, true);
         }
 
-        public void Read(Control statement, EvaluationContext context, SpiceNetlistValidationResult validation)
+        public void Read(Control statement, EvaluationContext context, ValidationEntryCollection validation)
         {
             Read(statement, context, validation, true);
         }
@@ -33,7 +33,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <param name="context">Expression context.</param>
         /// <param name="validation">Validation.</param>
         /// <param name="validate">Validate.</param>
-        public void Read(Control statement, EvaluationContext context, SpiceNetlistValidationResult validation, bool validate)
+        public void Read(Control statement, EvaluationContext context, ValidationEntryCollection validation, bool validate)
         {
             if (statement.Parameters == null)
             {

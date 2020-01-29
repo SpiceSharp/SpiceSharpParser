@@ -15,7 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
     {
         public EvaluationContext EvaluationContext { get; set; } 
         
-        public SpiceParserValidationResult Validation { get; set; }
+        public ValidationEntryCollection Validation { get; set; }
 
         /// <summary>
         /// Gets or sets the evaluator.
@@ -32,7 +32,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             ParamControl paramControl = new ParamControl();
             foreach (Control param in statements.Where(statement => statement is Control c && c.Name.ToLower() == "param").Cast<Control>())
             {
-                paramControl.Read(param, EvaluationContext, Validation.Reading);
+                paramControl.Read(param, EvaluationContext, Validation);
             }
 
             return ReadIfs(statements);
@@ -82,7 +82,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
             if (matchedEndIfIndex == statements.Count)
             {
-                Validation.Reading.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Error, "Cannot find matched .endif"));
+                Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Error, "Cannot find matched .endif"));
                 return result;
             }
 

@@ -319,7 +319,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             parser.Settings.Parsing.IsEndRequired = true;
 
             var result = parser.ParseNetlist(text);
-            Assert.True(result.ValidationResult.Parsing.HasError);
+            Assert.True(result.ValidationResult.HasError);
         }
     }
 }

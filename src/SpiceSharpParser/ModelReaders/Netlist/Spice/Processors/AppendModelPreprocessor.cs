@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
     public class AppendModelPreprocessor : IProcessor
     {
-        public SpiceParserValidationResult Validation { get; set; }
+        public ValidationEntryCollection Validation { get; set; }
 
         /// <summary>
         /// Preprocess .APPENDMODEL statements.

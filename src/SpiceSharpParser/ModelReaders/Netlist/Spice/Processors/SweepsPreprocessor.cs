@@ -1,12 +1,13 @@
 ﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Linq;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
     public class SweepsPreprocessor : IProcessor
     {
-        public SpiceParserValidationResult Validation { get; set; }
+        public ValidationEntryCollection Validation { get; set; }
 
         /// <summary>
         /// Preprocess .ST and .STEP.

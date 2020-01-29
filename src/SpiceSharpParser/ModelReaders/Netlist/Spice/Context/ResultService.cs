@@ -10,6 +10,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Collections.Generic;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -63,7 +64,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         private SpiceModel<Circuit, Simulation> Result { get; }
 
-        public SpiceNetlistValidationResult Validation => Result.ValidationResult;
+        public ValidationEntryCollection Validation => Result.ValidationResult;
 
         /// <summary>
         /// Adds comment.

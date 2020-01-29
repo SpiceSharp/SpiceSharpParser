@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
@@ -59,6 +60,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// </summary>
         int? Seed { get; set; }
 
-        SpiceNetlistValidationResult ValidationResult { get; }
+        ValidationEntryCollection ValidationResult { get; }
     }
 }
