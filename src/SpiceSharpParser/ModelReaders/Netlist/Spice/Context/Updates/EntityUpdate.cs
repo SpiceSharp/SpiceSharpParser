@@ -1,4 +1,4 @@
-﻿using SpiceSharp.Circuits;
+﻿using SpiceSharp.Entities;
 using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
@@ -11,7 +11,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             ParameterUpdatesBeforeTemperature = new List<EntityParameterUpdate>();
         }
 
-        public Entity Entity { get; set; }
+        public IEntity Entity { get; set; }
 
         public List<EntityParameterUpdate> ParameterUpdatesBeforeLoad { get; }
 

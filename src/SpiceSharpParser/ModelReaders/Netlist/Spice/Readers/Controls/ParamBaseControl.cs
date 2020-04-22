@@ -68,6 +68,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                         context.AddFunction(
                             assignmentParameter.Name,
+                            assignmentParameter.Value,
+                            assignmentParameter.Arguments,
                             factory.Create(
                                 assignmentParameter.Name,
                                 assignmentParameter.Arguments,

@@ -52,66 +52,67 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             Transient tran = null;
 
+
+            double? maxStep = null;
+            double? step = null;
+            double? final = null;
+
+            double[] args;
+
             switch (clonedParameters.Count)
             {
                 case 2:
-                    tran = new Transient(
-                        name,
-                        context.Evaluator.EvaluateDouble(clonedParameters[0].Image),
-                        context.Evaluator.EvaluateDouble(clonedParameters[1].Image));
+                    step = context.Evaluator.EvaluateDouble(clonedParameters[0].Image);
+                    final = context.Evaluator.EvaluateDouble(clonedParameters[1].Image);
+                    args = new double[] { step.Value, final.Value };
                     break;
-
                 case 3:
-                    tran = new Transient(
-                        name,
-                        context.Evaluator.EvaluateDouble(clonedParameters[0].Image),
-                        context.Evaluator.EvaluateDouble(clonedParameters[1].Image),
-                        context.Evaluator.EvaluateDouble(clonedParameters[2].Image));
+                    step = context.Evaluator.EvaluateDouble(clonedParameters[0].Image);
+                    final = context.Evaluator.EvaluateDouble(clonedParameters[1].Image);
+                    maxStep = context.Evaluator.EvaluateDouble(clonedParameters[2].Image);
+                    args = new double[] { step.Value, final.Value, maxStep.Value };
                     break;
-
-                case 4:
-                    tran = new Transient(
-                        name,
-                        context.Evaluator.EvaluateDouble(clonedParameters[0].Image),
-                        context.Evaluator.EvaluateDouble(clonedParameters[1].Image),
-                        context.Evaluator.EvaluateDouble(clonedParameters[3].Image));
-                    tran.Configurations.SetParameter("init", context.Evaluator.EvaluateDouble(clonedParameters[2].Image));
-
-                    break;
-
                 default:
                     context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".TRAN control - Too many parameters for .TRAN", statement.LineInfo));
                     return null;
             }
 
+            var factory = context.Result.SimulationConfiguration.TimeParametersFactory;
+
+            if (factory != null)
+            {
+                var config = context.Result.SimulationConfiguration.TransientConfiguration;
+                config.Step = step;
+                config.Final = final;
+                config.MaxStep = maxStep;
+                config.UseIc = useIc;
+                tran = new Transient(name, factory(config));
+            }
+            else
+            {
+                if (clonedParameters.Count == 2) {
+                    tran = new Transient(name, step.Value, final.Value);
+                    tran.TimeParameters.UseIc = useIc;
+                }
+                else
+                {
+                    tran = new Transient(name, step.Value, final.Value, maxStep.Value);
+                    tran.TimeParameters.UseIc = useIc;
+                }
+            }
+
             ConfigureCommonSettings(tran, context);
-            ConfigureTransientSettings(tran, context, useIc);
 
             tran.BeforeExecute += (sender, beforeExecuteEventArgs) =>
             {
-                tran.Method.TruncateProbe += (truncateSender, truncateArgs) =>
+                /*tran.Method.TruncateProbe += (truncateSender, truncateArgs) =>
                 {
                     context.Evaluator.SetParameter(tran, "TIME", tran.Method.Time + truncateArgs.Delta);
-                };
+                };*/
             };
             context.Result.AddSimulation(tran);
 
             return tran;
-        }
-
-        private void ConfigureTransientSettings(Transient tran, ICircuitContext context, bool useIc)
-        {
-            if (context.Result.SimulationConfiguration.Method != null)
-            {
-                tran.Configurations.Get<TimeConfiguration>().Method = context.Result.SimulationConfiguration.Method;
-            }
-
-            if (context.Result.SimulationConfiguration.TranMaxIterations.HasValue)
-            {
-                tran.Configurations.Get<TimeConfiguration>().TranMaxIterations = context.Result.SimulationConfiguration.TranMaxIterations.Value;
-            }
-
-            tran.Configurations.Get<TimeConfiguration>().UseIc = useIc;
         }
     }
 }

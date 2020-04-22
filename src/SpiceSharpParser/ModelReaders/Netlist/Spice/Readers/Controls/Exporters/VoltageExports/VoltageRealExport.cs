@@ -21,7 +21,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             Name = name ?? throw new System.ArgumentNullException(nameof(name));
             Node = node ?? throw new System.ArgumentNullException(nameof(node));
             Reference = reference;
-            ExportImpl = new RealVoltageExport((BaseSimulation)simulation, node, reference);
+            ExportImpl = new RealVoltageExport((IBiasingSimulation)simulation, node, reference);
         }
 
         /// <summary>

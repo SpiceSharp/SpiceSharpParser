@@ -1,5 +1,4 @@
 ﻿using SpiceSharp;
-using SpiceSharp.Circuits;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
@@ -10,6 +9,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Collections.Generic;
 using SpiceSharpParser.Common;
+using SpiceSharp.Entities;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -125,7 +125,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Adds entity to netlist.
         /// </summary>
         /// <param name="entity">Entity to add.</param>
-        public void AddEntity(Entity entity)
+        public void AddEntity(IEntity entity)
         {
             if (entity == null)
             {
@@ -139,7 +139,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Adds simulation to netlist.
         /// </summary>
         /// <param name="simulation">Simulation to add.</param>
-        public void AddSimulation(BaseSimulation simulation)
+        public void AddSimulation(Simulation simulation)
         {
             if (simulation == null)
             {
@@ -157,7 +157,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// True if found.
         /// </returns>
-        public bool FindObject(string objectId, out Entity entity)
+        public bool FindObject(string objectId, out IEntity entity)
         {
             if (objectId == null)
             {

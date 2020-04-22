@@ -27,14 +27,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether entity names are case-sensitive.
+        /// Gets or sets a value indicating whether names are case-sensitive.
         /// </summary>
-        public bool IsEntityNameCaseSensitive { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether entity parameter names are case-sensitive.
-        /// </summary>
-        public bool IsEntityParameterNameCaseSensitive { get; set; } = false;
+        public bool IsEntityNamesCaseSensitive { get; set; } = false;
 
         /// <summary>
         /// Gets a value indicating whether dot statements names are case-sensitive.

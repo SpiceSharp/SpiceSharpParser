@@ -1,19 +1,16 @@
-﻿using SpiceSharp.Circuits;
-using SpiceSharp.Simulations;
+﻿using SpiceSharp.Simulations;
 using System;
 using System.Collections.Generic;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using Model = SpiceSharp.Components.Model;
+using SpiceSharp.Entities;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 {
     public interface IModelsRegistry
     {
-        void SetModel<T>(Entity entity, BaseSimulation simulation, Parameter modelNameParameter, string exceptionMessage, Action<T> setModelAction, IResultService result)
-            where T : Model;
+        void SetModel(Entity entity, Simulation simulation, Parameter modelNameParameter, string exceptionMessage, Action<Context.Models.Model> setModelAction, IResultService result);
 
-        T FindModel<T>(string modelName)
-            where T : Model;
+        IEntity FindModel(string modelName);
 
         void RegisterModelInstance(Model model);
 

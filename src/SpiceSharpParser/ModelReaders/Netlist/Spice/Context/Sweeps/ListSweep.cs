@@ -1,18 +1,25 @@
-﻿using SpiceSharp.Simulations;
-using System;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
 {
-    public class ListSweep : Sweep<double>
+    public class ListSweep : IEnumerable<double>
     {
-        private readonly IEnumerable<double> _points;
+        private IEnumerable<double> points;
 
         public ListSweep(IEnumerable<double> points)
         {
-            _points = points ?? throw new ArgumentNullException(nameof(points));
+            this.points = points;
         }
 
-        public override IEnumerable<double> Points => _points;
+        public IEnumerator<double> GetEnumerator()
+        {
+            return points.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return points.GetEnumerator();
+        }
     }
 }

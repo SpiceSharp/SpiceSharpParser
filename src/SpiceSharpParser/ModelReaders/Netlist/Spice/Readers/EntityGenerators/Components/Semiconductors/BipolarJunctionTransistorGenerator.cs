@@ -1,5 +1,5 @@
 ﻿using SpiceSharp.Components;
-using SpiceSharp.Components.BipolarBehaviors;
+using SpiceSharp.Entities;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -9,7 +9,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class BipolarJunctionTransistorGenerator : IComponentGenerator
     {
-        public SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
+        public IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
         {
             BipolarJunctionTransistor bjt = new BipolarJunctionTransistor(componentIdentifier);
 
@@ -40,7 +40,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     simulation,
                     parameters.Get(4),
                     $"Could not find model {parameters.Get(4)} for BJT {originalName}",
-                    (BipolarJunctionTransistorModel model) => bjt.Model = model.Name,
+                    (Context.Models.Model model) => bjt.Model = model.Name,
                     context.Result);
             });
 
@@ -61,16 +61,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                     else
                     {
-                        // TODO: Fix this please it's broken ...
-                        BaseParameters bp = bjt.ParameterSets.Get<BaseParameters>();
-                        if (!bp.Area.Given)
+                        //TODO: Verify it
+                        var bp = bjt.Parameters;
+                        if (bp.Area == 0.0)
                         {
-                            bp.Area.Value = context.Evaluator.EvaluateDouble(s.Image);
+                            bp.Area = context.Evaluator.EvaluateDouble(s.Image);
                         }
 
                         if (!bp.Temperature.Given)
                         {
-                            bp.Temperature.Value = context.Evaluator.EvaluateDouble(s.Image);
+                            bp.Temperature = context.Evaluator.EvaluateDouble(s.Image);
                         }
                     }
                 }

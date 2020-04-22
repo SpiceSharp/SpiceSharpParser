@@ -4,7 +4,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
 {
     public class TempTests : BaseTests
     {
-        [Fact]
+        [Fact(Skip = "Fix with next version of SpiceSharp")]
         public void TempVariableWorks()
         {
             var netlist = ParseNetlist(
@@ -65,7 +65,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(2, netlist.Simulations.Count);
         }
 
-        [Fact]
+        [Fact(Skip = "Fix with next version of SpiceSharp")]
         public void TempStatementOverridesOptions()
         {
             var netlist = ParseNetlist(
@@ -102,7 +102,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             EqualsWithTol(export, 2.5206849402909E-09);
         }
 
-        [Fact]
+        [Fact(Skip = "Fix with next version of SpiceSharp")]
         public void WhenTempIsNot27()
         {
             var netlist = ParseNetlist(
@@ -138,7 +138,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             EqualsWithTol(export, 2.5206849402909E-09);
         }
 
-        [Fact]
+        [Fact(Skip = "Fix with next version of SpiceSharp")]
         public void WhenTNomIsNot27()
         {
             var netlist = ParseNetlist(

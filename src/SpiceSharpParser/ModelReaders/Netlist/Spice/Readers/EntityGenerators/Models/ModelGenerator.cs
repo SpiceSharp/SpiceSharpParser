@@ -1,7 +1,8 @@
 ﻿using System;
-using SpiceSharp.Circuits;
+using SpiceSharp.Entities;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -9,9 +10,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 {
     public abstract class ModelGenerator : IModelGenerator
     {
-        public abstract SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, ICircuitContext context);
+        public abstract Context.Models.Model Generate(string id, string type, ParameterCollection parameters, ICircuitContext context);
 
-        protected void SetParameters(ICircuitContext context, Entity entity, ParameterCollection parameters, bool onload = true)
+        protected void SetParameters(ICircuitContext context, IEntity entity, ParameterCollection parameters, bool onload = true)
         {
             foreach (Parameter parameter in parameters)
             {

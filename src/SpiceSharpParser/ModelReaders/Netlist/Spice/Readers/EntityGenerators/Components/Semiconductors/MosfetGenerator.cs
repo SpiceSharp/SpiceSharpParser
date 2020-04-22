@@ -1,10 +1,10 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Collections.Generic;
 using SpiceSharpParser.Common.Validation;
-using Model = SpiceSharp.Components.Model;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
+using SpiceSharp.Entities;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
 {
@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
         protected Dictionary<Type, Func<string, MosfetDetails>> Mosfets { get; } = new Dictionary<Type, Func<string, MosfetDetails>>();
 
-        public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
+        public override IEntity Generate(string componentIdentifier, string originalName, string type, SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection parameters, ICircuitContext context)
         {
             // Errors
             switch (parameters.Count)
@@ -63,7 +63,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             // Get the model and generate a component for it
             SpiceSharp.Components.Component mosfet = null;
             var modelNameParameter = parameters.Get(4);
-            Model model = context.ModelsRegistry.FindModel<Model>(modelNameParameter.Image);
+            var model = context.ModelsRegistry.FindModel(modelNameParameter.Image);
             if (model == null)
             {
                 context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,

@@ -87,14 +87,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
             if (simulation is DC dc)
             {
-                if (dc.Sweeps.Count > 1)
+                if (eventArgs.GetSweepValues().Length > 1)
                 {
                     // TODO: Add support for DC Sweeps > 1
                     context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".PRINT doesn't support sweep count > 1"));
                     return;
                 }
 
-                x = eventArgs.SweepValue;
+                x = eventArgs.GetSweepValues().FirstOrDefault();
             }
 
             if (!(simulation is OP))

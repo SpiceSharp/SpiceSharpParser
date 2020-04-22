@@ -59,7 +59,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                 {
                     var type = bracketParameter.Name;
 
-                    if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsEntityNameCaseSensitive, out var generator))
+                    if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsEntityNamesCaseSensitive, out var generator))
                     {
                         context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
                             ValidationEntryLevel.Warning, $"Unsupported model type: {type}",
@@ -77,7 +77,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                     if (model != null)
                     {
-                        context.Result.AddEntity(model);
+                        context.Result.AddEntity(model.Entity);
                     }
                 }
 
@@ -104,7 +104,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                     if (model != null)
                     {
-                        context.Result.AddEntity(model);
+                        context.Result.AddEntity(model.Entity);
                     }
                 }
             }

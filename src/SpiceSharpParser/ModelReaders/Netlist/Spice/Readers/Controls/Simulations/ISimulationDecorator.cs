@@ -4,6 +4,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 {
     public interface ISimulationDecorator
     {
-        BaseSimulation Decorate(BaseSimulation simulation);
+        Simulation Decorate(Simulation simulation);
     }
 }

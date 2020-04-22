@@ -35,9 +35,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <param name="context">Context.</param>
         /// <param name="createSimulation">Create simulation factory.</param>
         /// <returns></returns>
-        public List<BaseSimulation> CreateSimulations(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, BaseSimulation> createSimulation)
+        public List<Simulation> CreateSimulations(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, Simulation> createSimulation)
         {
-            var result = new List<BaseSimulation>();
+            var result = new List<Simulation>();
 
             ProcessTempParameterSweep(context);
 
@@ -56,7 +56,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             for (var i = 0; i < context.Result.SimulationConfiguration.ParameterSweeps.Count; i++)
             {
-                var sweepValues = context.Result.SimulationConfiguration.ParameterSweeps[i].Sweep.Points.ToList();
+                var sweepValues = context.Result.SimulationConfiguration.ParameterSweeps[i].Sweep.ToList();
                 sweeps.Add(sweepValues);
                 productCount *= sweepValues.Count;
             }
@@ -67,7 +67,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             {
                 int[] indexes = NumberSystem.GetValueInSystem(i, system);
 
-                Func<string, Control, ICircuitContext, BaseSimulation> createSimulationWithSweepParametersFactory =
+                Func<string, Control, ICircuitContext, Simulation> createSimulationWithSweepParametersFactory =
                     (name, control, modifiedContext) =>
                     {
                         List<KeyValuePair<Parameter, double>> parameterValues =
@@ -128,7 +128,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             if (tempSweep != null)
             {
                 context.Result.SimulationConfiguration.ParameterSweeps.Remove(tempSweep);
-                var tempValues = tempSweep.Sweep.Points.ToList();
+                var tempValues = tempSweep.Sweep.ToList();
 
                 if (context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions.HasValue)
                 {
@@ -144,7 +144,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             }
         }
 
-        protected void SetSweepSimulation(ICircuitContext context, List<KeyValuePair<Parameter, double>> parameterValues, BaseSimulation simulation)
+        protected void SetSweepSimulation(ICircuitContext context, List<KeyValuePair<Parameter, double>> parameterValues, Simulation simulation)
         {
             ParameterUpdater.Update(simulation, context, parameterValues);
         }

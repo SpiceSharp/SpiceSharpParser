@@ -33,11 +33,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Common\Evaluation\EvaluationParameter.cs" />
+    <Compile Remove="ModelReaders\Netlist\Spice\Evaluation\Functions\Math\TableFunction.cs" />
     <Compile Remove="Parsers\Expression\ExpressionParser - Copy.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SpiceSharp" Version="2.8.0" />
-    <PackageReference Include="SpiceSharpBehavioral" Version="1.1.5" />
+    <PackageReference Include="SpiceSharp" Version="3.0.4" />
+    <PackageReference Include="SpiceSharpBehavioral" Version="3.0.4" />
   </ItemGroup>
 </Project>

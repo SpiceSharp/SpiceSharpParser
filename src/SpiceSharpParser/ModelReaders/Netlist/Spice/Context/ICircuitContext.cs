@@ -1,4 +1,4 @@
-﻿using SpiceSharp.Circuits;
+﻿using SpiceSharp.Entities;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
@@ -88,7 +88,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="valueExpression">Value expression.</param>
         /// <param name="beforeTemperature">Should be re-evaluated before temperature.</param>
         /// <param name="onload">Should be re-evaluated OnBeforeLoad.</param>
-        void SetParameter(Entity entity, string parameterName, string valueExpression, bool beforeTemperature = true, bool onload = true);
+        void SetParameter(IEntity entity, string parameterName, string valueExpression, bool beforeTemperature = true, bool onload = true);
 
         /// <summary>
         /// Sets parameter of entity to value of expression.
@@ -98,7 +98,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="valueExpression">Value expression.</param>
         /// <param name="beforeTemperature">Should be re-evaluated before temperature.</param>
         /// <param name="onload">Should be re-evaluated OnBeforeLoad.</param>
-        void SetParameter(Entity entity, string parameterName, Parameter valueExpression, bool beforeTemperature = true, bool onload = true);
+        void SetParameter(IEntity entity, string parameterName, Parameter valueExpression, bool beforeTemperature = true, bool onload = true);
 
         /// <summary>
         /// Sets the initial voltage.
@@ -112,7 +112,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         /// <param name="component">A component</param>
         /// <param name="parameters">Parameters of component</param>
-        void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters);
+        void CreateNodes(SpiceSharp.Components.IComponent component, ParameterCollection parameters);
 
         /// <summary>
         /// Reads the statements with given order.

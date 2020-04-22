@@ -5,6 +5,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
@@ -13,6 +14,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
     /// </summary>
     public class NoiseControl : SimulationControl
     {
+        private IEnumerable<double> sweep;
+
         public NoiseControl(IMapper<Exporter> mapper)
             : base(mapper)
         {
@@ -67,8 +70,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             var start = context.Evaluator.EvaluateDouble(statement.Parameters.Get(4));
             var stop = context.Evaluator.EvaluateDouble(statement.Parameters.Get(5));
 
-            Sweep<double> sweep;
-
             switch (type)
             {
                 case "lin": sweep = new LinearSweep(start, stop, (int)numberSteps); break;
@@ -94,7 +95,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                                 var output = v.Elements[0].Image;
                                 var reference = v.Elements[1].Image;
                                 var input = statement.Parameters[2].Image;
-                                noise = new Noise(name, output, reference, input, sweep);
+                                noise = new Noise(name, output, reference, sweep);
                             }
                             else if (bracket.Parameters[0] is SingleParameter s)
                             {

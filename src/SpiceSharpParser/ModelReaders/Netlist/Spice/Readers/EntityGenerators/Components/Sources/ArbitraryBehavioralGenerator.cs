@@ -1,4 +1,6 @@
 ﻿using SpiceSharp.Components;
+using SpiceSharp.Components.BehavioralComponents;
+using SpiceSharp.Entities;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -8,7 +10,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class ArbitraryBehavioralGenerator : SourceGenerator
     {
-        public override SpiceSharp.Components.Component Generate(
+        public override IEntity Generate(
             string componentIdentifier,
             string originalName,
             string type,
@@ -21,9 +23,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.CreateNodes(entity, parameters);
 
                 var expressionParameter = (AssignmentParameter)parameters.First(p => p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "v");
-                var baseParameters = entity.ParameterSets.Get<SpiceSharpBehavioral.Components.BehavioralBehaviors.BaseParameters>();
-                baseParameters.Expression = expressionParameter.Value;
-                baseParameters.Parser = (sim) => CreateParser(context, sim);
+                entity.Parameters.Expression = expressionParameter.Value;
+
                 return entity;
             }
 
@@ -35,9 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var expressionParameter = (AssignmentParameter)parameters.First(p =>
                     p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "i");
 
-                var baseParameters = entity.ParameterSets.Get<SpiceSharpBehavioral.Components.BehavioralBehaviors.BaseParameters>();
-                baseParameters.Expression = expressionParameter.Value;
-                baseParameters.Parser = (sim) => CreateParser(context, sim);
+                entity.Parameters.Expression = expressionParameter.Value;
 
                 return entity;
             }

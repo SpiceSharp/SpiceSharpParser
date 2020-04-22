@@ -6,28 +6,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 {
     public class RLCModelGenerator : ModelGenerator
     {
-        public override SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, ICircuitContext context)
+        public override Context.Models.Model Generate(string id, string type, ParameterCollection parameters, ICircuitContext context)
         {
-            SpiceSharp.Components.Model model = null;
-
             switch (type.ToLower())
             {
                 case "res":
                 case "r":
-                    model = new ResistorModel(id);
-                    break;
+                    var model = new ResistorModel(id);
+                    SetParameters(context, model, parameters);
+                    return new Context.Models.Model(id, model, model.Parameters);
 
                 case "c":
-                    model = new CapacitorModel(id);
-                    break;
+                    var model2 = new CapacitorModel(id);
+                    SetParameters(context, model2, parameters);
+                    return new Context.Models.Model(id, model2, model2.Parameters);
+         
             }
-
-            if (model != null)
-            {
-                SetParameters(context, model, parameters);
-            }
-
-            return model;
+            return null;
         }
     }
 }

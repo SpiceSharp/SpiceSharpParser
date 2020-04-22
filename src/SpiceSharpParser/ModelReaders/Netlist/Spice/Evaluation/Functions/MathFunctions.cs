@@ -245,7 +245,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         /// </returns>
         public static IFunction<double, double> CreateTable()
         {
-            return new TableFunction();
+            return null; //TODO
         }
     }
 }

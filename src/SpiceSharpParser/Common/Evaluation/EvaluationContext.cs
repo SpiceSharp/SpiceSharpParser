@@ -1,5 +1,6 @@
 ﻿using SpiceSharp.Simulations;
 using SpiceSharpBehavioral.Parsers;
+using SpiceSharpBehavioral.Parsers.Nodes;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.Common.Evaluation.Functions;
 using SpiceSharpParser.Common.Mathematics.Probability;
@@ -39,7 +40,8 @@ namespace SpiceSharpParser.Common.Evaluation
             Functions = new Dictionary<string, List<IFunction>>(StringComparerProvider.Get(caseSettings.IsFunctionNameCaseSensitive));
             Children = new List<EvaluationContext>();
             ExpressionRegistry = new ExpressionRegistry(caseSettings.IsParameterNameCaseSensitive, caseSettings.IsExpressionNameCaseSensitive);
-
+            FunctionsBody = new Dictionary<string, string>();
+            FunctionArguments = new Dictionary<string, List<string>>();
             Randomizer = randomizer;
         }
 
@@ -82,6 +84,11 @@ namespace SpiceSharpParser.Common.Evaluation
         /// Gets or sets custom functions.
         /// </summary>
         public Dictionary<string, List<IFunction>> Functions { get; protected set; }
+
+        public Dictionary<string, string> FunctionsBody { get; protected set; }
+
+        public Dictionary<string, List<string>> FunctionArguments { get; private set; }
+
 
         /// <summary>
         /// Gets or sets expression registry for the context.
@@ -324,11 +331,13 @@ namespace SpiceSharpParser.Common.Evaluation
             return null;
         }
 
-        public void AddFunction(string functionName, IFunction function)
+        public void AddFunction(string functionName, string body, List<string> arguments, IFunction function)
         {
             if (!Functions.ContainsKey(functionName))
             {
                 Functions[functionName] = new List<IFunction>();
+                FunctionsBody[functionName] = body;
+                FunctionArguments[functionName] = arguments;
             }
 
             var overridenFunction = Functions[functionName].SingleOrDefault(f => f.ArgumentsCount == function.ArgumentsCount);
@@ -339,14 +348,6 @@ namespace SpiceSharpParser.Common.Evaluation
             }
 
             Functions[functionName].Add(function);
-        }
-
-        public void CreateCommonFunctions()
-        {
-            AddFunction("atan2", MathFunctions.CreateATan2());
-            AddFunction("cosh", MathFunctions.CreateCosh());
-            AddFunction("sinh", MathFunctions.CreateSinh());
-            AddFunction("tanh", MathFunctions.CreateTanh());
         }
 
         /// <summary>
@@ -396,7 +397,7 @@ namespace SpiceSharpParser.Common.Evaluation
             return ExpressionFeaturesReader.GetParameters(expression, this, b).ToList();
         }
 
-        public SimpleDerivativeParser GetDeriveParser(EvaluationContext context = null)
+        public ExpressionParser GetDeriveParser(EvaluationContext context = null)
         {
             return ExpressionParserFactory.Create(context ?? this, true);
         }

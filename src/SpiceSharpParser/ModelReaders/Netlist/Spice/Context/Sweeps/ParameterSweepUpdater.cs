@@ -1,5 +1,5 @@
-﻿using SpiceSharp.Circuits;
-using SpiceSharp.Components;
+﻿using SpiceSharp.Components;
+using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System;
@@ -16,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
         /// <param name="context">Reading context.</param>
         /// <param name="parameterValues">Parameter values.</param>
         public void Update(
-            BaseSimulation simulation,
+            Simulation simulation,
             ICircuitContext context,
             List<KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double>> parameterValues)
         {
@@ -38,13 +38,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
             UpdateSweep(simulation, context, parameterValues);
         }
 
-        protected void UpdateSweep(BaseSimulation simulation, ICircuitContext context, List<KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double>> parameterValues)
+        protected void UpdateSweep(Simulation simulation, ICircuitContext context, List<KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double>> parameterValues)
         {
             foreach (var paramToSet in parameterValues)
             {
                 if (paramToSet.Key is WordParameter || paramToSet.Key is IdentifierParameter)
                 {
-                    if (context.Result.FindObject(paramToSet.Key.Image, out Entity @object))
+                    if (context.Result.FindObject(paramToSet.Key.Image, out IEntity @object))
                     {
                         SetIndependentSource(@object, simulation, context, paramToSet);
                     }
@@ -64,21 +64,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
             }
         }
 
-        protected void SetDeviceParameter(BaseSimulation simulation, ICircuitContext context, KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double> paramToSet, ReferenceParameter rp)
+        protected void SetDeviceParameter(Simulation simulation, ICircuitContext context, KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double> paramToSet, ReferenceParameter rp)
         {
             string objectName = rp.Name;
             string paramName = rp.Argument;
-            if (context.Result.FindObject(objectName, out Entity @object))
+            if (context.Result.FindObject(objectName, out IEntity @object))
             {
                 context.SimulationPreparations.SetParameter(@object, simulation, paramName, paramToSet.Value, true, false);
             }
         }
 
-        protected void SetModelParameter(BaseSimulation simulation, ICircuitContext context, KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double> paramToSet, BracketParameter bp)
+        protected void SetModelParameter(Simulation simulation, ICircuitContext context, KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double> paramToSet, BracketParameter bp)
         {
             string modelName = bp.Name;
             string paramName = bp.Parameters[0].Image;
-            if (context.Result.FindObject(modelName, out Entity @model))
+            if (context.Result.FindObject(modelName, out IEntity @model))
             {
                 context
                     .SimulationPreparations
@@ -92,7 +92,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
             }
         }
 
-        protected void SetSimulationParameter(BaseSimulation simulation, ICircuitContext context, KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double> paramToSet)
+        protected void SetSimulationParameter(Simulation simulation, ICircuitContext context, KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double> paramToSet)
         {
             simulation.BeforeSetup += (object sender, EventArgs args) =>
             {
@@ -100,7 +100,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
             };
         }
 
-        protected void SetIndependentSource(Entity @entity, BaseSimulation simulation, ICircuitContext context, KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double> paramToSet)
+        protected void SetIndependentSource(IEntity @entity, Simulation simulation, ICircuitContext context, KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double> paramToSet)
         {
             if (@entity is CurrentSource || @entity is VoltageSource)
             {

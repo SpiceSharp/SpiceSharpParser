@@ -33,7 +33,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             resultService)
         {
             Mode = mode;
-            CreateCommonFunctions();
             CreateSpiceFunctions();
             CreateSpiceParameters();
         }
@@ -72,7 +71,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
                 MathFunctions.CreatePwrs(),
                 RandomFunctions.CreateRandom(),
                 MathFunctions.CreateSgn(),
-                MathFunctions.CreateTable(),
                 MathFunctions.CreateU(),
                 RandomFunctions.CreateUnif(),
                 MathFunctions.CreateURamp(),
@@ -81,7 +79,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
             foreach (var function in functions)
             {
-                AddFunction(function.Name, function);
+                AddFunction(function.Name,  null, null, function);
             }
         }
 

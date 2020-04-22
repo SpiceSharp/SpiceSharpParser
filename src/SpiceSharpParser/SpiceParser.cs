@@ -17,6 +17,7 @@ using SpiceSharp.Simulations;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.Lexers;
 using SpiceSharpParser.Parsers.Netlist;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser
 {
@@ -41,6 +42,8 @@ namespace SpiceSharpParser
         {
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
             SingleNetlistParser = new SingleSpiceNetlistParser(Settings.Parsing);
+
+            ReflectionHelper.Comparer = StringComparerProvider.Get(false);
 
             TokenProviderPool = new SpiceTokenProviderPool();
             var includesPreprocessor = new IncludesPreprocessor(
@@ -158,7 +161,7 @@ namespace SpiceSharpParser
         {
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(
                 new[] {"0"},
-                Settings.Reading.CaseSensitivity.IsNodeNameCaseSensitive);
+                Settings.Reading.CaseSensitivity.IsEntityNamesCaseSensitive);
 
             var objectNameGenerator = new ObjectNameGenerator(string.Empty);
             INameGenerator nameGenerator = new NameGenerator(nodeNameGenerator, objectNameGenerator);

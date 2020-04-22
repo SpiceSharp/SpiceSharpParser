@@ -117,7 +117,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             EqualsWithTol(new double[] {export}, references);
         }
 
-        [Fact]
+        [Fact(Skip = "Needs discussion with Sven")]
         public void When_Connectors_Are_Used()
         {
             var netlist = ParseNetlist(
@@ -143,7 +143,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             EqualsWithTol(exports, references);
         }
 
-        [Fact]
+        [Fact(Skip = "Needs discussion with Sven")]
         public void When_ConnectorsSame_Are_Used()
         {
             var netlist = ParseNetlist(

@@ -1,4 +1,6 @@
 ﻿using SpiceSharp.Components;
+using SpiceSharp.Components.Diodes;
+using SpiceSharp.Entities;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -7,7 +9,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class DiodeGenerator : IComponentGenerator
     {
-        public SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
+        public IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters.Count < 3)
             {
@@ -24,7 +26,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     simulation,
                     parameters.Get(2),
                     $"Could not find model {parameters.Get(2)} for diode {originalName}",
-                    (DiodeModel model) => diode.Model = model.Name,
+                    (Context.Models.Model model) => diode.Model = model.Name,
                     context.Result);
             });
 
@@ -58,16 +60,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 if (parameters[i] is ValueParameter || parameters[i] is ExpressionParameter)
                 {
                     // TODO: Fix this please it's broken ...
-                    var bp = diode.ParameterSets.Get<SpiceSharp.Components.DiodeBehaviors.BaseParameters>();
-                    if (!bp.Area.Given)
+                    var bp = diode.GetParameterSet<Parameters>();
+                    if (bp.Area == 0.0)
                     {
-                        bp.Area.Value = context.Evaluator.EvaluateDouble(parameters.Get(i));
+                        bp.Area = context.Evaluator.EvaluateDouble(parameters.Get(i));
                     }
                     else
                     {
                         if (!bp.Temperature.Given)
                         {
-                            bp.Temperature.Value = context.Evaluator.EvaluateDouble(parameters.Get(i));
+                            bp.Temperature = context.Evaluator.EvaluateDouble(parameters.Get(i));
                         }
                     }
                 }

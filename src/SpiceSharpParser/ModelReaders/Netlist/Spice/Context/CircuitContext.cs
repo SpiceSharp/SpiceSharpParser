@@ -1,6 +1,4 @@
-﻿using SpiceSharp.Circuits;
-using SpiceSharpParser.Common;
-using SpiceSharpParser.Common.Evaluation;
+﻿using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
@@ -11,9 +9,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharpParser.Common.Validation;
+using SpiceSharp.Entities;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
+    public class InstanceData
+    {
+
+    }
+
     /// <summary>
     /// Reading context.
     /// </summary>
@@ -166,7 +170,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         /// <param name="component">A component.</param>
         /// <param name="parameters">Parameters of component.</param>
-        public void CreateNodes(SpiceSharp.Components.Component component, ParameterCollection parameters)
+        public void CreateNodes(SpiceSharp.Components.IComponent component, ParameterCollection parameters)
         {
             if (component == null)
             {
@@ -178,13 +182,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(parameters));
             }
 
-            if (parameters.Count < component.PinCount)
+            if (parameters.Count < component.Nodes.Count)
             {
                 throw new SpiceSharpParserException($"Too few parameters for: {component.Name} to create nodes", parameters.LineInfo);
             }
 
-            string[] nodes = new string[component.PinCount];
-            for (var i = 0; i < component.PinCount; i++)
+            string[] nodes = new string[component.Nodes.Count];
+            for (var i = 0; i < component.Nodes.Count; i++)
             {
                 string pinName = parameters.Get(i).Image;
                 nodes[i] = NameGenerator.GenerateNodeName(pinName);
@@ -212,7 +216,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        public void SetParameter(Entity entity, string parameterName, string expression, bool beforeTemperature = true, bool onload = true)
+        public void SetParameter(IEntity entity, string parameterName, string expression, bool beforeTemperature = true, bool onload = true)
         {
             if (entity == null)
             {
@@ -229,13 +233,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            IEqualityComparer<string> comparer = StringComparerProvider.Get(CaseSensitivity.IsEntityParameterNameCaseSensitive);
-
             double value = Evaluator.EvaluateDouble(expression);
 
             try
             {
-                entity.SetParameter(parameterName, value, comparer);
+                entity.SetParameter(parameterName, value);
                 var context = Evaluator.GetEvaluationContext();
 
                 bool isDynamic = context.HaveSpiceProperties(expression)
@@ -253,7 +255,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        public void SetParameter(Entity entity, string parameterName, Parameter parameter, bool beforeTemperature = true, bool onload = true)
+        public void SetParameter(IEntity entity, string parameterName, Parameter parameter, bool beforeTemperature = true, bool onload = true)
         {
             if (entity == null)
             {
@@ -282,13 +284,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 expression = asg.Value;
             }
 
-            IEqualityComparer<string> comparer = StringComparerProvider.Get(CaseSensitivity.IsEntityParameterNameCaseSensitive);
-
             try
             {
                 double value = Evaluator.EvaluateDouble(expression);
 
-                entity.SetParameter(parameterName, value, comparer);
+                entity.SetParameter(parameterName, value);
 
                 var context = Evaluator.GetEvaluationContext();
 
@@ -337,7 +337,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 var generators = new List<INameGenerator>();
                 generators.Add(NameGenerator);
-                return new StochasticModelsRegistry(generators, CaseSensitivity.IsEntityNameCaseSensitive);
+                return new StochasticModelsRegistry(generators, CaseSensitivity.IsEntityNamesCaseSensitive);
             }
         }
     }

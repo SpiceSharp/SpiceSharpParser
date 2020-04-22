@@ -44,7 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var comparer = StringComparerProvider.Get(caseSettings.IsEntityParameterNameCaseSensitive);
+            var comparer = StringComparerProvider.Get(false);
 
             var entityName = (parameters[0] as VectorParameter)?.Elements[0].Image;
             var propertyName = (parameters[0] as VectorParameter)?.Elements[1].Image;

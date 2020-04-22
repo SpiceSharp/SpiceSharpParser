@@ -1,7 +1,5 @@
-﻿using SpiceSharp.Circuits;
-using SpiceSharp.Simulations;
+﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
@@ -13,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using SpiceSharpParser.Common.Validation;
+using SpiceSharp.Entities;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -170,7 +169,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void CreateOpSweepPlot(ParameterSweep firstParameterSweep, string variableName, List<Export> exports, ICircuitContext context)
+        private void CreateOpSweepPlot(Context.Sweeps.ParameterSweep firstParameterSweep, string variableName, List<Export> exports, ICircuitContext context)
         {
             var plot = new XyPlot("OP - Parameter sweep: " + variableName);
 
@@ -227,7 +226,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             context.Result.AddPlot(plot);
         }
 
-        private void AddOpPointToSeries(ParameterSweep firstParameterSweep, Export export, ICircuitContext context, Series series)
+        private void AddOpPointToSeries(Context.Sweeps.ParameterSweep firstParameterSweep, Export export, ICircuitContext context, Series series)
         {
             export.Simulation.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
@@ -262,7 +261,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 var nodes = new List<string>();
 
-                foreach (Entity entity in context.Result.Circuit)
+                foreach (IEntity entity in context.Result.Circuit)
                 {
                     if (entity is SpiceSharp.Components.Component c)
                     {
@@ -270,9 +269,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         var @params = new ParameterCollection(new List<Parameter>());
                         @params.Add(new WordParameter(componentName, null));
 
-                        for (var i = 0; i < c.PinCount; i++)
+                        for (var i = 0; i < c.Nodes.Count; i++)
                         {
-                            var node = c.GetNode(i);
+                            var node = c.Nodes[i];
                             if (!nodes.Contains(node))
                             {
                                 nodes.Add(node);

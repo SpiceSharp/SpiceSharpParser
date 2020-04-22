@@ -246,6 +246,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 "Poly(1) F test circuit",
                 "R1 1 0 100",
                 "R2 1 0 200",
+                "R3 2 0 100",
                 "I1 1 0 2",
                 "FSource 2 0 POLY(1) I1 2 1", // I(I1) + 2
                 ".OP",
@@ -264,6 +265,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 "Poly(1) F test circuit",
                 "R1 1 0 100",
                 "R2 1 0 200",
+                "R3 2 0 100",
                 "I1 1 0 2",
                 "FSource 2 0 POLY I1 2 1", // I(I1) + 2
                 ".OP",

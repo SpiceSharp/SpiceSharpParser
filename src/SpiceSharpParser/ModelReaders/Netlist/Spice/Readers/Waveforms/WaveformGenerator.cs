@@ -17,6 +17,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
         /// <returns>
         /// A new waveform.
         /// </returns>
-        public abstract Waveform Generate(ParameterCollection parameters, ICircuitContext context);
+        public abstract IWaveformDescription Generate(ParameterCollection parameters, ICircuitContext context);
     }
 }

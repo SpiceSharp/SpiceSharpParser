@@ -17,10 +17,10 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
 
             var netlist = ParseNetlist(
                 "Capacitor circuit - The initial voltage on capacitor is 0V. The result should be an exponential converging to dcVoltage.",
-                "C1 OUT 0 1e-6 IC=0.0",
+                "C1 OUT 0 1e-6 ic=0.0",
                 "R1 IN OUT 10e3",
                 "V1 IN 0 10",
-                ".TRAN 1e-8 1e-5 UIC",
+                ".TRAN 1e-8 1e-5 uic",
                 ".SAVE V(OUT)",
                 ".END");
 
@@ -29,7 +29,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             EqualsWithTol(exports, reference);
         }
 
-        [Fact]
+        [Fact(Skip = "4 parameter is removed")]
         public void When_TranHasTStart_Expect_Reference()
         {
             double dcVoltage = 10;

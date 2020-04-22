@@ -1,4 +1,5 @@
 ﻿using SpiceSharp;
+using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
@@ -46,16 +47,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 throw new System.ArgumentNullException(nameof(netlist));
             }
 
+            
             // Get result netlist
             var result = new SpiceModel<Circuit, Simulation>(
-                new Circuit(StringComparerProvider.Get(Settings.CaseSensitivity.IsEntityNameCaseSensitive)),
+                new Circuit(new EntityCollection(StringComparerProvider.Get(Settings.CaseSensitivity.IsEntityNamesCaseSensitive))),
                 netlist.Title);
 
             // Get reading context
             var resultService = new ResultService(result);
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(
                 new [] { "0" }, 
-                Settings.CaseSensitivity.IsNodeNameCaseSensitive);
+                Settings.CaseSensitivity.IsEntityNamesCaseSensitive);
             var objectNameGenerator = new ObjectNameGenerator(string.Empty);
             INameGenerator nameGenerator = new NameGenerator(nodeNameGenerator, objectNameGenerator);
             IRandomizer randomizer = new Randomizer(
@@ -67,7 +69,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             IExpressionValueProvider expressionValueProvider = new ExpressionValueProvider(expressionParserFactory);
 
             EvaluationContext expressionContext = new SpiceEvaluationContext(
-                string.Empty,
+                "",
                 Settings.EvaluatorMode,
                 Settings.CaseSensitivity,
                 randomizer,
