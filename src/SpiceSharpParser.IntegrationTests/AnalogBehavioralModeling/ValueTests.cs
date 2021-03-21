@@ -5,7 +5,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
 {
     public class ValueTests : BaseTests
     {
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void When_VoltageControlledVoltageSourceCasing_Expect_Reference()
         {
             var netlist = ParseNetlist(
@@ -29,7 +29,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             Assert.Equal(6, export);
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void When_VoltageControlledVoltageSourceIsInsideSubckt_Expect_Reference()
         {
             var netlist = ParseNetlist(
@@ -53,7 +53,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             Assert.Equal(6, export);
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact(Skip = "Needs dPow implementation in SpiceSharpBehavioral")]
         public void When_VoltageControlledVoltageSourcePower_Expect_Reference()
         {
             var netlist = ParseNetlist(
@@ -77,7 +77,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             Assert.Equal(18, export);
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void When_TwoVoltageControlledVoltageSourceInSubcktSameVoltage_Expect_Reference()
         {
             var netlist = ParseNetlist(
@@ -157,7 +157,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             Assert.Equal(18, export);
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void When_VoltageControlledVoltageSourceValueLoop_Expect_Reference()
         {
             var netlist = ParseNetlist(
@@ -170,7 +170,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
-            Assert.Throws<Exception>(() => RunOpSimulation(netlist, "V(2,0)"));
+            Assert.Throws<SpiceSharp.SpiceSharpException>(() => RunOpSimulation(netlist, "V(2,0)"));
         }
 
         [Fact]
@@ -225,7 +225,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             Assert.Equal(18, export);
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void When_CurrentControlledVoltageSourceValueLoop_Expect_Reference()
         {
             var netlist = ParseNetlist(
@@ -238,7 +238,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
-            Assert.Throws<Exception>(() => RunOpSimulation(netlist, "V(2,0)"));
+            Assert.Throws<SpiceSharp.SpiceSharpException>(() => RunOpSimulation(netlist, "V(2,0)"));
         }
 
         [Fact]
@@ -381,7 +381,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             EqualsWithTol(exports, reference);
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void When_TranComplexVoltage_Expect_Reference()
         {
             var netlist = ParseNetlist(

@@ -218,7 +218,7 @@ namespace SpiceSharpParser.Parsers.Expression
 
                 if (function is IFunction<double, double> doubleFunction)
                 {
-                    var arguments = new double[function.ArgumentsCount];
+                    var arguments = new double[function.ArgumentsCount >= 0 ? function.ArgumentsCount : functionArguments.Count];
                     for (var i = 0; i < function.ArgumentsCount; i++)
                     {
                         arguments[i] = DoubleBuilder.Build(functionArguments[i]);

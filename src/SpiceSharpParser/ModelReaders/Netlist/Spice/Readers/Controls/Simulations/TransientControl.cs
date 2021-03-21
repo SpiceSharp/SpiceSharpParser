@@ -103,12 +103,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             ConfigureCommonSettings(tran, context);
 
-            tran.BeforeExecute += (sender, beforeExecuteEventArgs) =>
+            tran.BeforeLoad += (truncateSender, truncateArgs) =>
             {
-                /*tran.Method.TruncateProbe += (truncateSender, truncateArgs) =>
-                {
-                    context.Evaluator.SetParameter(tran, "TIME", tran.Method.Time + truncateArgs.Delta);
-                };*/
+                context.Evaluator.SetParameter(tran, "TIME", ((IStateful<IIntegrationMethod>)tran).State.Time);
             };
             context.Result.AddSimulation(tran);
 
