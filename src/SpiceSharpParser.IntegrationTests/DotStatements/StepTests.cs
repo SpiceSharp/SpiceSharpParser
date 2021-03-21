@@ -4,7 +4,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
 {
     public class StepTests : BaseTests
     {
-        [Fact(Skip = "Will be fixed with new version of SpiceSharp")]
+        [Fact]
         public void StepWithoutDeclaration()
         {
             var result = ParseNetlist(
@@ -29,7 +29,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             }
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void ParamList()
         {
             var result = ParseNetlist(
@@ -54,7 +54,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             }
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void ParamDependencyList()
         {
             var result = ParseNetlist(
@@ -81,7 +81,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             }
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void ParamListWithTableInterpolation()
         {
             var result = ParseNetlist(
@@ -106,7 +106,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             }
         }
 
-        [Fact(Skip = "Will be fixed with new version of SpiceSharp")]
+        [Fact]
         public void ParamLin()
         {
             var result = ParseNetlist(
@@ -116,7 +116,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE i(R1)",
                 ".PARAM N=0",
-                ".PARAM R={table(N, 1, 10, 2, 20, 3, 30)}",
+                ".PARAM R={table(N, 1, 10, 2, 20, 3, 30, 4, 40)}",
                 ".STEP PARAM N 1 4 1",
                 ".END");
 

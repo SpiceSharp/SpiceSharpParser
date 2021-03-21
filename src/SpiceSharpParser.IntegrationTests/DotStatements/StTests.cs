@@ -234,7 +234,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(-0.0025, exports[2]);
         }
 
-        [Fact(Skip = "Will be fixed with new version of SpiceSharp")]
+        [Fact(Skip = "TODO")]
         public void LinParamWithTable()
         {
             var result = ParseNetlist(
@@ -259,7 +259,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             }
         }
 
-        [Fact(Skip = "Will be fixed with new version of SpiceSharp")]
+        [Fact(Skip = "TODO")]
         public void LinParamWithAdvancedTable()
         {
             var result = ParseNetlist(
@@ -284,7 +284,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             }
         }
 
-        [Fact(Skip = "Will be fixed with new version of SpiceSharp")]
+        [Fact(Skip = "TODO")]
         public void LinParamWithDependedTable()
         {
             var result = ParseNetlist(

@@ -488,13 +488,13 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             Assert.Equal(4, export);
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void When_CurrentControlledCurrentSourceValueParsing_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Value test circuit",
                 "R1 1 0 100",
-                "R2 1 0 200",
+                "R2 2 0 200",
                 "I1 1 0 2",
                 "FSource 2 0 VALUE = { I(I1) + 2 }",
                 ".OP",
@@ -506,13 +506,13 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             Assert.Equal(4, export);
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void When_CurrentControlledCurrentSourceValueParsingWithoutEqual_Expect_Reference()
         {
             var netlist = ParseNetlist(
                 "Value test circuit",
                 "R1 1 0 100",
-                "R2 1 0 200",
+                "R2 2 0 200",
                 "I1 1 0 2",
                 "FSource 2 0 VALUE { I(I1) + 2 }",
                 ".OP",

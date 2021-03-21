@@ -164,7 +164,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             Assert.Equal(2.5, export);
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void When_ParsingAdvancedExpression_Expect_Reference()
         {
             var netlist = ParseNetlist(

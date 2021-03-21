@@ -25,7 +25,7 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
             Assert.Equal(15, export);
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void TableMin()
         {
             var result = ParseNetlist(
@@ -67,7 +67,7 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
             Assert.Equal(-150.0 / 15.0, export);
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void TableMax()
         {
             var result = ParseNetlist(
