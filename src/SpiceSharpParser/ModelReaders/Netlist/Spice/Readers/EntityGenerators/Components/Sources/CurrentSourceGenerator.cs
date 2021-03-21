@@ -9,6 +9,7 @@ using SpiceSharpParser.Common.Validation;
 using Component = SpiceSharp.Components.Component;
 using SpiceSharp.Components.BehavioralComponents;
 using SpiceSharp.Entities;
+using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {
@@ -131,7 +132,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var entity = new BehavioralCurrentSource(name);
                 context.CreateNodes(entity, parameters);
                 entity.Parameters.Expression = valueParameter.Value;
-
+                entity.Parameters.ParseAction = (expression) => {
+                    var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
+                    return parser.MakeVariablesGlobal(expression);
+                };
                 return entity;
             }
 
@@ -143,7 +147,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     var entity = new BehavioralCurrentSource(name);
                     context.CreateNodes(entity, parameters);
                     entity.Parameters.Expression = expressionParameter.Image;
-
+                    entity.Parameters.ParseAction = (expression) => {
+                        var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
+                        return parser.MakeVariablesGlobal(expression);
+                    };
                     return entity;
                 }
             }
@@ -197,6 +204,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     var entity = new BehavioralCurrentSource(name);
                     context.CreateNodes(entity, parameters);
                     entity.Parameters.Expression = ExpressionFactory.CreateTableExpression(eep.Expression, eep.Points);
+                    entity.Parameters.ParseAction = (expression) => {
+                        var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
+                        return parser.MakeVariablesGlobal(expression);
+                    };
+
                     return entity;
                 }
                 else

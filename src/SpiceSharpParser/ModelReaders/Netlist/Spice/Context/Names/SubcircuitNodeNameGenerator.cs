@@ -11,6 +11,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         private readonly Dictionary<string, string> _pinMap;
         private HashSet<string> _globals;
 
+        public Dictionary<string, string> PinMap
+        {
+            get
+            {
+                return _pinMap;
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SubcircuitNodeNameGenerator"/> class.
         /// </summary>

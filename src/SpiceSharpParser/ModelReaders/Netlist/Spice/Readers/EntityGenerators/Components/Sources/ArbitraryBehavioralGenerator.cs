@@ -4,6 +4,7 @@ using SpiceSharp.Entities;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using SpiceSharpParser.Parsers.Expression;
 using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
@@ -24,7 +25,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 var expressionParameter = (AssignmentParameter)parameters.First(p => p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "v");
                 entity.Parameters.Expression = expressionParameter.Value;
-
+                entity.Parameters.ParseAction = (expression) => {
+                    var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
+                    return parser.MakeVariablesGlobal(expression);
+                };
                 return entity;
             }
 
@@ -37,7 +41,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "i");
 
                 entity.Parameters.Expression = expressionParameter.Value;
-
+                entity.Parameters.ParseAction = (expression) => {
+                    var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
+                    return parser.MakeVariablesGlobal(expression);
+                };
                 return entity;
             }
 

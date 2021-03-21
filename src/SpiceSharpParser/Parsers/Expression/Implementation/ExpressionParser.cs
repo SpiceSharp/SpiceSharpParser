@@ -6,6 +6,7 @@ using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -280,6 +281,24 @@ namespace SpiceSharpParser.Parsers.Expression
         {
             var node = InternalParser.Parse(expression);
             return DoubleBuilder.Build(node);
+        }
+
+        public Node MakeVariablesGlobal(string expression)
+        {
+            var node = InternalParser.Parse(expression);
+
+            var builder = new NodeReplacer();
+            builder.Map = new Dictionary<VariableNode, Node>();
+
+            if (Context.NameGenerator?.NodeNameGenerator is SubcircuitNodeNameGenerator sng)
+            {
+                foreach (var pin in sng.PinMap)
+                {
+                    builder.Map[VariableNode.Voltage(pin.Key)] = VariableNode.Voltage(pin.Value);
+                }
+            }
+
+            return builder.Build(node);
         }
     }
 }
