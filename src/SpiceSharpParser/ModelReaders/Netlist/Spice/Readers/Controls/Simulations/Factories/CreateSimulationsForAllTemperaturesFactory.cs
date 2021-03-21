@@ -54,7 +54,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             if (simulation is BiasingSimulation biasingSimulation)
             {
-                biasingSimulation.BeforeTemperature += (object sender, LoadStateEventArgs e) =>
+                biasingSimulation.BeforeTemperature += (object sender, TemperatureStateEventArgs e) =>
                 {
                     context.Evaluator.SetParameter(simulation, "TEMP", temp);
                 };

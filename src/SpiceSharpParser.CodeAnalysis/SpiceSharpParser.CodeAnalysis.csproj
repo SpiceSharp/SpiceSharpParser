@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard1.5</TargetFramework>
@@ -14,17 +14,12 @@
   <ItemGroup>
     <Compile Remove="..\SpiceSharpParser\obj\**\*.*" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="..\SpiceSharpParser\Common\Evaluation\UnknownParameterException.cs" />
-  </ItemGroup>
-
   <ItemGroup>
     <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SpiceSharp" Version="3.0.4" />
+    <PackageReference Include="SpiceSharp" Version="3.0.5" />
     <PackageReference Include="SpiceSharpBehavioral" Version="3.0.4" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>

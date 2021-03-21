@@ -201,7 +201,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             Assert.Equal(15, export);
         }
 
-        [Fact(Skip = "Will be fixed with new version of SpiceSharp")]
+        [Fact]
         public void When_TCParameterFormatWithNonZeroValues_Expect_Reference()
         {
             var netlist = ParseNetlist(
@@ -218,7 +218,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             Assert.NotEqual(15, export);
         }
 
-        [Fact(Skip = "Will be fixed with new version of SpiceSharp")]
+        [Fact]
         public void When_TCParameterFormatWithZeroValue_Expect_Reference()
         {
             var netlist = ParseNetlist(
@@ -253,7 +253,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             EqualsWithTol(300, export);
         }
 
-        [Fact(Skip = "Will be fixed with new version of SpiceSharp")]
+        [Fact]
         public void When_ModelFormatWithTC2NonZeroValue_Expect_Reference()
         {
             var netlist = ParseNetlist(
@@ -288,7 +288,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             EqualsWithTol(10.0334448160535, export);
         }
 
-        [Fact(Skip = "Will be fixed with new version of SpiceSharp")]
+        [Fact]
         public void When_ModelFormatWithTC1TC2NonZeroValues_Expect_Reference()
         {
             var netlist = ParseNetlist(
@@ -306,7 +306,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             EqualsWithTol(10.0908173562059, export);
         }
 
-        [Fact(Skip = "Will be fixed with new version of SpiceSharp")]
+        [Fact]
         public void When_ModelFormatWithTC1TC2NonZeroValuesAndTC1TC2OnResistor_Expect_Reference()
         {
             var netlist = ParseNetlist(
@@ -324,7 +324,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             EqualsWithTol(10.0908173562059, export);
         }
 
-        [Fact(Skip = "Will be fixed with new version of SpiceSharp")]
+        [Fact]
         public void When_ModelFormatWithTC1TC2NonZeroValuesAndTC1OnResistor_Expect_Reference()
         {
             var netlist = ParseNetlist(

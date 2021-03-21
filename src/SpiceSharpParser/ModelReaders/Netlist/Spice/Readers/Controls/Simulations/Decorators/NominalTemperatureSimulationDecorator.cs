@@ -15,7 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         public Simulation Decorate(Simulation simulation)
         {
             //TODO: Uncomment
-            /*EventHandler<TemperatureStateEventArgs> setState = (object sender, TemperatureStateEventArgs e) =>
+            EventHandler<TemperatureStateEventArgs> setState = (object sender, TemperatureStateEventArgs e) =>
             {
                 e.State.NominalTemperature = _nominalTemperatureInKelvins;
             };
@@ -24,8 +24,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             {
                 biasingSimulation.BeforeTemperature += setState;
             }
-
-            */
             return simulation;
         }
     }

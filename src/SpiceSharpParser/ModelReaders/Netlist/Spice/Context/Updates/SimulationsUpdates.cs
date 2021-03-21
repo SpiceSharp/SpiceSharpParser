@@ -37,7 +37,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
             var biasingSimulation = simulation as BiasingSimulation;
 
-            biasingSimulation.BeforeTemperature += (object sender, LoadStateEventArgs args) =>
+            biasingSimulation.BeforeTemperature += (object sender, TemperatureStateEventArgs args) =>
             {
                 foreach (var pUpdate in CommonUpdates.ParameterUpdatesBeforeTemperature)
                 {
@@ -66,7 +66,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                     }
                 };
 
-                biasingSimulation.BeforeTemperature += (object sender, LoadStateEventArgs args) =>
+                biasingSimulation.BeforeTemperature += (object sender, TemperatureStateEventArgs args) =>
                 {
                     foreach (var pUpdate in update.ParameterUpdatesBeforeTemperature)
                     {
