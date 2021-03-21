@@ -126,9 +126,6 @@ Note: Only voltage and current expressions are supported in TABLE, VALUE
 |W (Current Switch)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/W)|
 |X (Subcircuit)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/X)|
 
-## Supported by
-[<img src="jetbrains.png" width=100/>](https://www.jetbrains.com/?from=SpiceSharpParser)
-
 ## Documentation
 * API documentation is available at <https://spicesharp.github.io/SpiceSharpParser/api/index.html>.
 * Wiki is available at <https://github.com/SpiceSharp/SpiceSharpParser/wiki>
