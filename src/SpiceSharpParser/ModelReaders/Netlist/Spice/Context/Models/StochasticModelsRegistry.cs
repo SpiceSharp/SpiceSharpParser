@@ -234,7 +234,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 
         public void SetModel(Entity entity, Simulation simulation, Parameter modelNameParameter, string exceptionMessage, Action<Context.Models.Model> setModelAction, IResultService result)
         {
-            var model = FindModel(modelNameParameter.Image);
+            var model = FindModelEntity(modelNameParameter.Image);
 
             if (model == null)
             {
@@ -254,7 +254,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             }
         }
 
-        public IEntity FindModel(string modelName)
+        public Model FindModel(string modelName)
+        {
+            foreach (var generator in NamesGenerators)
+            {
+                var modelNameToSearch = generator.GenerateObjectName(modelName);
+
+                if (AllModels.TryGetValue(modelNameToSearch, out var model))
+                {
+                    return model;
+                }
+            }
+
+            return null;
+        }
+
+
+        public IEntity FindModelEntity(string modelName)
         {
             foreach (var generator in NamesGenerators)
             {
@@ -268,6 +284,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 
             return null;
         }
+
 
         public IModelsRegistry CreateChildRegistry(List<INameGenerator> generators)
         {

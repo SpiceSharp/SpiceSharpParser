@@ -182,7 +182,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (modelBased)
                 {
-                    var model = context.ModelsRegistry.FindModel(parameters.Get(2).Image);
+                    var model = context.ModelsRegistry.FindModelEntity(parameters.Get(2).Image);
 
                     if (tcParameterAssignment.Values.Count == 2)
                     {

@@ -60,7 +60,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(10, export[1]);
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void LetResistance()
         {
             var netlist = ParseNetlist(
@@ -77,7 +77,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(1000, export);
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void LetResistanceFunc()
         {
             var netlist = ParseNetlist(
@@ -96,7 +96,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(1001, export);
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void ReferenceInLet()
         {
             var netlist = ParseNetlist(
@@ -126,7 +126,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(4, export[2]);
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void ReferenceAsArgumentInLet()
         {
             var netlist = ParseNetlist(

@@ -6,6 +6,8 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Globalization;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharp.Entities;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Custom;
+using Model = SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.Model;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
 {
@@ -41,6 +43,33 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             string modelName = parameters.Get(4).Image;
 
+            var model = context.ModelsRegistry.FindModel(modelName);
+            if (model.Entity is VSwitchModel)
+            {
+                Resistor resistor = new Resistor(name);
+                Model resistorModel = model;
+                context.CreateNodes(resistor, parameters.Take(2));
+                context.SimulationPreparations.ExecuteTemperatureBehaviorBeforeLoad(resistor);
+
+                context.SimulationPreparations.ExecuteActionAfterSetup(
+                    (simulation) =>
+                    {
+                        if (context.ModelsRegistry is StochasticModelsRegistry stochasticModelsRegistry)
+                        {
+                            resistorModel = stochasticModelsRegistry.ProvideStochasticModel(name, simulation, model);
+
+                            if (!context.Result.FindObject(resistorModel.Name, out _))
+                            {
+                                stochasticModelsRegistry.RegisterModelInstance(resistorModel);
+                            }
+                        }
+                        
+                        string resExpression =
+                            $"table(v({parameters.Get(2)}, {parameters.Get(3)}), @{resistorModel.Name}[voff], @{resistorModel.Name}[roff] , @{resistorModel.Name}[von], @{resistorModel.Name}[ron])";
+                        context.SetParameter(resistor, "resistance", resExpression, beforeTemperature: true, onload: true, simulation);
+                    });
+                return resistor;
+            }
 
             VoltageSwitch vsw = new VoltageSwitch(name);
             context.CreateNodes(vsw, parameters);
@@ -52,7 +81,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     simulation,
                     parameters.Get(4),
                     $"Could not find model {parameters.Get(4)} for voltage switch {name}",
-                    (Context.Models.Model model) => { vsw.Model = model.Name; },
+                    (Context.Models.Model model2) => { vsw.Model = model2.Name; },
                     context.Result);
             });
 

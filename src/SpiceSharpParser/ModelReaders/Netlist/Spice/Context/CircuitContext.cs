@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharp.Entities;
+using SpiceSharp.Simulations;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -216,7 +217,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        public void SetParameter(IEntity entity, string parameterName, string expression, bool beforeTemperature = true, bool onload = true)
+        public void SetParameter(IEntity entity, string parameterName, string expression, bool beforeTemperature = true, bool onload = true, Simulation simulation = null)
         {
             if (entity == null)
             {
@@ -233,7 +234,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            double value = Evaluator.EvaluateDouble(expression);
+            double value = Evaluator.EvaluateDouble(expression, simulation);
 
             try
             {

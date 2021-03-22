@@ -1,4 +1,5 @@
 ﻿using SpiceSharp.Entities;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
@@ -88,7 +89,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="valueExpression">Value expression.</param>
         /// <param name="beforeTemperature">Should be re-evaluated before temperature.</param>
         /// <param name="onload">Should be re-evaluated OnBeforeLoad.</param>
-        void SetParameter(IEntity entity, string parameterName, string valueExpression, bool beforeTemperature = true, bool onload = true);
+        void SetParameter(IEntity entity, string parameterName, string expression, bool beforeTemperature = true, bool onload = true, Simulation simulation = null);
 
         /// <summary>
         /// Sets parameter of entity to value of expression.

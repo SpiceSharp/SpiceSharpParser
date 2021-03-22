@@ -101,7 +101,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Throws<SpiceSharpParserException>(() => mcResult.GetPlot(10));
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void McOpDeviceParameter()
         {
             var result = ParseNetlist(

@@ -10,7 +10,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
     {
         void SetModel(Entity entity, Simulation simulation, Parameter modelNameParameter, string exceptionMessage, Action<Context.Models.Model> setModelAction, IResultService result);
 
-        IEntity FindModel(string modelName);
+        Model FindModel(string modelName);
+
+        IEntity FindModelEntity(string modelName);
 
         void RegisterModelInstance(Model model);
 
