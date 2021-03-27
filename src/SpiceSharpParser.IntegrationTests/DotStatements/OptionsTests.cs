@@ -8,7 +8,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
 {
     public class OptionsTests : BaseTests
     {
-        [Fact(Skip = "TODO")]
+        [Fact]
         public void When_DynamicResistorsIsSpecified_Expect_DynamicResistors()
         {
             var netlist = ParseNetlist(

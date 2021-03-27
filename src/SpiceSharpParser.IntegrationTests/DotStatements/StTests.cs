@@ -234,7 +234,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(-0.0025, exports[2]);
         }
 
-        [Fact(Skip = "TODO")]
+        [Fact]
         public void LinParamWithTable()
         {
             var result = ParseNetlist(
@@ -244,7 +244,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE i(R1)",
                 ".PARAM N=0",
-                ".PARAM R={table(N, 1, 10, 2, 20, 3, 30)}",
+                ".PARAM R={table(N, 1, 10, 2, 20, 3, 30, 4, 40)}",
                 ".ST N 1 4 1",
                 ".END");
 
