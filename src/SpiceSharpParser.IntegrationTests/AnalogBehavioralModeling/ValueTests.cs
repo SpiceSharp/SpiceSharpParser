@@ -53,7 +53,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             Assert.Equal(6, export);
         }
 
-        [Fact(Skip = "Needs dPow implementation in SpiceSharpBehavioral")]
+        [Fact]
         public void When_VoltageControlledVoltageSourcePower_Expect_Reference()
         {
             var netlist = ParseNetlist(
@@ -66,7 +66,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 "V5 5 0 5",
                 "X1 3 6 4 COMP1",
                 ".SUBCKT COMP1 4 5 2",
-                "ESource 4 5 VALUE = { Pow(V(2), 2) + 2 }",
+                "ESource 4 5 VALUE = { pow(V(2), 2) + 2 }",
                 ".ENDS",
                 ".OP",
                 ".SAVE V(3,6)",
