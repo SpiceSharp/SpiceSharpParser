@@ -23,6 +23,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
                     var vSwitchModel = new VSwitchModel(id);
                     SetParameters(context, vSwitchModel, parameters);
                     return new Context.Models.Model(id, vSwitchModel, vSwitchModel.Parameters);
+
+                case "iswitch":
+                    var iSwitchModel = new ISwitchModel(id);
+                    SetParameters(context, iSwitchModel, parameters);
+                    return new Context.Models.Model(id, iSwitchModel, iSwitchModel.Parameters);
             }
 
             return null;

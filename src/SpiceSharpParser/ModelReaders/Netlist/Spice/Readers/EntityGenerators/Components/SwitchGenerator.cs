@@ -130,7 +130,32 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             string modelName = parameters.Get(3).Image;
+            var model = context.ModelsRegistry.FindModel(modelName);
+            if (model.Entity is ISwitchModel)
+            {
+                Resistor resistor = new Resistor(name);
+                Model resistorModel = model;
+                context.CreateNodes(resistor, parameters.Take(2));
+                context.SimulationPreparations.ExecuteTemperatureBehaviorBeforeLoad(resistor);
 
+                context.SimulationPreparations.ExecuteActionAfterSetup(
+                    (simulation) =>
+                    {
+                        if (context.ModelsRegistry is StochasticModelsRegistry stochasticModelsRegistry)
+                        {
+                            resistorModel = stochasticModelsRegistry.ProvideStochasticModel(name, simulation, model);
+
+                            if (!context.Result.FindObject(resistorModel.Name, out _))
+                            {
+                                stochasticModelsRegistry.RegisterModelInstance(resistorModel);
+                            }
+                        }
+                        double rOff = resistorModel.Parameters.GetProperty<double>("roff");
+                        string resExpression = $"table(i({parameters.Get(2)}), @{resistorModel.Name}[ioff], @{resistorModel.Name}[roff] , @{resistorModel.Name}[ion], @{resistorModel.Name}[ron])";
+                        context.SetParameter(resistor, "resistance", resExpression, beforeTemperature: true, onload: true, simulation);
+                    });
+                return resistor;
+            }
 
             CurrentSwitch csw = new CurrentSwitch(name);
             context.CreateNodes(csw, parameters);
@@ -154,7 +179,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     simulation,
                     parameters.Get(3),
                     $"Could not find model {parameters.Get(3)} for current switch {name}",
-                    (Context.Models.Model model) => csw.Model = model.Name,
+                    (Context.Models.Model switchModel) => csw.Model = switchModel.Name,
                     context.Result);
             });
 
