@@ -1,5 +1,5 @@
 ﻿using SpiceSharp.Components;
-using SpiceSharpParser.Common.Evaluation;
+using SpiceSharp.Entities;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -9,7 +9,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class LosslessTransmissionLineGenerator : ComponentGenerator
     {
-        public override SpiceSharp.Components.Component Generate(string name, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
+        public override IEntity Generate(string name, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
         {
             var losslessLine = new LosslessTransmissionLine(name);
             context.CreateNodes(losslessLine, parameters);

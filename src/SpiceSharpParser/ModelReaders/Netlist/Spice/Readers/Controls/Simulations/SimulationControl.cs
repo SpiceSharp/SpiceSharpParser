@@ -1,5 +1,4 @@
 ﻿using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
@@ -26,7 +25,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <summary>
         /// Creates simulations.
         /// </summary>
-        protected void CreateSimulations(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, BaseSimulation> createSimulation)
+        protected void CreateSimulations(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, Simulation> createSimulation)
         {
             _factory.Create(statement, context, createSimulation);
         }
@@ -36,34 +35,40 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// </summary>
         /// <param name="baseSimulation">The simulation to configure.</param>
         /// <param name="context">The reading context.</param>
-        protected void ConfigureCommonSettings(BaseSimulation baseSimulation, ICircuitContext context)
+        protected void ConfigureCommonSettings(Simulation baseSimulation, ICircuitContext context)
         {
-            var baseConfiguration = baseSimulation.Configurations.Get<BaseConfiguration>();
-            if (context.Result.SimulationConfiguration.Gmin.HasValue)
+            if (baseSimulation is BiasingSimulation bs)
             {
-                baseConfiguration.Gmin = context.Result.SimulationConfiguration.Gmin.Value;
+                var biasingParameters = bs.BiasingParameters;
+
+                if (context.Result.SimulationConfiguration.Gmin.HasValue)
+                {
+                    biasingParameters.Gmin = context.Result.SimulationConfiguration.Gmin.Value;
+                }
+
+                if (context.Result.SimulationConfiguration.AbsoluteTolerance.HasValue)
+                {
+                    biasingParameters.AbsoluteTolerance = context.Result.SimulationConfiguration.AbsoluteTolerance.Value;
+                }
+
+                if (context.Result.SimulationConfiguration.RelTolerance.HasValue)
+                {
+                    biasingParameters.RelativeTolerance = context.Result.SimulationConfiguration.RelTolerance.Value;
+                }
+
+                if (context.Result.SimulationConfiguration.DCMaxIterations.HasValue)
+                {
+                    biasingParameters.DcMaxIterations = context.Result.SimulationConfiguration.DCMaxIterations.Value;
+                }
             }
 
-            if (context.Result.SimulationConfiguration.AbsoluteTolerance.HasValue)
-            {
-                baseConfiguration.AbsoluteTolerance = context.Result.SimulationConfiguration.AbsoluteTolerance.Value;
-            }
 
-            if (context.Result.SimulationConfiguration.RelTolerance.HasValue)
-            {
-                baseConfiguration.RelativeTolerance = context.Result.SimulationConfiguration.RelTolerance.Value;
-            }
-
-            if (context.Result.SimulationConfiguration.DCMaxIterations.HasValue)
-            {
-                baseConfiguration.DcMaxIterations = context.Result.SimulationConfiguration.DCMaxIterations.Value;
-            }
-
-            baseSimulation.Configurations.Add(
+            // TODO: Talk with Sven
+            /*baseSimulation.Configurations.Add(
                 new CollectionConfiguration()
                 {
                     VariableComparer = StringComparerProvider.Get(context.CaseSensitivity.IsNodeNameCaseSensitive),
-                });
+                });*/
         }
     }
 }

@@ -3,29 +3,19 @@
     public interface ISpiceNetlistCaseSensitivitySettings
     {
         /// <summary>
-        /// Gets or sets a value indicating whether entity names are case-sensitive.
-        /// </summary>
-        bool IsEntityNameCaseSensitive { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether entity parameter names are case-sensitive.
-        /// </summary>
-        bool IsEntityParameterNameCaseSensitive { get; set; }
-
-        /// <summary>
-        /// Gets a value indicating whether dot statements names are case-sensitive.
+        /// Gets or sets a value indicating whether dot statements names are case-sensitive.
         /// </summary>
         bool IsDotStatementNameCaseSensitive { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether entity names are case-sensitive.
+        /// </summary>
+        bool IsEntityNamesCaseSensitive { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether model types names are case-sensitive.
         /// </summary>
         bool IsModelTypeCaseSensitive { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether node names are case-sensitive.
-        /// </summary>
-        bool IsNodeNameCaseSensitive { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether function names are case-sensitive.

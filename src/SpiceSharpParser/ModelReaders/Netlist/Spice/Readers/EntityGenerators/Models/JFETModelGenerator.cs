@@ -1,12 +1,13 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
 {
     public class JFETModelGenerator : ModelGenerator
     {
-        public override SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, ICircuitContext context)
+        public override Context.Models.Model Generate(string id, string type, ParameterCollection parameters, ICircuitContext context)
         {
             var model = new JFETModel(id);
             switch (type.ToLower())
@@ -16,7 +17,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             }
 
             SetParameters(context, model, parameters);
-            return model;
+            return new Context.Models.Model(id, model, model.Parameters);
         }
     }
 }

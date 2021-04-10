@@ -116,12 +116,12 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE i(R1)",
                 ".PARAM N=0",
-                ".PARAM R={table(N, 1, 10, 2, 20, 3, 30)}",
+                ".PARAM R={table(N, 1, 10, 2, 20, 3, 30, 4, 40)}",
                 ".STEP PARAM N 1 4 1",
                 ".END");
 
-            Assert.Equal(3, result.Exports.Count);
-            Assert.Equal(3, result.Simulations.Count);
+            Assert.Equal(4, result.Exports.Count);
+            Assert.Equal(4, result.Simulations.Count);
 
             var exports = RunSimulationsAndReturnExports(result);
 
@@ -239,8 +239,8 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".STEP V1 1 100 1",
                 ".END");
 
-            Assert.Equal(99, result.Exports.Count);
-            Assert.Equal(99, result.Simulations.Count);
+            Assert.Equal(100, result.Exports.Count);
+            Assert.Equal(100, result.Simulations.Count);
 
             var exports = RunSimulationsAndReturnExports(result);
 
@@ -262,8 +262,8 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".STEP LIN V1 1 100 1",
                 ".END");
 
-            Assert.Equal(99, result.Exports.Count);
-            Assert.Equal(99, result.Simulations.Count);
+            Assert.Equal(100, result.Exports.Count);
+            Assert.Equal(100, result.Simulations.Count);
 
             var exports = RunSimulationsAndReturnExports(result);
 
@@ -357,8 +357,8 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".STEP D 1N914(N) 5 10 0.5",
                 ".END");
 
-            Assert.Equal(10, result.Exports.Count);
-            Assert.Equal(10, result.Simulations.Count);
+            Assert.Equal(11, result.Exports.Count);
+            Assert.Equal(11, result.Simulations.Count);
         }
 
         [Fact]
@@ -375,8 +375,8 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".STEP TEMP 50 100 0.5",
                 ".END");
 
-            Assert.Equal(100, result.Exports.Count);
-            Assert.Equal(100, result.Simulations.Count);
+            Assert.Equal(101, result.Exports.Count);
+            Assert.Equal(101, result.Simulations.Count);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             }
             else
             {
-                ExportRealImpl = new RealVoltageExport((BaseSimulation)simulation, node, reference);
+                ExportRealImpl = new RealVoltageExport((IBiasingSimulation)simulation, node, reference);
             }
         }
 
@@ -69,11 +69,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             {
                 if (!ExportImpl.IsValid)
                 {
-                    if (ExceptionsEnabled)
-                    {
-                        throw new SpiceSharpParserException($"Voltage export {Name} is invalid");
-                    }
-
                     return double.NaN;
                 }
 
@@ -83,11 +78,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             {
                 if (!ExportRealImpl.IsValid)
                 {
-                    if (ExceptionsEnabled)
-                    {
-                        throw new SpiceSharpParserException($"Voltage export {Name} is invalid");
-                    }
-
                     return double.NaN;
                 }
 

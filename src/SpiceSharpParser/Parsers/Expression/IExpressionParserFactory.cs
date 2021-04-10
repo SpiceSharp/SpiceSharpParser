@@ -1,10 +1,10 @@
-﻿using SpiceSharpBehavioral.Parsers;
-using SpiceSharpParser.Common.Evaluation;
+﻿using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice;
 
 namespace SpiceSharpParser.Parsers.Expression
 {
     public interface IExpressionParserFactory
     {
-        SimpleDerivativeParser Create(EvaluationContext context, bool throwOnErrors = true, bool applyVoltage = false);
+        ExpressionParser Create(EvaluationContext context, bool throwOnErrors = true, bool applyVoltage = false);
     }
 }

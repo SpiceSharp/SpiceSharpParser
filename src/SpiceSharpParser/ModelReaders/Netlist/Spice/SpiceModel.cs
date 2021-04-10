@@ -27,7 +27,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <summary>
         /// Gets the circuit from the netlist.
         /// </summary>
-        public TCircuit Circuit { get; }
+        public TCircuit Circuit { get; set; }
 
         /// <summary>
         /// Gets the list of simulation from the netlist.

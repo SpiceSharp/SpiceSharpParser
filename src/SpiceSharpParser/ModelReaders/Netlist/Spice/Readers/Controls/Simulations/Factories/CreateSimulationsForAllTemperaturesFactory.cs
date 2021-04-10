@@ -11,9 +11,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 {
     public class CreateSimulationsForAllTemperaturesFactory : ICreateSimulationsForAllTemperaturesFactory
     {
-        public List<BaseSimulation> CreateSimulations(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, BaseSimulation> createSimulation)
+        public List<Simulation> CreateSimulations(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, Simulation> createSimulation)
         {
-            var result = new List<BaseSimulation>();
+            var result = new List<Simulation>();
 
             if (context.Result.SimulationConfiguration.TemperaturesInKelvins.Count > 0)
             {
@@ -30,7 +30,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             return result;
         }
 
-        protected BaseSimulation CreateSimulationForTemperature(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, BaseSimulation> createSimulation, double? temp)
+        protected Simulation CreateSimulationForTemperature(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, Simulation> createSimulation, double? temp)
         {
             var simulation = createSimulation(GetSimulationName(context, statement, temp), statement, context);
 
@@ -40,7 +40,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             return simulation;
         }
 
-        protected void SetTempVariable(ICircuitContext context, double? operatingTemperatureInKelvins, BaseSimulation simulation)
+        protected void SetTempVariable(ICircuitContext context, double? operatingTemperatureInKelvins, Simulation simulation)
         {
             double temp = 0;
             if (operatingTemperatureInKelvins.HasValue)
@@ -52,13 +52,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 temp = Constants.ReferenceTemperature - Constants.CelsiusKelvin;
             }
 
-            simulation.BeforeTemperature += (object sender, LoadStateEventArgs e) =>
+            if (simulation is BiasingSimulation biasingSimulation)
             {
-                context.Evaluator.SetParameter(simulation, "TEMP", temp);
-            };
+                biasingSimulation.BeforeTemperature += (object sender, TemperatureStateEventArgs e) =>
+                {
+                    context.Evaluator.SetParameter(simulation, "TEMP", temp);
+                };
+            }
         }
 
-        protected void SetSimulationTemperatures(BaseSimulation simulation, double? operatingTemperatureInKelvins, double? nominalTemperatureInKelvins)
+        protected void SetSimulationTemperatures(Simulation simulation, double? operatingTemperatureInKelvins, double? nominalTemperatureInKelvins)
         {
             if (operatingTemperatureInKelvins.HasValue)
             {

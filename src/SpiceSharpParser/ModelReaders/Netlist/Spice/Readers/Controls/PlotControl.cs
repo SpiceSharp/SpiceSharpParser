@@ -174,7 +174,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
             if (simulation is DC dc)
             {
-                if (dc.Sweeps.Count > 1)
+                if (eventArgs.GetSweepValues().Length > 1)
                 {
                     // TODO: Add support for DC Sweeps > 1
                     context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
@@ -182,7 +182,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     return;
                 }
 
-                x = eventArgs.SweepValue;
+                x = eventArgs.GetSweepValues().FirstOrDefault();
             }
 
             for (var i = 0; i < exports.Count; i++)

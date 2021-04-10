@@ -260,7 +260,7 @@ namespace SpiceSharpParser.Common.Evaluation
 
             foreach (var expression in NamedExpressions)
             {
-                if (!addedExpressions.Contains(expression.Value))
+                if (!result.NamedExpressions.ContainsKey(expression.Key))
                 {
                     result.NamedExpressions.Add(expression.Key, (NamedExpression)expression.Value.Clone());
                 }

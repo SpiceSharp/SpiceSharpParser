@@ -66,22 +66,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             }
 
             ConfigureCommonSettings(ac, context);
-            ConfigureAcSettings(ac.Configurations.Get<FrequencyConfiguration>(), context);
+            ConfigureAcSettings(ac.FrequencyParameters, context);
 
-            ac.BeforeFrequencyLoad += (sender, args) =>
+            /*ac.BeforeFrequencyLoad += (sender, args) =>
                 {
                     if (ac.ComplexState != null)
                     {
                         var freq = ac.ComplexState.Laplace.Imaginary / (2.0 * Math.PI);
                         context.Evaluator.SetParameter(ac, "FREQ", freq);
                     }
-                };
+                };*/ //TODO
 
             context.Result.AddSimulation(ac);
             return ac;
         }
 
-        private void ConfigureAcSettings(FrequencyConfiguration frequencyConfiguration, ICircuitContext context)
+        private void ConfigureAcSettings(FrequencyParameters frequencyConfiguration, ICircuitContext context)
         {
             if (context.Result.SimulationConfiguration.KeepOpInfo.HasValue)
             {

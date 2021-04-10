@@ -18,5 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         void AddChild(INodeNameGenerator nodeNameGenerator);
 
         void SetGlobal(string spImage);
+
+        INodeNameGenerator NodeNameGenerator { get; }
     }
 }

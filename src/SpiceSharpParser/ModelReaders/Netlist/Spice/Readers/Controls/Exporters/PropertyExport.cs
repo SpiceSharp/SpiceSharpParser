@@ -28,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             }
 
             Source = source ?? throw new NullReferenceException(nameof(source));
-            ExportRealImpl = new RealPropertyExport(simulation, source, property, comparer);
+            ExportRealImpl = new RealPropertyExport(simulation, source, property);
         }
 
         /// <summary>

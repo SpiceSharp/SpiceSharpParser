@@ -8,11 +8,6 @@ namespace SpiceSharpParser.Common.Evaluation
         TOutputType Logic(string image, TInputArgumentType[] args, EvaluationContext context);
     }
 
-    public interface IDerivativeFunction<TInputArgumentType, TOutputType> : IFunction<TInputArgumentType, TOutputType>
-    {
-        Derivatives<Func<TOutputType>> Derivative(string image, FunctionFoundEventArgs<Derivatives<Func<double>>> args, EvaluationContext context);
-    }
-
     public interface IFunction
     {
         int ArgumentsCount { get; set; }

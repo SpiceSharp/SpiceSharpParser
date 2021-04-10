@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 
 namespace SpiceSharpParser.Parsers.Expression
 {
@@ -14,46 +16,38 @@ namespace SpiceSharpParser.Parsers.Expression
 
         public bool HaveSpiceProperties(string expression, EvaluationContext context)
         {
-            bool present = false;
-            var parser = _factory.Create(context);
-            parser.SpicePropertyFound += (sender, e) =>
-            {
-                present = true;
-                e.Apply(() => 0);
-            };
+            var parser = _factory.Create(context, false);
+            var variables = parser.GetVariables(expression);
 
-            parser.Parse(expression);
-            return present;
+            var voltageExportFactory = new VoltageExporter();
+            var currentExportFactory = new CurrentExporter();
+
+            foreach (var variable in variables)
+            {
+                if (currentExportFactory.CreatedTypes.Contains(variable.ToLower()))
+                {
+                    return true;
+                }
+
+                if (voltageExportFactory.CreatedTypes.Contains(variable.ToLower()))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool HaveFunctions(string expression, EvaluationContext context)
         {
-            bool present = false;
-            var parser = _factory.Create(context);
-            parser.FunctionFound += (sender, e) =>
-            {
-                present = true;
-            };
-
-            parser.Parse(expression);
-            return present;
+            var parser = _factory.Create(context, false);
+            var functions = parser.GetFunctions(expression);
+            return functions.Any();
         }
 
         public IEnumerable<string> GetParameters(string expression, EvaluationContext context, bool @throw = true)
         {
             var parser = _factory.Create(context, @throw);
-            var parameters = new List<string>();
-            parser.VariableFound += (sender, e) =>
-            {
-                if (!parameters.Contains(e.Name))
-                {
-                    parameters.Add(e.Name);
-                }
-            };
-            parser.SpicePropertyFound += (sender, e) => { e.Apply(() => 0); };
-
-            parser.Parse(expression);
-            return parameters;
+            return parser.GetVariables(expression);
         }
     }
 }

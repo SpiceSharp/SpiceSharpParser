@@ -1,4 +1,5 @@
 ﻿using SpiceSharp.Components;
+using SpiceSharp.Entities;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -7,7 +8,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class JFETGenerator : IComponentGenerator
     {
-        public SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
+        public IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters.Count < 4)
             {
@@ -24,7 +25,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     simulation,
                     parameters.Get(3),
                     $"Could not find model {parameters.Get(3)} for JFET {originalName}",
-                    (JFETModel model) => jfet.Model = model.Name,
+                    (Context.Models.Model model) => jfet.Model = model.Name,
                     context.Result);
             });
 

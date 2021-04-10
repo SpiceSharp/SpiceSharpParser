@@ -1,5 +1,6 @@
 ﻿using SpiceSharp;
 using SpiceSharp.Attributes;
+using SpiceSharp.ParameterSets;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
 {
@@ -7,18 +8,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
     {
         [ParameterName("ron")]
         [ParameterInfo("Resistance when closed/on")]
-        public GivenParameter<double> OnResistance { get; } = new GivenParameter<double>(1.0);
+        public double OnResistance { get; set; } = 1.0;
 
         [ParameterName("roff")]
         [ParameterInfo("Resistance when off")]
-        public GivenParameter<double> OffResistance { get; } = new GivenParameter<double>(1.0e12);
+        public double OffResistance { get; set; } = 1.0e12;
 
         [ParameterName("von")]
         [ParameterInfo("On voltage")]
-        public GivenParameter<double> OnVoltage { get; } = new GivenParameter<double>(1.0);
+        public double OnVoltage { get; set; } = 1.0;
 
         [ParameterName("voff")]
         [ParameterInfo("Off voltage")]
-        public GivenParameter<double> OffVoltage { get; } = new GivenParameter<double>(0.0);
+        public double OffVoltage { get; set; } = 0.0;
     }
 }

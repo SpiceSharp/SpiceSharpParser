@@ -1,6 +1,4 @@
 ﻿using SpiceSharp;
-using SpiceSharp.Components;
-using SpiceSharpBehavioral.Components.BehavioralBehaviors;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
@@ -13,6 +11,7 @@ using System.Linq;
 using SpiceSharpParser.Common.Validation;
 using Component = SpiceSharpParser.Models.Netlist.Spice.Objects.Component;
 using Model = SpiceSharpParser.Models.Netlist.Spice.Objects.Model;
+using SpiceSharp.Entities;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
 {
@@ -21,7 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     /// </summary>
     public class SubCircuitGenerator : ComponentGenerator
     {
-        public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
+        public override IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
         {
             SubCircuit subCircuitDefinition = FindSubcircuitDefinition(parameters, context);
             CircuitContext subCircuitContext = CreateSubcircuitContext(componentIdentifier, originalName, subCircuitDefinition, parameters, context);
@@ -99,10 +98,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 var lastEntity = subCircuitContext.Result.Circuit.Last();
 
-                if (lastEntity.ParameterSets.TryGet(out BaseParameters bp))
+
+                //TODO: Fix it
+
+                /*if (lastEntity.ParameterSets.TryGet(out BaseParameters bp))
                 {
                     bp.Instance = subCircuitContext.InstanceData;
-                }
+                }*/
             }
         }
 
@@ -193,16 +195,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 pinInstanceIdentifiers.Add(pinInstanceName);
             }
 
-            var subcircuitNodeNameGenerator = new SubcircuitNodeNameGenerator(subcircuitFullName, subcircuitName, subCircuitDefinition, pinInstanceIdentifiers, context.NameGenerator.Globals, context.CaseSensitivity.IsNodeNameCaseSensitive);
+            var subcircuitNodeNameGenerator = new SubcircuitNodeNameGenerator(subcircuitFullName, subcircuitName, subCircuitDefinition, pinInstanceIdentifiers, context.NameGenerator.Globals, context.CaseSensitivity.IsEntityNamesCaseSensitive);
             var subcircuitObjectNameGenerator = context.NameGenerator.CreateChildNameGenerator(subcircuitName);
             var subcircuitNameGenerator = new NameGenerator(subcircuitNodeNameGenerator, subcircuitObjectNameGenerator);
             context.NameGenerator.AddChild(subcircuitNodeNameGenerator);
-            ComponentInstanceData instanceData = new CustomComponentInstanceData(context.Result.Circuit, subcircuitFullName);
+            /*ComponentInstanceData instanceData = new CustomComponentInstanceData(context.Result.Circuit, subcircuitFullName);
 
             foreach (var pin in subCircuitDefinition.Pins)
             {
                 instanceData.NodeMap[pin] = subcircuitNodeNameGenerator.Generate(pin);
-            }
+            }*/
 
             var subcircuitEvaluationContext = context.Evaluator.CreateChildContext(subcircuitFullName, true);
             subcircuitEvaluationContext.SetParameters(subcircuitParameters);
@@ -222,7 +224,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.CaseSensitivity,
                 context.Exporters,
                 context.WorkingDirectory,
-                instanceData);
+                null);
 
             return subcircuitContext;
         }
@@ -259,24 +261,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             return result;
-        }
-
-        public class CustomComponentInstanceData : ComponentInstanceData
-        {
-            static CustomComponentInstanceData()
-            {
-                Utility.Separator = ".";
-            }
-
-            public CustomComponentInstanceData(Circuit subcircuit)
-                : base(subcircuit)
-            {
-            }
-
-            public CustomComponentInstanceData(Circuit subckt, string name)
-                : base(subckt, name)
-            {
-            }
         }
     }
 }

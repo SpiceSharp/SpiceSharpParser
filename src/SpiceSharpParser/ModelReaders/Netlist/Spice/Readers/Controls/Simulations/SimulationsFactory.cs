@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <param name="statement">Simulation statement.</param>
         /// <param name="context">Context.</param>
         /// <param name="createSimulation">Simulation factory.</param>
-        public void Create(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, BaseSimulation> createSimulation)
+        public void Create(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, Simulation> createSimulation)
         {
             if (!IsMonteCarloEnabledForSimulation(statement, context))
             {

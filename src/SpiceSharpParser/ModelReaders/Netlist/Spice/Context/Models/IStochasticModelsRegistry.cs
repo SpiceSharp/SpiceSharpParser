@@ -21,12 +21,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter tolerance,
             string distributionName);
 
-        Model ProvideStochasticModel(string componentName, BaseSimulation simulation, Model model);
+        Model ProvideStochasticModel(string componentName, Simulation simulation, Model model);
 
-        Dictionary<Model, List<Model>> GetStochasticModels(BaseSimulation simulation);
+        Dictionary<string, List<Model>> GetStochasticModels(Simulation simulation);
 
-        Dictionary<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, ParameterRandomness> GetStochasticModelDevParameters(Model baseModel);
+        Dictionary<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, ParameterRandomness> GetStochasticModelDevParameters(string baseModel);
 
-        Dictionary<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, ParameterRandomness> GetStochasticModelLotParameters(Model baseModel);
+        Dictionary<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, ParameterRandomness> GetStochasticModelLotParameters(string baseModel);
     }
 }

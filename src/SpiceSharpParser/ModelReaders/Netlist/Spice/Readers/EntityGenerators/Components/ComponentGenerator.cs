@@ -1,5 +1,5 @@
 ﻿using System;
-using SpiceSharp.Circuits;
+using SpiceSharp.Entities;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -9,9 +9,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public abstract class ComponentGenerator : IComponentGenerator
     {
-        public abstract SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context);
+        public abstract IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context);
 
-        protected void SetParameters(ICircuitContext context, Entity entity, ParameterCollection parameters, bool onload)
+        protected void SetParameters(ICircuitContext context, IEntity entity, ParameterCollection parameters, bool onload)
         {
             foreach (Parameter parameter in parameters)
             {

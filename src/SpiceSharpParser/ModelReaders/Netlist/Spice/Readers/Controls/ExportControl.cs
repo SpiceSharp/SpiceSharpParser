@@ -1,4 +1,4 @@
-﻿using SpiceSharp.Circuits;
+﻿using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
@@ -47,7 +47,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             var result = new List<Export>();
             var nodes = new List<string>();
 
-            foreach (Entity entity in context.Result.Circuit)
+            foreach (IEntity entity in context.Result.Circuit)
             {
                 if (entity is SpiceSharp.Components.Component c)
                 {
@@ -55,9 +55,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     var @params = new ParameterCollection(new List<Parameter>());
                     @params.Add(new WordParameter(componentName, null));
 
-                    for (var i = 0; i < c.PinCount; i++)
+                    for (var i = 0; i < c.Nodes.Count; i++)
                     {
-                        var node = c.GetNode(i);
+                        var node = c.Nodes[i];
                         if (!nodes.Contains(node))
                         {
                             nodes.Add(node);

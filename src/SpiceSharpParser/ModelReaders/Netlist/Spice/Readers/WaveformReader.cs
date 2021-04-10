@@ -33,7 +33,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <returns>
         /// An new instance of waveform.
         /// </returns>
-        public Waveform Generate(string type, ParameterCollection parameters, ICircuitContext context)
+        public IWaveformDescription Generate(string type, ParameterCollection parameters, ICircuitContext context)
         {
             if (type == null)
             {

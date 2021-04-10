@@ -1,6 +1,5 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharp.Simulations;
-using SpiceSharpBehavioral.Parsers;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -8,18 +7,12 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Linq;
 using SpiceSharpParser.Common.Validation;
 using Component = SpiceSharp.Components.Component;
+using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {
     public abstract class SourceGenerator : ComponentGenerator
     {
-        protected SimpleDerivativeParser CreateParser(ICircuitContext context, Simulation simulation)
-        {
-            var simulationContext = context.Evaluator.GetEvaluationContext(simulation);
-            var parser = simulationContext.GetDeriveParser();
-            return parser;
-        }
-
         protected void SetSourceParameters(
             string name,
             ParameterCollection parameters,
@@ -27,7 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             Component component)
         {
             var originalParameters = parameters;
-            parameters = parameters.Skip(VoltageSource.VoltageSourcePinCount);
+            parameters = parameters.Skip(VoltageSource.PinCount);
 
             var acParameter = parameters.FirstOrDefault(p => p.Image.ToLower() == "ac");
             if (acParameter != null)

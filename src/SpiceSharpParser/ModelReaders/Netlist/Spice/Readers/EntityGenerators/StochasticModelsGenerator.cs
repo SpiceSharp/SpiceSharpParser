@@ -23,7 +23,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
         /// <returns>
         /// A new instance of entity.
         /// </returns>
-        public SpiceSharp.Components.Model GenerateModel(IModelGenerator modelGenerator, string id, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
+        public Context.Models.Model GenerateModel(IModelGenerator modelGenerator, string id, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
         {
             if (modelGenerator == null)
             {
@@ -86,7 +86,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
             return model;
         }
 
-        private static void RegisterDevAndLotModels(ParameterCollection parameters, IStochasticModelsRegistry stochasticModelRegistry, SpiceSharp.Components.Model model, Func<string, SpiceSharp.Components.Model> generator)
+        private static void RegisterDevAndLotModels(ParameterCollection parameters, IStochasticModelsRegistry stochasticModelRegistry, Context.Models.Model model, Func<string, Context.Models.Model> generator)
         {
             for (var i = 0; i < parameters.Count; i++)
             {

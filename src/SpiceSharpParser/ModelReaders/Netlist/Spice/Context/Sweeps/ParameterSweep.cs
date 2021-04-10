@@ -1,4 +1,6 @@
-﻿using SpiceSharp.Simulations;
+﻿using SpiceSharp;
+using SpiceSharp.Simulations;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
 {
@@ -15,6 +17,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
         /// <summary>
         /// Gets or sets the sweep for parameter sweep.
         /// </summary>
-        public Sweep<double> Sweep { get; set; }
+        public IEnumerable<double> Sweep { get; set; }
     }
 }

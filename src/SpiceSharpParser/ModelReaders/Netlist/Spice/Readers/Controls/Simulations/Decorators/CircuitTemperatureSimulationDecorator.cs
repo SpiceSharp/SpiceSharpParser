@@ -12,19 +12,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             _circuitTemperature = circuitTemperature;
         }
 
-        public BaseSimulation Decorate(BaseSimulation simulation)
+        public Simulation Decorate(Simulation simulation)
         {
-            EventHandler<LoadStateEventArgs> setState = (object sender, LoadStateEventArgs e) =>
+            EventHandler<TemperatureStateEventArgs> setState = (object sender, TemperatureStateEventArgs e) =>
             {
-                if (e.State is BaseSimulationState rs)
-                {
-                    rs.Temperature = _circuitTemperature;
-                }
-
-                // TODO: What to do with complex state?
+              e.State.Temperature = _circuitTemperature;
             };
 
-            simulation.BeforeTemperature += setState;
+            if (simulation is BiasingSimulation biasingSimulation)
+            {
+                biasingSimulation.BeforeTemperature += setState;
+            }
 
             return simulation;
         }

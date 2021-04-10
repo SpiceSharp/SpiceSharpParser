@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
         /// <returns>
         /// A new waveform.
         /// </returns>
-        public override Waveform Generate(ParameterCollection parameters, ICircuitContext context)
+        public override IWaveformDescription Generate(ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters == null)
             {
@@ -38,23 +38,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 
             var sine = new Sine();
 
-            sine.Offset.Value = context.Evaluator.EvaluateDouble(parameters.Get(0));
-            sine.Amplitude.Value = context.Evaluator.EvaluateDouble(parameters.Get(1));
-            sine.Frequency.Value = context.Evaluator.EvaluateDouble(parameters.Get(2));
+            sine.Offset = context.Evaluator.EvaluateDouble(parameters.Get(0));
+            sine.Amplitude = context.Evaluator.EvaluateDouble(parameters.Get(1));
+            sine.Frequency = context.Evaluator.EvaluateDouble(parameters.Get(2));
 
             if (parameters.Count >= 4)
             {
-                sine.Delay.Value = context.Evaluator.EvaluateDouble(parameters.Get(3));
+                sine.Delay = context.Evaluator.EvaluateDouble(parameters.Get(3));
             }
 
             if (parameters.Count >= 5)
             {
-                sine.Theta.Value = context.Evaluator.EvaluateDouble(parameters.Get(4));
+                sine.Theta = context.Evaluator.EvaluateDouble(parameters.Get(4));
             }
 
             if (parameters.Count == 6)
             {
-                sine.Phase.Value = context.Evaluator.EvaluateDouble(parameters.Get(5));
+                sine.Phase = context.Evaluator.EvaluateDouble(parameters.Get(5));
             }
 
             return sine;

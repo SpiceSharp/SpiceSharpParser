@@ -6,12 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharpParser.Common.Validation;
+using SpiceSharp.Components.Capacitors;
+using SpiceSharp.Entities;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
 {
     public class RLCKGenerator : ComponentGenerator
     {
-        public override SpiceSharp.Components.Component Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
+        public override IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
         {
             switch (type.ToLower())
             {
@@ -33,7 +35,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of mutual inductance.
         /// </returns>
-        protected SpiceSharp.Components.Component GenerateMut(string name, ParameterCollection parameters, ICircuitContext context)
+        protected IEntity GenerateMut(string name, ParameterCollection parameters, ICircuitContext context)
         {
             var mut = new MutualInductance(name);
 
@@ -90,7 +92,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of capacitor.
         /// </returns>
-        protected SpiceSharp.Components.Component GenerateCap(string name, ParameterCollection parameters, ICircuitContext context)
+        protected SpiceSharp.Components.IComponent GenerateCap(string name, ParameterCollection parameters, ICircuitContext context)
         {
             var capacitor = new Capacitor(name);
             context.CreateNodes(capacitor, parameters);
@@ -99,7 +101,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             Parameter tcParameter = parameters.FirstOrDefault(
                 p => p is AssignmentParameter ap && ap.Name.Equals(
                          "tc",
-                         context.CaseSensitivity.IsEntityParameterNameCaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase));
+                         false ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase));
 
             if (tcParameter != null)
             {
@@ -144,7 +146,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             simulation,
                             parameters.Get(2),
                             $"Could not find model {parameters.Get(2)} for capacitor {name}",
-                            (CapacitorModel model) => capacitor.Model = model.Name,
+                            (Context.Models.Model model) => capacitor.Model = model.Name,
                             context.Result);
                     });
 
@@ -155,14 +157,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (modelBased)
                 {
-                    var bp = capacitor.ParameterSets[typeof(SpiceSharp.Components.CapacitorBehaviors.BaseParameters)] as SpiceSharp.Components.CapacitorBehaviors.BaseParameters;
-                    if (bp == null || !bp.Length.Given)
+                    var bp = capacitor.GetParameterSet<ModelParameters>();
+                    /*if (bp == null || !bp.Length.Given)
                     {
                         context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
                             ValidationEntryLevel.Warning,
                             $"L needs to be specified", parameters.LineInfo));
                         return null;
-                    }
+                    }*/
                 }
             }
 
@@ -180,7 +182,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (modelBased)
                 {
-                    var model = context.ModelsRegistry.FindModel<CapacitorModel>(parameters.Get(2).Image);
+                    var model = context.ModelsRegistry.FindModelEntity(parameters.Get(2).Image);
 
                     if (tcParameterAssignment.Values.Count == 2)
                     {
@@ -208,7 +210,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         context.SetParameter(model, "tc1", tcParameterAssignment.Value);
                     }
 
-                    context.ModelsRegistry.RegisterModelInstance(model);
+                    context.ModelsRegistry.RegisterModelInstance(new Context.Models.Model(model.Name, model, model.Parameters));
                     context.Result.AddEntity(model);
                     capacitor.Model = model.Name;
                 }
@@ -226,7 +228,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of inductor.
         /// </returns>
-        protected SpiceSharp.Components.Component GenerateInd(string name, ParameterCollection parameters, ICircuitContext context)
+        protected IEntity GenerateInd(string name, ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters.Count != 3)
             {
@@ -252,7 +254,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of resistor.
         /// </returns>
-        protected SpiceSharp.Components.Component GenerateRes(string name, ParameterCollection parameters, ICircuitContext context)
+        protected IEntity GenerateRes(string name, ParameterCollection parameters, ICircuitContext context)
         {
             Resistor res = new Resistor(name);
 
@@ -278,7 +280,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 // Check if something is a model name
                 if ((something is WordParameter || something is IdentifierParameter)
-                    && context.ModelsRegistry.FindModel<ResistorModel>(parameters.Get(2).Image) != null)
+                    && context.ModelsRegistry.FindModel(parameters.Get(2).Image) != null)
                 {
                     // RName Node1 Node2 modelName
                     context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
@@ -327,11 +329,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 // Check if something is a model name
                 bool hasModelSyntax = (something is WordParameter || something is IdentifierParameter)
-                                      && context.ModelsRegistry.FindModel<ResistorModel>(something.Image) != null;
+                                      && context.ModelsRegistry.FindModel(something.Image) != null;
                 bool hasTcParameter = parameters.Any(
                     p => p is AssignmentParameter ap && ap.Name.Equals(
                              "tc",
-                             context.CaseSensitivity.IsEntityParameterNameCaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase));
+                             false ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase));
 
                 AssignmentParameter tcParameter = null;
 
@@ -340,7 +342,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     tcParameter = (AssignmentParameter)parameters.Single(
                         p => p is AssignmentParameter ap && ap.Name.Equals(
                                  "tc",
-                                 context.CaseSensitivity.IsEntityParameterNameCaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase));
+                                 false ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase));
                     resistorParameters.Remove(tcParameter);
                 }
 
@@ -356,7 +358,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             simulation,
                             modelNameParameter,
                             $"Could not find model {modelNameParameter} for resistor {name}",
-                            (ResistorModel model) => res.Model = model.Name,
+                            (Context.Models.Model model) => res.Model = model.Name,
                             context.Result);
                     });
 
@@ -386,7 +388,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             context.SetParameter(model, "tc1", tcParameter.Value);
                         }
 
-                        context.ModelsRegistry.RegisterModelInstance(model);
+                        context.ModelsRegistry.RegisterModelInstance(new Context.Models.Model(model.Name, model, model.Parameters));
                         res.Model = model.Name;
                         context.Result.AddEntity(model);
                     }

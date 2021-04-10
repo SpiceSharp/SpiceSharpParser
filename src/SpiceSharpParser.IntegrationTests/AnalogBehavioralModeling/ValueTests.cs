@@ -66,7 +66,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 "V5 5 0 5",
                 "X1 3 6 4 COMP1",
                 ".SUBCKT COMP1 4 5 2",
-                "ESource 4 5 VALUE = { Pow(V(2), 2) + 2 }",
+                "ESource 4 5 VALUE = { pow(V(2), 2) + 2 }",
                 ".ENDS",
                 ".OP",
                 ".SAVE V(3,6)",
@@ -170,7 +170,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
-            Assert.Throws<SpiceSharp.CircuitException>(() => RunOpSimulation(netlist, "V(2,0)"));
+            Assert.Throws<SpiceSharp.SpiceSharpException>(() => RunOpSimulation(netlist, "V(2,0)"));
         }
 
         [Fact]
@@ -238,7 +238,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
-            Assert.Throws<SpiceSharp.CircuitException>(() => RunOpSimulation(netlist, "V(2,0)"));
+            Assert.Throws<SpiceSharp.SpiceSharpException>(() => RunOpSimulation(netlist, "V(2,0)"));
         }
 
         [Fact]
@@ -405,7 +405,8 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         {
             var netlist = ParseNetlist(
                 "Current source value circuit",
-                "R1 2 0 100",
+                "R1 2 1 100",
+                "R2 1 0 1000",
                 "I1 1 0 2",
                 "I2 2 0 VALUE = { I(I1) + 2 }",
                 ".OP",
@@ -422,8 +423,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         {
             var netlist = ParseNetlist(
                 "Current source value circuit",
-                "R1 2 0 100",
+                "R1 1 0 100",
                 "I1 1 0 2",
+                "R2 2 0 100",
                 "I2 2 0 VALUE { I(I1) + 2 }",
                 ".OP",
                 ".SAVE I(I2)",
@@ -439,6 +441,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         {
             var netlist = ParseNetlist(
                 "Current source value circuit",
+                "R0 1 0 10",
                 "R1 2 0 100",
                 "I1 1 0 2",
                 "I2 2 0 { I(I1) + 2 }",
@@ -491,7 +494,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             var netlist = ParseNetlist(
                 "Value test circuit",
                 "R1 1 0 100",
-                "R2 1 0 200",
+                "R2 2 0 200",
                 "I1 1 0 2",
                 "FSource 2 0 VALUE = { I(I1) + 2 }",
                 ".OP",
@@ -509,7 +512,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             var netlist = ParseNetlist(
                 "Value test circuit",
                 "R1 1 0 100",
-                "R2 1 0 200",
+                "R2 2 0 200",
                 "I1 1 0 2",
                 "FSource 2 0 VALUE { I(I1) + 2 }",
                 ".OP",

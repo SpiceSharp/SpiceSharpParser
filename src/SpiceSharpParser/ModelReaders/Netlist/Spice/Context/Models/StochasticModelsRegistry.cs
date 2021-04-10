@@ -1,11 +1,11 @@
-﻿using SpiceSharp.Circuits;
-using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
+﻿using SpiceSharpParser.Common;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Collections.Generic;
 using SpiceSharpParser.Common.Validation;
-using Model = SpiceSharp.Components.Model;
+using SpiceSharp.Entities;
+using SpiceSharp.Simulations;
+using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 {
@@ -21,7 +21,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             NamesGenerators = modelNamesGenerators ?? throw new ArgumentNullException(nameof(modelNamesGenerators));
             IsModelNameCaseSensitive = isModelNameCaseSensitive;
 
-            AllModels = new Dictionary<string, Entity>(StringComparerProvider.Get(isModelNameCaseSensitive));
+            AllModels = new Dictionary<string, Model>(StringComparerProvider.Get(isModelNameCaseSensitive));
         }
 
         public bool IsModelNameCaseSensitive { get; }
@@ -29,27 +29,27 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// <summary>
         /// Gets or sets the dictionary of stochastic models with dev parameters.
         /// </summary>
-        protected Dictionary<Model, Dictionary<Parameter, ParameterRandomness>> ModelsWithDev { get; set; } = new Dictionary<Model, Dictionary<Parameter, ParameterRandomness>>();
+        protected Dictionary<string, Dictionary<Parameter, ParameterRandomness>> ModelsWithDev { get; set; } = new Dictionary<string, Dictionary<Parameter, ParameterRandomness>>();
 
         /// <summary>
         /// Gets or sets the dictionary of stochastic models with lot parameters.
         /// </summary>
-        protected Dictionary<Model, Dictionary<Parameter, ParameterRandomness>> ModelsWithLot { get; set; } = new Dictionary<Model, Dictionary<Parameter, ParameterRandomness>>();
+        protected Dictionary<string, Dictionary<Parameter, ParameterRandomness>> ModelsWithLot { get; set; } = new Dictionary<string, Dictionary<Parameter, ParameterRandomness>>();
 
         /// <summary>
         /// Gets or sets the dictionary of models generators.
         /// </summary>
-        protected Dictionary<Model, Func<string, Model>> ModelsGenerators { get; set; } = new Dictionary<Model, Func<string, Model>>();
+        protected Dictionary<string, Func<string, Model>> ModelsGenerators { get; set; } = new Dictionary<string, Func<string, Model>>();
 
         /// <summary>
         /// Gets or sets the dictionary of stochastic models.
         /// </summary>
-        protected Dictionary<BaseSimulation, Dictionary<Model, List<Model>>> StochasticModels { get; set; } = new Dictionary<BaseSimulation, Dictionary<Model, List<Model>>>();
+        protected Dictionary<Simulation, Dictionary<string, List<Model>>> StochasticModels { get; set; } = new Dictionary<Simulation, Dictionary<string, List<Model>>>();
 
         /// <summary>
         /// Gets or sets the list of all models in the registry.
         /// </summary>
-        protected Dictionary<string, Entity> AllModels { get; set; }
+        protected Dictionary<string, Model> AllModels { get; set; }
 
         /// <summary>
         /// Gets the object model name generators.
@@ -91,20 +91,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
                 throw new ArgumentNullException(nameof(tolerance));
             }
 
-            if (!ModelsWithDev.ContainsKey(model))
+            if (!ModelsWithDev.ContainsKey(model.Name))
             {
-                ModelsWithDev[model] = new Dictionary<Parameter, ParameterRandomness>();
+                ModelsWithDev[model.Name] = new Dictionary<Parameter, ParameterRandomness>();
             }
 
-            ModelsWithDev[model][parameter] = new ParameterRandomness
+            ModelsWithDev[model.Name][parameter] = new ParameterRandomness
             {
                 RandomDistributionName = distributionName,
                 Tolerance = tolerance,
             };
 
-            if (!ModelsGenerators.ContainsKey(model))
+            if (!ModelsGenerators.ContainsKey(model.Name))
             {
-                ModelsGenerators[model] = generator;
+                ModelsGenerators[model.Name] = generator;
             }
         }
 
@@ -123,20 +123,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             Parameter tolerance,
             string distributionName)
         {
-            if (!ModelsWithLot.ContainsKey(model))
+            if (!ModelsWithLot.ContainsKey(model.Name))
             {
-                ModelsWithLot[model] = new Dictionary<Parameter, ParameterRandomness>();
+                ModelsWithLot[model.Name] = new Dictionary<Parameter, ParameterRandomness>();
             }
 
-            ModelsWithLot[model][parameter] = new ParameterRandomness
+            ModelsWithLot[model.Name][parameter] = new ParameterRandomness
             {
                 RandomDistributionName = distributionName,
                 Tolerance = tolerance,
             };
 
-            if (!ModelsGenerators.ContainsKey(model))
+            if (!ModelsGenerators.ContainsKey(model.Name))
             {
-                ModelsGenerators[model] = generator;
+                ModelsGenerators[model.Name] = generator;
             }
         }
 
@@ -150,24 +150,26 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// If a model is stochastic (dev, lot) then a copy of model with be returned.
         /// If a model is not stochastic then a raw model is returned.
         /// </returns>
-        public Model ProvideStochasticModel(string componentName, BaseSimulation simulation, Model model)
+        public Model ProvideStochasticModel(string componentName, Simulation simulation, Model model)
         {
-            if (ModelsGenerators.ContainsKey(model))
+            if (ModelsGenerators.Any(m => m.Key == model.Name))
             {
+                var modelForComponentGenerator = ModelsGenerators.First(m => m.Key == model.Name);
                 string modelId = $"{model.Name}#{componentName}_{simulation.Name}";
-                var modelForComponent = ModelsGenerators[model](modelId);
+
+                var modelForComponent = modelForComponentGenerator.Value(modelId);
 
                 if (!StochasticModels.ContainsKey(simulation))
                 {
-                    StochasticModels[simulation] = new Dictionary<Model, List<Model>>();
+                    StochasticModels[simulation] = new Dictionary<string, List<Model>>();
                 }
 
-                if (!StochasticModels[simulation].ContainsKey(model))
+                if (!StochasticModels[simulation].ContainsKey(model.Name))
                 {
-                    StochasticModels[simulation][model] = new List<Model>();
+                    StochasticModels[simulation][model.Name] = new List<Model>();
                 }
 
-                StochasticModels[simulation][model].Add(modelForComponent);
+                StochasticModels[simulation][model.Name].Add(modelForComponent);
                 return modelForComponent;
             }
 
@@ -180,11 +182,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// <returns>
         /// A dictionary of base models and their stochastic models.
         /// </returns>
-        public Dictionary<Model, List<Model>> GetStochasticModels(BaseSimulation simulation)
+        public Dictionary<string, List<Model>> GetStochasticModels(Simulation simulation)
         {
             return StochasticModels.ContainsKey(simulation)
                 ? StochasticModels[simulation]
-                : new Dictionary<Model, List<Model>>();
+                : new Dictionary<string, List<Model>>();
         }
 
         /// <summary>
@@ -194,7 +196,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// <returns>
         /// A dictionary of DEV parameters and their tolerance value.
         /// </returns>
-        public Dictionary<Parameter, ParameterRandomness> GetStochasticModelDevParameters(Model baseModel)
+        public Dictionary<Parameter, ParameterRandomness> GetStochasticModelDevParameters(string baseModel)
         {
             if (ModelsWithDev.ContainsKey(baseModel))
             {
@@ -220,7 +222,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         /// <returns>
         /// A dictionary of LOT parameters and their tolerance value.
         /// </returns>
-        public Dictionary<Parameter, ParameterRandomness> GetStochasticModelLotParameters(Model baseModel)
+        public Dictionary<Parameter, ParameterRandomness> GetStochasticModelLotParameters(string baseModel)
         {
             if (ModelsWithLot.ContainsKey(baseModel))
             {
@@ -230,10 +232,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             return null;
         }
 
-        public void SetModel<T>(Entity entity, BaseSimulation simulation, Parameter modelNameParameter, string exceptionMessage, Action<T> setModelAction, IResultService result)
-            where T : Model
+        public void SetModel(Entity entity, Simulation simulation, Parameter modelNameParameter, string exceptionMessage, Action<Context.Models.Model> setModelAction, IResultService result)
         {
-            var model = FindModel<T>(modelNameParameter.Image);
+            var model = FindModelEntity(modelNameParameter.Image);
 
             if (model == null)
             {
@@ -241,20 +242,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
                 return;
             }
 
-            var stochasticModel = (T)ProvideStochasticModel(entity.Name, simulation, model);
+            var stochasticModel = ProvideStochasticModel(entity.Name, simulation, new Model(model.Name, model, model.ParameterSets.First()));
             setModelAction(stochasticModel);
 
             if (stochasticModel != null)
             {
                 if (!result.Circuit.Contains(stochasticModel.Name))
                 {
-                    result.Circuit.Add(stochasticModel);
+                    result.Circuit.Add(stochasticModel.Entity);
                 }
             }
         }
 
-        public T FindModel<T>(string modelName)
-            where T : Model
+        public Model FindModel(string modelName)
         {
             foreach (var generator in NamesGenerators)
             {
@@ -262,21 +262,38 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 
                 if (AllModels.TryGetValue(modelNameToSearch, out var model))
                 {
-                    return (T)model;
+                    return model;
                 }
             }
 
             return null;
         }
 
+
+        public IEntity FindModelEntity(string modelName)
+        {
+            foreach (var generator in NamesGenerators)
+            {
+                var modelNameToSearch = generator.GenerateObjectName(modelName);
+
+                if (AllModels.TryGetValue(modelNameToSearch, out var model))
+                {
+                    return model.Entity;
+                }
+            }
+
+            return null;
+        }
+
+
         public IModelsRegistry CreateChildRegistry(List<INameGenerator> generators)
         {
             var result = new StochasticModelsRegistry(generators, IsModelNameCaseSensitive)
             {
-                AllModels = new Dictionary<string, Entity>(AllModels, StringComparerProvider.Get(IsModelNameCaseSensitive)),
-                ModelsWithDev = new Dictionary<Model, Dictionary<Parameter, ParameterRandomness>>(ModelsWithDev),
-                ModelsWithLot = new Dictionary<Model, Dictionary<Parameter, ParameterRandomness>>(ModelsWithLot),
-                StochasticModels = new Dictionary<BaseSimulation, Dictionary<Model, List<Model>>>(StochasticModels),
+                AllModels = new Dictionary<string, Model>(AllModels, StringComparerProvider.Get(IsModelNameCaseSensitive)),
+                ModelsWithDev = new Dictionary<string, Dictionary<Parameter, ParameterRandomness>>(ModelsWithDev),
+                ModelsWithLot = new Dictionary<string, Dictionary<Parameter, ParameterRandomness>>(ModelsWithLot),
+                StochasticModels = new Dictionary<Simulation, Dictionary<string, List<Model>>>(StochasticModels),
             };
 
             return result;

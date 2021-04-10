@@ -1,5 +1,4 @@
 ﻿using SpiceSharp.Components;
-using SpiceSharp.Components.Waveforms;
 using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -24,7 +23,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
         /// <returns>
         /// A new waveform.
         /// </returns>
-        public override Waveform Generate(ParameterCollection parameters, ICircuitContext context)
+        public override IWaveformDescription Generate(ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters == null)
             {
@@ -53,7 +52,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             }
         }
 
-        private static Waveform CreatePwlFromSequence(ParameterCollection parameters, ICircuitContext context)
+        private static IWaveformDescription CreatePwlFromSequence(ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters.Count % 2 != 0)
             {
@@ -62,18 +61,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 
             double[] times = new double[parameters.Count / 2];
             double[] voltages = new double[parameters.Count / 2];
+            var points = new List<Point>();
 
             for (var i = 0; i < parameters.Count / 2; i++)
             {
                 times[i] = context.Evaluator.EvaluateDouble(parameters.Get(2 * i));
                 voltages[i] = context.Evaluator.EvaluateDouble(parameters.Get((2 * i) + 1));
+                points.Add(new Point(times[i], voltages[i]));
             }
 
-            var pwl = new Pwl(times, voltages);
-            return pwl;
+            return new Pwl() { Points = points };
         }
 
-        private static Waveform CreatePwlFromVector(ParameterCollection parameters, ICircuitContext context)
+        private static IWaveformDescription CreatePwlFromVector(ParameterCollection parameters, ICircuitContext context)
         {
             List<double> values = new List<double>();
 
@@ -93,18 +93,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             int pwlPoints = values.Count / 2;
             double[] times = new double[pwlPoints];
             double[] voltages = new double[pwlPoints];
+            var points = new List<Point>();
 
             for (var i = 0; i < pwlPoints; i++)
             {
                 times[i] = values[2 * i];
                 voltages[i] = values[(2 * i) + 1];
+                points.Add(new Point(times[i], voltages[i]));
             }
 
-            var pwl = new Pwl(times, voltages);
-            return pwl;
+            return new Pwl() { Points = points };
         }
 
-        private static Waveform CreatePwlFromFile(ParameterCollection parameters, ICircuitContext context)
+        private static IWaveformDescription CreatePwlFromFile(ParameterCollection parameters, ICircuitContext context)
         {
             var fileParameter = (AssignmentParameter)parameters.First(p => p is AssignmentParameter ap && ap.Name.ToLower() == "file");
             var filePath = PathConverter.Convert(fileParameter.Value);
@@ -119,14 +120,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             List<double[]> csvData = CsvFileReader.Read(fullFilePath, true).ToList();
             double[] times = new double[csvData.LongCount()];
             double[] voltages = new double[csvData.LongCount()];
+            var points = new List<Point>();
 
             for (var i = 0; i < csvData.LongCount(); i++)
             {
                 times[i] = csvData[i][0];
                 voltages[i] = csvData[i][1];
+                points.Add(new Point(times[i], voltages[i]));
             }
 
-            return new Pwl(times, voltages);
+            return new Pwl() { Points = points };
         }
     }
 }

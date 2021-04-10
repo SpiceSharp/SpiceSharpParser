@@ -29,7 +29,7 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
                 "V1 1 0 1.5m",
                 "R1 1 0 10",
                 ".IF (a == 1)",
-                "E12 2 1 TABLE {V(1,0)} = (0,1) (1m,2) (2m,3)",
+                "E12 2 1 TABLE {V(1)} = (0,1) (1m,2) (2m,3)",
                 ".ENDIF",
                 "R2 2 0 10",
                 ".SAVE V(2,1)",

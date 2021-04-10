@@ -1,5 +1,5 @@
 ﻿using SpiceSharp;
-using SpiceSharp.Circuits;
+using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
@@ -33,11 +33,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         void AddPlot(XyPlot plot);
 
-        void AddEntity(Entity entity);
+        void AddEntity(IEntity entity);
 
-        void AddSimulation(BaseSimulation simulation);
+        void AddSimulation(Simulation simulation);
 
-        bool FindObject(string objectId, out Entity entity);
+        bool FindObject(string objectId, out IEntity entity);
 
         void AddPrint(Print print);
     }

@@ -44,14 +44,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <param name="context">Context.</param>
         /// <param name="createSimulation">Simulation factory.</param>
         /// <returns></returns>
-        public List<BaseSimulation> Create(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, BaseSimulation> createSimulation)
+        public List<Simulation> Create(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, Simulation> createSimulation)
         {
             context.Result.MonteCarlo.Enabled = true;
             context.Result.MonteCarlo.Seed = context.Result.SimulationConfiguration.MonteCarloConfiguration.Seed;
             context.Result.MonteCarlo.OutputVariable = context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable.Image;
             context.Result.MonteCarlo.Function = context.Result.SimulationConfiguration.MonteCarloConfiguration.Function;
 
-            var result = new List<BaseSimulation>();
+            var result = new List<Simulation>();
 
             for (var i = 0; i < context.Result.SimulationConfiguration.MonteCarloConfiguration.Runs; i++)
             {
@@ -63,7 +63,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             return result;
         }
 
-        protected void AttachMonteCarloDataGathering(ICircuitContext context, IEnumerable<BaseSimulation> simulations)
+        protected void AttachMonteCarloDataGathering(ICircuitContext context, IEnumerable<Simulation> simulations)
         {
             foreach (var simulation in simulations)
             {
@@ -71,7 +71,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             }
         }
 
-        protected void AttachMonteCarloDataGatheringForSimulation(ICircuitContext context, BaseSimulation simulation)
+        protected void AttachMonteCarloDataGatheringForSimulation(ICircuitContext context, Simulation simulation)
         {
             var exportParam = context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable;
 

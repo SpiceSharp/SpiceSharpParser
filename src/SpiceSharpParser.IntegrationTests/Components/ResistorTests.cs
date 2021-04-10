@@ -242,7 +242,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "Resistor circuit",
                 "V1 1 0 150",
                 "R1 1 0 myresistor L=10u W=2u",
-                ".MODEL myresistor R RSH=0.1 TC1=0 TC2=0",
+                ".MODEL myresistor R rsh=0.1 tc1=0 tc2=0",
                 ".SAVE I(R1)",
                 ".OP",
                 ".OPTIONS TEMP=10",

@@ -1,12 +1,12 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
 {
     public class BipolarModelGenerator : ModelGenerator
     {
-        public override SpiceSharp.Components.Model Generate(string id, string type, ParameterCollection parameters, ICircuitContext context)
+        public override Model Generate(string id, string type, SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection parameters, ICircuitContext context)
         {
             BipolarJunctionTransistorModel model = new BipolarJunctionTransistorModel(id);
 
@@ -21,7 +21,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 
             SetParameters(context, model, parameters);
 
-            return model;
+            return new Model(id, model, model.Parameters);
         }
     }
 }

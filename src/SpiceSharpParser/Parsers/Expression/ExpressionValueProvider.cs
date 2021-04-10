@@ -16,7 +16,7 @@ namespace SpiceSharpParser.Parsers.Expression
             try
             {
                 var parser = _parserFactory.Create(context, @throw, true);
-                return parser.Parse(expression)[0]();
+                return parser.Parse(expression);
             }
             catch
             {
