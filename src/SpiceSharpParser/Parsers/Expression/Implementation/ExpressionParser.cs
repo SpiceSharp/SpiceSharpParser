@@ -8,6 +8,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.Parsers.Expression.Implementation;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SpiceSharpParser.Parsers.Expression
 {
@@ -22,7 +23,7 @@ namespace SpiceSharpParser.Parsers.Expression
             ThrowOnErrors = throwOnErrors;
         }
 
-        protected RealBuilder DoubleBuilder { get; }
+        protected CustomRealBuilder DoubleBuilder { get; }
         protected Parser InternalParser { get; }
         public EvaluationContext Context { get; }
         public bool ThrowOnErrors { get; }
@@ -67,22 +68,63 @@ namespace SpiceSharpParser.Parsers.Expression
             return DoubleBuilder.Build(node);
         }
 
-        public Node MakeVariablesGlobal(string expression)
+        public Node Resolve(string expression)
         {
             var node = InternalParser.Parse(expression);
 
-            var builder = new NodeReplacer();
-            builder.Map = new Dictionary<VariableNode, Node>();
+            var resolver = new Resolver();
+            resolver.VariableMap = new Dictionary<VariableNode, Node>();
 
             if (Context.NameGenerator?.NodeNameGenerator is SubcircuitNodeNameGenerator sng)
             {
                 foreach (var pin in sng.PinMap)
                 {
-                    builder.Map[VariableNode.Voltage(pin.Key)] = VariableNode.Voltage(pin.Value);
+                    resolver.VariableMap[VariableNode.Voltage(pin.Key)] = VariableNode.Voltage(pin.Value);
+                }
+
+                resolver.UnknownVariableFound += (sender, args) =>
+                {
+                    if (args.Node.NodeType == NodeTypes.Voltage)
+                    {
+                        args.Result = VariableNode.Voltage(Context.NameGenerator.NodeNameGenerator.Generate(args.Node.Name));
+                    }
+                };
+            }
+
+            foreach (var variable in DoubleBuilder.Variables)
+            {
+                resolver.VariableMap[VariableNode.Variable(variable.Name)] = variable.Value();
+            }
+
+
+            resolver.FunctionMap = CreateFunctions();
+
+            var resolved = resolver.Resolve(node);
+
+            return resolved;
+        }
+
+        public Dictionary<string, Resolver.Function> CreateFunctions()
+        {
+            var result = new Dictionary<string, Resolver.Function>();
+
+            foreach (var functionName in Context.FunctionsBody.Keys)
+            {
+                var body = Context.FunctionsBody[functionName];
+                if (body != null)
+                {
+                    var bodyNode = InternalParser.Parse(body);
+
+                    result[functionName] = new Resolver.Function()
+                    {
+                        Body = bodyNode,
+                        Name = functionName,
+                        Arguments = Context.FunctionArguments[functionName].Select(a => Node.Variable(a)).ToList()
+                    };
                 }
             }
 
-            return builder.Build(node);
+            return result;
         }
     }
 }

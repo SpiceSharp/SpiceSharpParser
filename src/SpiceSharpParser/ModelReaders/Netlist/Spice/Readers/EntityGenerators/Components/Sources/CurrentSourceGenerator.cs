@@ -134,7 +134,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 entity.Parameters.Expression = valueParameter.Value;
                 entity.Parameters.ParseAction = (expression) => {
                     var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
-                    return parser.MakeVariablesGlobal(expression);
+                    return parser.Resolve(expression);
                 };
                 return entity;
             }
@@ -149,7 +149,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     entity.Parameters.Expression = expressionParameter.Image;
                     entity.Parameters.ParseAction = (expression) => {
                         var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
-                        return parser.MakeVariablesGlobal(expression);
+                        return parser.Resolve(expression);
                     };
                     return entity;
                 }
@@ -206,7 +206,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     entity.Parameters.Expression = ExpressionFactory.CreateTableExpression(eep.Expression, eep.Points);
                     entity.Parameters.ParseAction = (expression) => {
                         var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
-                        return parser.MakeVariablesGlobal(expression);
+                        return parser.Resolve(expression);
                     };
 
                     return entity;

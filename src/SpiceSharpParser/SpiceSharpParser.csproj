@@ -40,6 +40,6 @@
 
   <ItemGroup>
     <PackageReference Include="SpiceSharp" Version="3.0.5" />
-    <PackageReference Include="SpiceSharpBehavioral" Version="3.0.5" />
+    <PackageReference Include="SpiceSharpBehavioral" Version="3.0.7" />
   </ItemGroup>
 </Project>

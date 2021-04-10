@@ -7,6 +7,7 @@ using System.Linq;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharp.Entities;
 using SpiceSharpParser.Parsers.Expression;
+using SpiceSharpParser.Parsers.Expression.Implementation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {
@@ -145,7 +146,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 entity.Parameters.Expression = valueParameter.Value;
                 entity.Parameters.ParseAction = (expression) => {
                     var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
-                    return parser.MakeVariablesGlobal(expression);
+                    return parser.Resolve(expression);
                 };
 
                 return entity;
@@ -162,7 +163,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     entity.Parameters.Expression = expressionParameter.Image;
                     entity.Parameters.ParseAction = (expression) => {
                         var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
-                        return parser.MakeVariablesGlobal(expression);
+                        return parser.Resolve(expression);
                     };
 
                 }
@@ -200,7 +201,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 entity.Parameters.Expression = expression;
                 entity.Parameters.ParseAction = (exp) => {
                     var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
-                    return parser.MakeVariablesGlobal(exp);
+                    return parser.Resolve(exp);
                 };
 
                 return entity;
@@ -224,7 +225,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     entity.Parameters.Expression =  ExpressionFactory.CreateTableExpression(eep.Expression, eep.Points);
                     entity.Parameters.ParseAction = (exp) => {
                         var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
-                        return parser.MakeVariablesGlobal(exp);
+                        return parser.Resolve(exp);
                     };
                     return entity;
                 }

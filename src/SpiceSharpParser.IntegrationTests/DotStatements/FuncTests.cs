@@ -158,5 +158,25 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(10.0, export[0]);
             Assert.Equal(10.0 / 17.0, export[1]);
         }
+
+        [Fact]
+        public void FuncValue()
+        {
+            var netlist = ParseNetlist(
+                "FUNC user function test",
+                "V1 OUT 0 10.0",
+                "R1 OUT 0 1",
+                "R2 2 0 10",
+                "ESource1 2 0 VALUE = { somefunction(4) * 2 }",
+                ".OP",
+                ".SAVE I(R2)",
+                ".PARAM abc = 1",
+                ".FUNC somefunction(x) = {V(OUT) + x + abc}",
+                ".END");
+
+            double[] export = RunOpSimulation(netlist, new string[] { "I(R2)" });
+
+            Assert.Equal(3, export[0]);
+        }
     }
 }
