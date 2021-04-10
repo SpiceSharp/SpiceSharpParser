@@ -4,7 +4,7 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
 {
     public class PolyExpressionTests : BaseTests
     {
-        [Fact(Skip = "Will be fixed in new release")]
+        [Fact(Skip = "Will be fixed in next release")]
         public void ExpressionOneVariableSimpleSum()
         {
             var netlist = ParseNetlist(
@@ -21,7 +21,7 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
             Assert.Equal(4, export);
         }
 
-        [Fact(Skip = "Will be fixed in new release")]
+        [Fact(Skip = "Will be fixed in next release")]
         public void ExpressionOneVariableSquare()
         {
             var netlist = ParseNetlist(

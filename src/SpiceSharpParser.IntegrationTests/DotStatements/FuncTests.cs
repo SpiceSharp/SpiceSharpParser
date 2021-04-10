@@ -101,7 +101,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(10.0 / 17.0, export[1]);
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void FuncWithoutArguments()
         {
             var netlist = ParseNetlist(
@@ -119,7 +119,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(10.0 / 17.0, export[1]);
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void FuncWithVoltageFunctionWithArgument()
         {
             var netlist = ParseNetlist(
@@ -130,16 +130,16 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE V(OUT) @R1[i]",
                 ".OPTIONS dynamic-resistors",
-                ".FUNC somefunction(x) = {V(x,0) + V(OUT) - 10.0}",
+                ".FUNC somefunction(x) = {V(x,0) + V(OUT)}",
                 ".END");
 
             double[] export = RunOpSimulation(netlist, new string[] { "V(OUT)", "@R1[i]" });
 
             Assert.Equal(10.0, export[0]);
-            Assert.Equal(10.0 / 17.0, export[1]);
+            Assert.Equal(10.0 / 27.0, export[1]);
         }
 
-        [Fact(Skip = "Needs discussion with Sven")]
+        [Fact]
         public void FuncWithVoltageFunction()
         {
             var netlist = ParseNetlist(
@@ -150,13 +150,13 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE V(OUT) @R1[i]",
                 ".OPTIONS dynamic-resistors",
-                ".FUNC somefunction() = {V(1) + V(OUT) - 10.0}",
+                ".FUNC somefunction() = {V(1) + V(OUT)}",
                 ".END");
 
             double[] export = RunOpSimulation(netlist, new string[] { "V(OUT)", "@R1[i]" });
 
             Assert.Equal(10.0, export[0]);
-            Assert.Equal(10.0 / 17.0, export[1]);
+            Assert.Equal(10.0 / 27.0, export[1]);
         }
 
         [Fact]

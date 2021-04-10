@@ -276,7 +276,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
             EqualsWithTol(-618.507827392572, export);
         }
 
-        [Fact(Skip = "Fix in next release")]
+        [Fact]
         public void ParamNamesFunctionParamPositive()
         {
             var parser = new SpiceParser();

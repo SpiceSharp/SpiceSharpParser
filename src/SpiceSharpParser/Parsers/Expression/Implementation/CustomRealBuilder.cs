@@ -29,14 +29,14 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
         {
             _caseSettings = caseSettings;
 
-            FunctionFound += OnFunctionFound;
-            FunctionFound += DoubleBuilder_FunctionFound;
-            VariableFound += DoubleBuilder_VariableFound;
+            FunctionFound += OnDefaultFunctionFound;
+            FunctionFound += OnCustomFunctionFound;
+            VariableFound += OnVariableFound;
             Context = context;
             Parser = parser;
 
 
-            // setup varaibles
+            // setup variables
             foreach (var variable in Context.Arguments)
             {
                 var variableNode = VariableNode.Variable(variable.Key);
@@ -59,7 +59,7 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
 
         }
 
-        private static void OnFunctionFound(object sender, FunctionFoundEventArgs<double> args)
+        private static void OnDefaultFunctionFound(object sender, FunctionFoundEventArgs<double> args)
         {
             if (!args.Created && RealBuilderHelper.Defaults.TryGetValue(args.Function.Name, out var definition))
             {
@@ -106,12 +106,15 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
         }
 
 
-        private void DoubleBuilder_VariableFound(object sender, SpiceSharpBehavioral.Builders.Direct.VariableFoundEventArgs<double> e)
+        private void OnVariableFound(object sender, SpiceSharpBehavioral.Builders.Direct.VariableFoundEventArgs<double> e)
         {
-            var found = Variables.SingleOrDefault(variable => StringComparerProvider.Get(_caseSettings.IsParameterNameCaseSensitive).Equals(variable.Name, e.Node.Name));
-            if (found != null)
+            if (e.Node.NodeType != NodeTypes.Voltage && e.Node.NodeType != NodeTypes.Current && e.Node.NodeType != NodeTypes.Property)
             {
-                e.Result = found.Value();
+                var found = Variables.SingleOrDefault(variable => StringComparerProvider.Get(_caseSettings.IsParameterNameCaseSensitive).Equals(variable.Name, e.Node.Name));
+                if (found != null)
+                {
+                    e.Result = found.Value();
+                }
             }
             else
             {
@@ -155,9 +158,16 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
                     {
                         var name = e.Node.Name;
 
+                        var variable = Variables.FirstOrDefault(v => v.Name == name);
+                        
+                        if (variable != null)
+                        {
+                            name = variable.Value().ToString();
+                        }
+
                         var parameters = new ParameterCollection();
                         var vectorParameter = new VectorParameter();
-                        vectorParameter.Elements.Add(new IdentifierParameter(e.Node.Name.ToString()));
+                        vectorParameter.Elements.Add(new IdentifierParameter(name));
                         parameters.Add(vectorParameter);
 
                         string key = $"{Context.Name}_V_{parameters}_{Context.Simulation?.Name}";
@@ -187,7 +197,7 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
         }
 
 
-        private void DoubleBuilder_FunctionFound(object sender, SpiceSharpBehavioral.Builders.Direct.FunctionFoundEventArgs<double> e)
+        private void OnCustomFunctionFound(object sender, SpiceSharpBehavioral.Builders.Direct.FunctionFoundEventArgs<double> e)
         {
             if (!e.Created)
             {

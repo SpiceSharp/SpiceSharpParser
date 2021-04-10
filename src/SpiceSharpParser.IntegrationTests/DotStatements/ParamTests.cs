@@ -62,7 +62,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(13 * (13 + 1) / 2.0, export[0]);
         }
 
-        [Fact(Skip = "Will be fixed with new version of SpiceSharp")]
+        [Fact]
         public void ParamFunctionWithoutArguments()
         {
             var netlist = ParseNetlist(

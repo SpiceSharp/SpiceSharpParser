@@ -259,7 +259,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             }
         }
 
-        [Fact(Skip = "TODO")]
+        [Fact]
         public void LinParamWithAdvancedTable()
         {
             var result = ParseNetlist(
@@ -269,7 +269,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE i(R1)",
                 ".PARAM N=0",
-                ".PARAM R={table(N, 1, pow(10, 1), 2*0+2-0, 20 + 0, 3, 30)}",
+                ".PARAM R={table(N, 1, pow(10, 1), 2*0+2-0, 20 + 0, 3, 30, 4, 40)}",
                 ".ST N 1 4 1",
                 ".END");
 
@@ -284,7 +284,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             }
         }
 
-        [Fact(Skip = "TODO")]
+        [Fact]
         public void LinParamWithDependedTable()
         {
             var result = ParseNetlist(
@@ -295,7 +295,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".SAVE i(R1)",
                 ".PARAM N=0",
                 ".PARAM M=N",
-                ".PARAM R={table(M, 1, 10, 2, 20, 3, 30)}",
+                ".PARAM R={table(M, 1, 10, 2, 20, 3, 30, 4, 40)}",
                 ".ST N 1 4 1",
                 ".END");
 
